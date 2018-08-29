@@ -1,12 +1,45 @@
-import React from 'react';
-import './header.css';
+import React, { Component } from 'react';
+import { MdApps } from 'react-icons/md';
+import { FaUserCircle } from 'react-icons/fa';
+import styles from './header.css';
+import { Link } from "react-router-dom";
+import LazyLoad from '../common/lazyload';
+import logo from '@global/style/icons/Mola_Action A.png';
 
-const Header = () => (
-    <div className={header__container}>
-        <div>MOLA</div>
-        <div>CATEGORY</div>
-        <div>MENU</div>
-    </div>
-);
+class Header extends Component {
+    render() {
+        return (
+            <div className={styles.header__container}>
+                <div className={styles.header__logo_wrapper}>
+                    <Link to="/">
+                        <LazyLoad
+                            image={logo}
+                            className={styles.header__logo}
+                        />
+                    </Link>
+                </div>
+                <div className={styles.header__library_wrapper}>
+                    <LazyLoad>
+                        <Link className ={styles.header__library_link_wrapper} to="/category">
+                            <MdApps size='40px' />
+                            <div className={styles.header__library_text}>
+                                <p>CLICK TO SEE</p>
+                                <p className={styles.header__library_underlined}>MOVIE LIBRARY</p>
+                            </div>
+                        </Link>
+                    </LazyLoad>
+                </div>
+                <div className={styles.header__right_menu}>
+                    <Link className ={styles.header__right_menu_wrapper} to="/search" onClick={this.handlemenu}>
+                        <LazyLoad>Search</LazyLoad>
+                    </Link>
+                    <Link className ={styles.header__right_menu_wrapper} to="/profile" onClick={this.handlemenu}>
+                        <LazyLoad><FaUserCircle size='40px' /></LazyLoad>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+}
 
 export default Header;

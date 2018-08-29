@@ -1,6 +1,72 @@
 .header__container {
+    position: fixed;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
     width: 100%;
+    margin: 25px 0;
+    z-index: 100;
+}
+
+.header__logo_wrapper {
+    padding-left: 40px;
+}
+.header__logo {
+    width: 118px;
+    height: auto;
+}
+
+.header__library_wrapper,
+.header__library_link_wrapper,
+.header__right_menu_wrapper {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 20px;
+    color: black;
+}
+
+.header__library_wrapper:hover .header__library_underlined,
+.header__library_link_wrapper:hover .header__library_underlined {
+    box-shadow: 0 4px 2px -2px gray;
+}
+
+.header__library_wrapper:hover p,
+.header__library_link_wrapper:hover p {
+    text-shadow: 1px 0 gray;
+}
+
+.header__library_text {
+    width: 100px;
+    font-size: 12px;
+    padding: 6px 2px;
+}
+
+.header__library_text p {
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.header__library_text p.header__library_underlined {
+    padding-bottom: 4px;
+}
+
+.header__right_menu {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 40px 25px 0px;
+}
+
+.header__right_menu a {
+    padding: 6px;
+}
+
+.header__right_menu a:hover {
+    text-shadow: 1px 0 gray;
 }

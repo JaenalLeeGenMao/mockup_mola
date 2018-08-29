@@ -1,0 +1,38 @@
+.burger__menu {
+    display: inline-block;
+    position: relative;
+    width: 10%;
+    right: 40px;
+    text-align: right;
+}
+
+.burger__menu_wrapper {
+    display: block;
+    color: black;
+    text-align: right;
+    text-decoration: none;
+    padding: 5px;
+    animation: fadein 2s;
+}
+
+.burger__menu_pop_up {
+    display: block;
+    color: black;
+    text-align: right;
+    text-decoration: none;
+    border-right: 1px solid black;
+    padding: 5px;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.show {
+    visibility: visible;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

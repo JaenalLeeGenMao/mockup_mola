@@ -1,0 +1,30 @@
+.navigation__wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    width: 250px;
+    left: 40px;
+}
+
+.navigation__links {
+    padding: 10px;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.navigation__links:hover, .isActive {
+    letter-spacing: 0.4em;
+    text-shadow: 1px 1px grey;
+}
+
+hr {
+    border: none;
+    width: 90%;
+    box-shadow: 0 20px 20px -20px #333;
+    position: relative;
+    right: 215px;
+    top: 6px;
+    margin: 0;
+}
