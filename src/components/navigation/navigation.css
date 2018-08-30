@@ -1,20 +1,27 @@
 .navigation__wrapper {
-    position: fixed;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     height: 100vh;
     width: 250px;
-    left: 40px;
+    left: 16px;
+    top: 0px;
 }
 
 .navigation__links {
     padding: 10px;
     font-size: 11px;
     text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: 150ms ease-out;
 }
 
-.navigation__links:hover, .isActive {
+.navigation__links:hover {
+    letter-spacing: 0.4em;
+    text-shadow: 0.4px 0.4px grey;
+}
+
+.isActive {
     letter-spacing: 0.4em;
     text-shadow: 1px 1px grey;
 }
@@ -25,6 +32,19 @@ hr {
     box-shadow: 0 20px 20px -20px #333;
     position: relative;
     right: 215px;
-    top: 6px;
+    top: 8px;
     margin: 0;
+}
+
+/* On screens that are 1180px or less, set the background color to blue */
+@media only screen and (min-device-width : 1080px) and (max-device-width : 1920px) and (-webkit-min-device-pixel-ratio: 1) {
+    .navigation__wrapper {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 250px;
+        left: 40px;
+        top: 166px;
+    }
 }

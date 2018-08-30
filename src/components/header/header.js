@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { MdApps } from 'react-icons/md';
-import { FaUserCircle } from 'react-icons/fa';
-import styles from './header.css';
 import { Link } from "react-router-dom";
-import LazyLoad from '../common/lazyload';
+
+import LazyLoad from '@components/common/lazyload';
 import logo from '@global/style/icons/Mola_Action A.png';
+
+import styles from './header.css';
+import RightMenu from './right-menu';
 
 class Header extends Component {
     render() {
@@ -29,14 +31,7 @@ class Header extends Component {
                         </Link>
                     </LazyLoad>
                 </div>
-                <div className={styles.header__right_menu}>
-                    <Link className ={styles.header__right_menu_wrapper} to="/search" onClick={this.handlemenu}>
-                        <LazyLoad>Search</LazyLoad>
-                    </Link>
-                    <Link className ={styles.header__right_menu_wrapper} to="/profile" onClick={this.handlemenu}>
-                        <LazyLoad><FaUserCircle size='40px' /></LazyLoad>
-                    </Link>
-                </div>
+                <RightMenu />
             </div>
         );
     }

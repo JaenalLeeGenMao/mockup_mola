@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { FiBarChart } from 'react-icons/fi';
 import $ from 'jquery';
 import styles from './burger-menu.css';
 
