@@ -29,10 +29,12 @@ class Navigation extends Component {
                             className={[styles.navigation__links, isActive ? styles.isActive : ""].join(" ")}
                             style={{ color }}
                         >
-                            <LazyLoad>
-                                {isActive && <hr style={{ "borderBottom": `1px solid ${color}` }} />}
-                                {title.toUpperCase()}
-                            </LazyLoad>
+                            {isActive && 
+                                <LazyLoad>
+                                    <hr style={{ "borderBottom": `1px solid ${color}` }} />
+                                </LazyLoad>
+                            }
+                            {title.toUpperCase()}
                         </Link>
                     );
                 })

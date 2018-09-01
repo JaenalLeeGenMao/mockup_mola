@@ -15,7 +15,7 @@ const RightMenu = () => (
         <span className ={styles.right__menu_wrapper}>
             <LazyLoad><FaUserCircle size='40px' /></LazyLoad>
             <div className={styles.right__menu_dropdown_wrapper}>
-                <IoMdArrowDropup className={styles.right__menu_dropdown_caret} size={44} color="grey" />
+                {/* <IoMdArrowDropup className={styles.right__menu_dropdown_caret} size={44} color="grey" /> */}
                 <div className={styles.right__menu_dropdown}>
                     <Link to="/">Account</Link>
                     <Link to="/">History</Link>

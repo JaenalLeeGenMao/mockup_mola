@@ -3,7 +3,7 @@ import { MdApps } from 'react-icons/md';
 import { Link } from "react-router-dom";
 
 import LazyLoad from '@components/common/lazyload';
-import logo from '@global/style/icons/Mola_Action A.png';
+import logo from '@global/style/icons/Mola.png';
 
 import styles from './header.css';
 import RightMenu from './right-menu';
