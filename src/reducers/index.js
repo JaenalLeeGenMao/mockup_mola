@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import user from './user';
 import runtime from './runtime';
+import home from './home';
 
 export default combineReducers({
-  user,
-  runtime,
+    user,
+    runtime,
+    home,
 });
