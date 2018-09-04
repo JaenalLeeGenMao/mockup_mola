@@ -7,33 +7,52 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import cx from 'classnames';
+import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Navigation.css';
+import LazyLoad from '@components/common/Lazyload';
 import Link from '../Link';
+// import { Link } from 'react-router-dom';
 
-class Navigation extends React.Component {
+import styles from './Navigation.css';
+
+class Navigation extends Component {
+  handleNavigation = e => {
+    e.preventDefault();
+    const { onClick } = this.props;
+    onClick(e.currentTarget.id);
+  };
+
   render() {
+    const { isDark = 1, playlists = undefined } = this.props,
+      color = isDark ? 'black' : 'white';
     return (
-      <div className={s.root} role="navigation">
-        <Link className={s.link} to="/about">
-          About
-        </Link>
-        <Link className={s.link} to="/contact">
-          Contact
-        </Link>
-        <span className={s.spacer}> | </span>
-        <Link className={s.link} to="/login">
-          Log in
-        </Link>
-        <span className={s.spacer}>or</span>
-        <Link className={cx(s.link, s.highlight)} to="/register">
-          Sign up
-        </Link>
+      <div className={styles.navigation__wrapper} style={{ color }}>
+        {playlists &&
+          playlists.map(
+            ({ id, isActive, attributes, attributes: { title, coverUrl } }) => (
+              <Link
+                key={id}
+                id={id}
+                to="/"
+                onClick={this.handleNavigation}
+                className={[
+                  styles.navigation__links,
+                  isActive ? styles.isActive : '',
+                ].join(' ')}
+                style={{ color }}
+              >
+                {isActive && (
+                  <LazyLoad>
+                    <hr style={{ borderBottom: `1px solid ${color}` }} />
+                  </LazyLoad>
+                )}
+                {title.toUpperCase()}
+              </Link>
+            ),
+          )}
       </div>
     );
   }
 }
 
-export default withStyles(s)(Navigation);
+export default withStyles(styles)(Navigation);

@@ -1,0 +1,6 @@
+{
+    "name": "RightMenu",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./right-menu.js"
+}

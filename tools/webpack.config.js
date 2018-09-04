@@ -33,6 +33,11 @@ const staticAssetName = isDebug
   ? '[path][name].[ext]?[hash:8]'
   : '[hash:8].[ext]';
 
+const alias = {
+  '@global': path.resolve(__dirname, '..', 'src', 'global'),
+  '@module': path.resolve(__dirname, '..', 'src', 'module'),
+  '@components': path.resolve(__dirname, '..', 'src', 'components'),
+};
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
   discardComments: { removeAll: true },
@@ -65,6 +70,7 @@ const config = {
     // Allow absolute paths in imports, e.g. import Button from 'components/Button'
     // Keep in sync with .flowconfig and .eslintrc
     modules: ['node_modules', 'src'],
+    alias,
   },
 
   module: {
