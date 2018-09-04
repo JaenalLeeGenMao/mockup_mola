@@ -54,7 +54,8 @@ class Home extends Component {
 		get('http://mola.lukitomo.com/v2/videos/playlists/mola-home').then(
 		  response => {
 		    const { data } = response.data;
-		    const { playlists: playlistsData } = data[0].attributes;
+				const { playlists: playlistsData } = data[0].attributes;
+				console.log("PLaylist", playlistsData)
 		    let playlists = playlistsData.map((playlist, index) => {
 		      const resp = this.handleVideos(playlist.id);
 		      resp.then(videos => {
