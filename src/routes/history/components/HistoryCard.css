@@ -19,7 +19,7 @@
   cursor: pointer;
 }
 
-.movieImageWrapper > img {
+.movieImage {
   width: 100%;
 }
 

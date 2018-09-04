@@ -1,8 +1,8 @@
-import { FETCH_HISTORY } from '../constants';
+import { GET_HISTORY } from '../constants/history';
 
 export default function history(state = { movies: [] }, action) {
   switch (action.type) {
-    case FETCH_HISTORY:
+    case GET_HISTORY:
       return {
         ...state,
         movies: action.result.data,

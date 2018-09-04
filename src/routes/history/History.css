@@ -1,9 +1,9 @@
 .wrapper {
-  background-image: url('https://www.publicdomainpictures.net/pictures/180000/velka/sea-background-texture-14667654387Yx.jpg');
+  background-image: url('https://wallpapercave.com/wp/1mQZjV4.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 76px 0 0 200px;
-  height: calc(100vh - 76px);
+  padding: 105px 0 0 200px;
+  height: calc(100vh - 105px);
   overflow-y: hidden;
 }
 
@@ -22,8 +22,7 @@
 }
 
 @media screen and (max-width: 1280px) {
-  .containerOuter 
-    {
+  .containerOuter {
     width: 960px;
   }
 }
@@ -33,8 +32,7 @@
     padding: 76px 40px 0 40px;
   }
 
-  .containerOuter 
-    {
+  .containerOuter {
     width: auto;
   }
 }

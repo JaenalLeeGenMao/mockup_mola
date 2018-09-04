@@ -4,27 +4,11 @@ import History from './History';
 
 const title = 'History';
 
-// const axios = require('axios');
-
-// // Make a request for a user with a given ID
-// axios.get('http://mola.lukitomo.com/v2/videos/playlists/horror')
-//   .then(function (response) {
-//     // handle success
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     // handle error
-//     console.log(error);
-//   })
-//   .then(function () {
-//     // always executed
-//   });
-
 function action() {
   const dummyHistory = [
     {
       type: 'user-video-history',
-      id: 2,
+      id: 1,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 670,
@@ -112,7 +96,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 3,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -153,7 +137,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 4,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -194,7 +178,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 5,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -235,7 +219,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 6,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -276,7 +260,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 7,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -317,7 +301,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 8,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -358,7 +342,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 9,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -399,7 +383,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 10,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -440,7 +424,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 11,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 7779,
@@ -481,7 +465,7 @@ function action() {
     },
     {
       type: 'user-video-history',
-      id: 2,
+      id: 12,
       attributes: {
         uid: 'kareemlukitomo123',
         timePosition: 999,

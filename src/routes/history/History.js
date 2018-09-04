@@ -7,7 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, {Fragment} from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,12 +15,14 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import HistoryCard from './components/HistoryCard';
 
-import { fetchAllHistory } from '../../actions/history';
+import { getAllHistory } from '../../actions/history';
+import Header from '@components/header';
+import Navbar from '@components/navigation';
 import s from './History.css';
 
 class History extends React.Component {
   componentWillMount() {
-    this.props.fetchAllHistory();
+    this.props.getAllHistory();
   }
 
   static propTypes = {
@@ -28,8 +30,30 @@ class History extends React.Component {
   };
 
   render() {
-    const { movieDummy, movies } = this.props;
+		const { movieDummy, movies } = this.props;
+		const isDark = false;
+		const playlist = [
+			{ 
+				id: 1,
+				isActive: false,
+				attributes: 
+				{ title: 'Profile Data' }
+			},
+			{ 
+				id: 2,
+				isActive: true,
+				attributes: 
+				{ title: 'History' }
+			},
+		]
     return (
+    <Fragment>
+      <Navbar
+			isDark={isDark}
+			playlists={playlist}
+			onClick={this.handleScrollToIndex}
+			/>
+			<Header isDark={isDark}/>
       <div className={s.wrapper}>
         <div className={s.containerOuter}>
           <div className={s.containerInner}>
@@ -56,27 +80,22 @@ class History extends React.Component {
           </div>
         </div>
       </div>
+		</Fragment>
     );
   }
 }
 
-// History.propTypes = {
-//     movieHistory: PropTypes.arrayOf(PropTypes.object),
-//   };
-
 function mapStateToProps(state, ownProps) {
-  console.log('stateeee', state);
+//   console.log('stateeee', state);
   return {
     movies: state.history.movies,
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  // same effect
-  fetchAllHistory: () => dispatch(fetchAllHistory()),
+    getAllHistory: () => dispatch(getAllHistory()),
 });
 
-// export default connect(mapStateToProps, mapDispatchToProps)(withStyles(s)(History));
 export default compose(
   withStyles(s),
   connect(mapStateToProps, mapDispatchToProps),

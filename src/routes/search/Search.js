@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classNames from 'classnames';
 import s from './Search.css';
+import Link from '@components/Link';
 
 class Search extends React.Component {
   state = {
@@ -14,22 +15,14 @@ class Search extends React.Component {
   };
 
   handleSearchChange = e => {
-    console.log('TEXT', e.target.value);
+    // console.log('TEXT', e.target.value);
+    this.setState({
+      showSuggestion: true
+    })
   };
 
   render() {
-    const genre = [
-      'Action',
-      'Family',
-      'Adventure',
-      'Horror',
-      'Comedy',
-      'Romance',
-      'Documentary',
-      'SciFi',
-      'Drama',
-      'Thriller',
-    ];
+    const { showSuggestion } = this.state;
 
     return (
       <div className={s.root}>
@@ -41,45 +34,52 @@ class Search extends React.Component {
               onChange={this.handleSearchChange}
             />
           </div>
-          <div className={s.genreContainer}>
-            <div>
-              <span className={s.genreAction} />
+          { !showSuggestion && 
+            <div className={s.genreContainer}>
+              <Link className={s.genreLink} to="/">
+                <span className={s.genreAction} />
+              </Link>
+              <div className={s.genreSplit} />
+              <Link className={s.genreLink} to="/">
+                <span className={classNames(s.genreFamily, s.genreAlignRight)} />
+              </Link>
+              <Link className={s.genreLink} to="/">
+                <span className={s.genreAdventure} />
+              </Link>
+              <div className={s.genreSplit} />
+              <Link className={s.genreLink} to="/">
+                <span className={classNames(s.genreHorror, s.genreAlignRight)} />
+              </Link>
+              <Link className={s.genreLink} to="/">
+                <span className={s.genreComedy} />
+              </Link>
+              <div className={s.genreSplit} />
+              <Link className={s.genreLink} to="/">
+                <span className={classNames(s.genreRomance, s.genreAlignRight)} />
+              </Link>
+              <Link className={s.genreLink} to="/">
+                <span className={s.genreDocumentary} />
+              </Link>
+              <div className={s.genreSplit} />
+              <Link className={s.genreLink} to="/">
+                <span className={classNames(s.genreSciFi, s.genreAlignRight)} />
+              </Link>
+              <Link className={s.genreLink} to="/">
+                <span className={s.genreDrama} />
+              </Link>
+              <div className={s.genreSplit} />
+              <Link className={s.genreLink} to="/">
+                <span
+                  className={classNames(s.genreThriller, s.genreAlignRight)}
+                />
+              </Link>
             </div>
-            <div className={s.genreSplit} />
+          }
+
+          { showSuggestion && 
             <div>
-              <span className={classNames(s.genreFamily, s.genreAlignRight)} />
             </div>
-            <div>
-              <span className={s.genreAdventure} />
-            </div>
-            <div className={s.genreSplit} />
-            <div>
-              <span className={classNames(s.genreHorror, s.genreAlignRight)} />
-            </div>
-            <div>
-              <span className={s.genreComedy} />
-            </div>
-            <div className={s.genreSplit} />
-            <div>
-              <span className={classNames(s.genreRomance, s.genreAlignRight)} />
-            </div>
-            <div>
-              <span className={s.genreDocumentary} />
-            </div>
-            <div className={s.genreSplit} />
-            <div>
-              <span className={classNames(s.genreSciFi, s.genreAlignRight)} />
-            </div>
-            <div>
-              <span className={s.genreDrama} />
-            </div>
-            <div className={s.genreSplit} />
-            <div>
-              <span
-                className={classNames(s.genreThriller, s.genreAlignRight)}
-              />
-            </div>
-          </div>
+          }
         </div>
       </div>
     );

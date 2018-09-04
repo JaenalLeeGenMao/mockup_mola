@@ -2,8 +2,6 @@
 
 .root {
   background-color: black;
-
-  /* height: 100%; */
   height: calc(100vh - 130px);
   padding: 130px 330px 0 330px;
 }
@@ -42,13 +40,13 @@
   padding: 10px 0 20px 48px;
 }
 
-.genreContainer > div {
+.genreLink {
   display: inline-block;
   width: 45%;
   height: 100px;
 }
 
-.genreContainer > div > span {
+.genreLink > span {
   background-repeat: no-repeat;
   background-size: contain;
   display: block;

@@ -7,38 +7,62 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { Component } from 'react';
+import { MdApps } from 'react-icons/md';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Header.css';
-import Link from '../Link';
-import Navigation from '../Navigation';
-import logoUrl from './logo-small.png';
-import logoUrl2x from './logo-small@2x.png';
+// import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-class Header extends React.Component {
+import LazyLoad from '@components/common/Lazyload';
+import logo from '@global/style/icons/Mola.png';
+
+import Link from '../Link';
+
+import RightMenu from './right-menu';
+import styles from './Header.css';
+
+class Header extends Component {
+
   render() {
+    const {
+      isDark = 1,
+      logoOff = false,
+      libraryOff = false,
+      rightMenuOff = false,
+    } = this.props;
+    const color = isDark ? 'black' : 'white';
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <Navigation />
-          <Link className={s.brand} to="/">
-            <img
-              src={logoUrl}
-              srcSet={`${logoUrl2x} 2x`}
-              width="38"
-              height="38"
-              alt="React"
-            />
-            <span className={s.brandTxt}>Your Company</span>
-          </Link>
-          <div className={s.banner}>
-            <h1 className={s.bannerTitle}>React</h1>
-            <p className={s.bannerDesc}>Complex web apps made easy</p>
-          </div>
+      <div className={styles.header__container}>
+        <div className={styles.header__logo_wrapper}>
+          {!logoOff && (
+            <Link to="/">
+              <LazyLoad image={logo} className={styles.header__logo} />
+            </Link>
+          )}
         </div>
+        <div className={styles.header__library_wrapper}>
+          {!libraryOff && (
+            <LazyLoad>
+              <Link
+                className={styles.header__library_link_wrapper}
+                to="/category"
+                style={{ color }}
+              >
+                <MdApps size="40px" />
+                <div className={styles.header__library_text}>
+                  <p>CLICK TO SEE</p>
+                  <p className={styles.header__library_underlined}>
+                    MOVIE LIBRARY
+                  </p>
+                </div>
+              </Link>
+            </LazyLoad>
+          )}
+        </div>
+        {!rightMenuOff && <RightMenu color={color} />}
       </div>
     );
   }
 }
 
-export default withStyles(s)(Header);
+export default withStyles(styles)(Header);
