@@ -1,0 +1,36 @@
+@import '../../components/variables.css';
+
+.root {
+  background-color: black;
+  height: 100vh;
+  padding: 76px 0 0 250px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1190px;
+
+}
+ 
+.searchInputWrapper {
+  margin: 84px 0 66px 156px;
+}
+
+.searchInput {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid white;
+  width: 580px;
+  color: #fff;
+  outline: 0;
+  padding: 10px 0 10px 48px;
+}
+
+.sectionContainer {
+  margin-bottom: 27px;
+}
+
+.sectionTitle {
+  font-size: 17px;
+  color: #bababa;
+}

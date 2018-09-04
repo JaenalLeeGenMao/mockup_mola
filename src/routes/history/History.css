@@ -1,0 +1,40 @@
+.wrapper {
+  background-image: url('https://www.publicdomainpictures.net/pictures/180000/velka/sea-background-texture-14667654387Yx.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 76px 0 0 200px;
+  height: calc(100vh - 76px);
+  overflow-y: hidden;
+}
+
+.containerOuter {
+  overflow: hidden;
+  width: 1190px;
+  margin: 0 auto;
+}
+
+.containerInner {
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 20px;
+  margin: 0 auto;
+  height: calc(100vh - 76px);
+}
+
+@media screen and (max-width: 1280px) {
+  .containerOuter 
+    {
+    width: 960px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 76px 40px 0 40px;
+  }
+
+  .containerOuter 
+    {
+    width: auto;
+  }
+}
