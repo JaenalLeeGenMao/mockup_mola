@@ -13,7 +13,6 @@
    * ======================================================================== */
 
   --font-family-base: 'Futura', 'HelveticaNeue-Light', sans-serif;
-  --font-family-nav: 'Roboto', 'Futura';
 
   /*
    * Layout
@@ -29,5 +28,4 @@
   --screen-sm-min: 768px;  /* Small screen / tablet */
   --screen-md-min: 992px;  /* Medium screen / desktop */
   --screen-lg-min: 1280px; /* Large screen / wide desktop */
-  
 }

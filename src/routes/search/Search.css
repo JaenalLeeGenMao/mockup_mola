@@ -3,17 +3,22 @@
 .root {
   background-color: black;
   height: calc(100vh - 130px);
-  padding: 130px 330px 0 330px;
+  padding: 130px 200px 0 200px;
+  overflow: hidden;
 }
 
 .container {
   margin: 0 auto;
   width: auto;
+  position: relative;
 }
 
 .searchInputWrapper {
-  margin: 0 10px 70px;
-  position: relative;
+  padding: 0 140px 0 140px;
+  position: absolute;
+  width: 100%;
+  z-index: 101;
+  box-sizing: border-box;
 }
 
 .searchIcon {
@@ -23,7 +28,7 @@
   display: block;
   position: absolute;
   bottom: 16px;
-  left: 0;
+  left: 140px;
   width: 38px;
   height: 38px;
 }
@@ -38,6 +43,11 @@
   outline: 0;
   font-size: 24px;
   padding: 10px 0 20px 48px;
+}
+
+.genreContainer {
+  padding-top: 130px;
+  margin: 0 130px 0 130px;
 }
 
 .genreLink {
@@ -60,51 +70,192 @@
 }
 
 .genreAction {
-  background-image: url('./assets/search_action.png');
+  background-image: url('./assets/search_action@2x.png');
 }
 
 .genreFamily {
-  background-image: url('./assets/search_family.png');
+  background-image: url('./assets/search_family@2x.png');
   background-position-x: 50px;
 }
 
 .genreAdventure {
-  background-image: url('./assets/search_adventure.png');
+  background-image: url('./assets/search_adventure@2x.png');
 }
 
 .genreHorror {
-  background-image: url('./assets/search_horror.png');
+  background-image: url('./assets/search_horror@2x.png');
   background-position-x: 50px;
 }
 
 .genreComedy {
-  background-image: url('./assets/search_comedy.png');
+  background-image: url('./assets/search_comedy@2x.png');
 }
 
 .genreRomance {
-  background-image: url('./assets/search_romance.png');
+  background-image: url('./assets/search_romance@2x.png');
   background-position-x: 50px;
 }
 
 .genreDocumentary {
-  background-image: url('./assets/search_documentary.png');
+  background-image: url('./assets/search_documentary@2x.png');
 }
 
 .genreSciFi {
-  background-image: url('./assets/search_scifi.png');
+  background-image: url('./assets/search_scifi@2x.png');
   background-position-x: 50px;
 }
 
 .genreDrama {
-  background-image: url('./assets/search_drama.png');
+  background-image: url('./assets/search_drama@2x.png');
 }
 
 .genreThriller {
-  background-image: url('./assets/search_thriller.png');
+  background-image: url('./assets/search_thriller@2x.png');
   background-position-x: 50px;
 }
 
 .sectionTitle {
   font-size: 17px;
   color: #bababa;
+}
+
+.resultWrapper {
+  padding-top: 130px;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.resultContainer {
+  overflow-y: auto;
+  height: calc(100vh - 300px);
+  padding-right: 20px;
+  width: 100%;
+}
+
+.resultRow {
+  padding-bottom: 32px;
+  margin: 0;
+  display: flex;
+}
+
+.resultRowWrap {
+  padding-bottom: 32px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch; 
+}
+
+.resultTitle {
+  color: #bababa;
+  font-size: 17px;
+  font-weight: normal;
+  display: inline-block;
+  flex: 1 0 160px;
+}
+
+.resultContent {
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  display: block;
+  width: 100%;
+}
+
+.resultChip {
+  padding: 6px 35px 6px 10px;
+  margin: 0 15px 15px 0;
+  position: relative;
+  display: inline-block;
+  border-radius: 100px;
+  background-color: #2b2b2b;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.resultChip > a {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+}
+
+.resultChip > a > i {
+  background-image: url('./assets/ic_close.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.clearRecentSearch {
+  padding: 6px 35px 6px 10px;
+  margin: 0 15px 15px 0;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  color: #bababa;
+  cursor: pointer;
+}
+
+.castBox {
+  display: inline-block;
+  width: calc(100% / 8);
+  text-align: center;
+  padding: 0 10px 20px 0;
+}
+
+.castBox > img{
+  height: 76px;
+  width: 76px;
+  border-radius: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.castBox > span {
+  padding-top: 8px;
+  font-size: 13px;
+  display: block;
+}
+
+.resultContent__movie {
+  padding: 0 54px;
+}
+
+.movieBox {
+  display: inline-block;
+  width: calc(100%/3);
+  padding: 18px 0 0;
+}
+
+.movieBoxInner {
+  display: block;
+  margin: 0 auto;
+}
+
+.movieBoxInner > img {
+  width: 270px;
+  height: 170px;
+}
+
+.movieBoxInner > span {
+  padding-top: 8px;
+  font-size: 12px;
+  display: block;
+}
+
+@media screen and (max-width: 1280px) {
+  .castBox {
+    width: calc(100% / 5);
+  }
+
+  .movieBoxInner > img {
+    width: 245px;
+    height: 154px;
+  }
 }
