@@ -1,12 +1,22 @@
 module.exports = {
     'extends': 'google',
+    'parser': 'babel-eslint',
     'parserOptions': {
         'ecmaVersion': 6,
+        'sourceType': 'module'
     },
+    'plugins': [
+        'react'
+    ],
+    'extends': ['plugin:react/recommended'],
 
     'rules': {
-
-        // https://eslint.org/docs/rules/array-bracket-spacing
+        'commadangle': 0,
+        'react/jsxusesvars': 1,
+        'react/displayname': 1,
+        'react/prop-types': 0,
+        'no-unused-vars': 'warn',
+        // 'no-unexpected-multiline': 'warn',
         'array-bracket-spacing': ['error', 'never'],
 
         // Use the one true brace style
@@ -15,7 +25,7 @@ module.exports = {
         // Enforce using camelCase
         'camelcase': ['error', {'properties': 'always'}],
 
-        // Shouldn't use console.* -- use a proper logger instead, e.g.
+        // Shouldn't use console.*  use a proper logger instead, e.g.
         // https://www.npmjs.com/package/winston
         'no-console': ['warn'],
         'no-debugger': ['warn'],
@@ -25,8 +35,14 @@ module.exports = {
 
         // No trailing spaces in code
         'no-trailing-spaces': ['error'],
-
-        // Don't use semicolons at the end of your statements
-        'semi': ['error', 'never'],
+        'array-bracket-spacing': ['error', 'never'],
+        'object-curly-spacing': ['error', 'never'],
+        'max-len': ['error', {'code': 200}]
     },
+    'settings': {
+        'react': {
+            'pragma': 'React',
+            'version': '16.2.0'
+        }
+    }
 }
