@@ -12,8 +12,10 @@ module.exports = {
 
     'rules': {
         'commadangle': 0,
-        'react/jsxusesvars': 1,
-        'react/displayname': 1,
+        "react/jsx-uses-vars": 1,
+        "react/react-in-jsx-scope": 1,
+        'react/display-name': 1,
+        'react/displayname': [true, { "ignoreTranspilerName": true }],
         'react/prop-types': 0,
         'no-unused-vars': 'warn',
         // 'no-unexpected-multiline': 'warn',
@@ -23,7 +25,7 @@ module.exports = {
         'brace-style': ['error', '1tbs'],
 
         // Enforce using camelCase
-        'camelcase': ['error', {'properties': 'always'}],
+        'camelcase': ['error', { 'properties': 'always' }],
 
         // Shouldn't use console.*  use a proper logger instead, e.g.
         // https://www.npmjs.com/package/winston
@@ -36,8 +38,8 @@ module.exports = {
         // No trailing spaces in code
         'no-trailing-spaces': ['error'],
         'array-bracket-spacing': ['error', 'never'],
-        'object-curly-spacing': ['error', 'never'],
-        'max-len': ['error', {'code': 200}]
+        'object-curly-spacing': ['error', 'always'],
+        'max-len': ['error', { 'code': 200 }]
     },
     'settings': {
         'react': {

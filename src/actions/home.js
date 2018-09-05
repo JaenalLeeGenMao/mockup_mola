@@ -13,16 +13,16 @@ export const getHomePlaylist = () => dispatch => {
 };
 
 export const getHomeVideo = playlist => dispatch => {
-    return Mola.getHomeVideo({id: playlist.id})
+    return Mola.getHomeVideo({ id: playlist.id })
         .then(result => {
             result = {
                 meta: {
                     status: "success",
-                    id: playlist.id
+                    id: playlist.id,
+                    sortOrder: playlist.sortOrder
                 },
                 data: [playlist].concat(result)
             };
-            // console.log(result);
             dispatch({
                 type: types.GET_HOME_VIDEO,
                 payload: result,
@@ -42,16 +42,15 @@ export const updateActivePlaylist = id => (dispatch, getState) => {
         } = store,
         data = playlistsData.map(playlist => {
             if (playlist.id === id) {
-                playlist.isActive = true;
+                return { ...playlist, isActive: true }
             }
-            playlist.isActive = false;
-            return {...playlist}
+            return { ...playlist, isActive: false }
         });
     return dispatch({
         type: types.UPDATE_ACTIVE_PLAYLIST,
         payload: {
-            meta: {...meta},
-            data: {...data}
+            meta: { ...meta },
+            data: [...data]
         },
     });
 };

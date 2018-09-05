@@ -1,9 +1,9 @@
-import {get} from 'axios';
-import {HOME_PLAYLIST_ENDPOINT} from './endpoints';
+import { get } from 'axios';
+import { HOME_PLAYLIST_ENDPOINT } from './endpoints';
 import utils from './util';
 
 const getHomePlaylist = payload => {
-    return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {...payload}).then(
+    return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, { ...payload }).then(
         response => {
             const result = utils.normalizeHomePlaylist(response);
             return {
@@ -16,7 +16,7 @@ const getHomePlaylist = payload => {
     );
 };
 
-const getHomeVideo = ({id}) => {
+const getHomeVideo = ({ id }) => {
     return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`).then(
         response => {
             const result = utils.normalizeHomeVideo(response);

@@ -1,11 +1,11 @@
 /**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
+* React Starter Kit (https://www.reactstarterkit.com/)
+*
+* Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+*
+* This source code is licensed under the MIT license found in the
+* LICENSE.txt file in the root directory of this source tree.
+*/
 
 @import '../../components/variables.css';
 
@@ -14,6 +14,16 @@
   padding: 0;
   min-height: 0;
   min-width: 0;
+  max-height: 100vh;
+}
+
+body {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+:root {
+  overflow-x: hidden;
   max-height: 100vh;
 }
 
@@ -41,7 +51,7 @@
   overflow: hidden;
 }
 
-.home__parallax_layer_3 {
+.home__parallax_layer_1 {
   width: 100vw;
   height: 100vh;
   z-index: 0;
@@ -52,50 +62,69 @@
   position: absolute;
   background-size: cover;
   background-repeat: no-repeat;
-  width: 50%;
-  right: 0;
+  width: 50vw;
+  right: 6%;
   bottom: 0;
   z-index: 1;
 }
 
-.home__parallax_layer_1 {
+.home__parallax_layer_3 {
   position: absolute;
   background-size: cover;
   background-repeat: no-repeat;
+  height: 100%;
   width: 40%;
   left: 0;
   bottom: 0;
   z-index: 2;
 }
 
-.home__parallax_layer_1_info {
+.home__parallax_layer_3_image {
+  width: 30vw;
+
+  /* height: 35vh; */
+  margin: auto 0 auto auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home__parallax_layer_3_info {
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 60vh;
+  height: 100vh;
   width: 40vw;
-  min-width: 500px;
+  min-width: 540px;
   bottom: 0;
   z-index: 3;
   text-align: right;
 }
 
-.home__parallax_layer_1_title {
+.home__parallax_layer_3_title {
   position: relative;
-  top: 20px;
+  bottom: 35%;
   padding: 10px;
-  font-size: 1.125rem;
+  font-size: 2.025vh;
+
+  /* font-size: 1.125vw; */
   text-transform: uppercase;
 }
 
-.home__parallax_layer_1_desc {
+.home__parallax_layer_3_desc {
   padding: 16px 10px;
   max-height: 120px;
-  font-size: 0.875rem;
+  font-size: 1.425vh;
+
+  /* font-size: .825rem; */
   font-style: italic;
   white-space: pre-line;
   overflow: hidden;
+  position: absolute;
+  max-width: 345px;
+  right: 0;
+  bottom: 28%;
 }
 
 :global(.slick-dots) {
@@ -136,10 +165,18 @@
   top: 90%;
 }
 
-:global(.slick-prev:before) {
+:global(.slick-prev::before) {
   content: '‹' !important;
 }
 
-:global(.slick-next:before) {
+:global(.slick-next::before) {
   content: '›' !important;
+}
+
+.home__parallax_layer_3 :global(.parallax-inner) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

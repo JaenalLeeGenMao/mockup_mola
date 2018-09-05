@@ -1,7 +1,7 @@
 const normalizeHomePlaylist = (response) => {
-    const {data} = response.data
+    const { data } = response.data
     if (data && data.length > 0) {
-        return data.map(({attributes: {playlists}}) =>
+        return data.map(({ attributes: { playlists } }) =>
             playlists.map((playlist) => {
                 const {
                     id,
@@ -18,7 +18,7 @@ const normalizeHomePlaylist = (response) => {
                             isDark,
                         },
                     },
-                } = playlist
+                } = playlist;
                 return {
                     id,
                     title,
@@ -28,7 +28,7 @@ const normalizeHomePlaylist = (response) => {
                     layer3: layer3 || '',
                     layer2: layer2 || '',
                     layer1: layer1 || '',
-                    isDark: isDark || 1,
+                    isDark: isDark || 0,
                     isActive: false,
                     type,
                 }
@@ -39,9 +39,9 @@ const normalizeHomePlaylist = (response) => {
 }
 
 const normalizeHomeVideo = (response) => {
-    const {data} = response.data
+    const { data } = response.data
     if (data && data.length > 0) {
-        return data.map(({attributes: {videos}}) =>
+        return data.map(({ attributes: { videos } }) =>
             videos.map((video) => {
                 const {
                     id,
@@ -56,7 +56,7 @@ const normalizeHomeVideo = (response) => {
                         layer1,
                         isDark,
                     },
-                } = video
+                } = video;
                 return {
                     id,
                     title,
@@ -66,7 +66,7 @@ const normalizeHomeVideo = (response) => {
                     layer3: layer3 || '',
                     layer2: layer2 || '',
                     layer1: layer1 || '',
-                    isDark: isDark || 1,
+                    isDark: isDark || 0,
                     type,
                 }
             }).sort((a, b) => a.displayOrder - b.displayOrder)

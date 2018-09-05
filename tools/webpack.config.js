@@ -12,7 +12,7 @@ import path from 'path';
 import webpack from 'webpack';
 import WebpackAssetsManifest from 'webpack-assets-manifest';
 import nodeExternals from 'webpack-node-externals';
-import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import overrideRules from './lib/overrideRules';
 import pkg from '../package.json';
 
@@ -40,7 +40,7 @@ const alias = {
 };
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
-    discardComments: {removeAll: true},
+    discardComments: { removeAll: true },
 };
 
 //
@@ -112,7 +112,7 @@ const config = {
                         '@babel/preset-flow',
                         // JSX
                         // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-                        ['@babel/preset-react', {development: isDebug}],
+                        ['@babel/preset-react', { development: isDebug }],
                     ],
                     plugins: [
                         // Treat React JSX elements as value types and hoist them to the highest scope
@@ -134,7 +134,7 @@ const config = {
                 rules: [
                     // Convert CSS into JS module
                     {
-                        issuer: {not: [reStyle]},
+                        issuer: { not: [reStyle] },
                         use: 'isomorphic-style-loader',
                     },
 
@@ -325,7 +325,7 @@ const clientConfig = {
             customize: (key, value) => {
                 // You can prevent adding items to the manifest by returning false.
                 if (key.toLowerCase().endsWith('.map')) return false;
-                return {key, value};
+                return { key, value };
             },
             done: (manifest, stats) => {
                 // Write chunk-manifest.json.json
