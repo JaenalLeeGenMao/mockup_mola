@@ -69,10 +69,6 @@ class Home extends Component {
 	                            onUpdatePlaylist(activePlaylist.id);
 	                            return false;
 	                        }
-	                        /** Blm ktmu solusi cakep, untuk next improvement deh */
-	                        const { isDark } = this.state;
-	                        $('.slick-dots li').css('color', isDark ? 'black' : 'white');
-	                        $('.slick-dots li.slick-active').css('color', isDark ? 'black' : 'white');
 	                        return true;
 	                    });
 
@@ -203,7 +199,11 @@ class Home extends Component {
 
     render() {
         const { playlists, videos } = this.props.home,
-            { isDark } = this.state;
+            { isDark } = this.state,
+            settings = {
+                ...SETTINGS,
+                dotsClass: `slick-dots ${isDark ? styles.home__dark : styles.home__white}`
+            }
     	return (
     		<div
     			className={styles.home__container}
@@ -231,7 +231,7 @@ class Home extends Component {
                     			key={id}
                     		>
                     			<Element name={id}>
-                    				<Slider {...SETTINGS}>
+                    				<Slider {...settings}>
                     					{video.data.map((eachVids) => {
                     						const {
                     							id,

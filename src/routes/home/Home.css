@@ -15,6 +15,8 @@
   min-height: 0;
   min-width: 0;
   max-height: 100vh;
+  transition: all 50ms ease-in;
+  font-family: monospace;
 }
 
 body {
@@ -125,37 +127,69 @@ body {
   position: absolute;
   max-width: 345px;
   right: 0;
-  bottom: 28%;
+  bottom: 25%;
 }
 
-:global(.slick-dots) {
+/* slick dots - start */
+.home__white,
+.home__dark {
   top: 89.25%;
   left: 0;
   right: 0;
   font-size: 14px;
 }
 
-:global(.slick-dots) li,
+.home__white,
+.home__white li,
+.home__white li button,
+.home__white li button::before {
+  color: white;
+  margin: 0;
+}
+
+.home__dark,
+.home__dark li,
+.home__dark li button,
+.home__dark li button::before {
+  color: black;
+  margin: 0;
+}
+
+.home__white li:global(.slick-active) button::before {
+  color: white;
+  margin: 0;
+}
+
+.home__dark li:global(.slick-active) button::before {
+  color: black;
+  margin: 0;
+}
+
+/* slick dots - end */
+
+/* :global(.slick-dots) {
+  top: 89.25%;
+  left: 0;
+  right: 0;
+  font-size: 14px;
+} */
+
+/* :global(.slick-dots) li,
 :global(.slick-dots) li span {
   padding: 0;
   margin: 0;
   width: 14px;
   height: 14px;
   opacity: 0.7;
-}
+} */
 
-:global(.slick-dots) li:hover > span,
-:global(.slick-dots) li:global(.slick-active) > span {
-  opacity: 1;
-}
-
-:global(.slick-white) {
+/* :global(.slick-white) {
   color: white;
 }
 
 :global(.slick-dark) {
   color: black;
-}
+} */
 
 :global(.slick-prev),
 :global(.slick-next) {
