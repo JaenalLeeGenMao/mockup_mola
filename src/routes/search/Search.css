@@ -1,0 +1,110 @@
+@import '../../components/variables.css';
+
+.root {
+  background-color: black;
+  height: calc(100vh - 130px);
+  padding: 130px 330px 0 330px;
+}
+
+.container {
+  margin: 0 auto;
+  width: auto;
+}
+
+.searchInputWrapper {
+  margin: 0 10px 70px;
+  position: relative;
+}
+
+.searchIcon {
+  background-image: url('./assets/ic_search.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  width: 38px;
+  height: 38px;
+}
+
+.searchInput {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid white;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+  outline: 0;
+  font-size: 24px;
+  padding: 10px 0 20px 48px;
+}
+
+.genreLink {
+  display: inline-block;
+  width: 45%;
+  height: 100px;
+}
+
+.genreLink > span {
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  width: auto;
+  height: 100px;
+}
+
+.genreContainer > .genreSplit {
+  display: inline-block;
+  width: 10%;
+}
+
+.genreAction {
+  background-image: url('./assets/search_action.png');
+}
+
+.genreFamily {
+  background-image: url('./assets/search_family.png');
+  background-position-x: 50px;
+}
+
+.genreAdventure {
+  background-image: url('./assets/search_adventure.png');
+}
+
+.genreHorror {
+  background-image: url('./assets/search_horror.png');
+  background-position-x: 50px;
+}
+
+.genreComedy {
+  background-image: url('./assets/search_comedy.png');
+}
+
+.genreRomance {
+  background-image: url('./assets/search_romance.png');
+  background-position-x: 50px;
+}
+
+.genreDocumentary {
+  background-image: url('./assets/search_documentary.png');
+}
+
+.genreSciFi {
+  background-image: url('./assets/search_scifi.png');
+  background-position-x: 50px;
+}
+
+.genreDrama {
+  background-image: url('./assets/search_drama.png');
+}
+
+.genreThriller {
+  background-image: url('./assets/search_thriller.png');
+  background-position-x: 50px;
+}
+
+.sectionTitle {
+  font-size: 17px;
+  color: #bababa;
+}

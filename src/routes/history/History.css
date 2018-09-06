@@ -1,0 +1,38 @@
+.wrapper {
+  background-image: url('https://wallpapercave.com/wp/1mQZjV4.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 105px 0 0 200px;
+  height: calc(100vh - 105px);
+  overflow-y: hidden;
+}
+
+.containerOuter {
+  overflow: hidden;
+  width: 1190px;
+  margin: 0 auto;
+}
+
+.containerInner {
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 20px;
+  margin: 0 auto;
+  height: calc(100vh - 76px);
+}
+
+@media screen and (max-width: 1280px) {
+  .containerOuter {
+    width: 960px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 76px 40px 0 40px;
+  }
+
+  .containerOuter {
+    width: auto;
+  }
+}
