@@ -1,47 +1,81 @@
-const normalizeHomePlaylist = response => {
-	const { data } = response.data;
-	if (data && data.length > 0) {
-		return data.map(({ attributes: { playlists } }) =>
-			playlists.map(playlist => {
-				const {
-					id,
-					type,
-					attributes: {
-						title,
-						coverUrl,
-						description,
-						sortOrder,
-						cover: {
-							layer1 = layer1 || "",
-							layer2 = layer2 || "",
-							layer3 = layer3 || "",
-							isDark = isDark || "",
-						}
-					},
-				} = playlist;
-				return {
-					id,
-					title,
-					description,
-					sortOrder,
-					layer3: coverUrl || layer3,
-					layer2: layer2 || "",
-					layer1: layer1 || "",
-					isDark: isDark || 1,
-					type
-				};
-			}),
-		);
-	}
+const normalizeHomePlaylist = (response) => {
+    const { data } = response.data
+    if (data && data.length > 0) {
+        return data.map(({ attributes: { playlists } }) =>
+            playlists.map((playlist) => {
+                const {
+                    id,
+                    type,
+                    attributes: {
+                        title,
+                        description,
+                        shortDescription,
+                        sortOrder,
+                        cover: {
+                            layer1,
+                            layer2,
+                            layer3,
+                            isDark,
+                        },
+                    },
+                } = playlist;
+                return {
+                    id,
+                    title,
+                    sortOrder,
+                    description,
+                    shortDescription: shortDescription || '',
+                    layer3: layer3 || '',
+                    layer2: layer2 || '',
+                    layer1: layer1 || '',
+                    isDark: isDark || 0,
+                    isActive: false,
+                    type,
+                }
+            }).sort((a, b) => a.sortOrder - b.sortOrder)
+        )
+    }
+    return []
+}
 
-	return {
-		meta: {
-			status: 'no_result',
-		},
-		data: {},
-	};
-};
+const normalizeHomeVideo = (response) => {
+    const { data } = response.data
+    if (data && data.length > 0) {
+        return data.map(({ attributes: { videos } }) =>
+            videos.map((video) => {
+                const {
+                    id,
+                    type,
+                    attributes: {
+                        title,
+                        description,
+                        shortDescription,
+                        displayOrder,
+                        layer3,
+                        layer2,
+                        layer1,
+                        isDark,
+                    },
+                } = video;
+                return {
+                    id,
+                    title,
+                    displayOrder,
+                    description,
+                    shortDescription,
+                    layer3: layer3 || '',
+                    layer2: layer2 || '',
+                    layer1: layer1 || '',
+                    isDark: isDark || 0,
+                    type,
+                }
+            }).sort((a, b) => a.displayOrder - b.displayOrder)
+        )
+    }
+    return []
+}
 
 export default {
-  normalizeHomePlaylist,
-};
+    normalizeHomePlaylist,
+    normalizeHomeVideo,
+}

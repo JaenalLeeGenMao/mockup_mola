@@ -11,9 +11,21 @@ const getHomePlaylist = payload => {
                     status: result[0].length > 0 ? "success" : "no_result"
                 },
                 data: [...result[0]] || []
-                }
             }
+        }
     );
 };
 
-export default { getHomePlaylist };
+const getHomeVideo = ({ id }) => {
+    return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`).then(
+        response => {
+            const result = utils.normalizeHomeVideo(response);
+            return [...result[0]] || [];
+        }
+    );
+};
+
+export default {
+    getHomePlaylist,
+    getHomeVideo
+};

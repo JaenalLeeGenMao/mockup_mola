@@ -2,8 +2,9 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 // import { Link } from 'react-router-dom';
 import Link from '../../Link';
-import { IoMdArrowDropup } from 'react-icons/io';
-import { FaUserCircle } from 'react-icons/fa';
+import { FiSearch, FiUserX } from 'react-icons/fi';
+import { iocircle } from 'react-icons/io';
+import { FaUserCircle, fauser } from 'react-icons/fa';
 
 import LazyLoad from '@components/common/Lazyload';
 
@@ -16,10 +17,10 @@ const RightMenu = ({ color }) => (
             className={styles.right__menu_search}
             to="/search"
         >
-            <LazyLoad>Search</LazyLoad>
+            <LazyLoad><FiSearch size='32' color={color} /></LazyLoad>
         </Link>
         <span className ={styles.right__menu_wrapper}>
-            <LazyLoad><FaUserCircle size='40px' color={color} /></LazyLoad>
+            <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad>
             <div className={styles.right__menu_dropdown_wrapper}>
                 {/* <IoMdArrowDropup className={styles.right__menu_dropdown_caret} size={44} color="grey" /> */}
                 <div className={styles.right__menu_dropdown} style={{ color }}>

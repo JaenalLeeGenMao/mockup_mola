@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 
 import LazyLoad from '@components/common/Lazyload';
 import logo from '@global/style/icons/Mola.png';
+import libraryLogo from  '@global/style/icons/ic_library2.svg';
 
 import Link from '../Link';
 
@@ -23,46 +24,50 @@ import styles from './Header.css';
 
 class Header extends Component {
 
-  render() {
-    const {
-      isDark = 1,
-      logoOff = false,
-      libraryOff = false,
-      rightMenuOff = false,
-    } = this.props;
-    const color = isDark ? 'black' : 'white';
-    return (
-      <div className={styles.header__container}>
-        <div className={styles.header__logo_wrapper}>
-          {!logoOff && (
-            <Link to="/">
-              <LazyLoad image={logo} className={styles.header__logo} />
-            </Link>
-          )}
-        </div>
-        <div className={styles.header__library_wrapper}>
-          {!libraryOff && (
-            <LazyLoad>
-              <Link
-                className={styles.header__library_link_wrapper}
-                to="/category"
-                style={{ color }}
-              >
-                <MdApps size="40px" />
-                <div className={styles.header__library_text}>
-                  <p>CLICK TO SEE</p>
-                  <p className={styles.header__library_underlined}>
-                    MOVIE LIBRARY
-                  </p>
+    render() {
+        const {
+            isDark = 1,
+            logoOff = false,
+            libraryOff = false,
+            rightMenuOff = false,
+        } = this.props;
+        const color = isDark ? 'black' : 'white';
+        return (
+            <div className={styles.header__container}>
+                <div className={styles.header__logo_wrapper}>
+                    {!logoOff && (
+                        <Link to="/">
+                            <LazyLoad image={logo} className={styles.header__logo} />
+                        </Link>
+                    )}
                 </div>
-              </Link>
-            </LazyLoad>
-          )}
-        </div>
-        {!rightMenuOff && <RightMenu color={color} />}
-      </div>
-    );
-  }
+                <div className={styles.header__library_wrapper}>
+                    {!libraryOff && (
+                        <LazyLoad>
+                            <Link
+                                className={styles.header__library_link_wrapper}
+                                to="/category"
+                                style={{ color }}
+                            >
+                                <span
+                                    className={styles[`header__library_logo_${color}`]}
+                                    alt="library"
+                                    style={{ width: '32px', height: '32px' }}
+                                />
+                                {/* <div className={styles.header__library_text}>
+                                    <p>CLICK TO SEE</p>
+                                    <p className={styles.header__library_underlined}>
+                                        MOVIE LIBRARY
+                                    </p>
+                                </div> */}
+                            </Link>
+                        </LazyLoad>
+                    )}
+                </div>
+                {!rightMenuOff && <RightMenu color={color} />}
+            </div>
+        );
+    }
 }
 
 export default withStyles(styles)(Header);

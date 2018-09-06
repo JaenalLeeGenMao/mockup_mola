@@ -11,7 +11,7 @@
 
 // The top-level (parent) route
 const routes = {
-  path: '',
+    path: '',
 
   // Keep in mind, routes are evaluated in order
   children: [
@@ -52,31 +52,31 @@ const routes = {
       load: () => import(/* webpackChunkName: 'search' */ './search'),
     },
 
-    // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
-    {
-      path: '(.*)',
-      load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),
-    },
-  ],
+        // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
+        {
+            path: '(.*)',
+            load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),
+        },
+    ],
 
-  async action({ next }) {
+    async action({ next }) {
     // Execute each child route until one of them return the result
-    const route = await next();
+        const route = await next();
 
-    // Provide default values for title, description etc.
-    route.title = `${route.title || 'Untitled Page'} - www.reactstarterkit.com`;
-    route.description = route.description || '';
+        // Provide default values for title, description etc.
+        route.title = `${route.title || 'Untitled Page'} - www.reactstarterkit.com`;
+        route.description = route.description || '';
 
-    return route;
-  },
+        return route;
+    },
 };
 
 // The error page is available by permanent url for development mode
 if (__DEV__) {
-  routes.children.unshift({
-    path: '/error',
-    action: require('./error').default,
-  });
+    routes.children.unshift({
+        path: '/error',
+        action: require('./error').default,
+    });
 }
 
 export default routes;
