@@ -4,7 +4,6 @@ import { Parallax } from 'react-scroll-parallax';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { get } from 'axios';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import {
@@ -26,17 +25,21 @@ import LazyLoad from '@components/common/lazyload';
 
 import styles from './Home.css';
 
-let lastScrollY = 0;
-let ticking = false;
-let prevScroll = 0;
-let activePlaylist;
-let isDark = 1;
+let lastScrollY = 0,
+    ticking = false,
+    prevScroll = 0,
+    activePlaylist;
+
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
+	state = {
+	    isDark: undefined
+	}
 
-    componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps) {
     	const {
+	        onUpdatePlaylist,
     		onHandleVideo,
     		home: {
     			playlists,
@@ -46,16 +49,43 @@ class Home extends Component {
     	if (
     		playlists.meta.status === "success"
     	) {
-    		playlists.data.map((playlist) => {
+    		playlists.data.map(playlist => {
     			if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
     				trackedPlaylistIds.push(playlist.id);
     				onHandleVideo(playlist);
     			}
-    		});
-    	}
-    }
+	        });
 
-    componentWillMount() {
+	        if (!this.interval) {
+	            this.interval = setInterval(async () => {
+	                if (activePlaylist) {
+	                    playlists.data.map(playlist => {
+	                        if (activePlaylist.id === playlist.id) {
+	                            const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+	                                isDark = parseInt(activeSlick.attr('isdark'), 10)
+	                            if (typeof(isDark) === "number") {
+	                                this.setState({ isDark });
+	                            }
+	                            onUpdatePlaylist(activePlaylist.id);
+	                            return false;
+	                        }
+	                        /** Blm ktmu solusi cakep, untuk next improvement deh */
+	                        const { isDark } = this.state;
+	                        $('.slick-dots li').css('color', isDark ? 'black' : 'white');
+	                        $('.slick-dots li.slick-active').css('color', isDark ? 'black' : 'white');
+	                        return true;
+	                    });
+
+	                    await this.handleScrollToIndex(activePlaylist.id);
+	                } else {
+	                    activePlaylist = playlists.data[0];
+	                }
+	            }, 800);
+	        }
+    	}
+	}
+
+	componentWillMount() {
     	const {
     		onHandlePlaylist,
     		home: {
@@ -65,137 +95,15 @@ class Home extends Component {
     	if (playlists.meta.status !== 'success') {
     		onHandlePlaylist();
     	}
-    	// get('http://mola.lukitomo.com/v2/videos/playlists/mola-home').then(
-    	// 	response => {
-    	// 		const { data } = response.data,
-    	// 			{ playlists: playlistsData } = data[0].attributes;
-    	// 		let playlists = playlistsData.map((playlist, index) => {
-    	// 			const resp = this.handleVideos(playlist.id);
-    	// 			resp.then(videos => {
-    	// 				videos.map(video => {
-    	// 				if (trackedPlaylistIds.indexOf(video.id) === -1) {
-    	// 					trackedPlaylistIds.push(video.id);
-    	// 					this.setState({ videos: [...this.state.videos].concat(video) });
-    	// 				}
-    	// 				return true;
-    	// 				});
-    	// 			});
-    	// 			if (index === 0) {
-    	// 				return { ...playlist, isActive: true };
-    	// 			}
-    	// 			return { ...playlist, isActive: false };
-    	// 		});
+	}
 
-    	// 		this.setState({ playlists });
-
-    	// 		setInterval(async () => {
-    	// 		if (activePlaylist) {
-    	// 			playlists = await this.state.playlists.map(playlist => {
-    	// 			if (activePlaylist.id === playlist.id) {
-    	// 				return { ...playlist, isActive: true };
-    	// 			}
-    	// 			return { ...playlist, isActive: false };
-    	// 			});
-
-    	// 			this.setState({ playlists });
-    	// 			await this.handleScrollToIndex(activePlaylist.id);
-    	// 		}
-    	// 		}, 1500);
-    	// 	},
-    	// );
-    }
-
-    componentDidMount() {
-        let { home: { playlists }, onUpdatePlaylist } = this.props;
-        console.log("Component Did Mount: ", playlists);
-        setInterval(async () => {
-            if (activePlaylist) {
-                playlists.data.map(playlist => {
-                    // console.log("ACTIVE PLAYLIST", activePlaylist);
-                    // console.log("CURRENT PLAYLIST", playlist);
-                    if (activePlaylist.id === playlist.id) {
-                        onUpdatePlaylist(activePlaylist.id);
-                        return false;
-                        // return { ...playlist, isActive: true };
-                    }
-                    // return { ...playlist, isActive: false };
-                    return true;
-                });
-
-                // this.setState({ playlists });
-                await this.handleScrollToIndex(activePlaylist.id);
-            }
-        }, 800);
-    	// const {
-    	//     onHandleVideo,
-    	//     home: {
-    	//         playlists,
-    	//         videos,
-    	//     },
-    	// } = this.props;
-    	// console.log(playlists, videos);
-    	// if (
-    	//     playlists.meta.status === "success"
-    	// ) {
-    	//     console.log("masuk");
-    	//     playlists.data.map((playlist) => {
-    	//         console.log("mulai looping");
-    	//         if (videos.data.length <= playlists.length) {
-    	//         	onHandleVideo(playlist);
-    	//         }
-    	//     });
-    	// }
-    	// const {
-    	// 	onHandlePlaylist,
-    	// 	onHandleVideo,
-    	// 	home: {
-    	// 		playlists,
-    	// 		videos
-    	// 	}
-    	// } = this.props;
-    	// if (
-    	// 	playlists.meta.status === "success"
-    	// 	&& playlists.data.length > 0
-    	// ) {
-    	// 	playlists.data.map(playlist => {
-    	// 		const resp = onHandleVideo(playlist);
-    	// 		resp.then(videos => {
-    	// 			console.log("REALLY VIDEOS?", videos);
-    	// videos.map(video => {
-    	// 	if (trackedPlaylistIds.indexOf(video.id) === -1) {
-    	// 		trackedPlaylistIds.push(video.id);
-    	// 		this.setState({ videos: [...this.state.videos].concat(video) });
-    	// 	}
-    	// 	return true;
-    	// });
-    	// 		});
-    	// 	});
-    	// }
-    	// const {
-    	// 	onUpdatePlaylist,
-    	// 	home: {
-    	// 		playlists: {
-    	// 			data
-    	// 		}
-    	// 	}
-    	// } = this.props;
-    	// console.log(data);
-    	// if (data && data.length > 0) {
-    	// 	console.log("YAAAAAYYYYY", data);
-    	// 	data.map((playlist, index) => {
-    	// 		if (index === 0) {
-    	// 			onUpdatePlaylist(playlist.id)
-    	// 			return false;
-    	// 		}
-    	// 		return true;
-    	// 	});
-    	// }
+	componentDidMount() {
     	window.addEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.register('begin', this.handleScroll);
     	Events.scrollEvent.register('end', this.handleScroll);
-    }
+	}
 
-    componentDidUpdate() {
+	componentDidUpdate() {
     	// const {
     	// 	onHandleVideo,
     	// 	home: {
@@ -237,12 +145,12 @@ class Home extends Component {
     	//     //     $('.slick-next').css('right', screenWidthHalf - sliderDotsWidth);
     	//     //     return true;
     	//     // });
-    	//     $('.slick-dots li').css('color', isDark ? 'black' : 'white');
-    	//     $('.slick-dots li.slick-active').css('color', isDark ? 'black' : 'white');
+    	    // $('.slick-dots li').css('color', isDark ? 'black' : 'white');
+    	    // $('.slick-dots li.slick-active').css('color', isDark ? 'black' : 'white');
     	// }
-    }
+	}
 
-    componentWillUnmount() {
+	componentWillUnmount() {
     	window.removeEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.remove('begin');
     	Events.scrollEvent.remove('end');
@@ -250,7 +158,7 @@ class Home extends Component {
     	for (let i = 0; i < 100; i += 1) {
     		window.clearInterval(i);
     	}
-    }
+	}
 
     handleScroll = () => {
     	lastScrollY = window.scrollY;
@@ -266,20 +174,6 @@ class Home extends Component {
                         	: Math.trunc(lastScrollY / screenHeight);
     			const playlists = this.props.home.playlists.data.map((playlist, index) => {
     				if (index === scrollIndex) {
-    					if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-    						// const data = this.handleVideos(playlist.id);
-    						// data.then((videos) => {
-    						// 	videos.map((video) => {
-    						// 		if (trackedPlaylistIds.indexOf(video.id) === -1) {
-    						// 			trackedPlaylistIds.push(video.id);
-    						// 			this.setState({
-    						// 				videos: this.state.videos.push(...video),
-    						// 			});
-    						// 		}
-    						// 		return true;
-    						// 	});
-    						// });
-                        }
     					activePlaylist = playlist;
     				}
     				return { ...playlist };
@@ -294,7 +188,7 @@ class Home extends Component {
 
     handleScrollToIndex = id => {
     	const { playlists } = this.props.home;
-    	playlists.data.map((playlist, index) => {
+    	playlists.data.map(playlist => {
     		if (id === playlist.id) {
     			scroller.scrollTo(id, {
     				duration: 250,
@@ -307,15 +201,9 @@ class Home extends Component {
     	});
     };
 
-    // handleVideos = (playlistId) =>
-    // 	homeActions.getHomeVideo(playlistId);
-
     render() {
-    	/** harus ubah ke redux */
-    	const { playlists, videos } = this.props.home,
-    		color = isDark ? 'black' : 'white',
-    		numOfPlaylists = playlists ? playlists.data.length : 1;
-    	// console.log(videos);
+        const { playlists, videos } = this.props.home,
+            { isDark } = this.state;
     	return (
     		<div
     			className={styles.home__container}
@@ -349,16 +237,14 @@ class Home extends Component {
                     							id,
                     							title,
                     							shortDescription,
-                    							isDark: darkColor,
+                    							isDark,
                     							layer1, /** background */
                     							layer2, /** subject */
                     							layer3, /** title image */
                     							type,
-                    						} = eachVids;
-                    						isDark = darkColor;
-                    						// console.log(title, isDark);
+                                            } = eachVids;
                     						return (
-                    							<div className={styles.home__parallax} key={id}>
+                    							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
                     								<LazyLoad>
                     									<Parallax
                     										offsetYMin={-50}
