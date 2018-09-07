@@ -34,7 +34,8 @@ const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar *
 
 class Home extends Component {
 	state = {
-	    isDark: undefined
+	    isDark: undefined,
+	    userAgent: undefined
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -59,24 +60,25 @@ class Home extends Component {
 	        if (!this.interval) {
 	            this.interval = setInterval(async () => {
 	                if (activePlaylist) {
+	                    // this.handleScrollToIndex(activePlaylist.id);
 	                    playlists.data.map(playlist => {
 	                        if (activePlaylist.id === playlist.id) {
 	                            const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
 	                                isDark = parseInt(activeSlick.attr('isdark'), 10)
 	                            if (typeof(isDark) === "number") {
 	                                this.setState({ isDark });
+	                                // onUpdatePlaylist(activePlaylist.id);
 	                            }
-	                            onUpdatePlaylist(activePlaylist.id);
 	                            return false;
 	                        }
 	                        return true;
 	                    });
 
-	                    await this.handleScrollToIndex(activePlaylist.id);
 	                } else {
 	                    activePlaylist = playlists.data[0];
+	                    this.props.onUpdatePlaylist(activePlaylist.id);
 	                }
-	            }, 800);
+	            }, 500);
 	        }
     	}
 	}
@@ -94,6 +96,8 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
+	    const userAgent = window.navigator.userAgent;
+	    this.setState({ userAgent });
     	window.addEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.register('begin', this.handleScroll);
     	Events.scrollEvent.register('end', this.handleScroll);
@@ -160,41 +164,78 @@ class Home extends Component {
     	lastScrollY = window.scrollY;
 
     	if (!ticking) {
-    		window.requestAnimationFrame(() => {
-    			ticking = false;
-    			const screen = $(window),
-    			    screenHeight = screen.height(),
-    			    scrollIndex =
-                        lastScrollY > prevScroll
-                        	? Math.ceil(lastScrollY / screenHeight)
-                        	: Math.trunc(lastScrollY / screenHeight);
-    			const playlists = this.props.home.playlists.data.map((playlist, index) => {
-    				if (index === scrollIndex) {
-    					activePlaylist = playlist;
-    				}
-    				return { ...playlist };
-    			});
-    			prevScroll = lastScrollY;
-    			this.setState({ playlists });
-    		});
+            document.onkeyup = event => {
+                ticking = false;
+                let scrollIndex;
+                const screen = $(window),
+                    screenHeight = screen.height();
+
+                switch (event.which || event.keyCode) {
+                case 37: /* left */
+                case 38: /* up */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+                    this.handleKeyPress(scrollIndex);
+                    break;
+                case 39: /* right */
+                case 40: /* down */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+                    this.handleKeyPress(scrollIndex);
+                    break;
+                default:
+                    break;
+                }
+            };
+
+            // window.requestAnimationFrame(() => {
+            //     ticking = false;
+            //     const screen = $(window),
+            //         screenHeight = screen.height(),
+            //         scrollIndex =
+            //             lastScrollY > prevScroll
+            //                 ? Math.ceil(lastScrollY / screenHeight)
+            //                 : Math.trunc(lastScrollY / screenHeight);
+            //     this.props.home.playlists.data.map((playlist, index) => {
+            //         if (index === scrollIndex) {
+            //             activePlaylist = playlist;
+            //         }
+            //     });
+            //     prevScroll = lastScrollY;
+            // });
 
     		ticking = true;
     	}
     };
+
+    handleKeyPress = scrollIndex => {
+        const result = this.props.home.playlists.data.map((playlist, index) => {
+            if (index === scrollIndex) {
+                const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+                    isDark = parseInt(activeSlick.attr('isdark'), 10);
+                if (typeof(isDark) === "number") {
+                    this.setState({ isDark });
+                    return playlist;
+                }
+            }
+        }).filter(data => data !== undefined);
+        if (result && result.length >= 1) {
+            this.handleScrollToIndex(result[0].id);
+        }
+    }
 
     handleScrollToIndex = id => {
     	const { playlists } = this.props.home;
     	playlists.data.map(playlist => {
     		if (id === playlist.id) {
     			scroller.scrollTo(id, {
-    				duration: 250,
+    				duration: 800,
     				delay: 0,
     				smooth: 'easeInOutQuart',
     			});
     			return false;
     		}
     		return true;
-    	});
+        });
+        this.props.onUpdatePlaylist(id);
     };
 
     render() {
@@ -204,9 +245,10 @@ class Home extends Component {
                 ...SETTINGS,
                 dotsClass: `slick-dots ${isDark ? styles.home__dark : styles.home__white}`
             }
+
     	return (
     		<div
-    			className={styles.home__container}
+                className={styles.home__container}
     		>
     			<Header isDark={isDark} />
     			{playlists && playlists.meta.status === 'success' &&

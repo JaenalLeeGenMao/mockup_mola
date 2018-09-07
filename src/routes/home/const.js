@@ -3,7 +3,7 @@ import React from 'react';
 export const SETTINGS = {
     // customPaging: () => (<span>&bull;</span>),
     dots: true,
-    // infinite: true,
+    infinite: true,
     speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
