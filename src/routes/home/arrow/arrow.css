@@ -1,0 +1,26 @@
+/* @value arrow_width: 40px;
+@value arrow_height: 40px;
+@value arrow_margin: -10px; */
+
+.home__arrow {
+  position: absolute;
+  top: 89.25vh;
+
+  /* margin-top: -20px; */
+  width: 40px;
+  height: 40px;
+  z-index: 99;
+
+  /* background: black; */
+  outline: none;
+  padding-top: 10px;
+}
+
+/*
+.home__arrow :global(.next) {
+    right: 25px;
+}
+
+.home__arrow :global(.prev) {
+    left: 25px;
+} */

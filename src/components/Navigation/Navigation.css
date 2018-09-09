@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .navigation__wrapper {
   position: relative;
   display: flex;
@@ -8,15 +10,17 @@
   top: 0;
   z-index: 2;
   font-size: 16px;
-  font-family: monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 .navigation__links {
-  padding: 10px;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 14px;
   font-size: 0.875rem;
   text-decoration: none;
   letter-spacing: 0.1em;
-  transition: 150ms ease-out;
+  transition: 250ms ease-out;
   opacity: 0.4;
 }
 
@@ -49,7 +53,7 @@ hr {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: calc(100vw - 1190px - 50px);
+    width: 180px;
     left: 40px;
     top: 166px;
   }

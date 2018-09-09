@@ -22,12 +22,18 @@ import { SETTINGS } from './const';
 import Header from '@components/header';
 import Navbar from '@components/navigation';
 import LazyLoad from '@components/common/lazyload';
+import Link from '@components/Link';
+
+import HomeArrow from './arrow';
+import HomePlaceholder from './placeholder';
+
+import { oddOrEven } from './util';
 
 import styles from './Home.css';
+import '@global/style/css/slick.css';
 
 let lastScrollY = 0,
     ticking = false,
-    prevScroll = 0,
     activePlaylist;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
@@ -40,7 +46,6 @@ class Home extends Component {
 
 	componentWillReceiveProps(nextProps) {
     	const {
-	        onUpdatePlaylist,
     		onHandleVideo,
     		home: {
     			playlists,
@@ -60,14 +65,23 @@ class Home extends Component {
 	        if (!this.interval) {
 	            this.interval = setInterval(async () => {
 	                if (activePlaylist) {
-	                    // this.handleScrollToIndex(activePlaylist.id);
 	                    playlists.data.map(playlist => {
 	                        if (activePlaylist.id === playlist.id) {
 	                            const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-	                                isDark = parseInt(activeSlick.attr('isdark'), 10)
+	                                isDark = parseInt(activeSlick.attr('isdark'), 10),
+	                                numOfDots = $('.active .slick-dots li'), /* Next improvement soon */
+	                                numOfDotsHalf =
+										oddOrEven(numOfDots.length) === 'even'
+										    ? Math.trunc(numOfDots.length / 2 + 1)
+										    : Math.ceil(numOfDots.length / 2 + 1),
+	                                margin = numOfDotsHalf * 25,
+	                                screen = $(window),
+	                                screenWidth = screen.width();
+	                            $('.slick-next').css('right', `${screenWidth / 2 - margin}px`);
+	                            $('.slick-prev').css('left', `${screenWidth / 2 - margin}px`);
+
 	                            if (typeof(isDark) === "number") {
 	                                this.setState({ isDark });
-	                                // onUpdatePlaylist(activePlaylist.id);
 	                            }
 	                            return false;
 	                        }
@@ -78,7 +92,7 @@ class Home extends Component {
 	                    activePlaylist = playlists.data[0];
 	                    this.props.onUpdatePlaylist(activePlaylist.id);
 	                }
-	            }, 500);
+	            }, 800);
 	        }
     	}
 	}
@@ -96,58 +110,9 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-	    const userAgent = window.navigator.userAgent;
-	    this.setState({ userAgent });
     	window.addEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.register('begin', this.handleScroll);
     	Events.scrollEvent.register('end', this.handleScroll);
-	}
-
-	componentDidUpdate() {
-    	// const {
-    	// 	onHandleVideo,
-    	// 	home: {
-    	// 		playlists,
-    	// 		videos,
-    	// 	},
-    	// } = this.props;
-    	// console.log(playlists, videos);
-    	// if (
-    	// 	playlists.meta.status === "success"
-    	// ) {
-    	// 	console.log("masuk");
-    	// 	playlists.data.map((playlist) => {
-    	// 		console.log("mulai looping");
-    	// 		console.log(videos.data, playlist);
-    	// 		if (videos.data.length <= playlists.length) {
-    	// 			console.log("dalam if statement");
-    	// 			onHandleVideo(playlist);
-    	// 		}
-    	// 	});
-    	// }
-    	// const { onHandleVideo, home: { playlists, videos } } = this.props;
-    	// if (playlists.meta.status === 'success') {
-    	//     if (
-    	//         videos.data.length <= playlists.length
-    	//     ) {
-    	//         playlists.data.map((playlist) => {
-    	//             onHandleVideo(playlist);
-    	//         });
-    	//     }
-    	//     // this.state.videos.map((video) => {
-    	//     //     const {
-    	//     //             attributes: {videos: videoList},
-    	//     //         } = video,
-    	//     //         screen = $(window),
-    	//     //         screenWidthHalf = screen.width() / 2,
-    	//     //         sliderDotsWidth = (videoList.length + 0.15) * 20;
-    	//     //     $('.slick-prev').css('left', screenWidthHalf - sliderDotsWidth);
-    	//     //     $('.slick-next').css('right', screenWidthHalf - sliderDotsWidth);
-    	//     //     return true;
-    	//     // });
-    	    // $('.slick-dots li').css('color', isDark ? 'black' : 'white');
-    	    // $('.slick-dots li.slick-active').css('color', isDark ? 'black' : 'white');
-    	// }
 	}
 
 	componentWillUnmount() {
@@ -161,7 +126,7 @@ class Home extends Component {
 	}
 
     handleScroll = () => {
-    	lastScrollY = window.scrollY;
+        lastScrollY = window.scrollY;
 
     	if (!ticking) {
             document.onkeyup = event => {
@@ -169,38 +134,29 @@ class Home extends Component {
                 let scrollIndex;
                 const screen = $(window),
                     screenHeight = screen.height();
-
+                console.log(event);
                 switch (event.which || event.keyCode) {
                 case 37: /* left */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
+                    this.handleSlidePrev(scrollIndex);
+                    return event.preventDefault();
                 case 38: /* up */
                     scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
                     this.handleKeyPress(scrollIndex);
                     break;
                 case 39: /* right */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
+                    this.handleSlideNext(scrollIndex);
+                    return event.preventDefault();
                 case 40: /* down */
                     scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
                     this.handleKeyPress(scrollIndex);
                     break;
                 default:
+                    event.preventDefault();
                     break;
                 }
             };
-
-            // window.requestAnimationFrame(() => {
-            //     ticking = false;
-            //     const screen = $(window),
-            //         screenHeight = screen.height(),
-            //         scrollIndex =
-            //             lastScrollY > prevScroll
-            //                 ? Math.ceil(lastScrollY / screenHeight)
-            //                 : Math.trunc(lastScrollY / screenHeight);
-            //     this.props.home.playlists.data.map((playlist, index) => {
-            //         if (index === scrollIndex) {
-            //             activePlaylist = playlist;
-            //         }
-            //     });
-            //     prevScroll = lastScrollY;
-            // });
 
     		ticking = true;
     	}
@@ -238,30 +194,53 @@ class Home extends Component {
         this.props.onUpdatePlaylist(id);
     };
 
+    handleSlideNext = (scrollIndex = 0) => {
+        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+        this.sliderRefs[scrollIndex].slickNext();
+    }
+    handleSlidePrev = (scrollIndex = 0) => {
+        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+        this.sliderRefs[scrollIndex].slickPrev();
+    }
+
     render() {
-        const { playlists, videos } = this.props.home,
+        const {
+                playlists,
+                playlists: {
+                    meta: {
+                        status = 'loading',
+                        error
+                    }
+                },
+                videos
+            } = this.props.home,
             { isDark } = this.state,
             settings = {
                 ...SETTINGS,
                 dotsClass: `slick-dots ${isDark ? styles.home__dark : styles.home__white}`
-            }
-
+            };
     	return (
     		<div
                 className={styles.home__container}
     		>
     			<Header isDark={isDark} />
-    			{playlists && playlists.meta.status === 'success' &&
+                {status === 'loading' && (<HomePlaceholder />)}
+                {status === 'error' &&
+					<div>Ada Error kawan: {error}</div>
+                }
+                {status === 'success' &&
                     <Navbar
                     	isDark={isDark}
                     	playlists={playlists.data}
                     	onClick={this.handleScrollToIndex}
                     />
-    			}
-    			{videos
+                }
+    			{
+                    status === 'success'
+					&& videos
                     && videos.data.length > 0
                     && videos.data.map(video => {
-                    	const { id } = video.meta;
+                    	const { id, sortOrder } = video.meta;
                     	return (
                     		<RSLink
                     			activeClass="active"
@@ -273,7 +252,30 @@ class Home extends Component {
                     			key={id}
                     		>
                     			<Element name={id}>
-                    				<Slider {...settings}>
+                                    <Slider
+                                        ref={node => {
+                                            if (!this.sliderRefs) {
+                                                this.sliderRefs = [];
+                                                this.trackedSliderIds = []
+                                            }
+                                            if (
+                                                this.trackedSliderIds.indexOf(id) === -1
+												&& this.sliderRefs.length < trackedPlaylistIds.length
+												&& node !== null
+                                            ) {
+                                                node = {
+                                                    ...node,
+                                                    id,
+                                                    sortOrder
+                                                }
+                                                this.trackedSliderIds.push(id);
+                                                return this.sliderRefs.push(node);
+                                            }
+                                        }}
+                                        {...settings}
+                                        prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
+                                        nextArrow={<HomeArrow direction="next" isDark={isDark} />}
+                                    >
                     					{video.data.map((eachVids) => {
                     						const {
                     							id,
@@ -298,14 +300,17 @@ class Home extends Component {
                     											style={{ color: isDark ? "black" : "white" }}
                     										>
                     											<img alt="" src={layer3} className={styles.home__parallax_layer_3_image} />
+                                                                <div className={styles.home__parallax_layer_3_detail}>
                     											<h4
                     												className={styles.home__parallax_layer_3_title}
                     											>
                     												{title}
                     											</h4>
                     											<p className={styles.home__parallax_layer_3_desc}>
-                    												{shortDescription}
+                                                                        {shortDescription}
+                                                                        <Link to="/movie" className={styles.home__see_more}>see movie</Link>
                     											</p>
+                                                                </div>
                     										</div>
                     									</Parallax>
                     									<Parallax
@@ -315,7 +320,10 @@ class Home extends Component {
                     										offsetXMax={-20}
                     										className={styles.home__parallax_layer_2}
                     									>
-                    										<img alt="" src={layer2} />
+                                                            {/* <div> */}
+                                                            <img alt="" src={layer2}/>
+                                                            {/* <Link to="/movie" className={styles.home__transparent_link} />
+															</div> */}
                     									</Parallax>
                     									<Parallax offsetYMin={-10} offsetYMax={10}>
                     										<img

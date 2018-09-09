@@ -1,0 +1,1 @@
+export const oddOrEven = num => num % 2 === 0 ? 'even' : 'odd';
