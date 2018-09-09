@@ -14,12 +14,11 @@ const getHomePlaylist = payload => {
                 data: [...result[0]] || []
             }
         }
-    ).catch(response => {
-        const { status, statusText } = response;
+    ).catch(error => {
         return {
             meta: {
                 status: "error",
-                error: `Home playlist API ${status} ${statusText}`
+                error: `home/getHomePlaylist ~ ${error}`
             },
             data: []
         }
@@ -32,12 +31,11 @@ const getHomeVideo = ({ id }) => {
             const result = utils.normalizeHomeVideo(response);
             return [...result[0]] || [];
         }
-    ).catch(response => {
-        const { status, statusText } = response;
+    ).catch(error => {
         return {
             meta: {
                 status: "error",
-                text: `Home playlist API ${status} ${statusText}`
+                text: `home/getHomeVideo ~ ${error}`
             },
             data: []
         }

@@ -1,7 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import React from 'react';
 export const SETTINGS = {
-    // customPaging: () => (<span>&bull;</span>),
     dots: true,
     arrows: true,
     infinite: false,

@@ -75,12 +75,12 @@
 
 .header__library_wrapper:hover .header__library_underlined,
 .header__library_link_wrapper:hover .header__library_underlined {
-  box-shadow: 0 4px 2px -2px gray;
+  box-shadow: 0 4px 2px -2px inherit;
 }
 
 .header__library_wrapper:hover p,
 .header__library_link_wrapper:hover p {
-  text-shadow: 0.4px 0.4px grey;
+  text-shadow: 0.4px 0.4px;
 }
 
 .header__library_text {

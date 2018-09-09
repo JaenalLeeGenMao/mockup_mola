@@ -27,9 +27,8 @@ import Link from '@components/Link';
 import HomeArrow from './arrow';
 import HomePlaceholder from './placeholder';
 
-import { oddOrEven } from './util';
-
 import styles from './Home.css';
+import customSlickDotStyles from './HomeSlickDots.css';
 import '@global/style/css/slick.css';
 
 let lastScrollY = 0,
@@ -62,37 +61,9 @@ class Home extends Component {
     			}
 	        });
 
-	        if (!this.interval) {
-	            this.interval = setInterval(async () => {
-	                if (activePlaylist) {
-	                    playlists.data.map(playlist => {
-	                        if (activePlaylist.id === playlist.id) {
-	                            const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-	                                isDark = parseInt(activeSlick.attr('isdark'), 10),
-	                                numOfDots = $('.active .slick-dots li'), /* Next improvement soon */
-	                                numOfDotsHalf =
-										oddOrEven(numOfDots.length) === 'even'
-										    ? Math.trunc(numOfDots.length / 2 + 1)
-										    : Math.ceil(numOfDots.length / 2 + 1),
-	                                margin = numOfDotsHalf * 25,
-	                                screen = $(window),
-	                                screenWidth = screen.width();
-	                            $('.slick-next').css('right', `${screenWidth / 2 - margin}px`);
-	                            $('.slick-prev').css('left', `${screenWidth / 2 - margin}px`);
-
-	                            if (typeof(isDark) === "number") {
-	                                this.setState({ isDark });
-	                            }
-	                            return false;
-	                        }
-	                        return true;
-	                    });
-
-	                } else {
-	                    activePlaylist = playlists.data[0];
-	                    this.props.onUpdatePlaylist(activePlaylist.id);
-	                }
-	            }, 800);
+	        if (!activePlaylist) {
+	            activePlaylist = playlists.data[0];
+	            this.props.onUpdatePlaylist(activePlaylist.id);
 	        }
     	}
 	}
@@ -134,7 +105,7 @@ class Home extends Component {
                 let scrollIndex;
                 const screen = $(window),
                     screenHeight = screen.height();
-                console.log(event);
+
                 switch (event.which || event.keyCode) {
                 case 37: /* left */
                     scrollIndex = Math.ceil(lastScrollY / screenHeight);
@@ -198,6 +169,7 @@ class Home extends Component {
         this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
         this.sliderRefs[scrollIndex].slickNext();
     }
+
     handleSlidePrev = (scrollIndex = 0) => {
         this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
         this.sliderRefs[scrollIndex].slickPrev();
@@ -217,7 +189,21 @@ class Home extends Component {
             { isDark } = this.state,
             settings = {
                 ...SETTINGS,
-                dotsClass: `slick-dots ${isDark ? styles.home__dark : styles.home__white}`
+                dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
+                onInit: () => {
+                    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+                        isDark = parseInt(activeSlick.attr('isdark'), 10);
+                    if (typeof(isDark) === "number") {
+                        this.setState({ isDark });
+                    }
+                },
+                afterChange: index => {
+                    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+                        isDark = parseInt(activeSlick.attr('isdark'), 10);
+                    if (typeof(isDark) === "number") {
+                        this.setState({ isDark });
+                    }
+                }
             };
     	return (
     		<div
@@ -291,8 +277,8 @@ class Home extends Component {
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
                     								<LazyLoad>
                     									<Parallax
-                    										offsetYMin={-50}
-                    										offsetYMax={50}
+                    										offsetYMin={id ? -50 : 0}
+                    										offsetYMax={id ? 50 : 0}
                     										className={styles.home__parallax_layer_3}
                     									>
                     										<div
@@ -314,10 +300,8 @@ class Home extends Component {
                     										</div>
                     									</Parallax>
                     									<Parallax
-                    										offsetYMin={-10}
-                    										offsetYMax={10}
-                    										offsetXMin={20}
-                    										offsetXMax={-20}
+                    										offsetYMin={id ? -10 : 0}
+                    										offsetYMax={id ? 10 : 0}
                     										className={styles.home__parallax_layer_2}
                     									>
                                                             {/* <div> */}
@@ -325,7 +309,7 @@ class Home extends Component {
                                                             {/* <Link to="/movie" className={styles.home__transparent_link} />
 															</div> */}
                     									</Parallax>
-                    									<Parallax offsetYMin={-10} offsetYMax={10}>
+                    									<Parallax offsetYMin={id ? -10 : 0} offsetYMax={id ? 10 : 0}>
                     										<img
                     											alt=""
                     											src={layer1}
@@ -360,7 +344,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default compose(
-    withStyles(styles),
+    withStyles(
+        styles,
+        customSlickDotStyles
+    ),
     connect(
         mapStateToProps,
         mapDispatchToProps,

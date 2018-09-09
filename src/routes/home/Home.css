@@ -58,8 +58,9 @@ body {
 }
 
 .home__parallax_layer_1 {
-  width: 100vw;
   height: 100vh;
+  width: 100vw;
+  min-width: 1190px;
   z-index: 0;
   overflow: hidden;
 }
@@ -68,20 +69,17 @@ body {
   position: absolute;
   background-size: cover;
   background-repeat: no-repeat;
-
-  /* width: 50vw; */
+  width: 100%;
   right: 0;
   bottom: 0;
   z-index: 1;
+  display: inline-block;
+  text-align: right;
 }
 
 .home__parallax_layer_2 img {
   height: auto;
   width: auto;
-
-  /* margin: 0 auto; */
-
-  /* transform: translateX(-50%); */
 }
 
 .home__parallax_layer_3 {
@@ -97,8 +95,6 @@ body {
 
 .home__parallax_layer_3_image {
   width: 30vw;
-
-  /* height: 35vh; */
   margin: auto 0 auto auto;
   display: flex;
   justify-content: center;
@@ -178,43 +174,6 @@ body {
   letter-spacing: 0.2em;
   opacity: 1;
 }
-
-/* slick dots - start */
-.home__white,
-.home__dark {
-  top: 89.25vh;
-  left: 0;
-  right: 0;
-  font-size: 14px;
-}
-
-.home__white,
-.home__white li,
-.home__white li button,
-.home__white li button::before {
-  color: white;
-  margin: 0;
-}
-
-.home__dark,
-.home__dark li,
-.home__dark li button,
-.home__dark li button::before {
-  color: black;
-  margin: 0;
-}
-
-.home__white li:global(.slick-active) button::before {
-  color: white;
-  margin: 0;
-}
-
-.home__dark li:global(.slick-active) button::before {
-  color: black;
-  margin: 0;
-}
-
-/* slick dots - end */
 
 .home__parallax_layer_3 :global(.parallax-inner) {
   height: 100%;

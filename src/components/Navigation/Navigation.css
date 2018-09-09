@@ -26,22 +26,22 @@
 
 .navigation__links:hover {
   letter-spacing: 0.4em;
-  text-shadow: 0.4px 0.4px grey;
+  text-shadow: 0.4px 0.4px;
   opacity: 1;
 }
 
 .isActive {
   letter-spacing: 0.4em;
-  text-shadow: 1px 1px grey;
+  text-shadow: 1px 1px;
   opacity: 1;
 }
 
 hr {
   border: none;
   width: 90%;
-  box-shadow: 0 20px 20px -20px #333;
+  box-shadow: 0 20px 20px -20px inherit;
   position: relative;
-  right: 215px;
+  right: 150px;
   top: 8px;
   margin: 0;
 }
@@ -55,6 +55,6 @@ hr {
     height: 100vh;
     width: 180px;
     left: 40px;
-    top: 166px;
+    top: 184px;
   }
 }
