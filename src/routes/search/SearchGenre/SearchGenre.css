@@ -1,12 +1,12 @@
 .genreContainer {
-  padding-top: 130px;
+  padding-top: 100px;
   margin: 0 150px;
 }
 
 .genreLink {
   display: inline-block;
   width: 45%;
-  height: 100px;
+  height: 85px;
   text-decoration: none;
 }
 
@@ -15,7 +15,15 @@
   background-size: contain;
   display: block;
   width: auto;
-  height: 100px;
+  height: 100%;
+}
+
+.genreLink .genreText {
+  background: none;
+  font-size: 24px;
+  color: white;
+  outline: none;
+  display: none;
 }
 
 .genreContainer .genreSplit {
@@ -25,14 +33,6 @@
 
 .genreAction {
   background-image: url('../assets/search_action@2x.png');
-}
-
-.genreText {
-  background: none;
-  font-size: 24px;
-  color: white;
-  outline: none;
-  display: none;
 }
 
 .genreFamily {

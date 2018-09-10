@@ -9,7 +9,7 @@
 }
 
 .root {
-  background-color: black;
+  background-color: #000;
   height: calc(100vh - 130px);
 
   /* padding: 130px calc((100vw - 1000px)/2) 0; */
@@ -236,7 +236,6 @@
   }
 
   .resultContainer {
-    padding: 0;
     height: calc(100vh - 130px);
   }
 }

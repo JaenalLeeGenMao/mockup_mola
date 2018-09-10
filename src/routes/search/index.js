@@ -4,7 +4,8 @@ import Search from './Search';
 
 const title = 'Search';
 
-function action() {
+function action(userAgent) {
+  console.log("USER AGENNT", userAgent)
   return {
     chunks: ['search'],
     title,

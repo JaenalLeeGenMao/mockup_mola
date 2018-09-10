@@ -4,14 +4,45 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import classNames from 'classnames';
 
 import { getAllHistory } from '../../../actions/history'; //test
-
+import Img1 from '../assets/lib_1.png';
+import Img2 from '../assets/lib_2.png';
+import Img3 from '../assets/lib_3.png'
+import Img4 from '../assets/lib_4.png';
 import s from './MovieSuggestion.css';
 
 class MovieSuggestion extends React.Component {
+ 
+  state = {
+    allImgLoaded: false
+  }
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     searchText: PropTypes.string
   };
+
+  handleOnLoad = () => {
+
+    if(!this.state.allImgLoaded) {
+      this.setState({
+        allImgLoaded: true
+      }, () => {
+        const movieCont = document.getElementById("movieContainer");
+        const fullHeight = movieCont.clientHeight;
+        movieCont.style.height = `${fullHeight/2}px`;
+        const scrollWidth = 
+        console.log("scroll", movieCont.scrollWidth)
+        console.log("inner",movieCont.clientWidth)
+        
+        if(movieCont.scrollWidth > movieCont.clientWidth) {
+          console.log("lastchild",movieCont.lastElementChild.clientHeight)
+        }
+
+      })
+    }
+    
+
+   
+  }
 
   render() {
     const { data, searchText} = this.props;
@@ -47,16 +78,27 @@ class MovieSuggestion extends React.Component {
             )
           })
         } */}
-        <div className={s.resultContent__movielib}>
-          <div className={s.movielib__moviebox}>
-            <img src="https://via.placeholder.com/200x400"/>
+        {/* <div className={s.resultContent__movieflex} id="movieContainer">
+          <div className={s.movieflex__moviebox}>
+            <img src={Img1} onLoad={this.handleOnLoad}/>
           </div>
-          <div className={s.movielib__moviebox}>
-            <img src="https://via.placeholder.com/200x200"/>
+          <div className={s.movieflex__moviebox}>
+            <img src={Img2} onLoad={this.handleOnLoad}/>
           </div>
-          <div className={s.movielib__moviebox}>
-            <img src="https://via.placeholder.com/200x300"/>
+          <div className={s.movieflex__moviebox}>
+            <img src={Img4} onLoad={this.handleOnLoad}/>
           </div>
+          
+        </div> */}
+        <div className={s.resultContent__movieflex} id="list">
+          <div className={s.movieflex__moviebox}>
+            <img src={Img1}/>
+          </div>
+          <div className={s.movieflex__moviebox}><img src={Img2}/></div>
+          <div className={s.movieflex__moviebox}><img src={Img3}/></div>
+          <div className={s.movieflex__moviebox}><img src={Img4}/></div>
+          <div className={s.movieflex__moviebox}><img src={Img2}/></div>
+          <div className={s.movieflex__moviebox}><img src={Img1}/></div>
         </div>
       </div>
     );
