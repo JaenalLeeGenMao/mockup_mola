@@ -12,17 +12,18 @@ import styles from './right-menu.css';
 
 const RightMenu = ({ color }) => (
     <div className={styles.right__menu}>
-        <Link
-            style={{ color }}
-            className={styles.right__menu_search}
-            to="/search"
-        >
-            <LazyLoad><FiSearch size='32' color={color} /></LazyLoad>
-        </Link>
+        <LazyLoad>
+            <Link
+                className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
+                to="/search"
+            />
+        </LazyLoad>
         <span className ={styles.right__menu_wrapper}>
-            <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad>
+            {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
+            <LazyLoad>
+                <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
+            </LazyLoad>
             <div className={styles.right__menu_dropdown_wrapper}>
-                {/* <IoMdArrowDropup className={styles.right__menu_dropdown_caret} size={44} color="grey" /> */}
                 <div className={styles.right__menu_dropdown} style={{ color }}>
                     <Link style={{ color }} to="/">Account</Link>
                     <Link style={{ color }} to="/">History</Link>

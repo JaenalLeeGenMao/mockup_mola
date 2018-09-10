@@ -8,14 +8,10 @@
  */
 
 import React, { Component } from 'react';
-import { MdApps } from 'react-icons/md';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-// import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import LazyLoad from '@components/common/Lazyload';
 import logo from '@global/style/icons/Mola.png';
-import libraryLogo from  '@global/style/icons/ic_library2.svg';
 
 import Link from '../Link';
 
