@@ -34,9 +34,13 @@ const staticAssetName = isDebug
     : '[hash:8].[ext]';
 
 const alias = {
-    '@global': path.resolve(__dirname, '..', 'src', 'global'),
-    '@module': path.resolve(__dirname, '..', 'src', 'module'),
-    '@components': path.resolve(__dirname, '..', 'src', 'components'),
+    '@api': path.resolve(__dirname, '../src/api'),
+    '@global': path.resolve(__dirname, '../src/global'),
+    '@routes': path.resolve(__dirname, '../src/routes'),
+    '@actions': path.resolve(__dirname, '../src/actions'),
+    '@reducers': path.resolve(__dirname, '../src/reducers'),
+    '@constants': path.resolve(__dirname, '../src/constants'),
+    '@components': path.resolve(__dirname, '../src/components'),
 };
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
@@ -97,8 +101,8 @@ const config = {
                             {
                                 targets: {
                                     browsers: pkg.browserslist,
-                                    forceAllTransforms: !isDebug, // for UglifyJS
                                 },
+                                forceAllTransforms: !isDebug, // for UglifyJS
                                 modules: false,
                                 useBuiltIns: false,
                                 debug: false,
@@ -106,7 +110,6 @@ const config = {
                         ],
                         // Experimental ECMAScript proposals
                         // https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-
-                        '@babel/preset-stage-2',
                         // Flow
                         // https://github.com/babel/babel/tree/master/packages/babel-preset-flow
                         '@babel/preset-flow',
@@ -124,6 +127,20 @@ const config = {
                         // Remove unnecessary React propTypes from the production build
                         // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
                         ...(isDebug ? [] : ['transform-react-remove-prop-types']),
+
+                        ...(isDebug ? [] : ['@babel/plugin-syntax-dynamic-import']),
+
+                        // Stage 2
+                        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                        "@babel/plugin-proposal-function-sent",
+                        "@babel/plugin-proposal-export-namespace-from",
+                        "@babel/plugin-proposal-numeric-separator",
+                        "@babel/plugin-proposal-throw-expressions",
+                        // Stage 3
+                        "@babel/plugin-syntax-dynamic-import",
+                        "@babel/plugin-syntax-import-meta",
+                        ["@babel/plugin-proposal-class-properties", { "loose": false }],
+                        "@babel/plugin-proposal-json-strings"
                     ],
                 },
             },

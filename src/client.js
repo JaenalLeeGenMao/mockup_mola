@@ -26,21 +26,22 @@ import router from './router';
 const context = {
 // Enables critical path CSS rendering
 // https://github.com/kriasoft/isomorphic-style-loader
-insertCss: (...styles) => {
+    insertCss: (...styles) => {
     // eslint-disable-next-line no-underscore-dangle
-    const removeCss = styles.map(x => x._insertCss());
-    return () => {
-        removeCss.forEach(f => f());
-    };
-},
-// Universal HTTP client
-fetch: createFetch(fetch, {
-    baseUrl: window.App.apiUrl,
-}),
-// Initialize a new Redux store
-// http://redux.js.org/docs/basics/UsageWithReact.html
-store: configureStore(window.App.state, { history }),
+        const removeCss = styles.map(x => x._insertCss());
+        return () => {
+            removeCss.forEach(f => f());
+        };
+    },
+    // Universal HTTP client
+    fetch: createFetch(fetch, {
+        baseUrl: window.App.apiUrl,
+    }),
+    // Initialize a new Redux store
+    // http://redux.js.org/docs/basics/UsageWithReact.html
+    store: configureStore(window.App.state, { history }),
     storeSubscription: null,
+    isMobile: window.App.isMobile
 };
 
 const container = document.getElementById('app');
@@ -52,52 +53,52 @@ const scrollPositionsHistory = {};
 // Re-render the app when window.location changes
 async function onLocationChange(location, action) {
 // Remember the latest scroll position for the previous location
-scrollPositionsHistory[currentLocation.key] = {
-    scrollX: window.pageXOffset,
-    scrollY: window.pageYOffset,
-};
-// Delete stored scroll position for next page if any
-if (action === 'PUSH') {
-    delete scrollPositionsHistory[location.key];
-}
-currentLocation = location;
-
-const isInitialRender = !action;
-try {
-    context.pathname = location.pathname;
-    context.query = queryString.parse(location.search);
-
-    // Traverses the list of routes in the order they are defined until
-    // it finds the first route that matches provided URL path string
-    // and whose action method returns anything other than `undefined`.
-    const route = await router.resolve(context);
-
-    // Prevent multiple page renders during the routing process
-    if (currentLocation.key !== location.key) {
-        return;
+    scrollPositionsHistory[currentLocation.key] = {
+        scrollX: window.pageXOffset,
+        scrollY: window.pageYOffset,
+    };
+    // Delete stored scroll position for next page if any
+    if (action === 'PUSH') {
+        delete scrollPositionsHistory[location.key];
     }
+    currentLocation = location;
 
-    if (route.redirect) {
-        history.replace(route.redirect);
-        return;
-    }
+    const isInitialRender = !action;
+    try {
+        context.pathname = location.pathname;
+        context.query = queryString.parse(location.search);
 
-    const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
-    appInstance = renderReactApp(
-        <ParallaxProvider>
-            <App context={context}>{route.component}</App>
-        </ParallaxProvider>,
-        container,
+        // Traverses the list of routes in the order they are defined until
+        // it finds the first route that matches provided URL path string
+        // and whose action method returns anything other than `undefined`.
+        const route = await router.resolve(context);
+
+        // Prevent multiple page renders during the routing process
+        if (currentLocation.key !== location.key) {
+            return;
+        }
+
+        if (route.redirect) {
+            history.replace(route.redirect);
+            return;
+        }
+
+        const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
+        appInstance = renderReactApp(
+            <ParallaxProvider>
+                <App context={context}>{route.component}</App>
+            </ParallaxProvider>,
+            container,
             () => {
                 if (isInitialRender) {
                 // Switch off the native scroll restoration behavior and handle it manually
                 // https://developers.google.com/web/updates/2015/09/history-api-scroll-restoration
-                if (window.history && 'scrollRestoration' in window.history) {
-                    window.history.scrollRestoration = 'manual';
-                }
+                    if (window.history && 'scrollRestoration' in window.history) {
+                        window.history.scrollRestoration = 'manual';
+                    }
 
-                const elem = document.getElementById('css');
-                if (elem) elem.parentNode.removeChild(elem);
+                    const elem = document.getElementById('css');
+                    if (elem) elem.parentNode.removeChild(elem);
                     return;
                 }
 
@@ -122,7 +123,7 @@ try {
                     if (targetHash) {
                         const target = document.getElementById(targetHash);
                         if (target) {
-                        scrollY = window.pageYOffset + target.getBoundingClientRect().top;
+                            scrollY = window.pageYOffset + target.getBoundingClientRect().top;
                         }
                     }
                 }
@@ -141,15 +142,15 @@ try {
         );
     } catch (error) {
         if (__DEV__) {
-        throw error;
+            throw error;
         }
 
         console.error(error);
 
         // Do a full page reload if error occurs during client-side navigation
         if (!isInitialRender && currentLocation.key === location.key) {
-        console.error('RSK will reload your page after error');
-        window.location.reload();
+            console.error('RSK will reload your page after error');
+            window.location.reload();
         }
     }
 }
@@ -164,7 +165,7 @@ if (module.hot) {
     module.hot.accept('./router', () => {
         if (appInstance && appInstance.updater.isMounted(appInstance)) {
         // Force-update the whole tree, including components that refuse to update
-        deepForceUpdate(appInstance);
+            deepForceUpdate(appInstance);
         }
 
         onLocationChange(currentLocation);

@@ -8,12 +8,21 @@ const getHomePlaylist = payload => {
             const result = utils.normalizeHomePlaylist(response);
             return {
                 meta: {
-                    status: result[0].length > 0 ? "success" : "no_result"
+                    status: result[0].length > 0 ? "success" : "no_result",
+                    error: ''
                 },
                 data: [...result[0]] || []
             }
         }
-    );
+    ).catch(error => {
+        return {
+            meta: {
+                status: "error",
+                error: `home/getHomePlaylist ~ ${error}`
+            },
+            data: []
+        }
+    });
 };
 
 const getHomeVideo = ({ id }) => {
@@ -22,7 +31,15 @@ const getHomeVideo = ({ id }) => {
             const result = utils.normalizeHomeVideo(response);
             return [...result[0]] || [];
         }
-    );
+    ).catch(error => {
+        return {
+            meta: {
+                status: "error",
+                text: `home/getHomeVideo ~ ${error}`
+            },
+            data: []
+        }
+    });;
 };
 
 export default {

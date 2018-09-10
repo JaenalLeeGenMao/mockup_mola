@@ -3,12 +3,29 @@ import Mola from '../api/mola';
 import types from '../constants';
 
 export const getHomePlaylist = () => dispatch => {
+    dispatch({
+        type: types.GET_HOME_PLAYLIST_LOADING,
+        payload: {
+            meta: {
+                status: "loading",
+                error: ''
+            },
+            data: []
+        }
+    });
     return Mola.getHomePlaylist()
         .then(result => {
-            dispatch({
-                type: types.GET_HOME_PLAYLIST,
-                payload: result,
-            });
+            if (result.meta.status === "error") {
+                dispatch({
+                    type: types.GET_HOME_PLAYLIST_ERROR,
+                    payload: result,
+                });
+            } else {
+                dispatch({
+                    type: types.GET_HOME_PLAYLIST_SUCCESS,
+                    payload: result,
+                });
+            }
         });
 };
 
