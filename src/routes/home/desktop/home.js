@@ -209,7 +209,7 @@ class Home extends Component {
                 className={styles.home__container}
     		>
     			<Header isDark={isDark} />
-                {status === 'loading' && (<HomePlaceholder />)}
+                {status === 'success' && (<HomePlaceholder />)}
                 {status === 'error' &&
 					<div>Ada Error kawan: {error}</div>
                 }
