@@ -4,6 +4,10 @@
   margin-bottom: 40px;
 }
 
+.movieContainer:last-child {
+  margin-bottom: 140px;
+}
+
 .movieDetailWrapper {
   display: inline-block;
   vertical-align: middle;
@@ -55,6 +59,10 @@
 }
 
 @media screen and (max-width: 1280px) {
+  .movieDetailWrapper {
+    width: calc(100% - 265px);
+  }
+
   .movieImageWrapper {
     width: 225px;
   }
@@ -62,18 +70,23 @@
   .movieTitle {
     font-size: 14px;
   }
-    
+
   .movieChapter {
     font-size: 12px;
   }
-    
+
   .movieDuration {
     font-size: 12px;
   }
 }
 
+@media screen and (max-width: 1024px) {
+  .movieDetailWrapper {
+    margin: 0 10px;
+  }
+}
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 960px) {
   .movieContainer {
     display: block;
     width: auto;
@@ -81,14 +94,48 @@
 
   .movieImageWrapper {
     display: block;
-    width: calc(100vw - 80px);
+    width: 80%;
+    margin: 0 auto;
     cursor: pointer;
   }
 
   .movieDetailWrapper {
     display: block;
-    margin: 10px 0 0 0;
-    width: auto;
+    margin: 10px auto;
+    width: 80%;
   }
-        
+
+  .movieTitle {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 4px;
+  }
+
+  .movieChapter {
+    font-size: 18px;
+    padding-bottom: 4px;
+  }
+
+  .movieDuration {
+    font-size: 22px;
+    padding-bottom: 4px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .movieTitle {
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 4px;
+  }
+
+  .movieChapter {
+    font-size: 12px;
+    padding-bottom: 4px;
+  }
+
+  .movieDuration {
+    font-size: 16px;
+    padding-bottom: 4px;
+  }
 }
