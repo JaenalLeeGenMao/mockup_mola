@@ -22,6 +22,8 @@ const Placeholder = () => {
             <div className={styles.placeholder__footer}>
                 <div className={styles.placeholder__footer_line} />
             </div>
+            <div className={styles.placeholder__thumbnail} />
+            <div className={styles.placeholder__title} />
         </div>
     )
 }

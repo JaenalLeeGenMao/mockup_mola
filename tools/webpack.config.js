@@ -34,8 +34,12 @@ const staticAssetName = isDebug
     : '[hash:8].[ext]';
 
 const alias = {
+    '@api': path.resolve(__dirname, '../src/api'),
     '@global': path.resolve(__dirname, '../src/global'),
-    '@module': path.resolve(__dirname, '../src/module'),
+    '@routes': path.resolve(__dirname, '../src/routes'),
+    '@actions': path.resolve(__dirname, '../src/actions'),
+    '@reducers': path.resolve(__dirname, '../src/reducers'),
+    '@constants': path.resolve(__dirname, '../src/constants'),
     '@components': path.resolve(__dirname, '../src/components'),
 };
 // CSS Nano options http://cssnano.co/

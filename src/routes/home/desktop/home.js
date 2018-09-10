@@ -16,9 +16,9 @@ import {
 } from 'react-scroll';
 import $ from 'jquery';
 
-import * as homeActions from '../../actions/home';
 
-import { SETTINGS } from './const';
+import { SETTINGS } from '../const';
+import * as homeActions from '@actions/home';
 import Header from '@components/header';
 import Navbar from '@components/navigation';
 import LazyLoad from '@components/common/lazyload';
@@ -27,9 +27,8 @@ import Link from '@components/Link';
 import HomeArrow from './arrow';
 import HomePlaceholder from './placeholder';
 
-import styles from './Home.css';
-import customSlickDotStyles from './HomeSlickDots.css';
-import '@global/style/css/slick.css';
+import styles from './home.css';
+import customSlickDotStyles from './homeSlickDots.css';
 
 let lastScrollY = 0,
     ticking = false,
