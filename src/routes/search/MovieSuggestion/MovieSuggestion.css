@@ -1,0 +1,95 @@
+.resultRowWrap {
+  padding-bottom: 32px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+}
+
+.resultContent__movie {
+  padding: 0 54px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  display: block;
+  width: 100%;
+}
+
+.resultTitle {
+  color: #bababa;
+  font-size: 17px;
+  font-weight: normal;
+  display: inline-block;
+  flex: 1 0 160px;
+}
+
+.movieBox {
+  display: inline-table;
+  width: calc(100% / 3);
+  padding: 18px 0 0;
+}
+
+.movieBoxInner {
+  display: block;
+  margin: 0 auto;
+}
+
+.movieBoxInner > img {
+  width: 270px;
+  height: 170px;
+}
+
+.movieTitle {
+  font-size: 12px;
+  display: block;
+  padding: 8px 30px 0 0;
+  color: #6f6f6f;
+}
+
+.movieTitleResult {
+  color: #fff;
+}
+
+.resultContent__movielib {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  margin: 0 auto;
+  height: 500px;
+}
+
+.movielib__moviebox {
+  width: 50%;
+}
+
+.movielib__moviebox > img {
+  width: 100%;
+}
+
+@media screen and (max-width: 1280px) {
+  .movieBoxInner > img {
+    width: 245px;
+    height: 154px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .movieBoxInner > img {
+    width: 205px;
+    height: 128px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .resultContent {
+    padding: 0;
+  }
+
+  .movieBoxInner > img {
+    width: 175px;
+    height: 110px;
+  }
+}
+

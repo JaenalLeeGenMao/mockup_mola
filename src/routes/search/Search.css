@@ -1,24 +1,58 @@
 @import '../../components/variables.css';
 
+.headerNone {
+  display: none;
+}
+
+.headerDisplay {
+  display: block;
+}
+
 .root {
   background-color: black;
   height: calc(100vh - 130px);
-  padding: 130px 200px 0 200px;
+
+  /* padding: 130px calc((100vw - 1000px)/2) 0; */
+  padding: 130px 0 0;
   overflow: hidden;
 }
 
 .container {
   margin: 0 auto;
-  width: auto;
+  width: 1000px;
   position: relative;
 }
 
 .searchInputWrapper {
-  padding: 0 140px 0 140px;
+  padding: 0 160px;
   position: absolute;
   width: 100%;
   z-index: 101;
   box-sizing: border-box;
+}
+
+.searchInputWrapper span {
+  display: none;
+}
+
+.searchInputWrapper .searchText {
+  display: block;
+}
+
+.searchAutocomplete {
+  padding: 0 160px;
+  position: relative;
+  width: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+  font-size: 22px;
+  color: #6f6f6f;
+}
+
+.searchAutocomplete span {
+  top: 8px;
+  left: 207px;
+  position: absolute;
 }
 
 .searchIcon {
@@ -28,7 +62,7 @@
   display: block;
   position: absolute;
   bottom: 16px;
-  left: 140px;
+  left: 160px;
   width: 38px;
   height: 38px;
 }
@@ -41,82 +75,8 @@
   box-sizing: border-box;
   color: #fff;
   outline: 0;
-  font-size: 24px;
+  font-size: 22px;
   padding: 10px 0 20px 48px;
-}
-
-.genreContainer {
-  padding-top: 130px;
-  margin: 0 130px 0 130px;
-}
-
-.genreLink {
-  display: inline-block;
-  width: 45%;
-  height: 100px;
-}
-
-.genreLink > span {
-  background-repeat: no-repeat;
-  background-size: contain;
-  display: block;
-  width: auto;
-  height: 100px;
-}
-
-.genreContainer > .genreSplit {
-  display: inline-block;
-  width: 10%;
-}
-
-.genreAction {
-  background-image: url('./assets/search_action@2x.png');
-}
-
-.genreFamily {
-  background-image: url('./assets/search_family@2x.png');
-  background-position-x: 50px;
-}
-
-.genreAdventure {
-  background-image: url('./assets/search_adventure@2x.png');
-}
-
-.genreHorror {
-  background-image: url('./assets/search_horror@2x.png');
-  background-position-x: 50px;
-}
-
-.genreComedy {
-  background-image: url('./assets/search_comedy@2x.png');
-}
-
-.genreRomance {
-  background-image: url('./assets/search_romance@2x.png');
-  background-position-x: 50px;
-}
-
-.genreDocumentary {
-  background-image: url('./assets/search_documentary@2x.png');
-}
-
-.genreSciFi {
-  background-image: url('./assets/search_scifi@2x.png');
-  background-position-x: 50px;
-}
-
-.genreDrama {
-  background-image: url('./assets/search_drama@2x.png');
-}
-
-.genreThriller {
-  background-image: url('./assets/search_thriller@2x.png');
-  background-position-x: 50px;
-}
-
-.sectionTitle {
-  font-size: 17px;
-  color: #bababa;
 }
 
 .resultWrapper {
@@ -139,14 +99,6 @@
   display: flex;
 }
 
-.resultRowWrap {
-  padding-bottom: 32px;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: stretch; 
-}
-
 .resultTitle {
   color: #bababa;
   font-size: 17px;
@@ -163,99 +115,128 @@
   width: 100%;
 }
 
-.resultChip {
-  padding: 6px 35px 6px 10px;
-  margin: 0 15px 15px 0;
-  position: relative;
-  display: inline-block;
-  border-radius: 100px;
-  background-color: #2b2b2b;
-  max-width: 200px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.resultChip > a {
-  position: absolute;
-  top: 7px;
-  right: 8px;
-}
-
-.resultChip > a > i {
-  background-image: url('./assets/ic_close.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.clearRecentSearch {
-  padding: 6px 35px 6px 10px;
-  margin: 0 15px 15px 0;
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  color: #bababa;
-  cursor: pointer;
-}
-
-.castBox {
-  display: inline-block;
-  width: calc(100% / 8);
-  text-align: center;
-  padding: 0 10px 20px 0;
-}
-
-.castBox > img{
-  height: 76px;
-  width: 76px;
-  border-radius: 100%;
-  display: block;
-  margin: 0 auto;
-}
-
-.castBox > span {
-  padding-top: 8px;
-  font-size: 13px;
-  display: block;
-}
-
-.resultContent__movie {
-  padding: 0 54px;
-}
-
-.movieBox {
-  display: inline-block;
-  width: calc(100%/3);
-  padding: 18px 0 0;
-}
-
-.movieBoxInner {
-  display: block;
-  margin: 0 auto;
-}
-
-.movieBoxInner > img {
-  width: 270px;
-  height: 170px;
-}
-
-.movieBoxInner > span {
-  padding-top: 8px;
-  font-size: 12px;
-  display: block;
-}
-
 @media screen and (max-width: 1280px) {
-  .castBox {
-    width: calc(100% / 5);
+  /* .root {
+    padding: 130px calc((100vw - 900px)/2) 0;
+  } */
+
+  .container {
+    width: 900px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 800px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .container {
+    width: 100%;
+    height: calc(100vh - 200px);
   }
 
-  .movieBoxInner > img {
-    width: 245px;
-    height: 154px;
+  .root {
+    padding: 30px 0 0;
+    height: calc(100vh - 30px);
+  }
+
+  .searchAutocomplete {
+    position: relative;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .searchAutocomplete span {
+    left: 20%;
+    top: 30px;
+    font-size: 22px;
+  }
+
+  .searchInputWrapper {
+    position: relative;
+    padding: 0;
+    margin: 0 auto;
+    width: 60%;
+  }
+
+  .searchInputWrapper .searchText {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    color: #bababa;
+    transform: translate(-50%, 0);
+    font-size: 18px;
+  }
+
+  .searchIcon {
+    top: 30px;
+    left: calc(50% - 58px);
+    width: 25px;
+    height: 25px;
+  }
+
+  .searchInput {
+    padding: 0 0 10px 0;
+    font-size: 22px;
+    position: absolute;
+    top: 32px;
+  }
+
+  .resultRow {
+    display: block;
+  }
+
+  .resultWrapper {
+    margin: 0 auto;
+    width: 90%;
+    padding-top: 120px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .searchAutocomplete span {
+    left: 15%;
+    top: 8px;
+    font-size: 18px;
+  }
+
+  .searchInputWrapper {
+    position: relative;
+    padding: 0;
+    margin: 0 auto;
+    width: 70%;
+  }
+
+  .searchInputWrapper .searchText {
+    top: 17px;
+    font-size: 12px;
+  }
+
+  .searchIcon {
+    top: 16px;
+    left: calc(50% - 38px);
+    width: 16px;
+    height: 16px;
+  }
+
+  .searchInput {
+    padding: 0 0 10px 0;
+    position: absolute;
+    top: 10px;
+    font-size: 18px;
+  }
+
+  .resultWrapper {
+    margin: 0 auto;
+    width: 90%;
+    padding-top: 70px;
+  }
+
+  .resultContainer {
+    padding: 0;
+    height: calc(100vh - 130px);
   }
 }

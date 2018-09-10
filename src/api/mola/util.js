@@ -75,6 +75,41 @@ const normalizeHomeVideo = (response) => {
     return []
 }
 
+const normalizeHistory = response => {
+	const { data } = response.data;
+	if (data && data.length > 0) {
+		return data.map( movieHistory  => {
+			const historyId = movieHistory.id;
+			const { 
+				timePosition,
+				videoId,
+				videos : {
+					title,
+					coverUrl,
+					duration
+
+				}
+			} = movieHistory.attributes;
+
+			return {
+				historyId,
+				timePosition,
+				videoId,
+				title,
+				coverUrl,
+				duration: duration || 0
+			}
+		})
+	}
+
+	return {
+		meta: {
+			status: 'no_result',
+		},
+		data: {},
+	};
+}
+
 export default {
     normalizeHomePlaylist,
     normalizeHomeVideo,

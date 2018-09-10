@@ -12,8 +12,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import classNames from 'classnames';
 
-import HistoryCard from './components/HistoryCard';
+import HistoryCard from './HistoryCard/HistoryCard';
 
 import { getAllHistory } from '../../actions/history';
 import Header from '@components/header';
@@ -21,16 +22,27 @@ import Navbar from '@components/navigation';
 import s from './History.css';
 
 class History extends React.Component {
+  state = {
+    showSearch: false,
+    isMobile: true,
+  }
+
   componentWillMount() {
     this.props.getAllHistory();
   }
 
-  static propTypes = {
-    movies: PropTypes.arrayOf(PropTypes.object),
-  };
+  componentDidMount() {
+    this.setState({
+      isMobile: window.innerWidth <= 960 ? true : false,
+    })
+
+    // this.isMobile = window.innerWidth <= 960 ? true : false;
+  }
 
   render() {
-		const { movieDummy, movies } = this.props;
+    const { movieDummy, movieHistory } = this.props;
+    const { isMobile } = this.state;
+    console.log("movieHistory", movieHistory)
 		const isDark = false;
 		const playlist = [
 			{ 
@@ -48,12 +60,16 @@ class History extends React.Component {
 		]
     return (
     <Fragment>
-      <Navbar
-			isDark={isDark}
-			playlists={playlist}
-			onClick={this.handleScrollToIndex}
-			/>
-			<Header isDark={isDark}/>
+      <div className={classNames(s.headerNone, !isMobile ? s.headerDisplay : '')}>
+        <Fragment>
+          <Navbar
+        isDark={isDark}
+        playlists={playlist}
+        onClick={this.handleScrollToIndex}
+        />
+        </Fragment>
+      </div>
+      <Header isDark={isDark}/>
       <div className={s.wrapper}>
         <div className={s.containerOuter}>
           <div className={s.containerInner}>
@@ -86,9 +102,9 @@ class History extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-//   console.log('stateeee', state);
+  console.log('stateeee', state);
   return {
-    movies: state.history.movies,
+    movieHistory: state.history.data,
   };
 }
 

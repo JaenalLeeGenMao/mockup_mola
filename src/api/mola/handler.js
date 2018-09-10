@@ -1,5 +1,5 @@
 import { get } from 'axios';
-import { HOME_PLAYLIST_ENDPOINT } from './endpoints';
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT } from './endpoints';
 import utils from './util';
 
 const getHomePlaylist = payload => {

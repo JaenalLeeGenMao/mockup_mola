@@ -32,6 +32,8 @@ class Html extends React.Component {
         scripts: [],
     };
 
+    static isMobile = true;
+
     render() {
         const { title, description, styles, scripts, app, children } = this.props;
         return (
