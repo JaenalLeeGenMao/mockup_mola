@@ -18,7 +18,7 @@ const normalizeHomePlaylist = (response) => {
                             isDark,
                         },
                     },
-                } = playlist;
+                } = playlist
                 return {
                     id,
                     title,
@@ -56,7 +56,7 @@ const normalizeHomeVideo = (response) => {
                         layer1,
                         isDark,
                     },
-                } = video;
+                } = video
                 return {
                     id,
                     title,
@@ -75,42 +75,43 @@ const normalizeHomeVideo = (response) => {
     return []
 }
 
-const normalizeHistory = response => {
-	const { data } = response.data;
-	if (data && data.length > 0) {
-		return data.map( movieHistory  => {
-			const historyId = movieHistory.id;
-			const { 
-				timePosition,
-				videoId,
-				videos : {
-					title,
-					coverUrl,
-					duration
+const normalizeHistory = (response) => {
+    const { data } = response.data
+    if (data && data.length > 0) {
+        return data.map( (movieHistory) => {
+            const historyId = movieHistory.id
+            const {
+                timePosition,
+                videoId,
+                videos: {
+                    title,
+                    coverUrl,
+                    duration,
 
-				}
-			} = movieHistory.attributes;
+                },
+            } = movieHistory.attributes
 
-			return {
-				historyId,
-				timePosition,
-				videoId,
-				title,
-				coverUrl,
-				duration: duration || 0
-			}
-		})
-	}
+            return {
+                historyId,
+                timePosition,
+                videoId,
+                title,
+                coverUrl,
+                duration: duration || 0,
+            }
+        })
+    }
 
-	return {
-		meta: {
-			status: 'no_result',
-		},
-		data: {},
-	};
+    return {
+        meta: {
+            status: 'no_result',
+        },
+        data: {},
+    }
 }
 
 export default {
     normalizeHomePlaylist,
     normalizeHomeVideo,
+    normalizeHistory,
 }
