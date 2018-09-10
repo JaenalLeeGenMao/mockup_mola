@@ -12,7 +12,7 @@ import styles from './right-menu.css';
 
 const RightMenu = ({ color }) => (
     <div className={styles.right__menu}>
-        <LazyLoad className={styles.right__menu_search_wrapper}>
+        <LazyLoad>
             <Link
                 className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
                 to="/search"
