@@ -102,7 +102,7 @@
 .placeholder__thumbnail {
   position: absolute;
   right: 5%;
-  top: 5%;
+  top: 15%;
   height: 45%;
   width: 30%;
   animation: pulse 1s infinite ease-in-out;
