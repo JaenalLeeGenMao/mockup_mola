@@ -39,7 +39,7 @@ const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar *
 class Home extends Component {
 	state = {
 	    isDark: undefined,
-	    userAgent: undefined
+	    userAgent: undefined,
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -64,7 +64,7 @@ class Home extends Component {
 	            activePlaylist = playlists.data[0];
 	            this.props.onUpdatePlaylist(activePlaylist.id);
 	        }
-    	}
+	    }
 	}
 
 	componentWillMount() {
@@ -203,7 +203,8 @@ class Home extends Component {
                         this.setState({ isDark });
                     }
                 }
-            };
+            },
+            isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
     	return (
     		<div
                 className={styles.home__container}
@@ -276,8 +277,9 @@ class Home extends Component {
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
                     								<LazyLoad>
                     									<Parallax
-                    										offsetYMin={id ? -50 : 0}
-                    										offsetYMax={id ? 50 : 0}
+                                                            disabled={isSafari}
+                    										offsetYMin={ticking ? -50 : 0}
+                    										offsetYMax={ticking ? 50 : 0}
                     										className={styles.home__parallax_layer_3}
                     									>
                     										<div
@@ -299,8 +301,11 @@ class Home extends Component {
                     										</div>
                     									</Parallax>
                     									<Parallax
-                    										offsetYMin={id ? -10 : 0}
-                    										offsetYMax={id ? 10 : 0}
+                                                            disabled={isSafari}
+                    										offsetYMin={ticking ? -10 : 0}
+                                                            offsetYMax={ticking ? 10 : 0}
+                                                            offsetXMin={ticking ? 20 : 0}
+                                                            offsetXMax={ticking ? -20 : 0}
                     										className={styles.home__parallax_layer_2}
                     									>
                                                             {/* <div> */}
@@ -308,7 +313,7 @@ class Home extends Component {
                                                             {/* <Link to="/movie" className={styles.home__transparent_link} />
 															</div> */}
                     									</Parallax>
-                    									<Parallax offsetYMin={id ? -10 : 0} offsetYMax={id ? 10 : 0}>
+                    									<Parallax disabled={isSafari}>
                     										<img
                     											alt=""
                     											src={layer1}

@@ -22,7 +22,9 @@
   font-family: monospace;
 }
 
+html,
 body {
+  box-sizing: border-box;
   max-width: 100vw;
   max-height: 100vh;
 }
@@ -123,20 +125,12 @@ body {
 .home__parallax_layer_3_title {
   position: relative;
   padding: 10px;
-
-  /* font-size: 2.025vh; */
-
-  /* font-size: 1.125vw; */
   font-size: 1.2em;
   text-transform: uppercase;
 }
 
 .home__parallax_layer_3_desc {
   padding: 0 10px;
-
-  /* max-height: 120px; */
-
-  /* font-size: 1.425vh; */
   font-family: 'Roboto', sans-serif;
   font-size: 0.825rem;
   font-style: italic;
@@ -147,15 +141,15 @@ body {
 }
 
 /* .home__transparent_link {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -25%;
-  width: 360px;
-  height: 440px;
-  margin: auto;
-  border-radius: 50%;
-  background: blue;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -25%;
+    width: 360px;
+    height: 440px;
+    margin: auto;
+    border-radius: 50%;
+    background: blue;
 } */
 
 .home__see_more {

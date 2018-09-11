@@ -122,14 +122,14 @@
 
 @media only screen and (max-device-width: 720px) and (-webkit-min-device-pixel-ratio: 1) {
   .header__container {
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     height: auto;
     width: 100%;
-    min-width: 575px;
+    min-width: 375px;
 
     /* margin: 25px 0; */
     z-index: 100;
