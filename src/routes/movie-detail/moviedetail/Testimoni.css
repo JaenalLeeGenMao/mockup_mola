@@ -29,7 +29,7 @@
 .photo_frame {
   width: 100px;
   height: 100px;
-  background: red;
+  background: white;
   position: absolute;
   top: 0;
   right: 0;
@@ -54,4 +54,5 @@
   font-size: 15px;
   line-height: 13px;
   letter-spacing: 2px;
+  font-weight: 600;
 }

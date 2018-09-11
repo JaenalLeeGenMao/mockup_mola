@@ -10,3 +10,7 @@
   width: 470px;
   position: relative;
 }
+
+.inner_box img:hover {
+  cursor: pointer;
+}

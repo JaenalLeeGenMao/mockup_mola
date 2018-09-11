@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import Slider from 'react-slick';
-// import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Moviedetail.css';
 
@@ -15,8 +14,9 @@ import Trailer from './moviedetail/Trailer';
 import Logo from '../../components/Header';
 import Slickcss from '../../components/Reactslick';
 
-import Next from './moviedetail/assets/circle-right.svg';
-import Prev from './moviedetail/assets/circle-left.svg';
+import Next from './moviedetail/assets/caret-right.png';
+import Prev from './moviedetail/assets/caret-left.png';
+import Playbtn from './moviedetail/assets/player-icon.jpg';
 
 const Right = props => (
     <div>
@@ -31,12 +31,6 @@ const Left = props => (
 )
 
 class Moviedetail extends React.Component {
-// static propTypes = {
-//   className: PropTypes.string.isRequired,
-//   castImage: PropTypes.string.isRequired,
-//   imageCastCopy: PropTypes.string.isRequired,
-// };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -52,6 +46,7 @@ class Moviedetail extends React.Component {
             trailerTitle: 'MOVIE TRAILER',
             trailerPlaytag: 'Play Trailer',
             link: './history',
+            playCopy: 'Play movie',
         };
     }
 
@@ -124,6 +119,7 @@ class Moviedetail extends React.Component {
           trailerPlaytag,
           testimoniSource,
           link,
+          playCopy,
       } = this.state;
 
       const casting = {
@@ -158,7 +154,7 @@ class Moviedetail extends React.Component {
               {/* <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" /> */}
               <Layout>
-                  <Banner imageTitle="hallo" bannerUrl={bannerImage} link={link}/>
+                  <Banner imageTitle="hallo" bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={playCopy} />
                   <Frame>
                       <Synopsis
                           synopsisContent={synopsisContent}
