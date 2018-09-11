@@ -6,7 +6,12 @@
         "node": ">=6.13.1",
         "npm": ">=3.10.10"
     },
-    "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
+    "browserslist": [
+        ">1%",
+        "last 4 versions",
+        "Firefox ESR",
+        "not ie < 9"
+    ],
     "dependencies": {
         "@babel/polyfill": "^7.0.0-beta.42",
         "axios": "0.18.0",
@@ -31,6 +36,7 @@
         "prop-types": "^15.6.1",
         "query-string": "^6.0.0",
         "react": "^16.2.0",
+        "react-device-detect": "^1.5.9",
         "react-dom": "^16.2.0",
         "react-icons": "3.0.5",
         "react-redux": "^5.0.6",
@@ -50,26 +56,36 @@
         "whatwg-fetch": "^2.0.3"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0-beta.42",
-        "@babel/node": "^7.0.0-beta.42",
+        "@babel/core": "^7.0.0",
+        "@babel/node": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.0.0",
+        "@babel/plugin-proposal-decorators": "^7.0.0",
+        "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+        "@babel/plugin-proposal-function-sent": "^7.0.0",
+        "@babel/plugin-proposal-json-strings": "^7.0.0",
+        "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+        "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+        "@babel/plugin-syntax-import-meta": "^7.0.0",
         "@babel/plugin-transform-react-constant-elements": "^7.0.0-beta.42",
         "@babel/plugin-transform-react-inline-elements": "^7.0.0-beta.42",
         "@babel/preset-env": "^7.0.0-beta.42",
         "@babel/preset-flow": "^7.0.0-beta.42",
         "@babel/preset-react": "^7.0.0-beta.42",
-        "@babel/preset-stage-2": "^7.0.0-beta.42",
+        "@babel/preset-stage-2": "^7.0.0",
         "autoprefixer": "^8.1.0",
-        "babel-core": "^7.0.0-0",
+        "babel-core": "^7.0.0-bridge.0",
         "babel-eslint": "^8.2.2",
         "babel-jest": "^22.4.3",
-        "babel-loader": "^8.0.0-beta.2",
+        "babel-loader": "^8.0.0",
         "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
         "browser-sync": "^2.23.6",
         "chokidar": "^2.0.2",
         "css-loader": "^0.28.11",
         "enzyme": "^3.3.0",
-        "eslint": "^4.19.0",
+        "eslint": "^4.19.1",
         "eslint-config-airbnb": "^16.1.0",
+        "eslint-config-google": "^0.10.0",
         "eslint-config-prettier": "^2.9.0",
         "eslint-import-resolver-node": "^0.3.2",
         "eslint-loader": "^2.0.0",
@@ -129,8 +145,14 @@
         "webpack-node-externals": "^1.6.0"
     },
     "lint-staged": {
-        "*.{js,jsx}": ["eslint --no-ignore --fix", "git add --force"],
-        "*.{json,md,graphql}": ["prettier --write", "git add --force"],
+        "*.{js,jsx}": [
+            "eslint --no-ignore --fix",
+            "git add --force"
+        ],
+        "*.{json,md,graphql}": [
+            "prettier --write",
+            "git add --force"
+        ],
         "*.{css,less,styl,scss,sass,sss}": [
             "stylelint --fix",
             "git add --force"
@@ -138,8 +160,7 @@
     },
     "scripts": {
         "precommit": "lint-staged",
-        "lint-js":
-            "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
+        "lint-js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
         "lint-css": "stylelint \"src/**/*.{css,less,styl,scss,sass,sss}\"",
         "lint": "yarn run lint-js && yarn run lint-css",
         "fix-js": "yarn run lint-js --fix",
@@ -150,8 +171,7 @@
         "test": "jest",
         "test-watch": "yarn run test --watch --notify",
         "test-cover": "yarn run test --coverage",
-        "coverage":
-            "yarn run test-cover && opn coverage/lcov-report/index.html",
+        "coverage": "yarn run test-cover && opn coverage/lcov-report/index.html",
         "clean": "babel-node tools/run clean",
         "copy": "babel-node tools/run copy",
         "bundle": "babel-node tools/run bundle",

@@ -8,9 +8,10 @@
  */
 
 import React from 'react';
-import Home from './Home';
+import HomeDesktop from './desktop';
+import HomeMobile from './mobile';
 
-async function action({ fetch }) {
+async function action({ fetch, isMobile }) {
     const resp = await fetch('/graphql', {
         body: JSON.stringify({
             query: '{news{title,link,content}}',
@@ -21,7 +22,7 @@ async function action({ fetch }) {
     return {
         title: 'React Starter Kit',
         chunks: ['home'],
-        component: <Home news={data.news} />,
+        component: isMobile ? <HomeMobile /> : <HomeDesktop />,
     };
 }
 

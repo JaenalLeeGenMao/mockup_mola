@@ -5,7 +5,7 @@ export default function history(state = { movies: [] }, action) {
     case GET_HISTORY:
       return {
         ...state,
-        movies: action.result.data,
+        ...action.payload,
       };
     default:
       return state;

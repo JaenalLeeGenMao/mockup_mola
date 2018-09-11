@@ -3,7 +3,11 @@ import { findIndexByKeyValue } from './util';
 
 export default function home(state = {}, action) {
     switch (action.type) {
-    case types.GET_HOME_PLAYLIST:
+    case types.GET_HOME_PLAYLIST_LOADING:
+        return { ...state,  playlists: { ...action.payload } };
+    case types.GET_HOME_PLAYLIST_SUCCESS:
+        return { ...state,  playlists: { ...action.payload } };
+    case types.GET_HOME_PLAYLIST_ERROR:
         return { ...state,  playlists: { ...action.payload } };
     case types.GET_HOME_VIDEO:
         let result = [...state.videos.data];

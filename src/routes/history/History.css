@@ -1,15 +1,23 @@
+.headerNone {
+  display: none;
+}
+
+.headerDisplay {
+  display: block;
+}
+
 .wrapper {
   background-image: url('https://wallpapercave.com/wp/1mQZjV4.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 105px 0 0 200px;
-  height: calc(100vh - 105px);
+  padding: 180px 0 0 245px;
+  height: calc(100vh - 180px);
   overflow-y: hidden;
 }
 
 .containerOuter {
   overflow: hidden;
-  width: 1190px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -22,14 +30,16 @@
 }
 
 @media screen and (max-width: 1280px) {
-  .containerOuter {
-    width: 960px;
+  .wrapper {
+    padding: 180px 0 0 225px;
+    height: calc(100vh - 180px);
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 960px) {
   .wrapper {
-    padding: 76px 40px 0 40px;
+    padding: 180px 0 0 0;
+    height: calc(100vh - 180px);
   }
 
   .containerOuter {

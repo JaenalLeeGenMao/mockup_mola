@@ -9,30 +9,37 @@
 @import '../../components/variables.css';
 
 .wrapper {
-  background-image: linear-gradient( #0E1D3D, #000000);
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
+  background-image: url('./assets/BG-bottomRight.png'), url('./assets/BG-bottomLeft.png'), linear-gradient( #0E1D3D, #000000);
+  background-position: right bottom, left bottom, left top;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: 640px, 640px, cover;
+  height: calc(100vh - 100px);
   overflow-y: hidden;
-  margin: auto;
+  padding-top: 100px;
 }
 
+
+
 .root {
-  align-content: center;
-  padding: 90px 415px 90px 415px;
+  margin: 0 auto;
+  width: 450px;
+  max-height: 540px;
 }
 
 .container {
-  background: #000000;
   margin: 0 auto;
   padding: 30px 30px 20px 30px;
   max-width: 450px;
   max-height: 540px;
+  background: #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  border-radius: 4px;
+  opacity: 0.75;
 }
 
 .container p {
   font-size: 12px;
-  font-family: Futura;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
   letter-spacing: 1.17px;
   color: #6F6F6F;
 }
@@ -44,7 +51,18 @@
 }
 
 .formGroup {
-  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.forgotPassword {
+  font-size: 14px !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 500;
+  color: #ffffff !important;
+  float: right;
+  letter-spacing: 1.36px;
+  line-height: 19px;
+  margin: 20px 0 20px 0;
 }
 
 .label {
@@ -52,27 +70,22 @@
   font-weight: 700;
 }
 
-.input {
-  display: block;
+.input {	
+  background: #3D3D3D;
+  opacity: 0.31;
+  border-radius: 4px;	
+  height: 50px;	
+  width: 390px;
   box-sizing: border-box;
   margin: 5px 0 0;
-  padding: 10px 16px;
-  width: 100%;
-  height: 46px;
+  padding: 12px 15px;
   outline: 0;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  background: #fff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  color: #616161;
-  font-size: 18px;
-  line-height: 1.3333333;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  font-size: 16px;
 }
 
 .input:focus {
   border-color: #0074c2;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 116, 194, 0.6);
+  box-shadow: inset 0 1px 1px rgba(248, 246, 246, 0.075), 0 0 8px rgba(247, 248, 248, 0.6);
 }
 
 .button {
@@ -80,17 +93,19 @@
   box-sizing: border-box;
   margin: 0;
   padding: 10px 16px;
-  width: 100%;
-  outline: 0;
+  height: 50px;	
+  width: 390px;
+  background: #2C56FF;
   border: 1px solid #373277;
-  border-radius: 0;
-  background: #373277;
+  border-radius: 4px;
   color: #fff;
   text-align: center;
   text-decoration: none;
-  font-size: 18px;
-  line-height: 1.3333333;
+  font-size: 16px;
   cursor: pointer;
+  font-family: 'Roboto', sans-serif !important;
+  letter-spacing: 1.91px;
+  font-weight: 500;
 }
 
 .button:hover {
@@ -105,7 +120,6 @@
 .facebook {
   border-color: #3b5998;
   background: #3b5998;
-  composes: button;
 }
 
 .facebook:hover {
@@ -142,35 +156,35 @@
 }
 
 .lineThrough {
+  color: #ffffff;
   position: relative;
   z-index: 1;
   display: block;
-  margin-bottom: 15px;
-  width: 100%;
-  color: #757575;
+  margin-top: 20px;
+  margin-bottom: 20px;
   text-align: center;
-  font-size: 80%;
+  font-size: 12px !important;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif !important;
+  letter-spacing: 1.16px;
 }
 
-.lineThrough::before {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: -1;
-  margin-top: -5px;
-  margin-left: -20px;
-  width: 40px;
-  height: 10px;
-  background-color: #fff;
-  content: '';
+.flexButton {
+  display: flex;
+  width: 405px;
 }
 
-.lineThrough::after {
-  position: absolute;
-  top: 49%;
-  z-index: -2;
-  display: block;
-  width: 100%;
-  border-bottom: 1px solid #ddd;
-  content: '';
+.flexButton > div {
+  width: 120px;
+  height: 50px;
+  border-radius: 4px;
+  opacity: 0.8;
+  background: #242528;
+  margin-right: 15px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.44);
+  cursor: pointer;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
 }
+
