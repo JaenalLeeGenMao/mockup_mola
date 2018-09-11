@@ -11,8 +11,7 @@ import React from 'react';
 import HomeDesktop from './desktop';
 import HomeMobile from './mobile';
 
-async function action({ fetch, isMobile, userAgent }) {
-    console.log(userAgent);
+async function action({ fetch, isMobile }) {
     const resp = await fetch('/graphql', {
         body: JSON.stringify({
             query: '{news{title,link,content}}',

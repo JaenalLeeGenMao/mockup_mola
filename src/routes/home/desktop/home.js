@@ -38,8 +38,7 @@ const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar *
 
 class Home extends Component {
 	state = {
-	    isDark: undefined,
-	    userAgent: undefined,
+	    isDark: undefined
 	}
 
 	componentWillReceiveProps(nextProps) {
