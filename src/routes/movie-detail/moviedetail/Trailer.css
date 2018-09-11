@@ -1,0 +1,12 @@
+.trailer_box {
+  padding: 0 28px 32px;
+  height: 100px;
+  position: relative;
+  left: -13px;
+}
+
+.inner_box {
+  background: white;
+  width: 470px;
+  position: relative;
+}
