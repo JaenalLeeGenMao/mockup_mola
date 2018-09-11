@@ -9,9 +9,9 @@
 
 import React from 'react';
 import HomeDesktop from './desktop';
+import HomeMobile from './mobile';
 
 async function action({ fetch, isMobile }) {
-
     const resp = await fetch('/graphql', {
         body: JSON.stringify({
             query: '{news{title,link,content}}',
@@ -22,7 +22,7 @@ async function action({ fetch, isMobile }) {
     return {
         title: 'React Starter Kit',
         chunks: ['home'],
-        component: isMobile ? <div>Ini halaman khusus mobile device</div> : <HomeDesktop news={data.news} />,
+        component: isMobile ? <HomeMobile /> : <HomeDesktop />,
     };
 }
 

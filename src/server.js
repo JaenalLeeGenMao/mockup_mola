@@ -172,7 +172,7 @@ app.get('*', async (req, res, next) => {
             // You can access redux through react-redux connect
             store,
             storeSubscription: null,
-            isMobile
+            isMobile,
         };
 
         const route = await router.resolve(context);

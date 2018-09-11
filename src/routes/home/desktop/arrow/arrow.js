@@ -17,7 +17,7 @@ class Arrow extends Component {
             margin = numOfDotsHalf * 20,
             screen = $(window),
             screenWidth = screen.width();
-        console.log(numOfDots);
+
         $(`.${styles.home__arrow_next}`).css('right', `${screenWidth / 2 - margin}px`);
         $(`.${styles.home__arrow_prev}`).css('left', `${screenWidth / 2 - margin}px`);
     }

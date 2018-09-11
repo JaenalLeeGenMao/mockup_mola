@@ -1,0 +1,30 @@
+@import '../../../components/variables.css';
+@import '../../../global/style/css/slick.css';
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  min-width: 0;
+  max-height: 100vh;
+  width: auto;
+  transition: 100ms ease-out;
+  font-family: monospace;
+}
+
+:root {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}

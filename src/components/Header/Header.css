@@ -129,7 +129,7 @@
     align-items: center;
     height: auto;
     width: 100%;
-    min-width: 575px;
+    min-width: 375px;
 
     /* margin: 25px 0; */
     z-index: 100;
