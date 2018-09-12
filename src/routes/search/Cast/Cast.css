@@ -18,7 +18,7 @@
 }
 
 .castBox {
-  width: calc(100% / 7);
+  width: calc(100% / 6);
   text-align: center;
   padding-bottom: 20px;
   line-height: 1.3;
@@ -49,10 +49,6 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .castBox {
-    width: calc(100% / 6);
-  }
-
   .castBox > img {
     height: 66px;
     width: 66px;
