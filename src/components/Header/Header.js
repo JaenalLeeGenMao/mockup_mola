@@ -10,8 +10,9 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import LazyLoad from '@components/common/Lazyload'
-import logo from '@global/style/icons/Mola.png'
+import LazyLoad from '@components/common/Lazyload';
+import logo from '@global/style/icons/Mola.png';
+import logoGrey from '@global/style/icons/Mola_grey.png';
 
 import Link from '../Link'
 
@@ -33,7 +34,10 @@ class Header extends Component {
                 <div className={styles.header__logo_wrapper}>
                     {!logoOff && (
                         <Link to="/">
-                            <LazyLoad image={logo} className={styles.header__logo} />
+                            {isDark
+                                ? <LazyLoad image={logo} className={styles.header__logo} />
+                                : <LazyLoad image={logoGrey} className={styles.header__logo} />
+                            }
                         </Link>
                     )}
                 </div>

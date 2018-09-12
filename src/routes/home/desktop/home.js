@@ -165,12 +165,16 @@ class Home extends Component {
 
     handleSlideNext = (scrollIndex = 0) => {
         this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-        this.sliderRefs[scrollIndex].slickNext();
+        if (this.sliderRefs[scrollIndex]) {
+            this.sliderRefs[scrollIndex].slickNext();
+        }
     }
 
     handleSlidePrev = (scrollIndex = 0) => {
         this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-        this.sliderRefs[scrollIndex].slickPrev();
+        if (this.sliderRefs[scrollIndex]) {
+            this.sliderRefs[scrollIndex].slickPrev();
+        }
     }
 
     render() {
@@ -209,9 +213,9 @@ class Home extends Component {
                 className={styles.home__container}
     		>
     			<Header isDark={isDark} />
-                {status === 'loading' && (<HomePlaceholder />)}
+                {status === 'loading' && <HomePlaceholder />}
                 {status === 'error' &&
-					<div>Ada Error kawan: {error}</div>
+					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
                 }
                 {status === 'success' &&
                     <Navbar
@@ -294,7 +298,7 @@ class Home extends Component {
                     											</h4>
                     											<p className={styles.home__parallax_layer_3_desc}>
                                                                         {shortDescription}
-                                                                        <Link to="/movie" className={styles.home__see_more}>see movie</Link>
+                                                                        <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
                     											</p>
                                                                 </div>
                     										</div>
