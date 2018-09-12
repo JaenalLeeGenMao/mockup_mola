@@ -34,8 +34,10 @@ class Header extends Component {
                 <div className={styles.header__logo_wrapper}>
                     {!logoOff && (
                         <Link to="/">
-                            {isDark && <LazyLoad image={logo} className={styles.header__logo} />}
-                            {!isDark && <LazyLoad image={logoGrey} className={styles.header__logo} />}
+                            {isDark
+                                ? <LazyLoad image={logo} className={styles.header__logo} />
+                                : <LazyLoad image={logoGrey} className={styles.header__logo} />
+                            }
                         </Link>
                     )}
                 </div>
