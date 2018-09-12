@@ -35,15 +35,15 @@ class Header extends Component {
                     {!logoOff && (
                         <Link to="/">
                             {isDark
-                                ? <LazyLoad image={logo} className={styles.header__logo} />
-                                : <LazyLoad image={logoGrey} className={styles.header__logo} />
+                                ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
+                                : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
                             }
                         </Link>
                     )}
                 </div>
                 <div className={styles.header__library_wrapper}>
                     {!libraryOff && (
-                        <LazyLoad>
+                        <LazyLoad lazyloadOff>
                             <Link
                                 className={styles.header__library_link_wrapper}
                                 to="/category"
@@ -54,12 +54,6 @@ class Header extends Component {
                                     alt="library"
                                     style={{ width: '32px', height: '32px' }}
                                 />
-                                {/* <div className={styles.header__library_text}>
-                                    <p>CLICK TO SEE</p>
-                                    <p className={styles.header__library_underlined}>
-                                        MOVIE LIBRARY
-                                    </p>
-                                </div> */}
                             </Link>
                         </LazyLoad>
                     )}

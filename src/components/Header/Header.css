@@ -10,14 +10,14 @@
 @import '../variables.css';
 
 .header__container {
-  position: relative;
+  position: fixed;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   height: auto;
   width: 100%;
-  min-width: 575px;
+  min-width: 375px;
   z-index: 100;
 }
 
@@ -98,8 +98,8 @@
   }
 
   .header__logo {
-    width: 83px;
-    height: 104px;
+    width: 134px;
+    height: 174px;
   }
 
   .header__library_wrapper,
