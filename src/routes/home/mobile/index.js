@@ -1,3 +1,3 @@
-import HomeDesktop from './home';
+import HomeMobile from './home';
 
-export default HomeDesktop;
+export default HomeMobile;

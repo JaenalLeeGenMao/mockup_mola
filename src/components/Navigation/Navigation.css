@@ -16,8 +16,7 @@
 .navigation__links {
   height: 40px;
   padding: 0 10px;
-  font-size: 14px;
-  font-size: 0.875rem;
+  font-size: 0.725rem;
   text-decoration: none;
   letter-spacing: 0.1em;
   transition: 250ms ease-out;
@@ -41,7 +40,7 @@ hr {
   width: 90%;
   box-shadow: 0 20px 20px -20px inherit;
   position: relative;
-  right: 150px;
+  right: 95%;
   top: 8px;
   margin: 0;
 }
