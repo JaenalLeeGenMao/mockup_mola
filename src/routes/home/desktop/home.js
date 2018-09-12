@@ -19,6 +19,7 @@ import $ from 'jquery';
 
 import { SETTINGS } from '../const';
 import * as homeActions from '@actions/home';
+
 import Header from '@components/header';
 import Navbar from '@components/navigation';
 import LazyLoad from '@components/common/lazyload';
