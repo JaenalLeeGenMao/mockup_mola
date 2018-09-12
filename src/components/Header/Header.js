@@ -7,28 +7,28 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React, { Component } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import LazyLoad from '@components/common/Lazyload';
 import logo from '@global/style/icons/Mola.png';
 import logoGrey from '@global/style/icons/Mola_grey.png';
 
-import Link from '../Link';
+import Link from '../Link'
 
-import RightMenu from './right-menu';
-import styles from './Header.css';
+import RightMenu from './right-menu'
+import styles from './Header.css'
 
 class Header extends Component {
-
     render() {
         const {
             isDark = 1,
             logoOff = false,
             libraryOff = false,
             rightMenuOff = false,
-        } = this.props;
-        const color = isDark ? 'black' : 'white';
+            searchOff = false,
+        } = this.props
+        const color = isDark ? 'black' : 'white'
         return (
             <div className={styles.header__container}>
                 <div className={styles.header__logo_wrapper}>
@@ -58,10 +58,10 @@ class Header extends Component {
                         </LazyLoad>
                     )}
                 </div>
-                {!rightMenuOff && <RightMenu color={color} />}
+                {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
             </div>
-        );
+        )
     }
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(Header)
