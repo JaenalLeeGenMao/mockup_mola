@@ -12,8 +12,7 @@ import styles from './right-menu.css'
 
 const RightMenu = ({ color, searchOff }) => (
     <div className={styles.right__menu}>
-        { !searchOff &&
-        <LazyLoad>
+        <LazyLoad lazyloadOff>
             <Link
                 className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
                 to="/search"
