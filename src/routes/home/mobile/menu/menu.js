@@ -13,15 +13,19 @@ import styles from './menu.css';
  * @param isOpen open or close pop up menu
  */
 class Menu extends Component {
+
     handleNavigation = e => {
         e.preventDefault();
-        const { onClick } = this.props;
+        const { onClick, onToggle } = this.props;
+        onToggle();
         onClick(e.currentTarget.id);
     }
+
     handleToggleMenu = () => {
         const { onToggle } = this.props;
         onToggle();
     }
+
     render() {
         const { isOpen, isDark = 0, playlists } = this.props,
             color = isDark ? "black" : "white",

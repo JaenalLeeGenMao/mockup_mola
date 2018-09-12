@@ -19,6 +19,8 @@ import $ from 'jquery';
 import { SETTINGS } from '../const';
 import * as homeActions from '@actions/home';
 
+import { swipeGestureListener } from '@routes/home/util';
+
 import Header from '@components/header';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
@@ -78,9 +80,122 @@ class Home extends Component {
     	}
     }
 
+    componentDidMount() {
+        /** swipe EventListener start */
+        window.onload = swipeGestureListener();
+
+        const handleSwipeEvent = e => {
+            console.log(e.type,e)
+            this.handleSwipe(e);
+        };
+
+        document.body.addEventListener('swl', handleSwipeEvent, false);
+        document.body.addEventListener('swr', handleSwipeEvent, false);
+        document.body.addEventListener('swu', handleSwipeEvent, false);
+        document.body.addEventListener('swd', handleSwipeEvent, false);
+        /** swipe EventListener ends */
+
+    	window.addEventListener('scroll', this.handleScroll);
+    	Events.scrollEvent.register('begin', this.handleScroll);
+    	Events.scrollEvent.register('end', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+    	window.removeEventListener('scroll', this.handleScroll);
+    	Events.scrollEvent.remove('begin');
+    	Events.scrollEvent.remove('end');
+
+    	for (let i = 0; i < 100; i += 1) {
+    		window.clearInterval(i);
+    	}
+    }
+
+    handleScroll = () => {
+        lastScrollY = window.scrollY;
+
+    	if (!ticking) {
+            document.onkeyup = event => {
+                ticking = false;
+                let scrollIndex;
+                const screen = $(window),
+                    screenHeight = screen.height();
+
+                switch (event.which || event.keyCode) {
+                case 37: /* left */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
+                    this.handleSlidePrev(scrollIndex);
+                    return event.preventDefault();
+                case 38: /* up */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+                    this.handleKeyPress(scrollIndex);
+                    break;
+                case 39: /* right */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
+                    this.handleSlideNext(scrollIndex);
+                    return event.preventDefault();
+                case 40: /* down */
+                    scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+                    this.handleKeyPress(scrollIndex);
+                    break;
+                default:
+                    event.preventDefault();
+                    break;
+                }
+            };
+
+    		ticking = true;
+    	}
+    };
+
+    handleSwipe = event => {
+        lastScrollY = window.scrollY;
+
+        let scrollIndex;
+        const screen = $(window),
+            screenHeight = screen.height();
+
+        switch (event.type) {
+        case 'swr': /* slide to left ~ swipe right */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight);
+            this.handleSlidePrev(scrollIndex);
+            return event.preventDefault();
+        case 'swd': /* slide up ~ swipe down */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+            this.handleKeyPress(scrollIndex);
+            break;
+        case 'swl': /* slide to right ~ swipe left */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight);
+            this.handleSlideNext(scrollIndex);
+            return event.preventDefault();
+        case 'swu': /* slide down ~ swipe up */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+            this.handleKeyPress(scrollIndex);
+            break;
+        default:
+            event.preventDefault();
+            break;
+        }
+    };
+
     handleToggleMenu = () => {
         const { isMenuOpen } = this.state;
         this.setState({ isMenuOpen: !isMenuOpen });
+    }
+
+    handleKeyPress = scrollIndex => {
+        const result = this.props.home.playlists.data.map((playlist, index) => {
+            if (index === scrollIndex) {
+                const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+                    isDark = parseInt(activeSlick.attr('isdark'), 10);
+                if (typeof(isDark) === "number") {
+                    this.setState({ isDark });
+                    return playlist;
+                }
+            }
+        }).filter(data => data !== undefined);
+        if (result && result.length >= 1) {
+            this.handleScrollToIndex(result[0].id);
+        }
     }
 
     handleScrollToIndex = id => {
@@ -96,9 +211,23 @@ class Home extends Component {
     		}
     		return true;
         });
-        this.handleToggleMenu();
+
         this.props.onUpdatePlaylist(id);
     };
+
+    handleSlideNext = (scrollIndex = 0) => {
+        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+        if (this.sliderRefs[scrollIndex]) {
+            this.sliderRefs[scrollIndex].slickNext();
+        }
+    }
+
+    handleSlidePrev = (scrollIndex = 0) => {
+        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+        if (this.sliderRefs[scrollIndex]) {
+            this.sliderRefs[scrollIndex].slickPrev();
+        }
+    }
 
     render() {
         const {
@@ -136,7 +265,7 @@ class Home extends Component {
 
         return (
             <div>
-                <Header libraryOff className={styles.placeholder__header} />
+                <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
                 {status === 'loading' && <HomePlaceholder />}
                 {status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
@@ -199,8 +328,6 @@ class Home extends Component {
                                             }
                                         }}
                                         {...settings}
-                                        // prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
-                                        // nextArrow={<HomeArrow direction="next" isDark={isDark} />}
                                     >
                     					{video.data.map((eachVids) => {
                     						const {
@@ -248,10 +375,7 @@ class Home extends Component {
                                                             offsetXMax={ticking ? -20 : 0}
                     										className={styles.home__parallax_layer_2}
                     									>
-                                                            {/* <div> */}
                                                             <img alt="" src={layer2}/>
-                                                            {/* <Link to="/movie" className={styles.home__transparent_link} />
-															</div> */}
                     									</Parallax>
                     									<Parallax disabled={isSafari}>
                     										<img

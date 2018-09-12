@@ -30,11 +30,11 @@ const RightMenu = ({ color }) => (
                     <Link style={{ color }} to="/">Inbox</Link>
                     <Link style={{ color }} to="/">System Info</Link>
                     <div className={styles.right__menu_dropdown_footer}>
-                        <Link style={{ color }} to="/">Account</Link>
+                        <Link style={{ color }} to="/">Privacy</Link>
                         &bull;
-                        <Link style={{ color }} to="/">History</Link>
+                        <Link style={{ color }} to="/">Terms</Link>
                         &bull;
-                        <Link style={{ color }} to="/">Inbox</Link>
+                        <Link style={{ color }} to="/">Help</Link>
                     </div>
                 </div>
             </div>
