@@ -23,63 +23,63 @@ import styles from './Header.css'
 
 class Header extends Component {
   handleGoBack = () => {
-      const { goBack } = history;
-      if (goBack) {
-          goBack();
-      }
+    const { goBack } = history;
+    if (goBack) {
+      goBack();
+    }
   }
   render() {
-      const {
-          isDark = 1,
-          logoOff = false,
-          libraryOff = false,
-          rightMenuOff = false,
-          searchOff = false,
-          backButtonOn = false,
-          title = '',
-      } = this.props
-      const color = isDark ? 'black' : 'white';
+    const {
+      isDark = 1,
+      logoOff = false,
+      libraryOff = false,
+      rightMenuOff = false,
+      searchOff = false,
+      backButtonOn = false,
+      title = '',
+    } = this.props
+    const color = isDark ? 'black' : 'white';
 
-      return (
-          <div className={styles.header__container}>
-              <div className={styles.header__logo_wrapper}>
-                  {!logoOff &&
+    return (
+      <div className={styles.header__container}>
+        <div className={styles.header__logo_wrapper}>
+          {!logoOff &&
             <Link to="/">
-                {isDark
-                    ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
-                    : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
-                }
+              {isDark
+                ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
+                : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
+              }
             </Link>
-                  }
-                  {backButtonOn && (
-                      <LazyLoad>
-                          <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                              <IoIosArrowRoundBack size={32} color={color} />
-                          </div>
-                      </LazyLoad>
-                  )}
+          }
+          {backButtonOn && (
+            <LazyLoad>
+              <div className={styles.header__back_button} onClick={this.handleGoBack}>
+                <IoIosArrowRoundBack size={32} color={color} />
               </div>
-              <div className={styles.header__library_wrapper} style={{ color }}>
-                  {!libraryOff && (
-                      <LazyLoad lazyloadOff>
-                          <Link
-                              className={styles.header__library_link_wrapper}
-                              to="/category"
-                              style={{ color }}
-                          >
-                              <span
-                                  className={styles[`header__library_logo_${color}`]}
-                                  alt="library"
-                                  style={{ width: '32px', height: '32px' }}
-                              />
-                          </Link>
-                      </LazyLoad>
-                  )}
-                  {title}
-              </div>
-              {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
-          </div>
-      )
+            </LazyLoad>
+          )}
+        </div>
+        <div className={styles.header__library_wrapper} style={{ color }}>
+          {!libraryOff && (
+            <LazyLoad lazyloadOff>
+              <Link
+                className={styles.header__library_link_wrapper}
+                to="/category"
+                style={{ color }}
+              >
+                <span
+                  className={styles[`header__library_logo_${color}`]}
+                  alt="library"
+                  style={{ width: '32px', height: '32px' }}
+                />
+              </Link>
+            </LazyLoad>
+          )}
+          {title}
+        </div>
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
+      </div>
+    )
   }
 }
 

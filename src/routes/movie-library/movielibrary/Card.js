@@ -12,11 +12,11 @@ class CardLibrary extends Component {
   render() {
     return (
       <Fragment>
-        <li className={s.image_element_class}>
+        <div className={s.card}>
           <a href={this.props.cardLink}>
-            <img src={this.props.imgUrl} />
+            <img src={this.props.imgUrl}/>
           </a>
-        </li>
+        </div>
       </Fragment>
     )
   }
