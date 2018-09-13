@@ -9,16 +9,14 @@
 @import '../../components/variables.css';
 
 .wrapper {
-  background-image: url('./assets/BG-bottomRight.png'), url('./assets/BG-bottomLeft.png'), linear-gradient( #0E1D3D, #000000);
+  background-image: url('../../global/style/icons/BG-bottomRight.png'), url('../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
   background-position: right bottom, left bottom, left top;
-  background-repeat: no-repeat, no-repeat, repeat;
+  background-repeat: no-repeat, no-repeat, no-repeat;
   background-size: 640px, 640px, cover;
   height: calc(100vh - 100px);
   overflow-y: hidden;
   padding-top: 100px;
 }
-
-
 
 .root {
   margin: 0 auto;
@@ -31,7 +29,7 @@
   padding: 30px 30px 20px 30px;
   max-width: 450px;
   max-height: 540px;
-  background: #000000;
+  background: #000;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   border-radius: 4px;
   opacity: 0.75;
@@ -41,13 +39,13 @@
   font-size: 12px;
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
   letter-spacing: 1.17px;
-  color: #6F6F6F;
+  color: #6f6f6f;
 }
 
 .lead {
   font-size: 16px !important;
   font-weight: 500 !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 .formGroup {
@@ -58,7 +56,7 @@
   font-size: 14px !important;
   font-family: 'Roboto', sans-serif !important;
   font-weight: 500;
-  color: #ffffff !important;
+  color: #fff !important;
   float: right;
   letter-spacing: 1.36px;
   line-height: 19px;
@@ -70,11 +68,11 @@
   font-weight: 700;
 }
 
-.input {	
-  background: #3D3D3D;
+.input {
+  background: #3d3d3d;
   opacity: 0.31;
-  border-radius: 4px;	
-  height: 50px;	
+  border-radius: 4px;
+  height: 50px;
   width: 390px;
   box-sizing: border-box;
   margin: 5px 0 0;
@@ -93,9 +91,9 @@
   box-sizing: border-box;
   margin: 0;
   padding: 10px 16px;
-  height: 50px;	
+  height: 50px;
   width: 390px;
-  background: #2C56FF;
+  background: #2c56ff;
   border: 1px solid #373277;
   border-radius: 4px;
   color: #fff;
@@ -105,6 +103,7 @@
   cursor: pointer;
   font-family: 'Roboto', sans-serif !important;
   letter-spacing: 1.91px;
+  opacity: 100%;
   font-weight: 500;
 }
 
@@ -118,8 +117,8 @@
 }
 
 .facebook {
-  border-color: #3b5998;
-  background: #3b5998;
+  height: 50px;
+  width: 120px;
 }
 
 .facebook:hover {
@@ -127,22 +126,18 @@
 }
 
 .google {
-  border-color: #dd4b39;
-  background: #dd4b39;
-  composes: button;
+  padding-top: 10px;
 }
 
 .google:hover {
   background: #c23321;
 }
 
-.twitter {
-  border-color: #55acee;
-  background: #55acee;
-  composes: button;
+.line {
+  padding-top: 10px;
 }
 
-.twitter:hover {
+.line:hover {
   background: #2795e9;
 }
 
@@ -156,7 +151,7 @@
 }
 
 .lineThrough {
-  color: #ffffff;
+  color: #fff;
   position: relative;
   z-index: 1;
   display: block;
@@ -180,11 +175,25 @@
   border-radius: 4px;
   opacity: 0.8;
   background: #242528;
-  margin-right: 15px;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.44);
   cursor: pointer;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
+  margin-right: 15px;
+  text-align: center;
+}
+
+.labelSignup {
+  margin-top: 30px;
+  margin-bottom: -3px;
+  color: #ffffff !important;
+  font-size: 14px;
+  letter-spacing: 1.36px;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 500;
+  opacity: 100%;
+}
+
+.labelSignup > a {
+  text-decoration: none;
+  color: #2C56FF;
 }
 

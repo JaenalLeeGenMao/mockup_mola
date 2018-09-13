@@ -1,0 +1,15 @@
+.casting_box {
+  width: 386px;
+  padding: 0 28px 32px;
+  height: 100px;
+  flex: 50% 1 1;
+}
+
+.inner_box {
+  background: white;
+  width: 409px;
+  position: relative;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 13px;
+}

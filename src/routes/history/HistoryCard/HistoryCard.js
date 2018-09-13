@@ -21,10 +21,11 @@ class HistoryCard extends React.Component {
 
   render() {
     const { videos, barStyle } = this.props;
+    console.log("videos", videos.coverUrl)
     return (
       <div className={s.movieContainer}>
         <a className={s.movieImageWrapper}>
-          <LazyLoad image={videos.coverUrl} width='100%'>
+          <LazyLoad image={videos.coverUrl} width='100%' lazyloadOff>
             <div className={s.movieDurationBar}>
               <span className={s.moviePlayedBar} style={barStyle} />
             </div>

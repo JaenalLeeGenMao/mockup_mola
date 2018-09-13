@@ -12,7 +12,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import classNames from 'classnames'
 
 import HistoryCard from './HistoryCard/HistoryCard'
 
@@ -23,95 +22,110 @@ import s from './History.css'
 
 class History extends React.Component {
   state = {
-      showSearch: false,
-      isMobile: true,
+    showSearch: false,
+    movieItems: this.props.movieDummy,
+    loadingState: false,
   }
 
+  static propTypes = {
+    isMobile: PropTypes.bool,
+  };
+
   componentWillMount() {
-      this.props.getAllHistory()
+    this.props.getAllHistory()
   }
 
   componentDidMount() {
-      this.setState({
-          isMobile: window.innerWidth <= 960 ? true : false,
-      })
+    document.getElementById("history-container").addEventListener('scroll', this.onScroll, false);
+  }
 
-      // this.isMobile = window.innerWidth <= 960 ? true : false;
+  onScroll = () => {
+    const historyCont = document.getElementById("history-container");
+    if (historyCont.scrollTop + historyCont.clientHeight + 100 >= historyCont.scrollHeight) {
+      //loadmore
+      if(!this.state.loadingState) {
+        this.setState({
+          movieItems: this.state.movieItems.slice().concat(this.props.movieDummy)
+        })
+      }
+      // console.log("LOADMORE")
+    }
   }
 
   render() {
-      const { movieDummy, movieHistory } = this.props
-      const { isMobile } = this.state
-      console.log('movieHistory', movieHistory)
-      const isDark = false
-      const playlist = [
-          {
-              id: 1,
-              isActive: false,
-              title: 'Profile Data',
-          },
-          {
-              id: 2,
-              isActive: true,
-              title: 'History',
-          },
-      ]
-      return (
+    const { movieHistory, isMobile } = this.props;
+    const { movieItems } = this.state;
+
+    // console.log('movieHistory', movieHistory);
+    const playlist = [
+      {
+        id: 1,
+        isActive: false,
+        title: 'Profile Data',
+      },
+      {
+        id: 2,
+        isActive: true,
+        title: 'History',
+      },
+    ]
+    return (
+      <Fragment>
+        { !isMobile &&
           <Fragment>
-              <div className={classNames(s.headerNone, !isMobile ? s.headerDisplay : '')}>
-                  <Fragment>
-                      <Navbar
-                          isDark={isDark}
-                          playlists={playlist}
-                          onClick={this.handleScrollToIndex}
-                          title='History'
-                      />
-                  </Fragment>
-              </div>
-              <Header isDark={isDark} libraryOff={isMobile} rightMenuOff={isMobile}/>
-              <div className={s.wrapper}>
-                  <div className={s.containerOuter}>
-                      <div className={s.containerInner}>
-                          {movieDummy.map((movie) => {
-                              const videosAttr = movie.attributes.videos[0].attributes
-                              if (
-                                  !movie.attributes.videos[0].videos ||
-                movie.attributes.videos[0].videos !== 'not_found'
-                              ) {
-                                  const playedDuration =
-                  movie.attributes.timePosition / videosAttr.duration * 100
-                                  const barStyle = {
-                                      width: `${playedDuration}%`,
-                                  }
-                                  return (
-                                      <HistoryCard
-                                          key={movie.id}
-                                          videos={videosAttr}
-                                          barStyle={barStyle}
-                                      />
-                                  )
-                              }
-                          })}
-                      </div>
-                  </div>
-              </div>
+            <Navbar
+              isDark={false}
+              playlists={playlist}
+              onClick={this.handleScrollToIndex}
+              title='History'
+            />
           </Fragment>
-      )
+        }
+        <Header isDark={false} libraryOff={isMobile} searchOff={isMobile}/>
+        <div className={s.wrapper}>
+          <div className={s.wrapperBg}></div>
+          <div className={s.containerOuter}>
+            <div className={s.containerInner} id='history-container'>
+              {movieItems.map((movie, index) => {
+                const videosAttr = movie.attributes.videos[0].attributes
+                if (
+                  !movie.attributes.videos[0].videos ||
+                movie.attributes.videos[0].videos !== 'not_found'
+                ) {
+                  const playedDuration =
+                  movie.attributes.timePosition / videosAttr.duration * 100
+                  const barStyle = {
+                    width: `${playedDuration}%`,
+                  }
+                  return (
+                    <HistoryCard
+                      key={index} //nanti ganti id ya kalau idnya uda unique
+                      videos={videosAttr}
+                      barStyle={barStyle}
+                    />
+                  )
+                }
+              })}
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    )
   }
 }
 
-function mapStateToProps(state, ownProps) {
-    console.log('stateeee', state)
-    return {
-        movieHistory: state.history.data,
-    }
+function mapStateToProps(state) {
+  console.log('stateeee', state)
+  return {
+    movieHistory: state.history.data,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    getAllHistory: () => dispatch(getAllHistory()),
+  getAllHistory: () => dispatch(getAllHistory()),
 })
 
 export default compose(
-    withStyles(s),
-    connect(mapStateToProps, mapDispatchToProps),
+  withStyles(s),
+  connect(mapStateToProps, mapDispatchToProps),
 )(History)

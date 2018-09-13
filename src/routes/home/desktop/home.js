@@ -7,18 +7,19 @@ import { compose } from 'redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import {
-    Link as RSLink,
-    Element,
-    Events,
-    animateScroll as scroll,
-    scrollSpy,
-    scroller,
+  Link as RSLink,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
 } from 'react-scroll';
 import $ from 'jquery';
 
 
 import { SETTINGS } from '../const';
 import * as homeActions from '@actions/home';
+
 import Header from '@components/header';
 import Navbar from '@components/navigation';
 import LazyLoad from '@components/common/lazyload';
@@ -31,8 +32,8 @@ import styles from './home.css';
 import customSlickDotStyles from './homeSlickDots.css';
 
 let lastScrollY = 0,
-    ticking = false,
-    activePlaylist;
+  ticking = false,
+  activePlaylist;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
@@ -81,11 +82,11 @@ class Home extends Component {
 	componentDidMount() {
     	window.addEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.register('begin', this.handleScroll);
-    	Events.scrollEvent.register('end', this.handleScroll);
+    	Events.scrollEvent.register('end', this.handleColorChange);
 	}
 
 	componentWillUnmount() {
-    	window.removeEventListener('scroll', this.handleScroll);
+	    window.removeEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.remove('begin');
     	Events.scrollEvent.remove('end');
 
@@ -94,57 +95,61 @@ class Home extends Component {
     	}
 	}
 
+    handleColorChange = () => {
+      const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+        isDark = parseInt(activeSlick.attr('isdark'), 10);
+      if (typeof(isDark) === "number") {
+        this.setState({ isDark });
+      }
+    }
+
     handleScroll = () => {
-        lastScrollY = window.scrollY;
+      lastScrollY = window.scrollY;
 
     	if (!ticking) {
-            document.onkeyup = event => {
-                ticking = false;
-                let scrollIndex;
-                const screen = $(window),
-                    screenHeight = screen.height();
+        document.onkeyup = event => {
+          ticking = false;
+          let scrollIndex;
+          const screen = $(window),
+            screenHeight = screen.height();
 
-                switch (event.which || event.keyCode) {
-                case 37: /* left */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
-                    this.handleSlidePrev(scrollIndex);
-                    return event.preventDefault();
-                case 38: /* up */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
-                    this.handleKeyPress(scrollIndex);
-                    break;
-                case 39: /* right */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
-                    this.handleSlideNext(scrollIndex);
-                    return event.preventDefault();
-                case 40: /* down */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
-                    this.handleKeyPress(scrollIndex);
-                    break;
-                default:
-                    event.preventDefault();
-                    break;
-                }
-            };
+          switch (event.which || event.keyCode) {
+          case 37: /* left */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight);
+            this.handleSlidePrev(scrollIndex);
+            return event.preventDefault();
+          case 38: /* up */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+            this.handleKeyPress(scrollIndex);
+            break;
+          case 39: /* right */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight);
+            this.handleSlideNext(scrollIndex);
+            return event.preventDefault();
+          case 40: /* down */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+            this.handleKeyPress(scrollIndex);
+            break;
+          default:
+            event.preventDefault();
+            break;
+          }
+        };
 
     		ticking = true;
     	}
     };
 
     handleKeyPress = scrollIndex => {
-        const result = this.props.home.playlists.data.map((playlist, index) => {
-            if (index === scrollIndex) {
-                const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-                    isDark = parseInt(activeSlick.attr('isdark'), 10);
-                if (typeof(isDark) === "number") {
-                    this.setState({ isDark });
-                    return playlist;
-                }
-            }
-        }).filter(data => data !== undefined);
-        if (result && result.length >= 1) {
-            this.handleScrollToIndex(result[0].id);
+      const result = this.props.home.playlists.data.map((playlist, index) => {
+        if (index === scrollIndex) {
+          this.handleColorChange();
+          return { ...playlist };
         }
+      }).filter(data => data !== undefined);
+      if (result && result.length >= 1) {
+        this.handleScrollToIndex(result[0].id);
+      }
     }
 
     handleScrollToIndex = id => {
@@ -159,71 +164,69 @@ class Home extends Component {
     			return false;
     		}
     		return true;
-        });
-        this.props.onUpdatePlaylist(id);
+      });
+      this.props.onUpdatePlaylist(id);
     };
 
     handleSlideNext = (scrollIndex = 0) => {
-        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex]) {
         this.sliderRefs[scrollIndex].slickNext();
+      }
     }
 
     handleSlidePrev = (scrollIndex = 0) => {
-        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex]) {
         this.sliderRefs[scrollIndex].slickPrev();
+      }
     }
 
     render() {
-        const {
-                playlists,
-                playlists: {
-                    meta: {
-                        status = 'loading',
-                        error
-                    }
-                },
-                videos
-            } = this.props.home,
-            { isDark } = this.state,
-            settings = {
-                ...SETTINGS,
-                dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
-                onInit: () => {
-                    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-                        isDark = parseInt(activeSlick.attr('isdark'), 10);
-                    if (typeof(isDark) === "number") {
-                        this.setState({ isDark });
-                    }
-                },
-                afterChange: index => {
-                    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-                        isDark = parseInt(activeSlick.attr('isdark'), 10);
-                    if (typeof(isDark) === "number") {
-                        this.setState({ isDark });
-                    }
-                }
-            },
-            isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+      const {
+          playlists,
+          playlists: {
+            meta: {
+              status = 'loading',
+              error
+            }
+          },
+          videos
+        } = this.props.home,
+        { isDark } = this.state,
+        settings = {
+          ...SETTINGS,
+          dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
+          onInit: () => {
+            this.handleColorChange();
+          },
+          afterChange: index => {
+            this.handleColorChange();
+          }
+        },
+        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+
     	return (
     		<div
-                className={styles.home__container}
+          className={styles.home__container}
     		>
     			<Header isDark={isDark} />
-                {status === 'loading' && (<HomePlaceholder />)}
-                {status === 'error' &&
-					<div>Ada Error kawan: {error}</div>
-                }
-                {status === 'success' &&
+          {status === 'loading' && <HomePlaceholder />}
+          {status === 'error' || (videos.data.length <= playlists.data.length) &&
+					<div className={styles.home__error_container}>Ada Error kawan: {error || 'MOLA video is not loaded'}</div>
+          }
+          {status === 'success' &&
                     <Navbar
                     	isDark={isDark}
                     	playlists={playlists.data}
                     	onClick={this.handleScrollToIndex}
                     />
-                }
+          }
     			{
-                    status === 'success'
+            status === 'success'
 					&& videos
                     && videos.data.length > 0
+                    && videos.data.length <= playlists.data.length
                     && videos.data.map(video => {
                     	const { id, sortOrder } = video.meta;
                     	return (
@@ -237,30 +240,30 @@ class Home extends Component {
                     			key={id}
                     		>
                     			<Element name={id}>
-                                    <Slider
-                                        ref={node => {
-                                            if (!this.sliderRefs) {
-                                                this.sliderRefs = [];
-                                                this.trackedSliderIds = []
-                                            }
-                                            if (
-                                                this.trackedSliderIds.indexOf(id) === -1
+                            <Slider
+                              ref={node => {
+                                if (!this.sliderRefs) {
+                                  this.sliderRefs = [];
+                                  this.trackedSliderIds = []
+                                }
+                                if (
+                                  this.trackedSliderIds.indexOf(id) === -1
 												&& this.sliderRefs.length < trackedPlaylistIds.length
 												&& node !== null
-                                            ) {
-                                                node = {
-                                                    ...node,
-                                                    id,
-                                                    sortOrder
-                                                }
-                                                this.trackedSliderIds.push(id);
-                                                return this.sliderRefs.push(node);
-                                            }
-                                        }}
-                                        {...settings}
-                                        prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
-                                        nextArrow={<HomeArrow direction="next" isDark={isDark} />}
-                                    >
+                                ) {
+                                  node = {
+                                    ...node,
+                                    id,
+                                    sortOrder
+                                  }
+                                  this.trackedSliderIds.push(id);
+                                  return this.sliderRefs.push(node);
+                                }
+                              }}
+                              {...settings}
+                              prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
+                              nextArrow={<HomeArrow direction="next" isDark={isDark} />}
+                            >
                     					{video.data.map((eachVids) => {
                     						const {
                     							id,
@@ -271,12 +274,12 @@ class Home extends Component {
                     							layer2, /** subject */
                     							layer3, /** title image */
                     							type,
-                                            } = eachVids;
+                                } = eachVids;
                     						return (
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
                     								<LazyLoad>
                     									<Parallax
-                                                            disabled={isSafari}
+                                        disabled={isSafari}
                     										offsetYMin={ticking ? -50 : 0}
                     										offsetYMax={ticking ? 50 : 0}
                     										className={styles.home__parallax_layer_3}
@@ -286,30 +289,30 @@ class Home extends Component {
                     											style={{ color: isDark ? "black" : "white" }}
                     										>
                     											<img alt="" src={layer3} className={styles.home__parallax_layer_3_image} />
-                                                                <div className={styles.home__parallax_layer_3_detail}>
+                                          <div className={styles.home__parallax_layer_3_detail}>
                     											<h4
                     												className={styles.home__parallax_layer_3_title}
                     											>
                     												{title}
                     											</h4>
                     											<p className={styles.home__parallax_layer_3_desc}>
-                                                                        {shortDescription}
-                                                                        <Link to="/movie" className={styles.home__see_more}>see movie</Link>
+                                              {shortDescription}
+                                              <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
                     											</p>
-                                                                </div>
+                                          </div>
                     										</div>
                     									</Parallax>
                     									<Parallax
-                                                            disabled={isSafari}
+                                        disabled={isSafari}
                     										offsetYMin={ticking ? -10 : 0}
-                                                            offsetYMax={ticking ? 10 : 0}
-                                                            offsetXMin={ticking ? 20 : 0}
-                                                            offsetXMax={ticking ? -20 : 0}
+                                        offsetYMax={ticking ? 10 : 0}
+                                        offsetXMin={ticking ? 20 : 0}
+                                        offsetXMax={ticking ? -20 : 0}
                     										className={styles.home__parallax_layer_2}
                     									>
-                                                            {/* <div> */}
-                                                            <img alt="" src={layer2}/>
-                                                            {/* <Link to="/movie" className={styles.home__transparent_link} />
+                                        {/* <div> */}
+                                        <img alt="" src={layer2}/>
+                                        {/* <Link to="/movie" className={styles.home__transparent_link} />
 															</div> */}
                     									</Parallax>
                     									<Parallax disabled={isSafari}>
@@ -335,24 +338,24 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
-    return {
-        ...state,
-    };
+  return {
+    ...state,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
-    onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
-    onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
+  onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
+  onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
+  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
 });
 
 export default compose(
-    withStyles(
-        styles,
-        customSlickDotStyles
-    ),
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+  withStyles(
+    styles,
+    customSlickDotStyles
+  ),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Home);
