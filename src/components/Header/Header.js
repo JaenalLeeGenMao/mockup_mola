@@ -16,10 +16,10 @@ import history from '../../history';
 import logo from '@global/style/icons/Mola.png';
 import logoGrey from '@global/style/icons/Mola_grey.png';
 
-import Link from '../Link';
+import Link from '../Link'
 
-import RightMenu from './right-menu';
-import styles from './Header.css';
+import RightMenu from './right-menu'
+import styles from './Header.css'
 
 class Header extends Component {
   handleGoBack = () => {
@@ -83,4 +83,4 @@ class Header extends Component {
   }
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(Header)

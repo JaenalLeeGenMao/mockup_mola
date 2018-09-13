@@ -1,0 +1,51 @@
+.box {
+  flex: 50% 1 1;
+  position: relative;
+}
+
+.inner_box {
+  background: white;
+  padding: 15px;
+  width: 409px;
+  border: 1px solid rgba(87, 132, 255, 1);
+  position: relative;
+  left: 33px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.inner_box p {
+  margin: 0;
+}
+
+.label_container {
+  width: 88px;
+  height: 34px;
+  background: rgba(87, 132, 255, 1);
+  color: white;
+  transform: rotate(-90deg);
+  position: absolute;
+  top: 66px;
+  left: -27px;
+}
+
+.label_container p {
+  position: absolute;
+  top: 35%;
+  right: 50%;
+  transform: translate(50%, -100%);
+  font-family: 'futura', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 2px;
+}
+
+.inner_box,
+p:last-child {
+  margin-top: 10px;
+}
+
+.inner_box span {
+  font-weight: 600;
+}

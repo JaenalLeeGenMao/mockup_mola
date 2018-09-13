@@ -32,6 +32,8 @@ class Html extends React.Component {
         scripts: [],
     };
 
+    static isMobile = true;
+
     render() {
         const { title, description, styles, scripts, app, children } = this.props;
         return (
@@ -65,10 +67,12 @@ class Html extends React.Component {
                         <script
                             dangerouslySetInnerHTML={{
                                 __html:
+
                     'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
                     `ga('create','${
                         config.analytics.googleTrackingId
                     }','auto');ga('send','pageview')`,
+
                             }}
                         />
                     )}

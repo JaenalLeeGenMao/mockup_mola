@@ -1,0 +1,122 @@
+.genreContainer {
+  padding-top: 100px;
+  margin: 0 auto;
+  width: 65%;
+}
+
+.genreLink {
+  display: inline-block;
+  width: 45%;
+  height: 85px;
+  text-decoration: none;
+}
+
+.genreLink span {
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+.genreLink .genreText {
+  background: none;
+  font-size: 24px;
+  color: white;
+  outline: none;
+  display: none;
+}
+
+.genreContainer .genreSplit {
+  display: inline-block;
+  width: 10%;
+}
+
+.genreAction {
+  background-image: url('../assets/search_action@2x.png');
+}
+
+.genreFamily {
+  background-image: url('../assets/search_family@2x.png');
+  background-position-x: 50px;
+}
+
+.genreAdventure {
+  background-image: url('../assets/search_adventure@2x.png');
+}
+
+.genreHorror {
+  background-image: url('../assets/search_horror@2x.png');
+  background-position-x: 50px;
+}
+
+.genreComedy {
+  background-image: url('../assets/search_comedy@2x.png');
+}
+
+.genreRomance {
+  background-image: url('../assets/search_romance@2x.png');
+  background-position-x: 50px;
+}
+
+.genreDocumentary {
+  background-image: url('../assets/search_documentary@2x.png');
+}
+
+.genreSciFi {
+  background-image: url('../assets/search_scifi@2x.png');
+  background-position-x: 50px;
+}
+
+.genreDrama {
+  background-image: url('../assets/search_drama@2x.png');
+}
+
+.genreThriller {
+  background-image: url('../assets/search_thriller@2x.png');
+  background-position-x: 50px;
+}
+
+@media screen and (max-width: 960px) {
+  .genreContainer {
+    padding: 130px 0 0;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .genreLink {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 15px 0;
+  }
+
+  .genreLink span {
+    display: none;
+  }
+
+  .genreLink .genreText {
+    display: block;
+    height: auto;
+    font-size: 30px;
+  }
+
+  .genreContainer .genreSplit {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .genreContainer {
+    padding: 70px 0 0;
+  }
+
+  .genreLink .genreText {
+    font-size: 20px;
+  }
+
+  .genreLink {
+    padding: 10px 0;
+  }
+}

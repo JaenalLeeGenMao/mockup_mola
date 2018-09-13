@@ -97,7 +97,7 @@
 /* On screens that are 1180px or less, set responsive layout */
 @media only screen and (min-device-width: 1024px) and (max-device-width: 1920px) and (-webkit-min-device-pixel-ratio: 1) {
   .header__container {
-    position: fixed;
+    position: absolute;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
