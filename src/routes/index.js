@@ -13,45 +13,50 @@
 const routes = {
     path: '',
 
-  // Keep in mind, routes are evaluated in order
-  children: [
-    {
-      path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
-    },
-    {
-      path: '/contact',
-      load: () => import(/* webpackChunkName: 'contact' */ './contact'),
-    },
-    {
-      path: '/login',
-      load: () => import(/* webpackChunkName: 'login' */ './login'),
-    },
-    {
-      path: '/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register'),
-    },
-    {
-      path: '/about',
-      load: () => import(/* webpackChunkName: 'about' */ './about'),
-    },
-    {
-      path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    {
-      path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
-    },
-    {
-      path: '/history',
-      load: () => import(/* webpackChunkName: 'history' */ './history'),
-    },
-    {
-      path: '/search',
-      load: () => import(/* webpackChunkName: 'search' */ './search'),
-    },
-
+    // Keep in mind, routes are evaluated in order
+    children: [
+        {
+            path: '',
+            load: () => import(/* webpackChunkName: 'home' */ './home'),
+        },
+        {
+            path: '/contact',
+            load: () => import(/* webpackChunkName: 'contact' */ './contact'),
+        },
+        {
+            path: '/login',
+            load: () => import(/* webpackChunkName: 'login' */ './login'),
+        },
+        {
+            path: '/register',
+            load: () => import(/* webpackChunkName: 'register' */ './register'),
+        },
+        {
+            path: '/about',
+            load: () => import(/* webpackChunkName: 'about' */ './about'),
+        },
+        {
+            path: '/privacy',
+            load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+        },
+        {
+            path: '/admin',
+            load: () => import(/* webpackChunkName: 'admin' */ './admin'),
+        },
+        // Movie details
+        {
+            path: '/movie-detail',
+            load: () => import(/* webpackChunkName: 'admin' */ './movie-detail'),
+        },
+        // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
+        {
+            path: '/history',
+            load: () => import(/* webpackChunkName: 'history' */ './history'),
+        },
+        {
+            path: '/search',
+            load: () => import(/* webpackChunkName: 'search' */ './search'),
+        },
         // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
         {
             path: '(.*)',
