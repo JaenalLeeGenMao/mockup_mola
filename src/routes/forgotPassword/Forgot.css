@@ -7,15 +7,15 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
- @import '../../components/variables.css';
+@import '../../components/variables.css';
 
 .wrapper {
-    background-image: linear-gradient(#0e1d3d, #000);
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: calc(100vh - 210px);
-    overflow-y: hidden;
-    padding-top: 210px;
+  background-image: linear-gradient(#0e1d3d, #000);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: calc(100vh - 210px);
+  overflow-y: hidden;
+  padding-top: 210px;
 }
 
 .root {
@@ -30,7 +30,7 @@
   max-width: 450px;
   max-height: 540px;
   background: #000;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   opacity: 0.75;
 }
@@ -43,11 +43,11 @@
 }
 
 .labelHeader {
-  color: #ffffff !important;
+  color: #fff !important;
   font-size: 16px !important;
   font-weight: 500;
   letter-spacing: 1.91px !important;
-  margin-top:-5px;
+  margin-top: -5px;
   font-family: 'Roboto', sans-serif !important;
 }
 

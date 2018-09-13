@@ -30,7 +30,7 @@
   max-width: 450px;
   max-height: 540px;
   background: #000;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   opacity: 0.75;
 }
@@ -175,7 +175,7 @@
   border-radius: 4px;
   opacity: 0.8;
   background: #242528;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.44);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
   cursor: pointer;
   margin-right: 15px;
   text-align: center;
@@ -184,7 +184,7 @@
 .labelSignup {
   margin-top: 30px;
   margin-bottom: -3px;
-  color: #ffffff !important;
+  color: #fff !important;
   font-size: 14px;
   letter-spacing: 1.36px;
   font-family: 'Roboto', sans-serif !important;
@@ -194,6 +194,6 @@
 
 .labelSignup > a {
   text-decoration: none;
-  color: #2C56FF;
+  color: #2c56ff;
 }
 
