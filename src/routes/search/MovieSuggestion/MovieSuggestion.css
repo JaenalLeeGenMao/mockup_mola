@@ -34,7 +34,7 @@
   margin: 0 auto;
 }
 
-.movieBoxInner > img {
+.movieImg {
   width: 270px;
   height: 170px;
 }
@@ -85,14 +85,14 @@
 }
 
 @media screen and (max-width: 1280px) {
-  .movieBoxInner > img {
+  .movieImg {
     width: 245px;
     height: 154px;
   }
 }
 
 @media screen and (max-width: 1024px) {
-  .movieBoxInner > img {
+  .movieImg {
     width: 205px;
     height: 128px;
   }
@@ -103,7 +103,7 @@
     padding: 0;
   }
 
-  .movieBoxInner > img {
+  .movieImg {
     width: 175px;
     height: 110px;
   }

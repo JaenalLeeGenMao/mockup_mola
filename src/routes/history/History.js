@@ -57,7 +57,6 @@ class History extends React.Component {
     const { movieItems } = this.state;
 
     // console.log('movieHistory', movieHistory);
-    const isDark = false
     const playlist = [
       {
         id: 1,
@@ -75,15 +74,16 @@ class History extends React.Component {
         { !isMobile &&
           <Fragment>
             <Navbar
-              isDark={isDark}
+              isDark={false}
               playlists={playlist}
               onClick={this.handleScrollToIndex}
               title='History'
             />
           </Fragment>
         }
-        <Header isDark={isDark} libraryOff={isMobile} searchOff={isMobile}/>
+        <Header isDark={false} libraryOff={isMobile} searchOff={isMobile}/>
         <div className={s.wrapper}>
+          <div className={s.wrapperBg}></div>
           <div className={s.containerOuter}>
             <div className={s.containerInner} id='history-container'>
               {movieItems.map((movie) => {

@@ -92,6 +92,7 @@ class Search extends React.Component {
           <Header isDark={isDark} libraryOff searchOff/>
         }
         <div className={s.root}>
+          <div className={s.containerBg}/>
           <div className={s.container}>
             <div className={isMobile ? s.searchAutocomplete__mobile : s.searchAutocomplete}>
               { showResult &&

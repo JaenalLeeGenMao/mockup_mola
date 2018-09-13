@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import LazyLoad from '@components/common/Lazyload';
 
 import { getAllHistory } from '../../../actions/history' // test
 import s from './MovieSuggestion.css'
@@ -34,16 +35,17 @@ class MovieSuggestion extends React.Component {
               return (
                 <div className={s.movieBox} key={movie.id}>
                   <div className={s.movieBoxInner}>
-                    <img src={movie.coverUrl}/>
-                    { startIdx > -1 ?
-                      (
-                        <div className={s.movieTitle}>
-                          <span>{movieTitleFirst}</span><span className={s.movieTitleResult}>{movieTitleRes}</span><span>{movieTitleSecond}</span>
-                        </div>
-                      )
-                      :
-                      (<div className={s.movieTitle}><span>{movieTitle}</span></div>)
-                    }
+                    <LazyLoad image={movie.coverUrl} className={s.movieImg} width='100%'>
+                      { startIdx > -1 ?
+                        (
+                          <div className={s.movieTitle}>
+                            <span>{movieTitleFirst}</span><span className={s.movieTitleResult}>{movieTitleRes}</span><span>{movieTitleSecond}</span>
+                          </div>
+                        )
+                        :
+                        (<div className={s.movieTitle}><span>{movieTitle}</span></div>)
+                      }
+                    </LazyLoad>
                   </div>
                 </div>
               )

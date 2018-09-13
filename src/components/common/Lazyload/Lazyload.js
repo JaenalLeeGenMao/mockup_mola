@@ -24,6 +24,7 @@ const CustomLazyLoad = ({
             </LazyLoad>
         }
     </div>
-);
+  )
+};
 
 export default withStyles(styles)(CustomLazyLoad);
