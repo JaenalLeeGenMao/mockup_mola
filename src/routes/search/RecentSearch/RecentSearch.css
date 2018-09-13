@@ -54,6 +54,10 @@
   cursor: pointer;
 }
 
+.clearRecentSearch__mobile {
+  display: none;
+}
+
 @media screen and (max-width: 960px) {
   .resultTitle {
     font-size: 14px;
@@ -62,6 +66,13 @@
 
   .resultContent {
     padding: 0;
+  }
+
+  .clearRecentSearch__mobile {
+    display: inline-block;
+    float: right;
+    color: #bababa;
+    font-size: 14px;
   }
 }
 
