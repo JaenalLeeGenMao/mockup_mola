@@ -64,7 +64,7 @@ class Header extends Component {
             <LazyLoad lazyloadOff>
               <Link
                 className={styles.header__library_link_wrapper}
-                to="/category"
+                to="/movie-library"
                 style={{ color }}
               >
                 <span
