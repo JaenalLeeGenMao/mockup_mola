@@ -7,6 +7,7 @@ import Header from '@components/header'
 import LazyLoad from '@components/common/Lazyload'
 import _ from 'lodash';
 
+import { getSearchVideo } from '../../actions/video'
 import SearchGenre from './SearchGenre/SearchGenre'
 import RecentSearch from './RecentSearch/RecentSearch'
 import Cast from './Cast/Cast'
@@ -18,6 +19,9 @@ class Search extends React.Component {
   state = {
     showResult: false,
     searchText: '',
+    textSuggestion: '',
+    searchedMovie: [],
+
   };
 
   static propTypes = {
@@ -25,18 +29,54 @@ class Search extends React.Component {
     isMobile: PropTypes.bool,
   };
 
-  handleSearchChange = (e) => {
-    const searchVal = e.target.value
-    this.setState({
-      showResult: searchVal,
-      searchText: searchVal,
-    })
+  componentWillMount() {
+    this.props.getSearchVideo();
+  }
 
-    // _.debounce( () => console.log("val:", searchVal) , 300);
+  handleSearchChange = (e) => {
+    const val = e.target.value;
+    const { video } = this.props;
+    const matchMovieArr = video.data.filter(function(dt) {
+      return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
+    });
+
+    const firstMatchMovieArr = matchMovieArr.filter(function(dt){
+      return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
+    });
+
+    const firstMatchMovie = firstMatchMovieArr.length ? firstMatchMovieArr[0].title : '';
+    const textSugRemain = firstMatchMovie.substr(val.length, firstMatchMovie.length);
+    this.setState({
+      showResult: val,
+      searchText: val,
+      searchedMovie: matchMovieArr,
+      textSuggestion: `${val}${textSugRemain}`,
+    })
+    // this.processSearch(searchVal);
   };
 
+  // processSearch = _.debounce((val) => {
+  //   console.log('Debounced Event:', val);
+  //   const { video } = this.props;
+  //   const matchMovie = video.data.filter(function(dt) {
+  //     return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
+  //   });
+
+  //   const firstMatchMovie = matchMovie.filter(function(dt){
+  //     return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
+  //   });
+
+  //   this.setState({
+  //     showResult: val,
+  //     searchText: val,
+  //     searchedMovie: matchMovie,
+  //     textSuggestion: firstMatchMovie.length ? firstMatchMovie[0].title : '',
+  //   })
+  // }, 300);
+
+
   render() {
-    const { showResult, searchText } = this.state
+    const { showResult, searchText, searchedMovie, textSuggestion } = this.state
     const { isMobile } = this.props;
     const showSearchPlaceholder = isMobile && !showResult;
     const isDark = false;
@@ -88,6 +128,7 @@ class Search extends React.Component {
       { id: 11, title: 'Conjuring', year: '2016', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
     ]
 
+
     return (
       <Fragment>
         { !isMobile &&
@@ -99,7 +140,7 @@ class Search extends React.Component {
             <div className={isMobile ? s.searchAutocomplete__mobile : s.searchAutocomplete}>
               { showResult &&
                 <span>
-                  Drama
+                  {textSuggestion}
                 </span>
               }
             </div>
@@ -132,8 +173,8 @@ class Search extends React.Component {
                       <Cast data={castData} searchText={searchText}/>
                     </div>
                   }
-                  { !isMobile && <MovieSuggestion isMobile={isMobile} data={movieSuggestionDt} searchText={searchText}/> }
-                  { isMobile && <MmovieSuggestion isMobile={isMobile} data={movieSuggestionDt} searchText={searchText}/> }
+                  { !isMobile &&  searchedMovie.length && <MovieSuggestion isMobile={isMobile} data={searchedMovie} searchText={searchText}/> }
+                  { isMobile &&  searchedMovie.length && <MmovieSuggestion isMobile={isMobile} data={searchedMovies} searchText={searchText}/> }
                 </div>
               </div>
             }
@@ -145,14 +186,13 @@ class Search extends React.Component {
 }
 
 function mapStateToProps(state) {
-  //   console.log('stateeee', state);
   return {
-    movies: state.history.movies,
+    ...state
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getAllHistory: () => dispatch(getAllHistory()),
+  getSearchVideo: () => dispatch(getSearchVideo()),
 })
 
 export default compose(

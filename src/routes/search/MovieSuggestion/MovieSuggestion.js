@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import LazyLoad from '@components/common/Lazyload';
 
-import { getAllHistory } from '../../../actions/history' // test
 import s from './MovieSuggestion.css'
 
 class MovieSuggestion extends React.Component {
@@ -25,12 +24,13 @@ class MovieSuggestion extends React.Component {
         <div className={s.resultContent__movie}>
           {
             data.map( (movie) => {
-              const movieTitle = `${movie.title} (${movie.year})`
+              const movieYear = movie.year ? ` (${movie.year})` : '';
+              const movieTitle = `${movie.title}${movieYear}`
               const startIdx = movieTitle.toLowerCase().indexOf(searchText.toLowerCase())
 
-              const movieTitleRes = movieTitle.substr(startIdx, searchText.length)
-              const movieTitleFirst = movieTitle.substr(0, startIdx)
-              const movieTitleSecond = movieTitle.substr(startIdx+searchText.length, movieTitle.length)
+              const movieTitleRes = movieTitle.substr(startIdx, searchText.length);
+              const movieTitleFirst = movieTitle.substr(0, startIdx);
+              const movieTitleSecond = movieTitle.substr(startIdx+searchText.length, movieTitle.length);
 
               return (
                 <div className={s.movieBox} key={movie.id}>
@@ -56,15 +56,5 @@ class MovieSuggestion extends React.Component {
     )
   }
 }
-
-// function mapStateToProps(state) {
-//   return {
-//     movies: state.history.movies,
-//   }
-// }
-
-const mapDispatchToProps = (dispatch) => ({
-  getAllHistory: () => dispatch(getAllHistory()),
-})
 
 export default withStyles(s)(MovieSuggestion)
