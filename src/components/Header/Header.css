@@ -17,7 +17,8 @@
   align-items: center;
   height: auto;
   width: 100%;
-  min-width: 375px;
+
+  /* min-width: 375px; */
   z-index: 100;
 }
 
@@ -39,8 +40,10 @@
   align-items: flex-start;
   position: relative;
   width: 134px;
-  height: 174px;
+
+  /* height: 174px; */
   top: -40px;
+  left: -40px;
 }
 
 .header__library_logo_white {
@@ -69,6 +72,7 @@
 .header__library_wrapper {
   position: relative;
   top: -40px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
 }
 
 .header__library_link_wrapper {
@@ -104,7 +108,8 @@
     align-items: center;
     height: auto;
     width: 100%;
-    min-width: 720px;
+
+    /* min-width: 720px;  */
     z-index: 100;
   }
 
@@ -120,8 +125,10 @@
     align-items: flex-start;
     position: relative;
     width: 134px;
-    height: 174px;
+
+    /* height: 174px; */
     top: -40px;
+    left: -40px;
   }
 
   .header__library_wrapper,
@@ -145,7 +152,8 @@
     align-items: center;
     height: auto;
     width: 100%;
-    min-width: 375px;
+
+    /* min-width: 375px; */
     z-index: 100;
   }
 
@@ -167,7 +175,20 @@
     align-items: flex-start;
     position: relative;
     width: 83px;
-    height: 104px;
+
+    /* height: 104px; */
     top: -40px;
+    left: -40px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .header__back_button {
+    position: relative;
+    left: 0;
+  }
+
+  .header__logo_wrapper {
+    left: 0;
   }
 }
