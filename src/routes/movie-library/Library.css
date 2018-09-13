@@ -1,0 +1,9 @@
+.main_container {
+  width: 1190px;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.card_wrapper {
+  position: relative;
+}
