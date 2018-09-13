@@ -2,17 +2,43 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
-import classNames from 'classnames';
 import s from './SearchGenre.css';
 
 class SearchGenre extends React.Component {
   static propTypes = {
+    data: PropTypes.arrayOf(PropTypes.object),
   };
 
   render() {
+    const { data } = this.props;
+    // console.log("data", data)
     return (
       <div className={s.genreContainer}>
-        <Link className={s.genreLink} to="/">
+        {
+          data.map( (data, index) => {
+            // const bgUrl = { backgroundImage: `url(${data.imgUrl})`, }
+
+            if( index % 2 === 0 ) {
+              return (
+                <Link className={s.genreLink} key={index} to="/">
+                  <span className={s.genreAction} />
+                  <span className={s.genreText}>{data.title}</span>
+                </Link>
+              )
+            } else {
+              return (
+                <Fragment>
+                  <div className={s.genreSplit} key={index}/>
+                  <Link className={s.genreLink} to="/">
+                    <span className={s.genreAdventure} />
+                    <span className={s.genreText}>{data.title}</span>
+                  </Link>
+                </Fragment>
+              )
+            }
+          })
+        }
+        {/* <Link className={s.genreLink} to="/">
           <span className={s.genreAction} />
           <span className={s.genreText}>Action</span>
         </Link>
@@ -56,7 +82,7 @@ class SearchGenre extends React.Component {
         <Link className={s.genreLink} to="/">
           <span className={classNames(s.genreThriller, s.genreAlignRight)} />
           <span className={s.genreText}>Thriller</span>
-        </Link>
+        </Link> */}
       </div>
     );
   }

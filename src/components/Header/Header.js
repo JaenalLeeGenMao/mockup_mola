@@ -20,48 +20,48 @@ import RightMenu from './right-menu'
 import styles from './Header.css'
 
 class Header extends Component {
-    render() {
-        const {
-            isDark = 1,
-            logoOff = false,
-            libraryOff = false,
-            rightMenuOff = false,
-            searchOff = false,
-        } = this.props
-        const color = isDark ? 'black' : 'white'
-        return (
-            <div className={styles.header__container}>
-                <div className={styles.header__logo_wrapper}>
-                    {!logoOff && (
-                        <Link to="/">
-                            {isDark
-                                ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
-                                : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
-                            }
-                        </Link>
-                    )}
-                </div>
-                <div className={styles.header__library_wrapper}>
-                    {!libraryOff && (
-                        <LazyLoad lazyloadOff>
-                            <Link
-                                className={styles.header__library_link_wrapper}
-                                to="/category"
-                                style={{ color }}
-                            >
-                                <span
-                                    className={styles[`header__library_logo_${color}`]}
-                                    alt="library"
-                                    style={{ width: '32px', height: '32px' }}
-                                />
-                            </Link>
-                        </LazyLoad>
-                    )}
-                </div>
-                {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
-            </div>
-        )
-    }
+  render() {
+    const {
+      isDark = 1,
+      logoOff = false,
+      libraryOff = false,
+      rightMenuOff = false,
+      searchOff = false,
+    } = this.props
+    const color = isDark ? 'black' : 'white'
+    return (
+      <div className={styles.header__container}>
+        <div className={styles.header__logo_wrapper}>
+          {!logoOff && (
+            <Link to="/">
+              {isDark
+                ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
+                : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
+              }
+            </Link>
+          )}
+        </div>
+        <div className={styles.header__library_wrapper}>
+          {!libraryOff && (
+            <LazyLoad lazyloadOff>
+              <Link
+                className={styles.header__library_link_wrapper}
+                to="/category"
+                style={{ color }}
+              >
+                <span
+                  className={styles[`header__library_logo_${color}`]}
+                  alt="library"
+                  style={{ width: '32px', height: '32px' }}
+                />
+              </Link>
+            </LazyLoad>
+          )}
+        </div>
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
+      </div>
+    )
+  }
 }
 
 export default withStyles(styles)(Header)

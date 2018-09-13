@@ -132,4 +132,4 @@ fabric.properties
 package-lock\.json
 .DS_Store
 
-yarn\.lock
+*yarn.lock
