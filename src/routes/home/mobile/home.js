@@ -97,7 +97,7 @@ class Home extends Component {
 
     	window.addEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.register('begin', this.handleScroll);
-    	Events.scrollEvent.register('end', this.handleScroll);
+    	Events.scrollEvent.register('end', this.handleColorChange);
     }
 
     componentWillUnmount() {
@@ -108,6 +108,14 @@ class Home extends Component {
     	for (let i = 0; i < 100; i += 1) {
     		window.clearInterval(i);
     	}
+    }
+
+    handleColorChange = () => {
+        const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+            isDark = parseInt(activeSlick.attr('isdark'), 10);
+        if (typeof(isDark) === "number") {
+            this.setState({ isDark });
+        }
     }
 
     handleScroll = () => {
@@ -185,12 +193,8 @@ class Home extends Component {
     handleKeyPress = scrollIndex => {
         const result = this.props.home.playlists.data.map((playlist, index) => {
             if (index === scrollIndex) {
-                const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-                    isDark = parseInt(activeSlick.attr('isdark'), 10);
-                if (typeof(isDark) === "number") {
-                    this.setState({ isDark });
-                    return playlist;
-                }
+                this.handleColorChange();
+                return playlist;
             }
         }).filter(data => data !== undefined);
         if (result && result.length >= 1) {
@@ -247,18 +251,10 @@ class Home extends Component {
                 arrows: false,
                 dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
                 onInit: () => {
-                    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-                        isDark = parseInt(activeSlick.attr('isdark'), 10);
-                    if (typeof(isDark) === "number") {
-                        this.setState({ isDark });
-                    }
+                    this.handleColorChange();
                 },
                 afterChange: index => {
-                    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-                        isDark = parseInt(activeSlick.attr('isdark'), 10);
-                    if (typeof(isDark) === "number") {
-                        this.setState({ isDark });
-                    }
+                    this.handleColorChange();
                 }
             },
             isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
