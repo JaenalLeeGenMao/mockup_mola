@@ -10,14 +10,16 @@ import LazyLoad from '@components/common/Lazyload';
 
 import styles from './right-menu.css';
 
-const RightMenu = ({ color }) => (
+const RightMenu = ({ color, searchOff }) => (
     <div className={styles.right__menu}>
-        <LazyLoad lazyloadOff>
-            <Link
-                className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
-                to="/search"
-            />
-        </LazyLoad>
+        { !searchOff &&
+            <LazyLoad lazyloadOff>
+                <Link
+                    className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
+                    to="/search"
+                />
+            </LazyLoad>
+        }
         <span className ={styles.right__menu_wrapper}>
             {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
             <LazyLoad>
@@ -26,7 +28,7 @@ const RightMenu = ({ color }) => (
             <div className={styles.right__menu_dropdown_wrapper}>
                 <div className={styles.right__menu_dropdown} style={{ color }}>
                     <Link style={{ color }} to="/">Account</Link>
-                    <Link style={{ color }} to="/">History</Link>
+                    <Link style={{ color }} to="/history">History</Link>
                     <Link style={{ color }} to="/">Inbox</Link>
                     <Link style={{ color }} to="/">System Info</Link>
                     <div className={styles.right__menu_dropdown_footer}>
