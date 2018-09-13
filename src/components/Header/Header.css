@@ -32,6 +32,17 @@
   height: 174px;
 }
 
+.header__back_button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  width: 134px;
+  height: 174px;
+  top: -40px;
+}
+
 .header__library_logo_white {
   width: 32px;
   height: 32px;
@@ -102,6 +113,17 @@
     height: 174px;
   }
 
+  .header__back_button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    width: 134px;
+    height: 174px;
+    top: -40px;
+  }
+
   .header__library_wrapper,
   .header__library_link_wrapper {
     display: flex;
@@ -136,5 +158,16 @@
   .header__logo {
     width: 83px;
     height: 104px;
+  }
+
+  .header__back_button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    width: 83px;
+    height: 104px;
+    top: -40px;
   }
 }
