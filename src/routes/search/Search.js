@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/header'
 import LazyLoad from '@components/common/Lazyload'
+import _ from 'lodash';
 
 import SearchGenre from './SearchGenre/SearchGenre'
 import RecentSearch from './RecentSearch/RecentSearch'
@@ -29,8 +30,9 @@ class Search extends React.Component {
     this.setState({
       showResult: searchVal,
       searchText: searchVal,
-
     })
+
+    // _.debounce( () => console.log("val:", searchVal) , 300);
   };
 
   render() {

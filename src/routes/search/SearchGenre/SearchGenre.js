@@ -20,7 +20,7 @@ class SearchGenre extends React.Component {
 
             if( index % 2 === 0 ) {
               return (
-                <Link className={s.genreLink} to="/">
+                <Link className={s.genreLink} key={index} to="/">
                   <span className={s.genreAction} />
                   <span className={s.genreText}>{data.title}</span>
                 </Link>
@@ -28,7 +28,7 @@ class SearchGenre extends React.Component {
             } else {
               return (
                 <Fragment>
-                  <div className={s.genreSplit} />
+                  <div className={s.genreSplit} key={index}/>
                   <Link className={s.genreLink} to="/">
                     <span className={s.genreAdventure} />
                     <span className={s.genreText}>{data.title}</span>

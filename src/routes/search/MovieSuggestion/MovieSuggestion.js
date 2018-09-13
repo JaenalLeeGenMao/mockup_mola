@@ -35,7 +35,7 @@ class MovieSuggestion extends React.Component {
               return (
                 <div className={s.movieBox} key={movie.id}>
                   <div className={s.movieBoxInner}>
-                    <LazyLoad image={movie.coverUrl} className={s.movieImg} width='100%'>
+                    <LazyLoad image={movie.coverUrl} className={s.movieImg} width='100%' lazyloadOff>
                       { startIdx > -1 ?
                         (
                           <div className={s.movieTitle}>
