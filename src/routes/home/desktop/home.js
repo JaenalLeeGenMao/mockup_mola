@@ -212,8 +212,8 @@ class Home extends Component {
     		>
     			<Header isDark={isDark} />
                 {status === 'loading' && <HomePlaceholder />}
-                {status === 'error' &&
-					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
+                {status === 'error' || (videos.data.length <= playlists.data.length) &&
+					<div className={styles.home__error_container}>Ada Error kawan: {error || 'MOLA video is not loaded'}</div>
                 }
                 {status === 'success' &&
                     <Navbar
@@ -226,6 +226,7 @@ class Home extends Component {
                     status === 'success'
 					&& videos
                     && videos.data.length > 0
+                    && videos.data.length <= playlists.data.length
                     && videos.data.map(video => {
                     	const { id, sortOrder } = video.meta;
                     	return (
