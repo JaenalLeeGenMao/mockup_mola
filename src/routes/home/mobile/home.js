@@ -111,11 +111,11 @@ class Home extends Component {
     }
 
     handleColorChange = () => {
-        const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-            isDark = parseInt(activeSlick.attr('isdark'), 10);
-        if (typeof(isDark) === "number") {
-            this.setState({ isDark });
-        }
+      const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+        isDark = parseInt(activeSlick.attr('isdark'), 10);
+      if (typeof(isDark) === "number") {
+        this.setState({ isDark });
+      }
     }
 
     handleScroll = () => {
@@ -191,14 +191,10 @@ class Home extends Component {
     }
 
     handleKeyPress = scrollIndex => {
-        const result = this.props.home.playlists.data.map((playlist, index) => {
-            if (index === scrollIndex) {
-                this.handleColorChange();
-                return playlist;
-            }
-        }).filter(data => data !== undefined);
-        if (result && result.length >= 1) {
-            this.handleScrollToIndex(result[0].id);
+      const result = this.props.home.playlists.data.map((playlist, index) => {
+        if (index === scrollIndex) {
+          this.handleColorChange();
+          return playlist;
         }
       }).filter(data => data !== undefined);
       if (result && result.length >= 1) {
@@ -238,36 +234,36 @@ class Home extends Component {
     }
 
     render() {
-        const {
-                playlists,
-                playlists: {
-                    meta: {
-                        status = 'loading',
-                        error
-                    }
-                },
-                videos
-            } = this.props.home,
-            { isDark, isMenuOpen } = this.state,
-            color = isDark ? "black" : "white",
-            settings = {
-                ...SETTINGS,
-                arrows: false,
-                dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
-                onInit: () => {
-                    this.handleColorChange();
-                },
-                afterChange: index => {
-                    this.handleColorChange();
-                }
-            },
-            isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+      const {
+          playlists,
+          playlists: {
+            meta: {
+              status = 'loading',
+              error
+            }
+          },
+          videos
+        } = this.props.home,
+        { isDark, isMenuOpen } = this.state,
+        color = isDark ? "black" : "white",
+        settings = {
+          ...SETTINGS,
+          arrows: false,
+          dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
+          onInit: () => {
+            this.handleColorChange();
+          },
+          afterChange: index => {
+            this.handleColorChange();
+          }
+        },
+        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
 
-        return (
-            <div>
-                <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
-                {status === 'loading' && <HomePlaceholder />}
-                {status === 'error' &&
+      return (
+        <div>
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
+          {status === 'loading' && <HomePlaceholder />}
+          {status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
           }
           {status === 'success' &&
