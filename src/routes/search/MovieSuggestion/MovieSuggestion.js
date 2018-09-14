@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 
 import s from './MovieSuggestion.css'
 
@@ -35,7 +35,7 @@ class MovieSuggestion extends React.Component {
               return (
                 <div className={s.movieBox} key={movie.id}>
                   <div className={s.movieBoxInner}>
-                    <LazyLoad image={movie.coverUrl} className={s.movieImg} width='100%' lazyloadOff>
+                    <LazyLoadBeta src={movie.coverUrl} containerClassName={s.movieImg}>
                       { startIdx > -1 ?
                         (
                           <div className={s.movieTitle}>
@@ -45,7 +45,7 @@ class MovieSuggestion extends React.Component {
                         :
                         (<div className={s.movieTitle}><span>{movieTitle}</span></div>)
                       }
-                    </LazyLoad>
+                    </LazyLoadBeta>
                   </div>
                 </div>
               )

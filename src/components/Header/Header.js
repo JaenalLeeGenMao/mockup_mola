@@ -11,6 +11,7 @@ import React, { Component } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
 import logo from '@global/style/icons/Mola.png';
@@ -46,8 +47,8 @@ class Header extends Component {
           {!logoOff &&
             <Link to="/">
               {isDark
-                ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
-                : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
+                ? <LazyLoadBeta src={logo} containerClassName={styles.header__logo}/>
+                : <LazyLoadBeta src={logoGrey} containerClassName={styles.header__logo}/>
               }
             </Link>
           }
@@ -61,7 +62,7 @@ class Header extends Component {
         </div>
         <div className={styles.header__library_wrapper} style={{ color }}>
           {!libraryOff && (
-            <LazyLoad lazyloadOff>
+            <LazyLoadBeta>
               <Link
                 className={styles.header__library_link_wrapper}
                 to="/movie-library"
@@ -70,10 +71,10 @@ class Header extends Component {
                 <span
                   className={styles[`header__library_logo_${color}`]}
                   alt="library"
-                  style={{ width: '32px', height: '32px' }}
+                  style={{ width: '32px', height: '32px', }}
                 />
               </Link>
-            </LazyLoad>
+            </LazyLoadBeta>
           )}
           {title}
         </div>

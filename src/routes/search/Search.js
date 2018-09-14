@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/header'
-import LazyLoad from '@components/common/Lazyload'
-import _ from 'lodash';
+import LazyLoadBeta from '@components/common/LazyloadBeta'
 
 import { getSearchVideo } from '../../actions/video'
 import SearchGenre from './SearchGenre/SearchGenre'
@@ -155,9 +154,9 @@ class Search extends React.Component {
               />
             </div>
             { !showResult &&
-              <LazyLoad>
+              <LazyLoadBeta>
                 <SearchGenre data={genre}/>
-              </LazyLoad>
+              </LazyLoadBeta>
             }
 
             { showResult &&

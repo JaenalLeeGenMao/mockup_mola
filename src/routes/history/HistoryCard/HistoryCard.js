@@ -10,7 +10,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoadBeta from '@components/common/LazyLoadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import s from './HistoryCard.css';
 
 class HistoryCard extends React.Component {
@@ -25,11 +26,11 @@ class HistoryCard extends React.Component {
     return (
       <div className={s.movieContainer}>
         <a className={s.movieImageWrapper}>
-          <LazyLoad image={videos.coverUrl} width='100%' lazyloadOff>
+          <LazyLoadBeta src={videos.coverUrl} width='100%'>
             <div className={s.movieDurationBar}>
               <span className={s.moviePlayedBar} style={barStyle} />
             </div>
-          </LazyLoad>
+          </LazyLoadBeta>
         </a>
         <div className={s.movieDetailWrapper}>
           <div className={s.movieTitle}>{videos.title}</div>
