@@ -33,6 +33,11 @@
   height: 174px;
 }
 
+.header__logo img {
+  width: 100px;
+  height: auto;
+}
+
 .header__back_button {
   display: flex;
   flex-direction: column;
@@ -116,6 +121,11 @@
   .header__logo {
     width: 134px;
     height: 174px;
+  }
+
+  .header__logo img {
+    width: 100px;
+    height: auto;
   }
 
   .header__back_button {
