@@ -248,6 +248,7 @@ class Home extends Component {
             color = isDark ? "black" : "white",
             settings = {
                 ...SETTINGS,
+                speed: 300,
                 arrows: false,
                 dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
                 onInit: () => {

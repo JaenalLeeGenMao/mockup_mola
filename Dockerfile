@@ -1,18 +1,15 @@
-FROM node:8.10.0-alpine
+FROM node:8-alpine
 
-# Set a working directory
-WORKDIR /usr/src/app
+WORKDIR /var/www/mola-web
 
-COPY ./build/package.json .
-COPY ./build/yarn.lock .
+# copy all package*.json files into current WORKDIR
+COPY package*.json ./
 
-# Install Node.js dependencies
-RUN yarn install --production --no-progress
+# installing dependencies
+RUN npm install --force --only=production && npm rebuild
 
-# Copy application files
-COPY ./build .
+# copy all files and folders into container
+COPY . .
 
-# Run the container under "node" user by default
-USER node
-
-CMD [ "node", "server.js" ]
+EXPOSE 3000
+CMD ["npm", "start"]
