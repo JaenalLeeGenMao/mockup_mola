@@ -1,0 +1,16 @@
+# docker run -p 3000:3000 -v $(pwd):/var/www/mola-web -d YOUR_DOCKER_ID/mola-web --name mola-web
+version: '3'
+services:
+  app:
+    container_name: mola-web
+    restart: always
+    build: . # look for Dockerfile in current directory [LOCAL]
+    ports:
+     - '3000:3000'
+    volumes: # map current directory to docker container WORKDIR
+     - .:/var/www/mola-web
+    links:  # link mola-web container to node container
+     - node
+  node:
+    container_name: node
+    image: node:8-alpine # pulls from docker hub

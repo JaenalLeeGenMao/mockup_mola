@@ -2737,6 +2737,13 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
+directory-named-webpack-plugin@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/directory-named-webpack-plugin/-/directory-named-webpack-plugin-4.0.0.tgz#b68220d4143c990a87ae8e09661bea700afe5f3c"
+  dependencies:
+    enhanced-resolve "^4.0.0"
+    object-assign "^4.1.0"
+
 discontinuous-range@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/discontinuous-range/-/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"
@@ -2822,6 +2829,10 @@ dot-prop@^4.1.1:
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.2.0.tgz#1f19e0c2e1aa0e32797c49799f2837ac6af69c57"
   dependencies:
     is-obj "^1.0.0"
+
+dotenv@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.0.0.tgz#24e37c041741c5f4b25324958ebbc34bca965935"
 
 dottie@^2.0.0:
   version "2.0.0"
@@ -2964,7 +2975,7 @@ engine.io@~3.2.0:
     engine.io-parser "~2.1.0"
     ws "~3.3.1"
 
-enhanced-resolve@^4.1.0:
+enhanced-resolve@^4.0.0, enhanced-resolve@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-4.1.0.tgz#41c7e0bfdfe74ac1ffe1e57ad6a5c6c9f3742a7f"
   dependencies:
