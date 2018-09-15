@@ -11,76 +11,77 @@ import React, { Component } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
 import logo from '@global/style/icons/Mola.png';
 import logoGrey from '@global/style/icons/Mola_grey.png';
 
-import Link from '../Link';
+import Link from '../Link'
 
-import RightMenu from './right-menu';
-import styles from './Header.css';
+import RightMenu from './right-menu'
+import styles from './Header.css'
 
 class Header extends Component {
   handleGoBack = () => {
-      const { goBack } = history;
-      if (goBack) {
-          goBack();
-      }
+    const { goBack } = history;
+    if (goBack) {
+      goBack();
+    }
   }
   render() {
-      const {
-          isDark = 1,
-          logoOff = false,
-          libraryOff = false,
-          rightMenuOff = false,
-          searchOff = false,
-          backButtonOn = false,
-          title = '',
-      } = this.props
-      const color = isDark ? 'black' : 'white';
+    const {
+      isDark = 1,
+      logoOff = false,
+      libraryOff = false,
+      rightMenuOff = false,
+      searchOff = false,
+      backButtonOn = false,
+      title = '',
+    } = this.props
+    const color = isDark ? 'black' : 'white';
 
-      return (
-          <div className={styles.header__container}>
-              <div className={styles.header__logo_wrapper}>
-                  {!logoOff &&
+    return (
+      <div className={styles.header__container}>
+        <div className={styles.header__logo_wrapper}>
+          {!logoOff &&
             <Link to="/">
-                {isDark
-                    ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
-                    : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
-                }
+              {isDark
+                ? <LazyLoadBeta src={logo} containerClassName={styles.header__logo}/>
+                : <LazyLoadBeta src={logoGrey} containerClassName={styles.header__logo}/>
+              }
             </Link>
-                  }
-                  {backButtonOn && (
-                      <LazyLoad>
-                          <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                              <IoIosArrowRoundBack size={32} color={color} />
-                          </div>
-                      </LazyLoad>
-                  )}
+          }
+          {backButtonOn && (
+            <LazyLoad>
+              <div className={styles.header__back_button} onClick={this.handleGoBack}>
+                <IoIosArrowRoundBack size={32} color={color} />
               </div>
-              <div className={styles.header__library_wrapper} style={{ color }}>
-                  {!libraryOff && (
-                      <LazyLoad lazyloadOff>
-                          <Link
-                              className={styles.header__library_link_wrapper}
-                              to="/category"
-                              style={{ color }}
-                          >
-                              <span
-                                  className={styles[`header__library_logo_${color}`]}
-                                  alt="library"
-                                  style={{ width: '32px', height: '32px' }}
-                              />
-                          </Link>
-                      </LazyLoad>
-                  )}
-                  {title}
-              </div>
-              {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
-          </div>
-      )
+            </LazyLoad>
+          )}
+        </div>
+        <div className={styles.header__library_wrapper} style={{ color }}>
+          {!libraryOff && (
+            <LazyLoadBeta>
+              <Link
+                className={styles.header__library_link_wrapper}
+                to="/movie-library"
+                style={{ color }}
+              >
+                <span
+                  className={styles[`header__library_logo_${color}`]}
+                  alt="library"
+                  style={{ width: '32px', height: '32px', }}
+                />
+              </Link>
+            </LazyLoadBeta>
+          )}
+          {title}
+        </div>
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
+      </div>
+    )
   }
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(Header)

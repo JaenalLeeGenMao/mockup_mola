@@ -17,7 +17,8 @@
   align-items: center;
   height: auto;
   width: 100%;
-  min-width: 375px;
+
+  /* min-width: 375px; */
   z-index: 100;
 }
 
@@ -32,6 +33,11 @@
   height: 174px;
 }
 
+.header__logo img {
+  width: 100px;
+  height: auto;
+}
+
 .header__back_button {
   display: flex;
   flex-direction: column;
@@ -39,8 +45,10 @@
   align-items: flex-start;
   position: relative;
   width: 134px;
-  height: 174px;
+
+  /* height: 174px; */
   top: -40px;
+  left: -40px;
 }
 
 .header__library_logo_white {
@@ -69,6 +77,7 @@
 .header__library_wrapper {
   position: relative;
   top: -40px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
 }
 
 .header__library_link_wrapper {
@@ -97,20 +106,26 @@
 /* On screens that are 1180px or less, set responsive layout */
 @media only screen and (min-device-width: 1024px) and (max-device-width: 1920px) and (-webkit-min-device-pixel-ratio: 1) {
   .header__container {
-    position: fixed;
+    position: absolute;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     height: auto;
     width: 100%;
-    min-width: 720px;
+
+    /* min-width: 720px;  */
     z-index: 100;
   }
 
   .header__logo {
     width: 134px;
     height: 174px;
+  }
+
+  .header__logo img {
+    width: 100px;
+    height: auto;
   }
 
   .header__back_button {
@@ -120,8 +135,10 @@
     align-items: flex-start;
     position: relative;
     width: 134px;
-    height: 174px;
+
+    /* height: 174px; */
     top: -40px;
+    left: -40px;
   }
 
   .header__library_wrapper,
@@ -145,7 +162,8 @@
     align-items: center;
     height: auto;
     width: 100%;
-    min-width: 375px;
+
+    /* min-width: 375px; */
     z-index: 100;
   }
 
@@ -167,7 +185,20 @@
     align-items: flex-start;
     position: relative;
     width: 83px;
-    height: 104px;
+
+    /* height: 104px; */
     top: -40px;
+    left: -40px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .header__back_button {
+    position: relative;
+    left: 0;
+  }
+
+  .header__logo_wrapper {
+    left: 0;
   }
 }

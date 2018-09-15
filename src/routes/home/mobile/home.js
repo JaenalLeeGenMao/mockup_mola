@@ -7,12 +7,12 @@ import { compose } from 'redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import {
-    Link as RSLink,
-    Element,
-    Events,
-    animateScroll as scroll,
-    scrollSpy,
-    scroller,
+  Link as RSLink,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
 } from 'react-scroll';
 import $ from 'jquery';
 
@@ -22,7 +22,7 @@ import * as homeActions from '@actions/home';
 import { swipeGestureListener } from '@routes/home/util';
 
 import Header from '@components/header';
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import Link from '@components/Link';
 
 import HomeMobileMenu from './menu';
@@ -32,15 +32,15 @@ import styles from './home.css';
 import customSlickDotStyles from './homeSlickDots.css';
 
 let lastScrollY = 0,
-    ticking = false,
-    activePlaylist;
+  ticking = false,
+  activePlaylist;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
     state = {
-        isDark: undefined,
-        isMenuOpen: false
+      isDark: undefined,
+      isMenuOpen: false
     }
 
     componentWillReceiveProps(nextProps) {
@@ -81,19 +81,19 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        /** swipe EventListener start */
-        window.onload = swipeGestureListener();
+      /** swipe EventListener start */
+      window.onload = swipeGestureListener();
 
-        const handleSwipeEvent = e => {
-            console.log(e.type,e)
-            this.handleSwipe(e);
-        };
+      const handleSwipeEvent = e => {
+        console.log(e.type,e)
+        this.handleSwipe(e);
+      };
 
-        document.body.addEventListener('swl', handleSwipeEvent, false);
-        document.body.addEventListener('swr', handleSwipeEvent, false);
-        document.body.addEventListener('swu', handleSwipeEvent, false);
-        document.body.addEventListener('swd', handleSwipeEvent, false);
-        /** swipe EventListener ends */
+      document.body.addEventListener('swl', handleSwipeEvent, false);
+      document.body.addEventListener('swr', handleSwipeEvent, false);
+      document.body.addEventListener('swu', handleSwipeEvent, false);
+      document.body.addEventListener('swd', handleSwipeEvent, false);
+      /** swipe EventListener ends */
 
     	window.addEventListener('scroll', this.handleScroll);
     	Events.scrollEvent.register('begin', this.handleScroll);
@@ -111,95 +111,95 @@ class Home extends Component {
     }
 
     handleColorChange = () => {
-        const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-            isDark = parseInt(activeSlick.attr('isdark'), 10);
-        if (typeof(isDark) === "number") {
-            this.setState({ isDark });
-        }
+      const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+        isDark = parseInt(activeSlick.attr('isdark'), 10);
+      if (typeof(isDark) === "number") {
+        this.setState({ isDark });
+      }
     }
 
     handleScroll = () => {
-        lastScrollY = window.scrollY;
+      lastScrollY = window.scrollY;
 
     	if (!ticking) {
-            document.onkeyup = event => {
-                ticking = false;
-                let scrollIndex;
-                const screen = $(window),
-                    screenHeight = screen.height();
+        document.onkeyup = event => {
+          ticking = false;
+          let scrollIndex;
+          const screen = $(window),
+            screenHeight = screen.height();
 
-                switch (event.which || event.keyCode) {
-                case 37: /* left */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
-                    this.handleSlidePrev(scrollIndex);
-                    return event.preventDefault();
-                case 38: /* up */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
-                    this.handleKeyPress(scrollIndex);
-                    break;
-                case 39: /* right */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight);
-                    this.handleSlideNext(scrollIndex);
-                    return event.preventDefault();
-                case 40: /* down */
-                    scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
-                    this.handleKeyPress(scrollIndex);
-                    break;
-                default:
-                    event.preventDefault();
-                    break;
-                }
-            };
+          switch (event.which || event.keyCode) {
+          case 37: /* left */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight);
+            this.handleSlidePrev(scrollIndex);
+            return event.preventDefault();
+          case 38: /* up */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+            this.handleKeyPress(scrollIndex);
+            break;
+          case 39: /* right */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight);
+            this.handleSlideNext(scrollIndex);
+            return event.preventDefault();
+          case 40: /* down */
+            scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+            this.handleKeyPress(scrollIndex);
+            break;
+          default:
+            event.preventDefault();
+            break;
+          }
+        };
 
     		ticking = true;
     	}
     };
 
     handleSwipe = event => {
-        lastScrollY = window.scrollY;
+      lastScrollY = window.scrollY;
 
-        let scrollIndex;
-        const screen = $(window),
-            screenHeight = screen.height();
+      let scrollIndex;
+      const screen = $(window),
+        screenHeight = screen.height();
 
-        switch (event.type) {
-        case 'swr': /* slide to left ~ swipe right */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight);
-            this.handleSlidePrev(scrollIndex);
-            return event.preventDefault();
-        case 'swd': /* slide up ~ swipe down */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
-            this.handleKeyPress(scrollIndex);
-            break;
-        case 'swl': /* slide to right ~ swipe left */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight);
-            this.handleSlideNext(scrollIndex);
-            return event.preventDefault();
-        case 'swu': /* slide down ~ swipe up */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
-            this.handleKeyPress(scrollIndex);
-            break;
-        default:
-            event.preventDefault();
-            break;
-        }
+      switch (event.type) {
+      case 'swr': /* slide to left ~ swipe right */
+        scrollIndex = Math.ceil(lastScrollY / screenHeight);
+        this.handleSlidePrev(scrollIndex);
+        return event.preventDefault();
+      case 'swd': /* slide up ~ swipe down */
+        scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+        this.handleKeyPress(scrollIndex);
+        break;
+      case 'swl': /* slide to right ~ swipe left */
+        scrollIndex = Math.ceil(lastScrollY / screenHeight);
+        this.handleSlideNext(scrollIndex);
+        return event.preventDefault();
+      case 'swu': /* slide down ~ swipe up */
+        scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+        this.handleKeyPress(scrollIndex);
+        break;
+      default:
+        event.preventDefault();
+        break;
+      }
     };
 
     handleToggleMenu = () => {
-        const { isMenuOpen } = this.state;
-        this.setState({ isMenuOpen: !isMenuOpen });
+      const { isMenuOpen } = this.state;
+      this.setState({ isMenuOpen: !isMenuOpen });
     }
 
     handleKeyPress = scrollIndex => {
-        const result = this.props.home.playlists.data.map((playlist, index) => {
-            if (index === scrollIndex) {
-                this.handleColorChange();
-                return playlist;
-            }
-        }).filter(data => data !== undefined);
-        if (result && result.length >= 1) {
-            this.handleScrollToIndex(result[0].id);
+      const result = this.props.home.playlists.data.map((playlist, index) => {
+        if (index === scrollIndex) {
+          this.handleColorChange();
+          return playlist;
         }
+      }).filter(data => data !== undefined);
+      if (result && result.length >= 1) {
+        this.handleScrollToIndex(result[0].id);
+      }
     }
 
     handleScrollToIndex = id => {
@@ -210,85 +210,84 @@ class Home extends Component {
     				duration: 800,
     				delay: 0,
     				smooth: 'easeInOutQuart',
-                });
+          });
     			return false;
     		}
     		return true;
-        });
+      });
 
-        this.props.onUpdatePlaylist(id);
+      this.props.onUpdatePlaylist(id);
     };
 
     handleSlideNext = (scrollIndex = 0) => {
-        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-        if (this.sliderRefs[scrollIndex]) {
-            this.sliderRefs[scrollIndex].slickNext();
-        }
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex]) {
+        this.sliderRefs[scrollIndex].slickNext();
+      }
     }
 
     handleSlidePrev = (scrollIndex = 0) => {
-        this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-        if (this.sliderRefs[scrollIndex]) {
-            this.sliderRefs[scrollIndex].slickPrev();
-        }
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex]) {
+        this.sliderRefs[scrollIndex].slickPrev();
+      }
     }
 
     render() {
-        const {
-                playlists,
-                playlists: {
-                    meta: {
-                        status = 'loading',
-                        error
-                    }
-                },
-                videos
-            } = this.props.home,
-            { isDark, isMenuOpen } = this.state,
-            color = isDark ? "black" : "white",
-            settings = {
-                ...SETTINGS,
-                speed: 300,
-                arrows: false,
-                dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
-                onInit: () => {
-                    this.handleColorChange();
-                },
-                afterChange: index => {
-                    this.handleColorChange();
-                }
-            },
-            isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+      const {
+          playlists,
+          playlists: {
+            meta: {
+              status = 'loading',
+              error
+            }
+          },
+          videos
+        } = this.props.home,
+        { isDark, isMenuOpen } = this.state,
+        color = isDark ? "black" : "white",
+        settings = {
+          ...SETTINGS,
+          arrows: false,
+          dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
+          onInit: () => {
+            this.handleColorChange();
+          },
+          afterChange: index => {
+            this.handleColorChange();
+          }
+        },
+        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
 
-        return (
-            <div>
-                <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
-                {status === 'loading' && <HomePlaceholder />}
-                {status === 'error' &&
+      return (
+        <div>
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
+          {status === 'loading' && <HomePlaceholder />}
+          {status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
-                }
-                {status === 'success' &&
+          }
+          {status === 'success' &&
                     <div>
-                        <HomeMobileMenu
-                            isDark={isDark}
-                            isOpen={isMenuOpen}
-                            playlists={playlists.data}
-                            onClick={this.handleScrollToIndex}
-                            onToggle={this.handleToggleMenu}
-                        />
-                        <LazyLoad className={styles.header__library_link_wrapper}>
-                            <Link to="/category" style={{ color }}>
-                                <span
-                                    className={styles[`header__library_logo_${color}`]}
-                                    alt="library"
-                                    style={{ width: '32px', height: '32px' }}
-                                />
-                            </Link>
-                        </LazyLoad>
+                      <HomeMobileMenu
+                        isDark={isDark}
+                        isOpen={isMenuOpen}
+                        playlists={playlists.data}
+                        onClick={this.handleScrollToIndex}
+                        onToggle={this.handleToggleMenu}
+                      />
+                      <LazyLoadBeta containerClassName={styles.header__library_link_wrapper}>
+                        <Link to="/category" style={{ color }}>
+                          <span
+                            className={styles[`header__library_logo_${color}`]}
+                            alt="library"
+                            style={{ width: '32px', height: '32px' }}
+                          />
+                        </Link>
+                      </LazyLoadBeta>
                     </div>
-                }
-                {
-                    status === 'success'
+          }
+          {
+            status === 'success'
 					&& videos
                     && videos.data.length > 0
                     && videos.data.map(video => {
@@ -304,28 +303,28 @@ class Home extends Component {
                     			key={id}
                     		>
                     			<Element name={id}>
-                                    <Slider
-                                        ref={node => {
-                                            if (!this.sliderRefs) {
-                                                this.sliderRefs = [];
-                                                this.trackedSliderIds = []
-                                            }
-                                            if (
-                                                this.trackedSliderIds.indexOf(id) === -1
+                            <Slider
+                              ref={node => {
+                                if (!this.sliderRefs) {
+                                  this.sliderRefs = [];
+                                  this.trackedSliderIds = []
+                                }
+                                if (
+                                  this.trackedSliderIds.indexOf(id) === -1
 												&& this.sliderRefs.length < trackedPlaylistIds.length
 												&& node !== null
-                                            ) {
-                                                node = {
-                                                    ...node,
-                                                    id,
-                                                    sortOrder
-                                                }
-                                                this.trackedSliderIds.push(id);
-                                                return this.sliderRefs.push(node);
-                                            }
-                                        }}
-                                        {...settings}
-                                    >
+                                ) {
+                                  node = {
+                                    ...node,
+                                    id,
+                                    sortOrder
+                                  }
+                                  this.trackedSliderIds.push(id);
+                                  return this.sliderRefs.push(node);
+                                }
+                              }}
+                              {...settings}
+                            >
                     					{video.data.map((eachVids) => {
                     						const {
                     							id,
@@ -336,52 +335,48 @@ class Home extends Component {
                     							layer2, /** subject */
                     							layer3, /** title image */
                     							type,
-                                            } = eachVids;
+                                } = eachVids;
                     						return (
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                    								<LazyLoad>
-                    									<Parallax
-                                                            disabled={isSafari}
-                    										offsetYMin={ticking ? -50 : 0}
-                    										offsetYMax={ticking ? 50 : 0}
-                    										className={styles.home__parallax_layer_3}
-                    									>
-                    										<div
-                    											className={styles.home__parallax_layer_3_info}
-                    											style={{ color: isDark ? "black" : "white" }}
-                    										>
-                    											<img alt="" src={layer3} className={styles.home__parallax_layer_3_image} />
-                                                                <div className={styles.home__parallax_layer_3_detail}>
-                    											<h4
-                    												className={styles.home__parallax_layer_3_title}
-                    											>
-                    												{title}
-                    											</h4>
-                    											<p className={styles.home__parallax_layer_3_desc}>
-                                                                        {shortDescription}
-                                                                        <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
-                    											</p>
-                                                                </div>
-                    										</div>
-                    									</Parallax>
-                    									<Parallax
-                                                            disabled={isSafari}
-                    										offsetYMin={ticking ? -10 : 0}
-                                                            offsetYMax={ticking ? 10 : 0}
-                                                            offsetXMin={ticking ? 20 : 0}
-                                                            offsetXMax={ticking ? -20 : 0}
-                    										className={styles.home__parallax_layer_2}
-                    									>
-                                                            <img alt="" src={layer2}/>
-                    									</Parallax>
-                    									<Parallax disabled={isSafari}>
-                    										<img
-                    											alt=""
-                    											src={layer1}
-                    											className={styles.home__parallax_layer_1}
-                    										/>
-                    									</Parallax>
-                    								</LazyLoad>
+                                    <Parallax
+                                      disabled={isSafari}
+                                      offsetYMin={ticking ? -50 : 0}
+                                      offsetYMax={ticking ? 50 : 0}
+                                      className={styles.home__parallax_layer_3}
+                                    >
+                                      <LazyLoadBeta src={layer3}
+                                        containerClassName={styles.home__parallax_layer_3_info}
+                                        style={{ color: isDark ? "black" : "white" }}
+                                        alt=""
+                                      >
+                                        <div className={styles.home__parallax_layer_3_detail}>
+                                          <h4
+                                            className={styles.home__parallax_layer_3_title}
+                                          >
+                                            {title}
+                                          </h4>
+                                          <p className={styles.home__parallax_layer_3_desc}>
+                                            {shortDescription}
+                                            <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
+                                          </p>
+                                        </div>
+                                      </LazyLoadBeta>
+                                    </Parallax>
+                                    <Parallax
+                                      disabled={isSafari}
+                                      offsetYMin={ticking ? -10 : 0}
+                                      offsetYMax={ticking ? 10 : 0}
+                                      offsetXMin={ticking ? 20 : 0}
+                                      offsetXMax={ticking ? -20 : 0}
+                                      className={styles.home__parallax_layer_2}
+                                    >
+                                      <LazyLoadBeta src={layer2}>
+                                      </LazyLoadBeta>
+                                    </Parallax>
+                                    <Parallax disabled={isSafari}>
+                                      <LazyLoadBeta src={layer1} containerClassName={styles.home__parallax_layer_1}>
+                                      </LazyLoadBeta>
+                                    </Parallax>
                     							</div>
                     						);
                     					})}
@@ -391,30 +386,30 @@ class Home extends Component {
                     	)
                     })
     			}
-            </div>
-        );
+        </div>
+      );
     }
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
-    return {
-        ...state,
-    };
+  return {
+    ...state,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
-    onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
-    onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
+  onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
+  onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
+  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
 });
 
 export default compose(
-    withStyles(
-        styles,
-        customSlickDotStyles
-    ),
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+  withStyles(
+    styles,
+    customSlickDotStyles
+  ),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Home);
