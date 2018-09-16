@@ -13,6 +13,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '@components/header'
 import Navbar from '@components/navigation'
 import s from './Profile.css';
+import line from '@global/style/icons/line.png';
 
 class Profile extends React.Component {
   static propTypes = {
@@ -24,13 +25,18 @@ class Profile extends React.Component {
     const playlist = [
       {
         id: 1,
-        isActive: false,
+        isActive: true,
         title: 'Profile Data',
       },
       {
         id: 2,
-        isActive: true,
-        title: 'History',
+        isActive: false,
+        title: 'Security',
+      },
+      {
+        id: 3,
+        isActive: false,
+        title: 'Setting',
       },
     ]
     return (
@@ -45,10 +51,11 @@ class Profile extends React.Component {
         </Fragment>
         <Header isDark={isDark} libraryOff rightMenuOff/>
         <div className={s.wrapper}>
-          <div className={s.root}>
-            <div className={s.container}>
-              <h1>{this.props.title}</h1>
-              <p>...</p>
+          <div className={s.containerOuter}>
+            <div className={s.containerInner}>
+              <div className={s.profPic}>
+                <img src={line} width='100px'/>
+              </div>
             </div>
           </div>
         </div>

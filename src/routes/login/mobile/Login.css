@@ -6,33 +6,31 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
-@import '../../components/variables.css';
+@import '../../../components/variables.css';
 
 .wrapper {
-  background-image: url('../../global/style/icons/BG-bottomRight.png'), url('../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
-  background-position: right bottom, left bottom, left top;
-  background-repeat: no-repeat, no-repeat, no-repeat;
-  background-size: 640px, 640px, cover;
-  height: calc(100vh - 100px);
+  background-image: url('../../../global/style/icons/Signin.png'), linear-gradient(#0e1d3d, #000);
+  background-position: left bottom, left top;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 360px, cover;
+  height: calc(100vh - 210px);
   overflow-y: hidden;
-  padding-top: 100px;
+  margin: 0 auto;
+  padding: 105px 20px;
 }
 
 .root {
   margin: 0 auto;
-  width: 450px;
-  max-height: 540px;
+  height: 430px;
 }
 
 .container {
   margin: 0 auto;
-  padding: 30px 30px 20px 30px;
-  max-width: 450px;
-  max-height: 540px;
-  background: #000;
+  padding: 10px 20px;
+  height: 430px;
+  background: rgba(0, 0, 0, 0.75);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 4px;
-  opacity: 0.75;
 }
 
 .container p {
@@ -43,7 +41,7 @@
 }
 
 .lead {
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 500 !important;
   color: #fff !important;
 }
@@ -61,6 +59,7 @@
   letter-spacing: 1.36px;
   line-height: 19px;
   margin: 20px 0 20px 0;
+  text-decoration: none;
 }
 
 .label {
@@ -68,31 +67,13 @@
   font-weight: 700;
 }
 
-.input {
-  background: #3d3d3d;
-  opacity: 0.31;
-  border-radius: 4px;
-  height: 50px;
-  width: 390px;
-  box-sizing: border-box;
-  margin: 5px 0 0;
-  padding: 12px 15px;
-  outline: 0;
-  font-size: 16px;
-}
-
-.input:focus {
-  border-color: #0074c2;
-  box-shadow: inset 0 1px 1px rgba(248, 246, 246, 0.075), 0 0 8px rgba(247, 248, 248, 0.6);
-}
-
 .button {
   display: block;
   box-sizing: border-box;
   margin: 0;
   padding: 10px 16px;
-  height: 50px;
-  width: 390px;
+  height: 40px;
+  width: 280px;
   background: #2c56ff;
   border: 1px solid #373277;
   border-radius: 4px;
@@ -108,37 +89,12 @@
 }
 
 .button:hover {
-  background: rgba(54, 50, 119, 0.8);
+  background: #2242c4;
 }
 
 .button:focus {
   border-color: #0074c2;
   box-shadow: 0 0 8px rgba(0, 116, 194, 0.6);
-}
-
-.facebook {
-  height: 50px;
-  width: 120px;
-}
-
-.facebook:hover {
-  background: #2d4373;
-}
-
-.google {
-  padding-top: 10px;
-}
-
-.google:hover {
-  background: #c23321;
-}
-
-.line {
-  padding-top: 10px;
-}
-
-.line:hover {
-  background: #2795e9;
 }
 
 .icon {
@@ -148,6 +104,11 @@
   height: 20px;
   vertical-align: middle;
   fill: currentColor;
+}
+
+.formMobile {
+  width: 280px !important;
+  height: 40px !important;
 }
 
 .lineThrough {
@@ -166,24 +127,25 @@
 
 .flexButton {
   display: flex;
-  width: 405px;
+  width: 290px;
+  position: relative;
+  z-index: 1;
 }
 
 .flexButton > div {
-  width: 120px;
-  height: 50px;
+  width: 88px;
+  height: 40px;
   border-radius: 4px;
-  opacity: 0.8;
-  background: #242528;
+  background: rgba(36, 37, 40, 0.8);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
   cursor: pointer;
-  margin-right: 15px;
+  margin-right: 8px;
   text-align: center;
+  padding-top: 8px;
 }
 
 .labelSignup {
   margin-top: 30px;
-  margin-bottom: -3px;
   color: #fff !important;
   font-size: 14px;
   letter-spacing: 1.36px;
@@ -196,4 +158,3 @@
   text-decoration: none;
   color: #2c56ff;
 }
-

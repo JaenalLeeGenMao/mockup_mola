@@ -10,14 +10,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Register.css';
 import Header from '@components/header';
 import Form from '@components/FormInput';
-import s from './Login.css';
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 
-class Login extends React.Component {
+class Register extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
@@ -30,50 +30,39 @@ class Login extends React.Component {
         <div className={s.wrapper}>
           <div className={s.root}>
             <div className={s.container}>
-              <p className={s.lead}>
-                            Masuk ke Mola
-              </p>
-              <p>Wah, kami kangen kamu! <br/>Masukkan data-data mu dan ayo mulai.</p>
+              <p className={s.labelHeader}>Daftar mola sekarang !</p>
               <form method="post">
                 <Form
-                  id="usernameOrEmail"
+                  id="username"
                   type="text"
-                  name="usernameOrEmail" autoFocus>
-                                Email or username
+                  name="username"
+                  autoFocus>Username
+                </Form>
+                <Form
+                  id="emailPhone"
+                  type="text"
+                  name="emailPhone"
+                >Email or Phonenumber
                 </Form>
                 <Form
                   id="password"
                   type="password"
-                  name="password">
-                                Password
+                  name="password"
+                >Password
                 </Form>
-                {/* <div className={s.formGroup}>
-                                  <input
-                                      className={s.input}
-                                      id="usernameOrEmail"
-                                      type="text"
-                                      name="usernameOrEmail"
-                                      placeholder="Email or username"
-                                      autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-                                  />
-                              </div> */}
-                {/* <div className={s.formGroup}>
-                                  <input
-                                      className={s.input}
-                                      id="password"
-                                      type="password"
-                                      name="password"
-                                      placeholder="Password"
-                                  />
-                              </div> */}
-                <p className={s.forgotPassword}>Lupa Password ?</p>
-                <div className={s.formGroup}>
+                <Form
+                  id="confirmPassword"
+                  type="password"
+                  name="confirmPassword"
+                >Confirm password
+                </Form>
+                <div className={s.formGroup} style={{ marginTop: '15px' }}>
                   <button className={s.button} type="submit">
-                                    SIGN IN
+                                    SIGN UP
                   </button>
                 </div>
               </form>
-              <strong className={s.lineThrough}>Atau</strong>
+              <strong className={s.lineThrough}>Atau daftar dengan</strong>
               <div className={s.flexButton}>
                 <div>
                   <a className={s.google} href="/login/facebook">
@@ -91,13 +80,13 @@ class Login extends React.Component {
                   </a>
                 </div>
               </div>
-              <p className={s.labelSignup}>Baru di mola ? <a href='#'>Daftar sekarang</a></p>
             </div>
           </div>
+          <div className={s.rightWrapper}></div>
         </div>
       </Fragment>
     );
   }
 }
 
-export default withStyles(s)(Login);
+export default withStyles(s)(Register);

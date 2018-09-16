@@ -10,14 +10,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Register.css';
 import Header from '@components/header';
 import Form from '@components/FormInput';
+import s from './Login.css';
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 
-class Register extends React.Component {
+class Login extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
@@ -30,39 +30,31 @@ class Register extends React.Component {
         <div className={s.wrapper}>
           <div className={s.root}>
             <div className={s.container}>
-              <p className={s.labelHeader}>Daftar mola sekarang !</p>
+              <p className={s.lead}>
+                            Masuk ke Mola
+              </p>
+              <p>Wah, kami kangen kamu! <br/>Masukkan data-data mu dan ayo mulai.</p>
               <form method="post">
                 <Form
-                  id="username"
+                  id="usernameOrEmail"
                   type="text"
-                  name="username"
-                  autoFocus>Username
-                </Form>
-                <Form
-                  id="emailPhone"
-                  type="text"
-                  name="emailPhone"
-                >Email or Phonenumber
+                  name="usernameOrEmail" autoFocus>
+                                Email or username
                 </Form>
                 <Form
                   id="password"
                   type="password"
-                  name="password"
-                >Password
+                  name="password">
+                                Password
                 </Form>
-                <Form
-                  id="confirmPassword"
-                  type="password"
-                  name="confirmPassword"
-                >Confirm password
-                </Form>
-                <div className={s.formGroup} style={{ marginTop: '15px' }}>
+                <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
+                <div className={s.formGroup}>
                   <button className={s.button} type="submit">
-                                    SIGN UP
+                                    SIGN IN
                   </button>
                 </div>
               </form>
-              <strong className={s.lineThrough}>Atau daftar dengan</strong>
+              <strong className={s.lineThrough}>Atau</strong>
               <div className={s.flexButton}>
                 <div>
                   <a className={s.google} href="/login/facebook">
@@ -80,7 +72,10 @@ class Register extends React.Component {
                   </a>
                 </div>
               </div>
+              <p className={s.labelSignup}>Baru di mola ? <a href='/register'>Daftar sekarang</a></p>
             </div>
+          </div>
+          <div className={s.rightWrapper}>
           </div>
         </div>
       </Fragment>
@@ -88,4 +83,4 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(s)(Register);
+export default withStyles(s)(Login);

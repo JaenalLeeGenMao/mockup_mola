@@ -12,18 +12,25 @@
   background-image: linear-gradient(180deg, #0e1d3d 0%, #000 100%);
   background-repeat: no-repeat;
   background-size: cover;
-  height: calc(100vh - 210px);
+  height: 100vh;
   overflow-y: hidden;
-  padding-top: 210px;
 }
 
-.root {
-  padding-left: 20px;
-  padding-right: 20px;
+.containerOuter {
+  overflow: hidden;
+  width: 720px;
+  margin-left: 310px;
+  margin-right: 5%;
 }
 
-.container {
-  margin: 0 auto;
-  padding: 0 0 40px;
-  max-width: var(--max-content-width);
+.containerInner {
+  background: rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  width: 100%;
+  padding-left: 40px;
+  padding-top: 80px;
+  height: 100vh;
+  position: relative;
+  right: 0;
+  top: 0;
 }

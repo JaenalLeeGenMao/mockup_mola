@@ -9,7 +9,7 @@
 
 import React from 'react';
 import Layout from '../../components/Layout';
-import Register from './Register';
+import Register from './desktop/Register';
 
 const title = 'New User Registration';
 
