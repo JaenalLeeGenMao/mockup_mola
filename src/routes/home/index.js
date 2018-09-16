@@ -11,19 +11,12 @@ import React from 'react';
 import HomeDesktop from './desktop';
 import HomeMobile from './mobile';
 
-async function action({ fetch, isMobile }) {
-    const resp = await fetch('/graphql', {
-        body: JSON.stringify({
-            query: '{news{title,link,content}}',
-        }),
-    });
-    const { data } = await resp.json();
-    if (!data || !data.news) throw new Error('Failed to load the news feed.');
-    return {
-        title: 'React Starter Kit',
-        chunks: ['home'],
-        component: isMobile ? <HomeMobile /> : <HomeDesktop />,
-    };
+async function action({ isMobile }) {
+  return {
+    title: 'React Starter Kit',
+    chunks: ['home'],
+    component: isMobile ? <HomeMobile /> : <HomeDesktop />,
+  };
 }
 
 export default action;
