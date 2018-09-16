@@ -54,7 +54,6 @@
         "sequelize": "^4.37.3",
         "serialize-javascript": "^1.4.0",
         "source-map-support": "^0.5.4",
-        "sqlite3": "4.0.2",
         "universal-router": "^6.0.0",
         "whatwg-fetch": "^2.0.3"
     },
@@ -183,8 +182,6 @@
         "deploy": "babel-node tools/run deploy",
         "render": "babel-node tools/run render",
         "serve": "babel-node tools/run runServer",
-        "start": "babel-node tools/run start",
-        "postinstall": "npm run rebuild-sqlite3",
-        "rebuild-sqlite3": "cd node_modules/sqlite3 npm run prepublish node-gyp configure --module_name=node_sqlite3 --module_path=../lib/binding/node-v47-darwin-x64 node-gyp rebuild --target=0.36.1 --arch=x64 --target_platform=darwin --dist-url=https://atom.io/download/atom-shell --module_name=node_sqlite3 --module_path=../lib/binding/node-v47-darwin-x64"
+        "start": "babel-node tools/run start"
     }
 }
