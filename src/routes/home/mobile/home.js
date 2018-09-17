@@ -51,24 +51,24 @@ class Home extends Component {
         onHandlePlaylist,
         onHandleVideo,
         home: {
-          playlists
+          playlists,
         }
       } = nextProps;
 
       if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
         onHandlePlaylist();
       } else if (prevState.videos.length <= 0) {
-    		playlists.data.map((playlist, index) => {
-    			if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-    				trackedPlaylistIds.push(playlist.id);
-    				onHandleVideo(playlist);
+        playlists.data.map((playlist, index) => {
+          if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+            trackedPlaylistIds.push(playlist.id);
+            onHandleVideo(playlist);
           }
           if (!activePlaylist && index === 0) {
             activePlaylist = playlists.data[0];
             onUpdatePlaylist(activePlaylist.id);
           }
         });
-	    }
+      }
       return { ...prevState, playlists };
     }
 

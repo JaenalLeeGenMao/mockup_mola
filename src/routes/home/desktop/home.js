@@ -50,7 +50,7 @@ class Home extends Component {
 	    onHandlePlaylist,
 	    onHandleVideo,
 	    home: {
-	      playlists
+	      playlists,
 	    }
 	  } = nextProps;
 
