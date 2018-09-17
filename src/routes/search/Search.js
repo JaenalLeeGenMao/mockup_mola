@@ -6,8 +6,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/header'
 import LazyLoadBeta from '@components/common/LazyloadBeta'
 
-import { getSearchVideo } from '../../actions/video'
+import { getSearchVideo } from '../../actions/search'
 import SearchGenre from './SearchGenre/SearchGenre'
+import MsearchGenre from './SearchGenre/MsearchGenre'
 import RecentSearch from './RecentSearch/RecentSearch'
 import Cast from './Cast/Cast'
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion'
@@ -34,8 +35,12 @@ class Search extends React.Component {
 
   handleSearchChange = (e) => {
     const val = e.target.value;
-    const { video } = this.props;
-    const matchMovieArr = video.data.filter(function(dt) {
+    const { search : { videos } } = this.props;
+    // console.log("VIDEO", videos)
+    if(videos.meta.status !== 'success') {
+      this.props.getSearchVideo();
+    }
+    const matchMovieArr = videos.data.filter(function(dt) {
       return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
     });
 
@@ -47,35 +52,14 @@ class Search extends React.Component {
     const textSugRemain = firstMatchMovie.substr(val.length, firstMatchMovie.length);
     this.setState({
       showResult: val,
-      searchText: val,
-      searchedMovie: matchMovieArr,
-      textSuggestion: `${val}${textSugRemain}`,
     })
-    // this.processSearch(searchVal);
+    this.textSuggestion = `${val}${textSugRemain}`;
+    this.searchedMovie = matchMovieArr;
+    this.searchText = val;
   };
 
-  // processSearch = _.debounce((val) => {
-  //   console.log('Debounced Event:', val);
-  //   const { video } = this.props;
-  //   const matchMovie = video.data.filter(function(dt) {
-  //     return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
-  //   });
-
-  //   const firstMatchMovie = matchMovie.filter(function(dt){
-  //     return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
-  //   });
-
-  //   this.setState({
-  //     showResult: val,
-  //     searchText: val,
-  //     searchedMovie: matchMovie,
-  //     textSuggestion: firstMatchMovie.length ? firstMatchMovie[0].title : '',
-  //   })
-  // }, 300);
-
-
   render() {
-    const { showResult, searchText, searchedMovie, textSuggestion } = this.state
+    const { showResult } = this.state
     const { isMobile } = this.props;
     const showSearchPlaceholder = isMobile && !showResult;
     const isDark = false;
@@ -139,7 +123,7 @@ class Search extends React.Component {
             <div className={isMobile ? s.searchAutocomplete__mobile : s.searchAutocomplete}>
               { showResult &&
                 <span>
-                  {textSuggestion}
+                  {this.textSuggestion}
                 </span>
               }
             </div>
@@ -153,15 +137,21 @@ class Search extends React.Component {
                 onChange={this.handleSearchChange}
               />
             </div>
-            { !showResult &&
+            { !showResult && !isMobile &&
               <LazyLoadBeta>
                 <SearchGenre data={genre}/>
               </LazyLoadBeta>
             }
 
+            { !showResult && isMobile &&
+              <LazyLoadBeta>
+                <MsearchGenre data={genre}/>
+              </LazyLoadBeta>
+            }
+
             { showResult &&
               <div className={s.resultWrapper}>
-                <div className={s.resultContainer}>
+                <div className={isMobile ? s.resultContainer__mobile : s.resultContainer}>
                   { recentSearch.length > 0 &&
                     <div className={s.resultRow}>
                       <RecentSearch isMobile={isMobile} data={recentSearch}/>
@@ -169,11 +159,11 @@ class Search extends React.Component {
                   }
                   { castData.length > 0 &&
                     <div className={s.resultRow}>
-                      <Cast data={castData} searchText={searchText}/>
+                      <Cast data={castData} searchText={this.searchText}/>
                     </div>
                   }
-                  { !isMobile &&  searchedMovie.length && <MovieSuggestion isMobile={isMobile} data={searchedMovie} searchText={searchText}/> }
-                  { isMobile &&  searchedMovie.length && <MmovieSuggestion isMobile={isMobile} data={searchedMovies} searchText={searchText}/> }
+                  { !isMobile &&  this.searchedMovie.length && <MovieSuggestion isMobile={isMobile} data={this.searchedMovie} searchText={this.searchText}/> }
+                  { isMobile &&  this.searchedMovie.length && <MmovieSuggestion isMobile={isMobile} data={this.searchedMovie} searchText={this.searchText}/> }
                 </div>
               </div>
             }

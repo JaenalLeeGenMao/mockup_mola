@@ -59,6 +59,7 @@ class Html extends React.Component {
           </head>
           <body>
             <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
+            <div id="modal-root"></div>
             <script
               dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }}
             />

@@ -13,6 +13,7 @@
   height: calc(100vh - 130px);
   padding: 130px 0 0;
   overflow: hidden;
+  font-family: var(--font-family-base);
 }
 
 .root::after {
@@ -60,16 +61,17 @@
   font-size: 22px;
   color: #6f6f6f;
   margin: 0 auto;
+  line-height: 1;
 }
 
 .searchAutocomplete__mobile span {
-  top: 8px;
+  top: 14px;
   left: 0;
   position: absolute;
 }
 
 .searchAutocomplete span {
-  top: 8px;
+  top: 14px;
   left: 48px;
   position: absolute;
 }
@@ -104,6 +106,7 @@
   color: #fff;
   outline: 0;
   font-size: 22px;
+  line-height: 1;
   padding: 10px 0 10px 48px;
   position: absolute;
   z-index: 101;
@@ -159,6 +162,13 @@
   height: 100%;
 }
 
+.resultContainer__mobile {
+  overflow-y: auto;
+  height: calc(100vh - 100px);
+  padding-right: 20px;
+  width: 100%;
+}
+
 @media screen and (max-width: 1280px) {
   /* .root {
     padding: 130px calc((100vw - 900px)/2) 0;
@@ -182,17 +192,17 @@
   }
 
   .root {
-    padding: 30px 0 0;
-    height: calc(100vh - 30px);
+    padding: 20px 0 0;
+    height: calc(100vh - 20px);
   }
 
   .searchAutocomplete {
-    width: 100%;
+    width: 60%;
   }
 
   .searchAutocomplete span {
-    left: 20%;
-    top: 30px;
+    left: 48px;
+    top: 46px;
     font-size: 22px;
   }
 
@@ -205,11 +215,15 @@
   }
 
   .searchAutocomplete__mobile span {
-    top: 28px;
+    top: 34px;
   }
 
   .searchText {
     top: 30px;
+  }
+
+  .searchIcon {
+    top: 40px;
   }
 
   .searchIcon__mobile {
@@ -220,7 +234,6 @@
   }
 
   .searchInput {
-    padding: 0 0 10px 0;
     font-size: 22px;
     position: absolute;
     top: 32px;
@@ -238,13 +251,18 @@
     margin: 0 auto;
     width: 90%;
     padding-top: 120px;
+    margin-top: 50px;
+  }
+
+  .resultContainer {
+    height: calc(100vh - 120px);
   }
 }
 
 @media screen and (max-width: 500px) {
   .searchAutocomplete span {
-    left: 15%;
-    top: 8px;
+    left: 48px;
+    top: 23px;
     font-size: 18px;
   }
 
@@ -259,24 +277,31 @@
     width: 70%;
   }
 
+  .searchAutocomplete {
+    width: 70%;
+  }
+
   .searchAutocomplete__mobile span {
-    top: 8px;
+    top: 14px;
   }
 
   .searchText {
     top: 17px;
-    font-size: 12px;
+    font-size: 14px;
+  }
+
+  .searchIcon {
+    top: 17px;
   }
 
   .searchIcon__mobile {
-    top: 16px;
-    left: calc(50% - 38px);
+    top: 18px;
+    left: calc(50% - 44px);
     width: 16px;
     height: 16px;
   }
 
   .searchInput {
-    padding: 0 0 10px 0;
     position: absolute;
     top: 10px;
     font-size: 18px;
@@ -290,10 +315,6 @@
     margin: 0 auto;
     width: 90%;
     padding-top: 70px;
-  }
-
-  .resultContainer {
-    height: calc(100vh - 130px);
   }
 }
 

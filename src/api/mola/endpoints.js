@@ -6,4 +6,4 @@ export const HISTORY_ENDPOINT =
   'https://api-d.supersoccer.tv/v2/userdata/user/video/history-mola.json';
   //http://mola.lukitomo.com/v2/userdata/kareemlukitomo123/videos/histories
 
-export const VIDEOS_ENDPOINT = 'http://mola.lukitomo.com/v2/videos/';
+export const SEARCH_VIDEOS_ENDPOINT = 'http://mola.lukitomo.com/v2/videos/';

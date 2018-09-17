@@ -339,10 +339,10 @@ class Home extends Component {
                                     >
                                       <LazyLoadBeta src={layer3}
                                         containerClassName={styles.home__parallax_layer_3_info}
-                                        style={{ color: isDark ? "black" : "white" }}
                                         alt=""
                                       >
-                                        <div className={styles.home__parallax_layer_3_detail}>
+                                        <div className={styles.home__parallax_layer_3_detail}
+                                          style={{ color: isDark ? "black" : "white" }}>
                                           <h4
                                             className={styles.home__parallax_layer_3_title}
                                           >

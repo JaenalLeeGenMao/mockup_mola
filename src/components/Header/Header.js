@@ -41,26 +41,30 @@ class Header extends Component {
       backButtonOn = false,
       isMobile = false,
       title = '',
-    } = this.props
+    } = this.props;
     const color = isDark ? 'black' : 'white';
-
+    const logoDark = isDark ? true : false;
     return (
       <div className={styles.header__container}>
         <div className={styles.header__logo_wrapper}>
           {!logoOff &&
             <Link to="/">
-              {isDark
-                ? <LazyLoadBeta src={isMobile ? logoLandscapeBlue : logoBlue} containerClassName={styles.header__logo}/>
-                : <LazyLoadBeta src={isMobile ? logoLandscapeGrey : logoGrey} containerClassName={styles.header__logo}/>
+              {
+                logoDark &&
+                <LazyLoadBeta src={isMobile ? logoLandscapeBlue : logoBlue} containerClassName={styles.header__logo}/>
+              }
+
+              {
+                !logoDark && <LazyLoadBeta src={isMobile ? logoLandscapeGrey : logoGrey} containerClassName={styles.header__logo}/>
               }
             </Link>
           }
           {backButtonOn && (
-            <LazyLoad>
+            <LazyLoadBeta>
               <div className={styles.header__back_button} onClick={this.handleGoBack}>
                 <IoIosArrowRoundBack size={32} color={color} />
               </div>
-            </LazyLoad>
+            </LazyLoadBeta>
           )}
         </div>
         <div className={styles.header__library_wrapper} style={{ color }}>
@@ -81,7 +85,7 @@ class Header extends Component {
           )}
           {title}
         </div>
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
       </div>
     )
   }
