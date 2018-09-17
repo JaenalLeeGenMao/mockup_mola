@@ -7,24 +7,25 @@ import { iocircle } from 'react-icons/io'
 import { FaUserCircle, fauser } from 'react-icons/fa'
 
 import LazyLoad from '@components/common/Lazyload'
+import LazyLoadBeta from '@components/common/LazyloadBeta'
 
 import styles from './right-menu.css'
 
 const RightMenu = ({ color, searchOff }) => (
   <div className={styles.right__menu}>
     { !searchOff &&
-            <LazyLoad lazyloadOff>
-              <Link
-                className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
-                to="/search"
-              />
-            </LazyLoad>
+    <LazyLoadBeta>
+      <Link
+        className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
+        to="/search"
+      />
+    </LazyLoadBeta>
     }
     <span className ={styles.right__menu_wrapper}>
       {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
-      <LazyLoad>
+      <LazyLoadBeta>
         <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
-      </LazyLoad>
+      </LazyLoadBeta>
       <div className={styles.right__menu_dropdown_wrapper}>
         <div className={styles.right__menu_dropdown} style={{ color }}>
           <Link style={{ color }} to="/">Account</Link>

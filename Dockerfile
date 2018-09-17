@@ -1,18 +1,21 @@
-FROM node:8.10.0-alpine
+# Preinstalation on docker
+# docker run -ti alpine
+# apk add --no-cache python nodejs
 
-# Set a working directory
-WORKDIR /usr/src/app
 
-COPY ./build/package.json .
-COPY ./build/yarn.lock .
+FROM node:8-alpine
 
-# Install Node.js dependencies
-RUN yarn install --production --no-progress
+WORKDIR /var/www/mola-web
 
-# Copy application files
-COPY ./build .
+# copy all package*.json files into current WORKDIR
+COPY package*.json ./
 
-# Run the container under "node" user by default
-USER node
+# installing dependencies
+# RUN npm install --production && npm install node-gyp
+RUN npm install --force --only=production && npm rebuild
 
-CMD [ "node", "server.js" ]
+# copy all files and folders into container
+COPY . .
+
+EXPOSE 3000
+CMD ["npm", "start"]

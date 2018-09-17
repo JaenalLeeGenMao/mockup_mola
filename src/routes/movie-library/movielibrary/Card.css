@@ -1,3 +1,10 @@
-ul li {
-  list-style: none;
+.card {
+  /* margin-bottom: 15px; */
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
 }

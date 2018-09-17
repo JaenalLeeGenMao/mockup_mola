@@ -1,11 +1,14 @@
 import React, { Fragment, Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '../../../components/header';
 import s from './Libheader.css';
 
 
 class Libheader extends Component {
+  static propTypes = {
+    cardTitle: PropTypes.string.isRequired,
+  };
   render() {
     return (
       <Fragment>
@@ -15,6 +18,8 @@ class Libheader extends Component {
             logoOff = {true}
             libraryOff = {true}
             rightMenuOff = {false}
+            backButtonOn = {true}
+            title = {this.props.cardTitle}
           />
         </div>
       </Fragment>

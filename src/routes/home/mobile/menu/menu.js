@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import Link from '@components/Link';
 
 import styles from './menu.css';
@@ -32,7 +32,7 @@ class Menu extends Component {
         backgroundColor = !isDark ? "black" : "white"
       return (
         <Fragment>
-          <LazyLoad>
+          <LazyLoadBeta>
             <div
               className={[
                 styles.mobile__menu_toggle,
@@ -43,7 +43,7 @@ class Menu extends Component {
             >
               <span>&#x203A;</span>
             </div>
-          </LazyLoad>
+          </LazyLoadBeta>
           <div className={[
             styles.mobile__menu_wrapper,
             styles[`mobile__menu_wrapper_${backgroundColor}`],
@@ -68,9 +68,9 @@ class Menu extends Component {
                           style={{ color }}
                         >
                           {isActive && (
-                            <LazyLoad>
+                            <LazyLoadBeta>
                               <hr style={{ borderBottom: `1px solid ${color}` }} />
-                            </LazyLoad>
+                            </LazyLoadBeta>
                           )}
                           {title.toUpperCase()}
                         </Link>

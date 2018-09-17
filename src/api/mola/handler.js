@@ -1,5 +1,5 @@
 import { get } from 'axios'
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT } from './endpoints'
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, VIDEOS_ENDPOINT } from './endpoints'
 import utils from './util'
 
 const getHomePlaylist = (payload) => {
@@ -65,8 +65,32 @@ const getAllHistory = (payload) => {
   })
 }
 
+const getSearchVideo = (payload) => {
+  return get(`${VIDEOS_ENDPOINT}`, { ...payload }).then(
+    (response) => {
+      const result = utils.normalizeSearchVideo(response);
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result] || [],
+      }
+    }
+  ).catch((error) => {
+    return {
+      meta: {
+        status: 'error',
+        error: `video/getSearchVideo ~ ${error}`,
+      },
+      data: [],
+    }
+  })
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
+  getSearchVideo
 }

@@ -22,7 +22,7 @@ import * as homeActions from '@actions/home';
 
 import Header from '@components/header';
 import Navbar from '@components/navigation';
-import LazyLoad from '@components/common/lazyload';
+import LazyLoadBeta from '@components/common/lazyloadBeta';
 import Link from '@components/Link';
 
 import HomeArrow from './arrow';
@@ -212,7 +212,7 @@ class Home extends Component {
     		>
     			<Header isDark={isDark} />
           {status === 'loading' && <HomePlaceholder />}
-          {status === 'error' || (videos.data.length <= playlists.data.length) &&
+          {status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error || 'MOLA video is not loaded'}</div>
           }
           {status === 'success' &&
@@ -277,52 +277,46 @@ class Home extends Component {
                                 } = eachVids;
                     						return (
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                    								<LazyLoad>
-                    									<Parallax
-                                        disabled={isSafari}
-                    										offsetYMin={ticking ? -50 : 0}
-                    										offsetYMax={ticking ? 50 : 0}
-                    										className={styles.home__parallax_layer_3}
-                    									>
-                    										<div
-                    											className={styles.home__parallax_layer_3_info}
-                    											style={{ color: isDark ? "black" : "white" }}
-                    										>
-                    											<img alt="" src={layer3} className={styles.home__parallax_layer_3_image} />
-                                          <div className={styles.home__parallax_layer_3_detail}>
-                    											<h4
-                    												className={styles.home__parallax_layer_3_title}
-                    											>
-                    												{title}
-                    											</h4>
-                    											<p className={styles.home__parallax_layer_3_desc}>
-                                              {shortDescription}
-                                              <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
-                    											</p>
-                                          </div>
-                    										</div>
-                    									</Parallax>
-                    									<Parallax
-                                        disabled={isSafari}
-                    										offsetYMin={ticking ? -10 : 0}
-                                        offsetYMax={ticking ? 10 : 0}
-                                        offsetXMin={ticking ? 20 : 0}
-                                        offsetXMax={ticking ? -20 : 0}
-                    										className={styles.home__parallax_layer_2}
-                    									>
-                                        {/* <div> */}
-                                        <img alt="" src={layer2}/>
-                                        {/* <Link to="/movie" className={styles.home__transparent_link} />
-															</div> */}
-                    									</Parallax>
-                    									<Parallax disabled={isSafari}>
-                    										<img
-                    											alt=""
-                    											src={layer1}
-                    											className={styles.home__parallax_layer_1}
-                    										/>
-                    									</Parallax>
-                    								</LazyLoad>
+                                    <Parallax
+                                      disabled={isSafari}
+                                      offsetYMin={ticking ? -50 : 0}
+                                      offsetYMax={ticking ? 50 : 0}
+                                      className={styles.home__parallax_layer_3}
+                                    >
+                                      <LazyLoadBeta src={layer3}
+                                        containerClassName={styles.home__parallax_layer_3_info}
+                                        style={{ color: isDark ? "black" : "white" }}
+                                      >
+                                        <div className={styles.home__parallax_layer_3_detail}>
+                                          <h4
+                                            className={styles.home__parallax_layer_3_title}
+                                          >
+                                            {title}
+                                          </h4>
+                                          <p className={styles.home__parallax_layer_3_desc}>
+                                            {shortDescription}
+                                            <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
+                                          </p>
+                                        </div>
+
+                                      </LazyLoadBeta>
+                                    </Parallax>
+                                    <Parallax
+                                      disabled={isSafari}
+                                      offsetYMin={ticking ? -10 : 0}
+                                      offsetYMax={ticking ? 10 : 0}
+                                      offsetXMin={ticking ? 20 : 0}
+                                      offsetXMax={ticking ? -20 : 0}
+                                      className={styles.home__parallax_layer_2}
+                                    >
+                                      <LazyLoadBeta src={layer2} alt="">
+                                        {/* <Link to="/movie" className={styles.home__transparent_link} />*/}
+                                      </LazyLoadBeta>
+                                    </Parallax>
+                                    <Parallax disabled={isSafari}>
+                                      <LazyLoadBeta src={layer1} alt="" containerClassName={styles.home__parallax_layer_1}>
+                                      </LazyLoadBeta>
+                                    </Parallax>
                     							</div>
                     						);
                     					})}

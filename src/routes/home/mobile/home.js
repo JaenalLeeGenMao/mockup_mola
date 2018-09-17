@@ -22,7 +22,7 @@ import * as homeActions from '@actions/home';
 import { swipeGestureListener } from '@routes/home/util';
 
 import Header from '@components/header';
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import Link from '@components/Link';
 
 import HomeMobileMenu from './menu';
@@ -248,6 +248,7 @@ class Home extends Component {
         color = isDark ? "black" : "white",
         settings = {
           ...SETTINGS,
+          speed: 300,
           arrows: false,
           dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
           onInit: () => {
@@ -261,7 +262,7 @@ class Home extends Component {
 
       return (
         <div>
-          <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
           {status === 'loading' && <HomePlaceholder />}
           {status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
@@ -275,7 +276,7 @@ class Home extends Component {
                         onClick={this.handleScrollToIndex}
                         onToggle={this.handleToggleMenu}
                       />
-                      <LazyLoad className={styles.header__library_link_wrapper}>
+                      <LazyLoadBeta containerClassName={styles.header__library_link_wrapper}>
                         <Link to="/category" style={{ color }}>
                           <span
                             className={styles[`header__library_logo_${color}`]}
@@ -283,7 +284,7 @@ class Home extends Component {
                             style={{ width: '32px', height: '32px' }}
                           />
                         </Link>
-                      </LazyLoad>
+                      </LazyLoadBeta>
                     </div>
           }
           {
@@ -338,49 +339,45 @@ class Home extends Component {
                                 } = eachVids;
                     						return (
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                    								<LazyLoad>
-                    									<Parallax
-                                        disabled={isSafari}
-                    										offsetYMin={ticking ? -50 : 0}
-                    										offsetYMax={ticking ? 50 : 0}
-                    										className={styles.home__parallax_layer_3}
-                    									>
-                    										<div
-                    											className={styles.home__parallax_layer_3_info}
-                    											style={{ color: isDark ? "black" : "white" }}
-                    										>
-                    											<img alt="" src={layer3} className={styles.home__parallax_layer_3_image} />
-                                          <div className={styles.home__parallax_layer_3_detail}>
-                    											<h4
-                    												className={styles.home__parallax_layer_3_title}
-                    											>
-                    												{title}
-                    											</h4>
-                    											<p className={styles.home__parallax_layer_3_desc}>
-                                              {shortDescription}
-                                              <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
-                    											</p>
-                                          </div>
-                    										</div>
-                    									</Parallax>
-                    									<Parallax
-                                        disabled={isSafari}
-                    										offsetYMin={ticking ? -10 : 0}
-                                        offsetYMax={ticking ? 10 : 0}
-                                        offsetXMin={ticking ? 20 : 0}
-                                        offsetXMax={ticking ? -20 : 0}
-                    										className={styles.home__parallax_layer_2}
-                    									>
-                                        <img alt="" src={layer2}/>
-                    									</Parallax>
-                    									<Parallax disabled={isSafari}>
-                    										<img
-                    											alt=""
-                    											src={layer1}
-                    											className={styles.home__parallax_layer_1}
-                    										/>
-                    									</Parallax>
-                    								</LazyLoad>
+                                    <Parallax
+                                      disabled={isSafari}
+                                      offsetYMin={ticking ? -50 : 0}
+                                      offsetYMax={ticking ? 50 : 0}
+                                      className={styles.home__parallax_layer_3}
+                                    >
+                                      <LazyLoadBeta src={layer3}
+                                        containerClassName={styles.home__parallax_layer_3_info}
+                                        style={{ color: isDark ? "black" : "white" }}
+                                        alt=""
+                                      >
+                                        <div className={styles.home__parallax_layer_3_detail}>
+                                          <h4
+                                            className={styles.home__parallax_layer_3_title}
+                                          >
+                                            {title}
+                                          </h4>
+                                          <p className={styles.home__parallax_layer_3_desc}>
+                                            {shortDescription}
+                                            <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
+                                          </p>
+                                        </div>
+                                      </LazyLoadBeta>
+                                    </Parallax>
+                                    <Parallax
+                                      disabled={isSafari}
+                                      offsetYMin={ticking ? -10 : 0}
+                                      offsetYMax={ticking ? 10 : 0}
+                                      offsetXMin={ticking ? 20 : 0}
+                                      offsetXMax={ticking ? -20 : 0}
+                                      className={styles.home__parallax_layer_2}
+                                    >
+                                      <LazyLoadBeta src={layer2}>
+                                      </LazyLoadBeta>
+                                    </Parallax>
+                                    <Parallax disabled={isSafari}>
+                                      <LazyLoadBeta src={layer1} containerClassName={styles.home__parallax_layer_1}>
+                                      </LazyLoadBeta>
+                                    </Parallax>
                     							</div>
                     						);
                     					})}

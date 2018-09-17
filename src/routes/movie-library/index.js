@@ -1,13 +1,13 @@
 import React from 'react';
 import MovieLibrary from './Library';
 
-const title = 'Movie Detail';
+const title = 'Movie Library';
 
-function action() {
+function action({ isMobile }) {
   return {
     // chunks: ['admin'],
     title,
-    component: <MovieLibrary />,
+    component: <MovieLibrary title={title} isMobile={isMobile} />,
   };
 }
 

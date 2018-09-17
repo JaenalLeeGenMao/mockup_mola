@@ -9,6 +9,15 @@
 
 /* eslint-disable max-len */
 
+/* eslint-disable camelcase */
+const dotenv = require('dotenv')
+const exceptions = ['production', 'staging']
+
+/* Override the values if the environment is not in the exception lists */
+if (!exceptions.includes(process.env.NODE_ENV)) {
+  dotenv.config()
+}
+
 if (process.env.BROWSER) {
   throw new Error(
     'Do not import `config.js` from inside the client-side code.',

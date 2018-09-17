@@ -11,10 +11,13 @@ import React, { Component } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
-import logo from '@global/style/icons/Mola.png';
-import logoGrey from '@global/style/icons/Mola_grey.png';
+import logoBlue from '@global/style/icons/mola_blue.png';
+import logoGrey from '@global/style/icons/mola_grey.png';
+import logoLandscapeBlue from '@global/style/icons/mola_landscape_blue.png';
+import logoLandscapeGrey from '@global/style/icons/mola_landscape_grey.png';
 
 import Link from '../Link'
 
@@ -36,6 +39,7 @@ class Header extends Component {
       rightMenuOff = false,
       searchOff = false,
       backButtonOn = false,
+      isMobile = false,
       title = '',
     } = this.props
     const color = isDark ? 'black' : 'white';
@@ -46,8 +50,8 @@ class Header extends Component {
           {!logoOff &&
             <Link to="/">
               {isDark
-                ? <LazyLoad image={logo} className={styles.header__logo} lazyloadOff />
-                : <LazyLoad image={logoGrey} className={styles.header__logo} lazyloadOff />
+                ? <LazyLoadBeta src={isMobile ? logoLandscapeBlue : logoBlue} containerClassName={styles.header__logo}/>
+                : <LazyLoadBeta src={isMobile ? logoLandscapeGrey : logoGrey} containerClassName={styles.header__logo}/>
               }
             </Link>
           }
@@ -61,19 +65,19 @@ class Header extends Component {
         </div>
         <div className={styles.header__library_wrapper} style={{ color }}>
           {!libraryOff && (
-            <LazyLoad lazyloadOff>
+            <LazyLoadBeta>
               <Link
                 className={styles.header__library_link_wrapper}
-                to="/category"
+                to="/movie-library"
                 style={{ color }}
               >
                 <span
                   className={styles[`header__library_logo_${color}`]}
                   alt="library"
-                  style={{ width: '32px', height: '32px' }}
+                  style={{ width: '32px', height: '32px', }}
                 />
               </Link>
-            </LazyLoad>
+            </LazyLoadBeta>
           )}
           {title}
         </div>
