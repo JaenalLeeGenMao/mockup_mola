@@ -29,13 +29,19 @@ const getHomeVideo = ({ id }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`).then(
     (response) => {
       const result = utils.normalizeHomeVideo(response)
-      return [...result[0]] || []
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
     }
   ).catch((error) => {
     return {
       meta: {
         status: 'error',
-        text: `home/getHomeVideo ~ ${error}`,
+        error: `home/getHomeVideo ~ ${error}`,
       },
       data: [],
     }
