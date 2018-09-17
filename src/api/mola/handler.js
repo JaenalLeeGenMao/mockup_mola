@@ -46,7 +46,6 @@ const getAllHistory = (payload) => {
   return get(`${HISTORY_ENDPOINT}`, { ...payload }).then(
     (response) => {
       const result = utils.normalizeHistory(response)
-      // console.log('RES', result)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',

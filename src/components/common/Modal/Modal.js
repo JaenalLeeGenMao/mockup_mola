@@ -23,20 +23,22 @@ class Modal extends Component {
   };
 
   handleCloseModal = () => {
-    this.props.onClose();
     this.setState({
       rootClose: true
+    }, () => {
+      setTimeout(() => this.props.onClose(), 300)
     })
   }
 
   render() {
+    const { rootClose } = this.state;
     const rootCloseClass = rootClose ? 'rootClose' : '';
     return (
       <div className={classNames(s.root, s[rootCloseClass])}>
         {/* <div className={s.background}/> */}
         {this.props.children}
         <a onClick={this.handleCloseModal} className={s.closeModal}>
-          <i>close</i>
+          <i/>
         </a>
       </div>
     )

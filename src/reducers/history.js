@@ -1,13 +1,20 @@
-import { GET_HISTORY } from '../constants/history';
+import types from '../constants';
 
-export default function history(state = { movies: [] }, action) {
+export default function history(state = {}, action) {
   switch (action.type) {
-  case GET_HISTORY:
+  case types.GET_HISTORY_LOADING:
+    return { ...state, ...action.payload };
+  case types.GET_HISTORY_SUCCESS:
+    return { ...state, ...action.payload };
+  case types.GET_HISTORY_ERROR:
+    return { ...state, ...action.payload };
+  default:
     return {
       ...state,
-      ...action.payload,
+      meta: {
+        status: "loading"
+      },
+      data: []
     };
-  default:
-    return state;
   }
 }

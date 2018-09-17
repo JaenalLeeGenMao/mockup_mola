@@ -1,0 +1,67 @@
+@import '../../variables.css';
+
+.root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 202;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  animation: slideInUp 300ms;
+  font-family: var(--font-family-base);
+}
+
+input {
+  font-family: var(--font-family-base);
+}
+
+.rootClose {
+  animation: slideInDown 300ms;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #bababa;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.closeModal {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13.414 13.414'%3e%3cdefs%3e%3cstyle%3e.a%7bfill:none;stroke:%23fff;stroke-width:2px;%7d%3c/style%3e%3c/defs%3e%3cg transform='translate(-327.293 -27.293)'%3e%3cline class='a' x2='12' y2='12' transform='translate(328 28)'/%3e%3cline class='a' x1='12' y2='12' transform='translate(328 28)'/%3e%3c/g%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  display: block;
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 28px;
+  right: 20px;
+  z-index: 102;
+}
+
+@keyframes slideInUp {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+
+  to {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    height: 100%;
+    opacity: 1;
+  }
+
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}

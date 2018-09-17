@@ -1,4 +1,5 @@
-.genreContainer {
+.genreContainer,
+.genreContainer__mobile {
   padding-top: 100px;
   margin: 0 auto;
   width: 65%;
@@ -17,14 +18,6 @@
   display: block;
   width: auto;
   height: 100%;
-}
-
-.genreLink .genreText {
-  background: none;
-  font-size: 24px;
-  color: white;
-  outline: none;
-  display: none;
 }
 
 .genreContainer .genreSplit {
@@ -77,33 +70,32 @@
   background-position-x: 50px;
 }
 
+.genreLink__mobile {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.genreText__mobile {
+  background: none;
+  font-size: 20px;
+  color: white;
+  outline: none;
+}
+
 @media screen and (max-width: 960px) {
   .genreContainer {
     padding: 130px 0 0;
-    margin: 0;
-    text-align: center;
-    width: 100%;
-  }
-
-  .genreLink {
-    display: block;
-    width: 100%;
-    height: auto;
-    padding: 15px 0;
-  }
-
-  .genreLink span {
-    display: none;
+    width: 60%;
+    margin-top: 100px;
   }
 
   .genreLink .genreText {
     display: block;
     height: auto;
     font-size: 30px;
-  }
-
-  .genreContainer .genreSplit {
-    display: none;
   }
 }
 
@@ -112,11 +104,15 @@
     padding: 70px 0 0;
   }
 
+  .genreContainer__mobile {
+    padding-top: 70px;
+  }
+
   .genreLink .genreText {
     font-size: 20px;
   }
 
   .genreLink {
     padding: 10px 0;
-  }
+  } 
 }

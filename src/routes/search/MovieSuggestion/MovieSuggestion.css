@@ -21,6 +21,7 @@
   font-weight: normal;
   display: inline-block;
   flex: 1 0 160px;
+  padding-bottom: 15px;
 }
 
 .movieBox {
@@ -97,12 +98,31 @@
 }
 
 @media screen and (max-width: 960px) {
-  .resultContent {
+  .resultContent__movie {
     padding: 0;
   }
 
   .movieImg {
     width: 175px;
     height: 110px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .movieBox {
+    width: 100%;
+  }
+
+  .movieImg {
+    width: 100%;
+    height: auto;
+  }
+
+  .movieTitle {
+    font-size: 16px;
+  }
+
+  .movieTitleResult {
+    font-size: 16px;
   }
 }
