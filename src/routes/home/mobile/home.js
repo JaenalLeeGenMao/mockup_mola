@@ -256,7 +256,7 @@ class Home extends Component {
         <div>
           <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
           {status === 'loading' && <HomePlaceholder />}
-          {status === 'error' &&
+          {status === 'error' || videos.meta.status &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error || "failed to load API Videos NOT FOUND"}</div>
           }
           {status === 'success' &&
