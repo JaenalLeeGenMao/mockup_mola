@@ -15,6 +15,7 @@ import nodeExternals from 'webpack-node-externals';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import overrideRules from './lib/overrideRules';
 import pkg from '../package.json';
+import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const resolvePath = (...args) => path.resolve(ROOT_DIR, ...args);
@@ -34,14 +35,15 @@ const staticAssetName = isDebug
     : '[hash:8].[ext]';
 
 const alias = {
-    '@api': path.resolve(__dirname, '../src/api'),
-    '@global': path.resolve(__dirname, '../src/global'),
-    '@routes': path.resolve(__dirname, '../src/routes'),
-    '@actions': path.resolve(__dirname, '../src/actions'),
-    '@reducers': path.resolve(__dirname, '../src/reducers'),
-    '@constants': path.resolve(__dirname, '../src/constants'),
-    '@components': path.resolve(__dirname, '../src/components'),
+    '@api': resolvePath('src/api'),
+    '@global': resolvePath('src/global'),
+    '@routes': resolvePath('src/routes'),
+    '@actions': resolvePath('src/actions'),
+    '@reducers': resolvePath('src/reducers'),
+    '@constants': resolvePath('src/constants'),
+    '@components': resolvePath('src/components'),
 };
+
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
     discardComments: { removeAll: true },
@@ -73,7 +75,24 @@ const config = {
     resolve: {
     // Allow absolute paths in imports, e.g. import Button from 'components/Button'
     // Keep in sync with .flowconfig and .eslintrc
+        extensions: ['.js', '.jsx', '.json'],
         modules: ['node_modules', 'src'],
+        plugins: [
+            new DirectoryNamedWebpackPlugin({
+                // define where the imported files will be resolving by DirectoryNamedWebpackPlugin.
+                // it can be string/regex or Array of string/regex.
+                include: [
+                    path.resolve(__dirname, 'api'),
+                    path.resolve(__dirname, 'global'),
+                    path.resolve(__dirname, 'routes'),
+                    path.resolve(__dirname, 'actions'),
+                    path.resolve(__dirname, 'reducers'),
+                    path.resolve(__dirname, 'constants'),
+                    path.resolve(__dirname, 'components'),
+                ]
+            })
+        ],
+        symlinks: true,
         alias,
     },
 
