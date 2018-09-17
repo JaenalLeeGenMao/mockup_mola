@@ -9,18 +9,22 @@
 
 import React from 'react';
 import Layout from '../../components/Layout';
-import Reset from './Reset';
+import ResetDesktop from './desktop/Reset';
+import ResetMobile from './mobile/Reset';
 
 const title = 'Reset Password';
 
-function action() {
+function action(isMobile) {
   return {
     chunks: ['resetPassword'],
     title,
-    component: (
-      <Layout>
-        <Reset title={title} />
-      </Layout>
+    component: (isMobile.isMobile ?
+      (<Layout>
+        <ResetMobile />
+      </Layout>)  :
+      (<Layout>
+        <ResetDesktop />
+      </Layout>)
     ),
   };
 }

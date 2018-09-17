@@ -7,7 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-@import '../../components/variables.css';
+@import '../../../components/variables.css';
 
 .wrapper {
   background-image: linear-gradient(#0e1d3d, #000);
@@ -29,10 +29,9 @@
   padding: 30px;
   max-width: 450px;
   max-height: 540px;
-  background: #000;
+  background: rgba(0, 0, 0, 0.75);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 4px;
-  opacity: 0.75;
 }
 
 .container p {

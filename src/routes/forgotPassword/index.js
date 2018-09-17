@@ -9,18 +9,22 @@
 
 import React from 'react';
 import Layout from '../../components/Layout';
-import Forgot from './Forgot';
+import ForgotDesktop from './desktop/Forgot';
+import ForgotMobile from './mobile/Forgot';
 
 const title = 'Forgot Password';
 
-function action() {
+function action(isMobile) {
   return {
     chunks: ['forgotPassword'],
     title,
-    component: (
-      <Layout>
-        <Forgot title={title} />
-      </Layout>
+    component: (isMobile.isMobile ?
+      (<Layout>
+        <ForgotMobile />
+      </Layout>)  :
+      (<Layout>
+        <ForgotDesktop />
+      </Layout>)
     ),
   };
 }
