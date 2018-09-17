@@ -248,6 +248,7 @@ class Home extends Component {
         color = isDark ? "black" : "white",
         settings = {
           ...SETTINGS,
+          speed: 300,
           arrows: false,
           dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
           onInit: () => {
@@ -261,7 +262,7 @@ class Home extends Component {
 
       return (
         <div>
-          <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
           {status === 'loading' && <HomePlaceholder />}
           {status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
