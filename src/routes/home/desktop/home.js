@@ -162,14 +162,14 @@ class Home extends Component {
 
     handleSlideNext = (scrollIndex = 0) => {
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex]) {
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
         this.sliderRefs[scrollIndex].slickNext();
       }
     }
 
     handleSlidePrev = (scrollIndex = 0) => {
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex]) {
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
         this.sliderRefs[scrollIndex].slickPrev();
       }
     }
@@ -204,21 +204,21 @@ class Home extends Component {
     		>
     			<Header isDark={isDark} />
           {status === 'loading' && <HomePlaceholder />}
-          {status === 'error' &&
+          {status === 'error' || videos.meta.status &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error || 'MOLA video is not loaded'}</div>
           }
           {status === 'success' &&
-                    <Navbar
-                    	isDark={isDark}
-                    	playlists={playlists.data}
-                    	onClick={this.handleScrollToIndex}
-                    />
+            <Navbar
+              isDark={isDark}
+              playlists={playlists.data}
+              onClick={this.handleScrollToIndex}
+            />
           }
     			{
             status === 'success'
-					&& videos
+					  && videos
                     && videos.data.length > 0
-                    && videos.data.length <= playlists.data.length
+                    && videos.data.length === playlists.data.length
                     && videos.data.map(video => {
                     	const { id, sortOrder } = video.meta;
                     	return (
