@@ -3,14 +3,12 @@ import user from './user';
 import runtime from './runtime';
 import home from './home';
 import history from './history';
-import video from './video'
-import modal from './modal'
+import search from './search'
 
 export default combineReducers({
   user,
   runtime,
   home,
   history,
-  video,
-  modal
+  search
 });

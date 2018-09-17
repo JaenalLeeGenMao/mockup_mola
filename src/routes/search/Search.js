@@ -6,7 +6,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/header'
 import LazyLoadBeta from '@components/common/LazyloadBeta'
 
-import { getSearchVideo } from '../../actions/video'
+import { getSearchVideo } from '../../actions/search'
 import SearchGenre from './SearchGenre/SearchGenre'
 import MsearchGenre from './SearchGenre/MsearchGenre'
 import RecentSearch from './RecentSearch/RecentSearch'
@@ -35,11 +35,12 @@ class Search extends React.Component {
 
   handleSearchChange = (e) => {
     const val = e.target.value;
-    const { video } = this.props;
-    if(video.meta.status !== 'success') {
+    const { search : { videos } } = this.props;
+    // console.log("VIDEO", videos)
+    if(videos.meta.status !== 'success') {
       this.props.getSearchVideo();
     }
-    const matchMovieArr = video.data.filter(function(dt) {
+    const matchMovieArr = videos.data.filter(function(dt) {
       return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
     });
 

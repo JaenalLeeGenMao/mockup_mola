@@ -38,7 +38,6 @@ class Header extends Component {
       libraryOff = false,
       rightMenuOff = false,
       searchOff = false,
-      searchIsModal = true,
       backButtonOn = false,
       isMobile = false,
       title = '',
@@ -86,7 +85,7 @@ class Header extends Component {
           )}
           {title}
         </div>
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} searchIsModal={searchIsModal} />}
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
       </div>
     )
   }

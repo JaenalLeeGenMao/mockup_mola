@@ -61,16 +61,17 @@
   font-size: 22px;
   color: #6f6f6f;
   margin: 0 auto;
+  line-height: 1;
 }
 
 .searchAutocomplete__mobile span {
-  top: 9px;
+  top: 14px;
   left: 0;
   position: absolute;
 }
 
 .searchAutocomplete span {
-  top: 9px;
+  top: 14px;
   left: 48px;
   position: absolute;
 }
@@ -201,7 +202,7 @@
 
   .searchAutocomplete span {
     left: 48px;
-    top: 40px;
+    top: 46px;
     font-size: 22px;
   }
 
@@ -214,7 +215,7 @@
   }
 
   .searchAutocomplete__mobile span {
-    top: 30px;
+    top: 34px;
   }
 
   .searchText {
@@ -261,7 +262,7 @@
 @media screen and (max-width: 500px) {
   .searchAutocomplete span {
     left: 48px;
-    top: 18px;
+    top: 23px;
     font-size: 18px;
   }
 
@@ -281,7 +282,7 @@
   }
 
   .searchAutocomplete__mobile span {
-    top: 10px;
+    top: 14px;
   }
 
   .searchText {
