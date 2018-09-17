@@ -14,8 +14,10 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LazyLoadBeta from '@components/common/LazyloadBeta';
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
-import logo from '@global/style/icons/Mola.png';
-import logoGrey from '@global/style/icons/Mola_grey.png';
+import logoBlue from '@global/style/icons/mola_blue.png';
+import logoGrey from '@global/style/icons/mola_grey.png';
+import logoLandscapeBlue from '@global/style/icons/mola_landscape_blue.png';
+import logoLandscapeGrey from '@global/style/icons/mola_landscape_grey.png';
 
 import Link from '../Link'
 
@@ -37,6 +39,7 @@ class Header extends Component {
       rightMenuOff = false,
       searchOff = false,
       backButtonOn = false,
+      isMobile = false,
       title = '',
     } = this.props
     const color = isDark ? 'black' : 'white';
@@ -47,8 +50,8 @@ class Header extends Component {
           {!logoOff &&
             <Link to="/">
               {isDark
-                ? <LazyLoadBeta src={logo} containerClassName={styles.header__logo}/>
-                : <LazyLoadBeta src={logoGrey} containerClassName={styles.header__logo}/>
+                ? <LazyLoadBeta src={isMobile ? logoLandscapeBlue : logoBlue} containerClassName={styles.header__logo}/>
+                : <LazyLoadBeta src={isMobile ? logoLandscapeGrey : logoGrey} containerClassName={styles.header__logo}/>
               }
             </Link>
           }

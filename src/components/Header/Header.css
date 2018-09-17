@@ -170,12 +170,17 @@
   .header__logo_wrapper {
     margin: 25px 0;
     position: relative;
-    left: 0;
+    left: 2.5%;
   }
 
   .header__logo {
     width: 83px;
     height: 104px;
+  }
+
+  .header__logo img {
+    width: 136px;
+    height: auto;
   }
 
   .header__back_button {
@@ -199,6 +204,6 @@
   }
 
   .header__logo_wrapper {
-    left: 0;
+    left: 2.5%;
   }
 }
