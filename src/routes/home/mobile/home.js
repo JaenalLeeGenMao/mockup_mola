@@ -40,44 +40,36 @@ const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar *
 class Home extends Component {
     state = {
       isDark: undefined,
-      isMenuOpen: false
+      isMenuOpen: false,
+      playlists: [],
+      videos: []
     }
 
-    componentWillReceiveProps(nextProps) {
-    	const {
-    		onHandleVideo,
-    		home: {
-    			playlists,
-    		},
-    	} = nextProps;
+    static getDerivedStateFromProps(nextProps, prevState) {
+      const {
+        onUpdatePlaylist,
+        onHandlePlaylist,
+        onHandleVideo,
+        home: {
+          playlists
+        }
+      } = nextProps;
 
-    	if (
-    		playlists.meta.status === "success"
-    	) {
-    		playlists.data.map(playlist => {
+      if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
+        onHandlePlaylist();
+      } else if (prevState.videos.length <= 0) {
+    		playlists.data.map((playlist, index) => {
     			if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
     				trackedPlaylistIds.push(playlist.id);
     				onHandleVideo(playlist);
-    			}
-	        });
-
-	        if (!activePlaylist) {
-	            activePlaylist = playlists.data[0];
-	            this.props.onUpdatePlaylist(activePlaylist.id);
-	        }
+          }
+          if (!activePlaylist && index === 0) {
+            activePlaylist = playlists.data[0];
+            onUpdatePlaylist(activePlaylist.id);
+          }
+        });
 	    }
-    }
-
-    componentWillMount() {
-    	const {
-    		onHandlePlaylist,
-    		home: {
-    			playlists,
-    		},
-    	} = this.props;
-    	if (playlists.meta.status !== 'success') {
-    		onHandlePlaylist();
-    	}
+      return { ...prevState, playlists };
     }
 
     componentDidMount() {
