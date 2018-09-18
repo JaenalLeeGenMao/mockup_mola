@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Slider from 'react-slick';
+import Modal from "react-responsive-modal";
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Moviedetail.css';
 
@@ -45,7 +46,16 @@ class Moviedetail extends React.Component {
       trailerPlaytag: 'Play Trailer',
       link: './history',
       playCopy: 'Play movie',
+      open: false,
     }
+
+    onOpenModal = () => {
+      this.setState({ open: true });
+    };
+
+    onCloseModal = () => {
+      this.setState({ open: false });
+    };
 
   castingArtist = () => [
     {
@@ -117,11 +127,12 @@ class Moviedetail extends React.Component {
       testimoniSource,
       link,
       playCopy,
+      open,
     } = this.state;
 
     const casting = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
       slidesToShow: 4,
       slidesToScroll: 4,
@@ -131,13 +142,20 @@ class Moviedetail extends React.Component {
 
     const trailer = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
       slidesToShow: 2,
       slidesToScroll: 2,
       nextArrow: <Left />,
       prevArrow: <Right />,
     };
+
+    // Trailer copy toogle
+    const dataTrailer = this.movieTrailer();
+    const trailerIsHide = dataTrailer.length < 1 ? false : true;
+
+    // css toogle
+    let ifOne = dataTrailer.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container ;
 
     return (
       <Fragment>
@@ -148,8 +166,6 @@ class Moviedetail extends React.Component {
           libraryOff = {true}
           rightMenuOff = {true}
         />
-        {/* <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" /> */}
         <Layout>
           <Banner imageTitle="hallo" bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={playCopy} />
           <Frame>
@@ -163,6 +179,7 @@ class Moviedetail extends React.Component {
               testimoniPhotoUrl={testimoniPhoto}
               trailerTitle={trailerTitle}
               testimoniSource={testimoniSource}
+              trailerText={trailerIsHide}
             />
           </Frame>
           <Secondframe copy={castingCopy}>
@@ -181,14 +198,22 @@ class Moviedetail extends React.Component {
             <Trailer trailerTitle="Trailer">
               <Slider {...trailer}>
                 {this.movieTrailer().map(obj => (
-                  <div key={obj.toString()} className={s.trailer_photo_container}>
-                    <img alt={obj.movieImageAlt} src={obj.movieImageUrl} />
+                  <div key={obj.toString()} className={ifOne}>
+                    <img alt={obj.movieImageAlt} src={obj.movieImageUrl} onClick={this.onOpenModal}/>
                     <p className={s.trailer_playtag}>{trailerPlaytag}</p>
                   </div>
                 ))}
               </Slider>
             </Trailer>
           </Secondframe>
+          <Modal open={open} onClose={this.onCloseModal} center>
+            <h2>Simple centered modal</h2>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet
+            hendrerit risus, sed porttitor quam.
+            </p>
+          </Modal>
         </Layout>
       </Fragment>
     );

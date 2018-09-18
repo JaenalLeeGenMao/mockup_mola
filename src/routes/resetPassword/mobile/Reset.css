@@ -1,0 +1,90 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+@import '../../../components/variables.css';
+
+.wrapper {
+  background-image: url('../../../global/style/icons/Signin.png'), linear-gradient(#0e1d3d, #000);
+  background-position: left bottom, left top;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 360px, cover;
+  height: calc(100vh - 390px);
+  overflow-y: hidden;
+  margin: 0 auto;
+  padding: 195px 20px;
+}
+
+.root {
+  margin: 0 auto;
+  height: 430px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 20px 20px;
+  max-height: 430px;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+.container p {
+  font-size: 12px;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
+  letter-spacing: 1.17px;
+  color: #6f6f6f;
+}
+
+.labelHeader {
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 500;
+  letter-spacing: 1.91px !important;
+  margin-top: -5px;
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.formGroup {
+  margin-top: 15px;
+}
+
+.button {
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10px 16px;
+  height: 40px;
+  width: 280px;
+  background: #2c56ff;
+  border: 1px solid #373277;
+  border-radius: 4px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif !important;
+  letter-spacing: 1.91px;
+  opacity: 100%;
+  font-weight: 500;
+}
+
+.button:hover {
+  background: rgba(54, 50, 119, 0.8);
+}
+
+.button:focus {
+  border-color: #0074c2;
+  box-shadow: 0 0 8px rgba(0, 116, 194, 0.6);
+}
+
+.formMobile {
+  width: 280px !important;
+  height: 40px !important;
+}

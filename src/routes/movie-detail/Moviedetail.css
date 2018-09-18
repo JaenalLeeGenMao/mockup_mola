@@ -30,6 +30,10 @@
   left: 10px;
 }
 
+.trailer_photo_container img {
+  width: initial;
+}
+
 .trailer_playtag {
   color: white;
   position: absolute;
@@ -38,4 +42,8 @@
   font-family: 'avenir', Helvetica, Arial, sans-serif;
   font-size: 12px;
   line-height: 12px;
+}
+
+.trailer_ifone {
+  left: 244px;
 }
