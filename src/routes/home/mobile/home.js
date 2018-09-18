@@ -255,11 +255,11 @@ class Home extends Component {
       return (
         <div>
           <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
-          {status === 'loading' && <HomePlaceholder />}
-          {status === 'error' || videos.meta.status &&
+          {status === 'loading' || videos.meta.status === 'loading' && <HomePlaceholder />}
+          {status === 'error' || videos.meta.status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error || "failed to load API Videos NOT FOUND"}</div>
           }
-          {status === 'success' &&
+          {status === 'success' && videos.meta.status === 'success' &&
                     <div>
                       <HomeMobileMenu
                         isDark={isDark}

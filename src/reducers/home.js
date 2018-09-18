@@ -10,9 +10,18 @@ export default function home(state = {}, action) {
   case types.GET_HOME_PLAYLIST_ERROR:
     return { ...state,  playlists: { ...action.payload } };
   case types.GET_HOME_VIDEO:
-    let result = [...state.videos.data];
+    let result = [...state.videos.data],
+      status;
     const index= findIndexByKeyValue(result, "id", action.payload.meta.id),
-      status = state.videos.data.filter(data => data.status !== "success").length > 0 ? "error" : "success";
+      filteredStatus = state.videos.data.filter(({ meta }) => meta.status === "error").length > 0;
+
+    if (filteredStatus) {
+      status = "error";
+    } else if (state.videos.data.length < state.playlists.data.length - 1) {
+      status = "loading";
+    } else {
+      status = "success";
+    }
 
     if (index === -1) {
       result.push({ ...action.payload });
