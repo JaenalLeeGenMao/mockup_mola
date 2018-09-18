@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '@components/header';
 import Form from '@components/FormInput';
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 import s from './Login.css';
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
@@ -26,54 +27,56 @@ class Login extends React.Component {
     const isDark = false;
     return (
       <Fragment>
-        {/* <Header isDark={isDark} libraryOff rightMenuOff /> */}
+        <Header isDark={isDark} libraryOff rightMenuOff isMobile />
         <div className={s.wrapper}>
           <div className={s.root}>
-            <div className={s.container}>
-              <p className={s.lead}>
+            <LazyLoadBeta>
+              <div className={s.container}>
+                <p className={s.lead}>
                             Masuk ke Mola
-              </p>
-              <p>Wah, kami kangen sama kamu! <br/>Masukkan data-data mu dan ayo mulai.</p>
-              <form method="post">
-                <Form className={s.formMobile}
-                  id="usernameOrEmail"
-                  type="text"
-                  name="usernameOrEmail" autoFocus>
+                </p>
+                <p>Wah, kami kangen sama kamu! <br/>Masukkan data-data mu dan ayo mulai.</p>
+                <form method="post">
+                  <Form className={s.formMobile}
+                    id="usernameOrEmail"
+                    type="text"
+                    name="usernameOrEmail" autoFocus>
                                 Email or username
-                </Form>
-                <Form className={s.formMobile}
-                  id="password"
-                  type="password"
-                  name="password">
+                  </Form>
+                  <Form className={s.formMobile}
+                    id="password"
+                    type="password"
+                    name="password">
                                 Password
-                </Form>
-                <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
-                <div className={s.formGroup}>
-                  <button className={s.button} type="submit">
+                  </Form>
+                  <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
+                  <div className={s.formGroup}>
+                    <button className={s.button} type="submit">
                                     SIGN IN
-                  </button>
+                    </button>
+                  </div>
+                </form>
+                <strong className={s.lineThrough}>Atau</strong>
+                <div className={s.flexButton}>
+                  <div>
+                    <a className={s.google} href="/login/facebook">
+                      <img className={s.buttonMobile} src={google} />
+                    </a>
+                  </div>
+                  <div>
+                    <a className={s.facebook} href="/login/facebook">
+                      <img className={s.buttonMobile} src={facebook} />
+                    </a>
+                  </div>
+                  <div>
+                    <a className={s.line} href="/login/facebook">
+                      <img className={s.buttonMobile} src={line}  />
+                    </a>
+                  </div>
                 </div>
-              </form>
-              <strong className={s.lineThrough}>Atau</strong>
-              <div className={s.flexButton}>
-                <div>
-                  <a className={s.google} href="/login/facebook">
-                    <img src={google} width={'28px'} />
-                  </a>
-                </div>
-                <div>
-                  <a className={s.facebook} href="/login/facebook">
-                    <img src={facebook} />
-                  </a>
-                </div>
-                <div>
-                  <a className={s.line} href="/login/facebook">
-                    <img src={line}  />
-                  </a>
-                </div>
+                <p className={s.labelSignup}>Baru di mola ? <a href='/register'>Daftar sekarang</a></p>
               </div>
-              <p className={s.labelSignup}>Baru di mola ? <a href='/register'>Daftar sekarang</a></p>
-            </div>
+            </LazyLoadBeta>
           </div>
         </div>
       </Fragment>

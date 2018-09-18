@@ -66,17 +66,17 @@ class Register extends React.Component {
               <div className={s.flexButton}>
                 <div>
                   <a className={s.google} href="/login/facebook">
-                    <img src={google} />
+                    <img className={s.buttonImg} src={google} />
                   </a>
                 </div>
                 <div>
                   <a className={s.facebook} href="/login/facebook">
-                    <img src={facebook} />
+                    <img className={s.buttonImg} src={facebook} />
                   </a>
                 </div>
                 <div>
                   <a className={s.line} href="/login/facebook">
-                    <img src={line}  />
+                    <img className={s.buttonImg} src={line}  />
                   </a>
                 </div>
               </div>

@@ -26,7 +26,7 @@ class Register extends React.Component {
     const isDark = false;
     return (
       <Fragment>
-        {/* <Header isDark={isDark} libraryOff rightMenuOff /> */}
+        <Header isDark={isDark} libraryOff rightMenuOff isMobile />
         <div className={s.wrapper}>
           <div className={s.root}>
             <div className={s.container}>
@@ -66,17 +66,17 @@ class Register extends React.Component {
               <div className={s.flexButton}>
                 <div>
                   <a className={s.google} href="/login/facebook">
-                    <img src={google} />
+                    <img src={google} className={s.buttonMobile} />
                   </a>
                 </div>
                 <div>
                   <a className={s.facebook} href="/login/facebook">
-                    <img src={facebook} />
+                    <img src={facebook} className={s.buttonMobile} />
                   </a>
                 </div>
                 <div>
                   <a className={s.line} href="/login/facebook">
-                    <img src={line}  />
+                    <img src={line} className={s.buttonMobile} />
                   </a>
                 </div>
               </div>

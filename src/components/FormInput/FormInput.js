@@ -11,6 +11,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import PropTypes from 'prop-types';
 import style from './FormInput.css';
+import visible from '@global/style/icons/visible.png'
 
 class FormInput extends React.Component {
     static propTypes = {
@@ -26,8 +27,10 @@ class FormInput extends React.Component {
           <input
             className={[style.form__input, className].join(' ')}
             {...props}
-            placeholder={children} // eslint-disable-line jsx-a11y/no-autofocus
-          />
+            placeholder={children}>
+          </input>
+          {/* <i className="fa fa-eye" style={{ position: 'absolute', right:  '10px', top: '10px' }}><img src={visible}/></i> */}
+          {/* onChange={}// eslint-disable-line jsx-a11y/no-autofocus */}
         </div>
       );
     }

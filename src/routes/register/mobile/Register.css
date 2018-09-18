@@ -11,6 +11,7 @@
 @import '../../login/mobile/Login.css';
 
 .labelHeader {
+  margin-top: 0 !important;
   color: #fff !important;
   font-size: 15px !important;
   font-weight: 500;
