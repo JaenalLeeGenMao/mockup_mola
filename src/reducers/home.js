@@ -13,7 +13,7 @@ export default function home(state = {}, action) {
     let result = [...state.videos.data],
       status;
     const index= findIndexByKeyValue(result, "id", action.payload.meta.id),
-      filteredStatus = state.videos.data.filter(data => data.status === "error").length > 0;
+      filteredStatus = state.videos.data.filter(({ meta }) => meta.status === "error").length > 0;
 
     if (filteredStatus) {
       status = "error";

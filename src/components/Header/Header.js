@@ -67,24 +67,24 @@ class Header extends Component {
             </LazyLoadBeta>
           )}
         </div>
-        <div className={styles.header__library_wrapper} style={{ color }}>
-          {!libraryOff && (
-            <LazyLoadBeta>
-              <Link
-                className={styles.header__library_link_wrapper}
-                to="/movie-library"
-                style={{ color }}
-              >
-                <span
-                  className={styles[`header__library_logo_${color}`]}
-                  alt="library"
-                  style={{ width: '32px', height: '32px', }}
-                />
-              </Link>
-            </LazyLoadBeta>
-          )}
-          {title}
-        </div>
+        {/* <div className={styles.header__library_wrapper}> */}
+        {!libraryOff && (
+          <LazyLoadBeta>
+            <Link
+              className={styles.header__library_link_wrapper}
+              to="/movie-library"
+              style={{ color }}
+            >
+              <span
+                className={styles[`header__library_logo_${color}`]}
+                alt="library"
+                style={{ width: '32px', height: '32px', }}
+              />
+            </Link>
+          </LazyLoadBeta>
+        )}
+        {title}
+        {/* </div> */}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
       </div>
     )

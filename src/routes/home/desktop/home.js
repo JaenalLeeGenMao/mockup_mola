@@ -203,11 +203,11 @@ class Home extends Component {
           className={styles.home__container}
     		>
     			<Header isDark={isDark} />
-          {status === 'loading' && <HomePlaceholder />}
+          {status === 'loading' || videos.meta.status === 'loading' && <HomePlaceholder />}
           {status === 'error' || videos.meta.status === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error || 'MOLA video is not loaded'}</div>
           }
-          {status === 'success' &&
+          {status === 'success' && videos.meta.status === 'success' &&
             <Navbar
               isDark={isDark}
               playlists={playlists.data}
