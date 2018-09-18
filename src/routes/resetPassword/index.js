@@ -8,22 +8,22 @@
  */
 
 import React from 'react';
-import LoginMobile from './mobile/Login';
-import LoginDesktop from './desktop/Login';
 import Layout from '../../components/Layout';
+import ResetDesktop from './desktop/Reset';
+import ResetMobile from './mobile/Reset';
 
-const title = 'Log In';
+const title = 'Reset Password';
 
 function action(isMobile) {
   return {
-    chunks: ['login'],
+    chunks: ['resetPassword'],
     title,
     component: (isMobile.isMobile ?
       (<Layout>
-        <LoginMobile />
+        <ResetMobile />
       </Layout>)  :
       (<Layout>
-        <LoginDesktop />
+        <ResetDesktop />
       </Layout>)
     ),
   };

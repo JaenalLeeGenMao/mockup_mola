@@ -5,11 +5,11 @@ import s from './Frame.css';
 
 class Frame extends React.Component {
   static propTypes = {
-      children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
   };
 
   render() {
-      return <div className={s.container}>{this.props.children}</div>;
+    return <div className={s.container}>{this.props.children}</div>;
   }
 }
 

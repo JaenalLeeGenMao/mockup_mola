@@ -5,26 +5,26 @@ import s from './Synopsis.css';
 
 class Synopsis extends React.Component {
   static propTypes = {
-      synopsisContent: PropTypes.string.isRequired,
-      directedBy: PropTypes.string.isRequired,
-      synopsisLabel: PropTypes.string.isRequired,
+    synopsisContent: PropTypes.string.isRequired,
+    directedBy: PropTypes.string.isRequired,
+    synopsisLabel: PropTypes.string.isRequired,
   };
 
   render() {
-      return (
-          <div className={s.box}>
-              <div className={s.inner_box}>
-                  <p>{this.props.synopsisContent}</p>
-                  <p>
+    return (
+      <div className={s.box}>
+        <div className={s.inner_box}>
+          <p>{this.props.synopsisContent}</p>
+          <p>
             Directed by :
-                      <span> {this.props.directedBy}</span>
-                  </p>
-              </div>
-              <div className={s.label_container}>
-                  <p>{this.props.synopsisLabel}</p>
-              </div>
-          </div>
-      );
+            <span> {this.props.directedBy}</span>
+          </p>
+        </div>
+        <div className={s.label_container}>
+          <p>{this.props.synopsisLabel}</p>
+        </div>
+      </div>
+    );
   }
 }
 

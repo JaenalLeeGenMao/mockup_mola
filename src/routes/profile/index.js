@@ -8,23 +8,19 @@
  */
 
 import React from 'react';
-import LoginMobile from './mobile/Login';
-import LoginDesktop from './desktop/Login';
 import Layout from '../../components/Layout';
+import Profile from './Profile';
 
-const title = 'Log In';
+const title = 'Profile';
 
-function action(isMobile) {
+function action() {
   return {
-    chunks: ['login'],
+    chunks: ['profile'],
     title,
-    component: (isMobile.isMobile ?
-      (<Layout>
-        <LoginMobile />
-      </Layout>)  :
-      (<Layout>
-        <LoginDesktop />
-      </Layout>)
+    component: (
+      <Layout>
+        <Profile title={title} />
+      </Layout>
     ),
   };
 }
