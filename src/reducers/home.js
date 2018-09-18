@@ -10,9 +10,18 @@ export default function home(state = {}, action) {
   case types.GET_HOME_PLAYLIST_ERROR:
     return { ...state,  playlists: { ...action.payload } };
   case types.GET_HOME_VIDEO:
-    let result = [...state.videos.data];
-    const status= state.videos.data.length > 1 ? "success" : "no_result",
-      index= findIndexByKeyValue(result, "id", action.payload.meta.id);
+    let result = [...state.videos.data],
+      status;
+    const index= findIndexByKeyValue(result, "id", action.payload.meta.id),
+      filteredStatus = state.videos.data.filter(({ meta }) => meta.status === "error").length > 0;
+
+    if (filteredStatus) {
+      status = "error";
+    } else if (state.videos.data.length < state.playlists.data.length - 1) {
+      status = "loading";
+    } else {
+      status = "success";
+    }
 
     if (index === -1) {
       result.push({ ...action.payload });
@@ -23,7 +32,7 @@ export default function home(state = {}, action) {
       ...state,
       videos: {
         ...state.videos,
-        meta: { status },
+        meta: { status, error: status === "error" ? "API Video failed" : "" },
         data: result,
       }
     };

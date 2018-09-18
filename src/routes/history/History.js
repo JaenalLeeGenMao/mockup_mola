@@ -31,7 +31,7 @@ class History extends React.Component {
     isMobile: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getAllHistory()
   }
 
@@ -115,7 +115,7 @@ class History extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log('stateeee', state)
+  // console.log('stateeee', state)
   return {
     movieHistory: state.history.data,
   }

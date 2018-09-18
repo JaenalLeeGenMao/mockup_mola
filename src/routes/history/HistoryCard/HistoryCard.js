@@ -22,7 +22,7 @@ class HistoryCard extends React.Component {
 
   render() {
     const { videos, barStyle } = this.props;
-    console.log("videos", videos.coverUrl)
+    // console.log("videos", videos.coverUrl)
     return (
       <div className={s.movieContainer}>
         <a className={s.movieImageWrapper}>
