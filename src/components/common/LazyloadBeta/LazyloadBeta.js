@@ -54,10 +54,13 @@ class LazyloadBeta extends PureComponent {
 
   componentDidMount() {
     const { src } = this.props;
-
     if(src) {
       if (this.props.lazy) {
-        this.initObserver();
+        if(this.loadPolyfills()) {
+          this.initObserver();
+        } else {
+          this.loadImage(global.webpSupport && this.props.webp);
+        }
       } else {
         this.loadImage(global.webpSupport && this.props.webp);
       }
@@ -83,7 +86,6 @@ class LazyloadBeta extends PureComponent {
         dataProps[key] = value;
       }
     });
-
     return dataProps;
   }
 
@@ -138,6 +140,22 @@ class LazyloadBeta extends PureComponent {
     this.setState({ load: status, });
   };
 
+  loadPolyfills = () => {
+    if (!this.supportsIntersectionObserver()) {
+      return false;
+
+    }
+    return true;
+  }
+
+  supportsIntersectionObserver = () => {
+    return (
+      'IntersectionObserver' in global &&
+      'IntersectionObserverEntry' in global &&
+      'intersectionRatio' in IntersectionObserverEntry.prototype
+    )
+  }
+
   render() {
     const { sources } = this.state;
     const { alt, containerClassName, containerStyle, style, onClick, children, className, src } = this.props;
@@ -148,8 +166,8 @@ class LazyloadBeta extends PureComponent {
         style={containerStyle}
         onClick={onClick}
       >
-        {children}
         { src && <img ref={this.image} className={className} style={style} src={sources} alt={alt} />}
+        {children}
       </div>
     );
   }

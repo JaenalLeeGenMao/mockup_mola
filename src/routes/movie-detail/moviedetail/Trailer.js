@@ -6,17 +6,17 @@ import s from './Trailer.css';
 
 class Trailer extends React.Component {
   static propTypes = {
-      children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
   };
 
   render() {
-      return (
-          <Fragment>
-              <div className={s.trailer_box}>
-                  <div className={s.inner_box}>{this.props.children}</div>
-              </div>
-          </Fragment>
-      );
+    return (
+      <Fragment>
+        <div className={s.trailer_box}>
+          <div className={s.inner_box}>{this.props.children}</div>
+        </div>
+      </Fragment>
+    );
   }
 }
 

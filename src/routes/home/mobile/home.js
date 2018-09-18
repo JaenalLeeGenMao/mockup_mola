@@ -40,44 +40,36 @@ const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar *
 class Home extends Component {
     state = {
       isDark: undefined,
-      isMenuOpen: false
+      isMenuOpen: false,
+      playlists: [],
+      videos: []
     }
 
-    componentWillReceiveProps(nextProps) {
-    	const {
-    		onHandleVideo,
-    		home: {
-    			playlists,
-    		},
-    	} = nextProps;
+    static getDerivedStateFromProps(nextProps, prevState) {
+      const {
+        onUpdatePlaylist,
+        onHandlePlaylist,
+        onHandleVideo,
+        home: {
+          playlists,
+        }
+      } = nextProps;
 
-    	if (
-    		playlists.meta.status === "success"
-    	) {
-    		playlists.data.map(playlist => {
-    			if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-    				trackedPlaylistIds.push(playlist.id);
-    				onHandleVideo(playlist);
-    			}
-	        });
-
-	        if (!activePlaylist) {
-	            activePlaylist = playlists.data[0];
-	            this.props.onUpdatePlaylist(activePlaylist.id);
-	        }
-	    }
-    }
-
-    componentWillMount() {
-    	const {
-    		onHandlePlaylist,
-    		home: {
-    			playlists,
-    		},
-    	} = this.props;
-    	if (playlists.meta.status !== 'success') {
-    		onHandlePlaylist();
-    	}
+      if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
+        onHandlePlaylist();
+      } else if (prevState.videos.length <= 0) {
+        playlists.data.map((playlist, index) => {
+          if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+            trackedPlaylistIds.push(playlist.id);
+            onHandleVideo(playlist);
+          }
+          if (!activePlaylist && index === 0) {
+            activePlaylist = playlists.data[0];
+            onUpdatePlaylist(activePlaylist.id);
+          }
+        });
+      }
+      return { ...prevState, playlists };
     }
 
     componentDidMount() {
@@ -221,14 +213,14 @@ class Home extends Component {
 
     handleSlideNext = (scrollIndex = 0) => {
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex]) {
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
         this.sliderRefs[scrollIndex].slickNext();
       }
     }
 
     handleSlidePrev = (scrollIndex = 0) => {
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex]) {
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
         this.sliderRefs[scrollIndex].slickPrev();
       }
     }
@@ -238,16 +230,23 @@ class Home extends Component {
           playlists,
           playlists: {
             meta: {
-              status = 'loading',
-              error
+              status: playlistStatus = 'loading',
+              error: playlistrror
             }
           },
-          videos
+          videos,
+          videos: {
+            meta: {
+              status: videoStatus = 'loading',
+              error: videoError
+            }
+          },
         } = this.props.home,
         { isDark, isMenuOpen } = this.state,
         color = isDark ? "black" : "white",
         settings = {
           ...SETTINGS,
+          speed: 300,
           arrows: false,
           dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
           onInit: () => {
@@ -261,12 +260,15 @@ class Home extends Component {
 
       return (
         <div>
-          <Header libraryOff className={styles.placeholder__header} isDark={isDark} />
-          {status === 'loading' && <HomePlaceholder />}
-          {status === 'error' &&
-					<div className={styles.home__error_container}>Ada Error kawan: {error}</div>
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
+          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'error' &&
+					<div className={styles.home__error_container}>Ada Error kawan: {playlistrror || 'MOLA playlist is not loaded'}</div>
           }
-          {status === 'success' &&
+          {videoStatus === 'error' &&
+					<div className={styles.home__error_container}>Ada Error kawan: {videoError || 'MOLA video is not loaded'}</div>
+          }
+          {playlistStatus === 'success' && videoStatus === 'success' &&
                     <div>
                       <HomeMobileMenu
                         isDark={isDark}
@@ -287,9 +289,10 @@ class Home extends Component {
                     </div>
           }
           {
-            status === 'success'
+            playlistStatus === 'success'
 					&& videos
                     && videos.data.length > 0
+                    && videos.data.length === playlists.data.length
                     && videos.data.map(video => {
                     	const { id, sortOrder } = video.meta;
                     	return (
@@ -346,10 +349,10 @@ class Home extends Component {
                                     >
                                       <LazyLoadBeta src={layer3}
                                         containerClassName={styles.home__parallax_layer_3_info}
-                                        style={{ color: isDark ? "black" : "white" }}
                                         alt=""
                                       >
-                                        <div className={styles.home__parallax_layer_3_detail}>
+                                        <div className={styles.home__parallax_layer_3_detail}
+                                          style={{ color: isDark ? "black" : "white" }}>
                                           <h4
                                             className={styles.home__parallax_layer_3_title}
                                           >
