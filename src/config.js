@@ -18,13 +18,10 @@ if (!exceptions.includes(process.env.NODE_ENV)) {
   dotenv.config()
 }
 
-if (process.env.BROWSER) {
-  throw new Error(
-    'Do not import `config.js` from inside the client-side code.',
-  );
-}
-
 module.exports = {
+  // timeout for API request
+  timeout: 10000,
+
   // Node.js app
   port: process.env.PORT || 3000,
 

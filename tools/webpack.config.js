@@ -42,6 +42,7 @@ const alias = {
   '@reducers': resolvePath('src/reducers'),
   '@constants': resolvePath('src/constants'),
   '@components': resolvePath('src/components'),
+  '@source': SRC_DIR,
 };
 
 // CSS Nano options http://cssnano.co/
