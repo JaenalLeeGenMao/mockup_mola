@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Mola from '../api/mola';
 import types from '../constants';
+import config from '../config';
 
 export const getHomePlaylist = () => dispatch => {
   dispatch({
@@ -13,7 +14,7 @@ export const getHomePlaylist = () => dispatch => {
       data: []
     }
   });
-  return Mola.getHomePlaylist()
+  return Mola.getHomePlaylist({ ...config })
     .then(result => {
       if (result.meta.status === "error") {
         dispatch({
@@ -30,7 +31,7 @@ export const getHomePlaylist = () => dispatch => {
 };
 
 export const getHomeVideo = playlist => dispatch => {
-  return Mola.getHomeVideo({ id: playlist.id })
+  return Mola.getHomeVideo({ id: playlist.id, ...config })
     .then(result => {
       result = {
         meta: {

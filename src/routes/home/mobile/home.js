@@ -230,11 +230,17 @@ class Home extends Component {
           playlists,
           playlists: {
             meta: {
-              status = 'loading',
-              error
+              status: playlistStatus = 'loading',
+              error: playlistrror
             }
           },
-          videos
+          videos,
+          videos: {
+            meta: {
+              status: videoStatus = 'loading',
+              error: videoError
+            }
+          },
         } = this.props.home,
         { isDark, isMenuOpen } = this.state,
         color = isDark ? "black" : "white",
@@ -255,11 +261,14 @@ class Home extends Component {
       return (
         <div>
           <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
-          {status === 'loading' || videos.meta.status === 'loading' && <HomePlaceholder />}
-          {status === 'error' || videos.meta.status === 'error' &&
-					<div className={styles.home__error_container}>Ada Error kawan: {error || "failed to load API Videos NOT FOUND"}</div>
+          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'error' &&
+					<div className={styles.home__error_container}>Ada Error kawan: {playlistrror || 'MOLA playlist is not loaded'}</div>
           }
-          {status === 'success' && videos.meta.status === 'success' &&
+          {videoStatus === 'error' &&
+					<div className={styles.home__error_container}>Ada Error kawan: {videoError || 'MOLA video is not loaded'}</div>
+          }
+          {playlistStatus === 'success' && videoStatus === 'success' &&
                     <div>
                       <HomeMobileMenu
                         isDark={isDark}
@@ -280,7 +289,7 @@ class Home extends Component {
                     </div>
           }
           {
-            status === 'success'
+            playlistStatus === 'success'
 					&& videos
                     && videos.data.length > 0
                     && videos.data.length === playlists.data.length
