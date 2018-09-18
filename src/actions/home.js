@@ -34,11 +34,11 @@ export const getHomeVideo = playlist => dispatch => {
     .then(result => {
       result = {
         meta: {
-          status: "success",
+          status: result.meta.status,
           id: playlist.id,
           sortOrder: playlist.sortOrder
         },
-        data: [playlist].concat(result)
+        data: [playlist].concat(result.data)
       };
       dispatch({
         type: types.GET_HOME_VIDEO,

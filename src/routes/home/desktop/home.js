@@ -39,44 +39,36 @@ const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar *
 
 class Home extends Component {
 	state = {
-	    isDark: undefined
+	  isDark: undefined,
+	  playlists: [],
+	  videos: []
 	}
 
-	componentWillReceiveProps(nextProps) {
-    	const {
-    		onHandleVideo,
-    		home: {
-    			playlists,
-    		},
-    	} = nextProps;
-
-    	if (
-    		playlists.meta.status === "success"
-    	) {
-    		playlists.data.map(playlist => {
-    			if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-    				trackedPlaylistIds.push(playlist.id);
-    				onHandleVideo(playlist);
-    			}
-	        });
-
-	        if (!activePlaylist) {
-	            activePlaylist = playlists.data[0];
-	            this.props.onUpdatePlaylist(activePlaylist.id);
-	        }
+	static getDerivedStateFromProps(nextProps, prevState) {
+	  const {
+	    onUpdatePlaylist,
+	    onHandlePlaylist,
+	    onHandleVideo,
+	    home: {
+	      playlists,
 	    }
-	}
+	  } = nextProps;
 
-	componentWillMount() {
-    	const {
-    		onHandlePlaylist,
-    		home: {
-    			playlists,
-    		},
-    	} = this.props;
-    	if (playlists.meta.status !== 'success') {
-    		onHandlePlaylist();
-    	}
+	  if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
+	    onHandlePlaylist();
+	  } else if (prevState.videos.length <= 0) {
+	    playlists.data.map((playlist, index) => {
+	      if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+	        trackedPlaylistIds.push(playlist.id);
+	        onHandleVideo(playlist);
+	      }
+	      if (!activePlaylist && index === 0) {
+	        activePlaylist = playlists.data[0];
+	        onUpdatePlaylist(activePlaylist.id);
+	      }
+	    });
+	  }
+	  return { ...prevState, playlists };
 	}
 
 	componentDidMount() {
@@ -170,14 +162,14 @@ class Home extends Component {
 
     handleSlideNext = (scrollIndex = 0) => {
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex]) {
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
         this.sliderRefs[scrollIndex].slickNext();
       }
     }
 
     handleSlidePrev = (scrollIndex = 0) => {
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex]) {
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
         this.sliderRefs[scrollIndex].slickPrev();
       }
     }
@@ -211,22 +203,22 @@ class Home extends Component {
           className={styles.home__container}
     		>
     			<Header isDark={isDark} />
-                {status === 'loading' && <HomePlaceholder />}
-                {status === 'error' &&
+          {status === 'loading' && <HomePlaceholder />}
+          {status === 'error' || videos.meta.status &&
 					<div className={styles.home__error_container}>Ada Error kawan: {error || 'MOLA video is not loaded'}</div>
           }
           {status === 'success' &&
-                    <Navbar
-                    	isDark={isDark}
-                    	playlists={playlists.data}
-                    	onClick={this.handleScrollToIndex}
-                    />
+            <Navbar
+              isDark={isDark}
+              playlists={playlists.data}
+              onClick={this.handleScrollToIndex}
+            />
           }
     			{
             status === 'success'
-					&& videos
+					  && videos
                     && videos.data.length > 0
-                    && videos.data.length <= playlists.data.length
+                    && videos.data.length === playlists.data.length
                     && videos.data.map(video => {
                     	const { id, sortOrder } = video.meta;
                     	return (
@@ -285,9 +277,9 @@ class Home extends Component {
                                     >
                                       <LazyLoadBeta src={layer3}
                                         containerClassName={styles.home__parallax_layer_3_info}
-                                        style={{ color: isDark ? "black" : "white" }}
                                       >
-                                        <div className={styles.home__parallax_layer_3_detail}>
+                                        <div className={styles.home__parallax_layer_3_detail}
+                                          style={{ color: isDark ? "black" : "white" }}>
                                           <h4
                                             className={styles.home__parallax_layer_3_title}
                                           >
@@ -298,7 +290,6 @@ class Home extends Component {
                                             <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
                                           </p>
                                         </div>
-
                                       </LazyLoadBeta>
                                     </Parallax>
                                     <Parallax

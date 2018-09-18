@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import LazyLoadBeta from '@components/common/LazyloadBeta';
 // import { getAllHistory } from '../../../actions/history' // test
 import Img1 from '../assets/lib_1.png'
 import Img2 from '../assets/lib_2.png'
@@ -38,11 +39,21 @@ class MmovieSuggestion extends React.Component {
   //   }
 
   render() {
+    const { data } = this.props
+
     return (
       <div className={s.resultRowWrap__mobile}>
         <div className={s.resultTitle}>Movie Suggestion</div>
         <div className={s.resultContent__movieflex}>
-          <div className={s.movieflex__moviebox}>
+          {
+            data.map( (movie) => {
+              return (
+                <LazyLoadBeta src={movie.coverUrl} containerClassName={s.movieflex__moviebox}>
+                </LazyLoadBeta>
+              )
+            })
+          }
+          {/* <div className={s.movieflex__moviebox}>
             <img src={Img1}/>
           </div>
           <div className={s.movieflex__moviebox}>
@@ -59,7 +70,7 @@ class MmovieSuggestion extends React.Component {
           </div>
           <div className={s.movieflex__moviebox}>
             <img src={Img1}/>
-          </div>
+          </div> */}
         </div>
       </div>
     )
