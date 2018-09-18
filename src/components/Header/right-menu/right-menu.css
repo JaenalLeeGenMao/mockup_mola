@@ -3,11 +3,12 @@
   flex-direction: row;
   text-decoration: none;
   position: relative;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  top: -40px;
+
+  /* top: -40px; */
   right: 20px;
-  width: 100px;
+  width: 75px;
 }
 
 .right__menu a,
