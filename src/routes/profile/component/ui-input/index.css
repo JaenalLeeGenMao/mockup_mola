@@ -1,0 +1,21 @@
+.root {
+  margin-bottom: 30px;
+}
+
+.component {
+  background: none;
+  padding: 8px 0;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid#34495e;
+  color: #fff;
+  outline: none;
+}
+
+.component:focus {
+  border-bottom: 1px solid#fff;
+}
+
+.label {
+  color: #6f6f6f;
+}
