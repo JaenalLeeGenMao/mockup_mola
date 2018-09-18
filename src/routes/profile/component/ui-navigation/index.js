@@ -6,9 +6,17 @@ const Navigation = (props) => (
   <div className={s.root}>
     <h3 className={s.title}>MOLA</h3>
     <ul className={s.container}>
-      <li><a href="" className={s.active}>PROFILE</a></li>
-      <li><a href="">SECURITY</a></li>
-      <li><a href="">SETTING</a></li>
+      {
+        props.menus.map((menu, index) => {
+          let className = ''
+          if (index === 0) {
+            className = s.active
+          }
+          return(
+            <li key={index}><a href={menu.href} className={className}>{menu.title}</a></li>
+          )
+        })
+      }
     </ul>
   </div>
 )

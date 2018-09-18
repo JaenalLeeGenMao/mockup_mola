@@ -87,11 +87,39 @@ class Profile extends React.Component {
       <div>
         {
           isMobile &&
-            <UiMobileNav />
+            <UiMobileNav
+              menus={[
+                {
+                  title: 'PROFILE',
+                  href: '/profile'
+                },
+                {
+                  title: 'SECURITY',
+                  href: '/security'
+                },
+                {
+                  title: 'SETTING',
+                  href: '/setting'
+                }
+              ]} />
         }
         <div className={s.root}>
           <div className={s.sideLeft}>
-            <UiNavigation />
+            <UiNavigation
+              menus={[
+                {
+                  title: 'PROFILE',
+                  href: '/profile'
+                },
+                {
+                  title: 'SECURITY',
+                  href: '/security'
+                },
+                {
+                  title: 'SETTING',
+                  href: '/setting'
+                }
+              ]} />
           </div>
           <div className={s.sideCenter}>
             <div className={s.profileArea}>

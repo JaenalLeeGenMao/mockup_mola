@@ -11,9 +11,17 @@ const MobileNav = (props) => {
         <b className={s.title}>Accounts</b>
       </div>
       <ul className={s.component}>
-        <li className={s.active}><a href="">PROFILE</a></li>
-        <li><a href="">SECURITY</a></li>
-        <li><a href="">SETTING</a></li>
+        {
+          props.menus.map((menu, index) => {
+            let className = ''
+            if (index === 0) {
+              className = s.active
+            }
+            return(
+              <li key={index} className={className}><a href={menu.href}>{menu.title}</a></li>
+            )
+          })
+        }
       </ul>
     </div>
   )
