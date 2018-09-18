@@ -7,7 +7,7 @@
 .play_icon {
   width: 60px;
   height: 60px;
-  position: absolute;
+  position: fixed;
   top: 28%;
   right: 50%;
   transform: translate(50%, -50%);

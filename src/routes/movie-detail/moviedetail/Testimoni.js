@@ -10,7 +10,8 @@ class Testimoni extends React.Component {
     testimoniPhotoUrl: PropTypes.string.isRequired,
     trailerTitle: PropTypes.string.isRequired,
     testimoniSource: PropTypes.string.isRequired,
-  };
+    trailerText: PropTypes.bool.isRequired,
+  }
 
   render() {
     return (
@@ -26,7 +27,7 @@ class Testimoni extends React.Component {
               src={this.props.testimoniPhotoUrl}
             />
           </div>
-          <div className={s.trailer_title}>{this.props.trailerTitle}</div>
+          {this.props.trailerText && <div className={s.trailer_title}>{this.props.trailerTitle}</div>}
         </div>
       </Fragment>
     );
