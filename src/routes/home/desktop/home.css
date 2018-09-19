@@ -92,7 +92,7 @@ body {
 }
 
 .home__parallax_layer_2 img {
-  height: auto;
+  height: 100vh;
   width: auto;
 }
 

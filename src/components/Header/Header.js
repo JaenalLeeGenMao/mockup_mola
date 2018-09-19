@@ -48,16 +48,19 @@ class Header extends Component {
       <div className={styles.header__container}>
         <div className={styles.header__logo_wrapper}>
           {!logoOff &&
-            <Link to="/">
-              {
-                logoDark &&
-                <LazyLoadBeta src={isMobile ? logoLandscapeBlue : logoBlue} containerClassName={styles.header__logo}/>
-              }
+            <LazyLoadBeta>
+              <Link to="/">
+                {
+                  logoDark &&
+                    <img alt='MOLA' src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                }
 
-              {
-                !logoDark && <LazyLoadBeta src={isMobile ? logoLandscapeGrey : logoGrey} containerClassName={styles.header__logo}/>
-              }
-            </Link>
+                {
+                  !logoDark &&
+                    <img alt='MOLA' src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo}/>
+                }
+              </Link>
+            </LazyLoadBeta>
           }
           {backButtonOn && (
             <LazyLoadBeta>
