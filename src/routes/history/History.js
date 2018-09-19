@@ -24,7 +24,7 @@ class History extends React.Component {
   state = {
     showSearch: false,
     movieItems: this.props.movieDummy,
-    loadingState: false,
+    // loadingState: false,
   }
 
   static propTypes = {
@@ -32,31 +32,31 @@ class History extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getAllHistory()
+    this.props.getAllHistory();
   }
 
-  componentDidMount() {
-    document.getElementById("history-container").addEventListener('scroll', this.onScroll, false);
-  }
+  // componentDidMount() {
+  //   document.getElementById("history-container").addEventListener('scroll', this.onScroll, false);
+  // }
 
-  onScroll = () => {
-    const historyCont = document.getElementById("history-container");
-    if (historyCont.scrollTop + historyCont.clientHeight + 100 >= historyCont.scrollHeight) {
-      //loadmore
-      if(!this.state.loadingState) {
-        this.setState({
-          movieItems: this.state.movieItems.slice().concat(this.props.movieDummy)
-        })
-      }
-      // console.log("LOADMORE")
-    }
-  }
+  //will implement infinite scroll later after api supported
+  // onScroll = () => {
+  //   const historyCont = document.getElementById("history-container");
+  //   if (historyCont.scrollTop + historyCont.clientHeight + 100 >= historyCont.scrollHeight) {
+  //     //loadmore
+  //     if(!this.state.loadingState) {
+  //       this.setState({
+  //         movieItems: this.state.movieItems.slice().concat(this.props.movieDummy)
+  //       })
+  //     }
+  //     // console.log("LOADMORE")
+  //   }
+  // }
 
   render() {
-    const { movieHistory, isMobile } = this.props;
+    const { isMobile } = this.props;
     const { movieItems } = this.state;
 
-    // console.log('movieHistory', movieHistory);
     const playlist = [
       {
         id: 1,
@@ -81,12 +81,12 @@ class History extends React.Component {
             />
           </Fragment>
         }
-        <Header isDark={false} libraryOff={isMobile} searchOff={isMobile}/>
+        <Header isDark={false} libraryOff searchOff/>
         <div className={s.wrapper}>
           <div className={s.wrapperBg}></div>
           <div className={s.containerOuter}>
             <div className={s.containerInner} id='history-container'>
-              {/* {movieItems.map((movie, index) => {
+              {movieItems.map((movie, index) => {
                 const videosAttr = movie.attributes.videos[0].attributes
                 if (
                   !movie.attributes.videos[0].videos ||
@@ -105,7 +105,7 @@ class History extends React.Component {
                     />
                   )
                 }
-              })} */}
+              })}
             </div>
           </div>
         </div>

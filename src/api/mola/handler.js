@@ -1,5 +1,5 @@
 import { get } from 'axios'
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT } from './endpoints'
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT, SEARCH_ENDPOINT } from './endpoints'
 import utils from './util'
 
 const getHomePlaylist = ({ timeout, ...payload }) => {
@@ -40,15 +40,16 @@ const getHomeVideo = ({ id, timeout, ...payload }) => {
       return {
         meta: {
           status: 'success',
-          error: '',
+          error: ''
         },
-        data: [...result[0]] || [],
-      }
+        data: [...result[0]] || []
+      };
     }
   ).catch((error) => {
+    const status = typeof error === 'object' ? 'success' : 'error';
     return {
       meta: {
-        status: typeof error === "object" ? 'success' : 'error',
+        status,
         error: `home/getHomeVideo ~ ${error}`,
       },
       data: [],
@@ -94,7 +95,30 @@ const getSearchVideo = (payload) => {
     return {
       meta: {
         status: 'error',
-        error: `search/getSearchVideo ~ ${error}`,
+        error: `search/getSearchResult ~ ${error}`,
+      },
+      data: [],
+    }
+  })
+}
+
+const getSearchResult = ({ q }) => {
+  return get(`${SEARCH_ENDPOINT}`, { params: { q: q } }).then(
+    (response) => {
+      const result = utils.normalizeSearchResult(response);
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result] || [],
+      }
+    }
+  ).catch((error) => {
+    return {
+      meta: {
+        status: 'error',
+        error: `search/getSearchResult ~ ${error}`,
       },
       data: [],
     }
@@ -105,5 +129,6 @@ export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
-  getSearchVideo
+  getSearchVideo,
+  getSearchResult
 }
