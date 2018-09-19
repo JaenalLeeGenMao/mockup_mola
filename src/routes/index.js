@@ -66,6 +66,14 @@ const routes = {
       path: '/profile',
       load: () => import(/* webpackChunkName: 'profile' */ './profile'),
     },
+    {
+      path: '/forgotPassword',
+      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
+    },
+    {
+      path: '/resetPassword',
+      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
