@@ -16,8 +16,7 @@ class MovieSuggestion extends React.Component {
   };
 
   render() {
-    const { data, searchText } = this.props
-
+    const { data, searchText } = this.props;
     return (
       <div className={s.resultRowWrap}>
         <div className={s.resultTitle}>Movie Suggestion</div>

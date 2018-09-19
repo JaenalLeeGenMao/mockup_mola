@@ -7,8 +7,8 @@
 }
 
 .wrapper {
-  padding: 180px 0 0 245px;
-  height: calc(100vh - 180px);
+  padding: 120px 0 0 245px;
+  height: calc(100vh - 120px);
   overflow-y: hidden;
 }
 
@@ -45,15 +45,15 @@
   padding-right: 20px;
   margin: 0 auto;
   height: calc(100vh - 76px);
-  z-index: 2;
+  z-index: 102;
   position: relative;
   background: #11110f;
 }
 
 @media screen and (max-width: 1280px) {
   .wrapper {
-    padding: 180px 0 0 225px;
-    height: calc(100vh - 180px);
+    padding: 150px 0 0 225px;
+    height: calc(100vh - 150px);
   }
 }
 

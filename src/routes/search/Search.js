@@ -6,7 +6,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/header'
 import LazyLoadBeta from '@components/common/LazyloadBeta'
 
-import { getSearchVideo } from '../../actions/search'
+import * as searchActions from '@actions/search';
 import SearchGenre from './SearchGenre/SearchGenre'
 import MsearchGenre from './SearchGenre/MsearchGenre'
 import RecentSearch from './RecentSearch/RecentSearch'
@@ -15,13 +15,20 @@ import MovieSuggestion from './MovieSuggestion/MovieSuggestion'
 import MmovieSuggestion from './MovieSuggestion/MmovieSuggestion'
 import s from './Search.css'
 
+import history from '../../history';
+
 class Search extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputSearch = React.createRef();
+  }
+
   state = {
-    showResult: false,
     searchText: '',
     textSuggestion: '',
     searchedMovie: [],
-
+    result: [],
+    val: ''
   };
 
   static propTypes = {
@@ -29,40 +36,68 @@ class Search extends React.Component {
     isMobile: PropTypes.bool,
   };
 
-  componentWillMount() {
-    this.props.getSearchVideo();
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {
+	    getSearchResult,
+	    search : { result }
+    } = nextProps;
+
+    if (nextProps.search.result.meta.status === 'loading'  && prevState.result.length <= 0) {
+      getSearchResult();
+    }
+    return { ...prevState, result };
   }
 
-  handleSearchChange = (e) => {
-    const val = e.target.value;
-    const { search : { videos } } = this.props;
-    // console.log("VIDEO", videos)
-    if(videos.meta.status !== 'success') {
-      this.props.getSearchVideo();
+  componentDidUpdate(prevProps, prevState) {
+    const queryString = history.location.search.split('?q=')[1];
+    let val = '';
+    if(queryString) {
+      val = decodeURIComponent(queryString.split("&")[0]);
+      this.inputSearch.current.value = val;
+      this.parseMovieSuggestion(val)
+      if(prevProps.search.result.meta.status !== this.props.search.result.meta.status) {
+        this.setState({
+          searchText: val,
+        })
+      }
     }
-    const matchMovieArr = videos.data.filter(function(dt) {
-      return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
-    });
+  }
 
+  parseMovieSuggestion = (val) => {
+    this.searchText = val;
+    const { search : { result } } = this.props;
+    const matchMovieArr = result.data.filter(function(dt) {
+      if(dt.type=="videos") {
+        return dt.title.toLowerCase().indexOf(val.toLowerCase()) !== -1;
+      }
+    });
     const firstMatchMovieArr = matchMovieArr.filter(function(dt){
       return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
     });
 
     const firstMatchMovie = firstMatchMovieArr.length ? firstMatchMovieArr[0].title : '';
     const textSugRemain = firstMatchMovie.substr(val.length, firstMatchMovie.length);
-    this.setState({
-      showResult: val,
-    })
     this.textSuggestion = `${val}${textSugRemain}`;
     this.searchedMovie = matchMovieArr;
-    this.searchText = val;
+  }
+
+  handleSearchChange = (e) => {
+    const val = e.target.value;
+    history.push({
+      search: `q=${encodeURIComponent(val)}`,
+    });
+    this.parseMovieSuggestion(val);
+    this.setState({
+      searchText: val,
+    })
   };
 
+
   render() {
-    const { showResult } = this.state
     const { isMobile } = this.props;
-    const showSearchPlaceholder = isMobile && !showResult;
     const isDark = false;
+    const showResult = this.searchText ? true : false;
+    const showSearchPlaceholder = isMobile && !showResult;
 
     const genre = [
       { title: 'Action', imgUrl: 'assets/search_scifi@2x.png', link: '' },
@@ -90,11 +125,11 @@ class Search extends React.Component {
       { id: 4, name: 'Ava Mendez', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
       { id: 5, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
       { id: 6, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-      { id: 7, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-      { id: 8, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-      { id: 9, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-      { id: 10, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-      { id: 11, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
+      // { id: 7, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
+      // { id: 8, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
+      // { id: 9, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
+      // { id: 10, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
+      // { id: 11, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
     ]
 
     const movieSuggestionDt = [
@@ -110,7 +145,6 @@ class Search extends React.Component {
       { id: 10, title: 'Kung Fu Panda: Secrets of the Furious Five', year: '2000', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
       { id: 11, title: 'Conjuring', year: '2016', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
     ]
-
 
     return (
       <Fragment>
@@ -134,6 +168,7 @@ class Search extends React.Component {
 
               <input
                 className={isMobile ? s.searchInput__mobile : s.searchInput}
+                ref={this.inputSearch}
                 onChange={this.handleSearchChange}
               />
             </div>
@@ -152,16 +187,16 @@ class Search extends React.Component {
             { showResult &&
               <div className={s.resultWrapper}>
                 <div className={isMobile ? s.resultContainer__mobile : s.resultContainer}>
-                  { recentSearch.length > 0 &&
+                  {/* { recentSearch.length > 0 &&
                     <div className={s.resultRow}>
                       <RecentSearch isMobile={isMobile} data={recentSearch}/>
                     </div>
                   }
                   { castData.length > 0 &&
                     <div className={s.resultRow}>
-                      <Cast data={castData} searchText={this.searchText}/>
+                      <Cast data={castData} searchText={searchText}/>
                     </div>
-                  }
+                  } */}
                   { !isMobile &&  this.searchedMovie.length && <MovieSuggestion isMobile={isMobile} data={this.searchedMovie} searchText={this.searchText}/> }
                   { isMobile &&  this.searchedMovie.length && <MmovieSuggestion isMobile={isMobile} data={this.searchedMovie} searchText={this.searchText}/> }
                 </div>
@@ -181,7 +216,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getSearchVideo: () => dispatch(getSearchVideo()),
+  getSearchResult: () => dispatch(searchActions.getSearchResult()),
 })
 
 export default compose(

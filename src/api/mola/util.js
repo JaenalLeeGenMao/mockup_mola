@@ -140,9 +140,40 @@ const normalizeSearchVideo = (response) => {
   }
 }
 
+const normalizeSearchResult = (response) => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map((result) => {
+      const {
+        id,
+        type,
+        attributes: {
+          title,
+          year,
+          coverUrl,
+        },
+      } = result
+      return {
+        id,
+        type,
+        title,
+        year,
+        coverUrl
+      }
+    })
+  }
+  return {
+    meta: {
+      status: 'no_result',
+    },
+    data: {},
+  }
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
   normalizeHistory,
-  normalizeSearchVideo
+  normalizeSearchVideo,
+  normalizeSearchResult
 }
