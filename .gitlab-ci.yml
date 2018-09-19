@@ -21,7 +21,7 @@ Build-Push-Docker-Staging:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
-    - staging@apps/mola/mola-web
+    - develop@apps/mola/mola-web
 
 Build-Push-Docker-Production:
   stage: push
