@@ -7,7 +7,7 @@ export const SETTINGS = {
   slidesToShow: true,
   slidesToScroll: true,
   adaptiveHeight: true,
-  autoplay: false,
+  autoplay: true,
   autoplaySpeed: 3000,
   speed: 800,
   lazyLoad: 'ondemand',

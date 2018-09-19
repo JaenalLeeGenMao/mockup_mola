@@ -40,15 +40,16 @@ const getHomeVideo = ({ id, timeout, ...payload }) => {
       return {
         meta: {
           status: 'success',
-          error: '',
+          error: ''
         },
-        data: [...result[0]] || [],
-      }
+        data: [...result[0]] || []
+      };
     }
   ).catch((error) => {
+    const status = typeof error === 'object' ? 'success' : 'error';
     return {
       meta: {
-        status: typeof error === "object" ? 'success' : 'error',
+        status,
         error: `home/getHomeVideo ~ ${error}`,
       },
       data: [],
