@@ -1,16 +1,13 @@
 import { get } from 'axios'
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, VIDEOS_ENDPOINT } from './endpoints'
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT } from './endpoints'
 import utils from './util'
-import config from '@global/config/api'
-const { NODE_ENV } = process.env
 
-const getHomePlaylist = () => {
+const getHomePlaylist = ({ timeout, ...payload }) => {
   return get(
-    `${HOME_PLAYLIST_ENDPOINT}/mola-home`,
-    {
-      ...config[NODE_ENV].api
-    }
-  ).then(
+    `${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
+      timeout,
+      maxRedirects: 0
+    }).then(
     (response) => {
       const result = utils.normalizeHomePlaylist(response)
       return {
@@ -32,22 +29,27 @@ const getHomePlaylist = () => {
   })
 }
 
-const getHomeVideo = ({ id }) => {
+const getHomeVideo = ({ id, timeout, ...payload }) => {
   return get(
-    `${HOME_PLAYLIST_ENDPOINT}/${id}`,
-    {
-      ...config[NODE_ENV].api
-    }
-  ).then(
+    `${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+      timeout,
+      maxRedirects: 0
+    }).then(
     (response) => {
       const result = utils.normalizeHomeVideo(response)
-      return [...result[0]] || []
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
     }
   ).catch((error) => {
     return {
       meta: {
-        status: 'error',
-        text: `home/getHomeVideo ~ ${error}`,
+        status: typeof error === "object" ? 'success' : 'error',
+        error: `home/getHomeVideo ~ ${error}`,
       },
       data: [],
     }
@@ -58,7 +60,6 @@ const getAllHistory = (payload) => {
   return get(`${HISTORY_ENDPOINT}`, { ...payload }).then(
     (response) => {
       const result = utils.normalizeHistory(response)
-      // console.log('RES', result)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -78,7 +79,7 @@ const getAllHistory = (payload) => {
 }
 
 const getSearchVideo = (payload) => {
-  return get(`${VIDEOS_ENDPOINT}`, { ...payload }).then(
+  return get(`${SEARCH_VIDEOS_ENDPOINT}`, { ...payload }).then(
     (response) => {
       const result = utils.normalizeSearchVideo(response);
       return {
@@ -93,7 +94,7 @@ const getSearchVideo = (payload) => {
     return {
       meta: {
         status: 'error',
-        error: `video/getSearchVideo ~ ${error}`,
+        error: `search/getSearchVideo ~ ${error}`,
       },
       data: [],
     }
