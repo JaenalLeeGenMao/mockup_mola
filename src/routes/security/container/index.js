@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './index.css'
 
-import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components'
+import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 class Profile extends React.Component {
@@ -31,44 +31,30 @@ class Profile extends React.Component {
       newPassword,
       confirmPassword
     } = this.state
+    const menus = [
+      {
+        title: 'PROFILE',
+        href: '/profile'
+      },
+      {
+        title: 'SECURITY',
+        href: '/security'
+      },
+      {
+        title: 'SETTING',
+        href: '/setting'
+      }
+    ]
 
     return (
       <div>
         {
           isMobile &&
-            <UiMobileNav
-              menus={[
-                {
-                  title: 'PROFILE',
-                  href: '/profile'
-                },
-                {
-                  title: 'SECURITY',
-                  href: '/security'
-                },
-                {
-                  title: 'SETTING',
-                  href: '/setting'
-                }
-              ]} />
+            <UiMobileNav menus={menus} />
         }
         <div className={s.root}>
           <div className={s.sideLeft}>
-            <UiNavigation
-              menus={[
-                {
-                  title: 'PROFILE',
-                  href: '/profile'
-                },
-                {
-                  title: 'SECURITY',
-                  href: '/security'
-                },
-                {
-                  title: 'SETTING',
-                  href: '/setting'
-                }
-              ]} />
+            <UiNavigation menus={menus} />
           </div>
           <div className={s.sideCenter}>
             <UiInput
@@ -94,6 +80,9 @@ class Profile extends React.Component {
               onChange={this.onChangeInput}
               label="Confirm Password"
               value={confirmPassword} />
+
+            <UiButton type="button"
+              text="CHANGE PASSWORD" />
           </div>
           <div className={s.sideRight}></div>
         </div>

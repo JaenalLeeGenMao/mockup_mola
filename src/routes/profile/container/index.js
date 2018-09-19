@@ -82,44 +82,30 @@ class Profile extends React.Component {
       photo,
       disabledEdit
     } = this.state
+    const menus = [
+      {
+        title: 'PROFILE',
+        href: '/profile'
+      },
+      {
+        title: 'SECURITY',
+        href: '/security'
+      },
+      {
+        title: 'SETTING',
+        href: '/setting'
+      }
+    ]
 
     return (
       <div>
         {
           isMobile &&
-            <UiMobileNav
-              menus={[
-                {
-                  title: 'PROFILE',
-                  href: '/profile'
-                },
-                {
-                  title: 'SECURITY',
-                  href: '/security'
-                },
-                {
-                  title: 'SETTING',
-                  href: '/setting'
-                }
-              ]} />
+            <UiMobileNav menus={menus} />
         }
         <div className={s.root}>
           <div className={s.sideLeft}>
-            <UiNavigation
-              menus={[
-                {
-                  title: 'PROFILE',
-                  href: '/profile'
-                },
-                {
-                  title: 'SECURITY',
-                  href: '/security'
-                },
-                {
-                  title: 'SETTING',
-                  href: '/setting'
-                }
-              ]} />
+            <UiNavigation menus={menus} />
           </div>
           <div className={s.sideCenter}>
             <div className={s.profileArea}>
@@ -179,7 +165,8 @@ class Profile extends React.Component {
                       label="Gender"
                       options={['male', 'female']}
                       onChange={this.onChangeRadio}
-                      checked={gender} />
+                      checked={gender}
+                      rootStyle={{ marginBottom: '65px' }} />
                 }
 
                 <UiInput

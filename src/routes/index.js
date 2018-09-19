@@ -78,6 +78,10 @@ const routes = {
       path: '/security',
       load: () => import(/* webpackChunkName: 'security' */ './security'),
     },
+    {
+      path: '/setting',
+      load: () => import(/* webpackChunkName: 'setting' */ './setting'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

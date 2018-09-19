@@ -4,9 +4,11 @@ import s from './index.css';
 
 const Button = (props) => {
   let uiStyle = props.uiStyle || 'default'
+  let type = props.type || 'type'
   return(
     <div className={s.root}>
       <button
+        type={type}
         className={s[uiStyle]}>
         {props.text}
       </button>

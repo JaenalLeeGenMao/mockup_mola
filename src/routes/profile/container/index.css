@@ -101,10 +101,12 @@
 @media only screen and (max-width: 1024px) {
   .button {
     padding: 15px 25px;
+    width: 100%;
   }
 
   .buttonCancel {
     padding: 15px 25px;
+    width: 100%;
   }
 }
 

@@ -7,11 +7,12 @@
 }
 
 .component {
+  margin-top: 5px;
   background: none;
-  padding: 8px 0;
+  padding: 10px 0;
   width: 100%;
   border: none;
-  border-bottom: 1px solid#34495e;
+  border-bottom: 1px solid #1a202f;
   color: #fff;
   outline: none;
 }
