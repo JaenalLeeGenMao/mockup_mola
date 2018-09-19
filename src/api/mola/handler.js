@@ -41,13 +41,20 @@ const getHomeVideo = ({ id }) => {
   ).then(
     (response) => {
       const result = utils.normalizeHomeVideo(response)
-      return [...result[0]] || []
+      return {
+        meta: {
+          status: 'success',
+          error: ''
+        },
+        data: [...result[0]] || []
+      };
     }
   ).catch((error) => {
+    const status = typeof error === 'object' ? 'success' : 'error';
     return {
       meta: {
-        status: 'error',
-        text: `home/getHomeVideo ~ ${error}`,
+        status,
+        error: `home/getHomeVideo ~ ${error}`,
       },
       data: [],
     }
