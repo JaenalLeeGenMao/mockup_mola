@@ -4,13 +4,14 @@ import Search from './Search'
 
 const title = 'Search'
 
-function action({ isMobile }) {
+function action({ isMobile, query }) {
+  const qs = query.q ? query.q : '';
   return {
     chunks: ['search'],
     title,
     component: (
       <Layout>
-        <Search title={title} isMobile={isMobile} />
+        <Search title={title} isMobile={isMobile} searchKeyword={qs} />
       </Layout>
     ),
   }
