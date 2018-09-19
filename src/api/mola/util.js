@@ -1,3 +1,6 @@
+import dummyFigure from '@global/style/icons/bruce.png';
+import dummyBg from '@global/style/icons/background.png';
+
 const normalizeHomePlaylist = (response) => {
   const { data } = response.data
   if (data && data.length > 0) {
@@ -26,8 +29,8 @@ const normalizeHomePlaylist = (response) => {
           description,
           shortDescription: shortDescription || '',
           layer3: layer3 || '',
-          layer2: layer2 || '',
-          layer1: layer1 || '',
+          layer2: layer2 || dummyFigure,
+          layer1: layer1 || dummyBg,
           isDark: isDark || 0,
           isActive: false,
           type,
@@ -64,8 +67,8 @@ const normalizeHomeVideo = (response) => {
           description,
           shortDescription,
           layer3: layer3 || '',
-          layer2: layer2 || '',
-          layer1: layer1 || '',
+          layer2: layer2 || dummyFigure,
+          layer1: layer1 || dummyBg,
           isDark: isDark || 0,
           type,
         }
