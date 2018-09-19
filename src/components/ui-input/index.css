@@ -1,0 +1,37 @@
+.root {
+  margin-bottom: 30px;
+}
+
+.label {
+  color: #6f6f6f;
+}
+
+.transparent,
+.box {
+  margin-top: 5px;
+  padding: 10px 0;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.transparent {
+  background: none;
+  border-bottom: 1px solid #1a202f;
+  color: #fff;
+}
+
+.transparent:focus {
+  border-bottom: 1px solid#fff;
+}
+
+.box {
+  background: #343434;
+  border-radius: 4px;
+  color: #fff;
+  padding: 15px 8px;
+}
+
+.box:focus {
+  background: #2d2d2d;
+}
