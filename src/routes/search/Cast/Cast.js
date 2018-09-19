@@ -12,7 +12,6 @@ class Cast extends React.Component {
 
   render() {
     const { data, searchText } = this.props;
-    console.log("Searchtext", searchText)
     return (
       <Fragment>
         <div className={s.resultTitle}>Cast</div>

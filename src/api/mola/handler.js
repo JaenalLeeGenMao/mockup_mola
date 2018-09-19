@@ -95,15 +95,15 @@ const getSearchVideo = (payload) => {
     return {
       meta: {
         status: 'error',
-        error: `search/getSearchVideo ~ ${error}`,
+        error: `search/getSearchResult ~ ${error}`,
       },
       data: [],
     }
   })
 }
 
-const getSearchResult = (payload) => {
-  return get(`${SEARCH_ENDPOINT}`, { ...payload }).then(
+const getSearchResult = ({ q }) => {
+  return get(`${SEARCH_ENDPOINT}`, { params: { q: q } }).then(
     (response) => {
       const result = utils.normalizeSearchResult(response);
       return {

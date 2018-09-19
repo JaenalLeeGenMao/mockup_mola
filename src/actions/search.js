@@ -28,7 +28,23 @@ export const getSearchVideo = () => dispatch => {
     });
 };
 
-export const getSearchResult = () => dispatch => {
+// export const getSearchResult = searchText => dispatch => {
+//   return Mola.getSearchResult({ searchText: searchText })
+//     .then(result => {
+//       result = {
+//         meta: {
+//           status: "success",
+//         },
+//         data: result
+//       };
+//       dispatch({
+//         type: types.GET_SEARCH,
+//         payload: result,
+//       });
+//     });
+// };
+
+export const getSearchResult = searchText => dispatch => {
   dispatch({
     type: types.GET_SEARCH_LOADING,
     payload: {
@@ -39,7 +55,7 @@ export const getSearchResult = () => dispatch => {
       data: []
     }
   });
-  return Mola.getSearchResult()
+  return Mola.getSearchResult({ q: searchText })
     .then(result => {
       if (result.meta.status === "error") {
         dispatch({

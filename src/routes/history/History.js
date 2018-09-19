@@ -86,7 +86,7 @@ class History extends React.Component {
           <div className={s.wrapperBg}></div>
           <div className={s.containerOuter}>
             <div className={s.containerInner} id='history-container'>
-              {/* {movieItems.map((movie, index) => {
+              {movieItems.map((movie, index) => {
                 const videosAttr = movie.attributes.videos[0].attributes
                 if (
                   !movie.attributes.videos[0].videos ||
@@ -105,7 +105,7 @@ class History extends React.Component {
                     />
                   )
                 }
-              })} */}
+              })}
             </div>
           </div>
         </div>

@@ -47,7 +47,6 @@
   height: calc(100vh - 76px);
   z-index: 102;
   position: relative;
-  background: #11110f;
 }
 
 @media screen and (max-width: 1280px) {

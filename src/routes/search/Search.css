@@ -97,7 +97,9 @@
 }
 
 .searchInput,
-.searchInput__mobile {
+.searchInput__mobile,
+.searchInputSuggestion,
+.searchInputSuggestion__mobile {
   background-color: transparent;
   border: 0;
   border-bottom: 2px solid white;
@@ -112,6 +114,11 @@
   z-index: 101;
 }
 
+.searchInputSuggestion,
+.searchInputSuggestion__mobile {
+  color: #6f6f6f;
+}
+
 .searchInput__mobile {
   padding: 10px 0 10px 0;
   top: 0;
@@ -122,6 +129,19 @@
   margin: 0;
   overflow: hidden;
   width: 100%;
+}
+
+.resultEmptyWrapper {
+  padding-top: 130px;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+  color: #6f6f6f;
+  text-align: center;
+}
+
+.resultEmptyWrapper div {
+  padding: 10px 0;
 }
 
 .resultContainer {
@@ -315,6 +335,12 @@
     margin: 0 auto;
     width: 90%;
     padding-top: 70px;
+  }
+
+  .resultEmptyWrapper {
+    margin: 0 auto;
+    width: 80%;
+    text-align: left;
   }
 }
 

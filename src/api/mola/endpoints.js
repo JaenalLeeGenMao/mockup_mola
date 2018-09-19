@@ -8,4 +8,4 @@ export const HISTORY_ENDPOINT =
 
 export const SEARCH_VIDEOS_ENDPOINT = 'http://mola.lukitomo.com/v2/videos/';
 
-export const SEARCH_ENDPOINT = 'http://mola.lukitomo.com/v2/videos/';
+export const SEARCH_ENDPOINT = 'http://mola.lukitomo.com/v2/search/';
