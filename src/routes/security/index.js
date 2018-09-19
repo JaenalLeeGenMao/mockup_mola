@@ -3,10 +3,10 @@ import Container from './container';
 
 import Layout from '@components/Layout';
 
-const title = 'Profile';
+const title = 'Security';
 function action({ isMobile }) {
   return {
-    chunks: ['profile'],
+    chunks: ['security'],
     title,
     component: (
       <Layout>

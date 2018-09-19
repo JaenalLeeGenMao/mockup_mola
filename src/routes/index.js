@@ -74,6 +74,14 @@ const routes = {
       path: '/resetPassword',
       load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
     },
+    {
+      path: '/security',
+      load: () => import(/* webpackChunkName: 'security' */ './security'),
+    },
+    {
+      path: '/setting',
+      load: () => import(/* webpackChunkName: 'setting' */ './setting'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

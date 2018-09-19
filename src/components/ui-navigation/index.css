@@ -1,0 +1,43 @@
+.root {
+  margin: 0;
+  padding: 20px 50px;
+}
+
+.title {
+  color: #2c56ff;
+  font-size: 30px;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-top: 100px;
+}
+
+.container > li {
+  margin-bottom: 15px;
+}
+
+.container > li > a {
+  color: #6f6f6f;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container > li > a.active,
+.container > li > a:hover {
+  color: #fff;
+  position: relative;
+}
+
+.container > li > a.active::before {
+  content: '';
+  height: 2px;
+  width: 80%;
+  background: #fff;
+  position: absolute;
+  left: -70%;
+  top: 40%;
+  margin-left: -12px;
+}

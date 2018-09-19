@@ -172,7 +172,7 @@ class Search extends React.Component {
           <div className={s.containerBg}/>
           <div className={s.container}>
             <div className={isMobile ? s.searchAutocomplete__mobile : s.searchAutocomplete}>
-              { showResult && !isMobile && 
+              { showResult && !isMobile &&
                 <span>
                   {this.textSuggestion}
                 </span>
@@ -182,11 +182,11 @@ class Search extends React.Component {
               { isMobile && !showResult && <i className={s.searchIcon__mobile}/>}
               { !isMobile && <i className={s.searchIcon}/>}
               { showSearchPlaceholder && <span className={s.searchText}>Search</span>}
-                <input
-                  className={isMobile ? s.searchInput__mobile : s.searchInput}
-                  ref={this.inputSearch}
-                  onChange={this.handleSearchChange}
-                />
+              <input
+                className={isMobile ? s.searchInput__mobile : s.searchInput}
+                ref={this.inputSearch}
+                onChange={this.handleSearchChange}
+              />
             </div>
             { !showResult && !isMobile &&
               <LazyLoadBeta>

@@ -1,0 +1,50 @@
+.root {
+  margin-bottom: 30px;
+}
+
+.label {
+  color: #6f6f6f;
+  font-weight: lighter;
+}
+
+.container {
+  position: relative;
+}
+
+.transparent,
+.box {
+  padding: 10px 0;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.transparent {
+  background: none;
+  border-bottom: 1px solid #1a202f;
+  color: #fff;
+}
+
+.transparent:focus {
+  border-bottom: 1px solid#fff;
+}
+
+.box {
+  background: #343434;
+  border-radius: 4px;
+  color: #fff;
+  padding: 15px 1.5%;
+  width: 97%;
+  margin-top: 5px;
+}
+
+.box:focus {
+  background: #2d2d2d;
+}
+
+.eye {
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}

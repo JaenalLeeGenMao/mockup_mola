@@ -1,0 +1,41 @@
+.root {
+  margin: 0;
+  background: #0e1d3d;
+}
+
+.header {
+  padding: 0 10px;
+  padding-top: 15px;
+}
+
+.title {
+  color: #fff;
+  font-size: 18px;
+}
+
+.component {
+  padding: 0 20px;
+  margin: 0;
+  display: flex;
+  list-style: none;
+}
+
+.component li {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+}
+
+.active > a {
+  color: #fff !important;
+}
+
+.component li a {
+  font-size: 14px;
+  color: #6f6f6f;
+  text-decoration: none;
+}
+
+.active {
+  border-bottom: 3px solid #fff;
+}
