@@ -6,20 +6,22 @@ variables:
   REPOSITORY_HOST: asia.gcr.io
   IMAGE_NAME: $CI_PROJECT_NAME
 
+before_script:
+  export DOCKER_HOST="tcp://localhost:2375"
+
 Build-Push-Docker-Staging:
   stage: push
   image: google/cloud-sdk
   services:
     - docker:dind
-  before_script:
-    - export DOCKER_HOST="tcp://localhost:2375"
-    - docker info
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
   script:
-    - .gitlab-ci/auth_gcloud.sh
-    - .gitlab-ci/push_docker.sh
+    - docker info
+    - echo $GCLOUD_SERVICE_KEY
+    #- .gitlab-ci/auth_gcloud.sh
+    #- .gitlab-ci/push_docker.sh
   only:
     - staging@apps/mola/mola-web
 
