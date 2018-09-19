@@ -43,7 +43,37 @@ const routes = {
       path: '/admin',
       load: () => import(/* webpackChunkName: 'admin' */ './admin'),
     },
-
+    // Movie details
+    {
+      path: '/movie-detail',
+      load: () => import(/* webpackChunkName: 'admin' */ './movie-detail'),
+    },
+    // Movie Library
+    {
+      path: '/movie-library',
+      load: () => import(/* webpackChunkName: 'admin' */ './movie-library'),
+    },
+    // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
+    {
+      path: '/history',
+      load: () => import(/* webpackChunkName: 'history' */ './history'),
+    },
+    {
+      path: '/search',
+      load: () => import(/* webpackChunkName: 'search' */ './search'),
+    },
+    {
+      path: '/profile',
+      load: () => import(/* webpackChunkName: 'profile' */ './profile'),
+    },
+    {
+      path: '/forgotPassword',
+      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
+    },
+    {
+      path: '/resetPassword',
+      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

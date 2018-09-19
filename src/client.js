@@ -11,6 +11,7 @@ import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import deepForceUpdate from 'react-deep-force-update';
+import { ParallaxProvider } from 'react-scroll-parallax';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
 import App from './components/App';
@@ -23,8 +24,8 @@ import router from './router';
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {
-  // Enables critical path CSS rendering
-  // https://github.com/kriasoft/isomorphic-style-loader
+// Enables critical path CSS rendering
+// https://github.com/kriasoft/isomorphic-style-loader
   insertCss: (...styles) => {
     // eslint-disable-next-line no-underscore-dangle
     const removeCss = styles.map(x => x._insertCss());
@@ -40,6 +41,7 @@ const context = {
   // http://redux.js.org/docs/basics/UsageWithReact.html
   store: configureStore(window.App.state, { history }),
   storeSubscription: null,
+  isMobile: window.App.isMobile
 };
 
 const container = document.getElementById('app');
@@ -50,7 +52,7 @@ const scrollPositionsHistory = {};
 
 // Re-render the app when window.location changes
 async function onLocationChange(location, action) {
-  // Remember the latest scroll position for the previous location
+// Remember the latest scroll position for the previous location
   scrollPositionsHistory[currentLocation.key] = {
     scrollX: window.pageXOffset,
     scrollY: window.pageYOffset,
@@ -83,7 +85,9 @@ async function onLocationChange(location, action) {
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
-      <App context={context}>{route.component}</App>,
+      <ParallaxProvider>
+        <App context={context}>{route.component}</App>
+      </ParallaxProvider>,
       container,
       () => {
         if (isInitialRender) {

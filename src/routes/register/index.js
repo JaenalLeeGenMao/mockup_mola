@@ -9,18 +9,22 @@
 
 import React from 'react';
 import Layout from '../../components/Layout';
-import Register from './Register';
+import RegisterDesktop from './desktop/Register';
+import RegisterMobile from './mobile/Register';
 
 const title = 'New User Registration';
 
-function action() {
+function action(isMobile) {
   return {
     chunks: ['register'],
     title,
-    component: (
-      <Layout>
-        <Register title={title} />
-      </Layout>
+    component: (isMobile.isMobile ?
+      (<Layout>
+        <RegisterMobile />
+      </Layout>)  :
+      (<Layout>
+        <RegisterDesktop />
+      </Layout>)
     ),
   };
 }

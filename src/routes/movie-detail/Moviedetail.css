@@ -1,0 +1,49 @@
+.casting_photo_container {
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  top: 31px;
+  height: 131px;
+}
+
+.casting_photo_container p {
+  margin: 0;
+  margin-top: 7px;
+}
+
+.casting_photo_container img {
+  border-radius: 50%;
+  width: 68px;
+  height: 68px;
+}
+
+.casting_photo_img {
+  position: relative;
+  left: 18px;
+}
+
+.trailer_photo_container {
+  text-align: center;
+  overflow: hidden;
+  height: 131px;
+  position: relative;
+  left: 10px;
+}
+
+.trailer_photo_container img {
+  width: initial;
+}
+
+.trailer_playtag {
+  color: white;
+  position: absolute;
+  bottom: -4px;
+  right: 24px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.trailer_ifone {
+  left: 244px;
+}

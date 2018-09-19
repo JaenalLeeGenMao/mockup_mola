@@ -1,0 +1,201 @@
+/**
+* React Starter Kit (https://www.reactstarterkit.com/)
+*
+* Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+*
+* This source code is licensed under the MIT license found in the
+* LICENSE.txt file in the root directory of this source tree.
+*/
+
+@import '../../../components/variables.css';
+@import '../../../global/style/css/slick.css';
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  min-width: 0;
+  max-height: 100vh;
+  width: auto;
+  transition: 100ms ease-out;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+:root {
+  overflow: hidden;
+  max-height: 100vh;
+}
+
+.home__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+.home__error_container {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5%;
+  letter-spacing: 0.25em;
+}
+
+.home__slider_container {
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.home__parallax {
+  position: relative;
+  height: 100vh;
+  max-height: 100vh;
+  min-width: 1190px;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  outline: 0;
+}
+
+.home__parallax_layer_1 img {
+  height: 100vh;
+  width: 100vw;
+  min-width: 1190px;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.home__parallax_layer_2 {
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: inline-block;
+  text-align: right;
+}
+
+.home__parallax_layer_2 img {
+  height: auto;
+  width: auto;
+}
+
+.home__parallax_layer_3 {
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 40%;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.home__parallax_layer_3_info {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  width: 40vw;
+  min-width: 540px;
+  bottom: 0;
+  z-index: 3;
+  text-align: right;
+}
+
+.home__parallax_layer_3_info img {
+  width: 30vw;
+  margin: auto 0 auto auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home__parallax_layer_3_detail {
+  position: absolute;
+  bottom: 20%;
+  right: 0;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
+}
+
+.home__parallax_layer_3_title {
+  position: relative;
+  padding: 10px;
+  font-size: 1.2em;
+  text-transform: uppercase;
+}
+
+.home__parallax_layer_3_desc {
+  padding: 0 10px;
+  font-size: 0.825rem;
+  font-style: italic;
+  white-space: pre-line;
+  overflow: hidden;
+  opacity: 0.8;
+  width: 345px;
+}
+
+/* .home__transparent_link {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -25%;
+    width: 360px;
+    height: 440px;
+    margin: auto;
+    border-radius: 50%;
+    background: blue;
+} */
+
+.home__see_more {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  font-family: 'Courier New', Courier, monospace;
+  font-variant: unicase;
+  font-style: italic;
+  font-size: 1.14rem;
+  padding-top: 5px;
+  opacity: 0.6;
+  animation: spaceout 2s infinite;
+}
+
+.home__see_more:hover {
+  letter-spacing: 0.2em;
+  opacity: 1;
+}
+
+.home__parallax_layer_3 :global(.parallax-inner) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes spaceout {
+  0% { letter-spacing: 0; }
+
+  50% {
+    letter-spacing: 0.12em;
+    text-shadow: 0.5px 0.4px;
+  }
+  100% { letter-spacing: 0; }
+}

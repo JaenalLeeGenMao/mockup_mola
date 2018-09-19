@@ -15,6 +15,7 @@ import nodeExternals from 'webpack-node-externals';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import overrideRules from './lib/overrideRules';
 import pkg from '../package.json';
+import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const resolvePath = (...args) => path.resolve(ROOT_DIR, ...args);
@@ -32,6 +33,17 @@ const reImage = /\.(bmp|gif|jpg|jpeg|png|svg)$/;
 const staticAssetName = isDebug
   ? '[path][name].[ext]?[hash:8]'
   : '[hash:8].[ext]';
+
+const alias = {
+  '@api': resolvePath('src/api'),
+  '@global': resolvePath('src/global'),
+  '@routes': resolvePath('src/routes'),
+  '@actions': resolvePath('src/actions'),
+  '@reducers': resolvePath('src/reducers'),
+  '@constants': resolvePath('src/constants'),
+  '@components': resolvePath('src/components'),
+  '@source': SRC_DIR,
+};
 
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
@@ -57,14 +69,32 @@ const config = {
       ? '[name].chunk.js'
       : '[name].[chunkhash:8].chunk.js',
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
+    devtoolModuleFilenameTemplate: (info) =>
       path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
 
   resolve: {
     // Allow absolute paths in imports, e.g. import Button from 'components/Button'
     // Keep in sync with .flowconfig and .eslintrc
+    extensions: ['.js', '.jsx', '.json'],
     modules: ['node_modules', 'src'],
+    plugins: [
+      new DirectoryNamedWebpackPlugin({
+        // define where the imported files will be resolving by DirectoryNamedWebpackPlugin.
+        // it can be string/regex or Array of string/regex.
+        include: [
+          path.resolve(__dirname, 'api'),
+          path.resolve(__dirname, 'global'),
+          path.resolve(__dirname, 'routes'),
+          path.resolve(__dirname, 'actions'),
+          path.resolve(__dirname, 'reducers'),
+          path.resolve(__dirname, 'constants'),
+          path.resolve(__dirname, 'components'),
+        ]
+      })
+    ],
+    symlinks: true,
+    alias,
   },
 
   module: {
@@ -91,8 +121,8 @@ const config = {
               {
                 targets: {
                   browsers: pkg.browserslist,
-                  forceAllTransforms: !isDebug, // for UglifyJS
                 },
+                forceAllTransforms: !isDebug, // for UglifyJS
                 modules: false,
                 useBuiltIns: false,
                 debug: false,
@@ -100,7 +130,6 @@ const config = {
             ],
             // Experimental ECMAScript proposals
             // https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-
-            '@babel/preset-stage-2',
             // Flow
             // https://github.com/babel/babel/tree/master/packages/babel-preset-flow
             '@babel/preset-flow',
@@ -118,6 +147,20 @@ const config = {
             // Remove unnecessary React propTypes from the production build
             // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
             ...(isDebug ? [] : ['transform-react-remove-prop-types']),
+
+            ...(isDebug ? [] : ['@babel/plugin-syntax-dynamic-import']),
+
+            // Stage 2
+            ["@babel/plugin-proposal-decorators", { "legacy": true }],
+            "@babel/plugin-proposal-function-sent",
+            "@babel/plugin-proposal-export-namespace-from",
+            "@babel/plugin-proposal-numeric-separator",
+            "@babel/plugin-proposal-throw-expressions",
+            // Stage 3
+            "@babel/plugin-syntax-dynamic-import",
+            "@babel/plugin-syntax-import-meta",
+            ["@babel/plugin-proposal-class-properties", { "loose": false }],
+            "@babel/plugin-proposal-json-strings"
           ],
         },
       },
@@ -253,13 +296,13 @@ const config = {
       ...(isDebug
         ? []
         : [
-            {
-              test: resolvePath(
-                'node_modules/react-deep-force-update/lib/index.js',
-              ),
-              loader: 'null-loader',
-            },
-          ]),
+          {
+            test: resolvePath(
+              'node_modules/react-deep-force-update/lib/index.js',
+            ),
+            loader: 'null-loader',
+          },
+        ]),
     ],
   },
 
@@ -307,7 +350,7 @@ const clientConfig = {
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
-      __DEV__: isDebug,
+      '__DEV__': isDebug,
     }),
 
     // Emit a file with assets paths
@@ -325,8 +368,8 @@ const clientConfig = {
         // Write chunk-manifest.json.json
         const chunkFileName = `${BUILD_DIR}/chunk-manifest.json`;
         try {
-          const fileFilter = file => !file.endsWith('.map');
-          const addPath = file => manifest.getPublicPath(file);
+          const fileFilter = (file) => !file.endsWith('.map');
+          const addPath = (file) => manifest.getPublicPath(file);
           const chunkFiles = stats.compilation.chunkGroups.reduce((acc, c) => {
             acc[c.name] = [
               ...(acc[c.name] || []),
@@ -351,10 +394,10 @@ const clientConfig = {
     ...(isDebug
       ? []
       : [
-          // Webpack Bundle Analyzer
-          // https://github.com/th0r/webpack-bundle-analyzer
-          ...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
-        ]),
+        // Webpack Bundle Analyzer
+        // https://github.com/th0r/webpack-bundle-analyzer
+        ...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
+      ]),
   ],
 
   // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
@@ -412,7 +455,7 @@ const serverConfig = {
   module: {
     ...config.module,
 
-    rules: overrideRules(config.module.rules, rule => {
+    rules: overrideRules(config.module.rules, (rule) => {
       // Override babel-preset-env configuration for Node.js
       if (rule.loader === 'babel-loader') {
         return {
@@ -420,20 +463,20 @@ const serverConfig = {
           options: {
             ...rule.options,
             presets: rule.options.presets.map(
-              preset =>
+              (preset) =>
                 preset[0] !== '@babel/preset-env'
                   ? preset
                   : [
-                      '@babel/preset-env',
-                      {
-                        targets: {
-                          node: pkg.engines.node.match(/(\d+\.?)+/)[0],
-                        },
-                        modules: false,
-                        useBuiltIns: false,
-                        debug: false,
+                    '@babel/preset-env',
+                    {
+                      targets: {
+                        node: pkg.engines.node.match(/(\d+\.?)+/)[0],
                       },
-                    ],
+                      modules: false,
+                      useBuiltIns: false,
+                      debug: false,
+                    },
+                  ],
             ),
           },
         };
@@ -471,7 +514,7 @@ const serverConfig = {
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
       'process.env.BROWSER': false,
-      __DEV__: isDebug,
+      '__DEV__': isDebug,
     }),
 
     // Adds a banner to the top of each generated chunk

@@ -1,101 +1,50 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-// ESLint configuration
-// http://eslint.org/docs/user-guide/configuring
 module.exports = {
-  parser: 'babel-eslint',
-
-  extends: [
-    'airbnb',
-    'plugin:flowtype/recommended',
-    'plugin:css-modules/recommended',
-    'prettier',
-    'prettier/flowtype',
-    'prettier/react',
+  'extends': 'google',
+  'parser': 'babel-eslint',
+  'parserOptions': {
+    'ecmaVersion': 6,
+    'sourceType': 'module'
+  },
+  'plugins': [
+    'react'
   ],
+  'extends': ['plugin:react/recommended'],
 
-  plugins: ['flowtype', 'css-modules', 'prettier'],
+  'rules': {
+    'commadangle': 0,
+    "react/jsx-uses-vars": 1,
+    "react/react-in-jsx-scope": 1,
+    'react/display-name': 1,
+    'react/displayname': [true, { "ignoreTranspilerName": true }],
+    'react/prop-types': 0,
+    'no-unused-vars': 'warn',
+    // 'no-unexpected-multiline': 'warn',
+    'array-bracket-spacing': ['error', 'never'],
 
-  globals: {
-    __DEV__: true,
+    // Use the one true brace style
+    'brace-style': ['error', '1tbs'],
+
+    // Enforce using camelCase
+    'camelcase': ['error', { 'properties': 'always' }],
+
+    // Shouldn't use console.*  use a proper logger instead, e.g.
+    // https://www.npmjs.com/package/winston
+    'no-console': ['warn'],
+    'no-debugger': ['warn'],
+
+    // Indent at 4 spaces
+    'indent': ['error', 2],
+
+    // No trailing spaces in code
+    'no-trailing-spaces': ['error'],
+    'array-bracket-spacing': ['error', 'never'],
+    'object-curly-spacing': ['error', 'always'],
+    'max-len': ['error', { 'code': 200 }]
   },
-
-  env: {
-    browser: true,
-  },
-
-  rules: {
-    // Forbid the use of extraneous packages
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
-    'import/no-extraneous-dependencies': ['error', { packageDir: '.' }],
-
-    // Recommend not to leave any console.log in your code
-    // Use console.error, console.warn and console.info instead
-    // https://eslint.org/docs/rules/no-console
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'error', 'info'],
-      },
-    ],
-
-    // Prefer destructuring from arrays and objects
-    // http://eslint.org/docs/rules/prefer-destructuring
-    'prefer-destructuring': [
-      'error',
-      {
-        VariableDeclarator: {
-          array: false,
-          object: true,
-        },
-        AssignmentExpression: {
-          array: false,
-          object: false,
-        },
-      },
-      {
-        enforceForRenamedProperties: false,
-      },
-    ],
-
-    // Ensure <a> tags are valid
-    // https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/anchor-is-valid.md
-    'jsx-a11y/anchor-is-valid': [
-      'error',
-      {
-        components: ['Link'],
-        specialLink: ['to'],
-        aspects: ['noHref', 'invalidHref', 'preferButton'],
-      },
-    ],
-
-    // Allow .js files to use JSX syntax
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
-
-    // Functional and class components are equivalent from React’s point of view
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
-    'react/prefer-stateless-function': 'off',
-
-    // ESLint plugin for prettier formatting
-    // https://github.com/prettier/eslint-plugin-prettier
-    'prettier/prettier': 'error',
-  },
-
-  settings: {
-    // Allow absolute paths in imports, e.g. import Button from 'components/Button'
-    // https://github.com/benmosher/eslint-plugin-import/tree/master/resolvers
-    'import/resolver': {
-      node: {
-        moduleDirectory: ['node_modules', 'src'],
-      },
-    },
-  },
-};
+  'settings': {
+    'react': {
+      'pragma': 'React',
+      'version': '16.2.0'
+    }
+  }
+}

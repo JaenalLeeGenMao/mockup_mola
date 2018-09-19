@@ -1,0 +1,58 @@
+.box {
+  flex: 50% 1 1;
+  position: relative;
+}
+
+.inner_box {
+  background: rgba(2, 2, 2, 0.6);
+  padding: 16px 35px 16px 35px;
+  width: 338px;
+  color: white;
+  text-align: right;
+  margin-top: 33px;
+  position: absolute;
+  right: 93px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  font-style: italic;
+}
+
+.inner_box p {
+  margin: 0;
+}
+
+.inner_box span {
+  font-weight: 600;
+}
+
+.photo_frame {
+  width: 100px;
+  height: 100px;
+  background: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px;
+}
+
+.photo_frame img {
+  max-width: 100%;
+  width: 100%;
+}
+
+.trailer_title {
+  background: white;
+  border: 1px solid #5784ff;
+  position: absolute;
+  bottom: 0;
+  right: 48px;
+  color: #5784ff;
+  padding: 7px 10px 7px 28px;
+  margin-bottom: 7px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 13px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
