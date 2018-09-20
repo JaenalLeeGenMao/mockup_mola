@@ -1,0 +1,64 @@
+.container {
+  clear: both;
+  padding-top: 10px;
+}
+
+.component {
+  float: left;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+.component input {
+  margin-right: 5px;
+}
+
+.component label {
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  top: 2px;
+}
+
+.label {
+  color: #6f6f6f;
+}
+
+.switch_item {
+  display: flex;
+  color: #fff;
+  padding: 5px 0;
+}
+
+.switch_content_left {
+  flex: 3%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .switch_content_left {
+    flex: 8%;
+  }
+}
+
+.switch_content_center {
+  flex: 50%;
+}
+
+.switch_content_center > p {
+  margin-top: 3px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .switch_content_center > p {
+    font-size: 14px;
+  }
+}
+
+.switch_content_right {
+  flex: 30%;
+  clear: both;
+}
+
+.switch_content_right > div {
+  float: right;
+}
