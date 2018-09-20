@@ -1,9 +1,13 @@
 import React, { Fragment } from 'react';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+
 import Slider from 'react-slick';
 import Modal from "react-responsive-modal";
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Moviedetail.css';
 
+import * as movieDetail from '@actions/movie-detail';
 import Layout from '../../components/Molalayout';
 import Frame from './moviedetail/Frame';
 import Secondframe from './moviedetail/Secondframe';
@@ -47,6 +51,10 @@ class Moviedetail extends React.Component {
       link: './history',
       playCopy: 'Play movie',
       open: false,
+    }
+
+    componentWillMount() {
+      return this.props.getMovieDetail('tt5095030')
     }
 
     onOpenModal = () => {
@@ -220,4 +228,22 @@ class Moviedetail extends React.Component {
   }
 }
 
-export default withStyles(s)(Moviedetail);
+function mapStateToProps(state) {
+  console.log(state)
+  return {
+    ...state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  getMovieDetail: searchText => dispatch(movieDetail.getMovieDetail(searchText)),
+})
+
+export default compose(
+  withStyles(s),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(Moviedetail)
+

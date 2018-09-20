@@ -1,5 +1,5 @@
 import { get } from 'axios'
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT, SEARCH_ENDPOINT } from './endpoints'
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT, SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT } from './endpoints'
 import utils from './util'
 import config from '@global/config/api'
 const { NODE_ENV } = process.env
@@ -128,10 +128,35 @@ const getSearchResult = ({ q }) => {
   })
 }
 
+const getMovieDetail = ({ id }) => {
+  return get(
+    `${MOVIE_DETAIL_ENDPOINT}/${id}`).then(
+    (response) => {
+      const result = utils.normalizeVideoDetail(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    }
+  ).catch((error) => {
+    return {
+      meta: {
+        status: 'error',
+        error: `home/getMovieDetail ~ ${error}`,
+      },
+      data: [],
+    }
+  })
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
   getSearchVideo,
-  getSearchResult
+  getSearchResult,
+  getMovieDetail
 }
