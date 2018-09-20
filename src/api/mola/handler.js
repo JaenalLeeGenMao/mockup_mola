@@ -1,14 +1,17 @@
 import { get } from 'axios'
 import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT, SEARCH_ENDPOINT } from './endpoints'
 import utils from './util'
+import config from '@global/config/api'
+const { NODE_ENV } = process.env
 
-const getHomePlaylist = ({ timeout, ...payload }) => {
+const getHomePlaylist = ({ ...payload }) => {
   return get(
-    `${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
-      timeout,
-      maxRedirects: 0
-    }).then(
-    (response) => {
+    `${HOME_PLAYLIST_ENDPOINT}/mola-home`,
+    {
+      ...config[NODE_ENV].api
+    }
+  ).then(
+    response => {
       const result = utils.normalizeHomePlaylist(response)
       return {
         meta: {
@@ -18,7 +21,7 @@ const getHomePlaylist = ({ timeout, ...payload }) => {
         data: [...result[0]] || [],
       }
     }
-  ).catch((error) => {
+  ).catch(error => {
     return {
       meta: {
         status: 'error',
@@ -29,13 +32,14 @@ const getHomePlaylist = ({ timeout, ...payload }) => {
   })
 }
 
-const getHomeVideo = ({ id, timeout, ...payload }) => {
+const getHomeVideo = ({ id, ...payload }) => {
   return get(
-    `${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-      timeout,
-      maxRedirects: 0
-    }).then(
-    (response) => {
+    `${HOME_PLAYLIST_ENDPOINT}/${id}`,
+    {
+      ...config[NODE_ENV].api
+    }
+  ).then(
+    response => {
       const result = utils.normalizeHomeVideo(response)
       return {
         meta: {
@@ -45,8 +49,7 @@ const getHomeVideo = ({ id, timeout, ...payload }) => {
         data: [...result[0]] || []
       };
     }
-  ).catch((error) => {
-    const status = typeof error === 'object' ? 'success' : 'error';
+  ).catch(error => {
     return {
       meta: {
         status,
