@@ -10,6 +10,6 @@ export const VIDEOS_ENDPOINT =
 
 export const HISTORY_ENDPOINT =
   'https://api-d.supersoccer.tv/v2/userdata/user/video/history-mola.json';
-  // `${config[NODE_ENV].molatv.baseURL}/userdata/kareemlukitomo123/videos/histories`;
+  //`${config[NODE_ENV].molatv.baseURL}/userdata/kareemlukitomo123/videos/histories`;
 
 export const SEARCH_VIDEOS_ENDPOINT = `${config[NODE_ENV].baseURL.molatv}/videos/`;

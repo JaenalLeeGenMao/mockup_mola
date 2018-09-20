@@ -11,7 +11,7 @@ const getHomePlaylist = () => {
       ...config[NODE_ENV].api
     }
   ).then(
-    (response) => {
+    response => {
       const result = utils.normalizeHomePlaylist(response)
       return {
         meta: {
@@ -21,7 +21,7 @@ const getHomePlaylist = () => {
         data: [...result[0]] || [],
       }
     }
-  ).catch((error) => {
+  ).catch(error => {
     return {
       meta: {
         status: 'error',
@@ -39,11 +39,11 @@ const getHomeVideo = ({ id }) => {
       ...config[NODE_ENV].api
     }
   ).then(
-    (response) => {
+    response => {
       const result = utils.normalizeHomeVideo(response)
       return [...result[0]] || []
     }
-  ).catch((error) => {
+  ).catch(error => {
     return {
       meta: {
         status: 'error',
