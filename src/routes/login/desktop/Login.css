@@ -29,6 +29,22 @@
   height: 300px;
 }
 
+@media only screen and (max-width: 1024px) {
+  .rightWrapper {
+    z-index: -1;
+  }
+
+  .wrapper {
+    background-image: url('../../../global/style/icons/BG-bottomRight.png'), url('../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
+    background-position: right bottom, left bottom, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size: 640px, 640px, cover;
+    height: calc(100vh - 100px);
+    overflow-y: hidden;
+    padding-top: 100px;
+  }
+}
+
 .root {
   margin: 0 auto;
   width: 450px;

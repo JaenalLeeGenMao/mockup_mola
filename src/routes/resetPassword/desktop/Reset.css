@@ -10,12 +10,24 @@
 @import '../../../components/variables.css';
 
 .wrapper {
-  background-image: linear-gradient(#0e1d3d, #000);
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: url('../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
+  background-position: left bottom, left top;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 640px, cover;
   height: calc(100vh - 210px);
   overflow-y: hidden;
   padding-top: 210px;
+}
+
+.rightWrapper {
+  background-image: url('../../../global/style/icons/BG-bottomRight.png');
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 640px;
+  height: 300px;
 }
 
 .root {
@@ -26,7 +38,7 @@
 
 .container {
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
   max-width: 450px;
   max-height: 540px;
   background: rgba(0, 0, 0, 0.75);

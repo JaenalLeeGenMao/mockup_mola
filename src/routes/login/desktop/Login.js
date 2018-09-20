@@ -24,7 +24,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const isDark = false;
+    const isDark = true;
     return (
       <Fragment>
         <Header isDark={isDark} libraryOff rightMenuOff />
@@ -46,8 +46,8 @@ class Login extends React.Component {
                   <Form
                     id="password"
                     type="password"
-                    name="password">
-                                Password
+                    name="password" visibleOn>
+                                 Password
                   </Form>
                   <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
                   <div className={s.formGroup}>
