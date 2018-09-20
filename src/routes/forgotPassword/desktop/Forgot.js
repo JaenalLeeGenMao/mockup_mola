@@ -42,6 +42,7 @@ class Forgot extends React.Component {
               </form>
             </div>
           </div>
+          <div className={s.rightWrapper}></div>
         </div>
       </Fragment>
     );

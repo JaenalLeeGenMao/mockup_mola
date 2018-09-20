@@ -24,7 +24,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const isDark = false;
+    const isDark = true;
     return (
       <Fragment>
         <Header isDark={isDark} libraryOff rightMenuOff isMobile />
@@ -46,7 +46,8 @@ class Login extends React.Component {
                   <Form className={s.formMobile}
                     id="password"
                     type="password"
-                    name="password">
+                    name="password"
+                  >
                                 Password
                   </Form>
                   <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
