@@ -21,6 +21,12 @@
   z-index: 100;
 }
 
+.movie_library {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
 .header__logo_wrapper {
   position: relative;
   left: 2.5%;
@@ -39,6 +45,15 @@
   height: auto;
 }
 
+.header__copy_library {
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  display: block;
+  position: relative;
+  top: 7px;
+  right: 10px;
+}
+
 .header__back_button {
   display: flex;
   flex-direction: column;
@@ -46,7 +61,8 @@
   align-items: flex-start;
   position: relative;
   width: 100px;
-  left: 5%;
+
+  /* left: -33px; */
 }
 
 .header__library_logo_white {
@@ -104,6 +120,10 @@
     padding: 5%;
   }
 
+  .movie_library {
+    padding: 0;
+  }
+
   .header__logo {
     position: relative;
     top: 5px;
@@ -114,5 +134,9 @@
   .header__logo img {
     width: 100px;
     height: auto;
+  }
+
+  .header__back_button {
+    left: -11px;
   }
 }

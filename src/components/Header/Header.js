@@ -41,11 +41,14 @@ class Header extends Component {
       backButtonOn = false,
       isMobile = false,
       title = '',
+      isLibrary = false,
+      isLibraryCopy = false,
     } = this.props;
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
+    const typeHeader = isLibrary ? styles.header__container + ' ' + styles.movie_library :  styles.header__container;
     return (
-      <div className={styles.header__container}>
+      <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>
           {!logoOff &&
             <LazyLoadBeta>
@@ -86,7 +89,7 @@ class Header extends Component {
             </Link>
           </LazyLoadBeta>
         )}
-        {title}
+        {isLibraryCopy && <span className={styles.header__copy_library}>{title}</span>}
         {/* </div> */}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
       </div>
