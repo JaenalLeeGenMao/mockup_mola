@@ -48,6 +48,7 @@ class Reset extends React.Component {
               </form>
             </div>
           </div>
+          <div className={s.rightWrapper} />
         </div>
       </Fragment>
     );
