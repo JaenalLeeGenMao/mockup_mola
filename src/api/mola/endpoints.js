@@ -14,4 +14,5 @@ export const HISTORY_ENDPOINT =
 
 export const SEARCH_ENDPOINT = 'http://mola.lukitomo.com/v2/search/';
 export const MOVIE_DETAIL_ENDPOINT = 'http://mola.lukitomo.com/v2/videos';
+export const SEARCH_VIDEOS_ENDPOINT =` ${config[NODE_ENV].baseURL.molatv}/videos/`;
 
