@@ -1,5 +1,5 @@
 import { get } from 'axios'
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT, SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT } from './endpoints'
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, MOVIE_DETAIL_ENDPOINT } from './endpoints'
 import utils from './util'
 import config from '@global/config/api'
 const { NODE_ENV } = process.env
@@ -82,10 +82,10 @@ const getAllHistory = (payload) => {
   })
 }
 
-const getSearchVideo = (payload) => {
-  return get(`${SEARCH_VIDEOS_ENDPOINT}`, { ...payload }).then(
+const getSearchResult = ({ q }) => {
+  return get(`${SEARCH_ENDPOINT}`, { params: { q: q } }).then(
     (response) => {
-      const result = utils.normalizeSearchVideo(response);
+      const result = utils.normalizeSearchResult(response);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -105,23 +105,23 @@ const getSearchVideo = (payload) => {
   })
 }
 
-const getSearchResult = ({ q }) => {
-  return get(`${SEARCH_ENDPOINT}`, { params: { q: q } }).then(
+const getSearchGenre = (payload) => {
+  return get(`${SEARCH_GENRE_ENDPOINT}`, { ...payload }).then(
     (response) => {
-      const result = utils.normalizeSearchResult(response);
+      const result = utils.normalizeSearchGenre(response);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result] || [],
+        data: [...result[0]] || [],
       }
     }
   ).catch((error) => {
     return {
       meta: {
         status: 'error',
-        error: `search/getSearchResult ~ ${error}`,
+        error: `search/getSearchGenre ~ ${error}`,
       },
       data: [],
     }
@@ -156,7 +156,7 @@ export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
-  getSearchVideo,
   getSearchResult,
+  getSearchGenre,
   getMovieDetail
 }

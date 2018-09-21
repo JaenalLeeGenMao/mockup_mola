@@ -9,10 +9,9 @@ export const VIDEOS_ENDPOINT =
 `${config[NODE_ENV].baseURL.molatv}/videos/videos`;
 
 export const HISTORY_ENDPOINT =
-  'https://api-d.supersoccer.tv/v2/userdata/user/video/history-mola.json';
-  // `${config[NODE_ENV].molatv.baseURL}/userdata/kareemlukitomo123/videos/histories`;
+`${config[NODE_ENV].baseURL.molatv}/userdata/kareemlukitomo123/videos/histories`;
 
-export const SEARCH_ENDPOINT = 'http://mola.lukitomo.com/v2/search/';
+export const SEARCH_ENDPOINT = `${config[NODE_ENV].baseURL.molatv}/search/`;
+export const SEARCH_GENRE_ENDPOINT = `${config[NODE_ENV].baseURL.molatv}/videos/playlists/genre`;
+
 export const MOVIE_DETAIL_ENDPOINT = 'http://mola.lukitomo.com/v2/videos';
-export const SEARCH_VIDEOS_ENDPOINT =` ${config[NODE_ENV].baseURL.molatv}/videos/`;
-

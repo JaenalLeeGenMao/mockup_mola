@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import LazyLoadBeta from '@components/common/LazyloadBeta';
+import Link from '@components/Link/Link';
 
 import s from './MovieSuggestion.css'
 
@@ -12,7 +13,6 @@ class MovieSuggestion extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     searchText: PropTypes.string,
-    isMobile: PropTypes.bool,
   };
 
   render() {
@@ -34,17 +34,19 @@ class MovieSuggestion extends React.Component {
               return (
                 <div className={s.movieBox} key={movie.id}>
                   <div className={s.movieBoxInner}>
-                    <LazyLoadBeta src={movie.coverUrl} containerClassName={s.movieImg}>
-                      { startIdx > -1 ?
-                        (
-                          <div className={s.movieTitle}>
-                            <span>{movieTitleFirst}</span><span className={s.movieTitleResult}>{movieTitleRes}</span><span>{movieTitleSecond}</span>
-                          </div>
-                        )
-                        :
-                        (<div className={s.movieTitle}><span>{movieTitle}</span></div>)
-                      }
-                    </LazyLoadBeta>
+                    <Link to={`/movie-detail/${movie.id}`}>
+                      <LazyLoadBeta src={movie.coverUrl} containerClassName={s.movieImg}>
+                        { startIdx > -1 ?
+                          (
+                            <div className={s.movieTitle}>
+                              <span>{movieTitleFirst}</span><span className={s.movieTitleResult}>{movieTitleRes}</span><span>{movieTitleSecond}</span>
+                            </div>
+                          )
+                          :
+                          (<div className={s.movieTitle}><span>{movieTitle}</span></div>)
+                        }
+                      </LazyLoadBeta>
+                    </Link>
                   </div>
                 </div>
               )
