@@ -5,7 +5,7 @@ import Link from '@components/Link';
 import LazyLoad from '@components/common/LazyLoad'
 import s from './SearchGenre.css';
 
-class MsearchGenre extends React.Component {
+class SearchGenre extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     isMobile: PropTypes.bool,
@@ -14,11 +14,11 @@ class MsearchGenre extends React.Component {
   render() {
     const { data } = this.props;
     return (
-      <LazyLoad containerClassName={s.genreContainer__mobile}>
+      <LazyLoad containerClassName={s.genreContainer}>
         {
           data.map( (data, index) => (
-            <Link className={s.genreLink__mobile} key={index} to={`/movie-library/${data.id}`}>
-              <span className={s.genreText__mobile}>{data.title}</span>
+            <Link className={s.genreLink} key={index} to={`/movie-library/${data.id}`}>
+              <span>{data.title}</span>
             </Link>
           ))
         }
@@ -27,4 +27,4 @@ class MsearchGenre extends React.Component {
   }
 }
 
-export default withStyles(s)(MsearchGenre);
+export default withStyles(s)(SearchGenre);

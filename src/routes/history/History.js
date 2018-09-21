@@ -95,7 +95,7 @@ class History extends React.Component {
           </Fragment>
         }
         <Header isDark={false} isMobile={isMobile} libraryOff searchOff/>
-        <div className={isMobile ? s.wrapper__mobile : s.wrapper}>
+        <div className={isMobile ? s.root__mobile : s.root}>
           <div className={s.wrapperBg}></div>
           <div className={s.containerOuter}>
             <div className={s.containerInner} id='history-container'>
