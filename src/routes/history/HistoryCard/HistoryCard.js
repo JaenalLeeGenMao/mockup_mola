@@ -18,9 +18,9 @@ class HistoryCard extends React.Component {
       <div className={s.movieContainer}>
         <Link className={s.movieImageWrapper} to={`/movie-detail/${videos.videoId}`}>
           <LazyLoadBeta src={videos.coverUrl} style={{ width: '100%', }}>
-            <div className={s.movieDurationBar}>
+            {/* <div className={s.movieDurationBar}>
               <span className={s.moviePlayedBar} style={barStyle} />
-            </div>
+            </div> */}
           </LazyLoadBeta>
         </Link>
         <div className={s.movieDetailWrapper}>
