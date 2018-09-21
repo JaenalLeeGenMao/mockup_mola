@@ -3,25 +3,21 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import Header from '@components/header'
-import LazyLoadBeta from '@components/common/LazyloadBeta'
-
 import _debounce from 'lodash.debounce';
+import Header from '@components/header'
+import LazyLoad from '@components/common/LazyLoad'
+
 
 import * as searchActions from '@actions/search';
 import SearchGenre from './SearchGenre/SearchGenre';
-import MsearchGenre from './SearchGenre/MsearchGenre';
 import SearchGenreLoading from './SearchGenre/SearchGenreLoading';
-import MsearchGenreLoading from './SearchGenre/MsearchGenreLoading';
 // import RecentSearch from './RecentSearch/RecentSearch'
 // import Cast from './Cast/Cast'
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
-import MmovieSuggestion from './MovieSuggestion/MmovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
-import MmovieSuggestionLoading from './MovieSuggestion/MmovieSuggestionLoading';
 import s from './Search.css';
 
-import history from '../../history';
+import history from '../../../history';
 
 class Search extends React.Component {
   constructor(props) {
@@ -42,7 +38,6 @@ class Search extends React.Component {
 
   static propTypes = {
     title: PropTypes.string.isRequired,
-    isMobile: PropTypes.bool,
     searchKeyword: PropTypes.string,
   };
 
@@ -133,59 +128,49 @@ class Search extends React.Component {
   }, 300);
 
   render() {
-    const { isMobile, search : { genre: { data: genreData }, result: { meta : { status : resultStatus } } }, searchKeyword } = this.props;
+    const { search : { genre: { data: genreData }, result: { meta : { status : resultStatus } } }, searchKeyword } = this.props;
     const { isLoadingGenre, isLoadingResult } = this.state;
     const isDark = false;
     const showResult = this.searchText ? true : false;
-    const showSearchPlaceholder = isMobile && !showResult;
-
     const showMovieLoading = searchKeyword!== "" ? isLoadingResult : false;
-    // const noResult = !this.searchedMovie.length && resultStatus!== "success";
     return (
       <Fragment>
-        { !isMobile &&
-          <Header isDark={isDark} libraryOff searchOff/>
-        }
+        <Header isDark={isDark} libraryOff searchOff/>
         <div className={s.root}>
           <div className={s.containerBg}/>
           <div className={s.container}>
-            <div className={isMobile ? s.searchAutocomplete__mobile : s.searchAutocomplete}>
-              { showResult && !isMobile &&
+            <div className={s.searchAutocomplete}>
+              { showResult &&
                 <span>
                   {this.textSuggestion}
                 </span>
               }
             </div>
             <div className={s.searchInputWrapper}>
-              { isMobile && !showResult && <i className={s.searchIcon__mobile}/>}
-              { !isMobile && <i className={s.searchIcon}/>}
-              { showSearchPlaceholder && <span className={s.searchText}>Search</span>}
+              <i className={s.searchIcon}/>
               <input
-                className={isMobile ? s.searchInput__mobile : s.searchInput}
+                className={s.searchInput}
                 ref={this.inputSearch}
                 onChange={this.handleSearchChange}
               />
             </div>
             { !showResult && !showMovieLoading && !isLoadingGenre &&
-              <LazyLoadBeta>
-                { !isMobile && <SearchGenre data={genreData}/> }
-                { isMobile && <MsearchGenre data={genreData}/> }
-              </LazyLoadBeta>
+              <LazyLoad>
+                <SearchGenre data={genreData}/>
+              </LazyLoad>
             }
 
             { !showResult && !showMovieLoading && isLoadingGenre &&
             <Fragment>
-              { !isMobile && <SearchGenreLoading/> }
-              { isMobile && <MsearchGenreLoading/> }
+              <SearchGenreLoading/>
             </Fragment>
             }
 
             {
               showMovieLoading &&
               <div className={s.resultWrapper}>
-                <div className={isMobile ? s.resultContainer__mobile : s.resultContainer}>
-                  { !isMobile && <MovieSuggestionLoading/> }
-                  { isMobile && <MmovieSuggestionLoading/> }
+                <div className={s.resultContainer}>
+                  <MovieSuggestionLoading/>
                 </div>
               </div>
             }
@@ -195,7 +180,7 @@ class Search extends React.Component {
               <Fragment>
                 { this.hasResult &&
                   <div className={s.resultWrapper}>
-                    <div className={isMobile ? s.resultContainer__mobile : s.resultContainer}>
+                    <div className={s.resultContainer}>
                       {/* { recentSearch.length > 0 &&
                         <div className={s.resultRow}>
                           <RecentSearch isMobile={isMobile} data={recentSearch}/>
@@ -206,20 +191,18 @@ class Search extends React.Component {
                           <Cast data={castData} searchText={searchText}/>
                         </div>
                       } */}
-
-                      { !isLoadingResult && !isMobile &&  this.searchedMovie.length && <MovieSuggestion data={this.searchedMovie} searchText={this.searchText}/> }
-                      { !isLoadingResult && isMobile &&  this.searchedMovie.length && <MmovieSuggestion data={this.searchedMovie} searchText={this.searchText}/> }
+                      { !isLoadingResult &&  this.searchedMovie.length && <MovieSuggestion data={this.searchedMovie} searchText={this.searchText}/> }
                     </div>
                   </div>
                 }
                 {
                   !this.searchedMovie.length && resultStatus == "error" &&
-                  <LazyLoadBeta>
+                  <LazyLoad>
                     <div className={s.resultEmptyWrapper}>
                       <div>Your search for {`"${this.searchText}"`} did not have any matches</div>
                       <div>Try searching different keywords or browse by genre</div>
                     </div>
-                  </LazyLoadBeta>
+                  </LazyLoad>
                 }
               </Fragment>
             }

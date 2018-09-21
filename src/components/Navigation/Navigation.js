@@ -9,7 +9,7 @@
 
 import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LazyLoadBeta from '@components/common/LazyloadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import Link from '../Link';
 // import { Link } from 'react-router-dom';
 
@@ -17,9 +17,12 @@ import styles from './Navigation.css';
 
 class Navigation extends Component {
   handleNavigation = e => {
-    e.preventDefault();
-    const { onClick } = this.props;
-    onClick(e.currentTarget.id);
+    const { onClick, href } = this.props;
+
+    if(!href || href !== "" ) {
+      onClick(e.currentTarget.id);
+      e.preventDefault();
+    }
   };
 
   render() {
@@ -29,11 +32,11 @@ class Navigation extends Component {
       <div className={styles.navigation__wrapper} style={{ color }}>
         {playlists &&
           playlists.map(
-            ({ id, isActive, title }) => (
+            ({ id, isActive, title, href }) => (
               <Link
                 key={id}
                 id={id}
-                to="/"
+                to={href}
                 onClick={this.handleNavigation}
                 className={[
                   styles.navigation__links,
@@ -42,9 +45,9 @@ class Navigation extends Component {
                 style={{ color }}
               >
                 {isActive && (
-                  <LazyLoadBeta>
+                  <LazyLoad>
                     <hr style={{ borderBottom: `1px solid ${color}` }} />
-                  </LazyLoadBeta>
+                  </LazyLoad>
                 )}
                 {title.toUpperCase()}
               </Link>

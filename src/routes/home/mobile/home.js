@@ -22,7 +22,7 @@ import * as homeActions from '@actions/home';
 import { swipeGestureListener } from '@routes/home/util';
 
 import Header from '@components/header';
-import LazyLoadBeta from '@components/common/LazyloadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import Link from '@components/Link';
 
 import HomeMobileMenu from './menu';
@@ -277,7 +277,7 @@ class Home extends Component {
                         onClick={this.handleScrollToIndex}
                         onToggle={this.handleToggleMenu}
                       />
-                      <LazyLoadBeta containerClassName={styles.header__library_link_wrapper}>
+                      <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                         <Link to="/category" style={{ color }}>
                           <span
                             className={styles[`header__library_logo_${color}`]}
@@ -285,7 +285,7 @@ class Home extends Component {
                             style={{ width: '32px', height: '32px' }}
                           />
                         </Link>
-                      </LazyLoadBeta>
+                      </LazyLoad>
                     </div>
           }
           {
@@ -347,7 +347,7 @@ class Home extends Component {
                                       offsetYMax={ticking ? 50 : 0}
                                       className={styles.home__parallax_layer_3}
                                     >
-                                      <LazyLoadBeta src={layer3}
+                                      <LazyLoad src={layer3}
                                         containerClassName={styles.home__parallax_layer_3_info}
                                         alt=""
                                       >
@@ -363,7 +363,7 @@ class Home extends Component {
                                             <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
                                           </p>
                                         </div>
-                                      </LazyLoadBeta>
+                                      </LazyLoad>
                                     </Parallax>
                                     <Parallax
                                       disabled={isSafari}
@@ -373,12 +373,12 @@ class Home extends Component {
                                       offsetXMax={ticking ? -20 : 0}
                                       className={styles.home__parallax_layer_2}
                                     >
-                                      <LazyLoadBeta src={layer2}>
-                                      </LazyLoadBeta>
+                                      <LazyLoad src={layer2}>
+                                      </LazyLoad>
                                     </Parallax>
                                     <Parallax disabled={isSafari}>
-                                      <LazyLoadBeta src={layer1} containerClassName={styles.home__parallax_layer_1}>
-                                      </LazyLoadBeta>
+                                      <LazyLoad src={layer1} containerClassName={styles.home__parallax_layer_1}>
+                                      </LazyLoad>
                                     </Parallax>
                     							</div>
                     						);

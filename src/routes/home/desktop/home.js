@@ -22,7 +22,7 @@ import * as homeActions from '@actions/home';
 
 import Header from '@components/header';
 import Navbar from '@components/navigation';
-import LazyLoadBeta from '@components/common/lazyloadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import Link from '@components/Link';
 
 import HomeArrow from './arrow';
@@ -284,7 +284,7 @@ class Home extends Component {
                                       offsetYMax={ticking ? 50 : 0}
                                       className={styles.home__parallax_layer_3}
                                     >
-                                      <LazyLoadBeta src={layer3}
+                                      <LazyLoad src={layer3}
                                         containerClassName={styles.home__parallax_layer_3_info}
                                       >
                                         <div className={styles.home__parallax_layer_3_detail}
@@ -299,7 +299,7 @@ class Home extends Component {
                                             <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
                                           </p>
                                         </div>
-                                      </LazyLoadBeta>
+                                      </LazyLoad>
                                     </Parallax>
                                     <Parallax
                                       disabled={isSafari}
@@ -309,13 +309,13 @@ class Home extends Component {
                                       offsetXMax={ticking ? -20 : 0}
                                       className={styles.home__parallax_layer_2}
                                     >
-                                      <LazyLoadBeta src={layer2} alt="">
+                                      <LazyLoad src={layer2} alt="">
                                         {/* <Link to="/movie" className={styles.home__transparent_link} />*/}
-                                      </LazyLoadBeta>
+                                      </LazyLoad>
                                     </Parallax>
                                     <Parallax disabled={isSafari}>
-                                      <LazyLoadBeta src={layer1} alt="" containerClassName={styles.home__parallax_layer_1}>
-                                      </LazyLoadBeta>
+                                      <LazyLoad src={layer1} alt="" containerClassName={styles.home__parallax_layer_1}>
+                                      </LazyLoad>
                                     </Parallax>
                     							</div>
                     						);

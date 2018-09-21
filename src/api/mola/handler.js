@@ -60,8 +60,8 @@ const getHomeVideo = ({ id, ...payload }) => {
   })
 }
 
-const getAllHistory = (payload) => {
-  return get(`${HISTORY_ENDPOINT}`, { ...payload }).then(
+const getAllHistory = ({ userId }) => {
+  return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`).then(
     (response) => {
       const result = utils.normalizeHistory(response)
       return {

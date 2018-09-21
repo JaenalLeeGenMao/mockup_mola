@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import LazyLoadBeta from '@components/common/LazyloadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import Link from '@components/Link/Link';
 import s from './MovieSuggestion.css'
 
-class MmovieSuggestion extends React.Component {
+class MovieSuggestion extends React.Component {
   state = {
     allImgLoaded: false,
   }
@@ -19,14 +19,14 @@ class MmovieSuggestion extends React.Component {
     const { data } = this.props
 
     return (
-      <div className={s.resultRowWrap__mobile}>
+      <div className={s.resultRowWrap}>
         <div className={s.resultTitle}>Movie Suggestion</div>
         <div className={s.resultContent__movieflex}>
           {
             data.map( (movie) => {
               return (
                 <Link to={`/movie-detail/${movie.id}`} key={movie.id}>
-                  <LazyLoadBeta src={movie.coverUrl} containerClassName={s.movieflex__moviebox}/>
+                  <LazyLoad src={movie.coverUrl} containerClassName={s.movieflex__moviebox}/>
                 </Link>
               )
             })
@@ -37,4 +37,4 @@ class MmovieSuggestion extends React.Component {
   }
 }
 
-export default withStyles(s)(MmovieSuggestion)
+export default withStyles(s)(MovieSuggestion)
