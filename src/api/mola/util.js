@@ -82,54 +82,27 @@ const normalizeHistory = (response) => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map( (movieHistory) => {
-      const historyId = movieHistory.id
-      const {
-        timePosition,
-        videoId,
-        videos: {
+      const historyId = movieHistory.id;
+      const attr = movieHistory.attributes;
+      const timePosition = attr.timePosition;
+      const videoId = attr.videoId;
+      return attr.videos.map( ({ attributes }) => {
+        const {
           title,
           coverUrl,
+          // thumbnail,
           duration,
+        } = attributes
 
-        },
-      } = movieHistory.attributes
-
-      return {
-        historyId,
-        timePosition,
-        videoId,
-        title,
-        coverUrl,
-        duration: duration || 0,
-      }
-    })
-  }
-  return {
-    meta: {
-      status: 'no_result',
-    },
-    data: {},
-  }
-}
-
-const normalizeSearchVideo = (response) => {
-  const { data } = response.data
-  if (data && data.length > 0) {
-    return data.map((video) => {
-      const {
-        id,
-        attributes: {
+        return {
+          historyId,
+          videoId,
+          timePosition,
           title,
-          year,
           coverUrl,
-        },
-      } = video
-      return {
-        id,
-        title,
-        year,
-        coverUrl
-      }
+          duration: duration || 0,
+        }
+      })
     })
   }
   return {
@@ -166,7 +139,32 @@ const normalizeSearchResult = (response) => {
     meta: {
       status: 'no_result',
     },
-    data: {},
+    data: [],
+  }
+}
+
+const normalizeSearchGenre = (response) => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(({ attributes: { playlists } }) =>
+      playlists.map(({ id, attributes } )=> {
+        const {
+          title,
+          iconUrl,
+        } = attributes;
+        return {
+          id,
+          title,
+          iconUrl
+        }
+      })
+    )
+  }
+  return {
+    meta: {
+      status: 'no_result',
+    },
+    data: [],
   }
 }
 
@@ -200,7 +198,7 @@ export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
   normalizeHistory,
-  normalizeSearchVideo,
   normalizeSearchResult,
+  normalizeSearchGenre,
   normalizeVideoDetail
 }

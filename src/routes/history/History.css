@@ -6,7 +6,8 @@
   display: block;
 }
 
-.wrapper {
+.wrapper,
+.wrapper__mobile {
   padding: 120px 0 0 245px;
   height: calc(100vh - 120px);
   overflow-y: hidden;
@@ -54,10 +55,20 @@
     padding: 150px 0 0 225px;
     height: calc(100vh - 150px);
   }
+
+  .wrapper__mobile {
+    padding: 150px 0 0 225px;
+    height: calc(100vh - 150px);
+  }
 }
 
 @media screen and (max-width: 960px) {
   .wrapper {
+    padding: 180px 0 0 150px;
+    height: calc(100vh - 180px);
+  }
+
+  .wrapper__mobile {
     padding: 180px 0 0 0;
     height: calc(100vh - 180px);
   }

@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
+import LazyLoadBeta from '@components/common/LazyloadBeta'
 import s from './SearchGenre.css';
 
 class SearchGenre extends React.Component {
@@ -12,29 +13,29 @@ class SearchGenre extends React.Component {
   render() {
     const { data } = this.props;
     return (
-      <div className={s.genreContainer}>
+      <LazyLoadBeta containerClassName={s.genreContainer}>
         {
           data.map( (data, index) => {
+            const genreImgStyle = { backgroundImage: `url(${data.iconUrl})`, }
             if( index % 2 === 0 ) {
               return (
-                <Link className={s.genreLink} key={index} to="/movie-library/">
-                  <span className={s.genreAction} />
+                <Link className={s.genreLink} key={index} to={`/movie-library/${data.id}`}>
+                  <span style={genreImgStyle} />
                 </Link>
               )
             } else {
               return (
                 <Fragment>
                   <div className={s.genreSplit} key={index}></div>
-                  <Link className={s.genreLink} to="/">
-                    <span className={s.genreAdventure} />
+                  <Link className={s.genreLink} to={`/movie-library/${data.id}`}>
+                    <span style={genreImgStyle} />
                   </Link>
                 </Fragment>
               )
             }
           })
         }
-
-      </div>
+      </LazyLoadBeta>
     );
   }
 }

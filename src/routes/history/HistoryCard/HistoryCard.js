@@ -1,17 +1,9 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LazyLoadBeta from '@components/common/LazyLoadBeta';
-import LazyLoad from '@components/common/LazyLoad';
+import Link from '@components/Link';
+// import LazyLoad from '@components/common/LazyLoad';
 import s from './HistoryCard.css';
 
 class HistoryCard extends React.Component {
@@ -24,17 +16,17 @@ class HistoryCard extends React.Component {
     const { videos, barStyle } = this.props;
     return (
       <div className={s.movieContainer}>
-        <a className={s.movieImageWrapper}>
-          <LazyLoadBeta src={videos.coverUrl} width='100%'>
+        <Link className={s.movieImageWrapper} to={`/movie-detail/${videos.videoId}`}>
+          <LazyLoadBeta src={videos.coverUrl} style={{ width: '100%', }}>
             <div className={s.movieDurationBar}>
               <span className={s.moviePlayedBar} style={barStyle} />
             </div>
           </LazyLoadBeta>
-        </a>
+        </Link>
         <div className={s.movieDetailWrapper}>
           <div className={s.movieTitle}>{videos.title}</div>
-          <div className={s.movieChapter}>{videos.chapter}</div>
-          <div className={s.movieDuration}>{videos.duration / 60} min.</div>
+          {/* <div className={s.movieChapter}>{videos.chapter}</div> */}
+          <div className={s.movieDuration}>{videos.duration ? videos.duration / 60 : 0} min.</div>
         </div>
       </div>
     );

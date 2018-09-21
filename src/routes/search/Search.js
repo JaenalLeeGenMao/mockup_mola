@@ -9,13 +9,17 @@ import LazyLoadBeta from '@components/common/LazyloadBeta'
 import _debounce from 'lodash.debounce';
 
 import * as searchActions from '@actions/search';
-import SearchGenre from './SearchGenre/SearchGenre'
-import MsearchGenre from './SearchGenre/MsearchGenre'
+import SearchGenre from './SearchGenre/SearchGenre';
+import MsearchGenre from './SearchGenre/MsearchGenre';
+import SearchGenreLoading from './SearchGenre/SearchGenreLoading';
+import MsearchGenreLoading from './SearchGenre/MsearchGenreLoading';
 // import RecentSearch from './RecentSearch/RecentSearch'
 // import Cast from './Cast/Cast'
-import MovieSuggestion from './MovieSuggestion/MovieSuggestion'
-import MmovieSuggestion from './MovieSuggestion/MmovieSuggestion'
-import s from './Search.css'
+import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
+import MmovieSuggestion from './MovieSuggestion/MmovieSuggestion';
+import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
+import MmovieSuggestionLoading from './MovieSuggestion/MmovieSuggestionLoading';
+import s from './Search.css';
 
 import history from '../../history';
 
@@ -30,34 +34,50 @@ class Search extends React.Component {
     textSuggestion: '',
     searchedMovie: [],
     result: [],
-    val: ''
+    genre: [],
+    val: '',
+    isLoadingGenre: true,
+    isLoadingResult: true,
   };
 
   static propTypes = {
     title: PropTypes.string.isRequired,
     isMobile: PropTypes.bool,
+    searchKeyword: PropTypes.string,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       getSearchResult,
-      search : { result },
+      getSearchGenre,
+      search : { genre, result },
       searchKeyword
     } = nextProps;
 
-    if (nextProps.search.result.meta.status === 'loading'  && prevState.result.length <= 0) {
+    if (nextProps.search.genre.meta.status === 'loading'  && prevState.genre.length <= 0) {
+      getSearchGenre();
+    }
+
+    if (searchKeyword !== "" && nextProps.search.genre.meta.status === 'loading'  && prevState.genre.length <= 0) {
       getSearchResult(searchKeyword);
     }
 
-    return { ...prevState, result };
+    return { ...prevState, result, genre };
   }
 
   componentDidUpdate(prevProps) {
     const {
-      searchKeyword
+      searchKeyword,
+      search : { genre : { meta: genreMeta }, result : { meta } }
     } = this.props;
 
-    if(prevProps.search.result.meta.status !== this.props.search.result.meta.status) {
+    if(prevProps.search.genre.meta.status !== genreMeta.status && genreMeta.status !== "loading") {
+      this.setState({
+        isLoadingGenre: false
+      })
+    }
+
+    if(prevProps.search.result.meta.status !== meta.status) {
       if(this.state.searchText=== '') {
         this.inputSearch.current.value = searchKeyword;
       }
@@ -86,6 +106,7 @@ class Search extends React.Component {
 
     this.setState({
       searchText: val,
+      isLoadingResult: false
     })
   }
 
@@ -94,75 +115,32 @@ class Search extends React.Component {
     history.push({
       search: `q=${encodeURIComponent(val)}`,
     });
-
     this.processSearch(val);
   };
 
   processSearch = _debounce((val) => {
     const {
-      getSearchResult
+      getSearchResult,
+      search: { result: { meta:status } }
     } = this.props;
 
     getSearchResult(val);
     this.parseMovieSuggestion(val);
     this.setState({
       searchText: val,
+      isLoadingResult: false,
     })
   }, 300);
 
   render() {
-    const { isMobile } = this.props;
+    const { isMobile, search : { genre: { data: genreData }, result: { meta : { status : resultStatus } } }, searchKeyword } = this.props;
+    const { isLoadingGenre, isLoadingResult } = this.state;
     const isDark = false;
     const showResult = this.searchText ? true : false;
     const showSearchPlaceholder = isMobile && !showResult;
 
-    const genre = [
-      { title: 'Action', imgUrl: 'assets/search_scifi@2x.png', link: '' },
-      { title: 'Family', imgUrl: '../assets/search_scifi@2x.png', link: '' },
-      { title: 'Adventure', imgUrl: '../assets/search_scifi@2x.png', link: '' },
-      { title: 'Horor', imgUrl: '../assets/search_scifi@2x.png', link: '' },
-      { title: 'Comedy', imgUrl: '../assets/search_scifi@2x.png', link: '' },
-      { title: 'Romance', imgUrl: '../assets/search_scifi@2x.png', link: '' },
-      { title: 'Documentary', imgUrl: '../assets/search_scifi@2x.png', link: '' },
-    ]
-
-    // const recentSearch = [
-    //   'Shawsank Redemption',
-    //   'Terminator 3 : The Return of Terminator',
-    //   'World War Z',
-    //   'The Forest',
-    //   'Avatar',
-    //   'IT: II',
-    //   'This Is Spartan',
-    // ]
-    // const castData = [
-    //   { id: 1, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 2, name: 'Thelma Harison', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 3, name: 'Warzy Hist', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 4, name: 'Ava Mendez', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 5, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 6, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 7, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 8, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 9, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 10, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    //   { id: 11, name: 'Diana Maragareng', profileImgUrl: 'https://www.thefamouspeople.com/profiles/thumbs/taissa-farmiga-1.jpg' },
-    // ]
-
-    // const movieSuggestionDt = [
-    //   { id: 1, title: 'Deadpool II', year: '2018', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 2, title: 'Jurassic Park: The Lost World', year: '2010', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 3, title: 'Jaws', year: '2011', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 4, title: 'Alien', year: '1999', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 5, title: 'Jurassic Park: The Lost World and The Lost Dino', year: '2018', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 6, title: 'Jurassic Park: The Lost World', year: '2000', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 7, title: 'Jurassic Park: The Lost World', year: '2010', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 8, title: 'The Nun', year: '2019', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 9, title: 'Lion King', year: '1999', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 10, title: 'Kung Fu Panda: Secrets of the Furious Five', year: '2000', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    //   { id: 11, title: 'Conjuring', year: '2016', coverUrl: 'https://i.imgur.com/3h2v67m.png' },
-    // ]
-
+    const showMovieLoading = searchKeyword!== "" ? isLoadingResult : false;
+    // const noResult = !this.searchedMovie.length && resultStatus!== "success";
     return (
       <Fragment>
         { !isMobile &&
@@ -188,17 +166,30 @@ class Search extends React.Component {
                 onChange={this.handleSearchChange}
               />
             </div>
-            { !showResult && !isMobile &&
+            { !showResult && !showMovieLoading && !isLoadingGenre &&
               <LazyLoadBeta>
-                <SearchGenre data={genre}/>
+                { !isMobile && <SearchGenre data={genreData}/> }
+                { isMobile && <MsearchGenre data={genreData}/> }
               </LazyLoadBeta>
             }
 
-            { !showResult && isMobile &&
-              <LazyLoadBeta>
-                <MsearchGenre data={genre}/>
-              </LazyLoadBeta>
+            { !showResult && !showMovieLoading && isLoadingGenre &&
+            <Fragment>
+              { !isMobile && <SearchGenreLoading/> }
+              { isMobile && <MsearchGenreLoading/> }
+            </Fragment>
             }
+
+            {
+              showMovieLoading &&
+              <div className={s.resultWrapper}>
+                <div className={isMobile ? s.resultContainer__mobile : s.resultContainer}>
+                  { !isMobile && <MovieSuggestionLoading/> }
+                  { isMobile && <MmovieSuggestionLoading/> }
+                </div>
+              </div>
+            }
+
             {
               showResult &&
               <Fragment>
@@ -215,13 +206,14 @@ class Search extends React.Component {
                           <Cast data={castData} searchText={searchText}/>
                         </div>
                       } */}
-                      { !isMobile &&  this.searchedMovie.length && <MovieSuggestion isMobile={isMobile} data={this.searchedMovie} searchText={this.searchText}/> }
-                      { isMobile &&  this.searchedMovie.length && <MmovieSuggestion isMobile={isMobile} data={this.searchedMovie} searchText={this.searchText}/> }
+
+                      { !isLoadingResult && !isMobile &&  this.searchedMovie.length && <MovieSuggestion data={this.searchedMovie} searchText={this.searchText}/> }
+                      { !isLoadingResult && isMobile &&  this.searchedMovie.length && <MmovieSuggestion data={this.searchedMovie} searchText={this.searchText}/> }
                     </div>
                   </div>
                 }
                 {
-                  !this.searchedMovie.length &&
+                  !this.searchedMovie.length && resultStatus == "error" &&
                   <LazyLoadBeta>
                     <div className={s.resultEmptyWrapper}>
                       <div>Your search for {`"${this.searchText}"`} did not have any matches</div>
@@ -245,6 +237,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
   getSearchResult: searchText => dispatch(searchActions.getSearchResult(searchText)),
 })
 

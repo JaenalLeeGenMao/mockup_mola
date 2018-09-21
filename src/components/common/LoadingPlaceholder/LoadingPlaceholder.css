@@ -1,0 +1,91 @@
+
+.loadingPlaceholder {
+  -webkit-animation-duration: 3.6s;
+  -moz-animation-duration: 3.6s;
+  -o-animation-duration: 3.6s;
+  animation-duration: 3.6s;
+  -webkit-animation-name: darkShimmerAnimation;
+  -moz-animation-name: darkShimmerAnimation;
+  -o-animation-name: darkShimmerAnimation;
+  animation-name: darkShimmerAnimation;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-timing-function: ease-in-out;
+  -o-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #333;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@-moz-keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #333;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@-o-keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #333;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #313131;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}

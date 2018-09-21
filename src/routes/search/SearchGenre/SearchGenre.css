@@ -25,51 +25,6 @@
   width: 10%;
 }
 
-.genreAction {
-  background-image: url('../assets/search_action@2x.png');
-}
-
-.genreFamily {
-  background-image: url('../assets/search_family@2x.png');
-  background-position-x: 50px;
-}
-
-.genreAdventure {
-  background-image: url('../assets/search_adventure@2x.png');
-}
-
-.genreHorror {
-  background-image: url('../assets/search_horror@2x.png');
-  background-position-x: 50px;
-}
-
-.genreComedy {
-  background-image: url('../assets/search_comedy@2x.png');
-}
-
-.genreRomance {
-  background-image: url('../assets/search_romance@2x.png');
-  background-position-x: 50px;
-}
-
-.genreDocumentary {
-  background-image: url('../assets/search_documentary@2x.png');
-}
-
-.genreSciFi {
-  background-image: url('../assets/search_scifi@2x.png');
-  background-position-x: 50px;
-}
-
-.genreDrama {
-  background-image: url('../assets/search_drama@2x.png');
-}
-
-.genreThriller {
-  background-image: url('../assets/search_thriller@2x.png');
-  background-position-x: 50px;
-}
-
 .genreLink__mobile {
   display: block;
   width: 100%;
@@ -83,6 +38,17 @@
   font-size: 20px;
   color: white;
   outline: none;
+}
+
+.genreText__mobileLoading {
+  margin: 0 auto 10px;
+  width: 40%;
+  height: 20px;
+}
+
+.genreImgLoading {
+  width: 100%;
+  height: 50px;
 }
 
 @media screen and (max-width: 960px) {
@@ -114,5 +80,9 @@
 
   .genreLink {
     padding: 10px 0;
+  }
+
+  .genreText__mobileLoading {
+    width: 60%;
   }
 }
