@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
-import LazyLoadBeta from '@components/common/LazyloadBeta'
+import LazyLoad from '@components/common/LazyLoad'
 import s from './SearchGenre.css';
 
 class SearchGenre extends React.Component {
@@ -13,7 +13,7 @@ class SearchGenre extends React.Component {
   render() {
     const { data } = this.props;
     return (
-      <LazyLoadBeta containerClassName={s.genreContainer}>
+      <LazyLoad containerClassName={s.genreContainer}>
         {
           data.map( (data, index) => {
             const genreImgStyle = { backgroundImage: `url(${data.iconUrl})`, }
@@ -35,7 +35,7 @@ class SearchGenre extends React.Component {
             }
           })
         }
-      </LazyLoadBeta>
+      </LazyLoad>
     );
   }
 }

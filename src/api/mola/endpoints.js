@@ -9,7 +9,7 @@ export const VIDEOS_ENDPOINT =
 `${config[NODE_ENV].baseURL.molatv}/videos/videos`;
 
 export const HISTORY_ENDPOINT =
-`${config[NODE_ENV].baseURL.molatv}/userdata/kareemlukitomo123/videos/histories`;
+`${config[NODE_ENV].baseURL.molatv}/userdata`;
 
 export const SEARCH_ENDPOINT = `${config[NODE_ENV].baseURL.molatv}/search/`;
 export const SEARCH_GENRE_ENDPOINT = `${config[NODE_ENV].baseURL.molatv}/videos/playlists/genre`;

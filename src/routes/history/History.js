@@ -30,7 +30,7 @@ class History extends React.Component {
     } = nextProps;
 
     if (history.meta.status === 'loading'  && prevState.history.length <= 0) {
-      getAllHistory();
+      getAllHistory('kareemlukitomo123');
     }
 
     return { ...prevState, history };
@@ -74,6 +74,7 @@ class History extends React.Component {
         id: 1,
         isActive: false,
         title: 'Profile Data',
+        href: '/profile'
       },
       {
         id: 2,
@@ -93,7 +94,7 @@ class History extends React.Component {
             />
           </Fragment>
         }
-        <Header isDark={false} libraryOff searchOff/>
+        <Header isDark={false} isMobile={isMobile} libraryOff searchOff/>
         <div className={isMobile ? s.wrapper__mobile : s.wrapper}>
           <div className={s.wrapperBg}></div>
           <div className={s.containerOuter}>
@@ -106,7 +107,7 @@ class History extends React.Component {
                 }
                 return (
                   <HistoryCard
-                    key={movie[0].historyId} //nanti ganti id ya kalau idnya uda unique
+                    key={movie[0].historyId}
                     videos={movie[0]}
                     barStyle={barStyle}
                   />
@@ -134,7 +135,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getAllHistory: () => dispatch(getAllHistory()),
+  getAllHistory: userId => dispatch(getAllHistory(userId)),
 })
 
 export default compose(

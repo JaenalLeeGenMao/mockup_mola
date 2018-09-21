@@ -10,7 +10,8 @@ const MmovieSuggestionLoading = () => {
       <LoadingPlaceholder className={s.resultTitleLoading}/>
       <div className={s.resultContent__movieflex}>
         <LoadingPlaceholder className={s.movieflex__movieboxLoading}/>
-        <LoadingPlaceholder className={s.movieflex__movieboxLoading}/>
+        <LoadingPlaceholder className={s.movieflex__movieboxLoadingSec}/>
+        <LoadingPlaceholder className={s.movieflex__movieboxLoadingThird}/>
         <LoadingPlaceholder className={s.movieflex__movieboxLoading}/>
       </div>
     </div>

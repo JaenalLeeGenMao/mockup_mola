@@ -90,7 +90,6 @@ const normalizeHistory = (response) => {
         const {
           title,
           coverUrl,
-          // thumbnail,
           duration,
         } = attributes
 

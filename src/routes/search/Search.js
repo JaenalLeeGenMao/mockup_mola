@@ -3,10 +3,10 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import Header from '@components/header'
-import LazyLoadBeta from '@components/common/LazyloadBeta'
-
 import _debounce from 'lodash.debounce';
+import Header from '@components/header'
+import LazyLoad from '@components/common/LazyLoad'
+
 
 import * as searchActions from '@actions/search';
 import SearchGenre from './SearchGenre/SearchGenre';
@@ -143,9 +143,9 @@ class Search extends React.Component {
     // const noResult = !this.searchedMovie.length && resultStatus!== "success";
     return (
       <Fragment>
-        { !isMobile &&
-          <Header isDark={isDark} libraryOff searchOff/>
-        }
+        {/* { !isMobile && */}
+        <Header isDark={isDark} isMobile={isMobile} libraryOff searchOff/>
+        {/* } */}
         <div className={s.root}>
           <div className={s.containerBg}/>
           <div className={s.container}>
@@ -167,10 +167,10 @@ class Search extends React.Component {
               />
             </div>
             { !showResult && !showMovieLoading && !isLoadingGenre &&
-              <LazyLoadBeta>
+              <LazyLoad>
                 { !isMobile && <SearchGenre data={genreData}/> }
                 { isMobile && <MsearchGenre data={genreData}/> }
-              </LazyLoadBeta>
+              </LazyLoad>
             }
 
             { !showResult && !showMovieLoading && isLoadingGenre &&
@@ -214,12 +214,12 @@ class Search extends React.Component {
                 }
                 {
                   !this.searchedMovie.length && resultStatus == "error" &&
-                  <LazyLoadBeta>
+                  <LazyLoad>
                     <div className={s.resultEmptyWrapper}>
                       <div>Your search for {`"${this.searchText}"`} did not have any matches</div>
                       <div>Try searching different keywords or browse by genre</div>
                     </div>
-                  </LazyLoadBeta>
+                  </LazyLoad>
                 }
               </Fragment>
             }

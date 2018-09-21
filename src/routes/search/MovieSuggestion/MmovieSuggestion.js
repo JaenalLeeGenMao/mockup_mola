@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import LazyLoadBeta from '@components/common/LazyloadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import Link from '@components/Link/Link';
 import s from './MovieSuggestion.css'
 
@@ -26,7 +26,7 @@ class MmovieSuggestion extends React.Component {
             data.map( (movie) => {
               return (
                 <Link to={`/movie-detail/${movie.id}`} key={movie.id}>
-                  <LazyLoadBeta src={movie.coverUrl} containerClassName={s.movieflex__moviebox}/>
+                  <LazyLoad src={movie.coverUrl} containerClassName={s.movieflex__moviebox}/>
                 </Link>
               )
             })

@@ -109,6 +109,7 @@
   outline: 0;
   font-size: 22px;
   line-height: 1;
+  height: 52px;
   padding: 10px 0 10px 48px;
   position: absolute;
   z-index: 101;
@@ -126,14 +127,14 @@
 
 .resultWrapper {
   padding-top: 130px;
-  margin: 0;
+  margin: 0 auto;
   overflow: hidden;
   width: 100%;
 }
 
 .resultEmptyWrapper {
   padding-top: 130px;
-  margin: 0;
+  margin: 0 auto;
   overflow: hidden;
   width: 100%;
   color: #6f6f6f;
@@ -212,8 +213,8 @@
   }
 
   .root {
-    padding: 20px 0 0;
-    height: calc(100vh - 20px);
+    /* padding: 20px 0 0;
+    height: calc(100vh - 20px); */
   }
 
   .searchAutocomplete {
@@ -268,10 +269,8 @@
   }
 
   .resultWrapper {
-    margin: 0 auto;
     width: 90%;
     padding-top: 120px;
-    margin-top: 50px;
   }
 
   .resultContainer {
@@ -280,9 +279,14 @@
 }
 
 @media screen and (max-width: 500px) {
+  .root {
+    padding: 50px 0 0;
+    height: calc(100vh - 50px);
+  }
+
   .searchAutocomplete span {
     left: 48px;
-    top: 23px;
+    top: 26px;
     font-size: 18px;
   }
 
