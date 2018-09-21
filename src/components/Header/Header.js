@@ -88,7 +88,7 @@ class Header extends Component {
         )}
         {title}
         {/* </div> */}
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
       </div>
     )
   }

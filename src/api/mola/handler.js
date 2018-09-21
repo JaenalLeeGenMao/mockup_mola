@@ -1,6 +1,10 @@
-import { get } from 'axios'
+import { get, post } from 'axios'
+import queryString from 'query-string'
+
 import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_VIDEOS_ENDPOINT, SEARCH_ENDPOINT } from './endpoints'
+
 import utils from './util'
+
 import config from '@global/config/api'
 const { NODE_ENV } = process.env
 
@@ -128,10 +132,93 @@ const getSearchResult = ({ q }) => {
   })
 }
 
+const updateUserToken = ({ origin = '', search = '', ...props }) => {
+  const parsed = queryString.parse(search),
+    { baseURL: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  if (parsed.code) {
+    return post(
+      `${authURL}/_/oauth2/v1/token`,
+      {
+        ...authConfig,
+        redirect_uri: origin,
+        code: parsed.code
+      }
+    )
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          const result = utils.normalizeUserToken(response);
+          console.log("UPDATE USER TOKEN", result);
+          return {
+            meta: {
+              status: 'success',
+              error: '',
+            },
+            data: result,
+          }
+        }
+        return {
+          meta: {
+            status: 'error',
+            error: `user/updateUserToken ~ Failed to authenticate user`,
+          },
+          data: {}
+        }
+      })
+      .catch(error => {
+        return {
+          meta: {
+            status: 'error',
+            error: `user/updateUserToken ~ ${error}`,
+          },
+          data: {}
+        }
+      });
+  }
+  return {
+    meta: {
+      status: 'error',
+      error: `user/updateUserToken ~ Failed to authenticate user`,
+    },
+    data: {}
+  }
+}
+
+const getUserInfo = token => {
+  const { baseURL: { auth: authURL } } = config["production"];
+  return get(
+    `${authURL}/_/v1/userinfo`,
+    {
+      headers: `Bearer ${token}`
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeUserInfo(response);
+      return {
+        meta: {
+          status: 'error',
+          error: `user/getUserInfo ~ ${error}`,
+        },
+        data: result
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `user/getUserInfo ~ ${error}`,
+        },
+        data: {}
+      }
+    });
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
   getSearchVideo,
-  getSearchResult
+  getSearchResult,
+  updateUserToken,
+  getUserInfo,
 }

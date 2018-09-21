@@ -29,6 +29,9 @@ export default function searchResult(state = {}, action) {
     return { ...state, result: { ...action.payload } };
   case types.GET_SEARCH_ERROR:
     return { ...state, result: { ...action.payload } };
+  case types.UPDATE_USER_AUTH_LOADING:
+  case types.UPDATE_USER_AUTH_SUCCESS:
+  case types.UPDATE_USER_AUTH_ERROR:
   default:
     return {
       ...state,

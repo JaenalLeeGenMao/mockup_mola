@@ -2,11 +2,13 @@
 import * as home from './home';
 import * as history from './history';
 import * as search from './search';
+import * as user from './user';
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE';
 export default {
   SET_RUNTIME_VARIABLE,
   ...home,
   ...history,
-  ...search
+  ...search,
+  ...user
 };

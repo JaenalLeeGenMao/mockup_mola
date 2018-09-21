@@ -1,7 +1,22 @@
 import types from '../constants';
 import { findIndexByKeyValue } from './util';
 
-export default function home(state = {}, action) {
+const initialState = {
+  playlists: {
+    meta: {
+      status: "loading"
+    },
+    data: []
+  },
+  videos: {
+    meta: {
+      status: "loading"
+    },
+    data: []
+  }
+};
+
+export default function home(state = initialState, action) {
   switch (action.type) {
   case types.GET_HOME_PLAYLIST_LOADING:
     return { ...state,  playlists: { ...action.payload } };
@@ -38,21 +53,10 @@ export default function home(state = {}, action) {
     };
   case types.UPDATE_ACTIVE_PLAYLIST:
     return { ...state,  playlists: { ...action.payload } };
+  case types.UPDATE_USER_AUTH_LOADING:
+  case types.UPDATE_USER_AUTH_SUCCESS:
+  case types.UPDATE_USER_AUTH_ERROR:
   default:
-    return {
-      ...state,
-      playlists: {
-        meta: {
-          status: "loading"
-        },
-        data: []
-      },
-      videos: {
-        meta: {
-          status: "loading"
-        },
-        data: []
-      }
-    };
+    return { ...state };
   }
 };

@@ -170,10 +170,32 @@ const normalizeSearchResult = (response) => {
   }
 }
 
+const normalizeUserToken = response => {
+  const { data: { access_token: token, expires_in: expire, token_type: type, refreshToken = '' } } = response;
+  return {
+    token,
+    refreshToken,
+    expire,
+    type,
+  }
+}
+
+const normalizeUserInfo = response => {
+  const { data: { user_id: id, first_name: firstName, last_name: lastName, email } } = response;
+  return {
+    id,
+    firstName,
+    lastName,
+    email
+  }
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
   normalizeHistory,
   normalizeSearchVideo,
-  normalizeSearchResult
+  normalizeSearchResult,
+  normalizeUserToken,
+  normalizeUserInfo
 }
