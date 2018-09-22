@@ -24,77 +24,95 @@ export default function user(state = initialState, action) {
   switch (action.type) {
   case types.UPDATE_USER_AUTH_LOADING:
     return {
+      ...initialState,
       ...state,
       meta: {
         ...initialState.meta,
+        ...state.meta,
         ...meta
       },
       data: {
         ...initialState.data,
+        ...state.data,
         ...data
       }
     };
   case types.UPDATE_USER_AUTH_SUCCESS:
     return {
+      ...initialState,
       ...state,
       meta: {
         ...initialState.meta,
+        ...state.meta,
         ...meta
       },
       data: {
         ...initialState.data,
+        ...state.data,
         ...data
       }
     };
   case types.UPDATE_USER_AUTH_ERROR:
     return {
+      ...initialState,
       ...state,
       meta: {
         ...initialState.meta,
+        ...state.meta,
         ...meta
       },
       data: {
         ...initialState.data,
+        ...state.data,
         ...data
       }
     };
   case types.GET_USER_INFO_LOADING:
     return {
+      ...initialState,
       ...state,
       meta: {
         ...initialState.meta,
+        ...state.meta,
         ...meta
       },
       data: {
         ...initialState.data,
+        ...state.data,
         ...data
       }
     };
   case types.GET_USER_INFO_SUCCESS:
     return {
+      ...initialState,
       ...state,
       meta: {
         ...initialState.meta,
+        ...state.meta,
         ...meta
       },
       data: {
         ...initialState.data,
+        ...state.data,
         ...data
       }
     };
   case types.GET_USER_INFO_ERROR:
     return {
+      ...initialState,
       ...state,
       meta: {
         ...initialState.meta,
+        ...state.meta,
         ...meta
       },
       data: {
         ...initialState.data,
+        ...state.data,
         ...data
       }
     };
   default:
-    return { ...state };
+    return { ...initialState, ...state };
   }
 }

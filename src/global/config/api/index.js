@@ -6,7 +6,7 @@ module.exports = {
     },
     baseURL: {
       molatv: 'http://mola.lukitomo.com/v2/',
-      auth: 'http://jaenal.mola.tv'
+      auth: 'http://jaenal.mola.tv',
     },
     auth: {
       app_key: "9KSkjpIb3I",

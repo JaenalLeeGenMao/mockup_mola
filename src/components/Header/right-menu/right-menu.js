@@ -22,18 +22,15 @@ class RightMenu extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { onGetUserInfo, user } = nextProps;
     // console.log("GET DERIVED STATE ", user);
-    if (user.meta) {
+    if (user.meta && user.meta.status == "success") {
       console.log(user.meta.status, document.cookie);
-      document.cookie = user.data.token;
+      document.cookie = user.data.token || '';
+      if (!user.data.id) {
+        onGetUserInfo(user.data.token);
+      }
+
+      return { ...prevState, loggedIn: true };
     }
-    // if (document) {
-    //   console.log("if", document, user);
-    // }
-    // token = document.cookie ? document.cookie : user.token;
-    // if (!prevState.loggedIn && !token) {
-    //   onGetUserInfo(token);
-    //   return { ...prevState, loggedIn: true };
-    // }
     return { ...prevState };
   }
 
@@ -45,8 +42,8 @@ class RightMenu extends Component {
   }
 
   componentDidMount() {
-    const { onUpdateToken, user } = this.props;
-    console.log(document.cookie);
+    const { onUpdateToken, runtime: { accessToken } } = this.props;
+    console.log(document.cookie, accessToken);
     if (document.cookie) {
       this.setState({ loggedIn: true });
     } else {
@@ -112,7 +109,6 @@ class RightMenu extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("ALLAH WAKBAR!", state);
   return {
     ...state
   }

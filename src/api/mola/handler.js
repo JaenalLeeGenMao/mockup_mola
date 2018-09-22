@@ -189,15 +189,17 @@ const getUserInfo = token => {
   return get(
     `${authURL}/_/v1/userinfo`,
     {
-      headers: `Bearer ${token}`
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }
   )
     .then(response => {
       const result = utils.normalizeUserInfo(response);
       return {
         meta: {
-          status: 'error',
-          error: `user/getUserInfo ~ ${error}`,
+          status: 'success',
+          error: '',
         },
         data: result
       }

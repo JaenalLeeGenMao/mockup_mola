@@ -171,7 +171,8 @@ const normalizeSearchResult = (response) => {
 }
 
 const normalizeUserToken = response => {
-  const { data: { access_token: token, expires_in: expire, token_type: type, refreshToken = '' } } = response;
+  console.log(response);
+  const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
   return {
     token,
     refreshToken,

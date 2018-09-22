@@ -43,31 +43,14 @@ export const updateToken = (location = "") => dispatch => {
 }
 
 
-export const getUserInfo = (token = "") => {
-  dispatch({
-    type: types.GET_USER_INFO_LOADING,
-    payload: {
-      meta: {
-        status: "loading",
-        error: ''
-      },
-      data: {
-        id: '',
-        token: '',
-        refreshToken: '',
-        lang: 'en'
-      }
-    }
-  });
+export const getUserInfo = (token = "") => dispatch =>{
 
-  return Mola.getUserInfo(token)
+  const apiCall = Mola.getUserInfo(token);
+
+  return apiCall
     .then(result => {
-      if (result.meta.status === "error") {
-        dispatch({
-          type: types.GET_USER_INFO_ERROR,
-          payload: result,
-        });
-      } else {
+      console.log("INI DATANYA KAK ", result);
+      if (result.meta.status === "success") {
         dispatch({
           type: types.GET_USER_INFO_SUCCESS,
           payload: result,

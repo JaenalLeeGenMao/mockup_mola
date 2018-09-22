@@ -53,10 +53,10 @@ export default function home(state = initialState, action) {
     };
   case types.UPDATE_ACTIVE_PLAYLIST:
     return { ...state,  playlists: { ...action.payload } };
-  case types.UPDATE_USER_AUTH_LOADING:
-  case types.UPDATE_USER_AUTH_SUCCESS:
-  case types.UPDATE_USER_AUTH_ERROR:
   default:
-    return { ...state };
+    return {
+      ...initialState,
+      ...state
+    };
   }
 };

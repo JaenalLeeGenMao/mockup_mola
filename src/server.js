@@ -15,6 +15,7 @@ import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 // import { graphql } from 'graphql';
 import jwt from 'jsonwebtoken';
 // import nodeFetch from 'node-fetch';
+import request from 'request';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
@@ -30,6 +31,7 @@ import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unr
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
 import config from './config';
+import apiConfig from '@global/config/api'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -134,10 +136,63 @@ app.get('*', async (req, res, next) => {
 
     store.dispatch(
       setRuntimeVariable({
-        name: 'initialNow',
-        value: Date.now(),
+        name: 'accessToken',
+        value: '',
       }),
     );
+
+    // if (typeof req.query.code !== undefined) {
+    //   const { baseURL: { auth: authURL }, auth: authConfig } = apiConfig["production"];
+
+    // request.post({
+    //   url: `${authURL}/_/oauth2/v1/token`,
+    //   json: {
+    //     ...authConfig,
+    //     redirect_uri: req.get('host'),
+    //     code: req.query.code
+    //   }
+    // }, function (error, response, body) {
+    //   if (!error && response.statusCode == 200) {
+    //     console.log(body)
+    //     // const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
+
+    //     // req.cookies.accessToken = token;
+    //     // req.cookies.refreshToken = refreshToken;
+    //     // req.cookies.expire = expire;
+    //     // req.cookies.type = type;
+    //   } else {
+    //     console.error(body)
+    //   }
+    // });
+    // }
+
+    //   nodeFetch(`${authURL}/_/oauth2/v1/token`, {
+    //     method: 'POST',
+    //     body: {
+    //       ...authConfig,
+    //       redirect_uri: req.get('host'),
+    //       code: req.query.code
+    //     }
+    //   })
+    //     .then(response => {
+    //       console.log(response.body);
+    //       const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
+
+    //       req.cookies.accessToken = token;
+    //       req.cookies.refreshToken = refreshToken;
+    //       req.cookies.expire = expire;
+    //       req.cookies.type = type;
+    //     });
+    // }
+
+    if (typeof req.cookies.accessToken !== undefined) {
+      store.dispatch(
+        setRuntimeVariable({
+          name: 'accessToken',
+          value: req.cookies.accessToken || '',
+        }),
+      );
+    }
 
     const userAgent = req.get('User-Agent');
     const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);
