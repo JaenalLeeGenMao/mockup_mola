@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '@components/header';
 import Form from '@components/FormInput';
-import LazyLoadBeta from '@components/common/LazyloadBeta';
+import LazyLoad from '@components/common/LazyLoad';
 import s from './Login.css';
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
@@ -24,13 +24,13 @@ class Login extends React.Component {
   };
 
   render() {
-    const isDark = false;
+    const isDark = true;
     return (
       <Fragment>
         <Header isDark={isDark} libraryOff rightMenuOff isMobile />
         <div className={s.wrapper}>
           <div className={s.root}>
-            <LazyLoadBeta>
+            <LazyLoad>
               <div className={s.container}>
                 <p className={s.lead}>
                             Masuk ke Mola
@@ -46,7 +46,8 @@ class Login extends React.Component {
                   <Form className={s.formMobile}
                     id="password"
                     type="password"
-                    name="password">
+                    name="password"
+                  >
                                 Password
                   </Form>
                   <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
@@ -76,7 +77,7 @@ class Login extends React.Component {
                 </div>
                 <p className={s.labelSignup}>Baru di mola ? <a href='/register'>Daftar sekarang</a></p>
               </div>
-            </LazyLoadBeta>
+            </LazyLoad>
           </div>
         </div>
       </Fragment>

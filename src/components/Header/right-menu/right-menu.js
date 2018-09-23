@@ -5,7 +5,7 @@ import queryString from 'query-string'
 import config from '@global/config/api'
 import Mola from '@api/mola'
 
-import LazyLoadBeta from '@components/common/LazyloadBeta'
+import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
 import styles from './right-menu.css'
@@ -48,18 +48,18 @@ class RightMenu extends Component {
     return (
       <div className={styles.right__menu}>
         { !searchOff &&
-      <LazyLoadBeta>
+      <LazyLoad>
         <Link
           className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
           to="/search"
         />
-      </LazyLoadBeta>
+      </LazyLoad>
         }
         <span className ={styles.right__menu_wrapper}>
           {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
-          <LazyLoadBeta>
+          <LazyLoad>
             <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
-          </LazyLoadBeta>
+          </LazyLoad>
           <div className={styles.right__menu_dropdown_wrapper}>
             <div className={styles.right__menu_dropdown} style={{ color }}>
               <Link style={{ color }} to="/" onClick={this.handleLogin}>Login</Link>

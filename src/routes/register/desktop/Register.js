@@ -23,7 +23,7 @@ class Register extends React.Component {
   };
 
   render() {
-    const isDark = false;
+    const isDark = true;
     return (
       <Fragment>
         <Header isDark={isDark} libraryOff rightMenuOff />

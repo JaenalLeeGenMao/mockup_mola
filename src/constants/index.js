@@ -3,6 +3,7 @@ import * as home from './home';
 import * as history from './history';
 import * as search from './search';
 import * as user from './user';
+import * as movieDetail from './movie-detail';
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE';
 export default {
@@ -10,5 +11,6 @@ export default {
   ...home,
   ...history,
   ...search,
-  ...user
+  ...user,
+  ...movieDetail
 };

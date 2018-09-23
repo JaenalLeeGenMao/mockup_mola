@@ -1,6 +1,7 @@
 import React from 'react'
 import Layout from '../../components/Layout'
-import Search from './Search'
+import SearchDesktop from './desktop/Search'
+import SearchMobile from './mobile/Search'
 
 const title = 'Search'
 
@@ -10,9 +11,15 @@ function action({ isMobile, query }) {
     chunks: ['search'],
     title,
     component: (
-      <Layout>
-        <Search title={title} isMobile={isMobile} searchKeyword={qs} />
-      </Layout>
+      isMobile ?
+        (<Layout>
+          <SearchMobile title={title} searchKeyword={qs} />
+        </Layout>)
+        :
+        (<Layout>
+          <SearchDesktop title={title} searchKeyword={qs} />
+        </Layout>
+        )
     ),
   }
 }

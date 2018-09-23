@@ -20,6 +20,8 @@ class Libheader extends Component {
             rightMenuOff = {false}
             backButtonOn = {true}
             title = {this.props.cardTitle}
+            isLibrary = {true}
+            isLibraryCopy = {true}
           />
         </div>
       </Fragment>

@@ -1,12 +1,3 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { Fragment } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -14,6 +5,7 @@ import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import HistoryCard from './HistoryCard/HistoryCard'
+import HistoryCardLoading from './HistoryCard/HistoryCardLoading'
 
 import { getAllHistory } from '../../actions/history'
 import Header from '@components/header'
@@ -23,16 +15,37 @@ import s from './History.css'
 class History extends React.Component {
   state = {
     showSearch: false,
-    movieItems: this.props.movieDummy,
-    // loadingState: false,
+    history: [],
+    isLoading: true
   }
 
   static propTypes = {
     isMobile: PropTypes.bool,
   };
 
-  componentDidMount() {
-    this.props.getAllHistory();
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {
+      getAllHistory,
+      history,
+    } = nextProps;
+
+    if (history.meta.status === 'loading'  && prevState.history.length <= 0) {
+      getAllHistory('kareemlukitomo123');
+    }
+
+    return { ...prevState, history };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      history
+    } = this.props;
+
+    if(prevProps.history.meta.status !== history.meta.status && history.meta.status !== "loading") {
+      this.setState({
+        isLoading: false
+      })
+    }
   }
 
   // componentDidMount() {
@@ -54,14 +67,14 @@ class History extends React.Component {
   // }
 
   render() {
-    const { isMobile } = this.props;
-    const { movieItems } = this.state;
-
+    const { isMobile, history: { data : movieHistory } } = this.props;
+    const { isLoading } = this.state;
     const playlist = [
       {
         id: 1,
         isActive: false,
         title: 'Profile Data',
+        href: '/profile'
       },
       {
         id: 2,
@@ -81,31 +94,32 @@ class History extends React.Component {
             />
           </Fragment>
         }
-        <Header isDark={false} libraryOff searchOff/>
-        <div className={s.wrapper}>
+        <Header isDark={false} isMobile={isMobile} libraryOff searchOff/>
+        <div className={isMobile ? s.root__mobile : s.root}>
           <div className={s.wrapperBg}></div>
           <div className={s.containerOuter}>
             <div className={s.containerInner} id='history-container'>
-              {movieItems.map((movie, index) => {
-                const videosAttr = movie.attributes.videos[0].attributes
-                if (
-                  !movie.attributes.videos[0].videos ||
-                movie.attributes.videos[0].videos !== 'not_found'
-                ) {
-                  const playedDuration =
-                  movie.attributes.timePosition / videosAttr.duration * 100
-                  const barStyle = {
-                    width: `${playedDuration}%`,
-                  }
-                  return (
-                    <HistoryCard
-                      key={index} //nanti ganti id ya kalau idnya uda unique
-                      videos={videosAttr}
-                      barStyle={barStyle}
-                    />
-                  )
+              { !isLoading && movieHistory.map(movie => {
+                const playedDuration =
+                movie[0].timePosition / 60 / 100 /*movie[0].duration*/ * 100
+                const barStyle = {
+                  width: `${playedDuration}%`,
                 }
+                return (
+                  <HistoryCard
+                    key={movie[0].historyId}
+                    videos={movie[0]}
+                    barStyle={barStyle}
+                  />
+                )
               })}
+              {
+                isLoading &&
+                <Fragment>
+                  <HistoryCardLoading/>
+                  <HistoryCardLoading/>
+                </Fragment>
+              }
             </div>
           </div>
         </div>
@@ -115,14 +129,13 @@ class History extends React.Component {
 }
 
 function mapStateToProps(state) {
-  // console.log('stateeee', state)
   return {
-    movieHistory: state.history.data,
+    ...state
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getAllHistory: () => dispatch(getAllHistory()),
+  getAllHistory: userId => dispatch(getAllHistory(userId)),
 })
 
 export default compose(
