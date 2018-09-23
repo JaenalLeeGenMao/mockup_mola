@@ -7,16 +7,18 @@
 .play_icon {
   width: 60px;
   height: 60px;
-  position: fixed;
-  top: 28%;
+  position: absolute;
+  top: 20%;
   right: 50%;
   transform: translate(50%, -50%);
   z-index: 1000;
+  text-align: center;
 }
 
 .play_icon img {
   border-radius: 50%;
   opacity: 0.6;
+  width: 70%;
 }
 
 .play_icon span {
