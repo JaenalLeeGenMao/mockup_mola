@@ -15,7 +15,7 @@ import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 // import { graphql } from 'graphql';
 import jwt from 'jsonwebtoken';
 // import nodeFetch from 'node-fetch';
-import request from 'request';
+// import request from 'request';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
@@ -30,8 +30,9 @@ import router from './router';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
+import { setUserVariable } from './actions/user';
 import config from './config';
-import apiConfig from '@global/config/api'
+import Mola from '@api/mola'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -106,10 +107,21 @@ app.use((err, req, res, next) => {
 //   },
 // );
 
+app.get('/set-cookie', async (req, res, next) => {
+  res.cookie('_at', req.cookies._at, {
+    maxAge: 3600 * 1000,
+    httpOnly: true,
+    // secure: !__DEV__,
+  });
+
+  return next();
+});
+
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
+
   try {
     const css = new Set();
 
@@ -129,69 +141,78 @@ app.get('*', async (req, res, next) => {
     // });
 
     const initialState = {
-      user: req.user || null,
+      user: req.user || {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        token: '',
+        refreshToken: '',
+        expire: '',
+        type: '',
+        lang: 'en'
+      },
     };
 
     const store = configureStore(initialState);
 
     store.dispatch(
       setRuntimeVariable({
-        name: 'accessToken',
-        value: '',
+        name: "start",
+        value: Date.now(),
       }),
     );
 
-    // if (typeof req.query.code !== undefined) {
-    //   const { baseURL: { auth: authURL }, auth: authConfig } = apiConfig["production"];
+    store.dispatch(
+      setUserVariable({
+        name: 'token',
+        value: req.cookies._at || "",
+      }),
+    );
 
-    // request.post({
-    //   url: `${authURL}/_/oauth2/v1/token`,
-    //   json: {
-    //     ...authConfig,
-    //     redirect_uri: req.get('host'),
-    //     code: req.query.code
-    //   }
-    // }, function (error, response, body) {
-    //   if (!error && response.statusCode == 200) {
-    //     console.log(body)
-    //     // const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
+    let apiCall;
+    let result;
+    // This is how you Sign Out a session, Sign Out NOT implemented yet
+    // res.clearCookie('_at');
+    if (req.cookies._at) {
+      /** GET EXISTING USER INFO  */
+      apiCall = await Mola.getUserInfo(req.cookies._at);
+      if (apiCall.meta.status === "success") {
+        result = { ...result, ...apiCall.data };
+        Object.keys(result).forEach(function(key) {
+          store.dispatch(
+            setUserVariable({
+              name: key,
+              value: result[key]
+            })
+          );
+        });
+      }
+    } else if (req.query.code) {
+      /** ON CLICK LOGIN  */
+      apiCall = await Mola.getAuth({ code: req.query.code, redirect_uri: "http://jaenal.mola.tv" });
 
-    //     // req.cookies.accessToken = token;
-    //     // req.cookies.refreshToken = refreshToken;
-    //     // req.cookies.expire = expire;
-    //     // req.cookies.type = type;
-    //   } else {
-    //     console.error(body)
-    //   }
-    // });
-    // }
+      if (apiCall.meta.status === "success") {
+        result = { ...apiCall.data };
+        apiCall = await Mola.getUserInfo(apiCall.data.token);
+        if (apiCall.meta.status === "success") {
+          result = { ...result, ...apiCall.data };
+          Object.keys(result).forEach(function(key) {
+            store.dispatch(
+              setUserVariable({
+                name: key,
+                value: result[key]
+              })
+            );
+          });
 
-    //   nodeFetch(`${authURL}/_/oauth2/v1/token`, {
-    //     method: 'POST',
-    //     body: {
-    //       ...authConfig,
-    //       redirect_uri: req.get('host'),
-    //       code: req.query.code
-    //     }
-    //   })
-    //     .then(response => {
-    //       console.log(response.body);
-    //       const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
-
-    //       req.cookies.accessToken = token;
-    //       req.cookies.refreshToken = refreshToken;
-    //       req.cookies.expire = expire;
-    //       req.cookies.type = type;
-    //     });
-    // }
-
-    if (typeof req.cookies.accessToken !== undefined) {
-      store.dispatch(
-        setRuntimeVariable({
-          name: 'accessToken',
-          value: req.cookies.accessToken || '',
-        }),
-      );
+          res.cookie('_at', result.token, {
+            maxAge: result.expire * 1000,
+            httpOnly: true,
+            // secure: !__DEV__,
+          });
+        }
+      }
     }
 
     const userAgent = req.get('User-Agent');

@@ -132,60 +132,41 @@ const getSearchResult = ({ q }) => {
   })
 }
 
-const updateUserToken = ({ origin = '', search = '', ...props }) => {
-  const parsed = queryString.parse(search),
-    { baseURL: { auth: authURL }, tokenAuth: authConfig } = config["production"];
-  if (parsed.code) {
-    return post(
-      `${authURL}/_/oauth2/v1/token`,
-      {
-        ...authConfig,
-        redirect_uri: origin,
-        code: parsed.code
+const getAuth = ({ code, redirect_uri }) => {
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  return post(
+    `${authURL}/_/oauth2/v1/token`,
+    {
+      ...authConfig,
+      redirect_uri,
+      code
+    }
+  )
+    .then(response => {
+      if (response.status === 200) {
+        const result = utils.normalizeUserToken(response);
+        return {
+          meta: {
+            status: 'success',
+            error: '',
+          },
+          data: result,
+        }
       }
-    )
-      .then(response => {
-        console.log(response);
-        if (response.status === 200) {
-          const result = utils.normalizeUserToken(response);
-          console.log("UPDATE USER TOKEN", result);
-          return {
-            meta: {
-              status: 'success',
-              error: '',
-            },
-            data: result,
-          }
-        }
-        return {
-          meta: {
-            status: 'error',
-            error: `user/updateUserToken ~ Failed to authenticate user`,
-          },
-          data: {}
-        }
-      })
-      .catch(error => {
-        return {
-          meta: {
-            status: 'error',
-            error: `user/updateUserToken ~ ${error}`,
-          },
-          data: {}
-        }
-      });
-  }
-  return {
-    meta: {
-      status: 'error',
-      error: `user/updateUserToken ~ Failed to authenticate user`,
-    },
-    data: {}
-  }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
 }
 
 const getUserInfo = token => {
-  const { baseURL: { auth: authURL } } = config["production"];
+  const { endpoints: { auth: authURL } } = config["production"];
   return get(
     `${authURL}/_/v1/userinfo`,
     {
@@ -208,11 +189,43 @@ const getUserInfo = token => {
       return {
         meta: {
           status: 'error',
-          error: `user/getUserInfo ~ ${error}`,
+          error,
         },
-        data: {}
+        data: {},
       }
-    });
+    })
+}
+
+const revokeAuth = token => {
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  return post(
+    `${authURL}/_/oauth2/v1/revoke`,
+    {
+      app_key: authConfig.app_key,
+      app_secret: authConfig.app_secret,
+      token
+    }
+  )
+    .then(response => {
+      if (response.status === 'success') {
+        return {
+          meta: {
+            status: 'success',
+            error: '',
+          },
+          data: {},
+        }
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
 }
 
 export default {
@@ -220,7 +233,9 @@ export default {
   getHomeVideo,
   getAllHistory,
   getSearchVideo,
-  getSearchResult,
-  updateUserToken,
+  getAuth,
   getUserInfo,
+  getSearchResult,
+  revokeAuth,
+  // updateUserToken,
 }
