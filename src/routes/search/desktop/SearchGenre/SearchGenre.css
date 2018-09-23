@@ -25,27 +25,6 @@
   width: 10%;
 }
 
-.genreLink__mobile {
-  display: block;
-  width: 100%;
-  height: auto;
-  padding: 15px 0;
-  text-align: center;
-}
-
-.genreText__mobile {
-  background: none;
-  font-size: 20px;
-  color: white;
-  outline: none;
-}
-
-.genreText__mobileLoading {
-  margin: 0 auto 10px;
-  width: 40%;
-  height: 20px;
-}
-
 .genreImgLoading {
   width: 100%;
   height: 50px;
@@ -55,7 +34,6 @@
   .genreContainer {
     padding: 130px 0 0;
     width: 60%;
-    margin-top: 100px;
   }
 
   .genreLink .genreText {
@@ -70,19 +48,16 @@
     padding: 70px 0 0;
   }
 
-  .genreContainer__mobile {
-    padding-top: 70px;
-  }
-
   .genreLink .genreText {
     font-size: 20px;
   }
 
   .genreLink {
-    padding: 10px 0;
+    margin: 10px 0;
+    height: 30px;
   }
 
-  .genreText__mobileLoading {
-    width: 60%;
+  .genreImgLoading {
+    height: 30px;
   }
 }

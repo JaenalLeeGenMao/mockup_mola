@@ -172,7 +172,7 @@ class Moviedetail extends React.Component {
           isDark = {1}
           logoOff = {false}
           libraryOff = {true}
-          rightMenuOff = {true}
+          rightMenuOff = {false}
         />
         <Layout>
           <Banner imageTitle="hallo" bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={playCopy} />
@@ -224,12 +224,11 @@ class Moviedetail extends React.Component {
           </Modal>
         </Layout>
       </Fragment>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     ...state
   }

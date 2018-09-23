@@ -1,0 +1,266 @@
+@import '../../../components/variables.css';
+@import '../../../global/style/css/grainBackground.css';
+
+.headerNone {
+  display: none;
+}
+
+.headerDisplay {
+  display: block;
+}
+
+.root {
+  background-color: #000;
+  height: calc(100vh - 50px);
+  padding: 50px 0 0;
+  overflow: hidden;
+  font-family: var(--font-family-base);
+}
+
+.container {
+  margin: 0 auto;
+  width: 1000px;
+  position: relative;
+  z-index: 102;
+}
+
+.searchInputWrapper {
+  position: relative;
+  padding: 0;
+  margin: 0 auto;
+  width: 65%;
+}
+
+.searchText {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  color: #bababa;
+  transform: translate(-50%, 0);
+  font-size: 18px;
+}
+
+.searchAutocomplete {
+  padding: 0;
+  position: relative;
+  width: 65%;
+  z-index: 100;
+  box-sizing: border-box;
+  font-size: 22px;
+  color: #6f6f6f;
+  margin: 0 auto;
+  line-height: 1;
+}
+
+.searchAutocomplete span {
+  top: 14px;
+  left: 0;
+  position: absolute;
+}
+
+.searchIcon {
+  background-image: url('../assets/ic_search.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 10px;
+  left: calc(50% - 58px);
+  width: 25px;
+  height: 25px;
+}
+
+.searchInput,
+.searchInputSuggestion,
+.searchInputSuggestion__mobile {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid white;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+  outline: 0;
+  font-size: 22px;
+  line-height: 1;
+  height: 52px;
+  padding: 10px 0 10px 48px;
+  position: absolute;
+  z-index: 101;
+}
+
+.searchInputSuggestion,
+.searchInputSuggestion__mobile {
+  color: #6f6f6f;
+}
+
+.searchInput {
+  padding: 10px 0 10px 0;
+  top: 0;
+}
+
+.resultWrapper {
+  padding-top: 130px;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 100%;
+}
+
+.resultEmptyWrapper {
+  padding-top: 130px;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 100%;
+  color: #6f6f6f;
+  text-align: center;
+}
+
+.resultEmptyWrapper div {
+  padding: 10px 0;
+}
+
+.resultContainer {
+  overflow-y: auto;
+  height: calc(100vh - 100px);
+  padding-right: 20px;
+  width: 100%;
+}
+
+.resultRow {
+  padding-bottom: 32px;
+  margin: 0;
+  display: flex;
+}
+
+.resultTitle {
+  color: #bababa;
+  font-size: 17px;
+  font-weight: normal;
+  display: inline-block;
+  flex: 1 0 160px;
+}
+
+.resultContent {
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  display: block;
+  width: 100%;
+}
+
+.containerBg {
+  background-color: #11110f;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1280px) {
+  .container {
+    width: 900px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 800px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .container {
+    width: 100%;
+    height: calc(100vh - 200px);
+  }
+
+  .searchInputWrapper {
+    width: 60%;
+  }
+
+  .searchAutocomplete {
+    width: 60%;
+  }
+
+  .searchAutocomplete span {
+    top: 34px;
+  }
+
+  .searchText {
+    top: 30px;
+  }
+
+  .searchIcon {
+    top: 30px;
+    left: calc(50% - 58px);
+    width: 25px;
+    height: 25px;
+  }
+
+  .searchInput {
+    top: 20px;
+  }
+
+  .resultRow {
+    display: block;
+  }
+
+  .resultWrapper {
+    width: 90%;
+    padding-top: 120px;
+  }
+
+  .resultContainer {
+    height: calc(100vh - 120px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .root {
+    padding: 70px 0 0;
+    height: calc(100vh - 70px);
+  }
+
+  .searchInputWrapper {
+    position: relative;
+    padding: 0;
+    margin: 0 auto;
+    width: 70%;
+  }
+
+  .searchAutocomplete {
+    width: 70%;
+  }
+
+  .searchAutocomplete span {
+    display: none;
+  }
+
+  .searchText {
+    top: 17px;
+    font-size: 14px;
+  }
+
+  .searchIcon {
+    top: 18px;
+    left: calc(50% - 44px);
+    width: 16px;
+    height: 16px;
+  }
+
+  .searchInput {
+    top: 0;
+  }
+
+  .resultWrapper {
+    margin: 0 auto;
+    width: 90%;
+    padding-top: 100px;
+  }
+
+  .resultEmptyWrapper {
+    margin: 0 auto;
+    width: 80%;
+    text-align: left;
+  }
+}

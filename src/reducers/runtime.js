@@ -8,6 +8,6 @@ export default function runtime(state = {}, action) {
       [action.payload.name]: action.payload.value,
     };
   default:
-    return state;
+    return { ...state };
   }
 }

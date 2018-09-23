@@ -3,19 +3,19 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LoadingPlaceholder from '@components/common/LoadingPlaceholder';
 import s from './SearchGenre.css';
 
-const MsearchGenreLoading = () => {
+const SearchGenreLoading = () => {
   const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
-    <div className={s.genreContainer__mobile}>
+    <div className={s.genreContainer}>
       {
         data.map( (dt) => (
-          <div className={s.genreLink__mobile} key={dt}>
-            <LoadingPlaceholder className={s.genreText__mobileLoading}/>
+          <div className={s.genreLink} key={dt}>
+            <LoadingPlaceholder className={s.genreTextLoading}/>
           </div>
         ))
       }
     </div>
   );
 }
-export default withStyles(s)(MsearchGenreLoading);
+export default withStyles(s)(SearchGenreLoading);

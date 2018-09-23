@@ -12,7 +12,7 @@ COPY package*.json ./
 
 # installing dependencies
 # RUN npm install --production && npm install node-gyp
-RUN npm install --force --only=production && npm rebuild
+RUN npm install --force
 
 # copy all files and folders into container
 COPY . .

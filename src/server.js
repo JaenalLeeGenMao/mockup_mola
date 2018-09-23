@@ -15,6 +15,7 @@ import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 // import { graphql } from 'graphql';
 import jwt from 'jsonwebtoken';
 // import nodeFetch from 'node-fetch';
+// import request from 'request';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
@@ -29,7 +30,9 @@ import router from './router';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
+import { setUserVariable } from './actions/user';
 import config from './config';
+import Mola from '@api/mola'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -104,10 +107,21 @@ app.use((err, req, res, next) => {
 //   },
 // );
 
+app.get('/set-cookie', async (req, res, next) => {
+  res.cookie('_at', req.cookies._at, {
+    maxAge: 3600 * 1000,
+    httpOnly: true,
+    // secure: !__DEV__,
+  });
+
+  return next();
+});
+
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
+
   try {
     const css = new Set();
 
@@ -127,17 +141,79 @@ app.get('*', async (req, res, next) => {
     // });
 
     const initialState = {
-      user: req.user || null,
+      user: req.user || {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        token: '',
+        refreshToken: '',
+        expire: '',
+        type: '',
+        lang: 'en'
+      },
     };
 
     const store = configureStore(initialState);
 
     store.dispatch(
       setRuntimeVariable({
-        name: 'initialNow',
+        name: "start",
         value: Date.now(),
       }),
     );
+
+    store.dispatch(
+      setUserVariable({
+        name: 'token',
+        value: req.cookies._at || "",
+      }),
+    );
+
+    let apiCall;
+    let result;
+    // This is how you Sign Out a session, Sign Out NOT implemented yet
+    // res.clearCookie('_at');
+    if (req.cookies._at) {
+      /** GET EXISTING USER INFO  */
+      apiCall = await Mola.getUserInfo(req.cookies._at);
+      if (apiCall.meta.status === "success") {
+        result = { ...result, ...apiCall.data };
+        Object.keys(result).forEach(function(key) {
+          store.dispatch(
+            setUserVariable({
+              name: key,
+              value: result[key]
+            })
+          );
+        });
+      }
+    } else if (req.query.code) {
+      /** ON CLICK LOGIN  */
+      apiCall = await Mola.getAuth({ code: req.query.code, redirect_uri: "http://jaenal.mola.tv" });
+
+      if (apiCall.meta.status === "success") {
+        result = { ...apiCall.data };
+        apiCall = await Mola.getUserInfo(apiCall.data.token);
+        if (apiCall.meta.status === "success") {
+          result = { ...result, ...apiCall.data };
+          Object.keys(result).forEach(function(key) {
+            store.dispatch(
+              setUserVariable({
+                name: key,
+                value: result[key]
+              })
+            );
+          });
+
+          res.cookie('_at', result.token, {
+            maxAge: result.expire * 1000,
+            httpOnly: true,
+            // secure: !__DEV__,
+          });
+        }
+      }
+    }
 
     const userAgent = req.get('User-Agent');
     const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);

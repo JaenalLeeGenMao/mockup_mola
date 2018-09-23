@@ -1,0 +1,105 @@
+.resultTitle {
+  color: #bababa;
+  font-size: 17px;
+  font-weight: normal;
+  display: inline-block;
+  flex: 1 0 160px;
+}
+
+.resultContent {
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-right: 130px;
+  margin-left: -10px;
+}
+
+.castBox {
+  width: calc(100% / 6);
+  text-align: center;
+  padding-bottom: 20px;
+  line-height: 1.3;
+}
+
+.castBox > img {
+  height: 76px;
+  width: 76px;
+  border-radius: 100%;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.castBox span {
+  font-size: 13px;
+  display: inline;
+  color: #6f6f6f;
+}
+
+.castBox .castNameResult {
+  color: #fff;
+}
+
+@media screen and (max-width: 1280px) {
+  .castBox {
+    width: calc(100% / 6);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .castBox > img {
+    height: 66px;
+    width: 66px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .resultTitle {
+    font-size: 14px;
+    padding-bottom: 15px;
+  }
+
+  .resultContent {
+    padding: 0;
+    margin: 0;
+  }
+
+  .castBox {
+    line-height: 1;
+  }
+
+  .castBox div {
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .resultTitle {
+    font-size: 14px;
+    padding-bottom: 15px;
+  }
+
+  .resultContent {
+    padding: 0;
+    margin: 0;
+  }
+
+  .castBox {
+    width: calc(100% / 5);
+    line-height: 1;
+    font-size: 12px;
+  }
+
+  .castBox div {
+    padding: 0;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  .castBox > img {
+    height: 50px;
+    width: 50px;
+  }
+}

@@ -20,6 +20,7 @@ const ContextType = {
   pathname: PropTypes.string.isRequired,
   query: PropTypes.object,
   isMobile: PropTypes.bool.isRequired,
+  cookies: PropTypes.object,
   // Integrate Redux
   // http://redux.js.org/docs/basics/UsageWithReact.html
   ...ReduxProvider.childContextTypes,

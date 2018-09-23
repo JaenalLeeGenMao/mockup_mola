@@ -1,7 +1,7 @@
 import types from '../constants';
 import Mola from '../api/mola';
 
-export const getAllHistory = () => dispatch => {
+export const getAllHistory = userId => dispatch => {
   dispatch({
     type: types.GET_HISTORY_LOADING,
     payload: {
@@ -12,7 +12,7 @@ export const getAllHistory = () => dispatch => {
       data: []
     }
   });
-  return Mola.getAllHistory()
+  return Mola.getAllHistory({ userId })
     .then(result => {
       if (result.meta.status === "error") {
         dispatch({
