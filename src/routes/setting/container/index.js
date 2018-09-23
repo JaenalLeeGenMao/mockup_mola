@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './index.css'
 
-import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch } from '@components'
+import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink } from '@components'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 class Setting extends React.Component {
@@ -56,6 +56,20 @@ class Setting extends React.Component {
     const { isMobile } = this.props
     const { videoQuality, location, autoPlay, signOn } = this.state
     const menus = [
+      {
+        title: 'PROFILE',
+        href: '/profile'
+      },
+      {
+        title: 'SECURITY',
+        href: '/security'
+      },
+      {
+        title: 'SETTING',
+        href: '/setting'
+      }
+    ]
+    const footerMenus = [
       {
         title: 'PROFILE',
         href: '/profile'
@@ -170,6 +184,7 @@ class Setting extends React.Component {
               rootStyle={{ marginBottom: '0px' }} />
 
             <hr />
+            <UiFooterLink menus={footerMenus} />
           </div>
           <div className={s.sideRight}></div>
         </div>

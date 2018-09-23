@@ -1,7 +1,6 @@
 .root {
   display: flex;
   background: linear-gradient(180deg, #0e1d3d 0%, #000 100%);
-  height: 800px;
 }
 
 .sideLeft {
@@ -18,13 +17,15 @@
 .sideCenter {
   background: rgba(0, 0, 0, 0.25);
   padding: 80px 50px;
+  padding-bottom: 400px;
   flex: 50%;
 }
 
 @media only screen and (max-width: 1024px) {
   .sideCenter {
     flex: 100%;
-    padding: 30px 30px;
+    padding: 30px;
+    padding-bottom: 140px;
   }
 }
 

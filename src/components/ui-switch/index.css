@@ -1,3 +1,5 @@
+@import '../variables.css';
+
 .container {
   clear: both;
   padding-top: 10px;
