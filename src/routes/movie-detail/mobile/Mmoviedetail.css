@@ -1,0 +1,47 @@
+.header {
+  position: absolute;
+  padding: 5%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.main_container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+.trailer_moviebox {
+  white-space: nowrap;
+  overflow: auto;
+}
+
+.trailer_moviebox img {
+  display: inline-block;
+  margin-right: 5px;
+  margin-top: 5px;
+  max-width: 50%;
+}
+
+.inner_box {
+  display: inline-grid;
+  text-align: center;
+  width: 80px;
+}
+
+.inner_box img {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-right: 5px;
+  margin-top: 5px;
+  max-width: 100%;
+}
+
+.inner_box p {
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 13px;
+  white-space: normal;
+}

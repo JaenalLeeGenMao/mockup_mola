@@ -1,0 +1,26 @@
+.container {
+  width: 100%;
+  padding: 0 13px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.box {
+  width: 100%;
+  border: 1px solid #5784ff;
+  margin-top: 16px;
+}
+
+.inner_box {
+  padding: 16px;
+}
+
+.inner_box p {
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.inner_box span {
+  font-weight: 600;
+}
