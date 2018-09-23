@@ -1,49 +1,86 @@
-import React from 'react'
+import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-// import { Link } from 'react-router-dom';
-import Link from '../../Link'
-import { FiSearch, FiUserX } from 'react-icons/fi'
-import { iocircle } from 'react-icons/io'
-import { FaUserCircle, fauser } from 'react-icons/fa'
+import queryString from 'query-string'
+
+import config from '@global/config/api'
+import Mola from '@api/mola'
+
 import LazyLoad from '@components/common/Lazyload'
-import LazyLoadBeta from '@components/common/LazyloadBeta'
+import Link from '@components/Link'
 
 import styles from './right-menu.css'
 
-const RightMenu = ({ color, searchOff }) => {
-  return (
-    <div className={styles.right__menu}>
-      { !searchOff &&
-      <LazyLoadBeta>
+class RightMenu extends Component {
+  state = {
+    loggedIn: false
+  }
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   const { onGetUserInfo, user } = nextProps;
+  //   // console.log("GET DERIVED STATE ", user);
+  //   if (user.meta && user.meta.status == "success") {
+  //     console.log(user.meta.status, document.cookie);
+  //     document.cookie = user.data.token || '';
+  //     if (!user.data.id) {
+  //       // onGetUserInfo(user.data.token);
+  //     }
+
+  //     return { ...prevState, loggedIn: true };
+  //   }
+  //   return { ...prevState };
+  // }
+
+  handleLogin = () => {
+    const { endpoints: { auth: authURL }, auth: authConfig } = config["production"];
+
+    const qs = queryString.stringify({ ...authConfig, redirect_uri: "http://jaenal.mola.tv" });
+    window.location.href = `${authURL}/oauth/login?${qs}`;
+  }
+
+  handleSignOut = () => {
+    const { user } = this.props;
+    window.App.cookies.cookies =  {};
+    Mola.revokeAuth(user.token);
+  }
+
+  render() {
+    const { color, searchOff } = this.props;
+    return (
+      <div className={styles.right__menu}>
+        { !searchOff &&
+      <LazyLoad>
         <Link
           className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
           to="/search"
         />
-      </LazyLoadBeta>
-      }
-      <span className ={styles.right__menu_wrapper}>
-        {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
-        <LazyLoadBeta>
-          <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
-        </LazyLoadBeta>
-        <div className={styles.right__menu_dropdown_wrapper}>
-          <div className={styles.right__menu_dropdown} style={{ color }}>
-            <Link style={{ color }} to="/">Account</Link>
+      </LazyLoad>
+        }
+        <span className ={styles.right__menu_wrapper}>
+          {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
+          <LazyLoad>
+            <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
+          </LazyLoad>
+          <div className={styles.right__menu_dropdown_wrapper}>
+            <div className={styles.right__menu_dropdown} style={{ color }}>
+              <Link style={{ color }} to="/" onClick={this.handleLogin}>Login</Link>
+              <Link style={{ color }} to="/" onClick={this.handleSignOut}>Sign out</Link>
+              {/* <Link style={{ color }} to="/">Account</Link>
             <Link style={{ color }} to="/history">History</Link>
-            <Link style={{ color }} to="/">Inbox</Link>
-            <Link style={{ color }} to="/">System Info</Link>
-            <div className={styles.right__menu_dropdown_footer}>
-              <Link style={{ color }} to="/">Privacy</Link>
+            <Link style={{ color }} to="/">Inbox</Link> */}
+              <Link style={{ color }} to="/">System Info</Link>
+              <div className={styles.right__menu_dropdown_footer}>
+                <Link style={{ color }} to="/">Privacy</Link>
                           &bull;
-              <Link style={{ color }} to="/">Terms</Link>
+                <Link style={{ color }} to="/">Terms</Link>
                           &bull;
-              <Link style={{ color }} to="/">Help</Link>
+                <Link style={{ color }} to="/">Help</Link>
+              </div>
             </div>
           </div>
-        </div>
-      </span>
-    </div>
-  )
+        </span>
+      </div>
+    )
+  }
 }
 
-export default withStyles(styles)(RightMenu)
+export default withStyles(styles)(RightMenu);

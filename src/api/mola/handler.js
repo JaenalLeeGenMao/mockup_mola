@@ -1,6 +1,7 @@
-import { get } from 'axios'
+import { get, post } from 'axios'
 import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, MOVIE_DETAIL_ENDPOINT } from './endpoints'
 import utils from './util'
+
 import config from '@global/config/api'
 const { NODE_ENV } = process.env
 
@@ -60,8 +61,8 @@ const getHomeVideo = ({ id, ...payload }) => {
   })
 }
 
-const getAllHistory = (payload) => {
-  return get(`${HISTORY_ENDPOINT}`, { ...payload }).then(
+const getAllHistory = ({ userId }) => {
+  return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`).then(
     (response) => {
       const result = utils.normalizeHistory(response)
       return {
@@ -152,11 +153,111 @@ const getMovieDetail = ({ id }) => {
   })
 }
 
+const getAuth = ({ code, redirect_uri }) => {
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  return post(
+    `${authURL}/_/oauth2/v1/token`,
+    {
+      ...authConfig,
+      redirect_uri,
+      code
+    }
+  )
+    .then(response => {
+      if (response.status === 200) {
+        const result = utils.normalizeUserToken(response);
+        return {
+          meta: {
+            status: 'success',
+            error: '',
+          },
+          data: result,
+        }
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
+const getUserInfo = token => {
+  const { endpoints: { auth: authURL } } = config["production"];
+  return get(
+    `${authURL}/_/v1/userinfo`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeUserInfo(response);
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: result
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
+const revokeAuth = token => {
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  return post(
+    `${authURL}/_/oauth2/v1/revoke`,
+    {
+      app_key: authConfig.app_key,
+      app_secret: authConfig.app_secret,
+      token
+    }
+  )
+    .then(response => {
+      if (response.status === 'success') {
+        return {
+          meta: {
+            status: 'success',
+            error: '',
+          },
+          data: {},
+        }
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
+  getAuth,
+  getUserInfo,
   getSearchResult,
+  revokeAuth,
+  // updateUserToken,
   getSearchGenre,
   getMovieDetail
 }

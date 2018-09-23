@@ -11,7 +11,6 @@ import React, { Component } from 'react';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import LazyLoadBeta from '@components/common/LazyloadBeta';
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
 import logoBlue from '@global/style/icons/mola_blue.png';
@@ -51,7 +50,7 @@ class Header extends Component {
       <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>
           {!logoOff &&
-            <LazyLoadBeta>
+            <LazyLoad>
               <Link to="/">
                 {
                   logoDark &&
@@ -63,19 +62,19 @@ class Header extends Component {
                     <img alt='MOLA' src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo}/>
                 }
               </Link>
-            </LazyLoadBeta>
+            </LazyLoad>
           }
           {backButtonOn && (
-            <LazyLoadBeta>
+            <LazyLoad>
               <div className={styles.header__back_button} onClick={this.handleGoBack}>
                 <IoIosArrowRoundBack size={32} color={color} />
               </div>
-            </LazyLoadBeta>
+            </LazyLoad>
           )}
         </div>
         {/* <div className={styles.header__library_wrapper}> */}
         {!libraryOff && (
-          <LazyLoadBeta>
+          <LazyLoad>
             <Link
               className={styles.header__library_link_wrapper}
               to="/movie-library"
@@ -87,11 +86,11 @@ class Header extends Component {
                 style={{ width: '32px', height: '32px', }}
               />
             </Link>
-          </LazyLoadBeta>
+          </LazyLoad>
         )}
         {isLibraryCopy && <span className={styles.header__copy_library}>{title}</span>}
         {/* </div> */}
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
       </div>
     )
   }
