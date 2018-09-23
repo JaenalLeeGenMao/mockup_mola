@@ -14,7 +14,7 @@ import HomeMobile from './mobile';
 async function action({ isMobile }) {
   return {
     title: 'React Starter Kit',
-    chunks: ['home'],
+    // chunks: ['home'],
     component: isMobile ? <HomeMobile /> : <HomeDesktop />,
   };
 }

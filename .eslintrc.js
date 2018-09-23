@@ -25,7 +25,7 @@ module.exports = {
     'brace-style': ['error', '1tbs'],
 
     // Enforce using camelCase
-    'camelcase': ['error', { 'properties': 'always' }],
+    // 'camelcase': ['error', { 'properties': 'always' }],
 
     // Shouldn't use console.*  use a proper logger instead, e.g.
     // https://www.npmjs.com/package/winston

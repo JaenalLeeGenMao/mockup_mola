@@ -90,7 +90,7 @@ class Header extends Component {
         )}
         {isLibraryCopy && <span className={styles.header__copy_library}>{title}</span>}
         {/* </div> */}
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff}/>}
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} />}
       </div>
     )
   }

@@ -72,9 +72,9 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-    	window.addEventListener('scroll', this.handleScroll);
-    	Events.scrollEvent.register('begin', this.handleScroll);
-    	Events.scrollEvent.register('end', this.handleColorChange);
+	  window.addEventListener('scroll', this.handleScroll);
+	  Events.scrollEvent.register('begin', this.handleScroll);
+	  Events.scrollEvent.register('end', this.handleColorChange);
 	}
 
 	componentWillUnmount() {
