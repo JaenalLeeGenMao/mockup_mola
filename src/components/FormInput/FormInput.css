@@ -42,6 +42,9 @@
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
 }
 
-.form__showPass {
+.eye {
   cursor: pointer;
+  position: absolute;
+  top: 17px;
+  right: 30px;
 }

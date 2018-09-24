@@ -19,11 +19,34 @@ import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 
 class Login extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      usernameOrEmail: '',
+      password: ''
+    }
+
+    this.onChangeInput = this.onChangeInput.bind(this)
+  }
+
+  onChangeInput = (e) => {
+    const target = e.target
+    const { id, value } = target
+    this.setState({
+      [id]: value
+    })
+  }
+
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
 
   render() {
+    const {
+      usernameOrEmail,
+      password
+    } = this.state
+
     const isDark = true;
     return (
       <Fragment>
@@ -40,13 +63,18 @@ class Login extends React.Component {
                   <Form className={s.formMobile}
                     id="usernameOrEmail"
                     type="text"
-                    name="usernameOrEmail" autoFocus>
+                    name="usernameOrEmail"
+                    onChange={this.onChangeInput}
+                    value={usernameOrEmail}
+                    autoFocus>
                                 Email or username
                   </Form>
                   <Form className={s.formMobile}
                     id="password"
                     type="password"
                     name="password"
+                    onChange={this.onChangeInput}
+                    value={password}
                   >
                                 Password
                   </Form>

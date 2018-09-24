@@ -14,11 +14,11 @@ import Layout from '../../components/Layout';
 
 const title = 'Log In';
 
-function action(isMobile) {
+function action({ isMobile }) {
   return {
     chunks: ['login'],
     title,
-    component: (isMobile.isMobile ?
+    component: (isMobile ?
       (<Layout>
         <LoginMobile />
       </Layout>)  :
