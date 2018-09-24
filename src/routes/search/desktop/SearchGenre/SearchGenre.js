@@ -13,14 +13,13 @@ class SearchGenre extends React.Component {
   render() {
     const { data } = this.props;
     return (
-      <LazyLoad containerClassName={s.genreContainer}>
+      <div className={s.genreContainer}>
         {
           data.map( (data, index) => {
-            const genreImgStyle = { backgroundImage: `url(${data.iconUrl})`, }
             if( index % 2 === 0 ) {
               return (
                 <Link className={s.genreLink} key={index} to={`/movie-library/${data.id}`}>
-                  <span style={genreImgStyle} />
+                  <LazyLoad src={data.iconUrl}/>
                 </Link>
               )
             } else {
@@ -28,14 +27,14 @@ class SearchGenre extends React.Component {
                 <Fragment>
                   <div className={s.genreSplit} key={index}></div>
                   <Link className={s.genreLink} to={`/movie-library/${data.id}`}>
-                    <span style={genreImgStyle} />
+                    <LazyLoad src={data.iconUrl}/>
                   </Link>
                 </Fragment>
               )
             }
           })
         }
-      </LazyLoad>
+      </div>
     );
   }
 }

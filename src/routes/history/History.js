@@ -27,10 +27,14 @@ class History extends React.Component {
     const {
       getAllHistory,
       history,
+      user: {
+        id: userId
+      }
     } = nextProps;
 
     if (history.meta.status === 'loading'  && prevState.history.length <= 0) {
       getAllHistory('kareemlukitomo123');
+      // getAllHistory(userId); comment dulu krn no data
     }
 
     return { ...prevState, history };

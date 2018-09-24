@@ -47,11 +47,21 @@ const routes = {
     {
       path: '/movie-detail',
       load: () => import(/* webpackChunkName: 'admin' */ './movie-detail'),
+      children: [
+        {
+          path: '/:id',
+        }
+      ]
     },
     // Movie Library
     {
       path: '/movie-library',
       load: () => import(/* webpackChunkName: 'admin' */ './movie-library'),
+      children: [
+        {
+          path: '/:id',
+        }
+      ]
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {

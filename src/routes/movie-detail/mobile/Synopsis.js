@@ -6,19 +6,30 @@ import s from './Synopsis.css';
 class Synopsis extends Component {
   static propTypes = {
     synopsisContent: PropTypes.string.isRequired,
-    directedBy: PropTypes.string.isRequired,
+    directedBy: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   render() {
+    const { synopsisContent, directedBy } = this.props;
     return (
       <Fragment>
         <div className={s.container}>
           <div className={s.box}>
             <div className={s.inner_box}>
-              <p>{this.props.synopsisContent}</p>
+              <p>{synopsisContent}</p>
               <p>
-            Directed by :
-                <span> {this.props.directedBy}</span>
+                Directed by :
+                <span>
+                  {
+                    directedBy.map( (dt, index) => {
+                      if( index == 0 ) {
+                        return dt.attributes.name;
+                      } else {
+                        return `, ${dt.attributes.name}`;
+                      }
+                    })
+                  }
+                </span>
               </p>
             </div>
           </div>
