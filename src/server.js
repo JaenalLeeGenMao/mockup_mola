@@ -107,14 +107,10 @@ app.use((err, req, res, next) => {
 //   },
 // );
 
-app.get('/set-cookie', async (req, res, next) => {
-  res.cookie('_at', req.cookies._at, {
-    maxAge: 3600 * 1000,
-    httpOnly: true,
-    // secure: !__DEV__,
-  });
-
-  return next();
+app.get('/signout', (req, res) => {
+  res.clearCookie('_at');
+  res.clearCookie('_exp');
+  return res.redirect('http://jaenal.mola.tv');
 });
 
 //
@@ -156,37 +152,62 @@ app.get('*', async (req, res, next) => {
 
     const store = configureStore(initialState);
 
-    store.dispatch(
-      setRuntimeVariable({
-        name: "start",
-        value: Date.now(),
-      }),
-    );
+    store.dispatch(setRuntimeVariable({ name: "start", value: Date.now() }));
+    store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || "" }));
 
-    store.dispatch(
-      setUserVariable({
-        name: 'token',
-        value: req.cookies._at || "",
-      }),
-    );
 
     let apiCall;
     let result;
-    // This is how you Sign Out a session, Sign Out NOT implemented yet
-    // res.clearCookie('_at');
-    if (req.cookies._at) {
-      /** GET EXISTING USER INFO  */
-      apiCall = await Mola.getUserInfo(req.cookies._at);
+    let accessTokenLifespan = -1;
+    const accessToken = req.cookies._at;
+    const tokenExpiry = req.cookies._exp;
+
+    const clearCookie = () => {
+      res.clearCookie('_at');
+      res.clearCookie('_exp');
+    }
+
+    const getUserInfo = async (token, updateCookie = true) => {
+      apiCall = await Mola.getUserInfo(token);
       if (apiCall.meta.status === "success") {
         result = { ...result, ...apiCall.data };
         Object.keys(result).forEach(function(key) {
-          store.dispatch(
-            setUserVariable({
-              name: key,
-              value: result[key]
-            })
-          );
+          store.dispatch(setUserVariable({ name: key, value: result[key] }));
         });
+
+        if (updateCookie) {
+          const oneMonth = 30 * 24 * result.expire * 1000;
+          res.cookie('_at', result.token, {
+            maxAge: oneMonth,
+            httpOnly: true,
+            // secure: !__DEV__,
+          });
+          res.cookie('_exp', oneMonth, {
+            maxAge: oneMonth,
+            httpOnly: true,
+            // secure: !__DEV__,
+          });
+        }
+      }
+    }
+
+    if (accessToken && tokenExpiry) {
+      accessTokenLifespan = tokenExpiry - (Date.now() / 1000);
+      if (accessTokenLifespan < 0) {
+        res.cookie('_at', '', { expires: new Date(0) });
+        res.cookie('_exp', '', { expires: new Date(0) });
+        return res.redirect(req.originalUrl);
+      } else if (accessTokenLifespan < 12 * 3600 * 1000) {
+        // if lifespan of token is less than 12 hours then get new access token
+        apiCall = await Mola.updateAuth(accessToken);
+
+        if (apiCall.meta.status === "success") {
+          result = { ...apiCall.data };
+          await getUserInfo(apiCall.data.token);
+        }
+      } else {
+        /** GET EXISTING USER INFO  */
+        await getUserInfo(accessToken, false);
       }
     } else if (req.query.code) {
       /** ON CLICK LOGIN  */
@@ -194,24 +215,7 @@ app.get('*', async (req, res, next) => {
 
       if (apiCall.meta.status === "success") {
         result = { ...apiCall.data };
-        apiCall = await Mola.getUserInfo(apiCall.data.token);
-        if (apiCall.meta.status === "success") {
-          result = { ...result, ...apiCall.data };
-          Object.keys(result).forEach(function(key) {
-            store.dispatch(
-              setUserVariable({
-                name: key,
-                value: result[key]
-              })
-            );
-          });
-
-          res.cookie('_at', result.token, {
-            maxAge: result.expire * 1000,
-            httpOnly: true,
-            // secure: !__DEV__,
-          });
-        }
+        await getUserInfo(apiCall.data.token);
       }
     }
 
@@ -230,6 +234,7 @@ app.get('*', async (req, res, next) => {
       store,
       storeSubscription: null,
       isMobile,
+      clearCookie
     };
 
     const route = await router.resolve(context);
@@ -265,6 +270,7 @@ app.get('*', async (req, res, next) => {
       apiUrl: config.api.clientUrl,
       state: context.store.getState(),
       isMobile: context.isMobile,
+      clearCookie: context.clearCookie,
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);

@@ -202,8 +202,7 @@ const normalizeVideoDetail = (response) => {
   }
 }
 
-const normalizeUserToken = response => {
-  // console.log(response.data);
+const normalizeAuth = response => {
   const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
   return {
     token,
@@ -228,7 +227,7 @@ export default {
   normalizeHomeVideo,
   normalizeHistory,
   normalizeSearchResult,
-  normalizeUserToken,
+  normalizeAuth,
   normalizeUserInfo,
   normalizeSearchGenre,
   normalizeVideoDetail

@@ -260,7 +260,7 @@ class Home extends Component {
 
       return (
         <div>
-          <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile />
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile {...this.props} />
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {playlistrror || 'MOLA playlist is not loaded'}</div>
