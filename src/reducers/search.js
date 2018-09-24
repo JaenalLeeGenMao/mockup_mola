@@ -1,25 +1,36 @@
 import types from '../constants';
 
-const initialState = {
-  id: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  token: '',
-  refreshToken: '',
-  expire: '',
-  type: ''
-}
-
-export default function runtime(state = initialState, action) {
+export default function searchResult(state = {}, action) {
   switch (action.type) {
-  case types.SET_USER_VARIABLE:
-    return {
-      ...initialState,
-      ...state,
-      [action.payload.name]: action.payload.value,
-    };
+  case types.GET_SEARCH_GENRE_LOADING:
+    return { ...state, genre: { ...action.payload } };
+  case types.GET_SEARCH_GENRE_SUCCESS:
+    return { ...state, genre: { ...action.payload } };
+  case types.GET_SEARCH_GENRE_ERROR:
+    return { ...state, genre: { ...action.payload } };
+
+  case types.GET_SEARCH_LOADING:
+    return { ...state, result: { ...action.payload } };
+  case types.GET_SEARCH_SUCCESS:
+    return { ...state, result: { ...action.payload } };
+  case types.GET_SEARCH_ERROR:
+    return { ...state, result: { ...action.payload } };
+
   default:
-    return { ...initialState, ...state };
+    return {
+      ...state,
+      result: {
+        meta: {
+          status: "loading"
+        },
+        data: []
+      },
+      genre: {
+        meta: {
+          status: "loading"
+        },
+        data: []
+      }
+    };
   }
-}
+};
