@@ -11,24 +11,6 @@ import Link from '@components/Link'
 import styles from './right-menu.css'
 
 class RightMenu extends Component {
-  state = {
-    loggedIn: false
-  }
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const { onGetUserInfo, user } = nextProps;
-  //   // console.log("GET DERIVED STATE ", user);
-  //   if (user.meta && user.meta.status == "success") {
-  //     console.log(user.meta.status, document.cookie);
-  //     document.cookie = user.data.token || '';
-  //     if (!user.data.id) {
-  //       // onGetUserInfo(user.data.token);
-  //     }
-
-  //     return { ...prevState, loggedIn: true };
-  //   }
-  //   return { ...prevState };
-  // }
 
   handleLogin = () => {
     const { endpoints: { auth: authURL }, auth: authConfig } = config["production"];
@@ -37,14 +19,19 @@ class RightMenu extends Component {
     window.location.href = `${authURL}/oauth/login?${qs}`;
   }
 
-  handleSignOut = () => {
+  handleSignOut = e => {
+    e.preventDefault();
     const { user } = this.props;
-    window.App.cookies.cookies =  {};
-    Mola.revokeAuth(user.token);
+    Mola.revokeAuth(user.token).then(response => {
+      // console.log(response);
+      if (response.meta.status === "success") {
+        window.location.href = '/logout';
+      }
+    });
   }
 
   render() {
-    const { color, searchOff } = this.props;
+    const { color, searchOff, user } = this.props;
     return (
       <div className={styles.right__menu}>
         { !searchOff &&
@@ -62,11 +49,13 @@ class RightMenu extends Component {
           </LazyLoad>
           <div className={styles.right__menu_dropdown_wrapper}>
             <div className={styles.right__menu_dropdown} style={{ color }}>
-              <Link style={{ color }} to="/" onClick={this.handleLogin}>Login</Link>
-              <Link style={{ color }} to="/" onClick={this.handleSignOut}>Sign out</Link>
-              {/* <Link style={{ color }} to="/">Account</Link>
-            <Link style={{ color }} to="/history">History</Link>
-            <Link style={{ color }} to="/">Inbox</Link> */}
+              {user.id
+                ? <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>Sign out</Link>
+                : <Link style={{ color }} to="/" onClick={this.handleLogin}>Login</Link>
+              }
+              {user.id && <Link style={{ color }} to="/accounts">Account</Link>}
+              {user.id && <Link style={{ color }} to="/history">History</Link>}
+              {user.id && <Link style={{ color }} to="/inbox">Inbox</Link>}
               <Link style={{ color }} to="/">System Info</Link>
               <div className={styles.right__menu_dropdown_footer}>
                 <Link style={{ color }} to="/">Privacy</Link>

@@ -165,7 +165,7 @@ const getAuth = ({ code, redirect_uri }) => {
   )
     .then(response => {
       if (response.status === 200) {
-        const result = utils.normalizeUserToken(response);
+        const result = utils.normalizeAuth(response);
         return {
           meta: {
             status: 'success',
@@ -228,7 +228,7 @@ const revokeAuth = token => {
     }
   )
     .then(response => {
-      if (response.status === 'success') {
+      if (response.data.status === 'success') {
         return {
           meta: {
             status: 'success',
@@ -249,15 +249,51 @@ const revokeAuth = token => {
     })
 }
 
+const updateAuth = token => {
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  return get(
+    `${authURL}/_/v1/access_token`,
+    {
+      params: {
+        app_key: authConfig.app_key,
+        app_secret: authConfig.app_secret,
+        access_token: token,
+        expires_in: 3600,
+      }
+    }
+  )
+    .then(response => {
+      if (response.status === 200) {
+        const result = utils.normalizeAuth(response.data);
+        return {
+          meta: {
+            status: 'success',
+            error: '',
+          },
+          data: result,
+        }
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
   getAllHistory,
-  getAuth,
-  getUserInfo,
   getSearchResult,
-  revokeAuth,
-  // updateUserToken,
   getSearchGenre,
-  getMovieDetail
+  getMovieDetail,
+  getUserInfo,
+  getAuth,
+  updateAuth,
+  revokeAuth,
 }
