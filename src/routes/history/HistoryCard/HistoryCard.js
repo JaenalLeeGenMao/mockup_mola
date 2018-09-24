@@ -17,15 +17,15 @@ class HistoryCard extends React.Component {
     return (
       <div className={s.movieContainer}>
         <Link className={s.movieImageWrapper} to={`/movie-detail/${videos.videoId}`}>
-          <LazyLoad src={videos.coverUrl} style={{ width: '100%', }}>
-            {/* <div className={s.movieDurationBar}>
+          <LazyLoad src={videos.thumbnail} style={{ width: '100%', }}>
+            <div className={s.movieDurationBar}>
               <span className={s.moviePlayedBar} style={barStyle} />
-            </div> */}
+            </div>
           </LazyLoad>
         </Link>
         <div className={s.movieDetailWrapper}>
           <div className={s.movieTitle}>{videos.title}</div>
-          {/* <div className={s.movieChapter}>{videos.chapter}</div> */}
+          { videos.chapter && <div className={s.movieChapter}>{videos.chapter}</div> }
           <div className={s.movieDuration}>{videos.duration ? videos.duration / 60 : 0} min.</div>
         </div>
       </div>

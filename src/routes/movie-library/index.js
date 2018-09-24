@@ -3,11 +3,12 @@ import MovieLibrary from './Library';
 
 const title = 'Movie Library';
 
-function action({ isMobile }) {
+function action({ isMobile, pathname }) {
+  const pathnameArr = pathname.split("/");
   return {
     // chunks: ['admin'],
     title,
-    component: <MovieLibrary title={title} isMobile={isMobile} />,
+    component: <MovieLibrary title={title} isMobile={isMobile} genreId={pathnameArr[2]} />,
   };
 }
 

@@ -1,6 +1,6 @@
 import types from '../constants';
 
-export default function history(state = {}, action) {
+export default function movieDetail(state = {}, action) {
   switch (action.type) {
   case types.GET_MOVIE_DETAIL_LOADING:
     return { ...state, ...action.payload };

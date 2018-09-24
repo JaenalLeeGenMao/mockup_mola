@@ -115,8 +115,7 @@ class Search extends React.Component {
 
   processSearch = _debounce((val) => {
     const {
-      getSearchResult,
-      search: { result: { meta:status } }
+      getSearchResult
     } = this.props;
 
     getSearchResult(val);

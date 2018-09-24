@@ -91,6 +91,8 @@ const normalizeHistory = (response) => {
           title,
           coverUrl,
           duration,
+          chapter,
+          thumbnail
         } = attributes
 
         return {
@@ -98,7 +100,8 @@ const normalizeHistory = (response) => {
           videoId,
           timePosition,
           title,
-          coverUrl,
+          chapter: chapter,
+          thumbnail: thumbnail ? thumbnail[0] : coverUrl,
           duration: duration || 0,
         }
       })
@@ -108,7 +111,7 @@ const normalizeHistory = (response) => {
     meta: {
       status: 'no_result',
     },
-    data: {},
+    data: [],
   }
 }
 
@@ -173,15 +176,21 @@ const normalizeVideoDetail = (response) => {
     return data.map((result) => {
       const {
         id,
-        type,
-        // attributes: {
-        //   title,
-        // },
+        attributes: {
+          shortDescription,
+          title,
+          quotes,
+          trailers,
+          people
+        },
       } = result
       return {
         id,
-        type,
-        // title,
+        title,
+        quotes,
+        trailers,
+        shortDescription,
+        people
       }
     })
   }
@@ -189,12 +198,12 @@ const normalizeVideoDetail = (response) => {
     meta: {
       status: 'no_result',
     },
-    data: {},
+    data: [],
   }
 }
 
 const normalizeUserToken = response => {
-  console.log(response.data);
+  // console.log(response.data);
   const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
   return {
     token,

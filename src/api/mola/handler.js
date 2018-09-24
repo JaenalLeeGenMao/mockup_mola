@@ -136,10 +136,10 @@ const getMovieDetail = ({ id }) => {
       const result = utils.normalizeVideoDetail(response)
       return {
         meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: [...result] || [],
       }
     }
   ).catch((error) => {

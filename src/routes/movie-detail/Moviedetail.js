@@ -7,8 +7,8 @@ import Modal from "react-responsive-modal";
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Moviedetail.css';
 
-import * as movieDetail from '@actions/movie-detail';
-import Layout from '../../components/Molalayout';
+import * as movieDetailActions from '@actions/movie-detail';
+import Layout from '@components/Molalayout';
 import Frame from './moviedetail/Frame';
 import Secondframe from './moviedetail/Secondframe';
 import Banner from './moviedetail/Banner';
@@ -51,10 +51,22 @@ class Moviedetail extends React.Component {
       link: './history',
       playCopy: 'Play movie',
       open: false,
+      movieDetail: [],
+      isLoading: true
     }
 
-    componentWillMount() {
-      return this.props.getMovieDetail('tt5095030')
+    static getDerivedStateFromProps(nextProps, prevState) {
+      const {
+        getMovieDetail,
+        movieDetail,
+        movieId //passed as props from index.js
+      } = nextProps;
+      if (nextProps.movieDetail.meta.status === 'loading'  && prevState.movieDetail.length <= 0) {
+        //getMovieDetail('tt1179056');
+        getMovieDetail(movieId);
+      }
+
+      return { ...prevState, movieDetail };
     }
 
     onOpenModal = () => {
@@ -64,39 +76,6 @@ class Moviedetail extends React.Component {
     onCloseModal = () => {
       this.setState({ open: false });
     };
-
-  castingArtist = () => [
-    {
-      photoUrl: 'https://dummyimage.com/150x150/000/fff',
-      imgAlt: 'lorem ipsum',
-      imageCastCopy: 'Chris Hemsworth',
-    },
-    {
-      photoUrl: 'https://dummyimage.com/150x150/000/fff',
-      imgAlt: 'lorem ipsum',
-      imageCastCopy: 'Daniel Brühl',
-    },
-    {
-      photoUrl: 'https://dummyimage.com/150x150/000/fff',
-      imgAlt: 'lorem ipsum',
-      imageCastCopy: 'Olivia Wilde',
-    },
-    {
-      photoUrl: 'https://dummyimage.com/150x150/000/fff',
-      imgAlt: 'lorem ipsum',
-      imageCastCopy: 'Alexandra Maria Lara',
-    },
-    {
-      photoUrl: 'https://dummyimage.com/150x150/000/fff',
-      imgAlt: 'lorem ipsum',
-      imageCastCopy: 'Alexandra Maria Lara',
-    },
-    {
-      photoUrl: 'https://dummyimage.com/150x150/000/fff',
-      imgAlt: 'lorem ipsum',
-      imageCastCopy: 'Alexandra Maria Lara',
-    },
-  ];
 
   movieTrailer = () => [
     {
@@ -124,18 +103,11 @@ class Moviedetail extends React.Component {
   render() {
     const {
       bannerImage,
-      testimoniPhoto,
-      synopsisContent,
-      synopsisDirected,
-      synopsisLabel,
-      testimoniContent,
       castingCopy,
-      trailerTitle,
       trailerPlaytag,
-      testimoniSource,
       link,
       playCopy,
-      open,
+      open
     } = this.state;
 
     const casting = {
@@ -158,12 +130,32 @@ class Moviedetail extends React.Component {
       prevArrow: <Right />,
     };
 
+    //get moviedetaildata from redux stored in props
+    const { movieDetail: { data : movieDetailData } } = this.props;
+
+    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : '';
+    //loop through array of people attribute to get director
+    const directedByArr = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
+      return dt.attributes.peopleTypes == "director";
+    }) : [];
+    const synopsisLabel = 'SYNOPSIS';
+
+    //loop through array of people attribute to get cast/stars
+    const castingArtists = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
+      return dt.attributes.peopleTypes == "stars";
+    }) : [];
+
+    //get quotes/testimoni data
+    const testimoniDt = movieDetailData.length > 0 ? movieDetailData[0].quotes[0].attributes: {};
+    const testimoniSrc = testimoniDt.author ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}` : '';
+
     // Trailer copy toogle
-    const dataTrailer = this.movieTrailer();
-    const trailerIsHide = dataTrailer.length < 1 ? false : true;
+    const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers: [];
+    // const dataTrailer = this.movieTrailer();
+    const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
 
     // css toogle
-    let ifOne = dataTrailer.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container ;
+    let ifOne = movieDetailData.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container ;
 
     return (
       <Fragment>
@@ -179,33 +171,33 @@ class Moviedetail extends React.Component {
           <Frame>
             <Synopsis
               synopsisContent={synopsisContent}
-              directedBy={synopsisDirected}
+              directedBy={directedByArr}
               synopsisLabel={synopsisLabel}
             />
             <Testimoni
-              testimoniContent={testimoniContent}
-              testimoniPhotoUrl={testimoniPhoto}
-              trailerTitle={trailerTitle}
-              testimoniSource={testimoniSource}
+              testimoniContent={testimoniDt.text }
+              testimoniPhotoUrl={testimoniDt.imageUrl}
+              trailerTitle={'MOVIE TRAILER'}
+              testimoniSource={testimoniSrc}
               trailerText={trailerIsHide}
             />
           </Frame>
           <Secondframe copy={castingCopy}>
             <Casting>
               <Slider {...casting}>
-                {this.castingArtist().map(obj => (
-                  <div key={obj.toString()} className={s.casting_photo_container}>
+                {castingArtists.map(({ id, attributes }) => (
+                  <div key={id} className={s.casting_photo_container}>
                     <div className={s.casting_photo_img}>
-                      <img alt={obj.imgAlt} src={obj.photoUrl} />
+                      <img alt={attributes.name} src={attributes.imageUrl} />
                     </div>
-                    <p>{obj.imageCastCopy}</p>
+                    <p>{attributes.name}</p>
                   </div>
                 ))}
               </Slider>
             </Casting>
             <Trailer trailerTitle="Trailer">
               <Slider {...trailer}>
-                {this.movieTrailer().map(obj => (
+                {trailerDt.map(obj => (
                   <div key={obj.toString()} className={ifOne}>
                     <img alt={obj.movieImageAlt} src={obj.movieImageUrl} onClick={this.onOpenModal}/>
                     <p className={s.trailer_playtag}>{trailerPlaytag}</p>
@@ -235,7 +227,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getMovieDetail: searchText => dispatch(movieDetail.getMovieDetail(searchText)),
+  getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
 })
 
 export default compose(

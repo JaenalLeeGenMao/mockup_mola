@@ -77,7 +77,7 @@ class Home extends Component {
       window.onload = swipeGestureListener();
 
       const handleSwipeEvent = e => {
-        console.log(e.type,e)
+        // console.log(e.type,e)
         this.handleSwipe(e);
       };
 
