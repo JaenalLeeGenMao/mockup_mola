@@ -42,10 +42,19 @@
 }
 
 .inner_box,
-p:last-child {
+.inner_box p:last-child {
   margin-top: 10px;
 }
 
 .inner_box span {
   font-weight: 600;
+}
+
+.synopsisPlaceholder {
+  margin-bottom: 10px;
+}
+
+.synopsisPlaceholderDirector {
+  margin-bottom: 0;
+  display: inline-block;
 }

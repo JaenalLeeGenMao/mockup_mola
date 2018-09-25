@@ -40,20 +40,22 @@ class Header extends Component {
       backButtonOn = false,
       isMobile = false,
       title = '',
-      isLibrary = false,
       isLibraryCopy = false,
-      isMobileMovDetail = false,
       home: {
         playlists = {
           data: []
         }
-      }
+      },
+      stickyOff = false,
     } = this.props;
+
+    console.log("TITLE", title)
 
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
-    const typeHeader = isLibrary || isMobileMovDetail ? styles.header__container + ' ' + styles.movie_library :  styles.header__container;
+    const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky :  styles.header__container;
     const isActivePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0]
+    
     return (
       <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>

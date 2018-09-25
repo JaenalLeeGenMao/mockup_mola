@@ -24,18 +24,30 @@
   max-width: 50%;
 }
 
+.trailer_moviebox_imgloading {
+  width: calc(50% - 7px);
+  height: 100px;
+  float: left;
+}
+
+.trailer_moviebox_imgloading:first-child {
+  margin-right: 14px;
+}
+
 .inner_box {
   display: inline-grid;
   text-align: center;
   width: 80px;
 }
 
-.inner_box img {
+.casting_photo_img {
   border-radius: 50%;
   width: 60px;
   height: 60px;
   max-width: 100%;
   margin: 0 auto;
+  object-fit: cover;
+  object-position: center;
 }
 
 .inner_box p {

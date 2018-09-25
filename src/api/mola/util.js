@@ -125,6 +125,7 @@ const normalizeSearchResult = (response) => {
         attributes: {
           title,
           year,
+          // thumbnail,
           coverUrl,
         },
       } = result
@@ -177,22 +178,51 @@ const normalizeVideoDetail = (response) => {
       const {
         id,
         attributes: {
-          shortDescription,
           title,
+          coverUrl,
           quotes,
           trailers,
+          shortDescription,
           people
         },
       } = result
       return {
         id,
         title,
+        coverUrl,
         quotes,
         trailers,
         shortDescription,
         people
       }
     })
+  }
+  return {
+    meta: {
+      status: 'no_result',
+    },
+    data: [],
+  }
+}
+
+const normalizeMovieLibrary = (response) => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(({ attributes: { videos, title: genreTitle } }) =>
+      videos.map(({ id, attributes } )=> {
+        const {
+          title,
+          thumbnail,
+          coverUrl
+        } = attributes;
+        return {
+          genreTitle,
+          id,
+          title,
+          thumbnail: thumbnail || coverUrl
+        }
+      })
+    )
   }
   return {
     meta: {
@@ -230,5 +260,6 @@ export default {
   normalizeAuth,
   normalizeUserInfo,
   normalizeSearchGenre,
-  normalizeVideoDetail
+  normalizeVideoDetail,
+  normalizeMovieLibrary
 }

@@ -15,11 +15,16 @@ import Testimoni from './Testimoni';
 import s from './Mmoviedetail.css';
 
 import Playbtn from '../moviedetail/assets/player-icon.jpg';
+import BannerLoading from './BannerLoading';
+import SynopsisLoading from './SynopsisLoading';
+import LoadingPlaceholder from '../../../components/common/LoadingPlaceholder/LoadingPlaceholder';
+import TestimoniLoading from './TestimoniLoading';
 
 class Mmoviedetail extends Component {
   state = {
     open: false,
     movieDetail: [],
+    isLoading: true,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -34,6 +39,18 @@ class Mmoviedetail extends Component {
     }
 
     return { ...prevState, movieDetail };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      movieDetail
+    } = this.props;
+
+    if(prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== "loading") {
+      this.setState({
+        isLoading: false
+      })
+    }
   }
 
   onOpenModal = () => {
@@ -87,47 +104,17 @@ class Mmoviedetail extends Component {
       castTitle: 'cast',
     };
 
-    // const castingArtist = [
-    //   {
-    //     castingImg: 'https://dummyimage.com/150x150/000/fff',
-    //     artistName: 'Zlatan'
-    //   },
-    //   {
-    //     castingImg: 'https://dummyimage.com/150x150/000/fff',
-    //     artistName: 'Chris Hemsworth'
-    //   },
-    //   {
-    //     castingImg: 'https://dummyimage.com/150x150/000/fff',
-    //     artistName: 'Chris Hemsworth'
-    //   },
-    //   {
-    //     castingImg: 'https://dummyimage.com/150x150/000/fff',
-    //     artistName: 'Chris Hemsworth'
-    //   },
-    //   {
-    //     castingImg: 'https://dummyimage.com/150x150/000/fff',
-    //     artistName: 'Chris Hemsworth'
-    //   },
-    //   {
-    //     castingImg: 'https://dummyimage.com/150x150/000/fff',
-    //     artistName: 'Chris Hemsworth'
-    //   },
-    // ];
-
-    // const testimony = {
-    //   testimoniContent: '“The story-telling lends depth to the characters, leaving you emotionally invested in them. You feel their fear, regrets, insecurities and vulnerability.',
-    //   testimonyImg: 'https://dummyimage.com/120x120/3cab52/ffffff',
-    //   testimoniSource: '- Zlatan Ibrahimovic, Footballer'
-    // }
-
     const {
-      open
+      open,
+      isLoading,
     } = this.state
 
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data : movieDetailData } } = this.props;
+    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].coverUrl : null;
+    const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
 
-    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : '';
+    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
     //loop through array of people attribute to get director
     const directedByArr = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
       return dt.attributes.peopleTypes == "director";
@@ -138,32 +125,35 @@ class Mmoviedetail extends Component {
     const castingArtists = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
       return dt.attributes.peopleTypes == "stars";
     }) : [];
+    const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
 
     //get quotes/testimoni data
-    const testimoniDt = movieDetailData.length > 0 ? movieDetailData[0].quotes[0].attributes: {};
-    const testimoniSrc = testimoniDt.author ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}` : '';
+    const testimoniDt = movieDetailData.length > 0 ? movieDetailData[0].quotes[0].attributes : null;
+    const testimoniSrc = testimoniDt && testimoniDt.author ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}` : '';
 
     // Trailer copy toogle
     const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers: [];
-    // const dataTrailer = this.movieTrailer();
+    const trailerDtPlaceholder = [1,2];
     const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
 
     return (
       <Fragment>
         <Layout>
-          <div className={s.header}>
-            <Logo
-              isDark = {0}
-              logoOff = {false}
-              libraryOff = {true}
-              rightMenuOff = {false}
-              isMobile = {true}
-              isMobileMovDetail = {true}
-            />
-          </div>
+          <Logo
+            isDark = {0}
+            libraryOff
+            isMobile
+            stickyOff
+            {...this.props}
+          />
           <div className={s.main_container}>
-            <Banner bannerUrl={banner.bannerUrl} link={banner.link} playBtn={Playbtn} playCopy={banner.playCopy}/>
-            <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr}/>
+            { !isLoading && <Banner imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={banner.link} playBtn={Playbtn} playCopy={banner.playCopy}/>}
+            { isLoading && <BannerLoading /> }
+
+            { isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr}/>}
+            { !isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr}/>}
+
+            { !isLoading && trailerDt.length > 0 &&
             <Trailer trailerTitle={trailerCopy} trailerText={trailerIsHide}>
               <div className={s.trailer_moviebox}>
                 {trailerDt.map(obj => (
@@ -172,18 +162,47 @@ class Mmoviedetail extends Component {
                 ))}
               </div>
             </Trailer>
+            }
+            { isLoading &&
+              <Trailer trailerTitle={trailerCopy} trailerText={true}>
+                <div className={s.trailer_moviebox}>
+                  {trailerDtPlaceholder.map(obj => (
+                    <LoadingPlaceholder key={obj} isLight className={s.trailer_moviebox_imgloading}/>
+                  ))}
+                </div>
+              </Trailer>
+            }
           </div>
+          { isLoading &&
+            <Casting castTitle={casting.castTitle}>
+              {castingArtistsPlaceholder.map(({ id, attributes }) => (
+                <Fragment key={id} >
+                  <div className={s.inner_box}>
+                    <LoadingPlaceholder isLight className={s.casting_photo_img}/>
+                    <LoadingPlaceholder isLight style={{ width: '80%', height: '12px', margin: '5px auto 0', }}/>
+                  </div>
+                </Fragment>
+              ))}
+            </Casting>
+          }
+          { !isLoading && castingArtists.length > 0 &&
           <Casting castTitle={casting.castTitle}>
             {castingArtists.map(({ id, attributes }) => (
               <Fragment key={id} >
                 <div className={s.inner_box}>
-                  <img src={attributes.imageUrl}/>
+                  <img src={attributes.imageUrl} className={s.casting_photo_img}/>
                   <p>{attributes.name}</p>
                 </div>
               </Fragment>
             ))}
           </Casting>
-          <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={testimoniDt.imageUrl}/>
+          }
+          { isLoading &&
+            <TestimoniLoading />
+          }
+          { !isLoading && testimoniDt && testimoniDt.text &&
+            <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={testimoniDt.imageUrl}/>
+          }
           <Modal open={open} onClose={this.onCloseModal} center>
             <h2>Simple centered modal</h2>
             <p>

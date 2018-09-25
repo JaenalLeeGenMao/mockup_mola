@@ -153,6 +153,28 @@ const getMovieDetail = ({ id }) => {
   })
 }
 
+const getMovieLibrary = (id) => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`).then(
+    (response) => {
+      const result = utils.normalizeMovieLibrary(response);
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    }).catch((error) => {
+    return {
+      meta: {
+        status: 'error',
+        error: `search/getMovieLibrary ~ ${error}`,
+      },
+      data: [],
+    }
+  })
+}
+
 const getAuth = ({ code, redirect_uri }) => {
   const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
   return post(
@@ -296,4 +318,5 @@ export default {
   getAuth,
   updateAuth,
   revokeAuth,
+  getMovieLibrary
 }

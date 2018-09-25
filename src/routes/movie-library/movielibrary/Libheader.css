@@ -1,13 +1,13 @@
 .header {
   position: relative;
   height: 46px;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 @media only screen and (max-device-width: 720px) and (-webkit-min-device-pixel-ratio: 1) {
   .header {
     position: relative;
-    height: 46px;
-    margin-top: 20px;
+    height: 66px;
+    margin: 0;
   }
 }

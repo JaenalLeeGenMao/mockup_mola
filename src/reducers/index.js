@@ -5,6 +5,7 @@ import home from './home';
 import history from './history';
 import search from './search';
 import movieDetail from './movie-detail'
+import movieLibrary from './movie-library'
 
 export default combineReducers({
   user,
@@ -12,5 +13,6 @@ export default combineReducers({
   home,
   history,
   search,
+  movieLibrary,
   movieDetail
 });

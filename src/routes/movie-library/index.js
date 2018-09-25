@@ -8,7 +8,7 @@ function action({ isMobile, pathname }) {
   return {
     // chunks: ['admin'],
     title,
-    component: <MovieLibrary title={title} isMobile={isMobile} genreId={pathnameArr[2]} />,
+    component: <MovieLibrary isMobile={isMobile} genreId={pathnameArr[2]} />,
   };
 }
 
