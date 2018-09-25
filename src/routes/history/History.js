@@ -8,8 +8,8 @@ import HistoryCard from './HistoryCard/HistoryCard'
 import HistoryCardLoading from './HistoryCard/HistoryCardLoading'
 
 import { getAllHistory } from '../../actions/history'
-import Header from '@components/header'
-import Navbar from '@components/navigation'
+import Header from '@components/Header'
+import Navbar from '@components/Navigation'
 import s from './History.css'
 
 class History extends React.Component {

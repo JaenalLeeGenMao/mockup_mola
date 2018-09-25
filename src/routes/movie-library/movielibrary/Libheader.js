@@ -1,7 +1,8 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import Header from '../../../components/header';
+import Header from '@components/Header';
+// import Header from '../../../components/header';
 import s from './Libheader.css';
 
 

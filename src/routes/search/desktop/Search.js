@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _debounce from 'lodash.debounce';
-import Header from '@components/header'
-import LazyLoad from '@components/common/LazyLoad'
+import Header from '@components/Header'
+import LazyLoad from '@components/common/Lazyload'
 
 
 import * as searchActions from '@actions/search';
