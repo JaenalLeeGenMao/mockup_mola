@@ -11,10 +11,6 @@ services:
      - .:/var/www/mola-web
     links:  # link mola-web container to node container
      - node
-     - python
   node:
     container_name: node
     image: node:8-alpine # pulls from docker hub
-  python:
-    container_name: python
-    image: python:2.7-alpine
