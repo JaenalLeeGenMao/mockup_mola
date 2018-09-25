@@ -360,7 +360,7 @@ class Home extends Component {
                                           </h4>
                                           <p className={styles.home__parallax_layer_3_desc}>
                                             {shortDescription}
-                                            <Link to="/movie" className={styles.home__see_more}>➪see movie</Link>
+                                            <Link to={`/movie-detail/${id}`} className={styles.home__see_more}>➪see movie</Link>
                                           </p>
                                         </div>
                                       </LazyLoad>

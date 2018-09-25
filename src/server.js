@@ -162,11 +162,6 @@ app.get('*', async (req, res, next) => {
     const accessToken = req.cookies._at;
     const tokenExpiry = req.cookies._exp;
 
-    const clearCookie = () => {
-      res.clearCookie('_at');
-      res.clearCookie('_exp');
-    }
-
     const getUserInfo = async (token, updateCookie = true) => {
       apiCall = await Mola.getUserInfo(token);
       if (apiCall.meta.status === "success") {
@@ -234,7 +229,6 @@ app.get('*', async (req, res, next) => {
       store,
       storeSubscription: null,
       isMobile,
-      clearCookie
     };
 
     const route = await router.resolve(context);
@@ -270,7 +264,6 @@ app.get('*', async (req, res, next) => {
       apiUrl: config.api.clientUrl,
       state: context.store.getState(),
       isMobile: context.isMobile,
-      clearCookie: context.clearCookie,
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
