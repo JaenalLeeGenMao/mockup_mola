@@ -10,9 +10,9 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import Header from '@components/header';
+import Header from '@components/Header';
 import Form from '@components/FormInput';
-import LazyLoad from '@components/common/LazyLoad';
+import LazyLoad from '@components/common/Lazyload';
 import s from './Login.css';
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';

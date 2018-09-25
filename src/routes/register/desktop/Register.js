@@ -11,12 +11,12 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
-import Header from '@components/header';
+import Header from '@components/Header';
 import Form from '@components/FormInput';
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
-import LazyLoad from '@components/common/LazyLoad';
+import LazyLoad from '@components/common/Lazyload';
 
 class Register extends React.Component {
   constructor (props) {
