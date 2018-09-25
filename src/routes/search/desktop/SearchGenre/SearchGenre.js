@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
-import LazyLoad from '@components/common/LazyLoad'
+import LazyLoad from '@components/common/Lazyload'
 import s from './SearchGenre.css';
 
 class SearchGenre extends React.Component {

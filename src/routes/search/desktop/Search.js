@@ -134,7 +134,7 @@ class Search extends React.Component {
     const showMovieLoading = searchKeyword!== "" ? isLoadingResult : false;
     return (
       <Fragment>
-        <Header isDark={isDark} libraryOff searchOff/>
+        <Header isDark={isDark} libraryOff searchOff {...this.props} />
         <div className={s.root}>
           <div className={s.containerBg}/>
           <div className={s.container}>

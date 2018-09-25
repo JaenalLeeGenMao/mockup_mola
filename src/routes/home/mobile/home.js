@@ -21,8 +21,8 @@ import * as homeActions from '@actions/home';
 
 import { swipeGestureListener } from '@routes/home/util';
 
-import Header from '@components/header';
-import LazyLoad from '@components/common/LazyLoad';
+import Header from '@components/Header';
+import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
 import HomeMobileMenu from './menu';

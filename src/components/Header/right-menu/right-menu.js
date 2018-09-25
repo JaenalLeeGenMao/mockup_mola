@@ -31,7 +31,7 @@ class RightMenu extends Component {
   }
 
   render() {
-    const { color, searchOff, user } = this.props;
+    const { color, searchOff, user: { id: userID = "", firstName = "" } } = this.props;
     return (
       <div className={styles.right__menu}>
         { !searchOff &&
@@ -49,13 +49,13 @@ class RightMenu extends Component {
           </LazyLoad>
           <div className={styles.right__menu_dropdown_wrapper}>
             <div className={styles.right__menu_dropdown} style={{ color }}>
-              {user.id
-                ? <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>Sign out</Link>
+              {userID
+                ? <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>{firstName ? `${firstName},` : ""} Sign out</Link>
                 : <Link style={{ color }} to="/" onClick={this.handleLogin}>Login</Link>
               }
-              {user.id && <Link style={{ color }} to="/accounts">Account</Link>}
-              {user.id && <Link style={{ color }} to="/history">History</Link>}
-              {user.id && <Link style={{ color }} to="/inbox">Inbox</Link>}
+              {userID && <Link style={{ color }} to="/accounts">Account</Link>}
+              {userID && <Link style={{ color }} to="/history">History</Link>}
+              {userID && <Link style={{ color }} to="/inbox">Inbox</Link>}
               <Link style={{ color }} to="/">System Info</Link>
               <div className={styles.right__menu_dropdown_footer}>
                 <Link style={{ color }} to="/">Privacy</Link>

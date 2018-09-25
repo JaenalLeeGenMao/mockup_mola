@@ -9,7 +9,7 @@
 
 import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LazyLoad from '@components/common/LazyLoad';
+import LazyLoad from '@components/common/Lazyload';
 import Link from '../Link';
 // import { Link } from 'react-router-dom';
 

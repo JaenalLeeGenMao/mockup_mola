@@ -22,6 +22,7 @@ class Libheader extends Component {
             title = {this.props.cardTitle}
             isLibrary = {true}
             isLibraryCopy = {true}
+            {...this.props}
           />
         </div>
       </Fragment>
