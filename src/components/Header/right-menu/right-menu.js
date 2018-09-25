@@ -25,7 +25,7 @@ class RightMenu extends Component {
     Mola.revokeAuth(user.token).then(response => {
       // console.log(response);
       if (response.meta.status === "success") {
-        window.location.href = '/logout';
+        window.location.href = '/signout';
       }
     });
   }
