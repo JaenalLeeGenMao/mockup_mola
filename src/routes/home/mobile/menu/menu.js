@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import LazyLoad from '@components/common/LazyLoad';
+import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
 import styles from './menu.css';

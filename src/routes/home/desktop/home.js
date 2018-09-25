@@ -20,9 +20,9 @@ import $ from 'jquery';
 import { SETTINGS } from '../const';
 import * as homeActions from '@actions/home';
 
-import Header from '@components/header';
-import Navbar from '@components/navigation';
-import LazyLoad from '@components/common/LazyLoad';
+import Header from '@components/Header';
+import Navbar from '@components/Navigation';
+import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
 import HomeArrow from './arrow';
