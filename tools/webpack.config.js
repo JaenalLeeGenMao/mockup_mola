@@ -148,8 +148,6 @@ const config = {
             // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
             ...(isDebug ? [] : ['transform-react-remove-prop-types']),
 
-            ...(isDebug ? [] : ['@babel/plugin-syntax-dynamic-import']),
-
             // Stage 2
             ["@babel/plugin-proposal-decorators", { "legacy": true }],
             "@babel/plugin-proposal-function-sent",
@@ -400,7 +398,7 @@ const clientConfig = {
       ]),
   ],
 
-  // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
+  // Move modules that occur in multiple [entry] chunks to a new [entry] chunk (the commons chunk).
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -441,7 +439,8 @@ const serverConfig = {
   output: {
     ...config.output,
     path: BUILD_DIR,
-    filename: '[name].js',
+    filename: 'index.js',
+    // filename: '[name].js',
     chunkFilename: 'chunks/[name].js',
     libraryTarget: 'commonjs2',
   },
