@@ -19,7 +19,8 @@ let pending = true;
 const [, serverConfig] = webpackConfig;
 const serverPath = path.join(
   serverConfig.output.path,
-  serverConfig.output.filename.replace('[name]', 'server'),
+  serverConfig.output.filename.replace('[name]', 'index')
+  //   serverConfig.output.filename.replace('[name]', 'server')
 );
 
 // Launch or restart the Node.js server
@@ -47,15 +48,13 @@ function runServer() {
 
     server = cp.spawn('node', [serverPath], {
       env: Object.assign({ NODE_ENV: 'development' }, process.env),
-      silent: false,
+      silent: false
     });
 
     if (pending) {
       server.once('exit', (code, signal) => {
         if (pending) {
-          throw new Error(
-            `Server terminated unexpectedly with code: ${code} signal: ${signal}`,
-          );
+          throw new Error(`Server terminated unexpectedly with code: ${code} signal: ${signal}`);
         }
       });
     }
