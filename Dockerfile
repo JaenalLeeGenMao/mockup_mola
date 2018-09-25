@@ -16,7 +16,6 @@ RUN npm install --force
 
 # copy all files and folders into container
 COPY . .
-COPY webpack.config.js ./tools
 
 EXPOSE 3000
 CMD ["npm", "start"]
