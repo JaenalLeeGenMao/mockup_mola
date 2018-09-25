@@ -43,11 +43,17 @@ class Header extends Component {
       isLibrary = false,
       isLibraryCopy = false,
       isMobileMovDetail = false,
+      home: {
+        playlists = {
+          data: []
+        }
+      }
     } = this.props;
 
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = isLibrary || isMobileMovDetail ? styles.header__container + ' ' + styles.movie_library :  styles.header__container;
+    const isActivePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0]
     return (
       <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>
@@ -79,7 +85,7 @@ class Header extends Component {
           <LazyLoad>
             <Link
               className={styles.header__library_link_wrapper}
-              to="/movie-library"
+              to={`/movie-library${isActivePlaylist ? `/${isActivePlaylist.id}` : ""}`}
               style={{ color }}
             >
               <span
