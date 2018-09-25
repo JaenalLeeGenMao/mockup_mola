@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LazyLoad from '../../../components/common/Lazyload';
+import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
-// import LazyLoad from '@components/common/LazyLoad';
+// import LazyLoad from '@components/common/Lazyload';
 import s from './HistoryCard.css';
 
 class HistoryCard extends React.Component {

@@ -54,7 +54,7 @@ class Register extends React.Component {
     const isDark = true;
     return (
       <Fragment>
-        <Header isDark={isDark} libraryOff rightMenuOff />
+        <Header isDark={isDark} libraryOff rightMenuOff {...this.props} />
         <div className={s.wrapper}>
           <div className={s.root}>
             <LazyLoad>

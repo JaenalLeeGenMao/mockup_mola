@@ -113,7 +113,7 @@ class MovieLibrary extends Component {
       <Fragment>
         <Layout>
           <div className={s.main_container}>
-            <Libheader cardTitle={title}/>
+            <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_wrapper}>
               {this.cardLibImg().map(obj => (
                 <CardLibrary key={obj.toString()} imgUrl={obj.cardImageLib} cardLink={cardLink}/>
