@@ -50,3 +50,8 @@
 .trailer_ifone {
   left: 244px;
 }
+
+.trailerImage {
+  width: auto !important;
+  margin: 0 10px;
+}

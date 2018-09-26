@@ -17,7 +17,7 @@ class Synopsis extends Component {
           <div className={s.inner_box}>
             <p>{synopsisContent}</p>
             <p>
-              Directed by :
+              Directed by:
               <span>
                 {
                   directedBy.map( (dt, index) => {

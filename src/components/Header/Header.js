@@ -49,13 +49,11 @@ class Header extends Component {
       stickyOff = false,
     } = this.props;
 
-    console.log("TITLE", title)
-
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky :  styles.header__container;
     const isActivePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0]
-    
+
     return (
       <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>
