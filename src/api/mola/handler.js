@@ -2,14 +2,14 @@ import { get, post } from 'axios'
 import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, MOVIE_DETAIL_ENDPOINT } from './endpoints'
 import utils from './util'
 
-import config from '@global/config/api'
-const { NODE_ENV } = process.env
+import { api } from '@source/config'
+const { config } = api;
 
 const getHomePlaylist = ({ ...payload }) => {
   return get(
     `${HOME_PLAYLIST_ENDPOINT}/mola-home`,
     {
-      ...config[NODE_ENV].api
+      ...config.api
     }
   ).then(
     response => {
@@ -37,7 +37,7 @@ const getHomeVideo = ({ id, ...payload }) => {
   return get(
     `${HOME_PLAYLIST_ENDPOINT}/${id}`,
     {
-      ...config[NODE_ENV].api
+      ...config.api
     }
   ).then(
     response => {
@@ -176,7 +176,7 @@ const getMovieLibrary = (id) => {
 }
 
 const getAuth = ({ code, redirect_uri }) => {
-  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config;
   return post(
     `${authURL}/_/oauth2/v1/token`,
     {
@@ -209,7 +209,7 @@ const getAuth = ({ code, redirect_uri }) => {
 }
 
 const getUserInfo = token => {
-  const { endpoints: { auth: authURL } } = config["production"];
+  const { endpoints: { auth: authURL } } = config;
   return get(
     `${authURL}/_/v1/userinfo`,
     {
@@ -240,7 +240,7 @@ const getUserInfo = token => {
 }
 
 const revokeAuth = token => {
-  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config;
   return post(
     `${authURL}/_/oauth2/v1/revoke`,
     {
@@ -272,7 +272,7 @@ const revokeAuth = token => {
 }
 
 const updateAuth = token => {
-  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config["production"];
+  const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config;
   return get(
     `${authURL}/_/v1/access_token`,
     {

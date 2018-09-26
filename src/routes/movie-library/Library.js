@@ -7,8 +7,8 @@ import CardLibrary from './movielibrary/Card'
 import Layout from '../../components/Molalayout';
 
 
-// import Header from '../../components/header';
-// import Navbar from '../../components/navigation';
+// import Header from '../../components/Header';
+// import Navbar from '../../components/Navigation';
 
 import Libheader from './movielibrary/Libheader';
 import s from './Library.css';

@@ -79,7 +79,7 @@ async function start() {
 
   // Configure server-side hot module replacement
   //   const serverConfig = webpackConfig.find(config => config.name === 'server');
-  const serverConfig = webpackConfig.find(config => config.name === 'index');
+  const serverConfig = webpackConfig.find(config => config.name === 'server');
   serverConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
   serverConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
   serverConfig.module.rules = serverConfig.module.rules.filter(x => x.loader !== 'null-loader');
@@ -90,10 +90,10 @@ async function start() {
   const multiCompiler = webpack(webpackConfig);
   const clientCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'client');
   //   const serverCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'server');
-  const serverCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'index');
+  const serverCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'server');
   const clientPromise = createCompilationPromise('client', clientCompiler, clientConfig);
   //   const serverPromise = createCompilationPromise('server', serverCompiler, serverConfig);
-  const serverPromise = createCompilationPromise('index', serverCompiler, serverConfig);
+  const serverPromise = createCompilationPromise('server', serverCompiler, serverConfig);
 
   // https://github.com/webpack/webpack-dev-middleware
   server.use(
@@ -111,7 +111,7 @@ async function start() {
   let appPromiseResolve;
   let appPromiseIsResolved = true;
   //   serverCompiler.hooks.compile.tap('server', () => {
-  serverCompiler.hooks.compile.tap('index', () => {
+  serverCompiler.hooks.compile.tap('server', () => {
     if (!appPromiseIsResolved) return;
     appPromiseIsResolved = false;
     // eslint-disable-next-line no-return-assign
@@ -151,10 +151,10 @@ async function start() {
       .catch(error => {
         if (['abort', 'fail'].includes(app.hot.status())) {
           console.warn(`${hmrPrefix}Cannot apply update.`);
-          delete require.cache[require.resolve('../build/index')];
+          delete require.cache[require.resolve('../build/server')];
           //   delete require.cache[require.resolve('../build/server')];
           // eslint-disable-next-line global-require, import/no-unresolved
-          app = require('../build/index').default;
+          app = require('../build/server').default;
           //   app = require('../build/server').default;
           console.warn(`${hmrPrefix}App has been reloaded.`);
         } else {
@@ -182,7 +182,7 @@ async function start() {
   // Load compiled src/server.js as a middleware
   // eslint-disable-next-line global-require, import/no-unresolved
   //   app = require('../build/server').default;
-  app = require('../build/index').default;
+  app = require('../build/server').default;
   appPromiseIsResolved = true;
   appPromiseResolve();
 
