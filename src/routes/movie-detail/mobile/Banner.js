@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import LazyLoad from '@components/common/LazyLoad';
 import s from './Banner.css';
 
 class Banner extends Component {
@@ -11,18 +12,17 @@ class Banner extends Component {
     };
 
     render() {
+      const { link, playCopy, bannerUrl, imageTitle, playBtn } = this.props;
       return (
-        <Fragment>
-          <div className={s.banner}>
-            <a href={this.props.link}>
-              <div className={s.play_icon}>
-                <img src={this.props.playBtn} />
-                <span>{this.props.playCopy}</span>
-              </div>
-            </a>
-            <img src={this.props.bannerUrl}/>
-          </div>
-        </Fragment>
+        <div className={s.bannerWrapper}>
+          <a className={s.bannerInner} href={link}>
+            <div className={s.play_icon}>
+              <img src={playBtn} />
+              <span>{playCopy}</span>
+            </div>
+          </a>
+          { bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />}
+        </div>
       )
     }
 }
