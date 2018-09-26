@@ -6,17 +6,20 @@ const client = filestack.init('AXrDPoUaxQrinUeOmumBnz')
 import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+import { updateProfile } from '../../../actions/user'
+import { connect } from 'react-redux';
+
 class Profile extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      username: 'Trisno Nino',
-      email: 'ninotrisno34@gmail.com',
-      birthdate: '18/09/2018',
-      gender: 'male',
-      phoneNumber: '0853-1501-5663',
-      photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
-      location: 'Indonesia',
+      username: '',
+      email: '',
+      birthdate: '',
+      gender: '',
+      phoneNumber: '',
+      photo: '',
+      location: '',
       disabledEdit: true
     }
 
@@ -25,6 +28,7 @@ class Profile extends React.Component {
     this.toggleToEdit = this.toggleToEdit.bind(this)
     this.changePhoto = this.changePhoto.bind(this)
     this.changeDate = this.changeDate.bind(this)
+    this.updateProfile = this.updateProfile.bind(this)
   }
 
   onChangeInput = (e) => {
@@ -67,6 +71,21 @@ class Profile extends React.Component {
     let getDate = date.format('DD/MM/YYYY')
     this.setState({
       birthdate: getDate
+    })
+  }
+
+  componentDidMount () {
+    const props = this.props
+    const payload = Object.assign(this.state, props)
+    this.setState({
+      ...payload
+    })
+  }
+
+  updateProfile (e) {
+    this.props.handleUpdateProfile(this.state)
+    this.setState({
+      disabledEdit: true
     })
   }
 
@@ -190,7 +209,7 @@ class Profile extends React.Component {
                     <button type="button" className={s.button} onClick={this.toggleToEdit}>Edit Profile</button>
                     :
                     <div>
-                      <button type="button" className={s.button}>Save</button>
+                      <button type="button" className={s.button} onClick={this.updateProfile}>Save</button>
                       <button type="button" className={s.buttonCancel} onClick={this.toggleToEdit}>Cancel</button>
                     </div>
                 }
@@ -205,4 +224,24 @@ class Profile extends React.Component {
   }
 }
 
-export default withStyles(s)(Profile);
+const mapStateToProps = state => {
+  const payload = state.user
+  return {
+    username: payload.username,
+    email: payload.email,
+    birthdate: payload.birthdate,
+    gender: payload.gender,
+    phoneNumber: payload.phoneNumber,
+    photo: payload.photo,
+    location: payload.location
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleUpdateProfile: (params) => dispatch(updateProfile(params))
+  }
+}
+
+const Default = withStyles(s)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Default);

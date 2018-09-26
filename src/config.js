@@ -11,7 +11,7 @@
 
 /* eslint-disable camelcase */
 const dotenv = require('dotenv')
-const exceptions = ['production', 'staging']
+const exceptions = ['production', 'staging', 'development']
 
 /* Override the values if the environment is not in the exception lists */
 if (!exceptions.includes(process.env.NODE_ENV)) {

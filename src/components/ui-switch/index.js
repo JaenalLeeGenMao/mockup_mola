@@ -54,6 +54,7 @@ class SwitchComponent extends React.Component {
   render() {
     const { option } = this.props
     const { text, img } = option
+
     return (
       <div className={s.switch_item}>
         <div className={s.switch_content_left}>
