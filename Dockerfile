@@ -12,10 +12,11 @@ COPY package*.json ./
 
 # installing dependencies
 # RUN npm install --production && npm install node-gyp
-RUN npm install --force
+RUN npm i -g yarn
+RUN yarn
 
 # copy all files and folders into container
 COPY . .
 
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
