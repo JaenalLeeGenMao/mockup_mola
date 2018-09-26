@@ -7,6 +7,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { updateSetting } from '../../../actions/user'
 import { connect } from 'react-redux';
 
+import { toastr } from 'react-redux-toastr'
+
 class Setting extends React.Component {
   constructor (props) {
     super(props)

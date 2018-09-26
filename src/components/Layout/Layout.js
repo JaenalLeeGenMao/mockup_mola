@@ -18,6 +18,9 @@ import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
 
+
+import ReduxToastr from 'react-redux-toastr'
+
 class Layout extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -27,6 +30,15 @@ class Layout extends React.Component {
     return (
       <div>
         {this.props.children}
+        <ReduxToastr
+          timeOut={4000}
+          newestOnTop={false}
+          preventDuplicates
+          position="top-right"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+          progressBar
+          closeOnToastrClick />
       </div>
     )
   }

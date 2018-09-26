@@ -1,5 +1,6 @@
 import types from '../constants';
 import { put } from '../lib/request';
+import { toastr } from 'react-redux-toastr'
 
 export const updateSetting = params => {
   return (dispatch, getState) => {
@@ -12,6 +13,7 @@ export const updateSetting = params => {
     return { type: types.UPDATE_SETTING_REQUEST }
   }
   function success (payload) {
+    toastr.success('Notification', 'Config success to updated')
     return { type: types.UPDATE_SETTING_SUCCESS, payload: payload }
   }
   function failure (error) {
@@ -38,6 +40,7 @@ export const updateProfile = params => {
     return { type: types.UPDATE_PROFILE_REQUEST }
   }
   function success (payload) {
+    toastr.success('Notification', 'Profile success to updated')
     return { type: types.UPDATE_PROFILE_SUCCESS, payload: payload }
   }
   function failure (error) {
