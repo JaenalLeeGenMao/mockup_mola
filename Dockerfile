@@ -22,10 +22,8 @@ FROM node:8-alpine
 
 WORKDIR /var/www/mola-web
 
-COPY . .
-
-COPY ./build/package.json .
-COPY ./build/yarn.lock .
+COPY ./build/package.json /var/www/mola-web/build
+COPY ./build/yarn.lock /var/www/mola-web/build
 
 # Install Node.js dependencies
 RUN yarn install --production --no-progress
