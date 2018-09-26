@@ -55,7 +55,7 @@ class RightMenu extends Component {
                 ? <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>{firstName ? `${firstName},` : ""} Sign out</Link>
                 : <Link style={{ color }} to="/" onClick={this.handleLogin}>Login</Link>
               }
-              {userID && <Link style={{ color }} to="/accounts">Account</Link>}
+              {userID && <Link style={{ color }} to="/profile">Account</Link>}
               {userID && <Link style={{ color }} to="/history">History</Link>}
               {userID && <Link style={{ color }} to="/inbox">Inbox</Link>}
               <Link style={{ color }} to="/">System Info</Link>

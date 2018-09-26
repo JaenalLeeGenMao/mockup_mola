@@ -7,6 +7,8 @@ import search from './search';
 import movieDetail from './movie-detail'
 import movieLibrary from './movie-library'
 
+import { reducer as toastrReducer } from 'react-redux-toastr'
+
 export default combineReducers({
   user,
   runtime,
@@ -14,5 +16,6 @@ export default combineReducers({
   history,
   search,
   movieLibrary,
-  movieDetail
+  movieDetail,
+  toastr: toastrReducer
 });

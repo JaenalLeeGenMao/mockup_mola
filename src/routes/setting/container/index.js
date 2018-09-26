@@ -1,8 +1,13 @@
 import React from 'react';
 import s from './index.css'
 
-import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink } from '@components'
+import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink, UiButton } from '@components'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+
+import { updateSetting } from '../../../actions/user'
+import { connect } from 'react-redux';
+
+import { toastr } from 'react-redux-toastr'
 
 class Setting extends React.Component {
   constructor (props) {
@@ -10,12 +15,13 @@ class Setting extends React.Component {
     this.state = {
       videoQuality: 1,
       location: 1,
-      autoPlay: [1],
+      autoPlay: [],
       signOn: []
     }
 
     this.handleOnChange = this.handleOnChange.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
+    this.updateSetting = this.updateSetting.bind(this)
   }
 
   handleOnChange (e) {
@@ -50,6 +56,18 @@ class Setting extends React.Component {
     this.setState({
       signOn: collection
     })
+  }
+
+  componentWillMount () {
+    const props = this.props
+    const payload = Object.assign(this.state, props)
+    this.setState({
+      ...payload
+    })
+  }
+
+  updateSetting (e) {
+    this.props.handleUpdateSetting(this.state)
   }
 
   render() {
@@ -183,6 +201,9 @@ class Setting extends React.Component {
               selected={autoPlay}
               rootStyle={{ marginBottom: '0px' }} />
 
+            <UiButton onClick={this.updateSetting} />
+            <br />
+
             <hr />
             <UiFooterLink menus={footerMenus} />
           </div>
@@ -193,4 +214,16 @@ class Setting extends React.Component {
   }
 }
 
-export default withStyles(s)(Setting);
+const mapStateToProps = state => {
+  const payload = state.user.setting
+  return payload
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleUpdateSetting: (params) => dispatch(updateSetting(params))
+  }
+}
+
+const Default = withStyles(s)(Setting)
+export default connect(mapStateToProps, mapDispatchToProps)(Default);
