@@ -9,8 +9,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { updateProfile } from '../../../actions/user'
 import { connect } from 'react-redux';
 
-import { toast } from 'react-toastify';
-
 class Profile extends React.Component {
   constructor (props) {
     super(props)
@@ -89,8 +87,6 @@ class Profile extends React.Component {
     this.setState({
       disabledEdit: true
     })
-
-    toast("Wow so easy !")
   }
 
   render() {
