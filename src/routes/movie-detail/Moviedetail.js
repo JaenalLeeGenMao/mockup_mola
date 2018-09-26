@@ -25,6 +25,7 @@ import Prev from './moviedetail/assets/caret-left.png';
 import Playbtn from './moviedetail/assets/player-icon.jpg';
 import BannerLoading from './moviedetail/BannerLoading';
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
+import LazyLoad from '@components/common/Lazyload';
 import TestimoniLoading from './moviedetail/TestimoniLoading';
 
 const Right = props => (
@@ -90,28 +91,28 @@ class Moviedetail extends React.Component {
       this.setState({ open: false });
     };
 
-    // movieTrailer = () => [
-    //   {
-    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-    //     movieImageAlt: 'lorem ipsum',
-    //   },
-    //   {
-    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-    //     movieImageAlt: 'lorem ipsum',
-    //   },
-    //   {
-    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-    //     movieImageAlt: 'lorem ipsum',
-    //   },
-    //   {
-    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-    //     movieImageAlt: 'lorem ipsum',
-    //   },
-    //   {
-    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-    //     movieImageAlt: 'lorem ipsum',
-    //   },
-    // ];
+    movieTrailer = () => [
+      {
+        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+        movieImageAlt: 'lorem ipsum',
+      },
+      {
+        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+        movieImageAlt: 'lorem ipsum',
+      },
+      {
+        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+        movieImageAlt: 'lorem ipsum',
+      },
+      {
+        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+        movieImageAlt: 'lorem ipsum',
+      },
+      {
+        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+        movieImageAlt: 'lorem ipsum',
+      },
+    ];
 
     render() {
       const {
@@ -179,7 +180,7 @@ class Moviedetail extends React.Component {
         <Fragment>
           <Slickcss />
           <Logo
-            isDark
+            isDark={movieDetailData.isDark}
             libraryOff
             {...this.props}
           />
@@ -220,9 +221,8 @@ class Moviedetail extends React.Component {
                 <Slider {...casting}>
                   { castingArtists.map(({ id, attributes }) => (
                     <div key={id} className={s.casting_photo_container}>
-                      <div className={s.casting_photo_img_wrapper}>
-                        <img alt={attributes.name} className={s.casting_photo_img} src={attributes.imageUrl} />
-                      </div>
+                      <LazyLoad containerClassName={s.casting_photo_img_wrapper}
+                        alt={attributes.name} className={s.casting_photo_img} src={attributes.imageUrl} />
                       <p>{attributes.name}</p>
                     </div>
                   ))}
@@ -243,14 +243,14 @@ class Moviedetail extends React.Component {
                 </Slider>
               </Casting>
               }
-              { !isLoading && trailerDt.length > 0 &&
+              { !isLoading &&
               <Trailer trailerTitle="Trailer">
                 <Slider {...trailer}>
                   {trailerDt.map(obj => (
-                    <div key={obj.toString()} className={ifOne}>
-                      <img alt={obj.movieImageAlt} src={obj.movieImageUrl} onClick={this.onOpenModal}/>
+                    <LazyLoad key={obj.toString()} containerClassName={ifOne}
+                      alt={obj.movieImageAlt} src={obj.movieImageUrl} onClick={this.onOpenModal} className={s.trailerImage}>
                       <p className={s.trailer_playtag}>{trailerPlaytag}</p>
-                    </div>
+                    </LazyLoad>
                   ))}
                 </Slider>
               </Trailer>
@@ -260,7 +260,7 @@ class Moviedetail extends React.Component {
                 <Slider {...trailer}>
                   {trailerDtPlaceholder.map(obj => (
                     <div key={obj.toString()} className={s.trailer_photo_container}>
-                      <LoadingPlaceholder isLight style={{ width: '80%', height: '100%', }}/>
+                      <LoadingPlaceholder isLight style={{ width: '90%', height: '100%', }}/>
                     </div>
                   ))}
                 </Slider>

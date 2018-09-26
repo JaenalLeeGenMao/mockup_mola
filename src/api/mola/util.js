@@ -183,7 +183,8 @@ const normalizeVideoDetail = (response) => {
           quotes,
           trailers,
           shortDescription,
-          people
+          people,
+          isDark
         },
       } = result
       return {
@@ -193,7 +194,8 @@ const normalizeVideoDetail = (response) => {
         quotes,
         trailers,
         shortDescription,
-        people
+        people,
+        isDark
       }
     })
   }

@@ -64,8 +64,7 @@
   align-items: flex-start;
   position: relative;
   width: 100px;
-
-  /* left: -33px; */
+  left: -33px;
 }
 
 .header__library_logo_white {

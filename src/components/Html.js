@@ -56,6 +56,10 @@ class Html extends React.Component {
                 dangerouslySetInnerHTML={{ __html: style.cssText }}
               />
             ))}
+            {/* <link rel="stylesheet" type="text/css" href='https://cdn.myth.theoplayer.com/0404472c-babf-4493-b331-268e77603598/ui.css'/>
+            <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+            <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+            <script src="//cdn.theoplayer.com/dash/theoplayer/THEOplayer.js"></script> */}
           </head>
           <body>
             <div id="app" dangerouslySetInnerHTML={{ __html: children }} />

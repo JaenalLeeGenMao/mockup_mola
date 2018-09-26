@@ -12,21 +12,20 @@ class Libheader extends Component {
   };
   render() {
     const { cardTitle } = this.props;
-    console.log("card", cardTitle)
     return (
-        <div className={s.header}>
-          <Header
-            isDark
-            logoOff
-            libraryOff
-            backButtonOn
-            title = {cardTitle}
-            isLibrary
-            isLibraryCopy
-            stickyOff
-            {...this.props}
-          />
-        </div>
+      <div className={s.header}>
+        <Header
+          isDark
+          logoOff
+          libraryOff
+          backButtonOn
+          title = {cardTitle}
+          isLibrary
+          isLibraryCopy
+          stickyOff
+          {...this.props}
+        />
+      </div>
     )
   }
 }

@@ -17,11 +17,16 @@
   overflow: auto;
 }
 
-.trailer_moviebox img {
+.trailer_moviebox__inner {
   display: inline-block;
   margin-right: 5px;
   margin-top: 5px;
   max-width: 50%;
+}
+
+.trailer_moviebox img {
+  display: inline-block;
+  width: 100%;
 }
 
 .trailer_moviebox_imgloading {

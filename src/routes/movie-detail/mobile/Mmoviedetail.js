@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Layout from '@components/Molalayout';
 import Logo from '../../../components/Header';
 import * as movieDetailActions from '@actions/movie-detail';
+import LazyLoad from '@components/common/Lazyload';
 
 import Banner from './Banner';
 import Synopsis from './Synopsis';
@@ -119,7 +120,6 @@ class Mmoviedetail extends Component {
     const directedByArr = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
       return dt.attributes.peopleTypes == "director";
     }) : [];
-    const synopsisLabel = 'SYNOPSIS';
 
     //loop through array of people attribute to get cast/stars
     const castingArtists = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
@@ -157,8 +157,7 @@ class Mmoviedetail extends Component {
             <Trailer trailerTitle={trailerCopy} trailerText={trailerIsHide}>
               <div className={s.trailer_moviebox}>
                 {trailerDt.map(obj => (
-                  <img key={obj.toString()} src={obj.movieImageUrl} onClick={this.onOpenModal}/>
-                //   <p className={s.trailer_playtag}>{trailerPlaytag}</p>
+                  <LazyLoad key={obj.toString()} containerClassName={s.trailer_moviebox__inner} src={obj.movieImageUrl} onClick={this.onOpenModal}/>
                 ))}
               </div>
             </Trailer>
@@ -175,7 +174,7 @@ class Mmoviedetail extends Component {
           </div>
           { isLoading &&
             <Casting castTitle={casting.castTitle}>
-              {castingArtistsPlaceholder.map(({ id, attributes }) => (
+              {castingArtistsPlaceholder.map(({ id }) => (
                 <Fragment key={id} >
                   <div className={s.inner_box}>
                     <LoadingPlaceholder isLight className={s.casting_photo_img}/>
@@ -189,10 +188,9 @@ class Mmoviedetail extends Component {
           <Casting castTitle={casting.castTitle}>
             {castingArtists.map(({ id, attributes }) => (
               <Fragment key={id} >
-                <div className={s.inner_box}>
-                  <img src={attributes.imageUrl} className={s.casting_photo_img}/>
+                <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
                   <p>{attributes.name}</p>
-                </div>
+                </LazyLoad>
               </Fragment>
             ))}
           </Casting>

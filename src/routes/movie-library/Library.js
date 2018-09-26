@@ -12,8 +12,6 @@ import Layout from '../../components/Molalayout';
 
 import Libheader from './movielibrary/Libheader';
 import s from './Library.css';
-import Header from '../../components/Header/Header';
-import CardLoading from './movielibrary/CardLoading';
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
 
 class MovieLibrary extends Component {
@@ -244,8 +242,8 @@ class MovieLibrary extends Component {
     return (
       <Fragment>
         <Layout>
-          <Libheader cardTitle={title} {...this.props}/>
           <div className={s.main_container}>
+            <Libheader cardTitle={title} {...this.props}/>
             <div className={s.card_wrapper}>
               { isLoading && cardImageLoading.map(obj => (
                 <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id}/>
