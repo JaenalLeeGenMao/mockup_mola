@@ -22,14 +22,14 @@ FROM node:8-alpine
 
 WORKDIR /var/www/mola-web
 
-COPY ./build/package.json /var/www/mola-web/build
-COPY ./build/yarn.lock /var/www/mola-web/build
+COPY package*.json .
+COPY yarn.lock .
 
 # Install Node.js dependencies
-RUN yarn install --production --no-progress
+RUN yarn install --no-progress
 
-# Copy application files
-COPY ./build .
+COPY . .
+RUN yarn build --release
 
 # Run the container under "node" user by default
 USER node
