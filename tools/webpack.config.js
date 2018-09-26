@@ -417,8 +417,7 @@ const clientConfig = {
 const serverConfig = {
   ...config,
 
-  // name: 'server',
-  name: 'index',
+  name: 'server',
   target: 'node',
 
   entry: {
@@ -428,7 +427,7 @@ const serverConfig = {
   output: {
     ...config.output,
     path: BUILD_DIR,
-    filename: 'index.js',
+    filename: '[name].js',
     chunkFilename: 'chunks/[name].js',
     libraryTarget: 'commonjs2'
   },

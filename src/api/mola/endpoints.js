@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import config from '@global/config/api';
-const { NODE_ENV } = process.env;
+// const { NODE_ENV } = process.env;
+const NODE_ENV = "production";
 
 export const HOME_PLAYLIST_ENDPOINT =
   `${config[NODE_ENV].endpoints.molatv}/videos/playlists`;
