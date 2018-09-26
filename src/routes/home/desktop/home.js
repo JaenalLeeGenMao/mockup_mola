@@ -202,14 +202,14 @@ class Home extends Component {
             this.handleColorChange();
           }
         },
-        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
-        isActivePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+      activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
     	return (
     		<div
           className={styles.home__container}
     		>
-    			<Header isDark={isDark} activePlaylist={isActivePlaylist} {...this.props} />
+    			<Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {playlistrror || 'MOLA playlist is not loaded'}</div>
