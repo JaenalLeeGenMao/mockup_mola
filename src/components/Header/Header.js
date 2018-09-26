@@ -13,8 +13,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
-import logoBlue from '@global/style/icons/mola_blue.png';
-import logoGrey from '@global/style/icons/Mola_grey.png';
+import logoBlue from '@global/style/icons/mola_blue.svg';
+import logoGrey from '@global/style/icons/Mola_grey.svg';
 import logoLandscapeBlue from '@global/style/icons/mola_landscape_blue.png';
 import logoLandscapeGrey from '@global/style/icons/mola_landscape_grey.png';
 
@@ -41,18 +41,13 @@ class Header extends Component {
       isMobile = false,
       title = '',
       isLibraryCopy = false,
-      home: {
-        playlists = {
-          data: []
-        }
-      },
+      activePlaylist,
       stickyOff = false,
     } = this.props;
 
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky :  styles.header__container;
-    const isActivePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0]
 
     return (
       <div className={typeHeader}>
@@ -85,7 +80,7 @@ class Header extends Component {
           <LazyLoad>
             <Link
               className={styles.header__library_link_wrapper}
-              to={`/movie-library${isActivePlaylist ? `/${isActivePlaylist.id}` : ""}`}
+              to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ""}`}
               style={{ color }}
             >
               <span
