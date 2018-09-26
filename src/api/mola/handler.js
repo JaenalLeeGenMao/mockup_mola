@@ -3,7 +3,8 @@ import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE
 import utils from './util'
 
 import config from '@global/config/api'
-const { NODE_ENV } = process.env
+// const { NODE_ENV } = process.env
+const NODE_ENV = "production";
 
 const getHomePlaylist = ({ ...payload }) => {
   return get(

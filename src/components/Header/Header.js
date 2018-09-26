@@ -14,7 +14,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LazyLoad from '@components/common/Lazyload';
 import history from '../../history';
 import logoBlue from '@global/style/icons/mola_blue.svg';
-import logoGrey from '@global/style/icons/Mola_grey.svg';
+import logoGrey from '@global/style/icons/mola_grey.svg';
 import logoLandscapeBlue from '@global/style/icons/mola_landscape_blue.png';
 import logoLandscapeGrey from '@global/style/icons/mola_landscape_grey.png';
 
