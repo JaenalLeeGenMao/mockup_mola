@@ -256,11 +256,12 @@ class Home extends Component {
             this.handleColorChange();
           }
         },
-        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+        isActivePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
       return (
         <div>
-          <Header libraryOff className={styles.placeholder__header} isDark={isDark} isMobile {...this.props} />
+          <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={isActivePlaylist} isMobile {...this.props} />
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' &&
 					<div className={styles.home__error_container}>Ada Error kawan: {playlistrror || 'MOLA playlist is not loaded'}</div>
@@ -278,7 +279,7 @@ class Home extends Component {
                         onToggle={this.handleToggleMenu}
                       />
                       <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                        <Link to="/category" style={{ color }}>
+                        <Link to={`/movie-library${isActivePlaylist ? `/${isActivePlaylist.id}` : ""}`} style={{ color }}>
                           <span
                             className={styles[`header__library_logo_${color}`]}
                             alt="library"
