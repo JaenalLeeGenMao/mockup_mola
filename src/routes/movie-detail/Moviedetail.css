@@ -11,13 +11,15 @@
   margin-top: 7px;
 }
 
-.casting_photo_container img {
+.casting_photo_img {
   border-radius: 50%;
   width: 68px;
   height: 68px;
+  object-fit: cover;
+  object-position: center;
 }
 
-.casting_photo_img {
+.casting_photo_img_wrapper {
   position: relative;
   left: 18px;
 }
@@ -28,6 +30,7 @@
   height: 131px;
   position: relative;
   left: 10px;
+  outline: 0;
 }
 
 .trailer_photo_container img {
@@ -46,4 +49,9 @@
 
 .trailer_ifone {
   left: 244px;
+}
+
+.trailerImage {
+  width: auto !important;
+  margin: 0 10px;
 }

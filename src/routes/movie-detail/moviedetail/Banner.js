@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LazyLoad from '@components/common/Lazyload';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Banner.css';
 
@@ -9,18 +10,20 @@ class Banner extends React.Component {
     imageTitle: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
     playBtn: PropTypes.string.isRequired,
+    playCopy: PropTypes.string
   };
 
   render() {
+    const { link, playCopy, bannerUrl, imageTitle, playBtn } = this.props;
     return (
-      <div className={s.banner}>
-        <a href={this.props.link}>
+      <div className={s.bannerWrapper}>
+        <a className={s.bannerInner} href={link}>
           <div className={s.play_icon}>
-            <img src={this.props.playBtn} />
-            <span>{this.props.playCopy}</span>
+            <img src={playBtn} />
+            <span>{playCopy}</span>
           </div>
         </a>
-        <img src={this.props.bannerUrl} alt={this.props.imageTitle} />
+        { bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />}
       </div>
     );
   }

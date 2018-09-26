@@ -105,9 +105,10 @@ class Search extends React.Component {
 
   handleSearchChange = (e) => {
     const val = e.target.value;
-    history.push({
+    history.replace({
       search: `q=${encodeURIComponent(val)}`,
     });
+
     this.processSearch(val);
   };
 

@@ -107,9 +107,10 @@ class Search extends React.Component {
 
   handleSearchChange = (e) => {
     const val = e.target.value;
-    history.push({
+    history.replace({
       search: `q=${encodeURIComponent(val)}`,
     });
+
     this.processSearch(val);
   };
 
@@ -125,6 +126,21 @@ class Search extends React.Component {
       isLoadingResult: false,
     })
   }, 300);
+
+  handleSearchKeyDown = (event) => {
+    switch (event.which || event.keyCode) {
+    case 38: /* up */
+      this.inputSearch.current.value = this.textSuggestion;
+      break;
+    case 39: /* right */
+      this.inputSearch.current.value = this.textSuggestion;
+      break;
+    case 40: /* down */
+      this.inputSearch.current.value = this.textSuggestion;
+      break;
+    default:
+    }
+  }
 
   render() {
     const { search : { genre: { data: genreData }, result: { meta : { status : resultStatus } } }, searchKeyword } = this.props;
@@ -151,6 +167,7 @@ class Search extends React.Component {
                 className={s.searchInput}
                 ref={this.inputSearch}
                 onChange={this.handleSearchChange}
+                onKeyDown={this.handleSearchKeyDown}
               />
             </div>
             { !showResult && !showMovieLoading && !isLoadingGenre &&

@@ -1,7 +1,8 @@
 .card {
-  /* margin-bottom: 15px; */
+  margin-bottom: 15px;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
+  display: inline-block;
 }
 
 .card img {

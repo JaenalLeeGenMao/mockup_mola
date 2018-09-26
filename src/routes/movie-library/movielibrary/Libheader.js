@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '@components/Header';
@@ -11,22 +11,21 @@ class Libheader extends Component {
     cardTitle: PropTypes.string.isRequired,
   };
   render() {
+    const { cardTitle } = this.props;
     return (
-      <Fragment>
-        <div className={s.header}>
-          <Header
-            isDark = {1}
-            logoOff = {true}
-            libraryOff = {true}
-            rightMenuOff = {false}
-            backButtonOn = {true}
-            title = {this.props.cardTitle}
-            isLibrary = {true}
-            isLibraryCopy = {true}
-            {...this.props}
-          />
-        </div>
-      </Fragment>
+      <div className={s.header}>
+        <Header
+          isDark
+          logoOff
+          libraryOff
+          backButtonOn
+          title = {cardTitle}
+          isLibrary
+          isLibraryCopy
+          stickyOff
+          {...this.props}
+        />
+      </div>
     )
   }
 }
