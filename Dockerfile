@@ -22,6 +22,8 @@ FROM node:8-alpine
 
 WORKDIR /var/www/mola-web
 
+COPY . .
+
 COPY ./build/package.json .
 COPY ./build/yarn.lock .
 
