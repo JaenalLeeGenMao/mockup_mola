@@ -12,7 +12,7 @@ class Banner extends Component {
     };
 
     render() {
-      const { link, playCopy, bannerUrl, imageTitle, playBtn } = this.props;
+      const { link, playCopy, bannerUrl, imageTitle, playBtn, year } = this.props;
       return (
         <div className={s.bannerWrapper}>
           <a className={s.bannerInner} href={link}>
@@ -21,6 +21,12 @@ class Banner extends Component {
               <span>{playCopy}</span>
             </div>
           </a>
+
+          <div className={s.yearInner}>
+            <span className={s.yearLine}/>
+            <span>({ year })</span>
+          </div>
+
           { bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />}
         </div>
       )

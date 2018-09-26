@@ -116,6 +116,8 @@ class Mmoviedetail extends Component {
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
 
     const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
+    const year = movieDetailData.length > 0 ? movieDetailData[0].year : "AAAA";
+
     //loop through array of people attribute to get director
     const directedByArr = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
       return dt.attributes.peopleTypes == "director";
@@ -147,7 +149,7 @@ class Mmoviedetail extends Component {
             {...this.props}
           />
           <div className={s.main_container}>
-            { !isLoading && <Banner imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={banner.link} playBtn={Playbtn} playCopy={banner.playCopy}/>}
+            { !isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={banner.link} playBtn={Playbtn} playCopy={banner.playCopy}/>}
             { isLoading && <BannerLoading /> }
 
             { isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr}/>}

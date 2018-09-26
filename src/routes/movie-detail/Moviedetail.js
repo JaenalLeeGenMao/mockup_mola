@@ -150,6 +150,8 @@ class Moviedetail extends React.Component {
 
       const playCopy = 'Play movie';
 
+      const year = movieDetailData.length > 0 ? movieDetailData[0].year : "AAAA";
+
       const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
       //loop through array of people attribute to get director
       const directedByArr = movieDetailData.length > 0 ? movieDetailData[0].people.filter ( dt => {
@@ -189,6 +191,20 @@ class Moviedetail extends React.Component {
             { isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} /> }
 
             <Frame>
+              <div className={s.yearWrapper}>
+                {!isLoading &&
+                <div className={s.yearInner}>
+                  <span className={s.yearLine}/>
+                  <span>({ year })</span>
+                </div>
+                }
+                {isLoading &&
+                <div className={s.yearInner}>
+                  <span className={s.yearLine}/>
+                  <LoadingPlaceholder isLight className={s.yearLoading}/>
+                </div>
+                }
+              </div>
               { !isLoading && synopsisContent &&
               <Synopsis
                 synopsisContent={synopsisContent}

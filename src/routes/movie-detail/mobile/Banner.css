@@ -47,11 +47,41 @@
   height: 500px;
 }
 
+.yearInner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+  width: 350px;
+}
+
+.yearLine {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #0045ff;
+  padding: 0;
+  width: 60%;
+}
+
+.yearInner span {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+  font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
 @media screen and (max-width: 960px) {
   .bannerWrapper,
   .bannerBgImage,
   .bannerBgImageLoading {
     height: 300px;
+  }
+
+  .yearLine {
+    width: 40%;
   }
 }
 
@@ -60,6 +90,10 @@
   .bannerBgImage,
   .bannerBgImageLoading {
     height: 200px;
+  }
+
+  .yearLine {
+    width: 20%;
   }
 }
 
