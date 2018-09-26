@@ -35,12 +35,14 @@ class RightMenu extends Component {
     return (
       <div className={styles.right__menu}>
         { !searchOff &&
-      <LazyLoad>
-        <Link
-          className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
-          to="/search"
-        />
-      </LazyLoad>
+        <span className ={styles.right__menu_wrapper}>
+          <LazyLoad>
+            <Link
+              className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white}
+              to="/search"
+            />
+          </LazyLoad>
+        </span>
         }
         <span className ={styles.right__menu_wrapper}>
           {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
