@@ -15,3 +15,5 @@ export const SEARCH_ENDPOINT = `${config.endpoints.molatv}/search/`;
 export const SEARCH_GENRE_ENDPOINT = `${config.endpoints.molatv}/videos/playlists/genre`;
 
 export const MOVIE_DETAIL_ENDPOINT = 'http://mola.lukitomo.com/v2/videos';
+
+export const MOVIE_STREAMING = 'http://mola.lukitomo.com/v2/videos/';
