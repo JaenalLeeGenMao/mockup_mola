@@ -12,10 +12,11 @@
 /* eslint-disable camelcase */
 const dotenv = require('dotenv')
 const exceptions = ['production', 'staging', 'development']
-const MolaConfig = require('../src/global/config/api');
+const MolaConfig = require('../src/global/config/api')
+const env = process.env.NODE_ENV === 'development' ? 'development' : 'staging'
 
 /* Override the values if the environment is not in the exception lists */
-if (!exceptions.includes(process.env.NODE_ENV)) {
+if (!exceptions.includes(env)) {
   dotenv.config()
 }
 
@@ -32,10 +33,12 @@ module.exports = {
     clientUrl: process.env.API_CLIENT_URL || '',
     // API URL to be used in the server-side code
     serverUrl:
-      process.env.API_SERVER_URL ||
-      'http://jaenal.mola.tv',
+      env === 'development'
+        ? 'http://jaenal.mola.tv'
+        : MolaConfig[env].endpoints.domain
+    ,
     // `http://localhost:${process.env.PORT || 3000}`,
-    config: MolaConfig[process.env.NODE_ENV]
+    config: MolaConfig[env]
   },
 
   // Database

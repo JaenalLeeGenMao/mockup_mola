@@ -110,7 +110,7 @@ app.use((err, req, res, next) => {
 app.get('/signout', (req, res) => {
   res.clearCookie('_at');
   res.clearCookie('_exp');
-  return res.redirect('http://jaenal.mola.tv');
+  return res.redirect(config.api.config.endpoints.domain || 'http://jaenal.mola.tv');
 });
 
 //

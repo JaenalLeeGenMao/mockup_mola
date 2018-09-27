@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import queryString from 'query-string'
 
+import mainConfig from '@source/config'
 import config from '@global/config/api'
 import Mola from '@api/mola'
 
@@ -14,8 +15,9 @@ class RightMenu extends Component {
 
   handleLogin = () => {
     const { endpoints: { auth: authURL }, auth: authConfig } = config["production"];
+    const { api: { config: { endpoints: { domain } } } } = mainConfig;
 
-    const qs = queryString.stringify({ ...authConfig, redirect_uri: "http://jaenal.mola.tv" });
+    const qs = queryString.stringify({ ...authConfig, redirect_uri: domain || "http://jaenal.mola.tv" });
     window.location.href = `${authURL}/oauth/login?${qs}`;
   }
 
