@@ -22,14 +22,15 @@
 .casting_photo_img_wrapper {
   position: relative;
   left: 18px;
+  width: 68px;
 }
 
 .trailer_photo_container {
   text-align: center;
   overflow: hidden;
   height: 131px;
+  width: auto;
   position: relative;
-  left: 10px;
   outline: 0;
 }
 
@@ -52,7 +53,6 @@
 }
 
 .trailerImage {
-  width: auto !important;
   margin: 0 10px;
 }
 

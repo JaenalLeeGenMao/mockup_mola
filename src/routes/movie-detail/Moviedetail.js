@@ -23,6 +23,7 @@ import Slickcss from '../../components/Reactslick';
 import Next from './moviedetail/assets/caret-right.png';
 import Prev from './moviedetail/assets/caret-left.png';
 import Playbtn from './moviedetail/assets/player-icon.jpg';
+import CastDefault from './moviedetail/assets/cast-default.jpg'
 import BannerLoading from './moviedetail/BannerLoading';
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
 import LazyLoad from '@components/common/Lazyload';
@@ -50,7 +51,6 @@ class Moviedetail extends React.Component {
       testimoniSource: '- Zlatan Ibrahimovic, Footballer',
       trailerTitle: 'MOVIE TRAILER',
       trailerPlaytag: 'Play Trailer',
-      link: './history',
       open: false,
       movieDetail: [],
       isLoading: true
@@ -117,7 +117,6 @@ class Moviedetail extends React.Component {
     render() {
       const {
         trailerPlaytag,
-        link,
         open,
         isLoading,
       } = this.state;
@@ -149,8 +148,9 @@ class Moviedetail extends React.Component {
       const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
 
       const playCopy = 'Play movie';
+      const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
-      const year = movieDetailData.length > 0 ? movieDetailData[0].year : "AAAA";
+      const year = movieDetailData.length > 0 ? movieDetailData[0].year : null;
 
       const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
       //loop through array of people attribute to get director
@@ -191,20 +191,14 @@ class Moviedetail extends React.Component {
             { isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} /> }
 
             <Frame>
-              <div className={s.yearWrapper}>
-                {!isLoading &&
-                <div className={s.yearInner}>
-                  <span className={s.yearLine}/>
-                  <span>({ year })</span>
+              { !isLoading && year &&
+                <div className={s.yearWrapper}>
+                  <div className={s.yearInner}>
+                    <span className={s.yearLine}/>
+                    <span>({ year })</span>
+                  </div>
                 </div>
-                }
-                {isLoading &&
-                <div className={s.yearInner}>
-                  <span className={s.yearLine}/>
-                  <LoadingPlaceholder isLight className={s.yearLoading}/>
-                </div>
-                }
-              </div>
+              }
               { !isLoading && synopsisContent &&
               <Synopsis
                 synopsisContent={synopsisContent}
@@ -232,16 +226,24 @@ class Moviedetail extends React.Component {
               }
             </Frame>
             <Secondframe copy={castingCopy}>
-              { !isLoading && castingArtists.length > 0 &&
+              { !isLoading &&
               <Casting>
                 <Slider {...casting}>
-                  { castingArtists.map(({ id, attributes }) => (
+                  { castingArtists.length > 0 && castingArtists.map(({ id, attributes }) => (
                     <div key={id} className={s.casting_photo_container}>
                       <LazyLoad containerClassName={s.casting_photo_img_wrapper}
                         alt={attributes.name} className={s.casting_photo_img} src={attributes.imageUrl} />
                       <p>{attributes.name}</p>
                     </div>
                   ))}
+                  { castingArtists.length == 0 &&
+                  <div className={s.casting_photo_container}>
+                    <LazyLoad containerClassName={s.casting_photo_img_wrapper}
+                      className={s.casting_photo_img} src={CastDefault}>
+                      <p>Unknown</p>
+                    </LazyLoad>
+                  </div>
+                  }
                 </Slider>
               </Casting>
               }
@@ -263,7 +265,7 @@ class Moviedetail extends React.Component {
               <Trailer trailerTitle="Trailer">
                 <Slider {...trailer}>
                   {trailerDt.map(obj => (
-                    <LazyLoad key={obj.toString()} containerClassName={ifOne}
+                    <LazyLoad key={obj.toString()} containerClassName={s.trailer_photo_container}
                       alt={obj.movieImageAlt} src={obj.movieImageUrl} onClick={this.onOpenModal} className={s.trailerImage}>
                       <p className={s.trailer_playtag}>{trailerPlaytag}</p>
                     </LazyLoad>
