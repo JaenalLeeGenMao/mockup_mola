@@ -61,3 +61,40 @@
   line-height: 13px;
   white-space: normal;
 }
+
+.yearWrapper {
+  position: relative;
+}
+
+.yearInner {
+  position: absolute;
+  top: -44px;
+  left: 0;
+  color: white;
+  width: 350px;
+}
+
+.yearLine {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #0045ff;
+  padding: 0;
+  width: 256px;
+}
+
+.yearInner span {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+  font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+.yearLoading {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+}

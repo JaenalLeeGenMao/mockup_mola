@@ -21,10 +21,10 @@
   letter-spacing: 0.1em;
   transition: 250ms ease-out;
   opacity: 0.4;
+  cursor: pointer;
 }
 
 .navigation__links:hover {
-  letter-spacing: 0.4em;
   text-shadow: 0.4px 0.4px;
   opacity: 1;
 }

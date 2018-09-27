@@ -25,7 +25,6 @@ class RightMenu extends Component {
     e.preventDefault();
     const { user } = this.props;
     Mola.revokeAuth(user.token).then(response => {
-      // console.log(response);
       if (response.meta.status === "success") {
         window.location.href = '/signout';
       }
