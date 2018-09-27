@@ -33,7 +33,8 @@ import customSlickDotStyles from './homeSlickDots.css';
 
 let lastScrollY = 0,
   ticking = false,
-  activePlaylist;
+  activePlaylist,
+  scrollIndex = 0;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
@@ -111,30 +112,32 @@ class Home extends Component {
     }
 
     handleScroll = () => {
-      lastScrollY = window.scrollY;
+      const { playlists } = this.props.home;
+    	playlists.data.map((playlist, index) => {
+    		if (playlist.isActive) {
+          scrollIndex = index;
+    			return false;
+    		}
+    		return true;
+      });
 
     	if (!ticking) {
         document.onkeyup = event => {
           ticking = false;
-          let scrollIndex;
-          const screen = $(window),
-            screenHeight = screen.height();
 
           switch (event.which || event.keyCode) {
           case 37: /* left */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight);
             this.handleSlidePrev(scrollIndex);
             return event.preventDefault();
           case 38: /* up */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+            scrollIndex -= 1
             this.handleKeyPress(scrollIndex);
             break;
           case 39: /* right */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight);
             this.handleSlideNext(scrollIndex);
             return event.preventDefault();
           case 40: /* down */
-            scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+            scrollIndex += 1
             this.handleKeyPress(scrollIndex);
             break;
           default:
@@ -148,27 +151,28 @@ class Home extends Component {
     };
 
     handleSwipe = event => {
-      lastScrollY = window.scrollY;
-
-      let scrollIndex;
-      const screen = $(window),
-        screenHeight = screen.height();
+      const { playlists } = this.props.home;
+    	playlists.data.map((playlist, index) => {
+    		if (playlist.isActive) {
+          scrollIndex = index;
+    			return false;
+    		}
+    		return true;
+      });
 
       switch (event.type) {
       case 'swr': /* slide to left ~ swipe right */
-        scrollIndex = Math.ceil(lastScrollY / screenHeight);
         this.handleSlidePrev(scrollIndex);
         return event.preventDefault();
       case 'swd': /* slide up ~ swipe down */
-        scrollIndex = Math.ceil(lastScrollY / screenHeight) - 1;
+        scrollIndex -= 1
         this.handleKeyPress(scrollIndex);
         break;
       case 'swl': /* slide to right ~ swipe left */
-        scrollIndex = Math.ceil(lastScrollY / screenHeight);
         this.handleSlideNext(scrollIndex);
         return event.preventDefault();
       case 'swu': /* slide down ~ swipe up */
-        scrollIndex = Math.ceil(lastScrollY / screenHeight) + 1;
+        scrollIndex += 1
         this.handleKeyPress(scrollIndex);
         break;
       default:
@@ -196,8 +200,9 @@ class Home extends Component {
 
     handleScrollToIndex = id => {
     	const { playlists } = this.props.home;
-    	playlists.data.map(playlist => {
+    	playlists.data.map((playlist, index) => {
     		if (id === playlist.id) {
+          scrollIndex = index;
     			scroller.scrollTo(id, {
     				duration: 800,
     				delay: 0,
@@ -357,11 +362,11 @@ class Home extends Component {
                                           <h4
                                             className={styles.home__parallax_layer_3_title}
                                           >
-                                            {title}
+                                            {type !== "playlists" ? title : "OVERVIEW"}
                                           </h4>
                                           <p className={styles.home__parallax_layer_3_desc}>
                                             {shortDescription}
-                                            <Link to={`/movie-detail/${id}`} className={styles.home__see_more}>➪see movie</Link>
+                                            {type !== "playlists" && <Link to={`/movie-detail/${id}`} className={styles.home__see_more}>➪see movie</Link>}
                                           </p>
                                         </div>
                                       </LazyLoad>
