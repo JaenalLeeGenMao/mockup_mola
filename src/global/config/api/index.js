@@ -32,7 +32,7 @@ module.exports = {
     endpoints: {
       molatv: 'http://api.staging.mola.tv/v2',
       auth: 'https://accounts.supersoccer.tv',
-      domain: 'http:/staging.mola.tv'
+      domain: 'http://staging.mola.tv'
     },
     auth: {
       app_key: "9KSkjpIb3I",
