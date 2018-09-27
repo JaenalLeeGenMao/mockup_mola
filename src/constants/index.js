@@ -5,6 +5,7 @@ import * as search from './search';
 import * as user from './user';
 import * as movieDetail from './movie-detail';
 import * as movieLibrary from './movie-library';
+import * as movieStream from './movie-stream';
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE';
 export default {
@@ -14,5 +15,6 @@ export default {
   ...search,
   ...user,
   ...movieDetail,
-  ...movieLibrary
+  ...movieLibrary,
+  ...movieStream
 };

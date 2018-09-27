@@ -1,5 +1,5 @@
 import { get, post } from 'axios'
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, MOVIE_DETAIL_ENDPOINT } from './endpoints'
+import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints'
 import utils from './util'
 
 import { api } from '@source/config'
@@ -175,6 +175,31 @@ const getMovieLibrary = (id) => {
   })
 }
 
+const getMovieStream = ({ id }) => {
+  return get(
+    `${MOVIE_STREAMING}/${id}`).then(
+    (response) => {
+      const result = utils.normalizeVideoStream(response)
+      console.log('meta status', result);
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result] || [],
+      }
+    }
+  ).catch((error) => {
+    return {
+      meta: {
+        status: 'error',
+        error: `home/getMovieStream ~ ${error}`,
+      },
+      data: [],
+    }
+  })
+}
+
 const getAuth = ({ code, redirect_uri }) => {
   const { endpoints: { auth: authURL }, tokenAuth: authConfig } = config;
   return post(
@@ -318,5 +343,6 @@ export default {
   getAuth,
   updateAuth,
   revokeAuth,
-  getMovieLibrary
+  getMovieLibrary,
+  getMovieStream
 }

@@ -234,6 +234,25 @@ const normalizeMovieLibrary = (response) => {
   }
 }
 
+const normalizeVideoStream = (response) => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map((result) => {
+      const {
+        id,
+        attributes: {
+          streamSourceUrl
+        },
+      } = result
+      return {
+        id,
+        streamSourceUrl
+      }
+    })
+  }
+  return [];
+}
+
 const normalizeAuth = response => {
   const { data: { access_token: token, expires_in: expire, token_type: type, refresh_token: refreshToken = '' } } = response;
   return {
@@ -263,5 +282,6 @@ export default {
   normalizeUserInfo,
   normalizeSearchGenre,
   normalizeVideoDetail,
-  normalizeMovieLibrary
+  normalizeMovieLibrary,
+  normalizeVideoStream
 }
