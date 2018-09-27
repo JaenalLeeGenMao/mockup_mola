@@ -127,16 +127,29 @@ class Search extends React.Component {
     })
   }, 300);
 
+  showSearchbySuggestion = () => {
+    if(this.inputSearch.current.value != "") {
+      const {
+        getSearchResult
+      } = this.props;
+
+      getSearchResult(this.inputSearch.current.value);
+    }
+  }
+
   handleSearchKeyDown = (event) => {
     switch (event.which || event.keyCode) {
     case 38: /* up */
       this.inputSearch.current.value = this.textSuggestion;
+      this.showSearchbySuggestion();
       break;
     case 39: /* right */
       this.inputSearch.current.value = this.textSuggestion;
+      this.showSearchbySuggestion();
       break;
     case 40: /* down */
       this.inputSearch.current.value = this.textSuggestion;
+      this.showSearchbySuggestion();
       break;
     default:
     }
