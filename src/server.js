@@ -106,11 +106,12 @@ app.use((err, req, res, next) => {
 //     res.redirect('/');
 //   },
 // );
+const domain = config.api.config.endpoints.domain;
 
 app.get('/signout', (req, res) => {
   res.clearCookie('_at');
   res.clearCookie('_exp');
-  return res.redirect(config.api.config.endpoints.domain || 'http://jaenal.mola.tv');
+  return res.redirect(domain || 'http://jaenal.mola.tv');
 });
 
 //
@@ -206,7 +207,7 @@ app.get('*', async (req, res, next) => {
       }
     } else if (req.query.code) {
       /** ON CLICK LOGIN  */
-      apiCall = await Mola.getAuth({ code: req.query.code, redirect_uri: "http://jaenal.mola.tv" });
+      apiCall = await Mola.getAuth({ code: req.query.code, redirect_uri: domain || 'http://jaenal.mola.tv' });
 
       if (apiCall.meta.status === "success") {
         result = { ...apiCall.data };
