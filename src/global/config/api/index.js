@@ -30,7 +30,7 @@ module.exports = {
       maxRedirects: 1
     },
     endpoints: {
-      molatv: 'api.staging.mola.tv/v2',
+      molatv: 'http://api.staging.mola.tv/v2',
       auth: 'https://accounts.supersoccer.tv',
       domain: 'http:/staging.mola.tv'
     },
