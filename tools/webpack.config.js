@@ -55,7 +55,7 @@ const minimizeCssOptions = {
 const config = {
   context: ROOT_DIR,
 
-  mode: process.env.NODE_ENV, /** development, staging, production */
+  mode: 'production', /** development, production */
 
   output: {
     path: resolvePath(BUILD_DIR, 'public/assets'),

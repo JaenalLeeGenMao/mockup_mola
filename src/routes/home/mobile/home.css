@@ -25,7 +25,7 @@ body {
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 .header__library_link_wrapper {
