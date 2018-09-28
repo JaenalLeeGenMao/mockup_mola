@@ -1,0 +1,26 @@
+.searchErrorContainer {
+  width: 400px;
+  margin: 0 auto;
+  padding-top: 50px;
+}
+
+.searchErrorTitle {
+  font-size: 18px;
+  color: #ffff;
+  text-align: center;
+  padding: 0 20px 10px;
+  margin-top: -30px;
+}
+
+.searchErrorDetail {
+  font-size: 15px;
+  color: #cfcfcf;
+  text-align: center;
+  padding: 0 20px;
+}
+
+@media screen and (max-width: 500px) {
+  .searchErrorContainer {
+    width: 100%;
+  }
+}
