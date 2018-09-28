@@ -12,10 +12,10 @@ module.exports = {
 
   'rules': {
     'commadangle': 0,
-    "react/jsx-uses-vars": 1,
-    "react/react-in-jsx-scope": 1,
+    'react/jsx-uses-vars': 1,
+    'react/react-in-jsx-scope': 1,
     'react/display-name': 1,
-    'react/displayname': [true, { "ignoreTranspilerName": true }],
+    'react/displayname': [true, { 'ignoreTranspilerName': true }],
     'react/prop-types': 0,
     'no-unused-vars': 'warn',
     // 'no-unexpected-multiline': 'warn',

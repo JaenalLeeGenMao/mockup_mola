@@ -1,0 +1,47 @@
+.error_container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 5%;
+  letter-spacing: 0.25em;
+  background: #000622;
+}
+
+.error__wrapper {
+  display: inline-block;
+  text-align: center;
+  font-family: 'Futura', 'HelveticaNeue-Light', sans-serif;
+  padding-top: 5%;
+}
+
+.error__mola_title {
+  width: 30%;
+  max-width: 120px;
+}
+
+.error__mola_background {
+  width: 80%;
+  max-width: 275px;
+}
+
+.error__title {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: 1.45pt;
+  margin: 0;
+  padding: 5% 0 0 0;
+}
+
+.error__description {
+  font-size: 13px;
+  font-weight: 300;
+  opacity: 0.7;
+  color: #c7c7c8;
+  letter-spacing: 0.56pt;
+  margin: 0;
+  padding: 0 5%;
+}

@@ -52,3 +52,13 @@ export const swipeGestureListener = () =>{
      *
     */
 }
+
+export const getErrorCode = str => {
+  if (str.includes("502" || "500")) {
+    return 502;
+  } else if (str.includes("400" || "404")) {
+    return 400;
+  } else {
+    return 1;
+  }
+}
