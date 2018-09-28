@@ -2,7 +2,7 @@ import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
 import s from './index.css';
-import logo from '@global/style/icons/mola_blue.png'
+import logo from '@global/style/icons/mola_blue.svg'
 
 class Navigation extends React.Component {
   constructor(props) {

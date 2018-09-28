@@ -26,7 +26,7 @@ const getHomePlaylist = ({ ...payload }) => {
     return {
       meta: {
         status: 'error',
-        error: `home/getHomePlaylist ~ ${error}`,
+        error: `home/getHomePlaylist - ${error}`,
       },
       data: [],
     }
@@ -54,7 +54,7 @@ const getHomeVideo = ({ id, ...payload }) => {
     return {
       meta: {
         status,
-        error: `home/getHomeVideo ~ ${error}`,
+        error: `home/getHomeVideo - ${error}`,
       },
       data: [],
     }
@@ -76,7 +76,7 @@ const getAllHistory = ({ userId }) => {
     return {
       meta: {
         status: 'error',
-        text: `history/getAllHistory ~ ${error}`,
+        text: `history/getAllHistory - ${error}`,
       },
       data: [],
     }
@@ -99,7 +99,7 @@ const getSearchResult = ({ q }) => {
     return {
       meta: {
         status: 'error',
-        error: `search/getSearchResult ~ ${error}`,
+        error: `search/getSearchResult - ${error}`,
       },
       data: [],
     }
@@ -122,7 +122,7 @@ const getSearchGenre = (payload) => {
     return {
       meta: {
         status: 'error',
-        error: `search/getSearchGenre ~ ${error}`,
+        error: `search/getSearchGenre - ${error}`,
       },
       data: [],
     }
@@ -146,7 +146,7 @@ const getMovieDetail = ({ id }) => {
     return {
       meta: {
         status: 'error',
-        error: `home/getMovieDetail ~ ${error}`,
+        error: `home/getMovieDetail - ${error}`,
       },
       data: [],
     }
@@ -168,7 +168,7 @@ const getMovieLibrary = (id) => {
     return {
       meta: {
         status: 'error',
-        error: `search/getMovieLibrary ~ ${error}`,
+        error: `search/getMovieLibrary - ${error}`,
       },
       data: [],
     }
@@ -193,7 +193,7 @@ const getMovieStream = ({ id }) => {
     return {
       meta: {
         status: 'error',
-        error: `home/getMovieStream ~ ${error}`,
+        error: `home/getMovieStream - ${error}`,
       },
       data: [],
     }

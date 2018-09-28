@@ -19,7 +19,7 @@ import $ from 'jquery';
 import { SETTINGS } from '../const';
 import * as homeActions from '@actions/home';
 
-import { swipeGestureListener } from '@routes/home/util';
+import { swipeGestureListener, getErrorCode } from '@routes/home/util';
 
 import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
@@ -27,6 +27,7 @@ import Link from '@components/Link';
 
 import HomeMobileMenu from './menu';
 import HomePlaceholder from './placeholder';
+import HomeError from '@components/common/error';
 
 import styles from './home.css';
 import customSlickDotStyles from './homeSlickDots.css';
@@ -112,7 +113,10 @@ class Home extends Component {
     }
 
     handleScroll = () => {
-      const { playlists } = this.props.home;
+      const { playlists, videos } = this.props.home;
+      if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
+        return true;
+      }
     	playlists.data.map((playlist, index) => {
     		if (playlist.isActive) {
           scrollIndex = index;
@@ -151,7 +155,10 @@ class Home extends Component {
     };
 
     handleSwipe = event => {
-      const { playlists } = this.props.home;
+      const { playlists, videos } = this.props.home;
+      if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
+        return true;
+      }
     	playlists.data.map((playlist, index) => {
     		if (playlist.isActive) {
           scrollIndex = index;
@@ -236,14 +243,14 @@ class Home extends Component {
           playlists: {
             meta: {
               status: playlistStatus = 'loading',
-              error: playlistrror
+              error: playlistError = ''
             }
           },
           videos,
           videos: {
             meta: {
               status: videoStatus = 'loading',
-              error: videoError
+              error: videoError = ''
             }
           },
         } = this.props.home,
@@ -261,18 +268,20 @@ class Home extends Component {
             this.handleColorChange();
           }
         },
-        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+        playlistErrorCode = getErrorCode(playlistError),
+        videoErrorCode = getErrorCode(videoError);
       activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
       return (
         <div>
-          <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />
+          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' &&
-					<div className={styles.home__error_container}>Ada Error kawan: {playlistrror || 'MOLA playlist is not loaded'}</div>
+              <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />
           }
           {videoStatus === 'error' &&
-					<div className={styles.home__error_container}>Ada Error kawan: {videoError || 'MOLA video is not loaded'}</div>
+              <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />
           }
           {playlistStatus === 'success' && videoStatus === 'success' &&
                     <div>
@@ -347,12 +356,7 @@ class Home extends Component {
                                 } = eachVids;
                     						return (
                     							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                                    <Parallax
-                                      disabled={isSafari}
-                                      offsetYMin={ticking ? -50 : 0}
-                                      offsetYMax={ticking ? 50 : 0}
-                                      className={styles.home__parallax_layer_3}
-                                    >
+                                    <div className={styles.home__parallax_layer_3}>
                                       <LazyLoad src={layer3}
                                         containerClassName={styles.home__parallax_layer_3_info}
                                         alt=""
@@ -370,22 +374,15 @@ class Home extends Component {
                                           </p>
                                         </div>
                                       </LazyLoad>
-                                    </Parallax>
-                                    <Parallax
-                                      disabled={isSafari}
-                                      offsetYMin={ticking ? -10 : 0}
-                                      offsetYMax={ticking ? 10 : 0}
-                                      offsetXMin={ticking ? 20 : 0}
-                                      offsetXMax={ticking ? -20 : 0}
-                                      className={styles.home__parallax_layer_2}
-                                    >
+                                    </div>
+                                    <div className={styles.home__parallax_layer_2}>
                                       <LazyLoad src={layer2}>
                                       </LazyLoad>
-                                    </Parallax>
-                                    <Parallax disabled={isSafari}>
+                                    </div>
+                                    <div disabled={isSafari}>
                                       <LazyLoad src={layer1} containerClassName={styles.home__parallax_layer_1}>
                                       </LazyLoad>
-                                    </Parallax>
+                                    </div>
                     							</div>
                     						);
                     					})}
