@@ -62,7 +62,9 @@ const getHomeVideo = ({ id, ...payload }) => {
 }
 
 const getAllHistory = ({ userId }) => {
-  return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`).then(
+  return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`, {
+    ...config.api
+  }).then(
     (response) => {
       const result = utils.normalizeHistory(response)
       return {
@@ -84,7 +86,9 @@ const getAllHistory = ({ userId }) => {
 }
 
 const getSearchResult = ({ q }) => {
-  return get(`${SEARCH_ENDPOINT}`, { params: { q: q } }).then(
+  return get(`${SEARCH_ENDPOINT}`, { params: { q: q },
+    ...config.api
+  }).then(
     (response) => {
       const result = utils.normalizeSearchResult(response);
       return {
@@ -107,7 +111,9 @@ const getSearchResult = ({ q }) => {
 }
 
 const getSearchGenre = (payload) => {
-  return get(`${SEARCH_GENRE_ENDPOINT}`, { ...payload }).then(
+  return get(`${SEARCH_GENRE_ENDPOINT}`, {
+    ...config.api
+  }).then(
     (response) => {
       const result = utils.normalizeSearchGenre(response);
       return {
@@ -131,7 +137,10 @@ const getSearchGenre = (payload) => {
 
 const getMovieDetail = ({ id }) => {
   return get(
-    `${MOVIE_DETAIL_ENDPOINT}/${id}`).then(
+    `${MOVIE_DETAIL_ENDPOINT}/${id}`,
+    {
+      ...config.api
+    }).then(
     (response) => {
       const result = utils.normalizeVideoDetail(response)
       return {
@@ -154,7 +163,10 @@ const getMovieDetail = ({ id }) => {
 }
 
 const getMovieLibrary = (id) => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`).then(
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`,
+    {
+      ...config.api
+    }).then(
     (response) => {
       const result = utils.normalizeMovieLibrary(response);
       return {

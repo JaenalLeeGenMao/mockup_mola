@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { bool, func, number, object, oneOfType, string, node } from 'prop-types';
-
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Lazyload.css';
 
@@ -20,7 +19,8 @@ class Lazyload extends PureComponent {
     style: object,
     webp: bool,
     onClick: func,
-    children: node
+    children: node,
+    onErrorShowDefault: bool
   };
 
   static defaultProps = {
@@ -38,6 +38,7 @@ class Lazyload extends PureComponent {
     webp: true,
     children: null,
     src: null,
+    onErrorShowDefault: false
   };
 
   constructor(props) {
@@ -116,9 +117,10 @@ class Lazyload extends PureComponent {
   };
 
   loadImage = (isWebP = false) => {
-    const { src } = this.props;
+    const { src, onErrorShowDefault } = this.props;
     const imageUrl = isWebP ? this.imageWebPUrl : src;
     const image = new window.Image();
+    let error = false;
 
     image.onload = () => {
       if (this.image.current) {
@@ -131,6 +133,11 @@ class Lazyload extends PureComponent {
         this.loadImage();
       } else {
         this.handleImageChange('default');
+        error = true;
+        console.log("MASUK jg error")
+        if(error && onErrorShowDefault) {
+          this.setState({ isError: true });
+        }
       }
     };
     image.src = imageUrl;
@@ -157,7 +164,7 @@ class Lazyload extends PureComponent {
   }
 
   render() {
-    const { sources } = this.state;
+    const { sources, isError } = this.state;
     const { alt, containerClassName, containerStyle, style, onClick, children, className, src } = this.props;
 
     return (
@@ -167,6 +174,7 @@ class Lazyload extends PureComponent {
         onClick={onClick}
       >
         { src && <img ref={this.image} className={className} style={style} src={sources} alt={alt} />}
+        { isError && <div className={s.lazyload__errorBg}/>}
         {children}
       </div>
     );

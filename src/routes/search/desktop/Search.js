@@ -13,6 +13,8 @@ import SearchGenre from './SearchGenre/SearchGenre';
 import SearchGenreLoading from './SearchGenre/SearchGenreLoading';
 // import RecentSearch from './RecentSearch/RecentSearch'
 // import Cast from './Cast/Cast'
+
+import Error from '../error/Error';
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
 import s from './Search.css';
@@ -156,7 +158,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const { search : { genre: { data: genreData }, result: { meta : { status : resultStatus } } }, searchKeyword } = this.props;
+    const { search : { genre: { data: genreData, meta : { status : genreStatus } }, result: { meta : { status : resultStatus } } }, searchKeyword } = this.props;
     const { isLoadingGenre, isLoadingResult } = this.state;
     const isDark = false;
     const showResult = this.searchText ? true : false;
@@ -185,7 +187,8 @@ class Search extends React.Component {
             </div>
             { !showResult && !showMovieLoading && !isLoadingGenre &&
               <LazyLoad>
-                <SearchGenre data={genreData}/>
+                { genreStatus == "success" && <SearchGenre data={genreData}/> }
+                { genreStatus == "error" && <Error/> }
               </LazyLoad>
             }
 
