@@ -35,7 +35,7 @@ class MovieSuggestion extends React.Component {
                 <div className={s.movieBox} key={movie.id}>
                   <div className={s.movieBoxInner}>
                     <Link to={`/movie-detail/${movie.id}`}>
-                      <LazyLoad src={movie.coverUrl} containerClassName={s.movieImg}>
+                      <LazyLoad src={movie.coverUrl} containerClassName={s.movieImg} onErrorShowDefault>
                         { startIdx > -1 ?
                           (
                             <div className={s.movieTitle}>
