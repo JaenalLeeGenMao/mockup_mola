@@ -24,8 +24,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'contact' */ './contact'),
     },
     {
-      path: '/login',
-      load: () => import(/* webpackChunkName: 'login' */ './login'),
+      path: '/accounts/login',
+      load: () => import(/* webpackChunkName: 'accounts-login' */ './login'),
     },
     {
       path: '/register',
@@ -73,8 +73,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'search' */ './search'),
     },
     {
-      path: '/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './profile'),
+      path: '/accounts/profile',
+      load: () => import(/* webpackChunkName: 'accounts-profile' */ './profile'),
     },
     // Movie-player
     {
@@ -95,12 +95,12 @@ const routes = {
       load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
     },
     {
-      path: '/security',
-      load: () => import(/* webpackChunkName: 'security' */ './security'),
+      path: '/accounts/security',
+      load: () => import(/* webpackChunkName: 'accounts-security' */ './security'),
     },
     {
-      path: '/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './setting'),
+      path: '/accounts/setting',
+      load: () => import(/* webpackChunkName: 'accounts-setting' */ './setting'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
