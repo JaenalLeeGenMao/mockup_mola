@@ -5,9 +5,9 @@ module.exports = {
       maxRedirects: 1
     },
     endpoints: {
-      molatv: 'http://mola.lukitomo.com/v2/',
+      molatv: 'http://mola.lukitomo.com/v2',
       auth: 'http://jaenal.mola.tv',
-      domain: 'http:/jaenal.mola.tv'
+      domain: 'http://jaenal.mola.tv'
     },
     auth: {
       app_key: "9KSkjpIb3I",
@@ -57,7 +57,7 @@ module.exports = {
     endpoints: {
       molatv: 'https://api.supersoccer.tv/v2',
       auth: 'https://accounts.supersoccer.tv',
-      domain: 'http:/www.mola.tv'
+      domain: 'http://www.mola.tv'
     },
     auth: {
       app_key: "9KSkjpIb3I",

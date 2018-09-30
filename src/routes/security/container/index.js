@@ -34,15 +34,15 @@ class Profile extends React.Component {
     const menus = [
       {
         title: 'PROFILE',
-        href: '/profile'
+        href: '/accounts/profile'
       },
       {
         title: 'SECURITY',
-        href: '/security'
+        href: '/accounts/security'
       },
       {
         title: 'SETTING',
-        href: '/setting'
+        href: '/accounts/setting'
       }
     ]
 
