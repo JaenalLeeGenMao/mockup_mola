@@ -13,7 +13,7 @@ import HomeMobile from './mobile';
 
 async function action({ isMobile }) {
   return {
-    title: 'React Starter Kit',
+    title: 'Mola - Watch TV Shows Online, Watch Movies Online',
     chunks: ['home'],
     component: isMobile ? <HomeMobile /> : <HomeDesktop />,
   };

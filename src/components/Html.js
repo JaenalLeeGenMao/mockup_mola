@@ -47,8 +47,7 @@ class Html extends React.Component {
             {scripts.map(script => (
               <link key={script} rel="preload" href={script} as="script" />
             ))}
-            <link rel="manifest" href="/site.webmanifest" />
-            <link rel="apple-touch-icon" href="/icon.png" />
+            <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
             <link href="https://diegoddox.github.io/react-redux-toastr/7.1/react-redux-toastr.min.css" rel="stylesheet" type="text/css" />
             {styles.map(style => (
               <style

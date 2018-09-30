@@ -155,7 +155,8 @@ class Home extends Component {
     };
 
     handleSwipe = event => {
-      const { playlists, videos } = this.props.home;
+      const { playlists, videos } = this.props.home,
+        activeSlickDots = $(`.${customSlickDotStyles.home__slick_dots}`);
       if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
         return true;
       }
@@ -167,6 +168,7 @@ class Home extends Component {
     		return true;
       });
 
+
       switch (event.type) {
       case 'swr': /* slide to left ~ swipe right */
         this.handleSlidePrev(scrollIndex);
@@ -174,6 +176,7 @@ class Home extends Component {
       case 'swd': /* slide up ~ swipe down */
         scrollIndex -= 1
         this.handleKeyPress(scrollIndex);
+        activeSlickDots.css('padding','0 5% 20.5% 0');
         break;
       case 'swl': /* slide to right ~ swipe left */
         this.handleSlideNext(scrollIndex);
@@ -181,6 +184,7 @@ class Home extends Component {
       case 'swu': /* slide down ~ swipe up */
         scrollIndex += 1
         this.handleKeyPress(scrollIndex);
+        activeSlickDots.css('padding','0 5% 5% 0');
         break;
       default:
         event.preventDefault();
@@ -370,7 +374,12 @@ class Home extends Component {
                                           </h4>
                                           <p className={styles.home__parallax_layer_3_desc}>
                                             {shortDescription}
-                                            {type !== "playlists" && <Link to={`/movie-detail/${id}`} className={styles.home__see_more}>➪see movie</Link>}
+                                            {type !== "playlists" &&
+                                              <Link to={`/movie-detail/${id}`} className={styles.home__see_more}>
+                                                <span className={styles.home__see_more_arrow}>→</span>
+                                                see movie
+                                              </Link>
+                                            }
                                           </p>
                                         </div>
                                       </LazyLoad>
