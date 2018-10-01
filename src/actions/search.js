@@ -13,22 +13,83 @@ export const getSearchResult = searchText => dispatch => {
       data: []
     }
   });
-  return Mola.getSearchResult({ q: searchText })
-    .then(result => {
-      console.log("MASUK search", searchText)
-      if (result.meta.status === "error") {
-        dispatch({
-          type: types.GET_SEARCH_ERROR,
-          payload: result,
+  var isExist = false;
+  var cacheResult = {
+    meta: {
+      status: 'success',
+    },
+    data: []
+  };
+  searchDb.transaction('r', searchDb.moviesResult, searchDb.searchKeyword, async ()=> {
+    //check on cache IndexedDB if keyword and search result exists
+    await searchDb.searchKeyword.where("keyword").equalsIgnoreCase(searchText).each(function (res) {
+      isExist = true; //if exist
+      const movieIdArr = res.movieId.split(",");
+      movieIdArr.map((id)=> {
+        searchDb.moviesResult.where("movieId").equalsIgnoreCase(id).each(function (res) {
+          cacheResult.data.push({ id: res.movieId, type: res.type, title: res.title, year: res.year, coverUrl: res.coverUrl })
         });
-      } else {
-
-        dispatch({
-          type: types.GET_SEARCH_SUCCESS,
-          payload: result,
-        });
-      }
+      });
     });
+  }).then(() => {
+    if(!isExist) {
+      //if keyword not exist in cache indexed DB then get from api and store in cache
+      return Mola.getSearchResult({ q: searchText })
+        .then(result => {
+          if (result.meta.status === "error") {
+            dispatch({
+              type: types.GET_SEARCH_ERROR,
+              payload: result,
+            });
+          } else {
+            // console.log("MASUK AMBIL API")
+            dispatch({
+              type: types.GET_SEARCH_SUCCESS,
+              payload: result,
+            });
+
+            var movieIdAdded = [];
+            searchDb.transaction('rw', searchDb.moviesResult, searchDb.searchKeyword, async ()=> {
+              //loop result from api to store to cache db
+              // result.data.map(async (dt)=> {
+              for (const dt of result.data) {
+                // console.log("Dt", dt)
+                var isMovieIdExist = false;
+                //check if movieid already exist in cache db so prevent duplication
+                await searchDb.moviesResult.where("movieId").equals(dt.id).count(function (cnt) {
+                  isMovieIdExist = cnt > 0;
+                }).then(()=> {
+                  // console.log("EXIST ", isMovieIdExist)
+                  if(!isMovieIdExist) {
+                    //if not exist then store
+                    searchDb.moviesResult
+                      .add({ movieId: dt.id, type: dt.type, title: dt.title, year: dt.year, coverUrl: dt.coverUrl  });
+                    // console.log("movieIdAdded",movieIdAdded)
+                  }
+                });
+                movieIdAdded.push(dt.id);
+              }
+              // });
+              searchDb.searchKeyword
+                .add({ keyword: searchText, movieId:  movieIdAdded.join(',') });
+            }).catch(function (e) {
+              // console.log("ERRRR", e)
+            });
+
+
+          }
+        });
+    } else {
+      // console.log("MASUK AMBIL CACHE", cacheResult)
+      dispatch({
+        type: types.GET_SEARCH_SUCCESS,
+        payload: cacheResult,
+      });
+    }
+  }).catch(function (error) {
+    // console.log("Error dixie",error);
+  });
+
 };
 
 export const getSearchGenre = () => dispatch => {
@@ -42,49 +103,18 @@ export const getSearchGenre = () => dispatch => {
       data: []
     }
   });
-  var isExist = false;
-  var cacheResult = [];
-  searchDb.searchKeyword.where("keyword").equalsIgnoreCase("bbb").each(function (res) {
-    isExist = true;
-    cacheResult.push({ id: res.movieId, type: res.type, title: res.title, year: res.year, coverUrl: res.coverUrl })
-
-  }).catch(function (error) {
-    console.log("Error dixie",error);
-  });
-
-  searchDb.table('searchKeyword')
-    .add({ keyword: 'AAA', movieId: '001,002' });
-  if(!isExist) {
-    return Mola.getSearchGenre()
-      .then(result => {
-        if (result.meta.status === "error") {
-          dispatch({
-            type: types.GET_SEARCH_GENRE_ERROR,
-            payload: result
-          });
-        } else {
-          dispatch({
-            type: types.GET_SEARCH_GENRE_SUCCESS,
-            payload: result,
-          });
-          console.log("Result", result)
-          var movieIdAdded = [];
-          result.map((dt)=> {
-            db.table('moviesResult')
-              .add({ id: dt.movieId, type: dt.type, title: dt.title, year: dt.year, coverUrl: dt.coverUrl  })
-              .then((id) => {
-                movieIdAdded.push(id);
-              });
-          });
-
-          db.table('searchKeyword')
-            .add({ id: searchText, movieId:  movieIdAdded.join(',') })
-        }
-      });
-  } else {
-    dispatch({
-      type: types.GET_SEARCH_GENRE_SUCCESS,
-      payload: result,
+  return Mola.getSearchGenre()
+    .then(result => {
+      if (result.meta.status === "error") {
+        dispatch({
+          type: types.GET_SEARCH_GENRE_ERROR,
+          payload: result
+        });
+      } else {
+        dispatch({
+          type: types.GET_SEARCH_GENRE_SUCCESS,
+          payload: result,
+        });
+      }
     });
-  }
 };
