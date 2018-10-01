@@ -72,11 +72,7 @@ export const getSearchResult = searchText => dispatch => {
               // });
               searchDb.searchKeyword
                 .add({ keyword: searchText, movieId:  movieIdAdded.join(',') });
-            }).catch(function (e) {
-              // console.log("ERRRR", e)
             });
-
-
           }
         });
     } else {
@@ -86,9 +82,23 @@ export const getSearchResult = searchText => dispatch => {
         payload: cacheResult,
       });
     }
-  }).catch(function (error) {
-    // console.log("Error dixie",error);
   });
+  // .catch(function (error) {
+  //   return Mola.getSearchResult({ q: searchText })
+  //     .then(result => {
+  //       if (result.meta.status === "error") {
+  //         dispatch({
+  //           type: types.GET_SEARCH_ERROR,
+  //           payload: result,
+  //         });
+  //       } else {
+  //         dispatch({
+  //           type: types.GET_SEARCH_SUCCESS,
+  //           payload: result,
+  //         });
+  //       }
+  //     });
+  // });
 
 };
 
