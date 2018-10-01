@@ -56,6 +56,7 @@ const config = {
   context: ROOT_DIR,
 
   mode: 'production', /** development, production */
+  // mode: process.env.NODE_ENV, /** development, staging, production */
 
   output: {
     path: resolvePath(BUILD_DIR, 'public/assets'),

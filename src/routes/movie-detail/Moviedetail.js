@@ -28,6 +28,7 @@ import BannerLoading from './moviedetail/BannerLoading';
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
 import LazyLoad from '@components/common/Lazyload';
 import TestimoniLoading from './moviedetail/TestimoniLoading';
+import Theoplayer from '../../components/Theoplayer/Theoplayer';
 
 const Right = props => (
   <div>
@@ -53,7 +54,7 @@ class Moviedetail extends React.Component {
       trailerPlaytag: 'Play Trailer',
       open: false,
       movieDetail: [],
-      isLoading: true
+      isLoading: true,
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -165,6 +166,7 @@ class Moviedetail extends React.Component {
       }) : [];
       const castingCopy = 'CAST';
       const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
+      // console.log('stars', castingArtists)
 
       //get quotes/testimoni data
       const testimoniDt = movieDetailData.length > 0 ? movieDetailData[0].quotes[0].attributes : null;
@@ -174,6 +176,7 @@ class Moviedetail extends React.Component {
       const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers: [];
       const trailerDtPlaceholder = [1,2];
       const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
+      // console.log('Trailer', trailerDt.map(obj => obj.attributes.streamSourceUrl))
 
       // css toogle
       let ifOne = movieDetailData.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container ;
@@ -266,7 +269,8 @@ class Moviedetail extends React.Component {
                 <Slider {...trailer}>
                   {trailerDt.map(obj => (
                     <LazyLoad key={obj.toString()} containerClassName={s.trailer_photo_container}
-                      alt={obj.movieImageAlt} src={obj.movieImageUrl} onClick={this.onOpenModal} className={s.trailerImage}>
+                      id={obj.id} alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
+                      src={obj.attributes.coverUrl} onClick={this.onOpenModal} className={s.trailerImage}>
                       <p className={s.trailer_playtag}>{trailerPlaytag}</p>
                     </LazyLoad>
                   ))}
@@ -274,7 +278,7 @@ class Moviedetail extends React.Component {
               </Trailer>
               }
               { isLoading &&
-              <Trailer trailerTitle="Trailer">
+              <Trailer trailerTitle="Trailer" foo="hallo">
                 <Slider {...trailer}>
                   {trailerDtPlaceholder.map(obj => (
                     <div key={obj.toString()} className={s.trailer_photo_container}>
@@ -286,12 +290,11 @@ class Moviedetail extends React.Component {
               }
             </Secondframe>
             <Modal open={open} onClose={this.onCloseModal} center>
-              <h2>Simple centered modal</h2>
-              <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet
-            hendrerit risus, sed porttitor quam.
-              </p>
+              <div className={s.modal_container}>
+                <Theoplayer
+                  // movieUrl={trailerDt.map(obj => )}
+                />
+              </div>
             </Modal>
           </Layout>
         </Fragment>
