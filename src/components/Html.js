@@ -13,84 +13,87 @@ import serialize from 'serialize-javascript';
 import config from '../config';
 
 class Html extends React.Component {
-    static propTypes = {
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      styles: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          cssText: PropTypes.string.isRequired,
-        }).isRequired,
-      ),
-      scripts: PropTypes.arrayOf(PropTypes.string.isRequired),
-        app: PropTypes.object, // eslint-disable-line
-      children: PropTypes.string.isRequired,
-    };
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    styles: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        cssText: PropTypes.string.isRequired
+      }).isRequired
+    ),
+    scripts: PropTypes.arrayOf(PropTypes.string.isRequired),
+    app: PropTypes.object, // eslint-disable-line
+    children: PropTypes.string.isRequired
+  };
 
-    static defaultProps = {
-      styles: [],
-      scripts: [],
-    };
+  static defaultProps = {
+    styles: [],
+    scripts: []
+  };
 
-    static isMobile = true;
+  static isMobile = true;
 
-    render() {
-      const { title, description, styles, scripts, app, children } = this.props;
-      return (
-        <html className="no-js" lang="en">
-          <head>
-            <meta charSet="utf-8" />
-            <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-            <title>{title}</title>
-            <meta name="description" content={description} />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            {scripts.map(script => (
-              <link key={script} rel="preload" href={script} as="script" />
-            ))}
-            <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
-            <link href="https://diegoddox.github.io/react-redux-toastr/7.1/react-redux-toastr.min.css" rel="stylesheet" type="text/css" />
-            {styles.map(style => (
-              <style
-                key={style.id}
-                id={style.id}
-                dangerouslySetInnerHTML={{ __html: style.cssText }}
-              />
-            ))}
-            <link rel="stylesheet" type="text/css" href='https://cdn.myth.theoplayer.com/0404472c-babf-4493-b331-268e77603598/ui.css'/>
-            <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-            <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
-            <script src="//cdn.theoplayer.com/dash/theoplayer/THEOplayer.js"></script>
-          </head>
-          <body>
-            <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
-            <script
-              dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }}
+  render() {
+    const { title, description, styles, scripts, app, children } = this.props;
+    return (
+      <html className="no-js" lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+          <title>{title}</title>
+          <meta name="description" content={description} />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {scripts.map(script => (
+            <link key={script} rel="preload" href={script} as="script" />
+          ))}
+          <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
+          <link
+            href="https://diegoddox.github.io/react-redux-toastr/7.1/react-redux-toastr.min.css"
+            rel="stylesheet"
+            type="text/css"
+          />
+          {styles.map(style => (
+            <style
+              key={style.id}
+              id={style.id}
+              dangerouslySetInnerHTML={{ __html: style.cssText }}
             />
-            {scripts.map(script => <script key={script} src={script} />)}
-            {config.analytics.googleTrackingId && (
-              <script
-                dangerouslySetInnerHTML={{
-                  __html:
-
-                    'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
-                    `ga('create','${
-                      config.analytics.googleTrackingId
-                    }','auto');ga('send','pageview')`,
-
-                }}
-              />
-            )}
-            {config.analytics.googleTrackingId && (
-              <script
-                src="https://www.google-analytics.com/analytics.js"
-                async
-                defer
-              />
-            )}
-          </body>
-        </html>
-      );
-    }
+          ))}
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.myth.theoplayer.com/0404472c-babf-4493-b331-268e77603598/ui.css"
+          />
+          <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js" />
+          <script
+            type="text/javascript"
+            src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
+          />
+          <script src="//cdn.theoplayer.com/dash/theoplayer/THEOplayer.js" />
+        </head>
+        <body>
+          <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
+          <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
+          {scripts.map(script => (
+            <script key={script} src={script} />
+          ))}
+          {config.analytics.googleTrackingId && (
+            <script
+              dangerouslySetInnerHTML={{
+                __html:
+                  'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
+                  `ga('create','${config.analytics.googleTrackingId}','auto');ga('send','pageview')`
+              }}
+            />
+          )}
+          {config.analytics.googleTrackingId && (
+            <script src="https://www.google-analytics.com/analytics.js" async defer />
+          )}
+        </body>
+      </html>
+    );
+  }
 }
 
 export default Html;

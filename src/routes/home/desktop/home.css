@@ -120,7 +120,7 @@ body {
   text-align: right;
 }
 
-.home__parallax_layer_3_info img {
+.home__parallax_layer_3_info > img {
   width: 30vw;
   margin: auto 0 auto auto;
   display: flex;
@@ -168,13 +168,26 @@ body {
   display: block;
   color: inherit;
   text-decoration: none;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
   font-variant: unicase;
-  font-style: italic;
+  font-style: normal;
   font-size: 1.14rem;
   padding-top: 5px;
   opacity: 0.6;
-  animation: spaceout 2s infinite;
+}
+
+.home__see_more_arrow {
+  position: relative;
+  z-index: 1;
+  width: 0.7em !important;
+  animation: movea 2s infinite;
+}
+
+.home__see_more_line {
+  position: relative;
+  right: 0.5em;
+  z-index: -1;
+  width: 0.7em !important;
 }
 
 .home__see_more:hover {
@@ -190,12 +203,35 @@ body {
   align-items: center;
 }
 
+.test {
+  display: flex;
+}
+
+@keyframes movea {
+  0% {
+    right: 1em;
+  }
+
+  50% {
+    right: 0.5em;
+  }
+
+  100% {
+    right: 1em;
+  }
+}
+
 @keyframes spaceout {
-  0% { letter-spacing: 0; }
+  0% {
+    letter-spacing: 0;
+  }
 
   50% {
     letter-spacing: 0.12em;
     text-shadow: 0.5px 0.4px;
   }
-  100% { letter-spacing: 0; }
+
+  100% {
+    letter-spacing: 0;
+  }
 }
