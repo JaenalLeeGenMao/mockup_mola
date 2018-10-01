@@ -158,6 +158,7 @@
   "lint-staged": {
     "*.{js,jsx}": [
       "eslint --no-ignore --fix",
+      "prettier --single-quote --write",
       "git add --force"
     ],
     "*.{json,md,graphql}": [
@@ -187,10 +188,16 @@
     "copy": "babel-node tools/run copy",
     "bundle": "babel-node tools/run bundle",
     "build": "babel-node tools/run build",
+    "build-dev": "REACT_APP_ENV=development yarn build",
+    "build-stag": "REACT_APP_ENV=staging yarn build",
+    "build-prod": "REACT_APP_ENV=production yarn build",
     "build-stats": "yarn run build --release --analyse",
     "deploy": "babel-node tools/run deploy",
     "render": "babel-node tools/run render",
     "serve": "babel-node tools/run runServer",
-    "start": "babel-node tools/run start"
+    "start": "babel-node tools/run start",
+    "dev": "REACT_APP_ENV=development yarn start",
+    "stag": "REACT_APP_ENV=staging yarn start",
+    "prod": "REACT_APP_ENV=production yarn start"
   }
 }
