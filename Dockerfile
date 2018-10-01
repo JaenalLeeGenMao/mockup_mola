@@ -15,9 +15,10 @@
 # USER node
 
 # EXPOSE 3000
-# CMD ["yarn", "start"]
+# CMD ["yarn", "dev"]
 
 
+# Before RUNNING Dockerfile, Please make sure to run `yarn build-{env} --release`
 FROM node:8-alpine
 
 WORKDIR /var/www/mola-web

@@ -55,8 +55,10 @@ const minimizeCssOptions = {
 const config = {
   context: ROOT_DIR,
 
-  mode: 'production', /** development, production */
-  // mode: process.env.NODE_ENV, /** development, staging, production */
+  mode:
+    process.env.REACT_APP_ENV === 'development'
+      ? 'development'
+      : 'production' /** development, production */,
 
   output: {
     path: resolvePath(BUILD_DIR, 'public/assets'),
@@ -288,11 +290,11 @@ const config = {
       ...(isDebug
         ? []
         : [
-          {
-            test: resolvePath('node_modules/react-deep-force-update/lib/index.js'),
-            loader: 'null-loader'
-          }
-        ])
+            {
+              test: resolvePath('node_modules/react-deep-force-update/lib/index.js'),
+              loader: 'null-loader'
+            }
+          ])
     ]
   },
 
@@ -339,7 +341,10 @@ const clientConfig = {
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
-      'process.env.BROWSER': true,
+      'process.env': {
+        BROWSER: true,
+        REACT_APP_ENV: JSON.stringify(process.env.REACT_APP_ENV)
+      },
       __DEV__: isDebug
     }),
 
@@ -381,10 +386,10 @@ const clientConfig = {
     ...(isDebug
       ? []
       : [
-        // Webpack Bundle Analyzer
-        // https://github.com/th0r/webpack-bundle-analyzer
-        ...(isAnalyze ? [new BundleAnalyzerPlugin()] : [])
-      ])
+          // Webpack Bundle Analyzer
+          // https://github.com/th0r/webpack-bundle-analyzer
+          ...(isAnalyze ? [new BundleAnalyzerPlugin()] : [])
+        ])
   ],
 
   // Move modules that occur in multiple [entry] chunks to a new [entry] chunk (the commons chunk).
@@ -454,16 +459,16 @@ const serverConfig = {
                 preset[0] !== '@babel/preset-env'
                   ? preset
                   : [
-                    '@babel/preset-env',
-                    {
-                      targets: {
-                        node: pkg.engines.node.match(/(\d+\.?)+/)[0]
-                      },
-                      modules: false,
-                      useBuiltIns: false,
-                      debug: false
-                    }
-                  ]
+                      '@babel/preset-env',
+                      {
+                        targets: {
+                          node: pkg.engines.node.match(/(\d+\.?)+/)[0]
+                        },
+                        modules: false,
+                        useBuiltIns: false,
+                        debug: false
+                      }
+                    ]
             )
           }
         };
@@ -500,7 +505,10 @@ const serverConfig = {
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
-      'process.env.BROWSER': false,
+      'process.env': {
+        BROWSER: false,
+        REACT_APP_ENV: JSON.stringify(process.env.REACT_APP_ENV)
+      },
       __DEV__: isDebug
     }),
 
