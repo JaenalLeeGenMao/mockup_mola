@@ -22,6 +22,7 @@ import Slickcss from '../../components/Reactslick';
 
 import Next from './moviedetail/assets/caret-right.png';
 import Prev from './moviedetail/assets/caret-left.png';
+import TrailerImg from './moviedetail/assets/notavailable.jpg';
 import Playbtn from './moviedetail/assets/player-icon.jpg';
 import CastDefault from './moviedetail/assets/cast-default.jpg'
 import BannerLoading from './moviedetail/BannerLoading';
@@ -175,11 +176,15 @@ class Moviedetail extends React.Component {
       // Trailer copy toogle
       const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers: [];
       const trailerDtPlaceholder = [1,2];
-      const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
-      // console.log('Trailer', trailerDt.map(obj => obj.attributes.streamSourceUrl))
+      const trailerIsShow = movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : [];
+      console.log('Trailer', trailerDt.map(obj => obj.attributes), trailerIsShow);
+      // console.log('Trailer', trailerDt);
 
       // css toogle
-      let ifOne = movieDetailData.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container ;
+      let ifOne = trailerDt.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container ;
+
+      // trailer temporary image
+      const temporaryImg = TrailerImg;
 
       return (
         <Fragment>
@@ -215,7 +220,7 @@ class Moviedetail extends React.Component {
               { isLoading &&
               <TestimoniLoading
                 trailerTitle={'MOVIE TRAILER'}
-                trailerText={trailerIsHide}
+                trailerText={trailerIsShow}
               />
               }
               { !isLoading && testimoniDt && testimoniDt.text &&
@@ -224,7 +229,7 @@ class Moviedetail extends React.Component {
                 testimoniPhotoUrl={testimoniDt.imageUrl}
                 trailerTitle={'MOVIE TRAILER'}
                 testimoniSource={testimoniSrc}
-                trailerText={trailerIsHide}
+                trailerText={trailerIsShow}
               />
               }
             </Frame>
@@ -268,9 +273,9 @@ class Moviedetail extends React.Component {
               <Trailer trailerTitle="Trailer">
                 <Slider {...trailer}>
                   {trailerDt.map(obj => (
-                    <LazyLoad key={obj.toString()} containerClassName={s.trailer_photo_container}
+                    <LazyLoad key={obj.toString()} containerClassName={ifOne}
                       id={obj.id} alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
-                      src={obj.attributes.coverUrl} onClick={this.onOpenModal} className={s.trailerImage}>
+                      src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl} onClick={this.onOpenModal} className={s.trailerImage}>
                       <p className={s.trailer_playtag}>{trailerPlaytag}</p>
                     </LazyLoad>
                   ))}
@@ -278,7 +283,7 @@ class Moviedetail extends React.Component {
               </Trailer>
               }
               { isLoading &&
-              <Trailer trailerTitle="Trailer" foo="hallo">
+              <Trailer trailerTitle="Trailer">
                 <Slider {...trailer}>
                   {trailerDtPlaceholder.map(obj => (
                     <div key={obj.toString()} className={s.trailer_photo_container}>
