@@ -7,6 +7,7 @@ import s from './Lazyload.css';
 class Lazyload extends PureComponent {
   static propTypes = {
     alt: string,
+    id: number,
     className: string,
     containerClassName: string,
     containerStyle: object,
@@ -25,6 +26,7 @@ class Lazyload extends PureComponent {
 
   static defaultProps = {
     alt: '',
+    id: '',
     className: '',
     containerClassName: '',
     containerStyle: {},
@@ -165,7 +167,7 @@ class Lazyload extends PureComponent {
 
   render() {
     const { sources, isError } = this.state;
-    const { alt, containerClassName, containerStyle, style, onClick, children, className, src } = this.props;
+    const { alt, id, containerClassName, containerStyle, style, onClick, children, className, src } = this.props;
 
     return (
       <div
@@ -173,7 +175,7 @@ class Lazyload extends PureComponent {
         style={containerStyle}
         onClick={onClick}
       >
-        { src && <img ref={this.image} className={className} style={style} src={sources} alt={alt} />}
+        { src && <img ref={this.image} className={className} style={style} src={sources} alt={alt} id={id}/>}
         { isError && <div className={s.lazyload__errorBg}/>}
         {children}
       </div>

@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import history from '../../history';
+import Layout from '@components/Molalayout';
+
+import playerArrow from './assets/arrowback.png'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Theoplayer.css';
 
@@ -16,6 +19,7 @@ class Theoplayer extends Component {
     label: PropTypes.string.isRequired,
     subTitleUrl: PropTypes.string.isRequired,
     srclang: PropTypes.string.isRequired,
+    isTrailer: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -29,6 +33,9 @@ class Theoplayer extends Component {
     var element = document.querySelector('.video-container');
     var player = new THEOplayer.Player(element, playerConfig);
     this.movieConfig(player);
+
+    // auto play when hit api
+    player.autoplay = true;
   }
 
   handleGoBack = () => {
@@ -66,17 +73,17 @@ class Theoplayer extends Component {
   }
 
   render() {
+    const addOnClass = `${s.mola_frame}`;
     const { toogleArrow } = this.state;
     return (
       <Fragment>
-        <div className="video-container video-js theoplayer-skin" onMouseEnter={this.getToggleArrow} onMouseLeave={this.getToggleArrow}>
-          <div className={`${s.arrow} ${toogleArrow}`} onClick={this.handleGoBack}>
-            <img/>
+        <Layout>
+          <div className= 'video-container video-js theoplayer-skin' onMouseEnter={this.getToggleArrow} onMouseLeave={this.getToggleArrow}>
+            {this.props.isTrailer && <div className={`${s.arrow} ${toogleArrow}`} onClick={this.handleGoBack}>
+              <img src={playerArrow}/>
+            </div>}
           </div>
-          <div className="sstv-banner">
-            <a href="" target="_blank" title=""><img src="" alt="" /></a>
-          </div>
-        </div>
+        </Layout>
       </Fragment>
     )
   }

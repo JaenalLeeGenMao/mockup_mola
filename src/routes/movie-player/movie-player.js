@@ -25,10 +25,8 @@ class Movieplayer extends Component {
   render() {
 
     const { movieStream: { data : movieStream } } = this.props;
-    console.log('from index : ', movieStream[0]);
-
     const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : null;
-    console.log('streamSource', streamSource)
+    // console.log('streamSource', streamSource)
 
     const movieConfig = {
       movieSrc: streamSource,//'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8',
@@ -45,6 +43,7 @@ class Movieplayer extends Component {
           label={movieConfig.label}
           subTitleUrl={movieConfig.subTitleUrl}
           srclang={movieConfig.srclang}
+          isTrailer={true}
         />
       </Fragment>
     )

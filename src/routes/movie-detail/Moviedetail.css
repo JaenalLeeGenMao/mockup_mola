@@ -92,3 +92,8 @@
   margin: 22px 0 22px 10px;
   vertical-align: bottom;
 }
+
+.modal_container {
+  width: 700px;
+  max-width: 100%;
+}

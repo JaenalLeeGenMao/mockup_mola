@@ -6,11 +6,20 @@
   top: 2%;
   left: 2%;
   opacity: 0.5;
-  background: red;
+  border: 3px solid white;
   display: none;
+  padding: 10px;
+}
+
+.arrow img {
+  width: 100%;
 }
 
 .arrow_show {
   display: block;
   cursor: pointer;
 }
+
+/* .mola_frame{
+  position: inherit!important;
+} */
