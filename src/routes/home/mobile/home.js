@@ -34,6 +34,8 @@ import customSlickDotStyles from './homeSlickDots.css';
 
 import RightBlack from '@global/style/icons/right_arrow_black.png';
 import LineBlack from '@global/style/icons/right_line_black.png';
+import RightWhite from '@global/style/icons/right_arrow_white.png';
+import LineWhite from '@global/style/icons/right_line_white.png';
 
 let lastScrollY = 0,
   ticking = false,
@@ -394,10 +396,13 @@ class Home extends Component {
                                       to={`/movie-detail/${id}`}
                                       className={styles.home__see_more}
                                     >
-                                      <img className={styles.home__see_more_line} src={LineBlack} />
+                                      <img
+                                        className={styles.home__see_more_line}
+                                        src={isDark ? LineBlack : LineWhite}
+                                      />
                                       <img
                                         className={styles.home__see_more_arrow}
-                                        src={RightBlack}
+                                        src={isDark ? RightBlack : RightWhite}
                                       />
                                       see movie
                                     </Link>
