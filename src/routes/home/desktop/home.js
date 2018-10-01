@@ -12,10 +12,9 @@ import {
   Events,
   animateScroll as scroll,
   scrollSpy,
-  scroller,
+  scroller
 } from 'react-scroll';
 import $ from 'jquery';
-
 
 import { SETTINGS } from '../const';
 import * as homeActions from '@actions/home';
@@ -26,6 +25,9 @@ import Header from '@components/Header';
 import Navbar from '@components/Navigation';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
+
+import RightBlack from '@global/style/icons/right_arrow_black.png';
+import LineBlack from '@global/style/icons/right_line_black.png';
 
 import HomeArrow from './arrow';
 import HomePlaceholder from './placeholder';
@@ -42,328 +44,337 @@ let lastScrollY = 0,
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
-	state = {
-	  isDark: undefined,
-	  playlists: [],
-	  videos: []
-	}
+  state = {
+    isDark: undefined,
+    playlists: [],
+    videos: []
+  };
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-	  const {
-	    onUpdatePlaylist,
-	    onHandlePlaylist,
-	    onHandleVideo,
-	    home: {
-	      playlists,
-	    }
-	  } = nextProps;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {
+      onUpdatePlaylist,
+      onHandlePlaylist,
+      onHandleVideo,
+      home: { playlists }
+    } = nextProps;
 
-	  if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
-	    onHandlePlaylist();
-	  } else if (prevState.videos.length <= 0) {
-	    playlists.data.map((playlist, index) => {
-	      if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-	        trackedPlaylistIds.push(playlist.id);
-	        onHandleVideo(playlist);
-	      }
-	      if (!activePlaylist && index === 0) {
-	        activePlaylist = playlists.data[0];
-	        onUpdatePlaylist(activePlaylist.id);
-	      }
-	    });
-	  }
-	  return { ...prevState, playlists };
-	}
-
-	componentDidMount() {
-	  window.addEventListener('scroll', this.handleScroll);
-	  Events.scrollEvent.register('begin', this.handleScroll);
-	  Events.scrollEvent.register('end', this.handleColorChange);
-	}
-
-	componentWillUnmount() {
-	    window.removeEventListener('scroll', this.handleScroll);
-    	Events.scrollEvent.remove('begin');
-    	Events.scrollEvent.remove('end');
-
-    	for (let i = 0; i < 100; i += 1) {
-    		window.clearInterval(i);
-    	}
-	}
-
-    handleColorChange = () => {
-      const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
-        isDark = parseInt(activeSlick.attr('isdark'), 10);
-      if (typeof(isDark) === "number") {
-        this.setState({ isDark });
-      }
-    }
-
-    handleScroll = () => {
-      const { playlists, videos } = this.props.home;
-      if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
-        return true;
-      }
-    	playlists.data.map((playlist, index) => {
-    		if (playlist.isActive) {
-          scrollIndex = index;
-    			return false;
-    		}
-    		return true;
+    if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
+      onHandlePlaylist();
+    } else if (prevState.videos.length <= 0) {
+      playlists.data.map((playlist, index) => {
+        if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+          trackedPlaylistIds.push(playlist.id);
+          onHandleVideo(playlist);
+        }
+        if (!activePlaylist && index === 0) {
+          activePlaylist = playlists.data[0];
+          onUpdatePlaylist(activePlaylist.id);
+        }
       });
+    }
+    return { ...prevState, playlists };
+  }
 
-    	if (!ticking) {
-        document.onkeyup = event => {
-          ticking = false;
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+    Events.scrollEvent.register('begin', this.handleScroll);
+    Events.scrollEvent.register('end', this.handleColorChange);
+  }
 
-          switch (event.which || event.keyCode) {
-          case 37: /* left */
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    Events.scrollEvent.remove('begin');
+    Events.scrollEvent.remove('end');
+
+    for (let i = 0; i < 100; i += 1) {
+      window.clearInterval(i);
+    }
+  }
+
+  handleColorChange = () => {
+    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+      isDark = parseInt(activeSlick.attr('isdark'), 10);
+    if (typeof isDark === 'number') {
+      this.setState({ isDark });
+    }
+  };
+
+  handleScroll = () => {
+    const { playlists, videos } = this.props.home;
+    if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
+      return true;
+    }
+    playlists.data.map((playlist, index) => {
+      if (playlist.isActive) {
+        scrollIndex = index;
+        return false;
+      }
+      return true;
+    });
+
+    if (!ticking) {
+      document.onkeyup = event => {
+        ticking = false;
+
+        switch (event.which || event.keyCode) {
+          case 37 /* left */:
             this.handleSlidePrev(scrollIndex);
             return event.preventDefault();
-          case 38: /* up */
-            scrollIndex -= 1
+          case 38 /* up */:
+            scrollIndex -= 1;
             this.handleKeyPress(scrollIndex);
             break;
-          case 39: /* right */
+          case 39 /* right */:
             this.handleSlideNext(scrollIndex);
             return event.preventDefault();
-          case 40: /* down */
-            scrollIndex += 1
+          case 40 /* down */:
+            scrollIndex += 1;
             this.handleKeyPress(scrollIndex);
             break;
           default:
             event.preventDefault();
             break;
-          }
-        };
+        }
+      };
 
-    		ticking = true;
-    	}
-    };
+      ticking = true;
+    }
+  };
 
-    handleKeyPress = scrollIndex => {
-      const result = this.props.home.playlists.data.map((playlist, index) => {
+  handleKeyPress = scrollIndex => {
+    const result = this.props.home.playlists.data
+      .map((playlist, index) => {
         if (index === scrollIndex) {
           this.handleColorChange();
           return { ...playlist };
         }
-      }).filter(data => data !== undefined);
-      if (result && result.length >= 1) {
-        this.handleScrollToIndex(result[0].id);
-      }
+      })
+      .filter(data => data !== undefined);
+    if (result && result.length >= 1) {
+      this.handleScrollToIndex(result[0].id);
     }
+  };
 
-    handleScrollToIndex = id => {
-    	const { playlists } = this.props.home;
-    	playlists.data.map((playlist, index) => {
-    		if (id === playlist.id) {
-          scrollIndex = index;
-    			scroller.scrollTo(id, {
-    				duration: 800,
-    				delay: 0,
-    				smooth: 'easeInOutQuart',
-          });
-    			return false;
-    		}
-    		return true;
-      });
-
-      this.props.onUpdatePlaylist(id);
-    };
-
-    handleSlideNext = (scrollIndex = 0) => {
-      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
-        this.sliderRefs[scrollIndex].slickNext();
+  handleScrollToIndex = id => {
+    const { playlists } = this.props.home;
+    playlists.data.map((playlist, index) => {
+      if (id === playlist.id) {
+        scrollIndex = index;
+        scroller.scrollTo(id, {
+          duration: 800,
+          delay: 0,
+          smooth: 'easeInOutQuart'
+        });
+        return false;
       }
-    }
+      return true;
+    });
 
-    handleSlidePrev = (scrollIndex = 0) => {
-      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
-        this.sliderRefs[scrollIndex].slickPrev();
-      }
-    }
+    this.props.onUpdatePlaylist(id);
+  };
 
-    render() {
-      const {
-          playlists,
-          playlists: {
-            meta: {
-              status: playlistStatus = 'loading',
-              error: playlistError = ''
-            }
-          },
-          videos,
-          videos: {
-            meta: {
-              status: videoStatus = 'loading',
-              error: videoError = ''
-            }
-          },
-        } = this.props.home,
-        { isDark } = this.state,
-        settings = {
-          ...SETTINGS,
-          dotsClass: `${customSlickDotStyles.home__slick_dots} ${isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white}`,
-          onInit: () => {
-            this.handleColorChange();
-          },
-          afterChange: index => {
-            this.handleColorChange();
-          }
+  handleSlideNext = (scrollIndex = 0) => {
+    this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+    if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
+      this.sliderRefs[scrollIndex].slickNext();
+    }
+  };
+
+  handleSlidePrev = (scrollIndex = 0) => {
+    this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+    if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
+      this.sliderRefs[scrollIndex].slickPrev();
+    }
+  };
+
+  render() {
+    const {
+        playlists,
+        playlists: {
+          meta: { status: playlistStatus = 'loading', error: playlistError = '' }
         },
-        isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
-        playlistErrorCode = getErrorCode(playlistError),
-        videoErrorCode = getErrorCode(videoError);
-      activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+        videos,
+        videos: {
+          meta: { status: videoStatus = 'loading', error: videoError = '' }
+        }
+      } = this.props.home,
+      { isDark } = this.state,
+      settings = {
+        ...SETTINGS,
+        dotsClass: `${customSlickDotStyles.home__slick_dots} ${
+          isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white
+        }`,
+        onInit: () => {
+          this.handleColorChange();
+        },
+        afterChange: index => {
+          this.handleColorChange();
+        }
+      },
+      isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+      playlistErrorCode = getErrorCode(playlistError),
+      videoErrorCode = getErrorCode(videoError);
+    activePlaylist =
+      playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
-    	return (
-    		<div
-          className={styles.home__container}
-    		>
-    			{playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
-          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-          {playlistStatus === 'error' &&
-              <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />
-          }
-          {videoStatus === 'error' && videoError !== '' &&
-              <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />
-          }
-          {playlistStatus === 'success' && videoStatus === 'success' &&
-            <Navbar
-              isDark={isDark}
-              playlists={playlists.data}
-              onClick={this.handleScrollToIndex}
-            />
-          }
-    			{
-            playlistStatus === 'success'
-					  && videos
-                    && videos.data.length > 0
-                    && videos.data.length === playlists.data.length
-                    && videos.data.map(video => {
-                    	const { id, sortOrder } = video.meta;
-                    	return (
-                    		<RSLink
-                    			activeClass="active"
-                    			to={id}
-                    			spy
-                    			smooth
-                    			duration={500}
-                    			className={styles.home__slider_container}
-                    			key={id}
-                    		>
-                    			<Element name={id}>
-                            <Slider
-                              ref={node => {
-                                if (!this.sliderRefs) {
-                                  this.sliderRefs = [];
-                                  this.trackedSliderIds = []
-                                }
-                                if (
-                                  this.trackedSliderIds.indexOf(id) === -1
-												&& this.sliderRefs.length < trackedPlaylistIds.length
-												&& node !== null
-                                ) {
-                                  node = {
-                                    ...node,
-                                    id,
-                                    sortOrder
-                                  }
-                                  this.trackedSliderIds.push(id);
-                                  return this.sliderRefs.push(node);
-                                }
-                              }}
-                              {...settings}
-                              prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
-                              nextArrow={<HomeArrow direction="next" isDark={isDark} />}
+    return (
+      <div className={styles.home__container}>
+        {playlistStatus !== 'error' && (
+          <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />
+        )}
+        {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+        {playlistStatus === 'error' && (
+          <HomeError
+            status={playlistErrorCode}
+            message={playlistError || 'MOLA playlist is not loaded'}
+          />
+        )}
+        {videoStatus === 'error' &&
+          videoError !== '' && (
+            <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />
+          )}
+        {playlistStatus === 'success' &&
+          videoStatus === 'success' && (
+            <Navbar isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />
+          )}
+        {playlistStatus === 'success' &&
+          videos &&
+          videos.data.length > 0 &&
+          videos.data.length === playlists.data.length &&
+          videos.data.map(video => {
+            const { id, sortOrder } = video.meta;
+            return (
+              <RSLink
+                activeClass="active"
+                to={id}
+                spy
+                smooth
+                duration={500}
+                className={styles.home__slider_container}
+                key={id}
+              >
+                <Element name={id}>
+                  <Slider
+                    ref={node => {
+                      if (!this.sliderRefs) {
+                        this.sliderRefs = [];
+                        this.trackedSliderIds = [];
+                      }
+                      if (
+                        this.trackedSliderIds.indexOf(id) === -1 &&
+                        this.sliderRefs.length < trackedPlaylistIds.length &&
+                        node !== null
+                      ) {
+                        node = {
+                          ...node,
+                          id,
+                          sortOrder
+                        };
+                        this.trackedSliderIds.push(id);
+                        return this.sliderRefs.push(node);
+                      }
+                    }}
+                    {...settings}
+                    prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
+                    nextArrow={<HomeArrow direction="next" isDark={isDark} />}
+                  >
+                    {video.data.map(eachVids => {
+                      const {
+                        id,
+                        title,
+                        shortDescription,
+                        isDark,
+                        layer1 /** background */,
+                        layer2 /** subject */,
+                        layer3 /** title image */,
+                        type
+                      } = eachVids;
+                      return (
+                        <div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
+                          <Parallax
+                            disabled={isSafari}
+                            offsetYMin={ticking ? -50 : 0}
+                            offsetYMax={ticking ? 50 : 0}
+                            className={styles.home__parallax_layer_3}
+                          >
+                            <LazyLoad
+                              src={layer3}
+                              containerClassName={styles.home__parallax_layer_3_info}
                             >
-                    					{video.data.map((eachVids) => {
-                    						const {
-                    							id,
-                    							title,
-                    							shortDescription,
-                    							isDark,
-                    							layer1, /** background */
-                    							layer2, /** subject */
-                    							layer3, /** title image */
-                    							type,
-                                } = eachVids;
-                    						return (
-                    							<div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                                    <Parallax
-                                      disabled={isSafari}
-                                      offsetYMin={ticking ? -50 : 0}
-                                      offsetYMax={ticking ? 50 : 0}
-                                      className={styles.home__parallax_layer_3}
+                              <div
+                                className={styles.home__parallax_layer_3_detail}
+                                style={{ color: isDark ? 'black' : 'white' }}
+                              >
+                                <h4 className={styles.home__parallax_layer_3_title}>
+                                  {type !== 'playlists' ? title : 'OVERVIEW'}
+                                </h4>
+                                <p className={styles.home__parallax_layer_3_desc}>
+                                  {shortDescription}
+                                  {type !== 'playlists' && (
+                                    <Link
+                                      to={`/movie-detail/${id}`}
+                                      className={styles.home__see_more}
                                     >
-                                      <LazyLoad src={layer3}
-                                        containerClassName={styles.home__parallax_layer_3_info}
-                                      >
-                                        <div className={styles.home__parallax_layer_3_detail}
-                                          style={{ color: isDark ? "black" : "white" }}>
-                                          <h4
-                                            className={styles.home__parallax_layer_3_title}
-                                          >
-                                            {type !== "playlists" ? title : "OVERVIEW"}
-                                          </h4>
-                                          <p className={styles.home__parallax_layer_3_desc}>
-                                            {shortDescription}
-                                            {type !== "playlists" &&<Link to={`/movie-detail/${id}`} className={styles.home__see_more}>➪see movie</Link>}
-                                          </p>
-                                        </div>
-                                      </LazyLoad>
-                                    </Parallax>
-                                    <Parallax
-                                      disabled={isSafari}
-                                      offsetYMin={ticking ? -10 : 0}
-                                      offsetYMax={ticking ? 10 : 0}
-                                      offsetXMin={ticking ? 20 : 0}
-                                      offsetXMax={ticking ? -20 : 0}
-                                      className={styles.home__parallax_layer_2}
-                                    >
-                                      <LazyLoad src={layer2} alt="">
-                                        {/* <Link to="/movie" className={styles.home__transparent_link} />*/}
-                                      </LazyLoad>
-                                    </Parallax>
-                                    <Parallax disabled={isSafari}>
-                                      <LazyLoad src={layer1} alt="" containerClassName={styles.home__parallax_layer_1}>
-                                      </LazyLoad>
-                                    </Parallax>
-                    							</div>
-                    						);
-                    					})}
-                    				</Slider>
-                    			</Element>
-                    		</RSLink>
-                    	)
-                    })
-    			}
-    		</div>
-    	);
-    }
+                                      <img className={styles.home__see_more_line} src={LineBlack} />
+                                      <img
+                                        className={styles.home__see_more_arrow}
+                                        src={RightBlack}
+                                      />
+                                      see movie
+                                    </Link>
+                                  )}
+                                </p>
+                              </div>
+                            </LazyLoad>
+                          </Parallax>
+                          <Parallax
+                            disabled={isSafari}
+                            offsetYMin={ticking ? -10 : 0}
+                            offsetYMax={ticking ? 10 : 0}
+                            offsetXMin={ticking ? 20 : 0}
+                            offsetXMax={ticking ? -20 : 0}
+                            className={styles.home__parallax_layer_2}
+                          >
+                            <LazyLoad src={layer2} alt="">
+                              {/* <Link to="/movie" className={styles.home__transparent_link} />*/}
+                            </LazyLoad>
+                          </Parallax>
+                          <Parallax disabled={isSafari}>
+                            <LazyLoad
+                              src={layer1}
+                              alt=""
+                              containerClassName={styles.home__parallax_layer_1}
+                            />
+                          </Parallax>
+                        </div>
+                      );
+                    })}
+                  </Slider>
+                </Element>
+              </RSLink>
+            );
+          })}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
   return {
-    ...state,
+    ...state
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
   onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
-  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
+  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id))
 });
 
 export default compose(
-  withStyles(
-    styles,
-    customSlickDotStyles
-  ),
+  withStyles(styles, customSlickDotStyles),
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-  ),
+    mapDispatchToProps
+  )
 )(Home);
