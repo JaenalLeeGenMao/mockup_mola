@@ -114,6 +114,9 @@ class Search extends React.Component {
     });
 
     this.processSearch(val);
+
+    // var db = new Dexie("FriendDatabase");
+    // db.version(1).stores({ friends: "++id,name,age" });
   };
 
   processSearch = _debounce((val) => {
