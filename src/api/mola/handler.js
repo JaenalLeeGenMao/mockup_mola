@@ -4,6 +4,7 @@ import {
   HISTORY_ENDPOINT,
   SEARCH_ENDPOINT,
   SEARCH_GENRE_ENDPOINT,
+  RECENT_SEARCH_ENDPOINT,
   MOVIE_DETAIL_ENDPOINT,
   MOVIE_STREAMING
 } from './endpoints';
@@ -137,6 +138,31 @@ const getSearchGenre = payload => {
     });
 };
 
+const getRecentSearch = () => {
+  return get(`${RECENT_SEARCH_ENDPOINT}`, {
+    ...config.api
+  })
+    .then(response => {
+      const result = utils.normalizeSearchGenre(response);
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: ''
+        },
+        data: [...result[0]] || []
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `search/getSearchGenre - ${error}`
+        },
+        data: []
+      };
+    });
+};
+
 const getMovieDetail = ({ id }) => {
   return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
     ...config.api
@@ -217,6 +243,7 @@ export default {
   getAllHistory,
   getSearchResult,
   getSearchGenre,
+  getRecentSearch,
   getMovieDetail,
   getMovieLibrary,
   getMovieStream

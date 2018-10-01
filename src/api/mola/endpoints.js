@@ -8,8 +8,10 @@ export const VIDEOS_ENDPOINT = `${config.endpoints.molatv}/videos/videos`;
 
 export const HISTORY_ENDPOINT = `${config.endpoints.molatv}/userdata`;
 
-export const SEARCH_ENDPOINT = 'http://private-697ce-search103.apiary-mock.com/search';//`${config.endpoints.molatv}/search/`;
+export const SEARCH_ENDPOINT = `${config.endpoints.molatv}/search/`; //'http://private-697ce-search103.apiary-mock.com/search';//
 export const SEARCH_GENRE_ENDPOINT = `${config.endpoints.molatv}/videos/playlists/genre`;
+export const RECENT_SEARCH_ENDPOINT =
+  'http://lukitomo.com:1111/histories?project=molatv&sessionId=abc';
 
 export const MOVIE_DETAIL_ENDPOINT = `${config.endpoints.molatv}/videos`;
 export const MOVIE_STREAMING = `${config.endpoints.molatv}/videos`;

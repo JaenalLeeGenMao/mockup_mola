@@ -196,6 +196,24 @@ const normalizeSearchGenre = response => {
   };
 };
 
+const normalizeRecentSearch = response => {
+  const { data } = response.data;
+  if (data && data.length > 0) {
+    return data.map(({ id, attributes: { keyword } }) => {
+      return {
+        id,
+        keyword
+      };
+    });
+  }
+  return {
+    meta: {
+      status: 'no_result'
+    },
+    data: []
+  };
+};
+
 const normalizeVideoDetail = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
@@ -282,6 +300,7 @@ export default {
   normalizeHistory,
   normalizeSearchResult,
   normalizeSearchGenre,
+  normalizeRecentSearch,
   normalizeVideoDetail,
   normalizeMovieLibrary,
   normalizeVideoStream
