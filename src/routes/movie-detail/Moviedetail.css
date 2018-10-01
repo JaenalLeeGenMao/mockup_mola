@@ -36,6 +36,10 @@
 
 .trailer_photo_container img {
   width: initial;
+  object-fit: cover;
+  height: 100%;
+  position: relative;
+  left: -6px;
 }
 
 .trailer_playtag {
