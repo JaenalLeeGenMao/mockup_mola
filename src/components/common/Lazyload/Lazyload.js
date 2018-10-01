@@ -12,7 +12,7 @@ class Lazyload extends PureComponent {
     containerClassName: string,
     containerStyle: object,
     fadeIn: bool,
-    width:  string,
+    width: string,
     height: string,
     initial: string,
     lazy: bool,
@@ -26,7 +26,7 @@ class Lazyload extends PureComponent {
 
   static defaultProps = {
     alt: '',
-    id: '',
+    id: null,
     className: '',
     containerClassName: '',
     containerStyle: {},
@@ -51,15 +51,15 @@ class Lazyload extends PureComponent {
       load: props.lazy ? '' : 'success',
       showBackground: props.lazy,
       sources: props.lazy ? props.initial : props.image,
-      widthSet: false,
+      widthSet: false
     };
   }
 
   componentDidMount() {
     const { src } = this.props;
-    if(src) {
+    if (src) {
       if (this.props.lazy) {
-        if(this.loadPolyfills()) {
+        if (this.loadPolyfills()) {
           this.initObserver();
         } else {
           this.loadImage(global.webpSupport && this.props.webp);
@@ -74,8 +74,8 @@ class Lazyload extends PureComponent {
     const { load } = this.state;
     const { fadeIn, src } = this.props;
 
-    if(src) {
-      return  `${s[load] || ''} ${fadeIn && s['fade']}`;
+    if (src) {
+      return `${s[load] || ''} ${fadeIn && s['fade']}`;
     } else {
       return s['fadeIn'];
     }
@@ -98,7 +98,7 @@ class Lazyload extends PureComponent {
 
   initObserver = () => {
     const options = {
-      threshold: [0.5, 0.75, 1.0],
+      threshold: [0.5, 0.75, 1.0]
     };
 
     let io = new IntersectionObserver(entries => {
@@ -136,8 +136,8 @@ class Lazyload extends PureComponent {
       } else {
         this.handleImageChange('default');
         error = true;
-        console.log("MASUK jg error")
-        if(error && onErrorShowDefault) {
+        console.log('MASUK jg error');
+        if (error && onErrorShowDefault) {
           this.setState({ isError: true });
         }
       }
@@ -146,28 +146,37 @@ class Lazyload extends PureComponent {
   };
 
   handleImageChange = status => {
-    this.setState({ load: status, });
+    this.setState({ load: status });
   };
 
   loadPolyfills = () => {
     if (!this.supportsIntersectionObserver()) {
       return false;
-
     }
     return true;
-  }
+  };
 
   supportsIntersectionObserver = () => {
     return (
       'IntersectionObserver' in global &&
       'IntersectionObserverEntry' in global &&
       'intersectionRatio' in IntersectionObserverEntry.prototype
-    )
-  }
+    );
+  };
 
   render() {
     const { sources, isError } = this.state;
-    const { alt, id, containerClassName, containerStyle, style, onClick, children, className, src } = this.props;
+    const {
+      alt,
+      id,
+      containerClassName,
+      containerStyle,
+      style,
+      onClick,
+      children,
+      className,
+      src
+    } = this.props;
 
     return (
       <div
@@ -175,8 +184,17 @@ class Lazyload extends PureComponent {
         style={containerStyle}
         onClick={onClick}
       >
-        { src && <img ref={this.image} className={className} style={style} src={sources} alt={alt} id={id}/>}
-        { isError && <div className={s.lazyload__errorBg}/>}
+        {src && (
+          <img
+            ref={this.image}
+            className={className}
+            style={style}
+            src={sources}
+            alt={alt}
+            id={id}
+          />
+        )}
+        {isError && <div className={s.lazyload__errorBg} />}
         {children}
       </div>
     );
