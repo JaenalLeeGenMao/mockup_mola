@@ -7,14 +7,13 @@ import s from './Banner.css';
 class Banner extends React.Component {
   static propTypes = {
     bannerUrl: PropTypes.string.isRequired,
-    imageTitle: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
     playBtn: PropTypes.string.isRequired,
     playCopy: PropTypes.string
   };
 
   render() {
-    const { link, playCopy, bannerUrl, imageTitle, playBtn } = this.props;
+    const { link, playCopy, bannerUrl, playBtn } = this.props;
     return (
       <div className={s.bannerWrapper}>
         <a className={s.bannerInner} href={link}>
@@ -23,7 +22,7 @@ class Banner extends React.Component {
             <span>{playCopy}</span>
           </div>
         </a>
-        { bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />}
+        {bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} />}
       </div>
     );
   }

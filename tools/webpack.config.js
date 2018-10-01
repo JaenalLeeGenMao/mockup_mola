@@ -60,6 +60,9 @@ const config = {
       ? 'development'
       : 'production' /** development, production */,
 
+  // mode: 'production', /** development, production */
+  // mode: process.env.NODE_ENV, /** development, staging, production */
+
   output: {
     path: resolvePath(BUILD_DIR, 'public/assets'),
     publicPath: '/assets/',
