@@ -50,7 +50,7 @@ class Theoplayer extends Component {
       sources: [
         {
           src: this.props.movieUrl,
-          type: 'application/x-mpegurl' // sets type to HLS
+          type: '' // sets type to HLS
         }
       ],
       textTracks: [
