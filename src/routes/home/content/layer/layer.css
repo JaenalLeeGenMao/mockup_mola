@@ -155,6 +155,7 @@
 
   .layer__parallax_layer_3_info {
     width: auto;
+    min-width: 1080px;
     text-align: left;
   }
 
