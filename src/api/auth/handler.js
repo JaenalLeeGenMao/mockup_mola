@@ -1,4 +1,5 @@
 import { get, post } from 'axios';
+import { AUTH_BASE_ENDPOINT } from './endpoints';
 import utils from './util';
 
 import { api } from '@source/config';
@@ -135,9 +136,33 @@ const updateAuth = token => {
     });
 };
 
+const createNewUser = ({ email = '', password = '' }) => {
+  console.log(email, password);
+  return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, {
+    params: {
+      email,
+      password
+    }
+  })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
 export default {
   getUserInfo,
   getAuth,
   updateAuth,
-  revokeAuth
+  revokeAuth,
+  createNewUser
 };

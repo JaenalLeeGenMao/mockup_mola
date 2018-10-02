@@ -17,3 +17,10 @@
   letter-spacing: 1.91px !important;
   font-family: 'Roboto', sans-serif !important;
 }
+
+.flip__container {
+  transition: 1.5s ease-in-out;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}

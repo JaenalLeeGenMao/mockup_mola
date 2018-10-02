@@ -17,39 +17,45 @@ import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 import LazyLoad from '@components/common/Lazyload';
+import Auth from '@api/auth';
+import $ from 'jquery';
 
 class Register extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       username: '',
-      emailPhone: '',
+      email: '',
       password: '',
       confirmPassword: ''
-    }
+    };
 
-    this.onChangeInput = this.onChangeInput.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this);
   }
 
-  onChangeInput = (e) => {
-    const target = e.target
-    const { id, value } = target
+  onChangeInput = e => {
+    const target = e.target;
+    const { id, value } = target;
     this.setState({
       [id]: value
-    })
-  }
+    });
+  };
+
+  handleRegistration = () => {
+    const { email, password } = this.state;
+    $(`.${s.container}`).toggleClass(`${s.flip__container}`);
+    Auth.createNewUser({
+      email,
+      password
+    });
+  };
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired
   };
 
   render() {
-    const {
-      username,
-      emailPhone,
-      password,
-      confirmPassword
-    } = this.state
+    const { username, email, password, confirmPassword } = this.state;
 
     const isDark = true;
     return (
@@ -60,22 +66,25 @@ class Register extends React.Component {
             <LazyLoad>
               <div className={s.container}>
                 <p className={s.labelHeader}>Daftar mola sekarang !</p>
-                <form method="post">
+                <div>
                   <Form
                     id="username"
                     type="text"
                     name="username"
                     onChange={this.onChangeInput}
                     value={username}
-                    autoFocus>Username
+                    autoFocus
+                  >
+                    Username
                   </Form>
                   <Form
-                    id="emailPhone"
+                    id="email"
                     type="text"
-                    name="emailPhone"
+                    name="email"
                     onChange={this.onChangeInput}
-                    value={emailPhone}
-                  >Email or Phonenumber
+                    value={email}
+                  >
+                    Email
                   </Form>
                   <Form
                     id="password"
@@ -83,7 +92,8 @@ class Register extends React.Component {
                     name="password"
                     onChange={this.onChangeInput}
                     value={password}
-                  >Password
+                  >
+                    Password
                   </Form>
                   <Form
                     id="confirmPassword"
@@ -91,14 +101,15 @@ class Register extends React.Component {
                     name="confirmPassword"
                     onChange={this.onChangeInput}
                     value={confirmPassword}
-                  >Confirm password
+                  >
+                    Confirm password
                   </Form>
                   <div className={s.formGroup} style={{ marginTop: '15px' }}>
-                    <button className={s.button} type="submit">
-                                    SIGN UP
+                    <button className={s.button} onClick={this.handleRegistration}>
+                      SIGN UP
                     </button>
                   </div>
-                </form>
+                </div>
                 <strong className={s.lineThrough}>Atau daftar dengan</strong>
                 <div className={s.flexButton}>
                   <div>
@@ -113,14 +124,14 @@ class Register extends React.Component {
                   </div>
                   <div>
                     <a className={s.line} href="/login/facebook">
-                      <img className={s.buttonImg} src={line}  />
+                      <img className={s.buttonImg} src={line} />
                     </a>
                   </div>
                 </div>
               </div>
             </LazyLoad>
           </div>
-          <div className={s.rightWrapper}></div>
+          <div className={s.rightWrapper} />
         </div>
       </Fragment>
     );
