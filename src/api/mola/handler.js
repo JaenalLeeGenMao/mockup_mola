@@ -138,8 +138,13 @@ const getSearchGenre = payload => {
     });
 };
 
+<<<<<<< HEAD
 const getRecentSearch = () => {
+=======
+const getRecentSearch = sessionId => {
+>>>>>>> add bold on search recent search
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
+    params: { sessionId: sessionId },
     ...config.api
   })
     .then(response => {

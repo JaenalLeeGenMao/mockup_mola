@@ -405,6 +405,7 @@ class Search extends React.Component {
                           <RecentSearch
                             onClick={this.handleClickRecentSearch}
                             recentSearchData={this.recentSearchData}
+                            searchText={this.searchText}
                           />
                         </div>
                       )}

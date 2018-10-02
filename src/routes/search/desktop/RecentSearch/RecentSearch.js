@@ -6,7 +6,8 @@ import s from './RecentSearch.css';
 class RecentSearch extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.string),
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    searchText: PropTypes.string
   };
 
   handleClearAllSearch = () => {};
@@ -19,22 +20,43 @@ class RecentSearch extends React.Component {
   };
 
   render() {
-    const { recentSearchData } = this.props;
-
+    const { recentSearchData, searchText } = this.props;
+    console.log('Recentsearch', recentSearchData, 'searchText', searchText);
+    const searchTxt = searchText !== undefined ? searchText : '';
+    console.log('Searcccc', searchTxt);
     return (
       <Fragment>
         <div className={s.resultTitle}>Recent Search</div>
         <div className={s.resultContent}>
-          {recentSearchData.map(data => (
-            <span className={s.resultChip} key={data.id}>
-              <a className={s.resultChipText} onClick={() => this.handleClickItem(data.keyword)}>
-                {data.keyword}
-              </a>
-              <a className={s.removeChip} onClick={this.handleRemoveSearch}>
-                <i />
-              </a>
-            </span>
-          ))}
+          {recentSearchData.map(data => {
+            const startIdx = data.keyword.toLowerCase().indexOf(searchTxt.toLowerCase());
+
+            const keywordRes = data.keyword.substr(startIdx, searchTxt.length);
+            const keywordFirst = data.keyword.substr(0, startIdx);
+            const keywordSecond = data.keyword.substr(
+              startIdx + searchTxt.length,
+              data.keyword.length
+            );
+
+            return (
+              <span className={s.resultChip} key={data.id}>
+                <a className={s.resultChipText} onClick={() => this.handleClickItem(data.keyword)}>
+                  {searchTxt != '' ? (
+                    <Fragment>
+                      <span>{keywordFirst}</span>
+                      <span className={s.keywordResult}>{keywordRes}</span>
+                      <span>{keywordSecond}</span>
+                    </Fragment>
+                  ) : (
+                    <span className={s.keywordResult}>{data.keyword}</span>
+                  )}
+                </a>
+                <a className={s.removeChip} onClick={this.handleRemoveSearch}>
+                  <i />
+                </a>
+              </span>
+            );
+          })}
           <a className={s.clearRecentSearch} onClick={this.handleClickClearSearch}>
             Clear all
           </a>

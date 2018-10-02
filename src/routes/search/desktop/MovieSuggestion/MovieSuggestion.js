@@ -4,6 +4,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link/Link';
 import { post } from 'axios';
+import { RECENT_SEARCH_ENDPOINT } from '../../../../api/mola/endpoints';
 import s from './MovieSuggestion.css';
 
 class MovieSuggestion extends React.Component {
@@ -15,11 +16,27 @@ class MovieSuggestion extends React.Component {
     searchText: PropTypes.string
   };
 
-  handleClickMovie = () => {
-    // axios.post('http://localhost:5000/users', {
-    //   userid: this.state.userid,
-    //   fullname: this.state.fullname,
-    // })
+  handleClickMovie = title => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    };
+    post(
+      RECENT_SEARCH_ENDPOINT,
+      {
+        q: title
+      },
+      config
+    )
+      .then(result => {
+        // Do somthing
+        console.log('AXIOS RES', result);
+      })
+      .catch(err => {
+        // Do somthing
+        console.log('AXIOS ERR', err);
+      });
   };
 
   render() {
@@ -43,7 +60,10 @@ class MovieSuggestion extends React.Component {
             return (
               <div className={s.movieBox} key={movie.id}>
                 <div className={s.movieBoxInner}>
-                  <Link onClick={this.handleClickMovie} to={`/movie-detail/${movie.id}`}>
+                  <Link
+                    onClick={() => this.handleClickMovie(movie.title)}
+                    to={`/movie-detail/${movie.id}`}
+                  >
                     <LazyLoad
                       src={movie.coverUrl}
                       containerClassName={s.movieImg}
