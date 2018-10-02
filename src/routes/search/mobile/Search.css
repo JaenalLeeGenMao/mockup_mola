@@ -110,6 +110,7 @@
   margin: 0 auto;
   overflow: hidden;
   width: 100%;
+  font-weight: 400;
   color: #6f6f6f;
   text-align: center;
 }
@@ -261,6 +262,5 @@
   .resultEmptyWrapper {
     margin: 0 auto;
     width: 80%;
-    text-align: left;
   }
 }

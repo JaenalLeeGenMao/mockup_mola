@@ -143,20 +143,20 @@ const getRecentSearch = () => {
     ...config.api
   })
     .then(response => {
-      const result = utils.normalizeSearchGenre(response);
+      const result = utils.normalizeRecentSearch(response);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
           error: ''
         },
-        data: [...result[0]] || []
+        data: [...result] || []
       };
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: `search/getSearchGenre - ${error}`
+          error: `search/getRecentSearch - ${error}`
         },
         data: []
       };

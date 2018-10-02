@@ -70,6 +70,20 @@
   height: 26px;
 }
 
+.removeSearchIcon {
+  background-image: url('../assets/ic_close@2x.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  z-index: 102;
+  cursor: pointer;
+}
+
 .searchInput,
 .searchInputSuggestion {
   background-color: transparent;

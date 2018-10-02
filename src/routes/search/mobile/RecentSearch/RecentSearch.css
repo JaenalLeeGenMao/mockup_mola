@@ -35,17 +35,13 @@
 }
 
 .resultChip > a > i {
-  background-image: url('../assets/ic_close@2x.png');
+  background-image: url('../../assets/ic_close@2x.png');
   background-repeat: no-repeat;
   background-size: contain;
   display: inline-block;
   width: 20px;
   height: 20px;
   cursor: pointer;
-}
-
-.clearRecentSearch {
-  display: none;
 }
 
 @media screen and (max-width: 960px) {

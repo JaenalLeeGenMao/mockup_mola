@@ -6,6 +6,11 @@
   flex: 1 0 160px;
 }
 
+.resultTitleLoading {
+  width: 80%;
+  height: 17px;
+}
+
 .resultContent {
   color: #fff;
   font-size: 16px;
@@ -28,14 +33,31 @@
   white-space: nowrap;
 }
 
-.resultChip > a {
+.resultChipLoading {
+  padding: 6px 35px 6px 10px;
+  margin: 0 15px 15px 0;
+  position: relative;
+  display: inline-block;
+  border-radius: 100px;
+  background-color: #2b2b2b;
+  width: 20%;
+  height: 10px;
+}
+
+.resultChipText {
+  color: #fff;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.removeChip {
   position: absolute;
   top: 7px;
   right: 8px;
 }
 
-.resultChip > a > i {
-  background-image: url('../assets/ic_close@2x.png');
+.removeChip > i {
+  background-image: url('../../assets/ic_close@2x.png');
   background-repeat: no-repeat;
   background-size: contain;
   display: inline-block;
@@ -52,10 +74,6 @@
   overflow: hidden;
   color: #bababa;
   cursor: pointer;
-}
-
-.clearRecentSearch__mobile {
-  display: none;
 }
 
 @media screen and (max-width: 960px) {
@@ -92,11 +110,11 @@
     max-width: 160px;
   }
 
-  .resultChip > a {
+  .removeChip {
     top: 6px;
   }
 
-  .resultChip > a > i {
+  .removeChip > i {
     width: 16px;
     height: 16px;
   }

@@ -28,6 +28,7 @@ export const getSearchResult = searchText => dispatch => {
         .equalsIgnoreCase(searchText)
         .each(function(res) {
           isExist = true; //if exist
+          console.log('MASUK AMBIL CACHE');
           const movieIdArr = res.movieId.split(',');
           movieIdArr.map(id => {
             searchDb.moviesResult
@@ -55,7 +56,7 @@ export const getSearchResult = searchText => dispatch => {
               payload: result
             });
           } else {
-            // console.log("MASUK AMBIL API")
+            console.log('MASUK AMBIL API');
             dispatch({
               type: types.GET_SEARCH_SUCCESS,
               payload: result
@@ -144,6 +145,7 @@ export const getRecentSearch = () => dispatch => {
     }
   });
   return Mola.getRecentSearch().then(result => {
+    console.log('RESULT REC', result);
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_RECENT_SEARCH_ERROR,

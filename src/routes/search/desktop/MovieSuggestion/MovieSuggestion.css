@@ -32,7 +32,7 @@
 }
 
 .movieBox {
-  display: inline-block;
+  display: inline-flex;
   width: calc(100% / 3);
   padding: 18px 0 0;
 }
@@ -50,7 +50,9 @@
 
 .movieTitle {
   font-size: 12px;
-  display: block;
+  display: flex;
+  height: 20px;
+  align-items: center;
   padding: 8px 30px 0 0;
   color: #6f6f6f;
 }
