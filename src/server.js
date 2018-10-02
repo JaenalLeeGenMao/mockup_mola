@@ -32,7 +32,7 @@ import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
 import { setUserVariable } from './actions/user';
 import config from './config';
-import Mola from '@api/mola'
+import Auth from '@api/auth';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -70,8 +70,8 @@ app.use(
   expressJwt({
     secret: config.auth.jwt.secret,
     credentialsRequired: false,
-    getToken: req => req.cookies.id_token,
-  }),
+    getToken: req => req.cookies.id_token
+  })
 );
 // Error handler for express-jwt
 app.use((err, req, res, next) => {
@@ -118,7 +118,6 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
-
   try {
     const css = new Set();
 
@@ -148,24 +147,22 @@ app.get('*', async (req, res, next) => {
         expire: '',
         type: '',
         lang: 'en'
-      },
+      }
     };
 
     const store = configureStore(initialState);
 
-    store.dispatch(setRuntimeVariable({ name: "start", value: Date.now() }));
-    store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || "" }));
-
+    store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }));
+    store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || '' }));
 
     let apiCall;
     let result;
     let accessTokenLifespan = -1;
     const accessToken = req.cookies._at;
     const tokenExpiry = req.cookies._exp;
-
     const getUserInfo = async (token, updateCookie = true) => {
-      apiCall = await Mola.getUserInfo(token);
-      if (apiCall.meta.status === "success") {
+      apiCall = await Auth.getUserInfo(token);
+      if (apiCall.meta.status === 'success') {
         result = { ...result, ...apiCall.data };
         Object.keys(result).forEach(function(key) {
           store.dispatch(setUserVariable({ name: key, value: result[key] }));
@@ -175,29 +172,29 @@ app.get('*', async (req, res, next) => {
           const oneMonth = 30 * 24 * result.expire * 1000;
           res.cookie('_at', result.token, {
             maxAge: oneMonth,
-            httpOnly: true,
+            httpOnly: true
             // secure: !__DEV__,
           });
           res.cookie('_exp', oneMonth, {
             maxAge: oneMonth,
-            httpOnly: true,
+            httpOnly: true
             // secure: !__DEV__,
           });
         }
       }
-    }
+    };
 
     if (accessToken && tokenExpiry) {
-      accessTokenLifespan = tokenExpiry - (Date.now() / 1000);
+      accessTokenLifespan = tokenExpiry - Date.now() / 1000;
       if (accessTokenLifespan < 0) {
         res.cookie('_at', '', { expires: new Date(0) });
         res.cookie('_exp', '', { expires: new Date(0) });
         return res.redirect(req.originalUrl);
       } else if (accessTokenLifespan < 12 * 3600 * 1000) {
         // if lifespan of token is less than 12 hours then get new access token
-        apiCall = await Mola.updateAuth(accessToken);
+        apiCall = await Auth.updateAuth(accessToken);
 
-        if (apiCall.meta.status === "success") {
+        if (apiCall.meta.status === 'success') {
           result = { ...apiCall.data };
           await getUserInfo(apiCall.data.token);
         }
@@ -207,16 +204,20 @@ app.get('*', async (req, res, next) => {
       }
     } else if (req.query.code) {
       /** ON CLICK LOGIN  */
-      apiCall = await Mola.getAuth({ code: req.query.code, redirect_uri: domain || 'http://jaenal.mola.tv' });
-
-      if (apiCall.meta.status === "success") {
+      apiCall = await Auth.getAuth({
+        code: req.query.code,
+        redirect_uri: domain || 'http://jaenal.mola.tv'
+      });
+      if (apiCall.meta.status === 'success') {
         result = { ...apiCall.data };
         await getUserInfo(apiCall.data.token);
       }
     }
 
     const userAgent = req.get('User-Agent');
-    const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);
+    const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(
+      userAgent
+    );
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
@@ -229,7 +230,7 @@ app.get('*', async (req, res, next) => {
       // You can access redux through react-redux connect
       store,
       storeSubscription: null,
-      isMobile,
+      isMobile
     };
 
     const route = await router.resolve(context);
@@ -241,11 +242,7 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route };
 
-    data.children = ReactDOM.renderToString(
-      <App
-        context={context}>{route.component}
-      </App>,
-    );
+    data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
     const scripts = new Set();
@@ -264,7 +261,7 @@ app.get('*', async (req, res, next) => {
     data.app = {
       apiUrl: config.api.clientUrl,
       state: context.store.getState(),
-      isMobile: context.isMobile,
+      isMobile: context.isMobile
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
@@ -292,7 +289,7 @@ app.use((err, req, res, next) => {
       styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
     >
       {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
-    </Html>,
+    </Html>
   );
   res.status(err.status || 500);
   res.send(`<!doctype html>${html}`);
