@@ -25,6 +25,7 @@ import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
+import HomeMobileContent from '../content';
 import HomeMobileMenu from './menu';
 import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
@@ -32,15 +33,11 @@ import HomeError from '@components/common/error';
 import styles from './home.css';
 import customSlickDotStyles from './homeSlickDots.css';
 
-import RightBlack from '@global/style/icons/right_arrow_black.png';
-import LineBlack from '@global/style/icons/right_line_black.png';
-import RightWhite from '@global/style/icons/right_arrow_white.png';
-import LineWhite from '@global/style/icons/right_line_white.png';
-
 let lastScrollY = 0,
   ticking = false,
   activePlaylist,
   scrollIndex = 0;
+let count = 0;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
@@ -62,8 +59,9 @@ class Home extends Component {
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist();
-    } else if (prevState.videos.length <= 0) {
+    } else if (prevState.videos.length <= 0 && count !== 5) {
       playlists.data.map((playlist, index) => {
+        count += 1; /** testing nembak api sekali saja */
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
           trackedPlaylistIds.push(playlist.id);
           onHandleVideo(playlist);
@@ -364,63 +362,8 @@ class Home extends Component {
                     {...settings}
                   >
                     {video.data.map(eachVids => {
-                      const {
-                        id,
-                        title,
-                        shortDescription,
-                        isDark,
-                        layer1 /** background */,
-                        layer2 /** subject */,
-                        layer3 /** title image */,
-                        type
-                      } = eachVids;
                       return (
-                        <div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                          <div className={styles.home__parallax_layer_3}>
-                            <LazyLoad
-                              src={layer3}
-                              containerClassName={styles.home__parallax_layer_3_info}
-                              alt=""
-                            >
-                              <div
-                                className={styles.home__parallax_layer_3_detail}
-                                style={{ color: isDark ? 'black' : 'white' }}
-                              >
-                                <h4 className={styles.home__parallax_layer_3_title}>
-                                  {type !== 'playlists' ? title : 'OVERVIEW'}
-                                </h4>
-                                <p className={styles.home__parallax_layer_3_desc}>
-                                  {shortDescription}
-                                  {type !== 'playlists' && (
-                                    <Link
-                                      to={`/movie-detail/${id}`}
-                                      className={styles.home__see_more}
-                                    >
-                                      <img
-                                        className={styles.home__see_more_line}
-                                        src={isDark ? LineBlack : LineWhite}
-                                      />
-                                      <img
-                                        className={styles.home__see_more_arrow}
-                                        src={isDark ? RightBlack : RightWhite}
-                                      />
-                                      see movie
-                                    </Link>
-                                  )}
-                                </p>
-                              </div>
-                            </LazyLoad>
-                          </div>
-                          <div className={styles.home__parallax_layer_2}>
-                            <LazyLoad src={layer2} />
-                          </div>
-                          <div disabled={isSafari}>
-                            <LazyLoad
-                              src={layer1}
-                              containerClassName={styles.home__parallax_layer_1}
-                            />
-                          </div>
-                        </div>
+                        <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} />
                       );
                     })}
                   </Slider>

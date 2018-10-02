@@ -26,13 +26,8 @@ import Navbar from '@components/Navigation';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
-import RightBlack from '@global/style/icons/right_arrow_black.png';
-import LineBlack from '@global/style/icons/right_line_black.png';
-
-import RightWhite from '@global/style/icons/right_arrow_white.png';
-import LineWhite from '@global/style/icons/right_line_white.png';
-
 import HomeArrow from './arrow';
+import HomeDesktopContent from '../content';
 import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
 
@@ -43,6 +38,7 @@ let lastScrollY = 0,
   ticking = false,
   activePlaylist,
   scrollIndex = 0;
+let count = 0;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
@@ -63,7 +59,8 @@ class Home extends Component {
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist();
-    } else if (prevState.videos.length <= 0) {
+    } else if (prevState.videos.length <= 0 && count !== 5) {
+      count += 1; /** testing nembak api sekali saja */
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
           trackedPlaylistIds.push(playlist.id);
@@ -281,80 +278,14 @@ class Home extends Component {
                     prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
                     nextArrow={<HomeArrow direction="next" isDark={isDark} />}
                   >
-                    {video.data.map(eachVids => {
-                      const {
-                        id,
-                        title,
-                        shortDescription,
-                        isDark,
-                        layer1 /** background */,
-                        layer2 /** subject */,
-                        layer3 /** title image */,
-                        type
-                      } = eachVids;
-                      return (
-                        <div className={styles.home__parallax} key={id} id={id} isdark={isDark}>
-                          <Parallax
-                            disabled={isSafari}
-                            offsetYMin={ticking ? -50 : 0}
-                            offsetYMax={ticking ? 50 : 0}
-                            className={styles.home__parallax_layer_3}
-                          >
-                            <LazyLoad
-                              src={layer3}
-                              containerClassName={styles.home__parallax_layer_3_info}
-                            >
-                              <div
-                                className={styles.home__parallax_layer_3_detail}
-                                style={{ color: isDark ? 'black' : 'white' }}
-                              >
-                                <h4 className={styles.home__parallax_layer_3_title}>
-                                  {type !== 'playlists' ? title : 'OVERVIEW'}
-                                </h4>
-                                <p className={styles.home__parallax_layer_3_desc}>
-                                  {shortDescription}
-                                  {type !== 'playlists' && (
-                                    <Link
-                                      to={`/movie-detail/${id}`}
-                                      className={styles.home__see_more}
-                                    >
-                                      <img
-                                        className={styles.home__see_more_line}
-                                        src={isDark ? LineBlack : LineWhite}
-                                      />
-                                      <img
-                                        className={styles.home__see_more_arrow}
-                                        src={isDark ? RightBlack : RightWhite}
-                                      />
-                                      see movie
-                                    </Link>
-                                  )}
-                                </p>
-                              </div>
-                            </LazyLoad>
-                          </Parallax>
-                          <Parallax
-                            disabled={isSafari}
-                            offsetYMin={ticking ? -10 : 0}
-                            offsetYMax={ticking ? 10 : 0}
-                            offsetXMin={ticking ? 20 : 0}
-                            offsetXMax={ticking ? -20 : 0}
-                            className={styles.home__parallax_layer_2}
-                          >
-                            <LazyLoad src={layer2} alt="">
-                              {/* <Link to="/movie" className={styles.home__transparent_link} />*/}
-                            </LazyLoad>
-                          </Parallax>
-                          <Parallax disabled={isSafari}>
-                            <LazyLoad
-                              src={layer1}
-                              alt=""
-                              containerClassName={styles.home__parallax_layer_1}
-                            />
-                          </Parallax>
-                        </div>
-                      );
-                    })}
+                    {video.data.map(eachVids => (
+                      <HomeDesktopContent
+                        {...eachVids}
+                        key={eachVids.id}
+                        isSafari={isSafari}
+                        ticking={ticking}
+                      />
+                    ))}
                   </Slider>
                 </Element>
               </RSLink>
