@@ -60,7 +60,7 @@ const normalizeHomePlaylist = response => {
 const normalizeHomeVideo = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
-    const videoadadisini = data.map(({ attributes: { videos } }) =>
+    const result = data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
           const {
@@ -107,7 +107,7 @@ const normalizeHomeVideo = response => {
         })
         .sort((a, b) => a.displayOrder - b.displayOrder)
     );
-    return videoadadisini;
+    return result;
   }
   return [];
 };
