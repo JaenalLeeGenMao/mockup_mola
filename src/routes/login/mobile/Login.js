@@ -19,33 +19,30 @@ import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 
 class Login extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       usernameOrEmail: '',
       password: ''
-    }
+    };
 
-    this.onChangeInput = this.onChangeInput.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this);
   }
 
-  onChangeInput = (e) => {
-    const target = e.target
-    const { id, value } = target
+  onChangeInput = e => {
+    const target = e.target;
+    const { id, value } = target;
     this.setState({
       [id]: value
-    })
-  }
+    });
+  };
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired
   };
 
   render() {
-    const {
-      usernameOrEmail,
-      password
-    } = this.state
+    const { usernameOrEmail, password } = this.state;
 
     const isDark = true;
     return (
@@ -55,33 +52,39 @@ class Login extends React.Component {
           <div className={s.root}>
             <LazyLoad>
               <div className={s.container}>
-                <p className={s.lead}>
-                            Masuk ke Mola
+                <p className={s.lead}>Masuk ke Mola</p>
+                <p>
+                  Wah, kami kangen sama kamu! <br />
+                  Masukkan data-data mu dan ayo mulai.
                 </p>
-                <p>Wah, kami kangen sama kamu! <br/>Masukkan data-data mu dan ayo mulai.</p>
                 <form method="post">
-                  <Form className={s.formMobile}
+                  <Form
+                    className={s.formMobile}
                     id="usernameOrEmail"
                     type="text"
                     name="usernameOrEmail"
                     onChange={this.onChangeInput}
                     value={usernameOrEmail}
-                    autoFocus>
-                                Email or username
+                    autoFocus
+                  >
+                    Email or username
                   </Form>
-                  <Form className={s.formMobile}
+                  <Form
+                    className={s.formMobile}
                     id="password"
                     type="password"
                     name="password"
                     onChange={this.onChangeInput}
                     value={password}
                   >
-                                Password
+                    Password
                   </Form>
-                  <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
+                  <a href="/forgotPassword" className={s.forgotPassword}>
+                    Lupa Password ?
+                  </a>
                   <div className={s.formGroup}>
                     <button className={s.button} type="submit">
-                                    SIGN IN
+                      SIGN IN
                     </button>
                   </div>
                 </form>
@@ -99,11 +102,13 @@ class Login extends React.Component {
                   </div>
                   <div>
                     <a className={s.line} href="/login/facebook">
-                      <img className={s.buttonMobile} src={line}  />
+                      <img className={s.buttonMobile} src={line} />
                     </a>
                   </div>
                 </div>
-                <p className={s.labelSignup}>Baru di mola ? <a href='/register'>Daftar sekarang</a></p>
+                <p className={s.labelSignup}>
+                  Baru di mola ? <a href="/accounts/register">Daftar sekarang</a>
+                </p>
               </div>
             </LazyLoad>
           </div>

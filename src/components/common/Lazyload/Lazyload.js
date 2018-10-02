@@ -3,11 +3,9 @@ import { bool, func, number, object, oneOfType, string, node } from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Lazyload.css';
 
-//kalau uda oke nanti replace yg lazy load
 class Lazyload extends PureComponent {
   static propTypes = {
     alt: string,
-    id: number,
     className: string,
     containerClassName: string,
     containerStyle: object,
@@ -26,7 +24,6 @@ class Lazyload extends PureComponent {
 
   static defaultProps = {
     alt: '',
-    id: null,
     className: '',
     containerClassName: '',
     containerStyle: {},
@@ -168,7 +165,6 @@ class Lazyload extends PureComponent {
     const { sources, isError } = this.state;
     const {
       alt,
-      id,
       containerClassName,
       containerStyle,
       style,
@@ -185,14 +181,7 @@ class Lazyload extends PureComponent {
         onClick={onClick}
       >
         {src && (
-          <img
-            ref={this.image}
-            className={className}
-            style={style}
-            src={sources}
-            alt={alt}
-            id={id}
-          />
+          <img ref={this.image} className={className} style={style} src={sources} alt={alt} />
         )}
         {isError && <div className={s.lazyload__errorBg} />}
         {children}

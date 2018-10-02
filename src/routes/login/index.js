@@ -16,16 +16,17 @@ const title = 'Log In';
 
 function action({ isMobile }) {
   return {
-    chunks: ['login'],
+    chunks: ['accounts-login'],
     title,
-    component: (isMobile ?
-      (<Layout>
+    component: isMobile ? (
+      <Layout>
         <LoginMobile />
-      </Layout>)  :
-      (<Layout>
+      </Layout>
+    ) : (
+      <Layout>
         <LoginDesktop />
-      </Layout>)
-    ),
+      </Layout>
+    )
   };
 }
 
