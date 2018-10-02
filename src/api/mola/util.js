@@ -1,5 +1,4 @@
-import dummyFigure from '@global/style/icons/bruce.png';
-import dummyBg from '@global/style/icons/background.png';
+import dummyBg from '@global/style/icons/dummybg.jpg';
 
 const normalizeHomePlaylist = response => {
   const { data } = response.data;
@@ -8,38 +7,45 @@ const normalizeHomePlaylist = response => {
       playlists
         .map(playlist => {
           const {
-              id,
-              type,
-              attributes: {
-                title,
-                description,
-                shortDescription,
-                sortOrder,
-                coverUrl,
-                cover: { layer1, layer2, layer3, isDark }
+            id,
+            type,
+            attributes: {
+              title,
+              description,
+              shortDescription,
+              sortOrder,
+              iconUrl,
+              isDark,
+              images: {
+                cover: {
+                  title: coverTitle,
+                  body: coverBody,
+                  background: coverBG,
+                  backgroundColor: coverBGColor,
+                  backgroundRepeat,
+                  poster
+                },
+                large,
+                big,
+                medium,
+                small,
+                tiny
               }
-            } = playlist,
-            layers = layer2
-              ? {
-                  layer3: layer3 || '',
-                  layer2: layer2 || dummyFigure,
-                  layer1: layer1 || dummyBg
-                }
-              : {
-                  layer3: '',
-                  layer2: '',
-                  layer1: coverUrl ? coverUrl : dummyBg
-                };
+            }
+          } = playlist;
           return {
             id,
             title,
             sortOrder,
             description,
             shortDescription: shortDescription || '',
-            // ...layers,
-            layer3: layer3 || '',
-            layer2: layer2 || dummyFigure,
-            layer1: layer1 || dummyBg,
+            iconUrl: iconUrl || '',
+            poster: poster || '',
+            coverTitle: coverTitle || '',
+            coverBody: coverBody || '',
+            background: coverBG || dummyBg,
+            backgroundColor: coverBGColor || '#000622',
+            backgroundRepeat: backgroundRepeat || '',
             isDark: isDark || 0,
             isActive: false,
             type
@@ -54,50 +60,54 @@ const normalizeHomePlaylist = response => {
 const normalizeHomeVideo = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
-    return data.map(({ attributes: { videos } }) =>
+    const result = data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
           const {
-              id,
-              type,
-              attributes: {
-                title,
-                description,
-                shortDescription,
-                displayOrder,
-                layer3,
-                layer2,
-                layer1,
-                isDark
+            id,
+            type,
+            attributes: {
+              title,
+              description,
+              shortDescription,
+              displayOrder,
+              isDark,
+              images: {
+                cover: {
+                  title: coverTitle,
+                  body: coverBody,
+                  background: coverBG,
+                  backgroundColor: coverBGColor,
+                  backgroundRepeat,
+                  poster
+                },
+                large,
+                big,
+                medium,
+                small,
+                tiny
               }
-            } = video,
-            layers = layer2
-              ? {
-                  layer3: layer3 || '',
-                  layer2: layer2 || dummyFigure,
-                  layer1: layer1 || dummyBg
-                }
-              : {
-                  layer3: '',
-                  layer2: '',
-                  layer1: coverUrl ? coverUrl : dummyBg
-                };
+            }
+          } = video;
           return {
             id,
             title,
             displayOrder,
             description,
-            shortDescription,
-            // ...layers,
-            layer3: layer3 || '',
-            layer2: layer2 || dummyFigure,
-            layer1: layer1 || dummyBg,
+            shortDescription: shortDescription || '',
+            poster: poster || '',
+            coverTitle: coverTitle || '',
+            coverBody: coverBody || '',
+            background: coverBG || dummyBg,
+            backgroundColor: coverBGColor || '#000622',
+            backgroundRepeat: backgroundRepeat || '',
             isDark: isDark || 0,
             type
           };
         })
         .sort((a, b) => a.displayOrder - b.displayOrder)
     );
+    return result;
   }
   return [];
 };
