@@ -38,7 +38,6 @@ let lastScrollY = 0,
   ticking = false,
   activePlaylist,
   scrollIndex = 0;
-let count = 0;
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
@@ -59,8 +58,7 @@ class Home extends Component {
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist();
-    } else if (prevState.videos.length <= 0 && count !== 5) {
-      count += 1; /** testing nembak api sekali saja */
+    } else if (prevState.videos.length <= 0) {
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
           trackedPlaylistIds.push(playlist.id);
