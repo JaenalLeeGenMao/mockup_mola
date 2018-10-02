@@ -1,68 +1,74 @@
 import React, { Component, Fragment } from 'react';
-import { compose } from 'redux'
-import { connect } from 'react-redux'
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import * as movieStreamActions from '@actions/movie-stream';
 
 import Theoplayer from '../../components/Theoplayer/Theoplayer';
 
 class Movieplayer extends Component {
   state = {
-    movieStream: [],
-  }
+    movieStream: []
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getMovieStream,
-      movieStream,
-      movieId
-    } = nextProps;
-    if (nextProps.movieStream.meta.status === 'loading'  && prevState.movieStream.length <= 0) {
+    const { getMovieStream, movieStream, movieId } = nextProps;
+    if (nextProps.movieStream.meta.status === 'loading' && prevState.movieStream.length <= 0) {
       getMovieStream(movieId);
     }
     return { ...prevState, movieStream };
   }
 
-  render() {
+  isBuffer() {
+    setTimeout(() => {
+      console.log('runn');
+    }, 500);
+  }
 
-    const { movieStream: { data : movieStream } } = this.props;
-    const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : null;
-    // console.log('streamSource', streamSource)
+  render() {
+    const {
+      movieStream: { data: movieStream }
+    } = this.props;
+    const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
 
     const movieConfig = {
-      movieSrc: streamSource,//'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8',
+      movieSrc: streamSource,
       kind: 'subtitles',
       label: 'Indonesia',
       subTitleUrl: 'example.srt',
-      srclang: 'id',
-    }
+      srclang: 'id'
+    };
     return (
       <Fragment>
-        <Theoplayer
-          movieUrl={movieConfig.movieSrc}
-          kind={movieConfig.kind}
-          label={movieConfig.label}
-          subTitleUrl={movieConfig.subTitleUrl}
-          srclang={movieConfig.srclang}
-          isTrailer={true}
-        />
+        {streamSource ? (
+          <Theoplayer
+            movieUrl={movieConfig.movieSrc}
+            kind={movieConfig.kind}
+            label={movieConfig.label}
+            subTitleUrl={movieConfig.subTitleUrl}
+            srclang={movieConfig.srclang}
+            isTrailer={true}
+          />
+        ) : (
+          ''
+        )}
       </Fragment>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
     ...state
-  }
+  };
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getMovieStream: movieId => dispatch(movieStreamActions.getMovieStream(movieId)),
-})
+const mapDispatchToProps = dispatch => ({
+  getMovieStream: movieId => dispatch(movieStreamActions.getMovieStream(movieId))
+});
 
 export default compose(
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(Movieplayer)
+    mapDispatchToProps
+  )
+)(Movieplayer);
