@@ -16,16 +16,17 @@ const title = 'Reset Password';
 
 function action(isMobile) {
   return {
-    chunks: ['resetPassword'],
+    chunks: ['accounts-resetPassword'],
     title,
-    component: (isMobile.isMobile ?
-      (<Layout>
+    component: isMobile.isMobile ? (
+      <Layout>
         <ResetMobile />
-      </Layout>)  :
-      (<Layout>
+      </Layout>
+    ) : (
+      <Layout>
         <ResetDesktop />
-      </Layout>)
-    ),
+      </Layout>
+    )
   };
 }
 

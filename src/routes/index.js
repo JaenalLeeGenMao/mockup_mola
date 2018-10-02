@@ -17,31 +17,31 @@ const routes = {
   children: [
     {
       path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
+      load: () => import(/* webpackChunkName: 'home' */ './home')
     },
     {
       path: '/contact',
-      load: () => import(/* webpackChunkName: 'contact' */ './contact'),
+      load: () => import(/* webpackChunkName: 'contact' */ './contact')
     },
     {
       path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'accounts-login' */ './login'),
+      load: () => import(/* webpackChunkName: 'accounts-login' */ './login')
     },
     {
-      path: '/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register'),
+      path: '/accounts/register',
+      load: () => import(/* webpackChunkName: 'accounts-register' */ './register')
     },
     {
       path: '/about',
-      load: () => import(/* webpackChunkName: 'about' */ './about'),
+      load: () => import(/* webpackChunkName: 'about' */ './about')
     },
     {
       path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+      load: () => import(/* webpackChunkName: 'privacy' */ './privacy')
     },
     {
       path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
+      load: () => import(/* webpackChunkName: 'admin' */ './admin')
     },
     // Movie details
     {
@@ -49,7 +49,7 @@ const routes = {
       load: () => import(/* webpackChunkName: 'admin' */ './movie-detail'),
       children: [
         {
-          path: '/:id',
+          path: '/:id'
         }
       ]
     },
@@ -59,22 +59,22 @@ const routes = {
       load: () => import(/* webpackChunkName: 'admin' */ './movie-library'),
       children: [
         {
-          path: '/:id',
+          path: '/:id'
         }
       ]
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '/history',
-      load: () => import(/* webpackChunkName: 'history' */ './history'),
+      load: () => import(/* webpackChunkName: 'history' */ './history')
     },
     {
       path: '/search',
-      load: () => import(/* webpackChunkName: 'search' */ './search'),
+      load: () => import(/* webpackChunkName: 'search' */ './search')
     },
     {
       path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'accounts-profile' */ './profile'),
+      load: () => import(/* webpackChunkName: 'accounts-profile' */ './profile')
     },
     // Movie-player
     {
@@ -82,31 +82,31 @@ const routes = {
       load: () => import(/* webpackChunkName: 'movie-player' */ './movie-player'),
       children: [
         {
-          path: '/:id',
+          path: '/:id'
         }
       ]
     },
     {
-      path: '/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
+      path: '/accounts/forgotPassword',
+      load: () => import(/* webpackChunkName: 'accounts-forgotPassword' */ './forgotPassword')
     },
     {
-      path: '/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
+      path: '/accounts/resetPassword',
+      load: () => import(/* webpackChunkName: 'accounts-resetPassword' */ './resetPassword')
     },
     {
       path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'accounts-security' */ './security'),
+      load: () => import(/* webpackChunkName: 'accounts-security' */ './security')
     },
     {
       path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'accounts-setting' */ './setting'),
+      load: () => import(/* webpackChunkName: 'accounts-setting' */ './setting')
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
-      load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),
-    },
+      load: () => import(/* webpackChunkName: 'not-found' */ './not-found')
+    }
   ],
 
   async action({ next }) {
@@ -117,14 +117,14 @@ const routes = {
     route.title = `${route.title || 'Untitled Page'}`;
     route.description = route.description || '';
     return route;
-  },
+  }
 };
 
 // The error page is available by permanent url for development mode
 if (__DEV__) {
   routes.children.unshift({
     path: '/error',
-    action: require('./error').default,
+    action: require('./error').default
   });
 }
 
