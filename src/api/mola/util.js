@@ -198,10 +198,8 @@ const normalizeSearchGenre = response => {
 
 const normalizeRecentSearch = response => {
   const { data } = response.data;
-  console.log('data======', data);
   if (data && data.length > 0) {
     return data.map(({ id, attributes: { keyword } }) => {
-      console.log('IDDD', id, keyword);
       return {
         id,
         keyword
