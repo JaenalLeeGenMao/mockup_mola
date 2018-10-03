@@ -11,6 +11,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '@components/Header';
+import Link from '@components/Link';
 import Form from '@components/FormInput';
 import LazyLoad from '@components/common/Lazyload';
 import s from './Login.css';
@@ -77,9 +78,9 @@ class Login extends React.Component {
                   >
                     Password
                   </Form>
-                  <a href="/forgotPassword" className={s.forgotPassword}>
+                  <Link className={s.forgotPassword} to="/accounts/forgotPassword">
                     Lupa Password ?
-                  </a>
+                  </Link>
                   <div className={s.formGroup}>
                     <button className={s.button} type="submit">
                       SIGN IN
