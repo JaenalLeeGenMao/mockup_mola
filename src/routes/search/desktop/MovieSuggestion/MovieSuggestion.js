@@ -22,13 +22,9 @@ class MovieSuggestion extends React.Component {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     };
-    post(
-      RECENT_SEARCH_ENDPOINT,
-      {
-        q: title
-      },
+    post(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${title}`, {
       config
-    )
+    })
       .then(result => {
         // Do somthing
         console.log('AXIOS RES', result);

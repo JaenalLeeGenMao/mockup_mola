@@ -71,15 +71,15 @@
 }
 
 .removeSearchIcon {
-  background-image: url('../assets/ic_close@2x.png');
+  background-image: url('../assets/ic_remove_white.png');
   background-repeat: no-repeat;
   background-size: contain;
   display: block;
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: 0;
-  width: 26px;
-  height: 26px;
+  width: 15px;
+  height: 15px;
   z-index: 102;
   cursor: pointer;
 }

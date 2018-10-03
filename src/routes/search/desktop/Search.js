@@ -12,12 +12,14 @@ import SearchGenre from './SearchGenre/SearchGenre';
 import SearchGenreLoading from './SearchGenre/SearchGenreLoading';
 import RecentSearch from './RecentSearch/RecentSearch';
 import RecentSearchLoading from './RecentSearch/RecentSearchLoading';
-// import Cast from './Cast/Cast'
+import Cast from './Cast/Cast';
 
 import Error from '../error/Error';
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
 import s from './Search.css';
+
+import searchDb from '../../../database/searchDb';
 
 import history from '../../../history';
 
@@ -61,12 +63,39 @@ class Search extends React.Component {
       getSearchGenre();
     }
 
+    if (result.meta.status === 'loading' && prevState.genre.length <= 0) {
+      var today = new Date();
+      var expiredDateStamp = new Date(new Date().setDate(today.getDate() - 7));
+      var expiredDate =
+        expiredDateStamp.getFullYear() +
+        '-' +
+        ('0' + (expiredDateStamp.getMonth() + 1)).slice(-2) +
+        '-' +
+        ('0' + expiredDateStamp.getDate()).slice(-2) +
+        ' 00:00:00';
+      //hanya delete keyword cache saja, data movie dan cast masih tersimpan
+      searchDb.transaction(
+        'rw',
+        searchDb.moviesResult,
+        searchDb.castsResult,
+        searchDb.searchKeyword,
+        () => {
+          searchDb.searchKeyword
+            .where('createdDate')
+            .belowOrEqual(expiredDate)
+            .delete()
+            .then(function(deleteCount) {
+              // console.log( "Deleted " + deleteCount + " objects");
+            });
+        }
+      );
+    }
+
     if (
       searchKeyword !== '' &&
       recentSearch.meta.status === 'loading' &&
       prevState.recentSearch.length <= 0
     ) {
-      console.log('MASUK RECENT SEARCH 0');
       getRecentSearch('abc');
     }
 
@@ -93,52 +122,50 @@ class Search extends React.Component {
       });
     }
 
-    console.log(
-      'RECENTSEARCHMETA',
-      prevProps.search.recentSearch.meta.status,
-      recentSearchMeta.status
-    );
-
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
       console.log('SUKSES RECENT SEARCH', rsDt);
       this.allRecentSearch = rsDt;
       this.recentSearchData = rsDt;
+      console.log('recentSearchData', this.recentSearchData);
       this.showRecentSearchByInput(searchKeyword);
       this.setState({
         isLoadingRecentSearch: false
       });
     }
 
-    console.log('KEYWORD', searchKeyword);
-    if (prevProps.search.result.meta.status !== meta.status) {
+    console.log('MASUK SINI LAGI', prevProps.search.result, this.props.search.result);
+    if (prevProps.search.result.meta.status !== meta.status && meta.status == 'success') {
       if (this.state.searchText === '') {
         this.inputSearch.current.value = searchKeyword;
       }
       this.resultval = searchKeyword;
-      this.parseMovieSuggestion(searchKeyword);
+      this.parseSearchResult(searchKeyword);
     }
   }
 
-  parseMovieSuggestion = val => {
+  parseSearchResult = val => {
     this.searchText = val;
     // this.showRecentSearchByInput(val);
     const {
       search: { result }
     } = this.props;
-    const matchMovieArr = result.data.filter(function(dt) {
-      return dt.type == 'videos';
-    });
 
-    const firstMatchMovieArr = matchMovieArr.filter(function(dt) {
-      return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
-    });
+    const movieSuggestion = this.parseMovieSuggestion(result, val);
+    const castSuggestion = this.parseCastSuggestion(result, val);
+    let firstMatch;
+    if (movieSuggestion.length) {
+      firstMatch = movieSuggestion[0].title;
+      this.textSuggestionType = 'movie';
+    } else if (castSuggestion.length) {
+      firstMatch = castSuggestion[0].name;
+      this.textSuggestionType = 'cast';
+    } else {
+      firstMatch = '';
+    }
 
-    const firstMatchMovie = firstMatchMovieArr.length ? firstMatchMovieArr[0].title : '';
-    const textSugRemain = firstMatchMovie.substr(val.length, firstMatchMovie.length);
-    this.textSuggestion = firstMatchMovie !== '' ? `${val}${textSugRemain}` : '';
-
-    this.searchedMovie = matchMovieArr;
-    console.log('searchedmovie', matchMovieArr);
+    const textSugRemain = firstMatch.substr(val.length, firstMatch.length);
+    this.textSuggestion = firstMatch !== '' ? `${val}${textSugRemain}` : '';
+    console.log('masuksini');
     this.setState({
       searchText: val,
       isLoadingResult: false,
@@ -148,6 +175,34 @@ class Search extends React.Component {
     });
   };
 
+  parseCastSuggestion = (result, val) => {
+    const matchCastArr = result.data.filter(function(dt) {
+      return dt.type == 'casts';
+    });
+
+    const firstMatchCastArr = matchCastArr.filter(function(dt) {
+      return dt.name.toLowerCase().indexOf(val.toLowerCase()) === 0;
+    });
+
+    this.searchedCast = matchCastArr;
+
+    return firstMatchCastArr;
+  };
+
+  parseMovieSuggestion = (result, val) => {
+    const matchMovieArr = result.data.filter(function(dt) {
+      return dt.type == 'videos';
+    });
+
+    const firstMatchMovieArr = matchMovieArr.filter(function(dt) {
+      return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
+    });
+
+    this.searchedMovie = matchMovieArr;
+
+    return firstMatchMovieArr;
+  };
+
   handleSearchChange = e => {
     const val = e.target.value;
     history.replace({
@@ -155,9 +210,6 @@ class Search extends React.Component {
     });
 
     this.processSearch(val);
-
-    // var db = new Dexie("FriendDatabase");
-    // db.version(1).stores({ friends: "++id,name,age" });
   };
 
   processSearch = _debounce(val => {
@@ -166,14 +218,17 @@ class Search extends React.Component {
     getSearchResult(val);
     this.showRecentSearchByInput(val);
     // getRecentSearch('abc');
-    this.parseMovieSuggestion(val);
     this.setState({
-      searchText: val,
-      isLoadingResult: false,
-      isLoadingRecentSearch: false,
-      showAllRecentSearch: false,
-      showGenre: false
+      isLoadingResult: true
     });
+
+    this.parseSearchResult(val);
+    // this.setState({
+    //   searchText: val,
+    //   isLoadingRecentSearch: false,
+    //   showAllRecentSearch: false,
+    //   showGenre: false
+    // });
 
     if (val == '') {
       this.setState({
@@ -183,23 +238,25 @@ class Search extends React.Component {
   }, 300);
 
   showSearchbySuggestion = () => {
-    if (this.inputSearch.current.value != '') {
+    const val = this.inputSearch.current.value;
+    if (val != '') {
       const { getSearchResult } = this.props;
 
-      getSearchResult(this.inputSearch.current.value);
+      getSearchResult(val);
+      this.showRecentSearchByInput(val);
       history.replace({
-        search: `q=${encodeURIComponent(this.inputSearch.current.value)}`
+        search: `q=${encodeURIComponent(val)}`
       });
     }
   };
 
   showRecentSearchByInput = val => {
-    console.log('allRecentSearch', this.allRecentSearch, val);
+    // console.log('allRecentSearch', this.allRecentSearch, val);
 
     if (this.allRecentSearch && this.allRecentSearch.length > 0) {
       this.recentSearchData = this.allRecentSearch.filter(dt => {
-        console.log('drt', dt);
-        return dt.keyword.indexOf(val) > -1;
+        console.log('drt', dt, dt.keyword.toLowerCase().indexOf(val.toLowerCase()));
+        return dt.keyword.toLowerCase().indexOf(val.toLowerCase()) > -1;
       });
 
       console.log('filteredRecentSearch', this.recentSearchData);
@@ -232,7 +289,7 @@ class Search extends React.Component {
       search: `q=${encodeURIComponent(val)}`
     });
     getSearchResult(val);
-    this.parseMovieSuggestion(val);
+    this.parseSearchResult(val);
     this.setState({
       searchText: val,
       isLoadingResult: false,
@@ -272,7 +329,8 @@ class Search extends React.Component {
     this.setState({
       searchText: '',
       showAllRecentSearch: false,
-      isLoadingRecentSearch: true,
+      isLoadingRecentSearch: false,
+      isLoadingResult: false,
       showGenre: true,
       showRemoveIcon: false
     });
@@ -288,24 +346,24 @@ class Search extends React.Component {
       }
     } = this.props;
 
-    console.log(
-      'MOVIERES',
-      showAllRecentSearch,
-      isLoadingResult,
-      resultStatus,
-      this.recentSearchData
-    );
+    // console.log(
+    //   'MOVIERES',
+    //   showAllRecentSearch,
+    //   isLoadingResult,
+    //   resultStatus,
+    //   this.recentSearchData
+    // );
     if (
       !showAllRecentSearch &&
       !isLoadingResult &&
-      resultStatus == 'error' &&
       this.recentSearchData &&
-      this.recentSearchData.length == 0
+      this.recentSearchData.length == 0 &&
+      resultStatus == 'no_result'
     ) {
-      console.log('Masuk sini');
+      // console.log('Masuk sini');
       return true;
     } else {
-      console.log('Masuk sini2');
+      // console.log('Masuk sini2');
       return false;
     }
   };
@@ -334,6 +392,7 @@ class Search extends React.Component {
     } = this.state;
     const isDark = false;
     const showResult = this.searchText ? searchKeyword !== '' : false;
+    console.log('REXR====', this.recentSearchData);
     return (
       <Fragment>
         <Header isDark={isDark} libraryOff searchOff {...this.props} />
@@ -409,16 +468,19 @@ class Search extends React.Component {
                           />
                         </div>
                       )}
-                    {/* castData.length > 0 &&
+                    {!showAllRecentSearch &&
+                      !isLoadingResult &&
+                      this.searchedCast &&
+                      this.searchedCast.length > 0 && (
                         <div className={s.resultRow}>
-                          <Cast data={castData} searchText={searchText}/>
+                          <Cast data={this.searchedCast} searchText={this.searchText} />
                         </div>
-                      */}
+                      )}
                     {!showAllRecentSearch && isLoadingResult && <MovieSuggestionLoading />}
                     {!showAllRecentSearch &&
                       !isLoadingResult &&
                       this.searchedMovie &&
-                      this.searchedMovie.length && (
+                      this.searchedMovie.length > 0 && (
                         <MovieSuggestion data={this.searchedMovie} searchText={this.searchText} />
                       )}
                     {this.showNoResult() && (

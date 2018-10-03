@@ -31,17 +31,17 @@ class RecentSearch extends React.Component {
           {recentSearchData.map(data => {
             const startIdx = data.keyword.toLowerCase().indexOf(searchTxt.toLowerCase());
 
-            const keywordRes = data.keyword.substr(startIdx, searchTxt.length);
-            const keywordFirst = data.keyword.substr(0, startIdx);
-            const keywordSecond = data.keyword.substr(
-              startIdx + searchTxt.length,
-              data.keyword.length
-            );
+            const keywordRes = startIdx > -1 ? data.keyword.substr(startIdx, searchTxt.length) : '';
+            const keywordFirst = startIdx > -1 ? data.keyword.substr(0, startIdx) : '';
+            const keywordSecond =
+              startIdx > -1
+                ? data.keyword.substr(startIdx + searchTxt.length, data.keyword.length)
+                : '';
 
             return (
               <span className={s.resultChip} key={data.id}>
                 <a className={s.resultChipText} onClick={() => this.handleClickItem(data.keyword)}>
-                  {searchTxt != '' ? (
+                  {searchTxt != '' && startIdx > -1 ? (
                     <Fragment>
                       <span>{keywordFirst}</span>
                       <span className={s.keywordResult}>{keywordRes}</span>

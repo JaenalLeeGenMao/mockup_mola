@@ -154,24 +154,31 @@ const normalizeSearchResult = response => {
           title,
           year,
           // thumbnail,
-          coverUrl
+          coverUrl,
+          name,
+          imageUrl
         }
       } = result;
-      return {
-        id,
-        type,
-        title,
-        year,
-        coverUrl
-      };
+
+      if (type == 'videos') {
+        return {
+          id,
+          type,
+          title,
+          year,
+          coverUrl
+        };
+      } else {
+        return {
+          id,
+          type,
+          name,
+          imageUrl
+        };
+      }
     });
   }
-  return {
-    meta: {
-      status: 'no_result'
-    },
-    data: []
-  };
+  return [];
 };
 
 const normalizeSearchGenre = response => {

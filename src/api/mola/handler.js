@@ -94,6 +94,7 @@ const getSearchResult = ({ q }) => {
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
+      console.log('RESPOS', result);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',

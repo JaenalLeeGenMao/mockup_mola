@@ -35,7 +35,7 @@
 }
 
 .resultChip > a > i {
-  background-image: url('../../assets/ic_close@2x.png');
+  background-image: url('../../assets/ic_remove_black.png');
   background-repeat: no-repeat;
   background-size: contain;
   display: inline-block;
