@@ -8,6 +8,7 @@
  */
 
 /* eslint-disable global-require */
+/* eslint-disable */
 
 import dateFormat from 'dateformat';
 import _get from 'lodash/get';
@@ -17,7 +18,7 @@ import history from '../history';
 
 import tracker from '../lib/tracker';
 
-let firstRender = true;
+// let firstRender = true;
 let currentLocation = history.location;
 
 // The top-level (parent) route
@@ -39,8 +40,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'accounts-login' */ './login')
     },
     {
-      path: '/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register')
+      path: '/accounts/register',
+      load: () => import(/* webpackChunkName: 'accounts-register' */ './register')
     },
     {
       path: '/about',
@@ -98,12 +99,12 @@ const routes = {
       ]
     },
     {
-      path: '/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword')
+      path: '/accounts/forgotPassword',
+      load: () => import(/* webpackChunkName: 'accounts-forgotPassword' */ './forgotPassword')
     },
     {
-      path: '/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword')
+      path: '/accounts/resetPassword',
+      load: () => import(/* webpackChunkName: 'accounts-resetPassword' */ './resetPassword')
     },
     {
       path: '/accounts/security',

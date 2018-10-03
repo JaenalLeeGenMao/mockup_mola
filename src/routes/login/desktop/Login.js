@@ -11,6 +11,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Header from '@components/Header';
+import Link from '@components/Link';
 import Form from '@components/FormInput';
 import LazyLoad from '@components/common/Lazyload';
 import s from './Login.css';
@@ -19,33 +20,30 @@ import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 
 class Login extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       usernameOrEmail: '',
       password: ''
-    }
+    };
 
-    this.onChangeInput = this.onChangeInput.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this);
   }
 
-  onChangeInput = (e) => {
-    const target = e.target
-    const { id, value } = target
+  onChangeInput = e => {
+    const target = e.target;
+    const { id, value } = target;
     this.setState({
       [id]: value
-    })
-  }
+    });
+  };
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired
   };
 
   render() {
-    const {
-      usernameOrEmail,
-      password
-    } = this.state
+    const { usernameOrEmail, password } = this.state;
 
     const isDark = true;
     return (
@@ -55,10 +53,11 @@ class Login extends React.Component {
           <div className={s.root}>
             <LazyLoad>
               <div className={s.container}>
-                <p className={s.lead}>
-                            Masuk ke Mola
+                <p className={s.lead}>Masuk ke Mola</p>
+                <p>
+                  Wah, kami kangen kamu! <br />
+                  Masukkan data-data mu dan ayo mulai.
                 </p>
-                <p>Wah, kami kangen kamu! <br/>Masukkan data-data mu dan ayo mulai.</p>
                 <form method="post">
                   <Form
                     id="usernameOrEmail"
@@ -66,21 +65,25 @@ class Login extends React.Component {
                     name="usernameOrEmail"
                     onChange={this.onChangeInput}
                     value={usernameOrEmail}
-                    autoFocus>
-                                Email or username
+                    autoFocus
+                  >
+                    Email or username
                   </Form>
                   <Form
                     id="password"
                     type="password"
                     name="password"
                     onChange={this.onChangeInput}
-                    value={password}>
-                                 Password
+                    value={password}
+                  >
+                    Password
                   </Form>
-                  <a href='/forgotPassword' className={s.forgotPassword}>Lupa Password ?</a>
+                  <Link className={s.forgotPassword} to="/accounts/forgotPassword">
+                    Lupa Password ?
+                  </Link>
                   <div className={s.formGroup}>
                     <button className={s.button} type="submit">
-                                    SIGN IN
+                      SIGN IN
                     </button>
                   </div>
                 </form>
@@ -98,16 +101,17 @@ class Login extends React.Component {
                   </div>
                   <div>
                     <a className={s.line} href="/login/facebook">
-                      <img className={s.buttonImg} src={line}  />
+                      <img className={s.buttonImg} src={line} />
                     </a>
                   </div>
                 </div>
-                <p className={s.labelSignup}>Baru di mola ? <a href='/register'>Daftar sekarang</a></p>
+                <p className={s.labelSignup}>
+                  Baru di mola ? <a href="/accounts/register">Daftar sekarang</a>
+                </p>
               </div>
             </LazyLoad>
           </div>
-          <div className={s.rightWrapper}>
-          </div>
+          <div className={s.rightWrapper} />
         </div>
       </Fragment>
     );

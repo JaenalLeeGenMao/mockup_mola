@@ -16,16 +16,17 @@ const title = 'New User Registration';
 
 function action(isMobile) {
   return {
-    chunks: ['register'],
+    chunks: ['accounts-register'],
     title,
-    component: (isMobile.isMobile ?
-      (<Layout>
+    component: isMobile.isMobile ? (
+      <Layout>
         <RegisterMobile />
-      </Layout>)  :
-      (<Layout>
+      </Layout>
+    ) : (
+      <Layout>
         <RegisterDesktop />
-      </Layout>)
-    ),
+      </Layout>
+    )
   };
 }
 

@@ -62,7 +62,8 @@ class Moviedetail extends React.Component {
     trailerPlaytag: 'Play Trailer',
     open: false,
     movieDetail: [],
-    isLoading: true
+    isLoading: true,
+    trailerMovie: ''
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -95,10 +96,8 @@ class Moviedetail extends React.Component {
     }
   }
 
-  onOpenModal = e => {
-    this.setState({ open: true });
-    console.log('trailer id', e.target.id);
-    // do something
+  onOpenModal = trailerUrl => {
+    this.setState({ open: true, trailerMovie: trailerUrl });
   };
 
   onCloseModal = () => {
@@ -225,7 +224,7 @@ class Moviedetail extends React.Component {
   ];
 
   render() {
-    const { trailerPlaytag, open, isLoading } = this.state;
+    const { trailerPlaytag, open, isLoading, trailerMovie } = this.state;
 
     const casting = {
       dots: false,
@@ -255,7 +254,7 @@ class Moviedetail extends React.Component {
     // cover banner
     const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images : null;
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
-    // console.log("Banner", bannerImage);
+    console.log('Banner', bannerImage);
 
     const playCopy = 'Play movie';
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
@@ -295,7 +294,7 @@ class Moviedetail extends React.Component {
     const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers : [];
     const trailerDtPlaceholder = [1, 2];
     const trailerIsShow = movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : [];
-    // console.log('trailler',trailerDt.streamSourceUrl );
+    // console.log('trailler',trailerDt);
 
     // css toogle
     let ifOne =
@@ -412,10 +411,9 @@ class Moviedetail extends React.Component {
                     <LazyLoad
                       key={obj.toString()}
                       containerClassName={ifOne}
-                      id={obj.id}
                       alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
                       src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
-                      onClick={this.onOpenModal}
+                      onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
                       className={s.trailerImage}
                     >
                       <p className={s.trailer_playtag}>{trailerPlaytag}</p>
