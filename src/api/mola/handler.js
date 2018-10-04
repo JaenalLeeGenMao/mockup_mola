@@ -94,6 +94,7 @@ const getSearchResult = ({ q }) => {
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
+      console.log('resulllt', result, SEARCH_ENDPOINT);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -138,11 +139,7 @@ const getSearchGenre = payload => {
     });
 };
 
-<<<<<<< HEAD
-const getRecentSearch = () => {
-=======
 const getRecentSearch = sessionId => {
->>>>>>> add bold on search recent search
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
     params: { sessionId: sessionId },
     ...config.api
@@ -222,10 +219,6 @@ const getMovieStream = ({ id }) => {
   return get(`${MOVIE_STREAMING}/${id}`)
     .then(response => {
       const result = utils.normalizeVideoStream(response);
-<<<<<<< HEAD
-      // console.log('meta status', result);
-=======
->>>>>>> update search mobile style
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',

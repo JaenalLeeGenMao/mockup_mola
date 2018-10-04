@@ -8,7 +8,7 @@ export const VIDEOS_ENDPOINT = `${config.endpoints.molatv}/videos/videos`;
 
 export const HISTORY_ENDPOINT = `${config.endpoints.molatv}/userdata`;
 
-export const SEARCH_ENDPOINT = `${config.endpoints.molatv}/search/`; // 'https://private-2e8aa9-irene5.apiary-mock.com/search'; //`${config.endpoints.molatv}/search/`;
+export const SEARCH_ENDPOINT = 'https://private-2e8aa9-irene5.apiary-mock.com/search'; //`${config.endpoints.molatv}/search/`;
 export const SEARCH_GENRE_ENDPOINT = `${config.endpoints.molatv}/videos/playlists/genre`;
 export const RECENT_SEARCH_ENDPOINT = `${SEARCH_ENDPOINT}histories`;
 //'https://private-697ce-search103.apiary-mock.com/recentsearch'; //'http://lukitomo.com:1111/histories?project=molatv&sessionId=abc';
