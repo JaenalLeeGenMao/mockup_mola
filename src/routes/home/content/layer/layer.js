@@ -74,7 +74,7 @@ const Layer = ({
             className={styles.layer__parallax_layer_3_detail}
             style={{ color: isDark ? 'black' : 'white' }}
           >
-            <h4 className={styles.layer__parallax_layer_3_title}>{title}</h4>
+            {/* <h4 className={styles.layer__parallax_layer_3_title}>{title}</h4> */}
             <p className={styles.layer__parallax_layer_3_desc}>
               {shortDescription}
               {type !== 'playlists' && (
