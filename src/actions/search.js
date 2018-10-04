@@ -170,27 +170,43 @@ export const getSearchResult = searchText => dispatch => {
           }
         });
       } else {
-        dispatch({
-          type: types.GET_SEARCH_SUCCESS,
-          payload: cacheResult
-        });
-      }
-    })
-    .catch(function(error) {
-      return Mola.getSearchResult({ q: searchText }).then(result => {
-        if (result.meta.status === 'error') {
+        console.log('Cacheresult', cacheResult);
+        // return {
+        //   meta: {
+        //     status: cacheResult.data.length > 0 ? 'success' : 'no_result',
+        //     error: ''
+        //   },
+        //   data: [{ ...cacheResult }] || []
+        // };
+        if (cacheResult.data.length > 0) {
           dispatch({
-            type: types.GET_SEARCH_ERROR,
-            payload: result
+            type: types.GET_SEARCH_SUCCESS,
+            payload: cacheResult
           });
         } else {
           dispatch({
-            type: types.GET_SEARCH_SUCCESS,
-            payload: result
+            type: types.GET_SEARCH_NO_RESULT,
+            payload: cacheResult
           });
         }
-      });
+      }
     });
+  // .catch(function(error) {
+  //   console.log("MASUK ERRORR", error)
+  //   return Mola.getSearchResult({ q: searchText }).then(result => {
+  //     if (result.meta.status === 'error') {
+  //       dispatch({
+  //         type: types.GET_SEARCH_ERROR,
+  //         payload: result
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: types.GET_SEARCH_SUCCESS,
+  //         payload: result
+  //       });
+  //     }
+  //   });
+  // });
 };
 
 export const getSearchGenre = () => dispatch => {

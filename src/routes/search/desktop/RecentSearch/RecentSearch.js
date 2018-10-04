@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { delete as axiosDelete } from 'axios';
+import { RECENT_SEARCH_ENDPOINT } from '../../../../api/mola/endpoints';
 import s from './RecentSearch.css';
 
 class RecentSearch extends React.Component {
@@ -10,20 +12,38 @@ class RecentSearch extends React.Component {
     searchText: PropTypes.string
   };
 
-  handleClearAllSearch = () => {};
+  handleClearAllSearch = () => {
+    const config = {
+      withCredentials: false,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', //'application/json',
+        // "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
+        // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+      }
+    };
+    axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc`, {
+      config
+    })
+      .then(result => {
+        // Do somthing
+        console.log('AXIOS RES DELETE', result);
+      })
+      .catch(err => {
+        // Do somthing
+        console.log('AXIOS ERR dELETE', err);
+      });
+  };
 
   handleRemoveSearch = () => {};
 
   handleClickItem = val => {
     this.props.onClick(val);
-    console.log('eeeee', val);
   };
 
   render() {
     const { recentSearchData, searchText } = this.props;
-    console.log('Recentsearch', recentSearchData, 'searchText', searchText);
     const searchTxt = searchText !== undefined ? searchText : '';
-    console.log('Searcccc', searchTxt);
     return (
       <Fragment>
         <div className={s.resultTitle}>Recent Search</div>
@@ -57,7 +77,7 @@ class RecentSearch extends React.Component {
               </span>
             );
           })}
-          <a className={s.clearRecentSearch} onClick={this.handleClickClearSearch}>
+          <a className={s.clearRecentSearch} onClick={this.handleClearAllSearch}>
             Clear all
           </a>
         </div>

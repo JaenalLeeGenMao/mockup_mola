@@ -101,6 +101,7 @@ class Search extends React.Component {
 
     if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.genre.length <= 0) {
       getSearchResult(searchKeyword);
+      console.log('Masuk++++AS++AS+S+');
     }
 
     return { ...prevState, result, genre, recentSearch };
@@ -123,18 +124,24 @@ class Search extends React.Component {
     }
 
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
-      console.log('SUKSES RECENT SEARCH', rsDt);
+      console.log('SUKSES RECENT SEARCH', rsDt, this.state.isLoadingRecentSearch);
       this.allRecentSearch = rsDt;
       this.recentSearchData = rsDt;
       console.log('recentSearchData', this.recentSearchData);
       this.showRecentSearchByInput(searchKeyword);
-      this.setState({
-        isLoadingRecentSearch: false
-      });
+      if (recentSearchMeta.status == 'success') {
+        this.setState({
+          isLoadingRecentSearch: false,
+          showGenre: false
+        });
+      }
     }
 
     console.log('MASUK SINI LAGI', prevProps.search.result, this.props.search.result);
-    if (prevProps.search.result.meta.status !== meta.status && meta.status == 'success') {
+    if (
+      prevProps.search.result.meta.status !==
+      meta.status /*&& ( meta.status == 'success' || meta.status == 'no_result') */
+    ) {
       if (this.state.searchText === '') {
         this.inputSearch.current.value = searchKeyword;
       }
@@ -165,11 +172,12 @@ class Search extends React.Component {
 
     const textSugRemain = firstMatch.substr(val.length, firstMatch.length);
     this.textSuggestion = firstMatch !== '' ? `${val}${textSugRemain}` : '';
-    console.log('masuksini');
+    console.log('masuksiniiiii');
     this.setState({
       searchText: val,
       isLoadingResult: false,
-      isLoadingRecentSearch: false,
+      // isLoadingRecentSearch: false,
+      showAllRecentSearch: this.inputSearch.current.value ? false : true,
       showGenre: false,
       showRemoveIcon: true
     });
@@ -199,7 +207,7 @@ class Search extends React.Component {
     });
 
     this.searchedMovie = matchMovieArr;
-
+    console.log('searchedmovie', this.searchedMovie);
     return firstMatchMovieArr;
   };
 
@@ -221,6 +229,8 @@ class Search extends React.Component {
     this.setState({
       isLoadingResult: true
     });
+
+    console.log('MASUK prosess search');
 
     this.parseSearchResult(val);
     // this.setState({
@@ -299,7 +309,7 @@ class Search extends React.Component {
 
   handleOnFocusSearch = () => {
     const { getRecentSearch } = this.props;
-
+    console.log('MASUK ON FOCUS');
     if (!this.inputSearch.current.value) {
       getRecentSearch('abc');
       this.setState({
@@ -346,13 +356,13 @@ class Search extends React.Component {
       }
     } = this.props;
 
-    // console.log(
-    //   'MOVIERES',
-    //   showAllRecentSearch,
-    //   isLoadingResult,
-    //   resultStatus,
-    //   this.recentSearchData
-    // );
+    console.log(
+      'NO RESULTTTT',
+      showAllRecentSearch,
+      isLoadingResult,
+      resultStatus,
+      this.recentSearchData
+    );
     if (
       !showAllRecentSearch &&
       !isLoadingResult &&
@@ -360,10 +370,10 @@ class Search extends React.Component {
       this.recentSearchData.length == 0 &&
       resultStatus == 'no_result'
     ) {
-      // console.log('Masuk sini');
+      console.log('Masuk sini');
       return true;
     } else {
-      // console.log('Masuk sini2');
+      console.log('Masuk sini2');
       return false;
     }
   };
@@ -479,10 +489,14 @@ class Search extends React.Component {
                     {!showAllRecentSearch && isLoadingResult && <MovieSuggestionLoading />}
                     {!showAllRecentSearch &&
                       !isLoadingResult &&
+                      resultStatus != 'error' &&
                       this.searchedMovie &&
                       this.searchedMovie.length > 0 && (
                         <MovieSuggestion data={this.searchedMovie} searchText={this.searchText} />
                       )}
+                    {!showAllRecentSearch &&
+                      !isLoadingResult &&
+                      resultStatus == 'error' && <Error />}
                     {this.showNoResult() && (
                       <LazyLoad>
                         <div className={s.resultEmptyWrapper}>

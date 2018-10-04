@@ -15,7 +15,17 @@ export default function searchResult(state = {}, action) {
       return { ...state, result: { ...action.payload } };
     case types.GET_SEARCH_ERROR:
       return { ...state, result: { ...action.payload } };
-
+    case types.GET_SEARCH_NO_RESULT:
+      return {
+        ...state,
+        result: {
+          meta: {
+            status: 'no_result',
+            error: ''
+          },
+          data: []
+        }
+      };
     case types.GET_RECENT_SEARCH_LOADING:
       return { ...state, recentSearch: { ...action.payload } };
     case types.GET_RECENT_SEARCH_SUCCESS:
