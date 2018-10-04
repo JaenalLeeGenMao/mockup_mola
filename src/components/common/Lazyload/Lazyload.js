@@ -180,13 +180,7 @@ class Lazyload extends PureComponent {
         onClick={onClick}
       >
         {src && (
-          <img
-            ref={this.image}
-            className={className}
-            style={style}
-            src={sources}
-            alt={alt}
-          />
+          <img ref={this.image} className={className} style={style} src={sources} alt={alt} />
         )}
         {isError && <div className={s.lazyload__errorBg} />}
         {children}
