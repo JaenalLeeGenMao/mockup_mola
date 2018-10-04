@@ -155,7 +155,7 @@ const getRecentSearch = sessionId => {
           status: result.length > 0 ? 'success' : 'no_result',
           error: ''
         },
-        data: [...result] || []
+        data: result.length > 0 ? [...result] : []
       };
     })
     .catch(error => {

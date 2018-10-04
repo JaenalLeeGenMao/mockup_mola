@@ -101,7 +101,6 @@ class Search extends React.Component {
 
     if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.genre.length <= 0) {
       getSearchResult(searchKeyword);
-      console.log('Masuk++++AS++AS+S+');
     }
 
     return { ...prevState, result, genre, recentSearch };
@@ -124,20 +123,18 @@ class Search extends React.Component {
     }
 
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
-      console.log('SUKSES RECENT SEARCH', rsDt, this.state.isLoadingRecentSearch);
+      // console.log('SUKSES RECENT SEARCH', rsDt, this.state.isLoadingRecentSearch);
       this.allRecentSearch = rsDt;
       this.recentSearchData = rsDt;
-      console.log('recentSearchData', this.recentSearchData);
+      // console.log('recentSearchData', this.recentSearchData);
       this.showRecentSearchByInput(searchKeyword);
-      if (recentSearchMeta.status == 'success') {
-        this.setState({
-          isLoadingRecentSearch: false,
-          showGenre: false
-        });
-      }
+      this.setState({
+        isLoadingRecentSearch: false,
+        showGenre: recentSearchMeta.status == 'success' ? false : true
+      });
     }
 
-    console.log('MASUK SINI LAGI', prevProps.search.result, this.props.search.result);
+    // console.log('MASUK SINI LAGI', prevProps.search.result, this.props.search.result);
     if (
       prevProps.search.result.meta.status !==
       meta.status /*&& ( meta.status == 'success' || meta.status == 'no_result') */
@@ -170,15 +167,21 @@ class Search extends React.Component {
       firstMatch = '';
     }
 
+    const noResult =
+      result.data.length == 0 &&
+      (!this.recentSearchData || this.recentSearchData.length == 0) &&
+      !this.inputSearch.current.value
+        ? true
+        : false;
+    // console.log("HasResult", result.data.length, ( !this.recentSearchData || this.recentSearchData.length == 0) )
     const textSugRemain = firstMatch.substr(val.length, firstMatch.length);
     this.textSuggestion = firstMatch !== '' ? `${val}${textSugRemain}` : '';
-    console.log('masuksiniiiii');
     this.setState({
       searchText: val,
       isLoadingResult: false,
       // isLoadingRecentSearch: false,
       showAllRecentSearch: this.inputSearch.current.value ? false : true,
-      showGenre: false,
+      showGenre: noResult,
       showRemoveIcon: true
     });
   };
@@ -207,7 +210,7 @@ class Search extends React.Component {
     });
 
     this.searchedMovie = matchMovieArr;
-    console.log('searchedmovie', this.searchedMovie);
+    // console.log('searchedmovie', this.searchedMovie);
     return firstMatchMovieArr;
   };
 
@@ -225,20 +228,11 @@ class Search extends React.Component {
 
     getSearchResult(val);
     this.showRecentSearchByInput(val);
-    // getRecentSearch('abc');
     this.setState({
       isLoadingResult: true
     });
 
-    console.log('MASUK prosess search');
-
     this.parseSearchResult(val);
-    // this.setState({
-    //   searchText: val,
-    //   isLoadingRecentSearch: false,
-    //   showAllRecentSearch: false,
-    //   showGenre: false
-    // });
 
     if (val == '') {
       this.setState({
@@ -265,7 +259,7 @@ class Search extends React.Component {
 
     if (this.allRecentSearch && this.allRecentSearch.length > 0) {
       this.recentSearchData = this.allRecentSearch.filter(dt => {
-        console.log('drt', dt, dt.keyword.toLowerCase().indexOf(val.toLowerCase()));
+        // console.log('drt', dt, dt.keyword.toLowerCase().indexOf(val.toLowerCase()));
         return dt.keyword.toLowerCase().indexOf(val.toLowerCase()) > -1;
       });
 
@@ -309,7 +303,6 @@ class Search extends React.Component {
 
   handleOnFocusSearch = () => {
     const { getRecentSearch } = this.props;
-    console.log('MASUK ON FOCUS');
     if (!this.inputSearch.current.value) {
       getRecentSearch('abc');
       this.setState({
@@ -332,6 +325,7 @@ class Search extends React.Component {
 
   handleRemoveSearch = () => {
     this.inputSearch.current.value = '';
+    this.searchText = '';
     this.textSuggestion = '';
     history.replace({
       search: ''
@@ -356,13 +350,13 @@ class Search extends React.Component {
       }
     } = this.props;
 
-    console.log(
-      'NO RESULTTTT',
-      showAllRecentSearch,
-      isLoadingResult,
-      resultStatus,
-      this.recentSearchData
-    );
+    // console.log(
+    //   'NO RESULTTTT',
+    //   showAllRecentSearch,
+    //   isLoadingResult,
+    //   resultStatus,
+    //   this.recentSearchData
+    // );
     if (
       !showAllRecentSearch &&
       !isLoadingResult &&
@@ -370,10 +364,10 @@ class Search extends React.Component {
       this.recentSearchData.length == 0 &&
       resultStatus == 'no_result'
     ) {
-      console.log('Masuk sini');
+      // console.log('Masuk sini');
       return true;
     } else {
-      console.log('Masuk sini2');
+      // console.log('Masuk sini2');
       return false;
     }
   };
@@ -385,7 +379,7 @@ class Search extends React.Component {
           data: genreData,
           meta: { status: genreStatus }
         },
-        /*recentSearch : { data : recentSearchData },*/
+        // recentSearch : { meta: { status: recentSearchStatus } },
         result: {
           meta: { status: resultStatus }
         }
@@ -402,7 +396,6 @@ class Search extends React.Component {
     } = this.state;
     const isDark = false;
     const showResult = this.searchText ? searchKeyword !== '' : false;
-    console.log('REXR====', this.recentSearchData);
     return (
       <Fragment>
         <Header isDark={isDark} libraryOff searchOff {...this.props} />
@@ -441,23 +434,6 @@ class Search extends React.Component {
                 </Fragment>
               )}
 
-            {/*
-              showAllRecentSearch &&
-              <div className={s.resultWrapper}>
-                <div className={s.resultContainer}>
-                  { isLoadingRecentSearch &&
-                    <div className={s.resultRow}>
-                      <RecentSearchLoading/>
-                </div>
-                  }
-                  { recentSearchData.length > 0 &&
-                      <div className={s.resultRow}>
-                        <RecentSearch onClick={this.handleClickRecentSearch} recentSearchData={recentSearchData}/>
-              </div>
-            }
-                </div>
-              </div>
-                */}
             {this.showResult() && (
               <Fragment>
                 <div className={s.resultWrapper}>
@@ -470,13 +446,11 @@ class Search extends React.Component {
                     {!isLoadingRecentSearch &&
                       this.recentSearchData &&
                       this.recentSearchData.length > 0 && (
-                        <div className={s.resultRow}>
-                          <RecentSearch
-                            onClick={this.handleClickRecentSearch}
-                            recentSearchData={this.recentSearchData}
-                            searchText={this.searchText}
-                          />
-                        </div>
+                        <RecentSearch
+                          onClick={this.handleClickRecentSearch}
+                          recentSearchData={this.recentSearchData}
+                          searchText={this.searchText}
+                        />
                       )}
                     {!showAllRecentSearch &&
                       !isLoadingResult &&

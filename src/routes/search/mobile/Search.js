@@ -6,15 +6,20 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import _debounce from 'lodash.debounce';
 import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
-import Error from '../error/Error';
 
 import * as searchActions from '@actions/search';
 import SearchGenre from './SearchGenre/SearchGenre';
 import SearchGenreLoading from './SearchGenre/SearchGenreLoading';
 import RecentSearch from './RecentSearch/RecentSearch';
+import RecentSearchLoading from './RecentSearch/RecentSearchLoading';
+import Cast from './Cast/Cast';
+
+import Error from '../error/Error';
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
 import s from './Search.css';
+
+import searchDb from '../../../database/searchDb';
 
 import history from '../../../history';
 
@@ -30,9 +35,14 @@ class Search extends React.Component {
     searchedMovie: [],
     result: [],
     genre: [],
+    recentSearch: [],
     val: '',
+    showAllRecentSearch: false,
+    showGenre: true,
+    showRemoveIcon: false,
     isLoadingGenre: true,
-    isLoadingResult: true
+    isLoadingResult: true,
+    isLoadingRecentSearch: true
   };
 
   static propTypes = {
@@ -43,9 +53,9 @@ class Search extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       getSearchResult,
-      getRecentSearch,
       getSearchGenre,
-      search: { genre, result },
+      getRecentSearch,
+      search: { genre, result, recentSearch },
       searchKeyword
     } = nextProps;
 
@@ -53,23 +63,48 @@ class Search extends React.Component {
       getSearchGenre();
     }
 
+    if (result.meta.status === 'loading' && prevState.genre.length <= 0) {
+      var today = new Date();
+      var expiredDateStamp = new Date(new Date().setDate(today.getDate() - 7));
+      var expiredDate =
+        expiredDateStamp.getFullYear() +
+        '-' +
+        ('0' + (expiredDateStamp.getMonth() + 1)).slice(-2) +
+        '-' +
+        ('0' + expiredDateStamp.getDate()).slice(-2) +
+        ' 00:00:00';
+      //hanya delete keyword cache saja, data movie dan cast masih tersimpan
+      searchDb.transaction(
+        'rw',
+        searchDb.moviesResult,
+        searchDb.castsResult,
+        searchDb.searchKeyword,
+        () => {
+          searchDb.searchKeyword
+            .where('createdDate')
+            .belowOrEqual(expiredDate)
+            .delete()
+            .then(function(deleteCount) {
+              // console.log( "Deleted " + deleteCount + " objects");
+            });
+        }
+      );
+    }
+
     if (
       searchKeyword !== '' &&
-      nextProps.search.recentSearch.meta.status === 'loading' &&
-      prevState.genre.length <= 0
+      recentSearch.meta.status === 'loading' &&
+      prevState.recentSearch.length <= 0
     ) {
+      console.log('masuk recent search');
       getRecentSearch('abc');
     }
 
-    if (
-      searchKeyword !== '' &&
-      nextProps.search.genre.meta.status === 'loading' &&
-      prevState.genre.length <= 0
-    ) {
+    if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.genre.length <= 0) {
       getSearchResult(searchKeyword);
     }
 
-    return { ...prevState, result, genre };
+    return { ...prevState, result, genre, recentSearch };
   }
 
   componentDidUpdate(prevProps) {
@@ -77,7 +112,8 @@ class Search extends React.Component {
       searchKeyword,
       search: {
         genre: { meta: genreMeta },
-        result: { meta }
+        result: { meta },
+        recentSearch: { data: rsDt, meta: recentSearchMeta }
       }
     } = this.props;
 
@@ -87,20 +123,84 @@ class Search extends React.Component {
       });
     }
 
-    if (prevProps.search.result.meta.status !== meta.status) {
+    if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
+      // console.log('SUKSES RECENT SEARCH', rsDt, this.state.isLoadingRecentSearch);
+      this.allRecentSearch = rsDt;
+      this.recentSearchData = rsDt;
+      // console.log('recentSearchData', this.recentSearchData);
+      this.showRecentSearchByInput(searchKeyword);
+
+      this.setState({
+        isLoadingRecentSearch: false,
+        showGenre: recentSearchMeta.status == 'success' ? false : true
+      });
+    }
+
+    // console.log('MASUK SINI LAGI', prevProps.search.result, this.props.search.result);
+    if (
+      prevProps.search.result.meta.status !==
+      meta.status /*&& ( meta.status == 'success' || meta.status == 'no_result') */
+    ) {
       if (this.state.searchText === '') {
         this.inputSearch.current.value = searchKeyword;
       }
       this.resultval = searchKeyword;
-      this.parseMovieSuggestion(searchKeyword);
+      this.parseSearchResult(searchKeyword);
     }
   }
 
-  parseMovieSuggestion = val => {
+  parseSearchResult = val => {
     this.searchText = val;
+    // this.showRecentSearchByInput(val);
     const {
       search: { result }
     } = this.props;
+
+    const movieSuggestion = this.parseMovieSuggestion(result, val);
+    const castSuggestion = this.parseCastSuggestion(result, val);
+    let firstMatch;
+    if (movieSuggestion.length) {
+      firstMatch = movieSuggestion[0].title;
+      this.textSuggestionType = 'movie';
+    } else if (castSuggestion.length) {
+      firstMatch = castSuggestion[0].name;
+      this.textSuggestionType = 'cast';
+    } else {
+      firstMatch = '';
+    }
+    const noResult =
+      result.data.length == 0 &&
+      (!this.recentSearchData || this.recentSearchData.length == 0) &&
+      !this.inputSearch.current.value
+        ? true
+        : false;
+    const textSugRemain = firstMatch.substr(val.length, firstMatch.length);
+    this.textSuggestion = firstMatch !== '' ? `${val}${textSugRemain}` : '';
+    this.setState({
+      searchText: val,
+      isLoadingResult: false,
+      // isLoadingRecentSearch: false,
+      showAllRecentSearch: this.inputSearch.current.value ? false : true,
+      showGenre: noResult,
+      showRemoveIcon: true
+    });
+  };
+
+  parseCastSuggestion = (result, val) => {
+    const matchCastArr = result.data.filter(function(dt) {
+      return dt.type == 'casts';
+    });
+
+    const firstMatchCastArr = matchCastArr.filter(function(dt) {
+      return dt.name.toLowerCase().indexOf(val.toLowerCase()) === 0;
+    });
+
+    this.searchedCast = matchCastArr;
+
+    return firstMatchCastArr;
+  };
+
+  parseMovieSuggestion = (result, val) => {
     const matchMovieArr = result.data.filter(function(dt) {
       return dt.type == 'videos';
     });
@@ -109,17 +209,9 @@ class Search extends React.Component {
       return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0;
     });
 
-    const firstMatchMovie = firstMatchMovieArr.length ? firstMatchMovieArr[0].title : '';
-    const textSugRemain = firstMatchMovie.substr(val.length, firstMatchMovie.length);
-    this.textSuggestion = firstMatchMovie !== '' ? `${val}${textSugRemain}` : '';
-
-    this.hasResult = matchMovieArr.length > 0;
     this.searchedMovie = matchMovieArr;
-
-    this.setState({
-      searchText: val,
-      isLoadingResult: false
-    });
+    // console.log('searchedmovie', this.searchedMovie);
+    return firstMatchMovieArr;
   };
 
   handleSearchChange = e => {
@@ -132,19 +224,123 @@ class Search extends React.Component {
   };
 
   processSearch = _debounce(val => {
-    const { getSearchResult, getRecentSearch } = this.props;
+    const { getSearchResult } = this.props;
 
     getSearchResult(val);
-    getRecentSearch('abc');
-    this.parseMovieSuggestion(val);
+    this.showRecentSearchByInput(val);
     this.setState({
-      searchText: val,
-      isLoadingResult: false
+      isLoadingResult: true
     });
+
+    this.parseSearchResult(val);
+
+    if (val == '') {
+      this.setState({
+        showAllRecentSearch: true
+      });
+    }
   }, 300);
 
+  showRecentSearchByInput = val => {
+    console.log('allRecentSearch', this.allRecentSearch, val);
+
+    if (this.allRecentSearch && this.allRecentSearch.length > 0) {
+      this.recentSearchData = this.allRecentSearch.filter(dt => {
+        // console.log('drt', dt, dt.keyword.toLowerCase().indexOf(val.toLowerCase()));
+        return dt.keyword.toLowerCase().indexOf(val.toLowerCase()) > -1;
+      });
+
+      // console.log('filteredRecentSearch', this.recentSearchData);
+    }
+  };
+
   handleClickRecentSearch = val => {
-    console.log('RECCCCENT', val);
+    const { getSearchResult } = this.props;
+
+    this.inputSearch.current.value = val;
+    history.replace({
+      search: `q=${encodeURIComponent(val)}`
+    });
+    getSearchResult(val);
+    this.parseSearchResult(val);
+    this.setState({
+      searchText: val,
+      isLoadingResult: false,
+      showAllRecentSearch: false
+    });
+  };
+
+  handleOnFocusSearch = () => {
+    const { getRecentSearch } = this.props;
+    if (!this.inputSearch.current.value) {
+      getRecentSearch('abc');
+      this.setState({
+        showAllRecentSearch: true,
+        showGenre: false,
+        showRemoveIcon: true
+      });
+    }
+  };
+
+  showResult = () => {
+    const { showAllRecentSearch } = this.state;
+    const { searchKeyword } = this.props;
+    if (this.searchText || searchKeyword !== '') {
+      console.log('MASUK 1');
+      return true;
+    } else {
+      return showAllRecentSearch;
+      console.log('MASUK 2');
+    }
+  };
+
+  handleRemoveSearch = () => {
+    this.inputSearch.current.value = '';
+    this.searchText = '';
+    this.textSuggestion = '';
+    history.replace({
+      search: ''
+    });
+    this.setState({
+      searchText: '',
+      showAllRecentSearch: false,
+      isLoadingRecentSearch: false,
+      isLoadingResult: false,
+      showGenre: true,
+      showRemoveIcon: false
+    });
+  };
+
+  showNoResult = () => {
+    const { showAllRecentSearch, isLoadingResult, showGenre } = this.state;
+    const {
+      search: {
+        result: {
+          meta: { status: resultStatus }
+        }
+      }
+    } = this.props;
+
+    // console.log(
+    //   'NO RESULTTTT',
+    //   showAllRecentSearch,
+    //   isLoadingResult,
+    //   resultStatus,
+    //   this.recentSearchData
+    // );
+    if (
+      !showAllRecentSearch &&
+      !isLoadingResult &&
+      this.recentSearchData &&
+      this.recentSearchData.length == 0 &&
+      resultStatus == 'no_result'
+    ) {
+      // console.log('Masuk sini');
+      return true;
+    } else {
+      // console.log('Masuk sini2');
+      return false;
+    }
   };
 
   render() {
@@ -154,17 +350,23 @@ class Search extends React.Component {
           data: genreData,
           meta: { status: genreStatus }
         },
-        recentSearch: { data: recentSearchData },
+        // recentSearch: { data: recentSearchData },
         result: {
           meta: { status: resultStatus }
         }
       },
       searchKeyword
     } = this.props;
-    const { isLoadingGenre, isLoadingResult } = this.state;
+    const {
+      isLoadingGenre,
+      isLoadingResult,
+      isLoadingRecentSearch,
+      showAllRecentSearch,
+      showGenre,
+      showRemoveIcon
+    } = this.state;
     const isDark = false;
-    const showResult = this.searchText ? true : false;
-    const showMovieLoading = searchKeyword !== '' ? isLoadingResult : false;
+    const showResult = this.searchText ? searchKeyword !== '' : false;
     return (
       <Fragment>
         <Header isDark={isDark} isMobile libraryOff searchOff {...this.props} />
@@ -185,10 +387,14 @@ class Search extends React.Component {
                 className={s.searchInput}
                 ref={this.inputSearch}
                 onChange={this.handleSearchChange}
+                onFocus={this.handleOnFocusSearch}
               />
+              {showRemoveIcon && (
+                <i className={s.removeSearchIcon} onClick={this.handleRemoveSearch} />
+              )}
             </div>
-            {!showResult &&
-              !showMovieLoading &&
+            {showGenre &&
+              !searchKeyword &&
               !isLoadingGenre && (
                 <LazyLoad>
                   {genreStatus == 'success' && <SearchGenre data={genreData} />}
@@ -196,51 +402,63 @@ class Search extends React.Component {
                 </LazyLoad>
               )}
 
-            {!showResult &&
-              !showMovieLoading &&
+            {showGenre &&
+              !searchKeyword &&
               isLoadingGenre && (
                 <Fragment>
                   <SearchGenreLoading />
                 </Fragment>
               )}
 
-            {showMovieLoading && (
-              <div className={s.resultWrapper}>
-                <div className={s.resultContainer}>
-                  <MovieSuggestionLoading />
-                </div>
-              </div>
-            )}
-
-            {showResult && (
+            {this.showResult() && (
               <Fragment>
-                {/* { this.hasResult && */}
                 <div className={s.resultWrapper}>
                   <div className={s.resultContainer}>
-                    {recentSearchData.length > 0 && (
+                    {isLoadingRecentSearch && (
                       <div className={s.resultRow}>
-                        <RecentSearch
-                          onClick={this.handleClickRecentSearch}
-                          recentSearchData={recentSearchData}
-                        />
+                        <RecentSearchLoading />
                       </div>
                     )}
-                    {!isLoadingResult &&
-                      this.searchedMovie.length && (
+                    {!isLoadingRecentSearch &&
+                      this.recentSearchData &&
+                      this.recentSearchData.length > 0 && (
+                        <RecentSearch
+                          onClick={this.handleClickRecentSearch}
+                          recentSearchData={this.recentSearchData}
+                          searchText={this.searchText}
+                        />
+                      )}
+                    {!showAllRecentSearch &&
+                      !isLoadingResult &&
+                      this.searchedCast &&
+                      this.searchedCast.length > 0 && (
+                        <div className={s.resultRow}>
+                          <Cast data={this.searchedCast} searchText={this.searchText} />
+                        </div>
+                      )}
+                    {!showAllRecentSearch && isLoadingResult && <MovieSuggestionLoading />}
+                    {!showAllRecentSearch &&
+                      !isLoadingResult &&
+                      resultStatus != 'error' &&
+                      this.searchedMovie &&
+                      this.searchedMovie.length > 0 && (
                         <MovieSuggestion data={this.searchedMovie} searchText={this.searchText} />
                       )}
+                    {!showAllRecentSearch &&
+                      !isLoadingResult &&
+                      resultStatus == 'error' && <Error />}
+                    {this.showNoResult() && (
+                      <LazyLoad>
+                        <div className={s.resultEmptyWrapper}>
+                          <div>
+                            Your search for {`"${this.searchText}"`} did not have any matches
+                          </div>
+                          <div>Try searching different keywords or browse by genre</div>
+                        </div>
+                      </LazyLoad>
+                    )}
                   </div>
                 </div>
-                {/* } */}
-                {!this.searchedMovie.length &&
-                  resultStatus == 'error' && (
-                    <LazyLoad>
-                      <div className={s.resultEmptyWrapper}>
-                        <div>Your search for {`"${this.searchText}"`} did not have any matches</div>
-                        <div>Try searching different keywords or browse by genre</div>
-                      </div>
-                    </LazyLoad>
-                  )}
               </Fragment>
             )}
           </div>

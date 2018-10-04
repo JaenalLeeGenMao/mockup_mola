@@ -195,12 +195,7 @@ const normalizeSearchGenre = response => {
       })
     );
   }
-  return {
-    meta: {
-      status: 'no_result'
-    },
-    data: []
-  };
+  return [];
 };
 
 const normalizeRecentSearch = response => {
@@ -213,12 +208,7 @@ const normalizeRecentSearch = response => {
       };
     });
   }
-  return {
-    meta: {
-      status: 'no_result'
-    },
-    data: []
-  };
+  return [];
 };
 
 const normalizeVideoDetail = response => {

@@ -1,3 +1,9 @@
+.resultRow {
+  padding-bottom: 32px;
+  margin: 0;
+  display: flex;
+}
+
 .resultTitle {
   color: #bababa;
   font-size: 17px;

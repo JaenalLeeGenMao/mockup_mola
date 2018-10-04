@@ -1,9 +1,21 @@
+.resultRow {
+  padding-bottom: 32px;
+  margin: 0;
+  display: block;
+}
+
 .resultTitle {
   color: #bababa;
   font-size: 17px;
   font-weight: normal;
   display: inline-block;
   flex: 1 0 160px;
+  padding-bottom: 15px;
+}
+
+.resultTitleLoading {
+  width: 150px;
+  height: 22px;
 }
 
 .resultContent {
@@ -26,15 +38,27 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: #6f6f6f;
 }
 
-.resultChip > a {
+.resultChipLoading {
+  padding: 6px 35px 6px 10px;
+  margin: 0 15px 15px 0;
+  position: relative;
+  display: inline-block;
+  border-radius: 100px;
+  background-color: #2b2b2b;
+  width: 30%;
+  height: 33px;
+}
+
+.removeChip {
   position: absolute;
   top: 7px;
   right: 8px;
 }
 
-.resultChip > a > i {
+.removeChip > i {
   background-image: url('../../assets/ic_remove_black.png');
   background-repeat: no-repeat;
   background-size: contain;
@@ -44,12 +68,11 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 960px) {
-  .resultTitle {
-    font-size: 14px;
-    padding-bottom: 15px;
-  }
+.keywordResult {
+  color: #fff;
+}
 
+@media screen and (max-width: 960px) {
   .resultContent {
     padding: 0;
   }
@@ -63,14 +86,8 @@
 }
 
 @media screen and (max-width: 500px) {
-  .resultTitle {
-    font-size: 14px;
-    padding-bottom: 15px;
-  }
-
   .resultContent {
     padding: 0;
-    font-size: 12px;
   }
 
   .resultChip {
@@ -78,11 +95,11 @@
     max-width: 160px;
   }
 
-  .resultChip > a {
+  .removeChip {
     top: 6px;
   }
 
-  .resultChip > a > i {
+  .removeChip > i {
     width: 16px;
     height: 16px;
   }

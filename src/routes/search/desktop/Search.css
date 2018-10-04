@@ -208,6 +208,10 @@
     top: 40px;
   }
 
+  .removeSearchIcon {
+    top: 50px;
+  }
+
   .searchInput {
     font-size: 22px;
     position: absolute;
@@ -252,6 +256,10 @@
 
   .searchIcon {
     top: 17px;
+  }
+
+  .removeSearchIcon {
+    top: 27px;
   }
 
   .searchInput {
