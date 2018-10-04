@@ -137,18 +137,18 @@ const updateAuth = token => {
 };
 
 const createNewUser = ({ email = '', password = '' }) => {
+  console.log(`${AUTH_BASE_ENDPOINT}/v1/signup`);
   console.log(email, password);
   return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, {
-    params: {
-      email,
-      password
-    }
+    email,
+    password
   })
     .then(response => {
-      console.log(response);
+      console.log('RESPONSE:\n', response);
     })
-    .catch(error => {
-      console.log(error);
+    .catch((error, ...props) => {
+      console.log('ERROR:\n', error);
+      console.log(props);
       return {
         meta: {
           status: 'error',

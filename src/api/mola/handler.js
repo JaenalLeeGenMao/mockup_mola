@@ -4,6 +4,7 @@ import {
   HISTORY_ENDPOINT,
   SEARCH_ENDPOINT,
   SEARCH_GENRE_ENDPOINT,
+  RECENT_SEARCH_ENDPOINT,
   MOVIE_DETAIL_ENDPOINT,
   MOVIE_STREAMING
 } from './endpoints';
@@ -93,6 +94,7 @@ const getSearchResult = ({ q }) => {
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
+      console.log('resulllt', result, SEARCH_ENDPOINT);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -131,6 +133,32 @@ const getSearchGenre = payload => {
         meta: {
           status: 'error',
           error: `search/getSearchGenre - ${error}`
+        },
+        data: []
+      };
+    });
+};
+
+const getRecentSearch = sessionId => {
+  return get(`${RECENT_SEARCH_ENDPOINT}`, {
+    params: { sessionId: sessionId },
+    ...config.api
+  })
+    .then(response => {
+      const result = utils.normalizeRecentSearch(response);
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: ''
+        },
+        data: result.length > 0 ? [...result] : []
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `search/getRecentSearch - ${error}`
         },
         data: []
       };
@@ -191,7 +219,6 @@ const getMovieStream = ({ id }) => {
   return get(`${MOVIE_STREAMING}/${id}`)
     .then(response => {
       const result = utils.normalizeVideoStream(response);
-      // console.log('meta status', result);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -217,6 +244,7 @@ export default {
   getAllHistory,
   getSearchResult,
   getSearchGenre,
+  getRecentSearch,
   getMovieDetail,
   getMovieLibrary,
   getMovieStream

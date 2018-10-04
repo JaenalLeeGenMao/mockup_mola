@@ -154,24 +154,31 @@ const normalizeSearchResult = response => {
           title,
           year,
           // thumbnail,
-          coverUrl
+          coverUrl,
+          name,
+          imageUrl
         }
       } = result;
-      return {
-        id,
-        type,
-        title,
-        year,
-        coverUrl
-      };
+
+      if (type == 'videos') {
+        return {
+          id,
+          type,
+          title,
+          year,
+          coverUrl
+        };
+      } else {
+        return {
+          id,
+          type,
+          name,
+          imageUrl
+        };
+      }
     });
   }
-  return {
-    meta: {
-      status: 'no_result'
-    },
-    data: []
-  };
+  return [];
 };
 
 const normalizeSearchGenre = response => {
@@ -188,12 +195,20 @@ const normalizeSearchGenre = response => {
       })
     );
   }
-  return {
-    meta: {
-      status: 'no_result'
-    },
-    data: []
-  };
+  return [];
+};
+
+const normalizeRecentSearch = response => {
+  const { data } = response.data;
+  if (data && data.length > 0) {
+    return data.map(({ id, attributes: { keyword } }) => {
+      return {
+        id,
+        keyword
+      };
+    });
+  }
+  return [];
 };
 
 const normalizeVideoDetail = response => {
@@ -282,6 +297,7 @@ export default {
   normalizeHistory,
   normalizeSearchResult,
   normalizeSearchGenre,
+  normalizeRecentSearch,
   normalizeVideoDetail,
   normalizeMovieLibrary,
   normalizeVideoStream

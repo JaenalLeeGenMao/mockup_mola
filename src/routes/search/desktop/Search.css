@@ -70,6 +70,20 @@
   height: 26px;
 }
 
+.removeSearchIcon {
+  background-image: url('../assets/ic_remove_white.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  width: 15px;
+  height: 15px;
+  z-index: 102;
+  cursor: pointer;
+}
+
 .searchInput,
 .searchInputSuggestion {
   background-color: transparent;
@@ -82,7 +96,7 @@
   font-size: 22px;
   line-height: 1;
   height: 52px;
-  padding: 10px 0 10px 48px;
+  padding: 10px 48px;
   position: absolute;
   z-index: 101;
 }
@@ -194,6 +208,10 @@
     top: 40px;
   }
 
+  .removeSearchIcon {
+    top: 50px;
+  }
+
   .searchInput {
     font-size: 22px;
     position: absolute;
@@ -238,6 +256,10 @@
 
   .searchIcon {
     top: 17px;
+  }
+
+  .removeSearchIcon {
+    top: 27px;
   }
 
   .searchInput {

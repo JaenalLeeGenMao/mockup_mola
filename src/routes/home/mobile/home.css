@@ -17,6 +17,10 @@
   max-height: 100vh;
 }
 
+html {
+  font-size: 100%;
+}
+
 html,
 body {
   box-sizing: border-box;
