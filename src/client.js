@@ -24,8 +24,8 @@ import router from './router';
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {
-// Enables critical path CSS rendering
-// https://github.com/kriasoft/isomorphic-style-loader
+  // Enables critical path CSS rendering
+  // https://github.com/kriasoft/isomorphic-style-loader
   insertCss: (...styles) => {
     // eslint-disable-next-line no-underscore-dangle
     const removeCss = styles.map(x => x._insertCss());
@@ -35,7 +35,7 @@ const context = {
   },
   // Universal HTTP client
   fetch: createFetch(fetch, {
-    baseUrl: window.App.apiUrl,
+    baseUrl: window.App.apiUrl
   }),
   // Initialize a new Redux store
   // http://redux.js.org/docs/basics/UsageWithReact.html
@@ -52,10 +52,10 @@ const scrollPositionsHistory = {};
 
 // Re-render the app when window.location changes
 async function onLocationChange(location, action) {
-// Remember the latest scroll position for the previous location
+  // Remember the latest scroll position for the previous location
   scrollPositionsHistory[currentLocation.key] = {
     scrollX: window.pageXOffset,
-    scrollY: window.pageYOffset,
+    scrollY: window.pageYOffset
   };
   // Delete stored scroll position for next page if any
   if (action === 'PUSH') {
@@ -138,7 +138,7 @@ async function onLocationChange(location, action) {
         if (window.ga) {
           window.ga('send', 'pageview', createPath(location));
         }
-      },
+      }
     );
   } catch (error) {
     if (__DEV__) {
@@ -154,7 +154,6 @@ async function onLocationChange(location, action) {
     }
   }
 }
-
 // Handle client-side navigation by using HTML5 History API
 // For more information visit https://github.com/mjackson/history#readme
 history.listen(onLocationChange);

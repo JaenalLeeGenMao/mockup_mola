@@ -163,8 +163,8 @@ class Moviedetail extends React.Component {
     const directedByArr =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'director';
-          })
+          return dt.attributes.peopleTypes == 'director';
+        })
         : [];
     const synopsisLabel = 'SYNOPSIS';
 
@@ -172,8 +172,8 @@ class Moviedetail extends React.Component {
     const castingArtists =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'stars';
-          })
+          return dt.attributes.peopleTypes == 'stars';
+        })
         : [];
     const castingCopy = 'CAST';
     const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
@@ -223,21 +223,21 @@ class Moviedetail extends React.Component {
           <Frame>
             {!isLoading &&
               year && (
-                <div className={s.yearWrapper}>
-                  <div className={s.yearInner}>
-                    <span className={s.yearLine} />
-                    <span>({year})</span>
-                  </div>
+              <div className={s.yearWrapper}>
+                <div className={s.yearInner}>
+                  <span className={s.yearLine} />
+                  <span>({year})</span>
                 </div>
-              )}
+              </div>
+            )}
             {!isLoading &&
               synopsisContent && (
-                <Synopsis
-                  synopsisContent={synopsisContent}
-                  directedBy={directedByArr}
-                  synopsisLabel={synopsisLabel}
-                />
-              )}
+              <Synopsis
+                synopsisContent={synopsisContent}
+                directedBy={directedByArr}
+                synopsisLabel={synopsisLabel}
+              />
+            )}
             {isLoading && <SynopsisLoading synopsisLabel={synopsisLabel} />}
             {isLoading && (
               <TestimoniLoading trailerTitle={'MOVIE TRAILER'} trailerText={trailerIsShow} />
@@ -245,14 +245,14 @@ class Moviedetail extends React.Component {
             {!isLoading &&
               testimoniDt &&
               testimoniDt.text && (
-                <Testimoni
-                  testimoniContent={testimoniDt.text}
-                  testimoniPhotoUrl={testimoniDt.imageUrl}
-                  trailerTitle={'MOVIE TRAILER'}
-                  testimoniSource={testimoniSrc}
-                  trailerText={trailerIsShow}
-                />
-              )}
+              <Testimoni
+                testimoniContent={testimoniDt.text}
+                testimoniPhotoUrl={testimoniDt.imageUrl}
+                trailerTitle={'MOVIE TRAILER'}
+                testimoniSource={testimoniSrc}
+                trailerText={trailerIsShow}
+              />
+            )}
           </Frame>
           <Secondframe copy={castingCopy}>
             {!isLoading && (

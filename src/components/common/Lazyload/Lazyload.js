@@ -95,7 +95,7 @@ class Lazyload extends PureComponent {
 
   initObserver = () => {
     const options = {
-      threshold: [0.5, 0.75, 1.0]
+      threshold: [0.1, 0.5, 0.75, 1.0]
     };
 
     let io = new IntersectionObserver(entries => {
@@ -133,7 +133,6 @@ class Lazyload extends PureComponent {
       } else {
         this.handleImageChange('default');
         error = true;
-        console.log('MASUK jg error');
         if (error && onErrorShowDefault) {
           this.setState({ isError: true });
         }
@@ -181,7 +180,13 @@ class Lazyload extends PureComponent {
         onClick={onClick}
       >
         {src && (
-          <img ref={this.image} className={className} style={style} src={sources} alt={alt} />
+          <img
+            ref={this.image}
+            className={className}
+            style={style}
+            src={sources}
+            alt={alt}
+          />
         )}
         {isError && <div className={s.lazyload__errorBg} />}
         {children}

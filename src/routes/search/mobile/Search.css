@@ -1,14 +1,6 @@
 @import '../../../components/variables.css';
 @import '../../../global/style/css/grainBackground.css';
 
-.headerNone {
-  display: none;
-}
-
-.headerDisplay {
-  display: block;
-}
-
 .root {
   background-color: #000;
   height: calc(100vh - 50px);
@@ -70,6 +62,20 @@
   height: 25px;
 }
 
+.removeSearchIcon {
+  background-image: url('../assets/ic_remove_white.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 15px;
+  height: 15px;
+  z-index: 102;
+  cursor: pointer;
+}
+
 .searchInput,
 .searchInputSuggestion,
 .searchInputSuggestion__mobile {
@@ -110,6 +116,7 @@
   margin: 0 auto;
   overflow: hidden;
   width: 100%;
+  font-weight: 400;
   color: #6f6f6f;
   text-align: center;
 }
@@ -120,7 +127,7 @@
 
 .resultContainer {
   overflow-y: auto;
-  height: calc(100vh - 100px);
+  height: 100%;
   padding-right: 20px;
   width: 100%;
 }
@@ -211,14 +218,18 @@
   }
 
   .resultContainer {
-    height: calc(100vh - 120px);
+    height: 100%;
   }
 }
 
 @media screen and (max-width: 500px) {
   .root {
     padding: 70px 0 0;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 130px);
+  }
+
+  .container {
+    height: 100%;
   }
 
   .searchInputWrapper {
@@ -237,15 +248,19 @@
   }
 
   .searchText {
-    top: 17px;
+    top: 25px;
     font-size: 14px;
   }
 
   .searchIcon {
-    top: 18px;
+    top: 25px;
     left: calc(50% - 44px);
     width: 16px;
     height: 16px;
+  }
+
+  .removeSearchIcon {
+    top: 20px;
   }
 
   .searchInput {
@@ -256,11 +271,12 @@
     margin: 0 auto;
     width: 90%;
     padding-top: 100px;
+    height: calc(100vh - 120px);
   }
 
   .resultEmptyWrapper {
+    padding-top: 30px;
     margin: 0 auto;
     width: 80%;
-    text-align: left;
   }
 }
