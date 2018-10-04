@@ -26,12 +26,8 @@ class MovieSuggestion extends React.Component {
     post(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${title}`, {
       config
     })
-      .then(result => {
-        console.log('SUKSES');
-      })
-      .catch(err => {
-        console.log('ERROR', err);
-      });
+      .then(result => {})
+      .catch(err => {});
   };
 
   render() {

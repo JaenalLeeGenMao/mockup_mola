@@ -27,7 +27,6 @@ class RecentSearch extends React.Component {
   };
 
   handleRemoveSearch = keyword => {
-    console.log('REMOVED', keyword);
     axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${keyword}`)
       .then(result => {
         const recDt = this.state.recentSearchData.filter(dt => {

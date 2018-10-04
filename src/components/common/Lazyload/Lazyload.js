@@ -95,7 +95,7 @@ class Lazyload extends PureComponent {
 
   initObserver = () => {
     const options = {
-      threshold: [0.5, 0.75, 1.0]
+      threshold: [0.1, 0.5, 0.75, 1.0]
     };
 
     let io = new IntersectionObserver(entries => {

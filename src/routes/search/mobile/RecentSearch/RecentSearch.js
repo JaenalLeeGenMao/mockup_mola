@@ -32,14 +32,10 @@ class RecentSearch extends React.Component {
           recentSearchData: []
         });
       })
-      .catch(err => {
-        // Do somthing
-        console.log('AXIOS ERR dELETE', err);
-      });
+      .catch(err => {});
   };
 
   handleRemoveSearch = keyword => {
-    console.log('keyword', keyword);
     axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${keyword}`)
       .then(result => {
         const recDt = this.state.recentSearchData.filter(dt => {

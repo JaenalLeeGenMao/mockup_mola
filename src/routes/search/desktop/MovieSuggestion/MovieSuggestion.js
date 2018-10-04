@@ -25,14 +25,8 @@ class MovieSuggestion extends React.Component {
     post(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${title}`, {
       config
     })
-      .then(result => {
-        // Do somthing
-        console.log('AXIOS RES', result);
-      })
-      .catch(err => {
-        // Do somthing
-        console.log('AXIOS ERR', err);
-      });
+      .then(result => {})
+      .catch(err => {});
   };
 
   render() {

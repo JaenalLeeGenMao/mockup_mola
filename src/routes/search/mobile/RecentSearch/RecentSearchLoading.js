@@ -13,7 +13,7 @@ const RecentSearchLoading = () => {
       <div className={s.resultContent}>
         <LoadingPlaceholder className={s.resultChipLoading} />
         <LoadingPlaceholder className={s.resultChipLoading} />
-        <LoadingPlaceholder className={s.resultChipLoading} />
+        <LoadingPlaceholder className={s.resultChipLoading} style={{ width: '60%' }} />
       </div>
     </Fragment>
   );

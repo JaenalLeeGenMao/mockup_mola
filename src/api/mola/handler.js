@@ -94,7 +94,6 @@ const getSearchResult = ({ q }) => {
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
-      console.log('RESPOS', result);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -223,7 +222,10 @@ const getMovieStream = ({ id }) => {
   return get(`${MOVIE_STREAMING}/${id}`)
     .then(response => {
       const result = utils.normalizeVideoStream(response);
+<<<<<<< HEAD
       // console.log('meta status', result);
+=======
+>>>>>>> update search mobile style
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',

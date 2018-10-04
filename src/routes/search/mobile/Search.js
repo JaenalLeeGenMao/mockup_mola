@@ -84,9 +84,7 @@ class Search extends React.Component {
             .where('createdDate')
             .belowOrEqual(expiredDate)
             .delete()
-            .then(function(deleteCount) {
-              // console.log( "Deleted " + deleteCount + " objects");
-            });
+            .then(function(deleteCount) {});
         }
       );
     }
@@ -96,7 +94,6 @@ class Search extends React.Component {
       recentSearch.meta.status === 'loading' &&
       prevState.recentSearch.length <= 0
     ) {
-      console.log('masuk recent search');
       getRecentSearch('abc');
     }
 
@@ -124,10 +121,8 @@ class Search extends React.Component {
     }
 
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
-      // console.log('SUKSES RECENT SEARCH', rsDt, this.state.isLoadingRecentSearch);
       this.allRecentSearch = rsDt;
       this.recentSearchData = rsDt;
-      // console.log('recentSearchData', this.recentSearchData);
       this.showRecentSearchByInput(searchKeyword);
 
       this.setState({
@@ -136,11 +131,7 @@ class Search extends React.Component {
       });
     }
 
-    // console.log('MASUK SINI LAGI', prevProps.search.result, this.props.search.result);
-    if (
-      prevProps.search.result.meta.status !==
-      meta.status /*&& ( meta.status == 'success' || meta.status == 'no_result') */
-    ) {
+    if (prevProps.search.result.meta.status !== meta.status) {
       if (this.state.searchText === '') {
         this.inputSearch.current.value = searchKeyword;
       }
@@ -210,7 +201,6 @@ class Search extends React.Component {
     });
 
     this.searchedMovie = matchMovieArr;
-    // console.log('searchedmovie', this.searchedMovie);
     return firstMatchMovieArr;
   };
 
@@ -242,15 +232,10 @@ class Search extends React.Component {
   }, 300);
 
   showRecentSearchByInput = val => {
-    console.log('allRecentSearch', this.allRecentSearch, val);
-
     if (this.allRecentSearch && this.allRecentSearch.length > 0) {
       this.recentSearchData = this.allRecentSearch.filter(dt => {
-        // console.log('drt', dt, dt.keyword.toLowerCase().indexOf(val.toLowerCase()));
         return dt.keyword.toLowerCase().indexOf(val.toLowerCase()) > -1;
       });
-
-      // console.log('filteredRecentSearch', this.recentSearchData);
     }
   };
 
@@ -286,11 +271,9 @@ class Search extends React.Component {
     const { showAllRecentSearch } = this.state;
     const { searchKeyword } = this.props;
     if (this.searchText || searchKeyword !== '') {
-      console.log('MASUK 1');
       return true;
     } else {
       return showAllRecentSearch;
-      console.log('MASUK 2');
     }
   };
 
@@ -321,13 +304,6 @@ class Search extends React.Component {
       }
     } = this.props;
 
-    // console.log(
-    //   'NO RESULTTTT',
-    //   showAllRecentSearch,
-    //   isLoadingResult,
-    //   resultStatus,
-    //   this.recentSearchData
-    // );
     if (
       !showAllRecentSearch &&
       !isLoadingResult &&
@@ -335,10 +311,8 @@ class Search extends React.Component {
       this.recentSearchData.length == 0 &&
       resultStatus == 'no_result'
     ) {
-      // console.log('Masuk sini');
       return true;
     } else {
-      // console.log('Masuk sini2');
       return false;
     }
   };

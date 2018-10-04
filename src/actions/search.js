@@ -36,7 +36,6 @@ export const getSearchResult = searchText => dispatch => {
               .equalsIgnoreCase(searchText)
               .each(function(res) {
                 isExist = true; //if exist
-                console.log('MASUK AMBIL CACHE', res);
                 if (res.movieId) {
                   const movieIdArr = res.movieId.split(',');
                   movieIdArr.map(id => {
@@ -55,7 +54,6 @@ export const getSearchResult = searchText => dispatch => {
                   });
                 }
                 if (res.castId) {
-                  console.log('MASUK', res.castId);
                   const castIdArr = res.castId.split(',');
                   castIdArr.map(id => {
                     searchDb.castsResult
@@ -84,7 +82,6 @@ export const getSearchResult = searchText => dispatch => {
                   payload: result
                 });
               } else {
-                console.log('MASUK AMBIL API');
                 dispatch({
                   type: types.GET_SEARCH_SUCCESS,
                   payload: result
@@ -109,9 +106,7 @@ export const getSearchResult = searchText => dispatch => {
                   searchDb.searchKeyword,
                   async () => {
                     //loop result from api to store to cache db
-                    // result.data.map(async (dt)=> {
                     for (const dt of result.data) {
-                      // console.log("Dt", dt)
                       var isMovieIdExist = false;
                       var isCastIdExist = false;
 
@@ -161,7 +156,7 @@ export const getSearchResult = searchText => dispatch => {
                         castIdAdded.push(dt.id);
                       }
                     }
-                    // });
+
                     searchDb.searchKeyword.add({
                       keyword: searchText,
                       movieId: movieIdAdded.join(','),
@@ -173,14 +168,6 @@ export const getSearchResult = searchText => dispatch => {
               }
             });
           } else {
-            console.log('Cacheresult', cacheResult);
-            // return {
-            //   meta: {
-            //     status: cacheResult.data.length > 0 ? 'success' : 'no_result',
-            //     error: ''
-            //   },
-            //   data: [{ ...cacheResult }] || []
-            // };
             if (cacheResult.data.length > 0) {
               dispatch({
                 type: types.GET_SEARCH_SUCCESS,
