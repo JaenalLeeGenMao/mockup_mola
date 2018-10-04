@@ -41,13 +41,14 @@ class Register extends React.Component {
     });
   };
 
-  handleRegistration = () => {
+  handleRegistration = async () => {
     const { email, password } = this.state;
     $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
-    Auth.createNewUser({
+    const result = await Auth.createNewUser({
       email,
       password
     });
+    console.log(result);
   };
 
   static propTypes = {

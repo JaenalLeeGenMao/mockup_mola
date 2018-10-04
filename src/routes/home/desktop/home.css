@@ -21,6 +21,10 @@
   transition: 100ms ease-out;
 }
 
+html {
+  font-size: 62.5%;
+}
+
 html,
 body {
   box-sizing: border-box;
@@ -112,6 +116,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-size: 1.4rem;
   height: 100vh;
   width: 40vw;
   min-width: 540px;
@@ -138,13 +143,11 @@ body {
 .home__parallax_layer_3_title {
   position: relative;
   padding: 10px;
-  font-size: 1.2em;
   text-transform: uppercase;
 }
 
 .home__parallax_layer_3_desc {
   padding: 0 10px;
-  font-size: 0.825rem;
   font-style: italic;
   white-space: pre-line;
   overflow: hidden;
@@ -171,7 +174,7 @@ body {
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
   font-variant: unicase;
   font-style: normal;
-  font-size: 1.14rem;
+  font-size: 1.4rem;
   padding-top: 5px;
   opacity: 0.6;
 }
