@@ -18,6 +18,7 @@ Build-Push-Docker-Staging:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
     NODE_ENV: staging
+    REACT_APP_ENV: staging
   script:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
@@ -33,6 +34,7 @@ Build-Push-Docker-Production:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
+    REACT_APP_ENV: production
   script:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh

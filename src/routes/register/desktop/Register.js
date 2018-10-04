@@ -41,13 +41,14 @@ class Register extends React.Component {
     });
   };
 
-  handleRegistration = () => {
+  handleRegistration = async () => {
     const { email, password } = this.state;
-    $(`.${s.container}`).toggleClass(`${s.flip__container}`);
-    Auth.createNewUser({
+    $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
+    const result = await Auth.createNewUser({
       email,
       password
     });
+    console.log(result);
   };
 
   static propTypes = {
@@ -64,69 +65,86 @@ class Register extends React.Component {
         <div className={s.wrapper}>
           <div className={s.root}>
             <LazyLoad>
-              <div className={s.container}>
-                <p className={s.labelHeader}>Daftar mola sekarang !</p>
-                <div>
-                  <Form
-                    id="username"
-                    type="text"
-                    name="username"
-                    onChange={this.onChangeInput}
-                    value={username}
-                    autoFocus
-                  >
-                    Username
-                  </Form>
-                  <Form
-                    id="email"
-                    type="text"
-                    name="email"
-                    onChange={this.onChangeInput}
-                    value={email}
-                  >
-                    Email
-                  </Form>
-                  <Form
-                    id="password"
-                    type="password"
-                    name="password"
-                    onChange={this.onChangeInput}
-                    value={password}
-                  >
-                    Password
-                  </Form>
-                  <Form
-                    id="confirmPassword"
-                    type="password"
-                    name="confirmPassword"
-                    onChange={this.onChangeInput}
-                    value={confirmPassword}
-                  >
-                    Confirm password
-                  </Form>
-                  <div className={s.formGroup} style={{ marginTop: '15px' }}>
-                    <button className={s.button} onClick={this.handleRegistration}>
-                      SIGN UP
-                    </button>
+              <div className={s.flip}>
+                <div className={s.container}>
+                  <p className={s.labelHeader}>Daftar mola sekarang !</p>
+                  <div>
+                    <Form
+                      id="username"
+                      type="text"
+                      name="username"
+                      onChange={this.onChangeInput}
+                      value={username}
+                      autoFocus
+                    >
+                      Username
+                    </Form>
+                    <Form
+                      id="email"
+                      type="text"
+                      name="email"
+                      onChange={this.onChangeInput}
+                      value={email}
+                    >
+                      Email
+                    </Form>
+                    <Form
+                      id="password"
+                      type="password"
+                      name="password"
+                      onChange={this.onChangeInput}
+                      value={password}
+                    >
+                      Password
+                    </Form>
+                    <Form
+                      id="confirmPassword"
+                      type="password"
+                      name="confirmPassword"
+                      onChange={this.onChangeInput}
+                      value={confirmPassword}
+                    >
+                      Confirm password
+                    </Form>
+                    <div className={s.formGroup} style={{ marginTop: '15px' }}>
+                      <button className={s.button} onClick={this.handleRegistration}>
+                        SIGN UP
+                      </button>
+                    </div>
+                  </div>
+                  <strong className={s.lineThrough}>Atau daftar dengan</strong>
+                  <div className={s.flexButton}>
+                    <div>
+                      <a className={s.google} href="/login/facebook">
+                        <img className={s.buttonImg} src={google} />
+                      </a>
+                    </div>
+                    <div>
+                      <a className={s.facebook} href="/login/facebook">
+                        <img className={s.buttonImg} src={facebook} />
+                      </a>
+                    </div>
+                    <div>
+                      <a className={s.line} href="/login/facebook">
+                        <img className={s.buttonImg} src={line} />
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <strong className={s.lineThrough}>Atau daftar dengan</strong>
-                <div className={s.flexButton}>
-                  <div>
-                    <a className={s.google} href="/login/facebook">
-                      <img className={s.buttonImg} src={google} />
-                    </a>
+                <div className={s.containerBack}>
+                  <p className={s.labelHeader}>Verifikasi Akun !</p>
+                  <p>
+                    Untuk melanjutkan nonton, <br />
+                    kami perlu memverifikasi akun email kamu dulu.
+                  </p>
+                  <div className={s.formGroup} style={{ marginTop: '15px', marginBottom: '20px' }}>
+                    <button className={s.button}>Cek Email</button>
                   </div>
-                  <div>
-                    <a className={s.facebook} href="/login/facebook">
-                      <img className={s.buttonImg} src={facebook} />
+                  <p style={{ textAlign: 'center' }}>
+                    <a className={s.label__resend} href="/accounts/register">
+                      Resend OTP
                     </a>
-                  </div>
-                  <div>
-                    <a className={s.line} href="/login/facebook">
-                      <img className={s.buttonImg} src={line} />
-                    </a>
-                  </div>
+                  </p>
                 </div>
               </div>
             </LazyLoad>

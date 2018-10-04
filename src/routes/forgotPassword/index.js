@@ -16,16 +16,17 @@ const title = 'Forgot Password';
 
 function action(isMobile) {
   return {
-    chunks: ['forgotPassword'],
+    chunks: ['accounts-forgotPassword'],
     title,
-    component: (isMobile.isMobile ?
-      (<Layout>
+    component: isMobile.isMobile ? (
+      <Layout>
         <ForgotMobile />
-      </Layout>)  :
-      (<Layout>
+      </Layout>
+    ) : (
+      <Layout>
         <ForgotDesktop />
-      </Layout>)
-    ),
+      </Layout>
+    )
   };
 }
 

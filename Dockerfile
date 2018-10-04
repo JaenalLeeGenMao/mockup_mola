@@ -23,6 +23,8 @@ FROM node:8-alpine
 
 WORKDIR /var/www/mola-web
 
+ARG REACT_APP_ENV
+
 COPY package*.json .
 COPY yarn.lock .
 

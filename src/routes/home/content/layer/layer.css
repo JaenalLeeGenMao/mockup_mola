@@ -39,8 +39,8 @@
 .layer__parallax_layer_2 img {
   height: auto;
   width: auto;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 100vh;
+  max-height: 100vw;
 }
 
 .layer__parallax_layer_3 {
@@ -155,7 +155,7 @@
 
   .layer__parallax_layer_3_info {
     width: auto;
-    min-width: 1080px;
+    max-width: 1080px;
     text-align: left;
   }
 
@@ -170,6 +170,7 @@
 
   .layer__parallax_layer_2 img {
     max-width: 60%;
+    max-height: 100vh;
   }
 }
 
