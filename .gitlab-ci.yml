@@ -20,6 +20,11 @@ Build:
   before_script:
     - yarn config set cache-folder .yarn
     - yarn install
+  variables:
+    GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
+    GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
+    NODE_ENV: staging
+    REACT_APP_ENV: staging
   script:
     - npm run build
 
