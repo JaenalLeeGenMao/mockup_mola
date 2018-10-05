@@ -14,17 +14,15 @@ Build-Push-Docker-Staging:
   before_script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-      echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-    - apt-get update -qq && apt-get install -y -qq nodejs yarn
-    - yarn install
+    - apt-get update -qq && apt-get install -y -qq nodejs
+    - npm install
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
   script:
-    - yarn run build-stag
+    - npm build-stag
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
@@ -38,17 +36,15 @@ Build-Push-Docker-Production:
   before_script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-      echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-    - apt-get update -qq && apt-get install -y -qq nodejs yarn
-    - yarn install
+    - apt-get update -qq && apt-get install -y -qq nodejs
+    - npm install
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
   script:
-    - yarn run build-prod
+    - npm build-prod
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
