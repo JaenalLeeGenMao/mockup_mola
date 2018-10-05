@@ -76,6 +76,9 @@ class Register extends React.Component {
       email,
       csrf
     });
+    if (result.meta.status === 'success') {
+      window.location.href = `http://staging.mola.tv/accounts/login`;
+    }
     console.log(result);
   };
 

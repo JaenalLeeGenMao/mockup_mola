@@ -171,6 +171,12 @@ const verifyUserOTP = ({ token = '', email = '', csrf = '' }) => {
   })
     .then(response => {
       console.log('RESPONSE:\n', response);
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: {}
+      };
     })
     .catch(error => {
       console.log('ERROR:\n', error);
