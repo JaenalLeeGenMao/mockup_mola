@@ -1,33 +1,3 @@
-image: node:9.4.0
-
-cache:
-  paths:
-    - node_modules/
-    - .yarn
-
-before_script:
-  - apt-get update -qq && apt-get install
-
-stages:
-#   - test
-  - build
-  - push
-
-Build:
-  stage: build
-  tags:
-    - node
-  before_script:
-    - yarn config set cache-folder .yarn
-    - yarn install
-  variables:
-    GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
-    GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
-    NODE_ENV: staging
-    REACT_APP_ENV: staging
-  script:
-    - npm run build
-
 variables:
   REPOSITORY_HOST: asia.gcr.io
   IMAGE_NAME: $CI_PROJECT_NAME
@@ -40,12 +10,17 @@ Build-Push-Docker-Staging:
   before_script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    - apt-get update -qq && apt-get install -y -qq nodejs yarn
+    - yarn install
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
   script:
+    - yarn run build-stag
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
@@ -56,12 +31,20 @@ Build-Push-Docker-Production:
   image: google/cloud-sdk
   services:
     - docker:dind
+  before_script:
+    - export DOCKER_HOST="tcp://localhost:2375"
+    - docker info
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    - apt-get update -qq && apt-get install -y -qq nodejs yarn
+    - yarn install
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
   script:
+    - yarn run build-prod
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
