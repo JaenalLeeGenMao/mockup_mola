@@ -18,10 +18,11 @@ import Error from '../error/Error';
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
 import s from './Search.css';
-
 import searchDb from '../../../database/searchDb';
-
 import history from '../../../history';
+import Tracker from '../../../lib/tracker';
+
+let sessionId;
 
 class Search extends React.Component {
   constructor(props) {
@@ -59,6 +60,10 @@ class Search extends React.Component {
       searchKeyword
     } = nextProps;
 
+    if (process.env.BROWSER) {
+      sessionId = Tracker.sessionId();
+    }
+
     if (nextProps.search.genre.meta.status === 'loading' && prevState.genre.length <= 0) {
       getSearchGenre();
     }
@@ -94,7 +99,7 @@ class Search extends React.Component {
       recentSearch.meta.status === 'loading' &&
       prevState.recentSearch.length <= 0
     ) {
-      getRecentSearch('abc');
+      getRecentSearch(sessionId);
     }
 
     if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.genre.length <= 0) {
@@ -287,7 +292,7 @@ class Search extends React.Component {
   handleOnFocusSearch = () => {
     const { getRecentSearch } = this.props;
     if (!this.inputSearch.current.value) {
-      getRecentSearch('abc');
+      getRecentSearch(sessionId);
       this.setState({
         showAllRecentSearch: true,
         showGenre: false,
@@ -424,6 +429,7 @@ class Search extends React.Component {
                           onClick={this.handleClickRecentSearch}
                           recentSearchData={this.recentSearchData}
                           searchText={this.searchText}
+                          sessionId={sessionId}
                         />
                       )}
                     {!showAllRecentSearch &&
@@ -440,7 +446,11 @@ class Search extends React.Component {
                       resultStatus != 'error' &&
                       this.searchedMovie &&
                       this.searchedMovie.length > 0 && (
-                        <MovieSuggestion data={this.searchedMovie} searchText={this.searchText} />
+                        <MovieSuggestion
+                          data={this.searchedMovie}
+                          searchText={this.searchText}
+                          sessionId={sessionId}
+                        />
                       )}
                     {!showAllRecentSearch &&
                       !isLoadingResult &&

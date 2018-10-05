@@ -1,51 +1,44 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { delete as axiosDelete } from 'axios';
-import { RECENT_SEARCH_ENDPOINT } from '../../../../api/mola/endpoints';
+import MolaHandler from '@api/mola';
 import s from './RecentSearch.css';
 
 class RecentSearch extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.string),
     onClick: PropTypes.func,
-    searchText: PropTypes.string
+    searchText: PropTypes.string,
+    sessionId: PropTypes.string
   };
+
   state = {
     recentSearchData: this.props.recentSearchData
   };
+
   handleClearAllSearch = () => {
-    const config = {
-      withCredentials: false,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', //'application/json',
-        // "Access-Control-Allow-Origin": "*",
-        'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
-        // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-      }
-    };
-    axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc`, {
-      config
-    })
-      .then(result => {
+    const { sessionId } = this.props;
+    MolaHandler.deleteRecentSearchAll(sessionId).then(response => {
+      if (response.meta.status === 'success') {
         this.setState({
           recentSearchData: []
         });
-      })
-      .catch(err => {});
+      }
+    });
   };
 
   handleRemoveSearch = keyword => {
-    axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${keyword}`)
-      .then(result => {
+    const { sessionId } = this.props;
+    MolaHandler.deleteRecentSearch(sessionId, keyword).then(response => {
+      if (response.meta.status === 'success') {
         const recDt = this.state.recentSearchData.filter(dt => {
           return dt.keyword !== keyword;
         });
         this.setState({
           recentSearchData: recDt
         });
-      })
-      .catch(err => {});
+      }
+    });
   };
 
   handleClickItem = val => {
