@@ -1,6 +1,27 @@
+image: node:9.4.0
+
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+before_script:
+  - export DOCKER_HOST="tcp://localhost:2375"
+  - docker info
+  - apt-get update -qq && apt-get install
+
 stages:
 #   - test
+  - build
   - push
+
+Build My App:
+  stage: build
+  before_script:
+    - yarn config set cache-folder .yarn
+    - yarn install
+  script:
+    - npm run build
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
@@ -14,8 +35,6 @@ Build-Push-Docker-Staging:
   before_script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
-    - apt-get update -qq && apt-get install -y -qq nodejs
-    - npm install
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
