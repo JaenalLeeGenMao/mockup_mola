@@ -21,7 +21,7 @@ Build My App:
     - yarn config set cache-folder .yarn
     - yarn install
   script:
-    - npm run build-stag
+    - yarn build
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
@@ -41,7 +41,6 @@ Build-Push-Docker-Staging:
     NODE_ENV: staging
     REACT_APP_ENV: staging
   script:
-    - npm build-stag
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
@@ -55,15 +54,12 @@ Build-Push-Docker-Production:
   before_script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
-    - apt-get update -qq && apt-get install -y -qq nodejs
-    - npm install
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
   script:
-    - npm build-prod
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
