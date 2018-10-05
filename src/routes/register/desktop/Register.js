@@ -185,15 +185,17 @@ class Register extends React.Component {
                     className={`${s.formGroup} ${s.form__otp}`}
                     style={{ marginTop: '15px', marginBottom: '20px' }}
                   >
-                    <Form
-                      id="token"
-                      type="text"
-                      name="token"
-                      onChange={this.onChangeInput}
-                      value={token}
-                    >
-                      Enter OTP here
-                    </Form>
+                    <div className={s.verify__otp_input}>
+                      <Form
+                        id="token"
+                        type="text"
+                        name="token"
+                        onChange={this.onChangeInput}
+                        value={token}
+                      >
+                        Enter OTP here
+                      </Form>
+                    </div>
                     <button className={s.verify__button} onClick={this.handleVerificationOTP}>
                       Verify
                     </button>

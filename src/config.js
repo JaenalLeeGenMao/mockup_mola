@@ -12,7 +12,7 @@
 /* eslint-disable camelcase */
 const dotenv = require('dotenv');
 const MolaConfig = require('../src/global/config/api');
-const env = process.env.REACT_APP_ENV;
+const env = process.env.REACT_APP_ENV || 'staging';
 
 /* Override the values if the environment is not in the exception lists */
 dotenv.config();
