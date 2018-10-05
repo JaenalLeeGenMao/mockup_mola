@@ -1,3 +1,16 @@
+# Uses NodeJS V 9.4.0
+image: node:9.4.0
+
+# And to cache them as well.
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+# Docker images come with yarn preinstalled
+before_script:
+  - apt-get update -qq && apt-get install
+
 stages:
 #   - test
   - push
@@ -19,6 +32,9 @@ Build-Push-Docker-Staging:
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
+  environment:
+    name: REACT_APP_ENV
+    value: staging
   script:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
@@ -35,6 +51,9 @@ Build-Push-Docker-Production:
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
+  environment:
+    name: REACT_APP_ENV
+    value: production
   script:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh

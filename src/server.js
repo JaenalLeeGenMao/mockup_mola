@@ -9,6 +9,7 @@
 
 import path from 'path';
 import express from 'express';
+import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
@@ -60,6 +61,7 @@ app.set('trust proxy', config.trustProxy);
 // -----------------------------------------------------------------------------
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
+app.use(csurf({ cookie: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -138,7 +140,7 @@ app.get('*', async (req, res, next) => {
 
     const initialState = {
       user: req.user || {
-        id: '',
+        uid: '',
         firstName: '',
         lastName: '',
         email: '',
@@ -147,6 +149,9 @@ app.get('*', async (req, res, next) => {
         expire: '',
         type: '',
         lang: 'en'
+      },
+      runtime: {
+        csrf: req.csrfToken()
       }
     };
 
