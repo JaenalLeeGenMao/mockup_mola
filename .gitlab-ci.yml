@@ -21,7 +21,7 @@ Build My App:
     - yarn config set cache-folder .yarn
     - yarn install
   script:
-    - npm run build
+    - npm run build-stag
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
