@@ -23,7 +23,7 @@ class Theoplayer extends Component {
 
   componentDidMount() {
     var playerConfig = {
-      libraryLocation: '//cdn.theoplayer.com/dash/theoplayer/',
+      libraryLocation: '//cdn.theoplayer.com/dash/8f102ebd-bb69-4ae6-85e0-755998018e16/',
       ui: {
         fluid: true
       }
@@ -50,7 +50,7 @@ class Theoplayer extends Component {
       sources: [
         {
           src: this.props.movieUrl,
-          type: '' // sets type to HLS
+          type: 'application/x-mpegurl' // sets type to HLS
         }
       ],
       textTracks: [
