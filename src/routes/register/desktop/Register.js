@@ -8,9 +8,12 @@
  */
 
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Register.css';
+import $ from 'jquery';
+
 import Header from '@components/Header';
 import Form from '@components/FormInput';
 import facebook from '@global/style/icons/facebook.png';
@@ -18,7 +21,9 @@ import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
 import LazyLoad from '@components/common/Lazyload';
 import Auth from '@api/auth';
-import $ from 'jquery';
+
+import { setUserVariable } from '@actions/user';
+import s from './Register.css';
 
 class Register extends React.Component {
   constructor(props) {
@@ -27,7 +32,8 @@ class Register extends React.Component {
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      token: ''
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -42,11 +48,46 @@ class Register extends React.Component {
   };
 
   handleRegistration = async () => {
-    const { email, password } = this.state;
+    const { email, password } = this.state,
+      {
+        runtime: { csrf },
+        onSetUserVariables
+      } = this.props;
     $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
     const result = await Auth.createNewUser({
       email,
-      password
+      password,
+      csrf
+    });
+    console.log(result);
+    Object.keys(result.data).forEach(key => {
+      onSetUserVariables({ name: key, value: result.data[key] });
+    });
+  };
+
+  handleVerificationOTP = async () => {
+    const { email, token } = this.state,
+      {
+        runtime: { csrf }
+      } = this.props;
+
+    const result = await Auth.verifyUserOTP({
+      token,
+      email,
+      csrf
+    });
+    console.log(result);
+  };
+
+  handleResendOTP = async () => {
+    const { email } = this.state,
+      {
+        runtime: { csrf }
+      } = this.props;
+
+    const result = await Auth.resendUserOTP({
+      email,
+      csrf
     });
     console.log(result);
   };
@@ -56,8 +97,8 @@ class Register extends React.Component {
   };
 
   render() {
-    const { username, email, password, confirmPassword } = this.state;
-
+    const { username, email, password, confirmPassword, token } = this.state;
+    console.log(token);
     const isDark = true;
     return (
       <Fragment>
@@ -137,11 +178,25 @@ class Register extends React.Component {
                     Untuk melanjutkan nonton, <br />
                     kami perlu memverifikasi akun email kamu dulu.
                   </p>
-                  <div className={s.formGroup} style={{ marginTop: '15px', marginBottom: '20px' }}>
-                    <button className={s.button}>Cek Email</button>
+                  <div
+                    className={`${s.formGroup} ${s.form__otp}`}
+                    style={{ marginTop: '15px', marginBottom: '20px' }}
+                  >
+                    <Form
+                      id="token"
+                      type="text"
+                      name="token"
+                      onChange={this.onChangeInput}
+                      value={token}
+                    >
+                      Enter OTP here
+                    </Form>
+                    <button className={s.verify__button} onClick={this.handleVerificationOTP}>
+                      Verify
+                    </button>
                   </div>
                   <p style={{ textAlign: 'center' }}>
-                    <a className={s.label__resend} href="/accounts/register">
+                    <a className={s.label__resend} onClick={this.handleResendOTP}>
                       Resend OTP
                     </a>
                   </p>
@@ -156,4 +211,18 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(s)(Register);
+const mapStateToProps = state => {
+  return { ...state };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
+});
+
+export default compose(
+  withStyles(s),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(Register);

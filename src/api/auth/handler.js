@@ -136,12 +136,14 @@ const updateAuth = token => {
     });
 };
 
-const createNewUser = ({ email = '', password = '' }) => {
+const createNewUser = ({ email = '', password = '', csrf = '' }) => {
   console.log(`${AUTH_BASE_ENDPOINT}/v1/signup`);
   console.log(email, password);
-  return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, {
-    email,
-    password
+  const body = { email, password };
+  return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
   })
     .then(response => {
       console.log('RESPONSE:\n', response);
@@ -159,10 +161,57 @@ const createNewUser = ({ email = '', password = '' }) => {
     });
 };
 
+const verifyUserOTP = ({ token = '', email = '', csrf = '' }) => {
+  console.log(token);
+  const body = { token, email };
+  return post(`${AUTH_BASE_ENDPOINT}/v1/signup/otp/verify`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      console.log('RESPONSE:\n', response);
+    })
+    .catch(error => {
+      console.log('ERROR:\n', error);
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
+const resendUserOTP = ({ email = '', csrf = '' }) => {
+  console.log(email);
+  const body = { email };
+  return post(`${AUTH_BASE_ENDPOINT}/v1/signup/otp/resend`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      console.log('RESPONSE:\n', response);
+    })
+    .catch(error => {
+      console.log('ERROR:\n', error);
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
 export default {
   getUserInfo,
   getAuth,
   updateAuth,
   revokeAuth,
-  createNewUser
+  createNewUser,
+  verifyUserOTP,
+  resendUserOTP
 };
