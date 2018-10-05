@@ -33,6 +33,7 @@ Build-Push-Docker-Staging:
     NODE_ENV: staging
     REACT_APP_ENV: staging
   script:
+    - yarn run build-stag
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:
@@ -49,6 +50,7 @@ Build-Push-Docker-Production:
     NODE_ENV: production
     REACT_APP_ENV: production
   script:
+    - yarn run build-prod
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
   only:

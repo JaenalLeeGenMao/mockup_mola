@@ -1,61 +1,112 @@
 import React, { Fragment } from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-
-import { getAllHistory } from '../../../actions/history'; //test
+import { delete as axiosDelete } from 'axios';
+import { RECENT_SEARCH_ENDPOINT } from '../../../../api/mola/endpoints';
 import s from './RecentSearch.css';
 
 class RecentSearch extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.string),
-    isMobile: PropTypes.bool,
+    onClick: PropTypes.func,
+    searchText: PropTypes.string
+  };
+  state = {
+    recentSearchData: this.props.recentSearchData
+  };
+  handleClearAllSearch = () => {
+    const config = {
+      withCredentials: false,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', //'application/json',
+        // "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
+        // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+      }
+    };
+    axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc`, {
+      config
+    })
+      .then(result => {
+        this.setState({
+          recentSearchData: []
+        });
+      })
+      .catch(err => {});
   };
 
-  handleClearAllSearch = () => {
+  handleRemoveSearch = keyword => {
+    axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=abc&q=${keyword}`)
+      .then(result => {
+        const recDt = this.state.recentSearchData.filter(dt => {
+          return dt.keyword !== keyword;
+        });
+        this.setState({
+          recentSearchData: recDt
+        });
+      })
+      .catch(err => {});
+  };
 
-  }
-
-  handleRemoveSearch = () => {
-
-  }
+  handleClickItem = val => {
+    this.props.onClick(val);
+  };
 
   render() {
-    const { data } = this.props;
-
+    const { searchText } = this.props;
+    const { recentSearchData } = this.state;
+    const searchTxt = searchText !== undefined ? searchText : '';
     return (
       <Fragment>
-        <div className={s.resultTitle}>Recent Search</div>
-        <a className={s.clearRecentSearch__mobile} onClick={this.handleClickClearSearch}>Clear all</a>
-        <div className={s.resultContent}>
-          {
-            data.map( (data, index) => (
-              <span className={s.resultChip} key={index}> {data} <a onClick={this.handleRemoveSearch}><i/></a></span>
-            ))
-          }
-          <a className={s.clearRecentSearch} onClick={this.handleClickClearSearch}>Clear all</a>
-        </div>
+        {recentSearchData.length > 0 && (
+          <div className={s.resultRow}>
+            <div className={s.resultTitle}>Recent Search</div>
+            <a className={s.clearRecentSearch} onClick={this.handleClearAllSearch}>
+              Clear all
+            </a>
+            <div className={s.resultContent}>
+              {recentSearchData.map(data => {
+                const startIdx = data.keyword.toLowerCase().indexOf(searchTxt.toLowerCase());
+
+                const keywordRes =
+                  startIdx > -1 ? data.keyword.substr(startIdx, searchTxt.length) : '';
+                const keywordFirst = startIdx > -1 ? data.keyword.substr(0, startIdx) : '';
+                const keywordSecond =
+                  startIdx > -1
+                    ? data.keyword.substr(startIdx + searchTxt.length, data.keyword.length)
+                    : '';
+
+                return (
+                  <span className={s.resultChip} key={data.id}>
+                    <a
+                      className={s.resultChipText}
+                      onClick={() => this.handleClickItem(data.keyword)}
+                    >
+                      {searchTxt != '' && startIdx > -1 ? (
+                        <Fragment>
+                          <span>{keywordFirst}</span>
+                          <span className={s.keywordResult}>{keywordRes}</span>
+                          <span>{keywordSecond}</span>
+                        </Fragment>
+                      ) : (
+                        <span className={s.keywordResult}>{data.keyword}</span>
+                      )}
+                    </a>
+                    <a
+                      className={s.removeChip}
+                      onClick={() => this.handleRemoveSearch(data.keyword)}
+                    >
+                      <i />
+                    </a>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </Fragment>
     );
   }
 }
 
-function mapStateToProps(state) {
-//   console.log('stateeee', state);
-  return {
-    movies: state.history.movies,
-  };
-}
-
-const mapDispatchToProps = dispatch => ({
-  getAllHistory: () => dispatch(getAllHistory()),
-});
-
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(RecentSearch);
+export default withStyles(s)(RecentSearch);
