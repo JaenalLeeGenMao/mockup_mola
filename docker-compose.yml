@@ -11,10 +11,6 @@ services:
      - .:/var/www/mola-web
     links:  # link mola-web container to node container
      - node
-    environment:
-    - REACT_APP_ENV=staging
   node:
     container_name: node
     image: node:8-alpine # pulls from docker hub
-    environment:
-    - REACT_APP_ENV=staging

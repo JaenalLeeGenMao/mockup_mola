@@ -1,7 +1,7 @@
 const axios = require('axios');
 const apiConfig = require('../global/config/api');
 
-const apiHost = `${apiConfig[process.env.REACT_APP_ENV].endpoints.molatv}`;
+const apiHost = `${apiConfig[process.env.REACT_APP_ENV || 'staging'].endpoints.molatv}`;
 module.exports = {
   get(endPoint, token) {
     return new Promise((resolve, reject) => {

@@ -102,19 +102,29 @@
   cursor: pointer;
 }
 
+.verify__otp_input {
+  width: 75%;
+}
+
+.verify__otp_input input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .verify__button {
   position: relative;
   z-index: 1;
   display: block;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0;
   padding: 10px 16px;
   height: 50px;
-  width: 30%;
+  width: 25%;
   background: #2c56ff;
-  border: 1px solid #373277;
+  border: 1px solid #2c56ff;
   border-radius: 4px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   color: #fff;
   text-align: center;
   text-decoration: none;
