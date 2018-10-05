@@ -23,7 +23,7 @@ class Theoplayer extends Component {
 
   componentDidMount() {
     var playerConfig = {
-      libraryLocation: '//cdn.theoplayer.com/dash/8f102ebd-bb69-4ae6-85e0-755998018e16/',
+      libraryLocation: '//cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/',
       ui: {
         fluid: true
       }
