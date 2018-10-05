@@ -1,27 +1,27 @@
-image: node:8.10.0
+# image: node:8.10.0
 
-cache:
-  paths:
-    - node_modules/
-    - .yarn
+# cache:
+#   paths:
+#     - node_modules/
+#     - .yarn
 
-before_script:
-  - export DOCKER_HOST="tcp://localhost:2375"
-  - docker info
-  - apt-get update -qq && apt-get install
+# before_script:
+#   - export DOCKER_HOST="tcp://localhost:2375"
+#   - docker info
+#   - apt-get update -qq && apt-get install
 
 stages:
 #   - test
-  - build
+#   - build
   - push
 
-Build My App:
-  stage: build
-  before_script:
-    - yarn config set cache-folder .yarn
-    - yarn install
-  script:
-    - yarn build
+# Build My App:
+#   stage: build
+#   before_script:
+#     - yarn config set cache-folder .yarn
+#     - yarn install
+#   script:
+#     - yarn build
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
