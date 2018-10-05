@@ -34,7 +34,7 @@ Build-Push-Docker-Staging:
     REACT_APP_ENV: staging
   environment:
     name: REACT_APP_ENV
-    value: staging
+    action: staging
   script:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
@@ -53,7 +53,7 @@ Build-Push-Docker-Production:
     REACT_APP_ENV: production
   environment:
     name: REACT_APP_ENV
-    value: production
+    action: production
   script:
     - .gitlab-ci/auth_gcloud.sh
     - .gitlab-ci/push_docker.sh
