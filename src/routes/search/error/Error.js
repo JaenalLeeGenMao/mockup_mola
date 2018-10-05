@@ -8,19 +8,18 @@ import s from './Error.css';
 
 class SearchError extends React.Component {
   static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object),
+    data: PropTypes.arrayOf(PropTypes.object)
   };
 
   render() {
     return (
       <div className={s.searchErrorContainer}>
-        <LazyLoad src={errorImg}/>
-        <div className={s.searchErrorTitle}>
-          Oops!
-        </div>
-        <div className={s.searchErrorDetail}>
-          Sorry, there is problem with our page. Please try again later.
-        </div>
+        <LazyLoad src={errorImg}>
+          <div className={s.searchErrorTitle}>Oops!</div>
+          <div className={s.searchErrorDetail}>
+            Sorry, there is problem with our page. Please try again later.
+          </div>
+        </LazyLoad>
       </div>
     );
   }

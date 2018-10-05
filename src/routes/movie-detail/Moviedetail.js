@@ -2,6 +2,11 @@ import React, { Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
+import dateFormat from 'dateformat';
+import UaParser from 'ua-parser-js';
+import queryString from 'query-string';
+import _get from 'lodash';
+
 import Slider from 'react-slick';
 import Modal from 'react-responsive-modal';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -72,6 +77,8 @@ class Moviedetail extends React.Component {
       getMovieDetail(movieId);
     }
 
+    console.log(`[Moviedetail] getDerivedStateFromProps prevState `, prevState);
+
     return { ...prevState, movieDetail };
   }
 
@@ -95,6 +102,102 @@ class Moviedetail extends React.Component {
 
   onCloseModal = () => {
     this.setState({ open: false });
+  };
+
+  handleOnPlay = () => {};
+
+  handleOnTime = () => {
+    window.__theo_start = window.__theo_start || Date.now();
+    window.__theo_ps = Date.now();
+
+    const minutesElapsed = Math.floor((window.__theo_ps - window.__theo_start) / (60 * 1000));
+    if (minutesElapsed >= 1) {
+      this.handleOnTimePerMinute();
+      window.__theo_start = window.__theo_ps;
+    }
+  };
+
+  handleOnTimePerMinute = () => {
+    this.handleTracking({ clientIp, users, videoType, heartbeat: true }, this.props);
+  };
+
+  handleTracking = async ({
+    // users,
+    // videoType,
+    heartbeat = false
+    // clientIp,
+  }) => {
+    // Parse Current Url
+    const urlParams = queryString.parse(window.location.search);
+
+    // Get list of channels
+    const channels = dsClient.channels();
+
+    // Get & Parse UA
+    const UA = new UaParser();
+    UA.setUA(navigator.userAgent);
+
+    // Try get user_id & subs
+    // const userId = _get(users, 'profile.user_id', null);
+    // let adjustedSubs = [];
+    // if (userId !== null) {
+    //   adjustedSubs = await users.subscriptions.map(
+    //     subs => `${_get(subs, 'subscriptionId', null)}`,
+    //   );
+    // } else {
+    //   adjustedSubs = [null];
+    // }
+
+    // Try get platform and browser
+    const platform = _get(UA.getDevice(), 'type', null);
+    const osName = _get(UA.getOS(), 'name', null);
+    const osVersion = _get(UA.getOS(), 'version', null);
+    const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null;
+    const vendor = _get(UA.getDevice(), 'vendor', null);
+    const mobile = _get(UA.getDevice(), 'mobile', null);
+    const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null;
+
+    const browserName = _get(UA.getBrowser(), 'name', null);
+    const browserVersion = _get(UA.getBrowser(), 'version', null);
+    const browser = browserName && browserVersion ? `${browserName} ${browserVersion}` : null;
+
+    // Initialize Payload
+    const payload = {
+      data: {
+        project_id: 'molatv',
+        // referrer: `${window.location.origin}${currentLocation.pathname}${
+        //   currentLocation.search
+        // }`,
+        host: `${window.location.host}`,
+        path: `${window.location.host}${location.pathname}${location.search}`,
+        // session_id: dsClient.sessionId(), // Try get+set session_id
+        // page_content: document.title || null,
+        // ip: clientIp || null,
+        platform,
+        os,
+        device,
+        app: browser,
+        video_type: videoType || null,
+        client: 'mola-web',
+        screen_resolution: `${window.screen.width}x${window.screen.height}`,
+        user_id: userId,
+        // current_subscription_id: adjustedSubs,
+        hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
+        interval_beats: heartbeat ? 60 : 0
+      },
+      table: 'event_video_plays'
+    };
+
+    if (channels.includes(urlParams.v || '')) {
+      payload.data.channel = urlParams.v || 'sstv';
+    } else {
+      payload.data.video_id = urlParams.v;
+    }
+
+    const token = await dsClient.getOrCreateToken();
+
+    // Post to ds-feeder
+    dsClient.sendPubSub(payload, token);
   };
 
   movieTrailer = () => [
@@ -333,7 +436,11 @@ class Moviedetail extends React.Component {
           </Secondframe>
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
-              <Theoplayer movieUrl={trailerMovie} />
+              <Theoplayer
+                movieUrl={sampleMovie}
+                handleOnPlay={this.handleOnPlay}
+                handleOnTime={this.handleOnTime}
+              />
             </div>
           </Modal>
         </Layout>

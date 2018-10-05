@@ -1,6 +1,8 @@
 .resultRowWrap {
   display: block;
-  padding-bottom: 32px;
+  padding-bottom: 100px;
+
+  /* padding-bottom: 0; */
   margin: 0;
 }
 
