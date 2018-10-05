@@ -1,14 +1,6 @@
 @import '../../../components/variables.css';
 @import '../../../global/style/css/grainBackground.css';
 
-.headerNone {
-  display: none;
-}
-
-.headerDisplay {
-  display: block;
-}
-
 .root {
   background-color: #000;
   height: calc(100vh - 130px);

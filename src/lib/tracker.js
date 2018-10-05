@@ -20,11 +20,10 @@ class Tracker {
       .filter(function(item) {
         return item.indexOf('__sessId=') >= 0;
       });
-    if (sessionId.length) {
-      sessionId = sessionId[0].split('=')[1];
-    }
 
-    if (!sessionId) {
+    if (sessionId && sessionId.length) {
+      sessionId = sessionId[0].split('=')[1];
+    } else {
       sessionId =
         Math.random()
           .toString(36)
