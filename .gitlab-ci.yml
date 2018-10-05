@@ -32,9 +32,6 @@ Build-Push-Docker-Staging:
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
-  environment:
-    name: REACT_APP_ENV
-    action: staging
   script:
     - yarn run build-stag
     - .gitlab-ci/auth_gcloud.sh
@@ -52,9 +49,6 @@ Build-Push-Docker-Production:
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
-  environment:
-    name: REACT_APP_ENV
-    action: production
   script:
     - yarn run build-prod
     - .gitlab-ci/auth_gcloud.sh
