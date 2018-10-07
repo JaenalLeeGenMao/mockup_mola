@@ -280,11 +280,12 @@ const normalizeVideoStream = response => {
     return data.map(result => {
       const {
         id,
-        attributes: { streamSourceUrl }
+        attributes: { streamSourceUrl, subtitles }
       } = result;
       return {
         id,
-        streamSourceUrl
+        streamSourceUrl,
+        subtitles
       };
     });
   }

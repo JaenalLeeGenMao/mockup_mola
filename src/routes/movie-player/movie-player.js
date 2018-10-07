@@ -18,10 +18,20 @@ class Movieplayer extends Component {
     return { ...prevState, movieStream };
   }
 
-  isBuffer() {
-    setTimeout(() => {
-      console.log('runn');
-    }, 500);
+  isTheoPlayer() {
+    const {
+      movieStream: { data: movieStream }
+    } = this.props;
+    const subtitlesDt = movieStream.length > 0 ? movieStream[0].subtitles : '';
+    // console.log('data subtitles methode', subtitlesDt)
+
+    const myTheoPlayer = subtitlesDt.map(obj => ({
+      kind: obj.type,
+      srclang: obj.attributes.locale,
+      src: obj.attributes.url
+    }));
+    // console.log('myTheoPlayer', myTheoPlayer)
+    return myTheoPlayer;
   }
 
   render() {
@@ -30,24 +40,10 @@ class Movieplayer extends Component {
     } = this.props;
     const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
 
-    const movieConfig = {
-      movieSrc: streamSource,
-      kind: 'subtitles',
-      label: 'Indonesia',
-      subTitleUrl: 'example.srt',
-      srclang: 'id'
-    };
     return (
       <Fragment>
         {streamSource ? (
-          <Theoplayer
-            movieUrl={movieConfig.movieSrc}
-            kind={movieConfig.kind}
-            label={movieConfig.label}
-            subTitleUrl={movieConfig.subTitleUrl}
-            srclang={movieConfig.srclang}
-            isTrailer={true}
-          />
+          <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />
         ) : (
           ''
         )}
