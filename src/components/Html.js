@@ -90,6 +90,7 @@ class Html extends React.Component {
           {config.analytics.googleTrackingId && (
             <script src="https://www.google-analytics.com/analytics.js" async defer />
           )}
+          <link rel="stylesheet" type="text/css" href="./Theoplayer/Theoverstyle.css" />
         </body>
       </html>
     );
