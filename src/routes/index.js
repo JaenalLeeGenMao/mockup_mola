@@ -37,11 +37,11 @@ const routes = {
     },
     {
       path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'accounts-login' */ './login')
+      load: () => import(/* webpackChunkName: 'login' */ './login')
     },
     {
       path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'accounts-register' */ './register')
+      load: () => import(/* webpackChunkName: 'register' */ './register')
     },
     {
       path: '/about',
@@ -77,7 +77,7 @@ const routes = {
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
-      path: '/history',
+      path: '/accounts/history',
       load: () => import(/* webpackChunkName: 'history' */ './history')
     },
     {
@@ -86,7 +86,7 @@ const routes = {
     },
     {
       path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'accounts-profile' */ './profile')
+      load: () => import(/* webpackChunkName: 'profile' */ './profile')
     },
     // Movie-player
     {
@@ -100,19 +100,19 @@ const routes = {
     },
     {
       path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'accounts-forgotPassword' */ './forgotPassword')
+      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword')
     },
     {
       path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'accounts-resetPassword' */ './resetPassword')
+      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword')
     },
     {
       path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'accounts-security' */ './security')
+      load: () => import(/* webpackChunkName: 'security' */ './security')
     },
     {
       path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'accounts-setting' */ './setting')
+      load: () => import(/* webpackChunkName: 'setting' */ './setting')
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {

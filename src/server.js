@@ -110,9 +110,29 @@ app.use((err, req, res, next) => {
 // );
 const domain = config.api.config.endpoints.domain;
 
+// set a cookie
+app.use(function(req, res, next) {
+  // check if client sent cookie
+  var cookie = req.cookies;
+  if (`${cookie.UID}` === 'undefined' || cookie.UID === undefined) {
+    if (req.query.uid) {
+      res.cookie('UID', req.query.uid, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+    }
+  }
+  // if (`${cookie.SID}` !== "undefined" || cookie.SID !== undefined) {
+  //   res.cookie('SID', req.cookies.SID, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+  // }
+  next(); // <-- important!
+});
+
+app.get('/signin', (req, res) => {
+  return res.redirect(domain || 'http://jaenal.mola.tv');
+});
+
 app.get('/signout', (req, res) => {
-  res.clearCookie('_at');
-  res.clearCookie('_exp');
+  res.clearCookie('UID');
+  // res.clearCookie('SID');
+  // res.clearCookie('_exp');
   return res.redirect(domain || 'http://jaenal.mola.tv');
 });
 
@@ -140,7 +160,8 @@ app.get('*', async (req, res, next) => {
 
     const initialState = {
       user: req.user || {
-        uid: '',
+        uid: req.cookies.UID === 'undefined' ? '' : req.cookies.UID,
+        sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
         firstName: '',
         lastName: '',
         email: '',
@@ -160,64 +181,64 @@ app.get('*', async (req, res, next) => {
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }));
     store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || '' }));
 
-    let apiCall;
-    let result;
-    let accessTokenLifespan = -1;
-    const accessToken = req.cookies._at;
-    const tokenExpiry = req.cookies._exp;
-    const getUserInfo = async (token, updateCookie = true) => {
-      apiCall = await Auth.getUserInfo(token);
-      if (apiCall.meta.status === 'success') {
-        result = { ...result, ...apiCall.data };
-        Object.keys(result).forEach(function(key) {
-          store.dispatch(setUserVariable({ name: key, value: result[key] }));
-        });
+    // let apiCall;
+    // let result;
+    // let accessTokenLifespan = -1;
+    // const accessToken = req.cookies._at;
+    // const tokenExpiry = req.cookies._exp;
+    // const getUserInfo = async (token, updateCookie = true) => {
+    //   apiCall = await Auth.getUserInfo(token);
+    //   if (apiCall.meta.status === 'success') {
+    //     result = { ...result, ...apiCall.data };
+    //     Object.keys(result).forEach(function(key) {
+    //       store.dispatch(setUserVariable({ name: key, value: result[key] }));
+    //     });
 
-        if (updateCookie) {
-          const oneMonth = 30 * 24 * result.expire * 1000;
-          res.cookie('_at', result.token, {
-            maxAge: oneMonth,
-            httpOnly: true
-            // secure: !__DEV__,
-          });
-          res.cookie('_exp', oneMonth, {
-            maxAge: oneMonth,
-            httpOnly: true
-            // secure: !__DEV__,
-          });
-        }
-      }
-    };
+    //     if (updateCookie) {
+    //       const oneMonth = 30 * 24 * result.expire * 1000;
+    //       res.cookie('_at', result.token, {
+    //         maxAge: oneMonth,
+    //         httpOnly: true
+    //         // secure: !__DEV__,
+    //       });
+    //       res.cookie('_exp', oneMonth, {
+    //         maxAge: oneMonth,
+    //         httpOnly: true
+    //         // secure: !__DEV__,
+    //       });
+    //     }
+    //   }
+    // };
 
-    if (accessToken && tokenExpiry) {
-      accessTokenLifespan = tokenExpiry - Date.now() / 1000;
-      if (accessTokenLifespan < 0) {
-        res.cookie('_at', '', { expires: new Date(0) });
-        res.cookie('_exp', '', { expires: new Date(0) });
-        return res.redirect(req.originalUrl);
-      } else if (accessTokenLifespan < 12 * 3600 * 1000) {
-        // if lifespan of token is less than 12 hours then get new access token
-        apiCall = await Auth.updateAuth(accessToken);
+    // if (accessToken && tokenExpiry) {
+    //   accessTokenLifespan = tokenExpiry - Date.now() / 1000;
+    //   if (accessTokenLifespan < 0) {
+    //     res.cookie('_at', '', { expires: new Date(0) });
+    //     res.cookie('_exp', '', { expires: new Date(0) });
+    //     return res.redirect(req.originalUrl);
+    //   } else if (accessTokenLifespan < 12 * 3600 * 1000) {
+    //     // if lifespan of token is less than 12 hours then get new access token
+    //     apiCall = await Auth.updateAuth(accessToken);
 
-        if (apiCall.meta.status === 'success') {
-          result = { ...apiCall.data };
-          await getUserInfo(apiCall.data.token);
-        }
-      } else {
-        /** GET EXISTING USER INFO  */
-        await getUserInfo(accessToken, false);
-      }
-    } else if (req.query.code) {
-      /** ON CLICK LOGIN  */
-      apiCall = await Auth.getAuth({
-        code: req.query.code,
-        redirect_uri: domain || 'http://jaenal.mola.tv'
-      });
-      if (apiCall.meta.status === 'success') {
-        result = { ...apiCall.data };
-        await getUserInfo(apiCall.data.token);
-      }
-    }
+    //     if (apiCall.meta.status === 'success') {
+    //       result = { ...apiCall.data };
+    //       await getUserInfo(apiCall.data.token);
+    //     }
+    //   } else {
+    //     /** GET EXISTING USER INFO  */
+    //     await getUserInfo(accessToken, false);
+    //   }
+    // } else if (req.query.code) {
+    //   /** ON CLICK LOGIN  */
+    //   apiCall = await Auth.getAuth({
+    //     code: req.query.code,
+    //     redirect_uri: domain || 'http://jaenal.mola.tv'
+    //   });
+    //   if (apiCall.meta.status === 'success') {
+    //     result = { ...apiCall.data };
+    //     await getUserInfo(apiCall.data.token);
+    //   }
+    // }
 
     const userAgent = req.get('User-Agent');
     const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(

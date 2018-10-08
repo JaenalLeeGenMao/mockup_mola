@@ -16,7 +16,7 @@ const title = 'New User Registration';
 
 function action(isMobile) {
   return {
-    chunks: ['accounts-register'],
+    chunks: ['register'],
     title,
     component: isMobile.isMobile ? (
       <Layout>

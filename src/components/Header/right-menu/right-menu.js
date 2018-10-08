@@ -34,8 +34,11 @@ class RightMenu extends Component {
 
   handleSignOut = e => {
     e.preventDefault();
-    const { user } = this.props;
-    Auth.revokeAuth(user.token).then(response => {
+    const {
+      user: { uid },
+      runtime: { csrf }
+    } = this.props;
+    Auth.requestLogout({ uid, csrf }).then(response => {
       if (response.meta.status === 'success') {
         window.location.href = '/signout';
       }
@@ -46,7 +49,7 @@ class RightMenu extends Component {
     const {
       color,
       searchOff,
-      user: { id: userID = '', firstName = '' }
+      user: { uid: userID = '', firstName = '' }
     } = this.props;
     return (
       <div className={styles.right__menu}>
@@ -87,17 +90,17 @@ class RightMenu extends Component {
                 </Link>
               )}
               {userID && (
-                <Link style={{ color }} to="/profile">
+                <Link style={{ color }} to="/accounts/profile">
                   Account
                 </Link>
               )}
               {userID && (
-                <Link style={{ color }} to="/history">
+                <Link style={{ color }} to="/accounts/history">
                   History
                 </Link>
               )}
               {userID && (
-                <Link style={{ color }} to="/inbox">
+                <Link style={{ color }} to="/accounts/inbox">
                   Inbox
                 </Link>
               )}

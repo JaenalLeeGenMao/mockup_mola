@@ -8,21 +8,30 @@
  */
 
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+
+import { setUserVariable } from '@actions/user';
+
+import Auth from '@api/auth';
+
 import Header from '@components/Header';
 import Form from '@components/FormInput';
 import LazyLoad from '@components/common/Lazyload';
-import s from './Login.css';
+
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
+
+import s from './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      usernameOrEmail: '',
+      email: '',
       password: ''
     };
 
@@ -37,12 +46,27 @@ class Login extends React.Component {
     });
   };
 
+  handleLogin = async () => {
+    const { email, password } = this.state,
+      {
+        runtime: { csrf }
+      } = this.props;
+    const result = await Auth.requestLogin({
+      email,
+      password,
+      csrf
+    });
+    if (result.meta.status === 'success') {
+      window.location.href = `/signin?uid=${result.data.uid}`;
+    }
+  };
+
   static propTypes = {
     title: PropTypes.string.isRequired
   };
 
   render() {
-    const { usernameOrEmail, password } = this.state;
+    const { email, password } = this.state;
 
     const isDark = true;
     return (
@@ -57,14 +81,14 @@ class Login extends React.Component {
                   Wah, kami kangen sama kamu! <br />
                   Masukkan data-data mu dan ayo mulai.
                 </p>
-                <form method="post">
+                <div>
                   <Form
                     className={s.formMobile}
-                    id="usernameOrEmail"
+                    id="email"
                     type="text"
-                    name="usernameOrEmail"
+                    name="email"
                     onChange={this.onChangeInput}
-                    value={usernameOrEmail}
+                    value={email}
                     autoFocus
                   >
                     Email or username
@@ -83,11 +107,11 @@ class Login extends React.Component {
                     Lupa Password ?
                   </a>
                   <div className={s.formGroup}>
-                    <button className={s.button} type="submit">
+                    <button className={s.button} onClick={this.handleLogin}>
                       SIGN IN
                     </button>
                   </div>
-                </form>
+                </div>
                 <strong className={s.lineThrough}>Atau</strong>
                 <div className={s.flexButton}>
                   <div>
@@ -118,4 +142,18 @@ class Login extends React.Component {
   }
 }
 
-export default withStyles(s)(Login);
+const mapStateToProps = state => {
+  return { ...state };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
+});
+
+export default compose(
+  withStyles(s),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(Login);
