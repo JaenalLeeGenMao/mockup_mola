@@ -67,13 +67,13 @@ class Register extends React.Component {
     });
   };
 
-  handleVerificationOTP = async () => {
+  handleVerificationToken = async () => {
     const { email, token } = this.state,
       {
         runtime: { csrf }
       } = this.props;
 
-    const result = await Auth.verifyUserOTP({
+    const result = await Auth.verifyUserToken({
       token,
       email,
       csrf
@@ -83,17 +83,17 @@ class Register extends React.Component {
     }
   };
 
-  handleResendOTP = async () => {
+  handleResendToken = async () => {
     const { email } = this.state,
       {
         runtime: { csrf }
       } = this.props;
 
-    const result = await Auth.resendUserOTP({
+    const result = await Auth.resendUserToken({
       email,
       csrf
     });
-    console.info(`Please check your email OTP's on ${email}`);
+    console.info(`Please check your email Token's on ${email}`);
   };
 
   static propTypes = {
@@ -197,12 +197,12 @@ class Register extends React.Component {
                         Enter OTP here
                       </Form>
                     </div>
-                    <button className={s.verify__button} onClick={this.handleVerificationOTP}>
+                    <button className={s.verify__button} onClick={this.handleVerificationToken}>
                       Verify
                     </button>
                   </div>
                   <p style={{ textAlign: 'center' }}>
-                    <a className={s.label__resend} onClick={this.handleResendOTP}>
+                    <a className={s.label__resend} onClick={this.handleResendToken}>
                       Resend OTP
                     </a>
                   </p>

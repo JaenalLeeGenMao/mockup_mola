@@ -1,140 +1,5 @@
-import { get, post } from 'axios';
+import { post, patch } from 'axios';
 import { AUTH_BASE_ENDPOINT } from './endpoints';
-import utils from './util';
-
-import { api } from '@source/config';
-const { config } = api;
-
-// const getAuth = ({ code, redirect_uri }) => {
-//   const {
-//     endpoints: { auth: authURL },
-//     tokenAuth: authConfig
-//   } = config;
-//   return post(`${authURL}/_/oauth2/v1/token`, {
-//     ...authConfig,
-//     redirect_uri,
-//     code
-//   })
-//     .then(response => {
-//       if (response.status === 200) {
-//         const result = utils.normalizeAuth(response);
-//         return {
-//           meta: {
-//             status: 'success',
-//             error: ''
-//           },
-//           data: result
-//         };
-//       }
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error
-//         },
-//         data: {}
-//       };
-//     });
-// };
-
-// const getUserInfo = token => {
-//   const {
-//     endpoints: { auth: authURL }
-//   } = config;
-//   return get(`${authURL}/_/v1/userinfo`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     }
-//   })
-//     .then(response => {
-//       const result = utils.normalizeUserInfo(response);
-//       return {
-//         meta: {
-//           status: 'success',
-//           error: ''
-//         },
-//         data: result
-//       };
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error
-//         },
-//         data: {}
-//       };
-//     });
-// };
-
-// const revokeAuth = token => {
-//   const {
-//     endpoints: { auth: authURL },
-//     tokenAuth: authConfig
-//   } = config;
-//   return post(`${authURL}/_/oauth2/v1/revoke`, {
-//     app_key: authConfig.app_key,
-//     app_secret: authConfig.app_secret,
-//     token
-//   })
-//     .then(response => {
-//       if (response.data.status === 'success') {
-//         return {
-//           meta: {
-//             status: 'success',
-//             error: ''
-//           },
-//           data: {}
-//         };
-//       }
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error
-//         },
-//         data: {}
-//       };
-//     });
-// };
-
-// const updateAuth = token => {
-//   const {
-//     endpoints: { auth: authURL },
-//     tokenAuth: authConfig
-//   } = config;
-//   return get(`${authURL}/_/v1/access_token`, {
-//     params: {
-//       app_key: authConfig.app_key,
-//       app_secret: authConfig.app_secret,
-//       access_token: token,
-//       expires_in: 3600
-//     }
-//   })
-//     .then(response => {
-//       if (response.status === 200) {
-//         const result = utils.normalizeAuth(response.data);
-//         return {
-//           meta: {
-//             status: 'success',
-//             error: ''
-//           },
-//           data: result
-//         };
-//       }
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error
-//         },
-//         data: {}
-//       };
-//     });
-// };
 
 const createNewUser = ({ email = '', password = '', csrf = '' }) => {
   const body = { email, password };
@@ -163,14 +28,14 @@ const createNewUser = ({ email = '', password = '', csrf = '' }) => {
     });
 };
 
-const verifyUserOTP = ({ token = '', email = '', csrf = '' }) => {
+const verifyUserToken = ({ token = '', email = '', csrf = '' }) => {
   const body = { token, email };
   return post(`${AUTH_BASE_ENDPOINT}/v1/signup/otp/verify`, body, {
     headers: {
       'x-csrf-token': csrf
     }
   })
-    .then(response => {
+    .then(() => {
       return {
         meta: {
           status: 'success'
@@ -189,15 +54,20 @@ const verifyUserOTP = ({ token = '', email = '', csrf = '' }) => {
     });
 };
 
-const resendUserOTP = ({ email = '', csrf = '' }) => {
+const resendUserToken = ({ email = '', csrf = '' }) => {
   const body = { email };
   return post(`${AUTH_BASE_ENDPOINT}/v1/signup/otp/resend`, body, {
     headers: {
       'x-csrf-token': csrf
     }
   })
-    .then(response => {
-      console.log('RESPONSE:\n', response);
+    .then(() => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: {}
+      };
     })
     .catch(error => {
       return {
@@ -218,7 +88,6 @@ const requestLogin = ({ email = '', password = '', csrf = '' }) => {
     }
   })
     .then(response => {
-      console.log(response);
       return {
         meta: {
           status: 'success'
@@ -263,14 +132,88 @@ const requestLogout = ({ uid = '', csrf = '' }) => {
     });
 };
 
+const resetPassword = ({ email = '', csrf = '' }) => {
+  const body = { email };
+  return post(`${AUTH_BASE_ENDPOINT}/v1/password/forgot`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
+const verifyPasswordToken = ({ email = '', token = '', csrf = '' }) => {
+  const body = { email, token };
+  return post(`${AUTH_BASE_ENDPOINT}/v1/password/token`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
+const updateNewPassword = ({ password = '', csrf = '' }) => {
+  const body = { password };
+  return patch(`${AUTH_BASE_ENDPOINT}/v1/password`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
 export default {
-  // getUserInfo,
-  // getAuth,
-  // updateAuth,
-  // revokeAuth,
   createNewUser,
-  verifyUserOTP,
-  resendUserOTP,
+  verifyUserToken,
+  resendUserToken,
   requestLogin,
   requestLogout
 };
