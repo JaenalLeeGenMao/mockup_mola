@@ -21,6 +21,6 @@
 
 @media screen and (max-width: 500px) {
   .searchErrorContainer {
-    width: 100%;
+    width: 90%;
   }
 }
