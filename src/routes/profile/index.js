@@ -6,7 +6,7 @@ import Layout from '@components/Layout';
 const title = 'Profile';
 function action({ isMobile }) {
   return {
-    chunks: ['accounts-profile'],
+    chunks: ['profile'],
     title,
     component: (
       <Layout>

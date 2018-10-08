@@ -16,8 +16,8 @@ const title = 'Log In';
 
 function action({ isMobile }) {
   return {
-    chunks: ['accounts-login'],
     title,
+    chunks: ['login'],
     component: isMobile ? (
       <Layout>
         <LoginMobile />

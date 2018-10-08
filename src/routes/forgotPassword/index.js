@@ -16,7 +16,7 @@ const title = 'Forgot Password';
 
 function action(isMobile) {
   return {
-    chunks: ['accounts-forgotPassword'],
+    chunks: ['forgotPassword'],
     title,
     component: isMobile.isMobile ? (
       <Layout>

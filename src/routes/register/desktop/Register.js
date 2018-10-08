@@ -14,13 +14,15 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import $ from 'jquery';
 
+import Auth from '@api/auth';
+
 import Header from '@components/Header';
 import Form from '@components/FormInput';
+import LazyLoad from '@components/common/Lazyload';
+
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
-import LazyLoad from '@components/common/Lazyload';
-import Auth from '@api/auth';
 
 import { setUserVariable } from '@actions/user';
 import s from './Register.css';
@@ -59,7 +61,7 @@ class Register extends React.Component {
       password,
       csrf
     });
-    console.log(result);
+
     Object.keys(result.data).forEach(key => {
       onSetUserVariables({ name: key, value: result.data[key] });
     });
@@ -79,7 +81,6 @@ class Register extends React.Component {
     if (result.meta.status === 'success') {
       window.location.href = `http://staging.mola.tv/accounts/login`;
     }
-    console.log(result);
   };
 
   handleResendOTP = async () => {
@@ -92,7 +93,7 @@ class Register extends React.Component {
       email,
       csrf
     });
-    console.log(result);
+    console.info(`Please check your email OTP's on ${email}`);
   };
 
   static propTypes = {
