@@ -6,7 +6,7 @@ module.exports = {
     },
     endpoints: {
       molatv: 'http://mola.lukitomo.com/v2',
-      auth: 'http://jaenal.mola.tv',
+      auth: 'http://jaenal.mola.tv/accounts/_',
       domain: 'http://jaenal.mola.tv'
     },
     auth: {
@@ -32,7 +32,7 @@ module.exports = {
     },
     endpoints: {
       molatv: 'https://api.staging.mola.tv/v2',
-      auth: 'https://accounts.supersoccer.tv',
+      auth: 'http://staging.mola.tv/accounts/_',
       domain: 'https://staging.mola.tv'
     },
     auth: {
@@ -58,7 +58,7 @@ module.exports = {
     },
     endpoints: {
       molatv: 'https://api.supersoccer.tv/v2',
-      auth: 'https://accounts.supersoccer.tv',
+      auth: 'https://www.mola.tv/accounts/_',
       domain: 'http://www.mola.tv'
     },
     auth: {

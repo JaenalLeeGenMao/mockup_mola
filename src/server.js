@@ -31,9 +31,9 @@ import router from './router';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
-import { setUserVariable } from './actions/user';
+// import { setUserVariable } from './actions/user';
 import config from './config';
-import Auth from '@api/auth';
+// import Auth from '@api/auth';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -179,7 +179,7 @@ app.get('*', async (req, res, next) => {
     const store = configureStore(initialState);
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }));
-    store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || '' }));
+    // store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || '' }));
 
     // let apiCall;
     // let result;

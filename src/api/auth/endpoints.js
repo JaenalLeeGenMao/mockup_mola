@@ -1,3 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { api } from '@source/config';
+const { config } = api;
 
-export const AUTH_BASE_ENDPOINT = 'http://staging.mola.tv/accounts/_';
+export const AUTH_BASE_ENDPOINT = `${config.endpoints.auth}`;
