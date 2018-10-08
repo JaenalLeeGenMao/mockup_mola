@@ -8,48 +8,105 @@
  */
 
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Register.css';
+import $ from 'jquery';
+
+import Auth from '@api/auth';
+
 import Header from '@components/Header';
 import Form from '@components/FormInput';
+import LazyLoad from '@components/common/Lazyload';
+
 import facebook from '@global/style/icons/facebook.png';
 import google from '@global/style/icons/google.png';
 import line from '@global/style/icons/line.png';
-import LazyLoad from '@components/common/Lazyload';
+
+import { setUserVariable } from '@actions/user';
+import s from './Register.css';
 
 class Register extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       username: '',
-      emailPhone: '',
+      email: '',
       password: '',
-      confirmPassword: ''
-    }
+      confirmPassword: '',
+      token: ''
+    };
 
-    this.onChangeInput = this.onChangeInput.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this);
   }
 
-  onChangeInput = (e) => {
-    const target = e.target
-    const { id, value } = target
+  handleRegistration = async () => {
+    const { email, password } = this.state,
+      {
+        runtime: { csrf },
+        onSetUserVariables
+      } = this.props;
+
+    // console.log('asd', this.state.username)
+
+    if (this.state.username) {
+      $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
+    }
+    const result = await Auth.createNewUser({
+      email,
+      password,
+      csrf
+    });
+
+    Object.keys(result.data).forEach(key => {
+      onSetUserVariables({ name: key, value: result.data[key] });
+    });
+  };
+
+  handleVerificationToken = async () => {
+    const { email, token } = this.state,
+      {
+        runtime: { csrf }
+      } = this.props;
+
+    const result = await Auth.verifyUserToken({
+      token,
+      email,
+      csrf
+    });
+    if (result.meta.status === 'success') {
+      window.location.href = `http://staging.mola.tv/accounts/login`;
+    }
+  };
+
+  handleResendToken = async () => {
+    const { email } = this.state,
+      {
+        runtime: { csrf }
+      } = this.props;
+
+    const result = await Auth.resendUserToken({
+      email,
+      csrf
+    });
+    console.info(`Please check your email Token's on ${email}`);
+  };
+
+  onChangeInput = e => {
+    const target = e.target;
+    const { id, value } = target;
     this.setState({
       [id]: value
-    })
-  }
+    });
+  };
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired
   };
 
   render() {
-    const {
-      username,
-      emailPhone,
-      password,
-      confirmPassword
-    } = this.state
+    const { username, email, password, confirmPassword, token } = this.state;
 
     const isDark = true;
     return (
@@ -58,64 +115,105 @@ class Register extends React.Component {
         <div className={s.wrapper}>
           <div className={s.root}>
             <LazyLoad>
-              <div className={s.container}>
-                <p className={s.labelHeader}>Daftar mola sekarang !</p>
-                <form method="post">
-                  <Form className={s.formMobile}
-                    id="username"
-                    type="text"
-                    name="username"
-                    onChange={this.onChangeInput}
-                    value={username}
-                    autoFocus>Username
-                  </Form>
-                  <Form className={s.formMobile}
-                    id="emailPhone"
-                    type="text"
-                    name="emailPhone"
-                    onChange={this.onChangeInput}
-                    value={emailPhone}
-                  >Email or Phonenumber
-                  </Form>
-                  <Form className={s.formMobile}
-                    id="password"
-                    type="password"
-                    name="password"
-                    onChange={this.onChangeInput}
-                    value={password}
-                  >Password
-                  </Form>
-                  <Form className={s.formMobile}
-                    id="confirmPassword"
-                    type="password"
-                    name="confirmPassword"
-                    onChange={this.onChangeInput}
-                    value={confirmPassword}
-                  >Confirm password
-                  </Form>
-                  <div className={s.formGroup} style={{ marginTop: '15px' }}>
-                    <button className={s.button} type="submit">
-                                    SIGN UP
+              <div className={s.flip}>
+                <div className={s.container}>
+                  <p className={s.labelHeader}>Daftar mola sekarang !</p>
+                  <div>
+                    <Form
+                      className={s.formMobile}
+                      id="username"
+                      type="text"
+                      name="username"
+                      onChange={this.onChangeInput}
+                      value={username}
+                      autoFocus
+                    >
+                      Username
+                    </Form>
+                    <Form
+                      className={s.formMobile}
+                      id="email"
+                      type="text"
+                      name="email"
+                      onChange={this.onChangeInput}
+                      value={email}
+                    >
+                      Email or Phonenumber
+                    </Form>
+                    <Form
+                      className={s.formMobile}
+                      id="password"
+                      type="password"
+                      name="password"
+                      onChange={this.onChangeInput}
+                      value={password}
+                    >
+                      Password
+                    </Form>
+                    <Form
+                      className={s.formMobile}
+                      id="confirmPassword"
+                      type="password"
+                      name="confirmPassword"
+                      onChange={this.onChangeInput}
+                      value={confirmPassword}
+                    >
+                      Confirm password
+                    </Form>
+                    <div className={s.formGroup} style={{ marginTop: '15px' }}>
+                      <button className={s.button} onClick={this.handleRegistration}>
+                        SIGN UP
+                      </button>
+                    </div>
+                  </div>
+                  <strong className={s.lineThrough}>Atau</strong>
+                  <div className={s.flexButton}>
+                    <div>
+                      <a className={s.google} href="/login/facebook">
+                        <img src={google} className={s.buttonMobile} />
+                      </a>
+                    </div>
+                    <div>
+                      <a className={s.facebook} href="/login/facebook">
+                        <img src={facebook} className={s.buttonMobile} />
+                      </a>
+                    </div>
+                    <div>
+                      <a className={s.line} href="/login/facebook">
+                        <img src={line} className={s.buttonMobile} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className={s.containerBack}>
+                  <p className={s.labelHeader}>Verifikasi Akun !</p>
+                  <p>
+                    Untuk melanjutkan nonton, <br />
+                    kami perlu memverifikasi akun email kamu dulu.
+                  </p>
+                  <div
+                    className={`${s.formGroup} ${s.form__otp}`}
+                    style={{ marginTop: '15px', marginBottom: '20px' }}
+                  >
+                    <Form
+                      className={s.form__otp__input}
+                      id="token"
+                      type="text"
+                      name="token"
+                      onChange={this.onChangeInput}
+                      value={token}
+                    >
+                      Enter OTP here
+                    </Form>
+                    <button className={s.verify__button} onClick={this.handleVerificationToken}>
+                      Verify
                     </button>
                   </div>
-                </form>
-                <strong className={s.lineThrough}>Atau</strong>
-                <div className={s.flexButton}>
-                  <div>
-                    <a className={s.google} href="/login/facebook">
-                      <img src={google} className={s.buttonMobile} />
+                  <p style={{ textAlign: 'center' }}>
+                    <a className={s.label__resend} onClick={this.handleResendToken}>
+                      Resend OTP
                     </a>
-                  </div>
-                  <div>
-                    <a className={s.facebook} href="/login/facebook">
-                      <img src={facebook} className={s.buttonMobile} />
-                    </a>
-                  </div>
-                  <div>
-                    <a className={s.line} href="/login/facebook">
-                      <img src={line} className={s.buttonMobile} />
-                    </a>
-                  </div>
+                  </p>
                 </div>
               </div>
             </LazyLoad>
@@ -126,4 +224,18 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(s)(Register);
+const mapStateToProps = state => {
+  return { ...state };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
+});
+
+export default compose(
+  withStyles(s),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(Register);
