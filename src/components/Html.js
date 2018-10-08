@@ -63,14 +63,14 @@ class Html extends React.Component {
           <link
             rel="stylesheet"
             type="text/css"
-            href="https://cdn.myth.theoplayer.com/0404472c-babf-4493-b331-268e77603598/ui.css"
+            href="//cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/ui.css"
           />
           <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js" />
           <script
             type="text/javascript"
             src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
           />
-          <script src="//cdn.theoplayer.com/dash/theoplayer/THEOplayer.js" />
+          <script src="//cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/THEOplayer.js" />
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
@@ -90,6 +90,7 @@ class Html extends React.Component {
           {config.analytics.googleTrackingId && (
             <script src="https://www.google-analytics.com/analytics.js" async defer />
           )}
+          <link rel="stylesheet" type="text/css" href="./Theoplayer/Theoverstyle.css" />
         </body>
       </html>
     );

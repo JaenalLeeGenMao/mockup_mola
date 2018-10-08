@@ -10,17 +10,18 @@ module.exports = {
       domain: 'http://jaenal.mola.tv'
     },
     auth: {
-      app_key: "9KSkjpIb3I",
-      response_type: "code",
-      redirect_uri: "https://example.com/callback", /** redirect uri must change to current page */
-      scope: "https://api.supersoccer.tv/users/users.profile.read https://api.supersoccer.tv/users/users.subscription.read https://api.supersoccer.tv/offline_access",
-      state: "po8mN1ip7ab"
+      app_key: '9KSkjpIb3I',
+      response_type: 'code',
+      redirect_uri: 'https://example.com/callback' /** redirect uri must change to current page */,
+      scope:
+        'https://api.supersoccer.tv/users/users.profile.read https://api.supersoccer.tv/users/users.subscription.read https://api.supersoccer.tv/offline_access',
+      state: 'po8mN1ip7ab'
     },
     tokenAuth: {
-      app_key: "9KSkjpIb3I",
-      app_secret: "VEwMSSob5hPhXveRgTGXpSYmoTjDFVFq4BT1FXx2aEBJbqNhu3NRyaF83GsqLz9l",
-      grant_type: "authorization_code",
-      redirect_uri: "https://example.com/callback", /** redirect uri must change to current page */
+      app_key: '9KSkjpIb3I',
+      app_secret: 'VEwMSSob5hPhXveRgTGXpSYmoTjDFVFq4BT1FXx2aEBJbqNhu3NRyaF83GsqLz9l',
+      grant_type: 'authorization_code',
+      redirect_uri: 'https://example.com/callback' /** redirect uri must change to current page */,
       code: 'overrideCodeIsGeneratedWhenVerified'
     }
   },
@@ -30,22 +31,23 @@ module.exports = {
       maxRedirects: 1
     },
     endpoints: {
-      molatv: 'http://api.staging.mola.tv/v2',
+      molatv: 'https://api.staging.mola.tv/v2',
       auth: 'https://accounts.supersoccer.tv',
-      domain: 'http://staging.mola.tv'
+      domain: 'https://staging.mola.tv'
     },
     auth: {
-      app_key: "9KSkjpIb3I",
-      response_type: "code",
-      redirect_uri: "https://example.com/callback", /** redirect uri must change to current page */
-      scope: "https://api.supersoccer.tv/users/users.profile.read https://api.supersoccer.tv/users/users.subscription.read https://api.supersoccer.tv/offline_access",
-      state: "po8mN1ip7ab"
+      app_key: '9KSkjpIb3I',
+      response_type: 'code',
+      redirect_uri: 'https://example.com/callback' /** redirect uri must change to current page */,
+      scope:
+        'https://api.supersoccer.tv/users/users.profile.read https://api.supersoccer.tv/users/users.subscription.read https://api.supersoccer.tv/offline_access',
+      state: 'po8mN1ip7ab'
     },
     tokenAuth: {
-      app_key: "9KSkjpIb3I",
-      app_secret: "VEwMSSob5hPhXveRgTGXpSYmoTjDFVFq4BT1FXx2aEBJbqNhu3NRyaF83GsqLz9l",
-      grant_type: "authorization_code",
-      redirect_uri: "https://example.com/callback", /** redirect uri must change to current page */
+      app_key: '9KSkjpIb3I',
+      app_secret: 'VEwMSSob5hPhXveRgTGXpSYmoTjDFVFq4BT1FXx2aEBJbqNhu3NRyaF83GsqLz9l',
+      grant_type: 'authorization_code',
+      redirect_uri: 'https://example.com/callback' /** redirect uri must change to current page */,
       code: 'overrideCodeIsGeneratedWhenVerified'
     }
   },
@@ -60,18 +62,19 @@ module.exports = {
       domain: 'http://www.mola.tv'
     },
     auth: {
-      app_key: "9KSkjpIb3I",
-      response_type: "code",
-      redirect_uri: "https://example.com/callback", /** redirect uri must change to current page */
-      scope: "https://api.supersoccer.tv/users/users.profile.read https://api.supersoccer.tv/users/users.subscription.read https://api.supersoccer.tv/offline_access",
-      state: "po8mN1ip7ab"
+      app_key: '9KSkjpIb3I',
+      response_type: 'code',
+      redirect_uri: 'https://example.com/callback' /** redirect uri must change to current page */,
+      scope:
+        'https://api.supersoccer.tv/users/users.profile.read https://api.supersoccer.tv/users/users.subscription.read https://api.supersoccer.tv/offline_access',
+      state: 'po8mN1ip7ab'
     },
     tokenAuth: {
-      app_key: "9KSkjpIb3I",
-      app_secret: "VEwMSSob5hPhXveRgTGXpSYmoTjDFVFq4BT1FXx2aEBJbqNhu3NRyaF83GsqLz9l",
-      grant_type: "authorization_code",
-      redirect_uri: "https://example.com/callback", /** redirect uri must change to current page */
+      app_key: '9KSkjpIb3I',
+      app_secret: 'VEwMSSob5hPhXveRgTGXpSYmoTjDFVFq4BT1FXx2aEBJbqNhu3NRyaF83GsqLz9l',
+      grant_type: 'authorization_code',
+      redirect_uri: 'https://example.com/callback' /** redirect uri must change to current page */,
       code: 'overrideCodeIsGeneratedWhenVerified'
     }
-  },
-}
+  }
+};

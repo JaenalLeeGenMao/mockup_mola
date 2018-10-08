@@ -1,4 +1,4 @@
-import { get, post } from 'axios';
+import { get, post, delete as axiosDelete } from 'axios';
 import {
   HOME_PLAYLIST_ENDPOINT,
   HISTORY_ENDPOINT,
@@ -9,6 +9,7 @@ import {
   MOVIE_STREAMING
 } from './endpoints';
 import utils from './util';
+import _get from 'lodash/get';
 
 import { api } from '@source/config';
 const { config } = api;
@@ -94,7 +95,6 @@ const getSearchResult = ({ q }) => {
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
-      console.log('resulllt', result, SEARCH_ENDPOINT);
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
@@ -161,6 +161,73 @@ const getRecentSearch = sessionId => {
           error: `search/getRecentSearch - ${error}`
         },
         data: []
+      };
+    });
+};
+
+const postRecentSearch = (sessionId, keyword) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  };
+  post(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`, {
+    config
+  })
+    .then(result => {
+      return {
+        meta: {
+          status: 'success',
+          error: ''
+        }
+      };
+    })
+    .catch(err => {
+      return {
+        meta: {
+          status: 'error',
+          error: 'Error add recent search ' + err
+        }
+      };
+    });
+};
+
+const deleteRecentSearchAll = sessionId => {
+  return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}`)
+    .then(result => {
+      return {
+        meta: {
+          status: 'success',
+          error: ''
+        }
+      };
+    })
+    .catch(err => {
+      return {
+        meta: {
+          status: 'error',
+          error: err
+        }
+      };
+    });
+};
+
+const deleteRecentSearch = (sessionId, keyword) => {
+  return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`)
+    .then(result => {
+      return {
+        meta: {
+          status: 'success',
+          error: ''
+        }
+      };
+    })
+    .catch(err => {
+      return {
+        meta: {
+          status: 'error',
+          error: err
+        }
       };
     });
 };
@@ -245,6 +312,9 @@ export default {
   getSearchResult,
   getSearchGenre,
   getRecentSearch,
+  postRecentSearch,
+  deleteRecentSearch,
+  deleteRecentSearchAll,
   getMovieDetail,
   getMovieLibrary,
   getMovieStream

@@ -6,6 +6,7 @@ import Layout from '@components/Molalayout';
 import playerArrow from './assets/arrowback.png';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Theoplayer.css';
+// import './Theoverstyle.css';
 
 class Theoplayer extends Component {
   state = {
@@ -14,16 +15,17 @@ class Theoplayer extends Component {
 
   static propTypes = {
     movieUrl: PropTypes.string.isRequired,
-    kind: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    subTitleUrl: PropTypes.string.isRequired,
-    srclang: PropTypes.string.isRequired,
-    isTrailer: PropTypes.bool.isRequired
+    // kind: PropTypes.string.isRequired,
+    // label: PropTypes.string.isRequired,
+    // subTitleUrl: PropTypes.string.isRequired,
+    // srclang: PropTypes.string.isRequired,
+    isTrailer: PropTypes.bool.isRequired,
+    theoConfig: PropTypes.array.isRequired
   };
 
   componentDidMount() {
     var playerConfig = {
-      libraryLocation: '//cdn.theoplayer.com/dash/theoplayer/',
+      libraryLocation: '//cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/',
       ui: {
         fluid: true
       }
@@ -50,22 +52,17 @@ class Theoplayer extends Component {
       sources: [
         {
           src: this.props.movieUrl,
-          type: '' // sets type to HLS
+          type: 'application/x-mpegurl' // sets type to HLS
         }
       ],
-      textTracks: [
-        {
-          default: true, //optional
-          kind: this.props.kind,
-          label: this.props.label,
-          src: this.props.subTitleUrl,
-          srclang: this.props.srclang
-          // kind : 'subtitles', //optional - other values findable at https://support.theoplayer.com/hc/en-us/articles/214350425#TextTrackDescription
-          // label: 'Indonesia', //optional
-          // src : 'example.srt',
-          //srclang : 'id'
-        }
-      ]
+      textTracks: this.props.theoConfig
+      // {
+      //   default: true, //optional
+      //   // kind : 'subtitles', //optional - other values findable at https://support.theoplayer.com/hc/en-us/articles/214350425#TextTrackDescription
+      //   // label: 'Indonesia', //optional
+      //   // src : 'example.srt',
+      //   //srclang : 'id'
+      // }
     };
   }
 
