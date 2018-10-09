@@ -10,12 +10,21 @@
 import React from 'react';
 import HomeDesktop from './desktop';
 import HomeMobile from './mobile';
+import MolaLayout from '@components/Molalayout';
 
 async function action({ isMobile }) {
   return {
     title: 'Mola - Watch TV Shows Online, Watch Movies Online',
     chunks: ['home'],
-    component: isMobile ? <HomeMobile /> : <HomeDesktop />,
+    component: isMobile ? (
+      <MolaLayout>
+        <HomeMobile />
+      </MolaLayout>
+    ) : (
+      <MolaLayout>
+        <HomeDesktop />
+      </MolaLayout>
+    )
   };
 }
 

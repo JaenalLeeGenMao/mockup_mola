@@ -7,8 +7,6 @@
   padding: 0;
   min-height: 0;
   min-width: 0;
-
-  /* max-height: 100vh; */
   width: auto;
   transition: 100ms ease-out;
 }
@@ -16,10 +14,6 @@
 :root {
   overflow: hidden;
   max-height: 100vh;
-}
-
-html {
-  font-size: 62.5%;
 }
 
 html,
@@ -59,4 +53,21 @@ body {
   position: relative;
   margin: 0;
   padding: 0;
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .header__library_link_wrapper {
+    padding: 2.5%;
+  }
+
+  .header__library_logo_white {
+    width: 96px;
+    height: 96px;
+  }
+
+  .header__library_logo_black {
+    width: 96px;
+    height: 96px;
+  }
 }

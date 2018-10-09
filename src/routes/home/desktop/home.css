@@ -22,10 +22,6 @@
   transition: 100ms ease-out;
 }
 
-html {
-  font-size: 62.5%;
-}
-
 html,
 body {
   box-sizing: border-box;

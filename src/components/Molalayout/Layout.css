@@ -1,0 +1,10 @@
+html {
+  font-size: 62.5%;
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  html {
+    font-size: 187.5%;
+  }
+}
