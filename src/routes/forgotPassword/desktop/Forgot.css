@@ -10,24 +10,12 @@
 @import '../../../components/variables.css';
 
 .wrapper {
-  background-image: url('../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
-  background-position: left bottom, left top;
-  background-repeat: no-repeat, no-repeat;
-  background-size: 640px, cover;
-  height: calc(100vh - 210px);
+  background-image: url('../../../global/style/icons/BG-bottomRight.png'), url('../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
+  background-position: right bottom, left bottom, left top;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: 640px, 640px, cover;
+  height: 100vh;
   overflow-y: hidden;
-  padding-top: 210px;
-}
-
-.rightWrapper {
-  background-image: url('../../../global/style/icons/BG-bottomRight.png');
-  background-position: right bottom;
-  background-repeat: no-repeat;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 640px;
-  height: 300px;
 }
 
 .root {
@@ -36,17 +24,53 @@
   max-height: 540px;
 }
 
+.flip {
+  position: absolute;
+}
+
 .container {
-  margin: 0 auto;
+  position: absolute;
+  top: 230px;
   padding: 30px;
   max-width: 450px;
   max-height: 540px;
   background: rgba(0, 0, 0, 0.75);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 4px;
+  opacity: 1;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  z-index: 2;
 }
 
 .container p {
+  font-size: 12px;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
+  letter-spacing: 1.17px;
+  color: #6f6f6f;
+}
+
+.containerBack {
+  position: absolute;
+  top: 230px;
+  padding: 30px;
+  min-width: 390px;
+  max-width: 450px;
+  max-height: 540px;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+
+  /* transform: rotateY(-180deg); */
+  z-index: 1;
+}
+
+.containerBack p {
   font-size: 12px;
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
   letter-spacing: 1.17px;
@@ -63,7 +87,6 @@
 }
 
 .formGroup {
-  margin-top: 15px;
   padding-top: 5px;
 }
 
@@ -89,10 +112,26 @@
 }
 
 .button:hover {
-  background: rgba(54, 50, 119, 0.8);
+  background: #2242c4;
 }
 
 .button:focus {
   border-color: #0074c2;
   box-shadow: 0 0 8px rgba(0, 116, 194, 0.6);
+}
+
+.flip__container .container {
+  backface-visibility: hidden;
+  opacity: 0;
+
+  /* transform: rotateY(180deg); */
+  z-index: 900;
+}
+
+.flip__container .containerBack {
+  backface-visibility: hidden;
+  opacity: 1;
+
+  /* transform: rotateY(0deg); */
+  z-index: 1000;
 }

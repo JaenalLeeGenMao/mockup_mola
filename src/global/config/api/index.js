@@ -32,7 +32,7 @@ module.exports = {
     },
     endpoints: {
       molatv: 'https://api.staging.mola.tv/v2',
-      auth: 'http://staging.mola.tv/accounts/_',
+      auth: 'https://staging.mola.tv/accounts/_',
       domain: 'https://staging.mola.tv'
     },
     auth: {
