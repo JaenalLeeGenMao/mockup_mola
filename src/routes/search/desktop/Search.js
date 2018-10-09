@@ -413,6 +413,11 @@ class Search extends React.Component {
                 </Fragment>
               )}
 
+            {this.showResult() &&
+              !showAllRecentSearch &&
+              !isLoadingResult &&
+              resultStatus == 'error' && <Error />}
+
             {this.showResult() && (
               <Fragment>
                 <div className={s.resultWrapper}>
@@ -452,9 +457,6 @@ class Search extends React.Component {
                           sessionId={sessionId}
                         />
                       )}
-                    {!showAllRecentSearch &&
-                      !isLoadingResult &&
-                      resultStatus == 'error' && <Error />}
                     {this.showNoResult() && (
                       <LazyLoad>
                         <div className={s.resultEmptyWrapper}>
