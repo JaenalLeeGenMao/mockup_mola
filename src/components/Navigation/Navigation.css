@@ -9,7 +9,6 @@
   left: 40px;
   top: 184px;
   z-index: 2;
-  font-size: 16px;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -55,5 +54,23 @@ hr {
     width: 180px;
     left: 40px;
     top: 184px;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .navigation__wrapper {
+    top: 25%;
+    left: 80px;
+  }
+
+  .navigation__links {
+    height: auto;
+    width: 360px;
+    padding: 2.5% 0;
+  }
+
+  hr {
+    top: 21px;
   }
 }

@@ -1,4 +1,6 @@
 import dummyBg from '@global/style/icons/dummybg.jpg';
+import dummyTitle from '@global/style/icons/banner-test-left.jpg';
+import dummyFigure from '@global/style/icons/banner-test-right.jpg';
 
 const normalizeHomePlaylist = response => {
   const { data } = response.data;
@@ -41,8 +43,10 @@ const normalizeHomePlaylist = response => {
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
             poster: poster || '',
-            coverTitle: coverTitle || '',
-            coverBody: coverBody || '',
+            // coverTitle: coverTitle || '',
+            // coverBody: coverBody || '',
+            coverTitle: dummyTitle,
+            coverBody: dummyFigure,
             background: coverBG || dummyBg,
             backgroundColor: coverBGColor || '#000622',
             backgroundRepeat: backgroundRepeat || '',
@@ -96,8 +100,10 @@ const normalizeHomeVideo = response => {
             description,
             shortDescription: shortDescription || '',
             poster: poster || '',
-            coverTitle: coverTitle || '',
-            coverBody: coverBody || '',
+            // coverTitle: coverTitle || '',
+            // coverBody: coverBody || '',
+            coverTitle: dummyTitle,
+            coverBody: dummyFigure,
             background: coverBG || dummyBg,
             backgroundColor: coverBGColor || '#000622',
             backgroundRepeat: backgroundRepeat || '',

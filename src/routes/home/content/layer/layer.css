@@ -1,4 +1,4 @@
-.layer__parallax {
+/* .layer__parallax {
   position: relative;
   height: 100vh;
   max-height: 100vh;
@@ -22,8 +22,6 @@
 .layer__parallax_layer_1 img {
   height: 100%;
   width: 100%;
-
-  /* min-width: 1190px; */
   z-index: 0;
   overflow: hidden;
 }
@@ -45,7 +43,7 @@
   width: auto;
   max-width: 100vh;
   max-height: 100vw;
-}
+} */
 
 .layer__parallax_layer_3 {
   position: absolute;
@@ -80,7 +78,6 @@
 }
 
 .layer__parallax_layer_3_detail {
-  /* width: 100vw; */
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
 }
 
@@ -110,10 +107,6 @@
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
   font-variant: unicase;
   padding-top: 15px;
-
-  /* opacity: 0.6; */
-
-  /* animation: spaceout 2s infinite; */
 }
 
 .layer__see_more_arrow {
@@ -144,10 +137,9 @@
   align-items: center;
 }
 
-/* Desktop style */
+/* Desktop style
 @media screen and (min-width: 1024px) {
   .layer__parallax_layer_3_detail {
-    /* width: 100vw; */
     font-family: Futura, Trebuchet MS, Arial, sans-serif;
   }
 
@@ -176,7 +168,7 @@
     max-width: 60%;
     max-height: 100vh;
   }
-}
+} */
 
 @keyframes spaceout {
   0% { letter-spacing: 0; }
@@ -198,5 +190,78 @@
 
   100% {
     right: 1em;
+  }
+}
+
+/* NEW GRID STYLE BABE */
+
+.layer__grid_container {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-gap: 0;
+  grid-template-areas:
+    'header'
+    'title'
+    'figure';
+  grid-template-rows: 1fr 3fr 4fr;
+  grid-template-columns: auto;
+}
+
+.layer__grid_header {
+  position: relative;
+  height: auto;
+  grid-area: header;
+  background-color: #8ca0ff;
+}
+
+.layer__grid_title {
+  position: relative;
+  height: 100%;
+  grid-area: title;
+  background-color: #8ca00f;
+}
+
+.layer__grid_figure {
+  position: relative;
+  height: 100%;
+  grid-area: figure;
+  background-color: #8c00af;
+}
+
+.layer__grid_images,
+.layer__grid_images img {
+  height: 100%;
+  max-height: 50vh;
+}
+
+/* Desktop style */
+
+@media screen and (min-width: 768px) {
+  .layer__grid_container {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-gap: 0;
+    grid-template-areas:
+      'title figure'
+      'title  figure'
+      'title  figure';
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto;
+  }
+
+  .layer__grid_header {
+    display: none;
+  }
+
+  .layer__grid_images,
+  .layer__grid_images img {
+    height: 100%;
+    max-height: 100vh;
+  }
+
+  .layer__grid_figure img {
+    height: 100vh;
   }
 }

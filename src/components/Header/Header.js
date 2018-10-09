@@ -18,10 +18,10 @@ import logoGrey from '@global/style/icons/mola_grey.svg';
 import logoLandscapeBlue from '@global/style/icons/mola_landscape_blue.svg';
 import logoLandscapeGrey from '@global/style/icons/mola_landscape_grey.svg';
 
-import Link from '../Link'
+import Link from '../Link';
 
-import RightMenu from './right-menu'
-import styles from './Header.css'
+import RightMenu from './right-menu';
+import styles from './Header.css';
 
 class Header extends Component {
   handleGoBack = () => {
@@ -29,7 +29,7 @@ class Header extends Component {
     if (goBack) {
       goBack();
     }
-  }
+  };
   render() {
     const {
       isDark = 1,
@@ -42,31 +42,39 @@ class Header extends Component {
       title = '',
       isLibraryCopy = false,
       activePlaylist,
-      stickyOff = false,
+      stickyOff = false
     } = this.props;
 
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
-    const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky :  styles.header__container;
+    const typeHeader = stickyOff
+      ? styles.header__container + ' ' + styles.header__notsticky
+      : styles.header__container;
 
     return (
       <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>
-          {!logoOff &&
+          {!logoOff && (
             <LazyLoad>
               <Link to="/">
-                {
-                  logoDark &&
-                    <img alt='MOLA' src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-                }
+                {logoDark && (
+                  <img
+                    alt="MOLA"
+                    src={isMobile ? logoLandscapeBlue : logoBlue}
+                    className={styles.header__logo}
+                  />
+                )}
 
-                {
-                  !logoDark &&
-                    <img alt='MOLA' src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo}/>
-                }
+                {!logoDark && (
+                  <img
+                    alt="MOLA"
+                    src={isMobile ? logoLandscapeGrey : logoGrey}
+                    className={styles.header__logo}
+                  />
+                )}
               </Link>
             </LazyLoad>
-          }
+          )}
           {backButtonOn && (
             <LazyLoad>
               <div className={styles.header__back_button} onClick={this.handleGoBack}>
@@ -80,14 +88,10 @@ class Header extends Component {
           <LazyLoad>
             <Link
               className={styles.header__library_link_wrapper}
-              to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ""}`}
+              to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`}
               style={{ color }}
             >
-              <span
-                className={styles[`header__library_logo_${color}`]}
-                alt="library"
-                style={{ width: '32px', height: '32px', }}
-              />
+              <span className={styles[`header__library_logo_${color}`]} alt="library" />
             </Link>
           </LazyLoad>
         )}
@@ -95,8 +99,8 @@ class Header extends Component {
         {/* </div> */}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} {...this.props} />}
       </div>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(Header)
+export default withStyles(styles)(Header);

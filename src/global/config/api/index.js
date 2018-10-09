@@ -59,7 +59,7 @@ module.exports = {
     endpoints: {
       molatv: 'https://api.supersoccer.tv/v2',
       auth: 'https://www.mola.tv/accounts/_',
-      domain: 'http://www.mola.tv'
+      domain: 'https://www.mola.tv'
     },
     auth: {
       app_key: '9KSkjpIb3I',
