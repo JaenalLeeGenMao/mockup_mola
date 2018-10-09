@@ -11,8 +11,7 @@ const createNewUser = ({ email = '', password = '', csrf = '' }) => {
     .then(response => {
       return {
         meta: {
-          status: 'error',
-          error
+          status: 'success'
         },
         data: response.data
       };
@@ -132,7 +131,7 @@ const requestLogout = ({ uid = '', csrf = '' }) => {
     });
 };
 
-const resetPassword = ({ email = '', csrf = '' }) => {
+const emailForgotPassword = ({ email = '', csrf = '' }) => {
   const body = { email };
   return post(`${AUTH_BASE_ENDPOINT}/v1/password/forgot`, body, {
     headers: {
@@ -215,5 +214,8 @@ export default {
   verifyUserToken,
   resendUserToken,
   requestLogin,
-  requestLogout
+  requestLogout,
+  emailForgotPassword,
+  verifyPasswordToken,
+  updateNewPassword
 };

@@ -14,27 +14,62 @@
   background-position: left bottom, left top;
   background-repeat: no-repeat, no-repeat;
   background-size: 360px, cover;
-  height: calc(100vh - 420px);
+  height: 100vh;
   overflow-y: hidden;
-  margin: 0 auto;
-  padding: 210px 20px;
+  padding-left: 20px;
 }
 
 .root {
   margin: 0 auto;
-  height: 430px;
+  max-height: 430px;
+}
+
+.flip {
+  position: absolute;
 }
 
 .container {
-  margin: 0 auto;
+  position: absolute;
+  top: 210px;
   padding: 20px;
   max-height: 430px;
   background: rgba(0, 0, 0, 0.75);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 4px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+
+  /* transform: rotateY(-180deg); */
+  z-index: 2;
 }
 
 .container p {
+  font-size: 12px;
+  font-family: Futura, Trebuchet MS, Arial, sans-serif;
+  letter-spacing: 1.17px;
+  color: #6f6f6f;
+}
+
+.containerBack {
+  position: absolute;
+  top: 210px;
+  padding: 20px;
+  max-height: 430px;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+
+  /* transform: rotateY(-180deg); */
+  z-index: 1;
+}
+
+.containerBack p {
   font-size: 12px;
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
   letter-spacing: 1.17px;
@@ -76,7 +111,7 @@
 }
 
 .button:hover {
-  background: rgba(54, 50, 119, 0.8);
+  background: #2242c4;
 }
 
 .button:focus {
@@ -87,4 +122,20 @@
 .formMobile {
   width: 280px !important;
   height: 40px !important;
+}
+
+.flip__container .container {
+  backface-visibility: hidden;
+  opacity: 0;
+
+  /* transform: rotateY(180deg); */
+  z-index: 900;
+}
+
+.flip__container .containerBack {
+  backface-visibility: hidden;
+  opacity: 1;
+
+  /* transform: rotateY(0deg); */
+  z-index: 1000;
 }

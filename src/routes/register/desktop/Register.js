@@ -55,12 +55,15 @@ class Register extends React.Component {
         runtime: { csrf },
         onSetUserVariables
       } = this.props;
-    $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
     const result = await Auth.createNewUser({
       email,
       password,
       csrf
     });
+
+    if (result.meta.status === 'success') {
+      $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
+    }
 
     Object.keys(result.data).forEach(key => {
       onSetUserVariables({ name: key, value: result.data[key] });
