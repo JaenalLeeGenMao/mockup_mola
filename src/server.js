@@ -108,7 +108,7 @@ app.use((err, req, res, next) => {
 //     res.redirect('/');
 //   },
 // );
-const domain = config.api.config.endpoints.domain;
+const domain = config.api.endpoints.domain;
 
 // set a cookie
 app.use(function(req, res, next) {

@@ -1,47 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { api } from '@source/config';
-const { config } = api;
-
-// import { config as baseConfig } from 'gandalf';
-
-// var options = {
-//   development: {
-//     api: {
-//       timeout: 10000,
-//       maxRedirects: 1
-//     },
-//     endpoints: {
-//       api: 'http://test.example.com/v2',
-//       auth: 'http://test.example.tv/accounts/_',
-//       domain: 'http://test.example.tv'
-//     }
-//   },
-//   staging: {
-//     api: {
-//       timeout: 10000,
-//       maxRedirects: 1
-//     },
-//     endpoints: {
-//       api: 'https://api.staging.test.example.tv/v2',
-//       auth: 'http://staging.test.example.tv/accounts/_',
-//       domain: 'https://staging.test.example.tv'
-//     }
-//   },
-//   production: {
-//     api: {
-//       timeout: 10000,
-//       maxRedirects: 1
-//     },
-//     endpoints: {
-//       api: 'https://api.test.example.tv/v2',
-//       auth: 'https://www.test.example.tv/accounts/_',
-//       domain: 'https://www.test.example.tv'
-//     }
-//   }
-// }
-
-// baseConfig.updateConfig(options);
-// const config = baseConfig.default[process.env.REACT_APP_ENV || "development"];
+import { api as config } from '@source/config';
 
 export const HOME_PLAYLIST_ENDPOINT = `${config.endpoints.api}/videos/playlists`;
 
