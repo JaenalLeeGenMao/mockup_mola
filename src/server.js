@@ -119,19 +119,19 @@ app.use(function(req, res, next) {
       res.cookie('UID', req.query.uid, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
     }
   }
-  // if (`${cookie.SID}` !== "undefined" || cookie.SID !== undefined) {
-  //   res.cookie('SID', req.cookies.SID, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
-  // }
+  if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
+    res.cookie('SID', req.cookies.SID, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+  }
   next(); // <-- important!
 });
 
-app.get('/signin', (req, res) => {
+app.get('/accounts/signin', (req, res) => {
   return res.redirect(domain || 'http://jaenal.mola.tv');
 });
 
 app.get('/signout', (req, res) => {
   res.clearCookie('UID');
-  // res.clearCookie('SID');
+  res.clearCookie('SID');
   // res.clearCookie('_exp');
   return res.redirect(domain || 'http://jaenal.mola.tv');
 });

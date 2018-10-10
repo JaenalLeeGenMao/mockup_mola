@@ -57,7 +57,7 @@ class Login extends React.Component {
       csrf
     });
     if (result.meta.status === 'success') {
-      window.location.href = `/signin?uid=${result.data.uid}`;
+      window.location.href = `/accounts/signin?uid=${result.data.uid}`;
     }
   };
 
