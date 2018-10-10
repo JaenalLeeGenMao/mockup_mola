@@ -1,66 +1,47 @@
-# image: node:8.10.0
-
-# cache:
-#   paths:
-#     - node_modules/
-#     - .yarn
-
-# before_script:
-#   - export DOCKER_HOST="tcp://localhost:2375"
-#   - docker info
-#   - apt-get update -qq && apt-get install
-
 stages:
 #   - test
 #   - build
-  - push
+  - push_docker
 
-# Build My App:
-#   stage: build
-#   before_script:
-#     - yarn config set cache-folder .yarn
-#     - yarn install
-#   script:
-#     - yarn build
+.job_template: &push_docker
+  image: google/cloud-sdk
+  services:
+    - docker:dind
+  script:
+    - export DOCKER_HOST="tcp://localhost:2375"
+    - docker info
+    - ./.gitlab-ci/auth_gcloud.sh
+    - ./.gitlab-ci/push_docker.sh
+    - ./.gitlab-ci/deploy.sh
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
   IMAGE_NAME: $CI_PROJECT_NAME
+  APP_NAME: $CI_PROJECT_NAME
+  BASE_URL: github.com/supersoccer
+  NAMESPACE: frontend
+  FOLDER_NAME: applications
 
-Build-Push-Docker-Staging:
-  stage: push
-  image: google/cloud-sdk
-  services:
-    - docker:dind
-  before_script:
-    - export DOCKER_HOST="tcp://localhost:2375"
-    - docker info
+push_docker_staging:
+  stage: push_docker
+  <<: *push_docker
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
-  script:
-    - .gitlab-ci/auth_gcloud.sh
-    - .gitlab-ci/push_docker.sh
+    DEPLOYMENT_REPO: core-staging-cluster-01
   only:
     - develop@apps/mola/mola-web
 
-Build-Push-Docker-Production:
-  stage: push
-  image: google/cloud-sdk
-  services:
-    - docker:dind
-  before_script:
-    - export DOCKER_HOST="tcp://localhost:2375"
-    - docker info
+push_docker_production:
+  stage: push_docker
+  <<: *push_docker
   variables:
     GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
     GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
-  script:
-    - .gitlab-ci/auth_gcloud.sh
-    - .gitlab-ci/push_docker.sh
+    DEPLOYMENT_REPO: core-prod-cluster-01
   only:
     - master@apps/mola/mola-web
