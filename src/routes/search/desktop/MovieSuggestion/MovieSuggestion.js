@@ -17,8 +17,8 @@ class MovieSuggestion extends React.Component {
   };
 
   handleClickMovie = title => {
-    const { sessionId } = this.props;
-    MolaHandler.postRecentSearch(sessionId, title);
+    const { sessionId, sid } = this.props;
+    MolaHandler.postRecentSearch(sessionId, sid, title);
   };
 
   render() {

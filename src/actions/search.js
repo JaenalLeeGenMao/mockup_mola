@@ -225,7 +225,7 @@ export const getSearchGenre = () => dispatch => {
   });
 };
 
-export const getRecentSearch = sessionId => dispatch => {
+export const getRecentSearch = (sessionId, sid) => dispatch => {
   dispatch({
     type: types.GET_RECENT_SEARCH_LOADING,
     payload: {
@@ -236,7 +236,7 @@ export const getRecentSearch = sessionId => dispatch => {
       data: []
     }
   });
-  return Mola.getRecentSearch(sessionId).then(result => {
+  return Mola.getRecentSearch(sessionId, sid).then(result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_RECENT_SEARCH_ERROR,

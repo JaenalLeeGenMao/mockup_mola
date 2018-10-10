@@ -91,6 +91,7 @@
   padding: 10px 48px;
   position: absolute;
   z-index: 101;
+  font-family: 'Futura', 'HelveticaNeue-Light', sans-serif;
 }
 
 .searchInputSuggestion {

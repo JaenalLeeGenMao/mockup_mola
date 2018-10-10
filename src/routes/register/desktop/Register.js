@@ -105,7 +105,7 @@ class Register extends React.Component {
 
   render() {
     const { username, email, password, confirmPassword, token } = this.state;
-    console.log(token);
+    // console.log(token);
     const isDark = true;
     return (
       <Fragment>
