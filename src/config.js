@@ -41,6 +41,7 @@ const env = process.env.REACT_APP_ENV || 'staging';
 // }
 
 // const baseConfig = require('gandalf').config;
+// import { config as baseConfig } from 'gandalf';
 // baseConfig.updateConfig(options);
 // const config = baseConfig.default[env];
 
