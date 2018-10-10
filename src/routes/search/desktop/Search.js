@@ -57,6 +57,7 @@ class Search extends React.Component {
       getSearchGenre,
       getRecentSearch,
       search: { genre, result, recentSearch },
+      user: { sid },
       searchKeyword
     } = nextProps;
 
@@ -99,7 +100,7 @@ class Search extends React.Component {
       recentSearch.meta.status === 'loading' &&
       prevState.recentSearch.length <= 0
     ) {
-      getRecentSearch(sessionId);
+      getRecentSearch(sessionId, sid);
     }
 
     if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.genre.length <= 0) {
@@ -290,9 +291,12 @@ class Search extends React.Component {
   };
 
   handleOnFocusSearch = () => {
-    const { getRecentSearch } = this.props;
+    const {
+      getRecentSearch,
+      user: { sid }
+    } = this.props;
     if (!this.inputSearch.current.value) {
-      getRecentSearch(sessionId);
+      getRecentSearch(sessionId, sid);
       this.setState({
         showAllRecentSearch: true,
         showGenre: false,
@@ -353,12 +357,12 @@ class Search extends React.Component {
 
   render() {
     const {
+      user: { sid },
       search: {
         genre: {
           data: genreData,
           meta: { status: genreStatus }
         },
-        // recentSearch : { meta: { status: recentSearchStatus } },
         result: {
           meta: { status: resultStatus }
         }
@@ -435,6 +439,7 @@ class Search extends React.Component {
                           recentSearchData={this.recentSearchData}
                           searchText={this.searchText}
                           sessionId={sessionId}
+                          sid={sid}
                         />
                       )}
                     {!showAllRecentSearch &&
@@ -455,6 +460,7 @@ class Search extends React.Component {
                           data={this.searchedMovie}
                           searchText={this.searchText}
                           sessionId={sessionId}
+                          sid={sid}
                         />
                       )}
                     {this.showNoResult() && (
@@ -486,7 +492,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
   getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
-  getRecentSearch: sessionId => dispatch(searchActions.getRecentSearch(sessionId)),
+  getRecentSearch: (sessionId, sid) => dispatch(searchActions.getRecentSearch(sessionId, sid)),
   getSearchResult: searchText => dispatch(searchActions.getSearchResult(searchText))
 });
 

@@ -17,8 +17,8 @@ class MovieSuggestion extends React.Component {
   };
 
   handleClickMovie = keyword => {
-    const { sessionId } = this.props;
-    MolaHandler.postRecentSearch(sessionId, keyword);
+    const { sessionId, sid } = this.props;
+    MolaHandler.postRecentSearch(sessionId, sid, keyword);
   };
 
   render() {
@@ -32,7 +32,7 @@ class MovieSuggestion extends React.Component {
             return (
               <Link
                 onClick={() => this.handleClickMovie(movie.title)}
-                // to={`/movie-detail/${movie.id}`}
+                to={`/movie-detail/${movie.id}`}
                 key={movie.id}
               >
                 <LazyLoad src={movie.coverUrl} containerClassName={s.movieflex__moviebox} />

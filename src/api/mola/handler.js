@@ -1,4 +1,5 @@
 import { get, post, delete as axiosDelete } from 'axios';
+// import axios from 'axios'
 import {
   HOME_PLAYLIST_ENDPOINT,
   HISTORY_ENDPOINT,
@@ -12,6 +13,7 @@ import utils from './util';
 import _get from 'lodash/get';
 
 import { api as config } from '@source/config';
+// axios.defaults.headers.common['Authorization'] = `Bearer aa`;
 
 const getHomePlaylist = ({ ...payload }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
@@ -138,10 +140,11 @@ const getSearchGenre = payload => {
     });
 };
 
-const getRecentSearch = sessionId => {
+const getRecentSearch = (sessionId, sid) => {
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
     params: { sessionId: sessionId },
-    ...config.setting
+    ...config.setting,
+    headers: { Authorization: `Bearer ${sid}` }
   })
     .then(response => {
       const result = utils.normalizeRecentSearch(response);
@@ -164,15 +167,15 @@ const getRecentSearch = sessionId => {
     });
 };
 
-const postRecentSearch = (sessionId, keyword) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+const postRecentSearch = (sessionId, sid, keyword) => {
+  post(
+    `${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`,
+    {},
+    {
+      ...config.setting,
+      headers: { Authorization: `Bearer ${sid}` }
     }
-  };
-  post(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`, {
-    config
-  })
+  )
     .then(result => {
       return {
         meta: {
@@ -191,8 +194,11 @@ const postRecentSearch = (sessionId, keyword) => {
     });
 };
 
-const deleteRecentSearchAll = sessionId => {
-  return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}`)
+const deleteRecentSearchAll = (sessionId, sid) => {
+  return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}`, {
+    ...config.setting,
+    headers: { Authorization: `Bearer ${sid}` }
+  })
     .then(result => {
       return {
         meta: {
@@ -211,8 +217,11 @@ const deleteRecentSearchAll = sessionId => {
     });
 };
 
-const deleteRecentSearch = (sessionId, keyword) => {
-  return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`)
+const deleteRecentSearch = (sessionId, sid, keyword) => {
+  return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`, {
+    ...config.setting,
+    headers: { Authorization: `Bearer ${sid}` }
+  })
     .then(result => {
       return {
         meta: {

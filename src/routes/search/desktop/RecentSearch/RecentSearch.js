@@ -17,8 +17,8 @@ class RecentSearch extends React.Component {
   };
 
   handleClearAllSearch = () => {
-    const { sessionId } = this.props;
-    MolaHandler.deleteRecentSearchAll(sessionId).then(response => {
+    const { sessionId, sid } = this.props;
+    MolaHandler.deleteRecentSearchAll(sessionId, sid).then(response => {
       if (response.meta.status === 'success') {
         this.setState({
           recentSearchData: []
@@ -28,8 +28,8 @@ class RecentSearch extends React.Component {
   };
 
   handleRemoveSearch = keyword => {
-    const { sessionId } = this.props;
-    MolaHandler.deleteRecentSearch(sessionId, keyword).then(response => {
+    const { sessionId, sid } = this.props;
+    MolaHandler.deleteRecentSearch(sessionId, sid, keyword).then(response => {
       if (response.meta.status === 'success') {
         const recDt = this.state.recentSearchData.filter(dt => {
           return dt.keyword !== keyword;
