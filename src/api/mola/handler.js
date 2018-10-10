@@ -1,5 +1,4 @@
 import { get, post, delete as axiosDelete } from 'axios';
-// import axios from 'axios'
 import {
   HOME_PLAYLIST_ENDPOINT,
   HISTORY_ENDPOINT,
@@ -13,7 +12,6 @@ import utils from './util';
 import _get from 'lodash/get';
 
 import { api as config } from '@source/config';
-// axios.defaults.headers.common['Authorization'] = `Bearer aa`;
 
 const getHomePlaylist = ({ ...payload }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
