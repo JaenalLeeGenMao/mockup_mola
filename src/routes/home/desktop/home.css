@@ -9,7 +9,6 @@
 
 @import '../../../components/variables.css';
 @import '../../../global/style/css/slick.css';
-@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 * {
   margin: 0;
@@ -38,7 +37,6 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  font-family: 'Roboto', sans-serif;
 }
 
 .home__error_container {
@@ -134,7 +132,6 @@ body {
   position: absolute;
   bottom: 20%;
   right: 0;
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
 }
 
 .home__parallax_layer_3_title {
@@ -168,7 +165,6 @@ body {
   display: block;
   color: inherit;
   text-decoration: none;
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
   font-variant: unicase;
   font-style: normal;
   font-size: 1.4rem;

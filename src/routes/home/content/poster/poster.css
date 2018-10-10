@@ -68,7 +68,6 @@
 
 .poster__parallax_layer_3_detail {
   width: 100vw;
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
 }
 
 .poster__parallax_layer_3_title {
@@ -94,7 +93,6 @@
   display: block;
   color: inherit;
   text-decoration: none;
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
   font-variant: unicase;
   padding-top: 5px;
   opacity: 0.6;

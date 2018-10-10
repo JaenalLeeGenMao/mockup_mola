@@ -78,7 +78,7 @@
 }
 
 .layer__parallax_layer_3_detail {
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
+  position: relative;
 }
 
 .layer__parallax_layer_3_title {
@@ -104,7 +104,6 @@
   display: block;
   color: inherit;
   text-decoration: none;
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
   font-variant: unicase;
   padding-top: 15px;
 }
@@ -140,7 +139,7 @@
 /* Desktop style
 @media screen and (min-width: 1024px) {
   .layer__parallax_layer_3_detail {
-    font-family: Futura, Trebuchet MS, Arial, sans-serif;
+    position: relative;
   }
 
   .layer__parallax_layer_3_desc {

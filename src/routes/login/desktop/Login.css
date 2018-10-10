@@ -66,7 +66,6 @@
 
 .container p {
   font-size: 12px;
-  font-family: Futura, Trebuchet MS, Arial, sans-serif;
   letter-spacing: 1.17px;
   color: #6f6f6f;
 }
@@ -85,7 +84,6 @@
   position: relative;
   z-index: 1;
   font-size: 14px !important;
-  font-family: 'Roboto', sans-serif !important;
   font-weight: 500;
   color: #fff !important;
   float: right;
@@ -118,7 +116,6 @@
   text-decoration: none;
   font-size: 16px;
   cursor: pointer;
-  font-family: 'Roboto', sans-serif !important;
   letter-spacing: 1.91px;
   opacity: 100%;
   font-weight: 500;
@@ -152,7 +149,6 @@
   text-align: center;
   font-size: 12px !important;
   font-weight: 500;
-  font-family: 'Roboto', sans-serif !important;
   letter-spacing: 1.16px;
 }
 
@@ -180,7 +176,6 @@
   color: #fff !important;
   font-size: 14px;
   letter-spacing: 1.36px;
-  font-family: 'Roboto', sans-serif !important;
   font-weight: 500;
   opacity: 100%;
 }
