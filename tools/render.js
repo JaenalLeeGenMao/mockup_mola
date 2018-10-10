@@ -24,18 +24,19 @@ import runServer from './runServer';
 const routes = [
   '/',
   '/contact',
+  '/accounts',
   '/accounts/login',
   '/accounts/profile',
   '/accounts/security',
   '/accounts/setting',
+  '/accounts/history',
+  '/accounts/register',
   '/movie-detail',
   '/movie-library',
   '/search',
-  '/history',
-  '/register',
   '/about',
   '/privacy',
-  '/404', // https://help.github.com/articles/creating-a-custom-404-page-for-your-github-pages-site/
+  '/404' // https://help.github.com/articles/creating-a-custom-404-page-for-your-github-pages-site/
 ];
 
 async function render() {
@@ -51,13 +52,8 @@ async function render() {
   await Promise.all(
     routes.map(async (route, index) => {
       const url = `http://${server.host}${route}`;
-      const fileName = route.endsWith('/')
-        ? 'index.html'
-        : `${path.basename(route, '.html')}.html`;
-      const dirName = path.join(
-        'build/public',
-        route.endsWith('/') ? route : path.dirname(route),
-      );
+      const fileName = route.endsWith('/') ? 'index.html' : `${path.basename(route, '.html')}.html`;
+      const dirName = path.join('build/public', route.endsWith('/') ? route : path.dirname(route));
       const dist = path.join(dirName, fileName);
       const timeStart = new Date();
       const response = await fetch(url);
@@ -67,11 +63,9 @@ async function render() {
       await writeFile(dist, text);
       const time = timeEnd.getTime() - timeStart.getTime();
       console.info(
-        `#${index + 1} ${dist} => ${response.status} ${
-          response.statusText
-        } (${time} ms)`,
+        `#${index + 1} ${dist} => ${response.status} ${response.statusText} (${time} ms)`
       );
-    }),
+    })
   );
 
   server.kill('SIGTERM');
