@@ -11,12 +11,11 @@ import {
 import utils from './util';
 import _get from 'lodash/get';
 
-import { api } from '@source/config';
-const { config } = api;
+import { api as config } from '@source/config';
 
 const getHomePlaylist = ({ ...payload }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeHomePlaylist(response);
@@ -41,7 +40,7 @@ const getHomePlaylist = ({ ...payload }) => {
 
 const getHomeVideo = ({ id, ...payload }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeHomeVideo(response);
@@ -66,7 +65,7 @@ const getHomeVideo = ({ id, ...payload }) => {
 
 const getAllHistory = ({ userId }) => {
   return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`, {
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeHistory(response);
@@ -91,7 +90,7 @@ const getAllHistory = ({ userId }) => {
 const getSearchResult = ({ q }) => {
   return get(`${SEARCH_ENDPOINT}`, {
     params: { q: q },
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
@@ -116,7 +115,7 @@ const getSearchResult = ({ q }) => {
 
 const getSearchGenre = payload => {
   return get(`${SEARCH_GENRE_ENDPOINT}`, {
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeSearchGenre(response);
@@ -142,7 +141,7 @@ const getSearchGenre = payload => {
 const getRecentSearch = sessionId => {
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
     params: { sessionId: sessionId },
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeRecentSearch(response);
@@ -234,7 +233,7 @@ const deleteRecentSearch = (sessionId, keyword) => {
 
 const getMovieDetail = ({ id }) => {
   return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeVideoDetail(response);
@@ -259,7 +258,7 @@ const getMovieDetail = ({ id }) => {
 
 const getMovieLibrary = id => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...config.api
+    ...config.setting
   })
     .then(response => {
       const result = utils.normalizeMovieLibrary(response);

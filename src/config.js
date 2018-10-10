@@ -1,21 +1,50 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-/* eslint-disable max-len */
-
 /* eslint-disable camelcase */
 const dotenv = require('dotenv');
-const MolaConfig = require('../src/global/config/api');
+dotenv.config();
+
 const env = process.env.REACT_APP_ENV || 'staging';
 
-/* Override the values if the environment is not in the exception lists */
-dotenv.config();
+// const options = {
+//   development: {
+//     setting: {
+//       timeout: 10000,
+//       maxRedirects: 1
+//     },
+//     endpoints: {
+//       api: 'http://test.example.com/v2',
+//       auth: 'http://test.example.tv/accounts/_',
+//       domain: 'http://test.example.tv'
+//     }
+//   },
+//   staging: {
+//     setting: {
+//       timeout: 10000,
+//       maxRedirects: 1
+//     },
+//     endpoints: {
+//       api: 'https://api.staging.test.example.tv/v2',
+//       auth: 'http://staging.test.example.tv/accounts/_',
+//       domain: 'https://staging.test.example.tv'
+//     }
+//   },
+//   production: {
+//     setting: {
+//       timeout: 10000,
+//       maxRedirects: 1
+//     },
+//     endpoints: {
+//       api: 'https://api.test.example.tv/v2',
+//       auth: 'https://www.test.example.tv/accounts/_',
+//       domain: 'https://www.test.example.tv'
+//     }
+//   }
+// }
+
+// const baseConfig = require('gandalf').config;
+// baseConfig.updateConfig(options);
+// const config = baseConfig.default[env];
+
+const config = require('../src/global/config/api')[env];
 
 module.exports = {
   // Node.js app
@@ -29,9 +58,10 @@ module.exports = {
     // API URL to be used in the client-side code
     clientUrl: process.env.API_CLIENT_URL || '',
     // API URL to be used in the server-side code
-    serverUrl: MolaConfig[env].endpoints.domain || 'http://jaenal.mola.tv',
+    serverUrl: config.endpoints.domain || 'http://jaenal.mola.tv',
+    // serverUrl: 'http://jaenal.mola.tv',
     // `http://localhost:${process.env.PORT || 3000}`,
-    config: MolaConfig[env]
+    ...config
   },
 
   // Database

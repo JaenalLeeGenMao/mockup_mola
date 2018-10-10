@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    api: {
+    setting: {
       timeout: 10000,
       maxRedirects: 1
     },
@@ -11,18 +11,18 @@ module.exports = {
     }
   },
   staging: {
-    api: {
+    setting: {
       timeout: 10000,
       maxRedirects: 1
     },
     endpoints: {
-      molatv: 'https://api.staging.mola.tv/v2',
+      api: 'https://api.staging.mola.tv/v2',
       auth: 'https://staging.mola.tv/accounts/_',
       domain: 'https://staging.mola.tv'
     }
   },
   production: {
-    api: {
+    setting: {
       timeout: 10000,
       maxRedirects: 1
     },
