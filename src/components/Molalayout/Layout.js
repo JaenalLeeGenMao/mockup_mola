@@ -2,6 +2,8 @@ import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+// external-global styles must be imported in your JS.
+import normalizeCss from 'normalize.css';
 import styles from './Layout.css';
 
 class Layout extends Component {
@@ -14,4 +16,4 @@ class Layout extends Component {
   }
 }
 
-export default withStyles(styles)(Layout);
+export default withStyles(normalizeCss, styles)(Layout);
