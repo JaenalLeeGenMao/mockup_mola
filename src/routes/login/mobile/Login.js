@@ -115,17 +115,17 @@ class Login extends React.Component {
                 <strong className={s.lineThrough}>Or</strong>
                 <div className={s.flexButton}>
                   <div>
-                    <a className={s.google} href="/login/facebook">
+                    <a className={s.google} href="/accounts/_/v1/login/google">
                       <img className={s.buttonMobile} src={google} />
                     </a>
                   </div>
                   <div>
-                    <a className={s.facebook} href="/login/facebook">
+                    <a className={s.facebook} href="/accounts/_/v1/login/facebook">
                       <img className={s.buttonMobile} src={facebook} />
                     </a>
                   </div>
                   <div>
-                    <a className={s.line} href="/login/facebook">
+                    <a className={s.line} href="/accounts/_/v1/login/line">
                       <img className={s.buttonMobile} src={line} />
                     </a>
                   </div>
