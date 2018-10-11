@@ -67,7 +67,7 @@ class Reset extends React.Component {
           <div className={s.root}>
             <div className={s.container}>
               <p className={s.labelHeader}>Reset password</p>
-              <p>Bikin password baru. Konfirmasi kemudian</p>
+              <p>Create your new password!</p>
               <div>
                 <Form
                   id="password"

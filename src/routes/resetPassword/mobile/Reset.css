@@ -14,10 +14,10 @@
   background-position: left bottom, left top;
   background-repeat: no-repeat, no-repeat;
   background-size: 360px, cover;
-  height: calc(100vh - 390px);
+  height: calc(100vh - 340px);
   overflow-y: hidden;
   margin: 0 auto;
-  padding: 195px 20px;
+  padding: 170px 20px;
 }
 
 .root {
