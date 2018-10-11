@@ -88,8 +88,8 @@ class Forgot extends React.Component {
             <LazyLoad>
               <div className={s.flip}>
                 <div className={s.container}>
-                  <p className={s.labelHeader}>Lupa password ?</p>
-                  <p>Masukkan email untuk reset password</p>
+                  <p className={s.labelHeader}>Forgot password ?</p>
+                  <p>Please enter your email below:</p>
                   <div>
                     <Form
                       className={s.formMobile}
@@ -104,16 +104,16 @@ class Forgot extends React.Component {
                     </Form>
                     <div className={s.formGroup}>
                       <button className={s.button} onClick={this.handleForgotPassword}>
-                        KIRIM
+                        Next
                       </button>
                     </div>
                   </div>
                 </div>
                 <div className={s.containerBack}>
-                  <p className={s.labelHeader}>Verifikasi Akun !</p>
+                  <p className={s.labelHeader}>Verify Acount !</p>
                   <p>
-                    Untuk melanjutkan nonton, <br />
-                    kami perlu memverifikasi akun email kamu dulu.
+                    Please check your email, <br />
+                    and input OTP.
                   </p>
                   <div
                     className={`${s.formGroup} ${s.form__otp}`}

@@ -76,10 +76,10 @@ class Login extends React.Component {
           <div className={s.root}>
             <LazyLoad>
               <div className={s.container}>
-                <p className={s.lead}>Masuk ke Mola</p>
+                <p className={s.lead}>Login Mola</p>
                 <p>
-                  Wah, kami kangen sama kamu! <br />
-                  Masukkan data-data mu dan ayo mulai.
+                  Wah, we miss you! <br />
+                  Input your data to login and lets start.
                 </p>
                 <div>
                   <Form
@@ -103,8 +103,8 @@ class Login extends React.Component {
                   >
                     Password
                   </Form>
-                  <a href="/forgotPassword" className={s.forgotPassword}>
-                    Lupa Password ?
+                  <a href="/accounts/forgotPassword" className={s.forgotPassword}>
+                    Forgot your password ?
                   </a>
                   <div className={s.formGroup}>
                     <button className={s.button} onClick={this.handleLogin}>
@@ -112,7 +112,7 @@ class Login extends React.Component {
                     </button>
                   </div>
                 </div>
-                <strong className={s.lineThrough}>Atau</strong>
+                <strong className={s.lineThrough}>Or</strong>
                 <div className={s.flexButton}>
                   <div>
                     <a className={s.google} href="/login/facebook">
@@ -131,7 +131,7 @@ class Login extends React.Component {
                   </div>
                 </div>
                 <p className={s.labelSignup}>
-                  Baru di mola ? <a href="/accounts/register">Daftar sekarang</a>
+                  New user ? <a href="/accounts/register">Register now</a>
                 </p>
               </div>
             </LazyLoad>

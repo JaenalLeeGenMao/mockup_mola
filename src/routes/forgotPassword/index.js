@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Molalayout';
+import Layout from '../../components/Layout';
 import ForgotDesktop from './desktop/Forgot';
 import ForgotMobile from './mobile/Forgot';
 

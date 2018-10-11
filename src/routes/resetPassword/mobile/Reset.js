@@ -59,19 +59,22 @@ class Reset extends React.Component {
   };
 
   render() {
+    const { password, confirmPassword } = this.state;
     return (
       <Fragment>
         <div className={s.wrapper}>
           <div className={s.root}>
             <div className={s.container}>
               <p className={s.labelHeader}>Reset password</p>
-              <p>Bikin password baru. Konfirmasi kemudian</p>
+              <p>Create your new password!</p>
               <div>
                 <Form
                   className={s.formMobile}
                   id="password"
                   type="password"
                   name="password"
+                  onChange={this.onChangeInput}
+                  value={password}
                   autoFocus
                 >
                   New Password
@@ -81,6 +84,8 @@ class Reset extends React.Component {
                   id="confirmPassword"
                   type="password"
                   name="confirmPassword"
+                  onChange={this.onChangeInput}
+                  value={confirmPassword}
                 >
                   Confirm password
                 </Form>

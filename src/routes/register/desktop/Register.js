@@ -115,7 +115,7 @@ class Register extends React.Component {
             <LazyLoad>
               <div className={s.flip}>
                 <div className={s.container}>
-                  <p className={s.labelHeader}>Daftar mola sekarang !</p>
+                  <p className={s.labelHeader}>Register mola now !</p>
                   <div>
                     <Form
                       id="username"
@@ -160,7 +160,7 @@ class Register extends React.Component {
                       </button>
                     </div>
                   </div>
-                  <strong className={s.lineThrough}>Atau daftar dengan</strong>
+                  <strong className={s.lineThrough}>Or</strong>
                   <div className={s.flexButton}>
                     <div>
                       <a className={s.google} href="/login/facebook">
@@ -180,10 +180,10 @@ class Register extends React.Component {
                   </div>
                 </div>
                 <div className={s.containerBack}>
-                  <p className={s.labelHeader}>Verifikasi Akun !</p>
+                  <p className={s.labelHeader}>Verify Account !</p>
                   <p>
-                    Untuk melanjutkan nonton, <br />
-                    kami perlu memverifikasi akun email kamu dulu.
+                    We need verify your email account, <br />
+                    Please check your email to verify your account.
                   </p>
                   <div
                     className={`${s.formGroup} ${s.form__otp}`}
