@@ -14,7 +14,7 @@
 
 .resultTitleLoading {
   width: 80%;
-  height: 22px;
+  height: 1.7rem;
 }
 
 .resultContent {
@@ -40,14 +40,14 @@
 }
 
 .resultChipLoading {
-  padding: 6px 35px 6px 10px;
+  padding: 0 35px 0 10px;
   margin: 0 15px 15px 0;
   position: relative;
   display: inline-block;
   border-radius: 100px;
   background-color: #2b2b2b;
   width: 20%;
-  height: 33px;
+  height: 35px;
 }
 
 .resultChipText {
@@ -58,7 +58,7 @@
 
 .removeChip {
   position: absolute;
-  top: 7px;
+  top: 5px;
   right: 8px;
 }
 
@@ -88,7 +88,7 @@
 
 @media screen and (max-width: 960px) {
   .resultTitle {
-    font-size: 14px;
+    font-size: 1.4rem;
     padding-bottom: 15px;
   }
 
@@ -106,7 +106,7 @@
 
 @media screen and (max-width: 500px) {
   .resultTitle {
-    font-size: 14px;
+    font-size: 1.4rem;
     padding-bottom: 15px;
   }
 
@@ -127,5 +127,47 @@
   .removeChip > i {
     width: 16px;
     height: 16px;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .resultTitle {
+    font-size: 2rem;
+    flex: 1 0 20rem;
+  }
+
+  .resultContent {
+    padding: 0;
+    font-size: 1.5rem;
+  }
+
+  .resultChip {
+    margin: 0 1rem 1rem 0;
+    max-width: 600px;
+    padding: 0.5rem 3rem 0.5rem 1rem;
+  }
+
+  .removeChip {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .removeChip > i {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .resultChipLoading {
+    margin: 0 1rem 1rem 0;
+    height: 2rem;
+  }
+
+  .resultTitleLoading {
+    height: 2rem;
+  }
+
+  .clearRecentSearch {
+    padding: 1rem 35px 1rem 1rem;
   }
 }

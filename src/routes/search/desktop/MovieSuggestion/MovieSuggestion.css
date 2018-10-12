@@ -9,7 +9,7 @@
 .resultContent__movie {
   padding: 0 54px;
   color: #fff;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: normal;
   display: block;
   width: 100%;
@@ -17,7 +17,7 @@
 
 .resultTitle {
   color: #bababa;
-  font-size: 17px;
+  font-size: 1.7rem;
   font-weight: normal;
   display: inline-block;
   flex: 1 0 160px;
@@ -27,7 +27,7 @@
 .resultTitleLoading {
   display: inline-block;
   width: 200px;
-  height: 17px;
+  height: 1.7rem;
   margin-bottom: 15px;
 }
 
@@ -46,10 +46,11 @@
 .movieImgLoading {
   width: 270px;
   height: 170px;
+  margin: 0 auto;
 }
 
 .movieTitle {
-  font-size: 12px;
+  font-size: 1.2rem;
   display: flex;
   height: 20px;
   align-items: center;
@@ -58,10 +59,10 @@
 }
 
 .movieTitleLoading {
-  width: 270px;
+  width: 70%;
+  margin: 1rem 1rem 0 1.5rem;
+  height: 2rem;
   display: block;
-  height: 12px;
-  margin-top: 8px;
 }
 
 .movieTitleResult {
@@ -171,7 +172,7 @@
   }
 
   .movieTitle {
-    font-size: 16px;
+    font-size: 1.6rem;
   }
 
   .movieTitleLoading {
@@ -180,5 +181,33 @@
 
   .movieTitleResult {
     font-size: 16px;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .resultTitle {
+    font-size: 2rem;
+  }
+
+  .movieImg {
+    width: 90%;
+    height: 15rem;
+  }
+
+  .movieTitle {
+    padding: 1rem 1rem 0 0;
+    font-size: 1.5rem;
+  }
+
+  .movieImgLoading {
+    width: 90%;
+    height: 15rem;
+  }
+
+  .movieTitleLoading {
+    width: 70%;
+    margin: 1rem 1rem 0 1.5rem;
+    height: 2rem;
   }
 }
