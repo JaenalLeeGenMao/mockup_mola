@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import dateFormat from 'dateformat';
 import UaParser from 'ua-parser-js';
 import queryString from 'query-string';
-import _get from 'lodash';
+import _get from 'lodash/get';
 
 import Slider from 'react-slick';
 import Modal from 'react-responsive-modal';

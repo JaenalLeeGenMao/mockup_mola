@@ -11,11 +11,16 @@ function action({ isMobile, query }) {
   return {
     chunks: ['search'],
     title,
-    component: isMobile ? (
-      <MolaLayout>
-        <SearchMobile title={title} searchKeyword={qs} />
-      </MolaLayout>
-    ) : (
+    // component: isMobile ? (
+    //   <MolaLayout>
+    //     <SearchMobile title={title} searchKeyword={qs} />
+    //   </MolaLayout>
+    // ) : (
+    //   <MolaLayout>
+    //     <SearchDesktop title={title} searchKeyword={qs} />
+    //   </MolaLayout>
+    // )
+    component: (
       <MolaLayout>
         <SearchDesktop title={title} searchKeyword={qs} />
       </MolaLayout>
