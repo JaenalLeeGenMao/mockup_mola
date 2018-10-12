@@ -99,6 +99,10 @@ class Register extends React.Component {
     console.info(`Please check your email Token's on ${email}`);
   };
 
+  handleLoginSocMed = provider => {
+    window.location.href = `/accounts/_/v1/login/${provider}`;
+  };
+
   static propTypes = {
     title: PropTypes.string.isRequired
   };
@@ -162,21 +166,15 @@ class Register extends React.Component {
                   </div>
                   <strong className={s.lineThrough}>Or</strong>
                   <div className={s.flexButton}>
-                    <div>
-                      <a className={s.google} href="/login/facebook">
-                        <img className={s.buttonImg} src={google} />
-                      </a>
-                    </div>
-                    <div>
-                      <a className={s.facebook} href="/login/facebook">
-                        <img className={s.buttonImg} src={facebook} />
-                      </a>
-                    </div>
-                    <div>
-                      <a className={s.line} href="/login/facebook">
-                        <img className={s.buttonImg} src={line} />
-                      </a>
-                    </div>
+                    <button onClick={() => this.handleLoginSocMed('google')}>
+                      <img className={s.buttonImg} src={google} />
+                    </button>
+                    <button onClick={() => this.handleLoginSocMed('facebook')}>
+                      <img className={s.buttonImg} src={facebook} />
+                    </button>
+                    <button onClick={() => this.handleLoginSocMed('line')}>
+                      <img className={s.buttonImg} src={line} />
+                    </button>
                   </div>
                 </div>
                 <div className={s.containerBack}>
