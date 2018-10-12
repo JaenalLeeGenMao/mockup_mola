@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import Mola from '@api/mola';
 import types from '../constants';
-import config from '../config';
 
 export const getHomePlaylist = () => dispatch => {
   dispatch({
@@ -14,7 +13,7 @@ export const getHomePlaylist = () => dispatch => {
       data: []
     }
   });
-  return Mola.getHomePlaylist({ ...config }).then(result => {
+  return Mola.getHomePlaylist().then(result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_HOME_PLAYLIST_ERROR,
@@ -30,7 +29,7 @@ export const getHomePlaylist = () => dispatch => {
 };
 
 export const getHomeVideo = playlist => dispatch => {
-  return Mola.getHomeVideo({ id: playlist.id, ...config }).then(result => {
+  return Mola.getHomeVideo({ id: playlist.id }).then(result => {
     result = {
       meta: {
         status: result.meta.status,
@@ -48,11 +47,7 @@ export const getHomeVideo = playlist => dispatch => {
 
 export const updateActivePlaylist = id => (dispatch, getState) => {
   const store = getState(),
-    {
-      home: {
-        playlists: { meta, data: playlistsData }
-      }
-    } = store,
+    { home: { playlists: { meta, data: playlistsData } } } = store,
     data = playlistsData.map(playlist => {
       if (playlist.id === id) {
         return { ...playlist, isActive: true };

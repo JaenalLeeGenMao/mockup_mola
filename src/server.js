@@ -12,9 +12,7 @@ import express from 'express';
 import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 // import { graphql } from 'graphql';
-import jwt from 'jsonwebtoken';
 // import nodeFetch from 'node-fetch';
 // import request from 'request';
 import React from 'react';
@@ -25,7 +23,6 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 // import createFetch from './createFetch';
-// import passport from './passport';
 import router from './router';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
@@ -65,50 +62,7 @@ app.use(csurf({ cookie: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//
-// Authentication
-// -----------------------------------------------------------------------------
-app.use(
-  expressJwt({
-    secret: config.auth.jwt.secret,
-    credentialsRequired: false,
-    getToken: req => req.cookies.id_token
-  })
-);
-// Error handler for express-jwt
-app.use((err, req, res, next) => {
-  // eslint-disable-line no-unused-vars
-  if (err instanceof Jwt401Error) {
-    console.error('[express-jwt-error]', req.cookies.id_token);
-    // `clearCookie`, otherwise user can't use web-app until cookie expires
-    res.clearCookie('id_token');
-  }
-  next(err);
-});
-
-// app.use(passport.initialize());
-
-// app.get(
-//   '/login/facebook',
-//   passport.authenticate('facebook', {
-//     scope: ['email', 'user_location'],
-//     session: false
-//   })
-// );
-// app.get(
-//   '/login/facebook/return',
-//   passport.authenticate('facebook', {
-//     failureRedirect: '/login',
-//     session: false
-//   }),
-//   (req, res) => {
-//     const expiresIn = 60 * 60 * 24 * 180; // 180 days
-//     const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
-//     res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-//     res.redirect('/');
-//   }
-// );
-const domain = config.api.endpoints.domain;
+const domain = config.endpoints.domain;
 
 // set a cookie
 app.use(function(req, res, next) {
@@ -149,14 +103,6 @@ app.get('*', async (req, res, next) => {
       // eslint-disable-next-line no-underscore-dangle
       styles.forEach(style => css.add(style._getCss()));
     };
-
-    // Universal HTTP client
-    // const fetch = createFetch(nodeFetch, {
-    //   baseUrl: config.api.serverUrl,
-    //   cookie: req.headers.cookie,
-    //   schema,
-    //   graphql,
-    // });
 
     const initialState = {
       user: req.user || {
@@ -285,7 +231,7 @@ app.get('*', async (req, res, next) => {
 
     data.scripts = Array.from(scripts);
     data.app = {
-      apiUrl: config.api.clientUrl,
+      apiUrl: config.endpoints.clientUrl,
       state: context.store.getState(),
       isMobile: context.isMobile
     };

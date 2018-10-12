@@ -15,7 +15,6 @@ import nodeExternals from 'webpack-node-externals';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import overrideRules from './lib/overrideRules';
 import pkg from '../package.json';
-import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const resolvePath = (...args) => path.resolve(ROOT_DIR, ...args);
@@ -41,6 +40,23 @@ const alias = {
   '@components': resolvePath('src/components'),
   '@source': resolvePath('src')
 };
+
+/** this is how to use gandalf */
+// import { webpackBaseConfig } from 'gandalf';
+// let config = webpackBaseConfig.updateConfig({
+//   isDebug,
+//   isVerbose,
+//   ROOT_DIR,
+//   env: process.env.REACT_APP_ENV
+// });
+
+// config = {
+//   ...config,
+//   resolve: {
+//     ...config.resolve,
+//     alias
+//   }
+// }
 
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
@@ -79,21 +95,6 @@ const config = {
     // Keep in sync with .flowconfig and .eslintrc
     extensions: ['.js', '.jsx', '.json'],
     modules: ['node_modules', 'src'],
-    plugins: [
-      new DirectoryNamedWebpackPlugin({
-        // define where the imported files will be resolving by DirectoryNamedWebpackPlugin.
-        // it can be string/regex or Array of string/regex.
-        include: [
-          path.resolve(__dirname, 'api'),
-          path.resolve(__dirname, 'global'),
-          path.resolve(__dirname, 'routes'),
-          path.resolve(__dirname, 'actions'),
-          path.resolve(__dirname, 'reducers'),
-          path.resolve(__dirname, 'constants'),
-          path.resolve(__dirname, 'components')
-        ]
-      })
-    ],
     symlinks: true,
     alias
   },

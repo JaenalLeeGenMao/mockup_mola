@@ -1,5 +1,5 @@
 const axios = require('axios');
-const apiConfig = require('../global/config/api');
+const apiConfig = require('../global/config');
 
 const apiHost = `${apiConfig[process.env.REACT_APP_ENV || 'staging'].endpoints.api}`;
 module.exports = {

@@ -11,11 +11,11 @@ import {
 import utils from './util';
 import _get from 'lodash/get';
 
-import { api as config } from '@source/config';
+import { endpoints } from '@source/config';
 
-const getHomePlaylist = ({ ...payload }) => {
+const getHomePlaylist = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeHomePlaylist(response);
@@ -38,9 +38,9 @@ const getHomePlaylist = ({ ...payload }) => {
     });
 };
 
-const getHomeVideo = ({ id, ...payload }) => {
+const getHomeVideo = ({ id }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeHomeVideo(response);
@@ -65,7 +65,7 @@ const getHomeVideo = ({ id, ...payload }) => {
 
 const getAllHistory = ({ userId }) => {
   return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`, {
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeHistory(response);
@@ -90,7 +90,7 @@ const getAllHistory = ({ userId }) => {
 const getSearchResult = ({ q }) => {
   return get(`${SEARCH_ENDPOINT}`, {
     params: { q: q },
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeSearchResult(response);
@@ -115,7 +115,7 @@ const getSearchResult = ({ q }) => {
 
 const getSearchGenre = payload => {
   return get(`${SEARCH_GENRE_ENDPOINT}`, {
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeSearchGenre(response);
@@ -141,7 +141,7 @@ const getSearchGenre = payload => {
 const getRecentSearch = (sessionId, sid) => {
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
     params: { sessionId: sessionId },
-    ...config.setting,
+    ...endpoints.setting,
     headers: { Authorization: `Bearer ${sid}` }
   })
     .then(response => {
@@ -170,7 +170,7 @@ const postRecentSearch = (sessionId, sid, keyword) => {
     `${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`,
     {},
     {
-      ...config.setting,
+      ...endpoints.setting,
       headers: { Authorization: `Bearer ${sid}` }
     }
   )
@@ -194,7 +194,7 @@ const postRecentSearch = (sessionId, sid, keyword) => {
 
 const deleteRecentSearchAll = (sessionId, sid) => {
   return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}`, {
-    ...config.setting,
+    ...endpoints.setting,
     headers: { Authorization: `Bearer ${sid}` }
   })
     .then(result => {
@@ -217,7 +217,7 @@ const deleteRecentSearchAll = (sessionId, sid) => {
 
 const deleteRecentSearch = (sessionId, sid, keyword) => {
   return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`, {
-    ...config.setting,
+    ...endpoints.setting,
     headers: { Authorization: `Bearer ${sid}` }
   })
     .then(result => {
@@ -240,7 +240,7 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
 
 const getMovieDetail = ({ id }) => {
   return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeVideoDetail(response);
@@ -265,7 +265,7 @@ const getMovieDetail = ({ id }) => {
 
 const getMovieLibrary = id => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...config.setting
+    ...endpoints.setting
   })
     .then(response => {
       const result = utils.normalizeMovieLibrary(response);
