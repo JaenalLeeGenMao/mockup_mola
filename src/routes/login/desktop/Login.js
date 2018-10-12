@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import $ from 'jquery';
 
 import { setUserVariable } from '@actions/user';
 
@@ -63,7 +64,14 @@ class Login extends React.Component {
     });
     if (result.meta.status === 'success') {
       window.location.href = `/accounts/signin?uid=${result.data.uid}`;
+    } else {
+      console.log('result', result);
+      alert('error');
     }
+  };
+
+  handleLoginSocMed = provider => {
+    window.location.href = `/accounts/_/v1/login/${provider}`;
   };
 
   render() {
@@ -113,21 +121,15 @@ class Login extends React.Component {
                 </div>
                 <strong className={s.lineThrough}>Or</strong>
                 <div className={s.flexButton}>
-                  <div>
-                    <a className={s.google} href="/accounts/_/v1/login/google">
-                      <img className={s.buttonImg} src={google} />
-                    </a>
-                  </div>
-                  <div>
-                    <a className={s.facebook} href="/accounts/_/v1/login/facebook">
-                      <img className={s.buttonImg} src={facebook} />
-                    </a>
-                  </div>
-                  <div>
-                    <a className={s.line} href="/accounts/_/v1/login/line">
-                      <img className={s.buttonImg} src={line} />
-                    </a>
-                  </div>
+                  <button onClick={() => this.handleLoginSocMed('google')}>
+                    <img className={s.buttonImg} src={google} />
+                  </button>
+                  <button onClick={() => this.handleLoginSocMed('facebook')}>
+                    <img className={s.buttonImg} src={facebook} />
+                  </button>
+                  <button onClick={() => this.handleLoginSocMed('line')}>
+                    <img className={s.buttonImg} src={line} />
+                  </button>
                 </div>
                 <p className={s.labelSignup}>
                   New user ? <a href="/accounts/register">Register now</a>

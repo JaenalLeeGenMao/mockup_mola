@@ -104,6 +104,10 @@ class Register extends React.Component {
     title: PropTypes.string.isRequired
   };
 
+  handleLoginSocMed = provider => {
+    window.location.href = `/accounts/_/v1/login/${provider}`;
+  };
+
   render() {
     const { username, email, password, confirmPassword, token } = this.state;
 
@@ -167,21 +171,15 @@ class Register extends React.Component {
                   </div>
                   <strong className={s.lineThrough}>Or</strong>
                   <div className={s.flexButton}>
-                    <div>
-                      <a className={s.google} href="/login/facebook">
-                        <img src={google} className={s.buttonMobile} />
-                      </a>
-                    </div>
-                    <div>
-                      <a className={s.facebook} href="/login/facebook">
-                        <img src={facebook} className={s.buttonMobile} />
-                      </a>
-                    </div>
-                    <div>
-                      <a className={s.line} href="/login/facebook">
-                        <img src={line} className={s.buttonMobile} />
-                      </a>
-                    </div>
+                    <button onClick={() => this.handleLoginSocMed('google')}>
+                      <img src={google} className={s.buttonMobile} />
+                    </button>
+                    <button onClick={() => this.handleLoginSocMed('facebook')}>
+                      <img src={facebook} className={s.buttonMobile} />
+                    </button>
+                    <button onClick={() => this.handleLoginSocMed('line')}>
+                      <img src={line} className={s.buttonMobile} />
+                    </button>
                   </div>
                 </div>
                 <div className={s.containerBack}>

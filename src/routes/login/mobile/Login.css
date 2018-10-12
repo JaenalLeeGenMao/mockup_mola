@@ -60,7 +60,7 @@
   float: right;
   letter-spacing: 1.36px;
   line-height: 19px;
-  margin: 20px 0 20px 0;
+  margin: 10px 0 20px 0;
   text-decoration: none;
 }
 
@@ -137,15 +137,16 @@
   z-index: 1;
 }
 
-.flexButton > div {
+.flexButton > button {
   width: 88px;
   height: 40px;
+  outline: none;
+  border: none;
   border-radius: 4px;
   background: rgba(36, 37, 40, 0.8);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
   cursor: pointer;
   text-align: center;
-  padding-top: 8px;
 }
 
 .labelSignup {

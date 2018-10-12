@@ -65,6 +65,10 @@ class Login extends React.Component {
     title: PropTypes.string.isRequired
   };
 
+  handleLoginSocMed = provider => {
+    window.location.href = `/accounts/_/v1/login/${provider}`;
+  };
+
   render() {
     const { email, password } = this.state;
 
@@ -114,21 +118,15 @@ class Login extends React.Component {
                 </div>
                 <strong className={s.lineThrough}>Or</strong>
                 <div className={s.flexButton}>
-                  <div>
-                    <a className={s.google} href="/accounts/_/v1/login/google">
-                      <img className={s.buttonMobile} src={google} />
-                    </a>
-                  </div>
-                  <div>
-                    <a className={s.facebook} href="/accounts/_/v1/login/facebook">
-                      <img className={s.buttonMobile} src={facebook} />
-                    </a>
-                  </div>
-                  <div>
-                    <a className={s.line} href="/accounts/_/v1/login/line">
-                      <img className={s.buttonMobile} src={line} />
-                    </a>
-                  </div>
+                  <button onClick={() => this.handleLoginSocMed('google')}>
+                    <img className={s.buttonMobile} src={google} />
+                  </button>
+                  <button onClick={() => this.handleLoginSocMed('facebook')}>
+                    <img className={s.buttonMobile} src={facebook} />
+                  </button>
+                  <button onClick={() => this.handleLoginSocMed('line')}>
+                    <img className={s.buttonMobile} src={line} />
+                  </button>
                 </div>
                 <p className={s.labelSignup}>
                   New user ? <a href="/accounts/register">Register now</a>
