@@ -44,9 +44,7 @@ class Html extends React.Component {
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {scripts.map(script => (
-            <link key={script} rel="preload" href={script} as="script" />
-          ))}
+          {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link
             href="https://diegoddox.github.io/react-redux-toastr/7.1/react-redux-toastr.min.css"
@@ -75,10 +73,8 @@ class Html extends React.Component {
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
-          {scripts.map(script => (
-            <script key={script} src={script} />
-          ))}
-          {config.analytics.googleTrackingId && (
+          {scripts.map(script => <script key={script} src={script} />)}
+          {/* {config.analytics.googleTrackingId && (
             <script
               dangerouslySetInnerHTML={{
                 __html:
@@ -89,7 +85,7 @@ class Html extends React.Component {
           )}
           {config.analytics.googleTrackingId && (
             <script src="https://www.google-analytics.com/analytics.js" async defer />
-          )}
+          )} */}
           <link rel="stylesheet" type="text/css" href="./Theoplayer/Theoverstyle.css" />
         </body>
       </html>

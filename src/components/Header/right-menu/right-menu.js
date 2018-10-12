@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import queryString from 'query-string';
 
-import mainConfig from '@source/config';
-import config from '@global/config/api';
 import Auth from '@api/auth';
 
 import LazyLoad from '@components/common/Lazyload';
@@ -12,32 +9,9 @@ import Link from '@components/Link';
 import styles from './right-menu.css';
 
 class RightMenu extends Component {
-  handleLogin = () => {
-    const {
-      endpoints: { auth: authURL },
-      auth: authConfig
-    } = config['production'];
-    const {
-      api: {
-        config: {
-          endpoints: { domain }
-        }
-      }
-    } = mainConfig;
-
-    const qs = queryString.stringify({
-      ...authConfig,
-      redirect_uri: domain || 'http://jaenal.mola.tv'
-    });
-    window.location.href = `${authURL}/oauth/login?${qs}`;
-  };
-
   handleSignOut = e => {
     e.preventDefault();
-    const {
-      user: { uid },
-      runtime: { csrf }
-    } = this.props;
+    const { user: { uid }, runtime: { csrf } } = this.props;
     Auth.requestLogout({ uid, csrf }).then(response => {
       if (response.meta.status === 'success') {
         window.location.href = '/signout';
@@ -46,11 +20,7 @@ class RightMenu extends Component {
   };
 
   render() {
-    const {
-      color,
-      searchOff,
-      user: { uid: userID = '', firstName = '' }
-    } = this.props;
+    const { color, searchOff, user: { uid: userID = '', firstName = '' } } = this.props;
     return (
       <div className={styles.right__menu}>
         {!searchOff && (

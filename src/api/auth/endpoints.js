@@ -1,4 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import { api as config } from '@source/config';
+import { endpoints } from '@source/config';
 
-export const AUTH_BASE_ENDPOINT = `${config.endpoints.auth}`;
+export const AUTH_BASE_ENDPOINT = `${endpoints.auth}`;
