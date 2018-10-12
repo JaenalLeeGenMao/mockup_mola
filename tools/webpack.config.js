@@ -118,7 +118,19 @@ const config = {
           presets: [
             // A Babel preset that can automatically determine the Babel plugins and polyfills
             // https://github.com/babel/babel-preset-env
-            ['@babel/preset-env'],
+            [
+              '@babel/preset-env',
+              {
+                targets: {
+                  browsers: pkg.browserslist
+                },
+                forceAllTransforms: !isDebug, // for UglifyJS
+                modules: false,
+                useBuiltIns: false,
+                debug: false
+              }
+            ],
+
             // Experimental ECMAScript proposals
             // https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-
             // Flow
