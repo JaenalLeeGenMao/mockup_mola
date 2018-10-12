@@ -25,8 +25,7 @@ WORKDIR /var/www/mola-web
 
 ARG REACT_APP_ENV
 
-COPY package*.json .
-COPY yarn.lock .
+COPY yarn.lock* package*.json .
 
 # Install Node.js dependencies
 RUN yarn install --no-progress
