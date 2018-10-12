@@ -61,3 +61,10 @@
     height: 30px;
   }
 }
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .genreContainer {
+    padding-top: 230px;
+  }
+}

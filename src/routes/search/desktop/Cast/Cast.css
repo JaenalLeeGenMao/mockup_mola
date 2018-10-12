@@ -104,3 +104,10 @@
     width: 50px;
   }
 }
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .resultTitle {
+    font-size: 2rem;
+  }
+}
