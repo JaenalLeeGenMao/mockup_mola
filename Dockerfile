@@ -22,10 +22,13 @@
 FROM node:8-alpine
 
 WORKDIR /var/www/mola-web
+#RUN apk add --update alpine-sdk
+#RUN apk add libpng-dev
+RUN apk --no-cache update && apk --no-cache add g++ make bash zlib-dev libpng-dev && rm -fr /var/cache/apk/*
 
 ARG REACT_APP_ENV
 
-COPY yarn.lock* package*.json .
+COPY package*.json .
 
 # Install Node.js dependencies
 RUN yarn install --no-progress
