@@ -32,7 +32,9 @@ class Login extends React.Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      isError: false,
+      errMsg: ''
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -58,6 +60,13 @@ class Login extends React.Component {
     });
     if (result.meta.status === 'success') {
       window.location.href = `/accounts/signin?uid=${result.data.uid}`;
+    } else {
+      this.setState({
+        isError: true,
+        errMsg: result.meta.error.response.data.error_description
+      });
+      // console.log('result', result.meta.error.response.data);
+      // alert(result.meta.error.response.data.error_description);
     }
   };
 
@@ -70,7 +79,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, isError, errMsg } = this.state;
 
     const isDark = true;
     return (
@@ -87,7 +96,7 @@ class Login extends React.Component {
                 </p>
                 <div>
                   <Form
-                    className={s.formMobile}
+                    className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')}
                     id="email"
                     type="text"
                     name="email"
@@ -98,7 +107,7 @@ class Login extends React.Component {
                     Email or username
                   </Form>
                   <Form
-                    className={s.formMobile}
+                    className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')}
                     id="password"
                     type="password"
                     name="password"
@@ -107,9 +116,14 @@ class Login extends React.Component {
                   >
                     Password
                   </Form>
-                  <a href="/accounts/forgotPassword" className={s.forgotPassword}>
-                    Forgot your password ?
-                  </a>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
+                    <div>
+                      <a href="/accounts/forgotPassword" className={s.forgotPassword}>
+                        Forgot password ?
+                      </a>
+                    </div>
+                  </div>
                   <div className={s.formGroup}>
                     <button className={s.button} onClick={this.handleLogin}>
                       SIGN IN
