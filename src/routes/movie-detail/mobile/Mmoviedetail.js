@@ -16,16 +16,20 @@ import Testimoni from './Testimoni';
 import s from './Mmoviedetail.css';
 
 import Playbtn from '../moviedetail/assets/player-icon.jpg';
+import TrailerImg from '../moviedetail/assets/notavailable.jpg';
 import BannerLoading from './BannerLoading';
 import SynopsisLoading from './SynopsisLoading';
 import LoadingPlaceholder from '../../../components/common/LoadingPlaceholder/LoadingPlaceholder';
 import TestimoniLoading from './TestimoniLoading';
+import Theoplayer from '../../../components/Theoplayer/Theoplayer';
 
 class Mmoviedetail extends Component {
   state = {
     open: false,
     movieDetail: [],
-    isLoading: true
+    isLoading: true,
+    trailerPlaytag: 'Play Trailer',
+    trailerMovie: ''
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -51,8 +55,8 @@ class Mmoviedetail extends Component {
     }
   }
 
-  onOpenModal = () => {
-    this.setState({ open: true });
+  onOpenModal = trailerUrl => {
+    this.setState({ open: true, trailerMovie: trailerUrl });
   };
 
   onCloseModal = () => {
@@ -74,40 +78,40 @@ class Mmoviedetail extends Component {
 
     const trailerCopy = 'movie trailer';
 
-    const trailerMovie = [
-      {
-        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-        trailerLink: '#',
-        trailerCopy: 'Play movie'
-      },
-      {
-        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-        trailerLink: '#',
-        trailerCopy: 'Play movie'
-      },
-      {
-        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-        trailerLink: '#',
-        trailerCopy: 'Play movie'
-      },
-      {
-        movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
-        trailerLink: '#',
-        trailerCopy: 'Play movie'
-      }
-    ];
+    // const trailerMovie = [
+    //   {
+    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+    //     trailerLink: '#',
+    //     trailerCopy: 'Play movie'
+    //   },
+    //   {
+    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+    //     trailerLink: '#',
+    //     trailerCopy: 'Play movie'
+    //   },
+    //   {
+    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+    //     trailerLink: '#',
+    //     trailerCopy: 'Play movie'
+    //   },
+    //   {
+    //     movieImageUrl: 'https://dummyimage.com/220x138/000/fff',
+    //     trailerLink: '#',
+    //     trailerCopy: 'Play movie'
+    //   }
+    // ];
 
     const casting = {
       castTitle: 'cast'
     };
 
-    const { open, isLoading } = this.state;
+    const { open, isLoading, trailerPlaytag, trailerMovie } = this.state;
 
     //get moviedetaildata from redux stored in props
     const {
       movieDetail: { data: movieDetailData }
     } = this.props;
-    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].coverUrl : null;
+    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images : null;
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
@@ -143,6 +147,15 @@ class Mmoviedetail extends Component {
     const trailerDtPlaceholder = [1, 2];
     const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
 
+    // css toogle
+    let ifOne =
+      trailerDt.length === 1
+        ? s.trailer_photo_container + ' ' + s.trailer_ifone
+        : s.trailer_photo_container;
+
+    // trailer temporary image
+    const temporaryImg = TrailerImg;
+
     return (
       <Fragment>
         <Layout>
@@ -152,7 +165,7 @@ class Mmoviedetail extends Component {
               <Banner
                 year={year}
                 imageTitle={bannerImgTitle}
-                bannerUrl={bannerImage}
+                bannerUrl={bannerImage ? bannerImage.large : null}
                 link={link}
                 playBtn={Playbtn}
                 playCopy={banner.playCopy}
@@ -170,15 +183,19 @@ class Mmoviedetail extends Component {
 
             {!isLoading &&
               trailerDt.length > 0 && (
-                <Trailer trailerTitle={trailerCopy} trailerText={trailerIsHide}>
+                <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
                   <div className={s.trailer_moviebox}>
                     {trailerDt.map(obj => (
                       <LazyLoad
                         key={obj.toString()}
-                        containerClassName={s.trailer_moviebox__inner}
-                        src={obj.movieImageUrl}
-                        onClick={this.onOpenModal}
-                      />
+                        containerClassName={ifOne}
+                        alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
+                        src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
+                        onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
+                        className={s.trailerImage}
+                      >
+                        <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
+                      </LazyLoad>
                     ))}
                   </div>
                 </Trailer>
@@ -188,7 +205,7 @@ class Mmoviedetail extends Component {
                 <div className={s.trailer_moviebox}>
                   {trailerDtPlaceholder.map(obj => (
                     <LoadingPlaceholder
-                      key={obj}
+                      key={obj.toString()}
                       isLight
                       className={s.trailer_moviebox_imgloading}
                     />
@@ -239,11 +256,13 @@ class Mmoviedetail extends Component {
               />
             )}
           <Modal open={open} onClose={this.onCloseModal} center>
-            <h2>Simple centered modal</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
-              risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor quam.
-            </p>
+            <div className={s.modal_container}>
+              <Theoplayer
+                movieUrl={trailerMovie}
+                handleOnPlay={this.handleOnPlay}
+                handleOnTime={this.handleOnTime}
+              />
+            </div>
           </Modal>
         </Layout>
       </Fragment>

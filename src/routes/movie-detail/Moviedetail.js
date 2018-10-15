@@ -76,9 +76,7 @@ class Moviedetail extends React.Component {
       //getMovieDetail('tt1179056');
       getMovieDetail(movieId);
     }
-
-    console.log(`[Moviedetail] getDerivedStateFromProps prevState `, prevState);
-
+    // console.log(`[Moviedetail] getDerivedStateFromProps prevState `, prevState);
     return { ...prevState, movieDetail };
   }
 
@@ -254,7 +252,7 @@ class Moviedetail extends React.Component {
     // cover banner
     const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images : null;
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
-    console.log('Banner', bannerImage);
+    // console.log('Banner', bannerImage);
 
     const playCopy = 'Play movie';
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
@@ -306,7 +304,7 @@ class Moviedetail extends React.Component {
     const temporaryImg = TrailerImg;
 
     // sample movie
-    const sampleMovie = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8';
+    // const sampleMovie = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8';
 
     return (
       <Fragment>
@@ -437,7 +435,7 @@ class Moviedetail extends React.Component {
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
               <Theoplayer
-                movieUrl={sampleMovie}
+                movieUrl={trailerMovie}
                 handleOnPlay={this.handleOnPlay}
                 handleOnTime={this.handleOnTime}
               />

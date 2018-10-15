@@ -6,7 +6,6 @@ import Layout from '@components/Molalayout';
 import playerArrow from './assets/arrowback.png';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Theoplayer.css';
-// import './Theoverstyle.css';
 
 class Theoplayer extends Component {
   state = {
@@ -34,7 +33,6 @@ class Theoplayer extends Component {
     var element = document.querySelector('.video-container');
     var player = new THEOplayer.Player(element, playerConfig);
     this.movieConfig(player);
-
     // auto play when hit api
     // player.autoplay = true;
     player.play();
@@ -56,13 +54,6 @@ class Theoplayer extends Component {
         }
       ],
       textTracks: this.props.theoConfig
-      // {
-      //   default: true, //optional
-      //   // kind : 'subtitles', //optional - other values findable at https://support.theoplayer.com/hc/en-us/articles/214350425#TextTrackDescription
-      //   // label: 'Indonesia', //optional
-      //   // src : 'example.srt',
-      //   //srclang : 'id'
-      // }
     };
   }
 

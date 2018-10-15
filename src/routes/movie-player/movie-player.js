@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as movieStreamActions from '@actions/movie-stream';
 
 import Theoplayer from '../../components/Theoplayer/Theoplayer';
+import s from './movie-player.css';
 
 class Movieplayer extends Component {
   state = {
@@ -28,7 +30,8 @@ class Movieplayer extends Component {
     const myTheoPlayer = subtitlesDt.map(obj => ({
       kind: obj.type,
       srclang: obj.attributes.locale,
-      src: obj.attributes.url
+      src: obj.attributes.url,
+      label: obj.attributes.label
     }));
     // console.log('myTheoPlayer', myTheoPlayer)
     return myTheoPlayer;
@@ -42,11 +45,13 @@ class Movieplayer extends Component {
 
     return (
       <Fragment>
-        {streamSource ? (
-          <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />
-        ) : (
-          ''
-        )}
+        <div id={s.movie_player}>
+          {streamSource ? (
+            <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />
+          ) : (
+            ''
+          )}
+        </div>
       </Fragment>
     );
   }
@@ -63,6 +68,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+  withStyles(s),
   connect(
     mapStateToProps,
     mapDispatchToProps
