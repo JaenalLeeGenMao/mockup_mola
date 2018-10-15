@@ -5,6 +5,11 @@ html {
   font-family: Futura, Trebuchet MS, Arial, sans-serif;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 /* Big TV Styles */
 @media screen and (min-height: 1080px) {
   html {

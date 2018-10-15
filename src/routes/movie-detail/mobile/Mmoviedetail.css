@@ -10,11 +10,13 @@
   width: 100%;
   max-width: 100%;
   padding: 0;
+  overflow: hidden;
 }
 
 .trailer_moviebox {
   white-space: nowrap;
   overflow: auto;
+  display: -webkit-box;
 }
 
 .trailer_moviebox__inner {
@@ -27,6 +29,12 @@
 .trailer_moviebox img {
   display: inline-block;
   width: 100%;
+  height: 147px;
+  object-fit: cover;
+}
+
+.trailer_moviebox > div {
+  margin-right: 10px;
 }
 
 .trailer_moviebox_imgloading {
@@ -98,3 +106,9 @@
   margin: 22px 0 22px 10px;
   vertical-align: bottom;
 }
+
+.modal_container {
+  width: 250px;
+  max-width: 100%;
+}
+
