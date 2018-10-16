@@ -127,28 +127,6 @@
   width: 100%;
 }
 
-.resultRow {
-  padding-bottom: 32px;
-  margin: 0;
-  display: flex;
-}
-
-.resultTitle {
-  color: #bababa;
-  font-size: 1.7rem;
-  font-weight: normal;
-  display: inline-block;
-  flex: 1 0 160px;
-}
-
-.resultContent {
-  color: #fff;
-  font-size: 1.6rem;
-  font-weight: normal;
-  display: block;
-  width: 100%;
-}
-
 .containerBg {
   background-color: #11110f;
   position: absolute;

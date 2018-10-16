@@ -6,7 +6,7 @@ import s from './RecentSearch.css';
 
 const RecentSearchLoading = () => {
   return (
-    <Fragment>
+    <div className={s.resultRow}>
       <div className={s.resultTitle}>
         <LoadingPlaceholder className={s.resultTitleLoading} />
       </div>
@@ -15,7 +15,7 @@ const RecentSearchLoading = () => {
         <LoadingPlaceholder className={s.resultChipLoading} />
         <LoadingPlaceholder className={s.resultChipLoading} style={{ width: '60%' }} />
       </div>
-    </Fragment>
+    </div>
   );
 };
 

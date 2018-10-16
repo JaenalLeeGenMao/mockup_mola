@@ -1,7 +1,6 @@
 .searchErrorContainer {
-  width: 400px;
+  width: 100%;
   margin: 0 auto;
-  padding-top: 50px;
 }
 
 .searchErrorTitle {
@@ -9,7 +8,7 @@
   color: #ffff;
   text-align: center;
   padding: 0 20px 10px;
-  margin-top: -30px;
+  margin-top: 20px;
 }
 
 .searchErrorDetail {
@@ -17,10 +16,26 @@
   color: #cfcfcf;
   text-align: center;
   padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.searchErrorContainer img {
+  width: 300px;
+  margin: 0 auto;
+  display: block;
 }
 
 @media screen and (max-width: 500px) {
   .searchErrorContainer {
-    width: 90%;
+    width: 100%;
+  }
+
+  .searchErrorContainer img {
+    width: 60%;
+  }
+
+  .searchErrorDetail {
+    width: auto;
   }
 }

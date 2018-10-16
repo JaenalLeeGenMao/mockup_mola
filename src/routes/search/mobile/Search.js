@@ -8,20 +8,16 @@ import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
 
 import * as searchActions from '@actions/search';
-import SearchGenre from './SearchGenre/SearchGenre';
-import SearchGenreLoading from './SearchGenre/SearchGenreLoading';
 import RecentSearch from './RecentSearch/RecentSearch';
 import RecentSearchLoading from './RecentSearch/RecentSearchLoading';
 import Cast from './Cast/Cast';
-
+import CastLoading from './Cast/CastLoading';
 import Error from '../error/Error';
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
 import s from './Search.css';
-
 import searchDb from '../../../database/searchDb';
 import history from '../../../history';
-
 import Tracker from '../../../lib/tracker';
 
 let sessionId;
@@ -37,15 +33,13 @@ class Search extends React.Component {
     textSuggestion: '',
     searchedMovie: [],
     result: [],
-    genre: [],
     recentSearch: [],
     val: '',
     showAllRecentSearch: false,
-    showGenre: true,
     showRemoveIcon: false,
-    isLoadingGenre: true,
     isLoadingResult: true,
-    isLoadingRecentSearch: true
+    isLoadingRecentSearch: true,
+    isEmptyInput: this.props.searchKeyword ? false : true
   };
 
   static propTypes = {
@@ -56,9 +50,8 @@ class Search extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       getSearchResult,
-      getSearchGenre,
       getRecentSearch,
-      search: { genre, result, recentSearch },
+      search: { result, recentSearch },
       user: { sid },
       searchKeyword
     } = nextProps;
@@ -66,11 +59,7 @@ class Search extends React.Component {
       sessionId = Tracker.sessionId();
     }
 
-    if (nextProps.search.genre.meta.status === 'loading' && prevState.genre.length <= 0) {
-      getSearchGenre();
-    }
-
-    if (result.meta.status === 'loading' && prevState.genre.length <= 0) {
+    if (result.meta.status === 'loading' && prevState.result.length <= 0) {
       var today = new Date();
       var expiredDateStamp = new Date(new Date().setDate(today.getDate() - 7));
       var expiredDate =
@@ -96,49 +85,32 @@ class Search extends React.Component {
       );
     }
 
-    if (process.env.BROWSER) {
-      sessionId = Tracker.sessionId();
-    }
-
-    if (
-      searchKeyword !== '' &&
-      recentSearch.meta.status === 'loading' &&
-      prevState.recentSearch.length <= 0
-    ) {
+    if (recentSearch.meta.status === 'loading' && prevState.recentSearch.length <= 0) {
       getRecentSearch(sessionId, sid);
     }
 
-    if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.genre.length <= 0) {
+    if (searchKeyword !== '' && result.meta.status === 'loading' && prevState.result.length <= 0) {
       getSearchResult(searchKeyword);
     }
 
-    return { ...prevState, result, genre, recentSearch };
+    return { ...prevState, result, recentSearch };
   }
 
   componentDidUpdate(prevProps) {
     const {
       searchKeyword,
       search: {
-        genre: { meta: genreMeta },
         result: { meta },
         recentSearch: { data: rsDt, meta: recentSearchMeta }
       }
     } = this.props;
 
-    if (prevProps.search.genre.meta.status !== genreMeta.status && genreMeta.status !== 'loading') {
-      this.setState({
-        isLoadingGenre: false
-      });
-    }
-
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
       this.allRecentSearch = rsDt;
       this.recentSearchData = rsDt;
       this.showRecentSearchByInput(searchKeyword);
-
       this.setState({
-        isLoadingRecentSearch: false,
-        showGenre: recentSearchMeta.status == 'success' ? false : true
+        isLoadingRecentSearch: recentSearchMeta.status != 'loading' ? false : true
       });
     }
 
@@ -151,9 +123,12 @@ class Search extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.inputSearch.current.focus();
+  }
+
   parseSearchResult = val => {
     this.searchText = val;
-    // this.showRecentSearchByInput(val);
     const {
       search: { result }
     } = this.props;
@@ -170,19 +145,13 @@ class Search extends React.Component {
     } else {
       firstMatch = '';
     }
-    const noResult =
-      result.data.length == 0 &&
-      (!this.recentSearchData || this.recentSearchData.length == 0) &&
-      !this.inputSearch.current.value
-        ? true
-        : false;
+
     const textSugRemain = firstMatch.substr(val.length, firstMatch.length);
     this.textSuggestion = firstMatch !== '' ? `${val}${textSugRemain}` : '';
     this.setState({
       searchText: val,
-      isLoadingResult: false,
+      isLoadingResult: result.meta.status != 'loading' ? false : true,
       showAllRecentSearch: this.inputSearch.current.value ? false : true,
-      showGenre: noResult,
       showRemoveIcon: true
     });
   };
@@ -219,7 +188,10 @@ class Search extends React.Component {
     history.replace({
       search: `q=${encodeURIComponent(val)}`
     });
-
+    this.setState({
+      isEmptyInput: false,
+      isLoadingResult: true
+    });
     this.processSearch(val);
   };
 
@@ -228,17 +200,8 @@ class Search extends React.Component {
 
     getSearchResult(val);
     this.showRecentSearchByInput(val);
-    this.setState({
-      isLoadingResult: true
-    });
 
     this.parseSearchResult(val);
-
-    if (val == '') {
-      this.setState({
-        showAllRecentSearch: true
-      });
-    }
   }, 300);
 
   showRecentSearchByInput = val => {
@@ -266,15 +229,8 @@ class Search extends React.Component {
   };
 
   handleOnFocusSearch = () => {
-    const {
-      getRecentSearch,
-      user: { sid }
-    } = this.props;
     if (!this.inputSearch.current.value) {
-      getRecentSearch(sessionId, sid);
       this.setState({
-        showAllRecentSearch: true,
-        showGenre: false,
         showRemoveIcon: true
       });
     }
@@ -292,6 +248,7 @@ class Search extends React.Component {
 
   handleRemoveSearch = () => {
     this.inputSearch.current.value = '';
+    this.inputSearch.current.focus();
     this.searchText = '';
     this.textSuggestion = '';
     history.replace({
@@ -299,16 +256,15 @@ class Search extends React.Component {
     });
     this.setState({
       searchText: '',
-      showAllRecentSearch: false,
+      isEmptyInput: true,
       isLoadingRecentSearch: false,
       isLoadingResult: false,
-      showGenre: true,
       showRemoveIcon: false
     });
   };
 
   showNoResult = () => {
-    const { showAllRecentSearch, isLoadingResult } = this.state;
+    const { isLoadingResult } = this.state;
     const {
       search: {
         result: {
@@ -318,7 +274,6 @@ class Search extends React.Component {
     } = this.props;
 
     if (
-      !showAllRecentSearch &&
       !isLoadingResult &&
       this.recentSearchData &&
       this.recentSearchData.length == 0 &&
@@ -330,30 +285,53 @@ class Search extends React.Component {
     }
   };
 
+  showError = () => {
+    const { isLoadingResult, isLoadingRecentSearch } = this.state;
+    const {
+      search: {
+        result: {
+          meta: { status: resultStatus }
+        },
+        recentSearch: {
+          meta: { status: recentStatus }
+        }
+      }
+    } = this.props;
+
+    if (
+      !isLoadingResult &&
+      resultStatus == 'error' &&
+      !isLoadingRecentSearch &&
+      recentStatus == 'error'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  showRecentSearch = () => {
+    if (this.recentSearchData && this.recentSearchData.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   render() {
     const {
       user: { sid },
       search: {
-        genre: {
-          data: genreData,
-          meta: { status: genreStatus }
-        },
         result: {
           meta: { status: resultStatus }
         }
       },
       searchKeyword
     } = this.props;
-    const {
-      isLoadingGenre,
-      isLoadingResult,
-      isLoadingRecentSearch,
-      showAllRecentSearch,
-      showGenre,
-      showRemoveIcon
-    } = this.state;
+    const { isLoadingResult, isLoadingRecentSearch, showRemoveIcon, isEmptyInput } = this.state;
     const isDark = false;
     const showResult = this.searchText ? searchKeyword !== '' : false;
+    console.log('isloading', isLoadingResult);
     return (
       <Fragment>
         <Header isDark={isDark} isMobile libraryOff searchOff {...this.props} />
@@ -374,46 +352,41 @@ class Search extends React.Component {
                 className={s.searchInput}
                 ref={this.inputSearch}
                 onChange={this.handleSearchChange}
-                onFocus={this.handleOnFocusSearch}
               />
               {showRemoveIcon && (
                 <i className={s.removeSearchIcon} onClick={this.handleRemoveSearch} />
               )}
             </div>
-            {showGenre &&
-              !searchKeyword &&
-              !isLoadingGenre && (
-                <LazyLoad>
-                  {genreStatus == 'success' && <SearchGenre data={genreData} />}
-                  {genreStatus == 'error' && <Error />}
-                </LazyLoad>
-              )}
 
-            {showGenre &&
-              !searchKeyword &&
-              isLoadingGenre && (
-                <Fragment>
-                  <SearchGenreLoading />
-                </Fragment>
-              )}
+            {isEmptyInput && (
+              <div className={s.resultWrapper}>
+                <div className={s.resultContainer}>
+                  {isLoadingRecentSearch && <RecentSearchLoading />}
+                  {!isLoadingRecentSearch &&
+                    this.showRecentSearch() && (
+                      <RecentSearch
+                        onClick={this.handleClickRecentSearch}
+                        recentSearchData={this.recentSearchData}
+                        searchText={this.searchText}
+                        sessionId={sessionId}
+                        sid={sid}
+                      />
+                    )}
 
-            {this.showResult() &&
-              !showAllRecentSearch &&
-              !isLoadingResult &&
-              resultStatus == 'error' && <Error />}
-
-            {this.showResult() && (
+                  {!isLoadingRecentSearch &&
+                    !this.showRecentSearch() &&
+                    !this.showError() && <Error errorText={'Please type to search'} />}
+                  {this.showError() && <Error />}
+                </div>
+              </div>
+            )}
+            {!isEmptyInput && (
               <Fragment>
                 <div className={s.resultWrapper}>
                   <div className={s.resultContainer}>
-                    {isLoadingRecentSearch && (
-                      <div className={s.resultRow}>
-                        <RecentSearchLoading />
-                      </div>
-                    )}
+                    {isLoadingRecentSearch && <RecentSearchLoading />}
                     {!isLoadingRecentSearch &&
-                      this.recentSearchData &&
-                      this.recentSearchData.length > 0 && (
+                      this.showRecentSearch() && (
                         <RecentSearch
                           onClick={this.handleClickRecentSearch}
                           recentSearchData={this.recentSearchData}
@@ -422,17 +395,18 @@ class Search extends React.Component {
                           sid={sid}
                         />
                       )}
-                    {!showAllRecentSearch &&
-                      !isLoadingResult &&
+                    {!isLoadingResult &&
                       this.searchedCast &&
                       this.searchedCast.length > 0 && (
-                        <div className={s.resultRow}>
-                          <Cast data={this.searchedCast} searchText={this.searchText} />
-                        </div>
+                        <Cast data={this.searchedCast} searchText={this.searchText} />
                       )}
-                    {!showAllRecentSearch && isLoadingResult && <MovieSuggestionLoading />}
-                    {!showAllRecentSearch &&
-                      !isLoadingResult &&
+                    {isLoadingResult && (
+                      <Fragment>
+                        <CastLoading />
+                        <MovieSuggestionLoading />
+                      </Fragment>
+                    )}
+                    {!isLoadingResult &&
                       resultStatus != 'error' &&
                       this.searchedMovie &&
                       this.searchedMovie.length > 0 && (
@@ -453,6 +427,7 @@ class Search extends React.Component {
                         </div>
                       </LazyLoad>
                     )}
+                    {this.showError() && <Error />}
                   </div>
                 </div>
               </Fragment>

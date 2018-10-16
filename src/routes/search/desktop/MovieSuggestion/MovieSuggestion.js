@@ -25,7 +25,7 @@ class MovieSuggestion extends React.Component {
     const { data, searchText } = this.props;
     return (
       <div className={s.resultRowWrap}>
-        <div className={s.resultTitle}>Movie Suggestion</div>
+        <div className={s.resultTitle}>Movie</div>
         <div className={s.resultContent__movie}>
           {data.map(movie => {
             const movieYear = movie.year ? ` (${movie.year})` : '';
