@@ -1,6 +1,6 @@
 
 .resultRow {
-  padding-bottom: 32px;
+  padding-bottom: 3.2rem;
   margin: 0;
   display: flex;
 }
@@ -41,6 +41,11 @@
   text-align: center;
   padding-bottom: 20px;
   line-height: 1.3;
+}
+
+.castBoxLoading {
+  width: calc(100% / 6);
+  text-align: center;
 }
 
 .castBox > img,
@@ -100,6 +105,50 @@
   .castBox div {
     padding: 0 10px;
   }
+
+  .castBox > img,
+  .castImgLoading {
+    height: 55px;
+    width: 55px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .resultTitle {
+    font-size: 14px;
+    padding-bottom: 15px;
+  }
+
+  .resultContent {
+    padding: 0;
+    margin: 0;
+  }
+
+  .castBox {
+    width: calc(100% / 5);
+    line-height: 1;
+    font-size: 12px;
+  }
+
+  .castBox div {
+    padding: 0;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  .castBox > img {
+    height: 50px;
+    width: 50px;
+  }
+
+  .castBoxLoading {
+    width: 30%;
+    text-align: center;
+  }
+
+  .castImgLoading {
+    padding: 0;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -133,7 +182,15 @@
 
 /* Big TV Styles */
 @media screen and (min-height: 1080px) {
-  .resultTitle {
+  .resultTitle,
+  .resultTitleLoading {
     font-size: 2rem;
+    flex: 1 0 400px;
+  }
+
+  .castBox > img,
+  .castImgLoading {
+    height: 200px;
+    width: 200px;
   }
 }

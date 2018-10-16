@@ -11,9 +11,10 @@
 }
 
 .error__wrapper {
-  display: inline-block;
+  display: block;
   text-align: center;
-  padding-top: 5%;
+  padding-top: 4rem;
+  width: 100%;
 }
 
 .error__mola_title {
@@ -27,20 +28,33 @@
 }
 
 .error__title {
-  font-size: 15px;
+  font-size: 1.5rem;
   font-weight: 500;
-  line-height: 40px;
+  line-height: 4rem;
   letter-spacing: 1.45pt;
   margin: 0;
-  padding: 5% 0 0 0;
+  padding: 1.8rem 0 0 0;
 }
 
 .error__description {
-  font-size: 13px;
-  font-weight: 300;
+  font-size: 1.3rem;
+  font-weight: 400;
   opacity: 0.7;
   color: #c7c7c8;
   letter-spacing: 0.56pt;
   margin: 0;
-  padding: 0 5%;
+  padding: 0 5rem;
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .error__mola_title {
+    width: 10%;
+    max-width: none;
+  }
+
+  .error__mola_background {
+    width: 25%;
+    max-width: none;
+  }
 }

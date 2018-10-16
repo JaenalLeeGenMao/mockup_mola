@@ -19,7 +19,8 @@ class Lazyload extends PureComponent {
     webp: bool,
     onClick: func,
     children: node,
-    onErrorShowDefault: bool
+    onErrorShowDefault: bool,
+    errorImgClassName: string
   };
 
   static defaultProps = {
@@ -37,7 +38,8 @@ class Lazyload extends PureComponent {
     webp: true,
     children: null,
     src: null,
-    onErrorShowDefault: false
+    onErrorShowDefault: false,
+    errorImgClassName: ''
   };
 
   constructor(props) {
@@ -170,7 +172,8 @@ class Lazyload extends PureComponent {
       onClick,
       children,
       className,
-      src
+      src,
+      errorImgClassName
     } = this.props;
 
     return (
@@ -179,10 +182,11 @@ class Lazyload extends PureComponent {
         style={containerStyle}
         onClick={onClick}
       >
-        {src && (
-          <img ref={this.image} className={className} style={style} src={sources} alt={alt} />
-        )}
-        {isError && <div className={s.lazyload__errorBg} />}
+        {src &&
+          !isError && (
+            <img ref={this.image} className={className} style={style} src={sources} alt={alt} />
+          )}
+        {isError && <div className={`${s.lazyload__errorBg} ${errorImgClassName}`} />}
         {children}
       </div>
     );
