@@ -40,7 +40,7 @@ module.exports = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'http://jaenal.mola.tv',
-      api: 'http://mola.lukitomo.com/v2',
+      api: 'http://mola.lukitomo.com/api/v2',
       auth: 'http://jaenal.mola.tv/accounts/_',
       domain: 'http://jaenal.mola.tv',
       setting: {
@@ -54,8 +54,8 @@ module.exports = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://staging.mola.tv',
-      api: 'https://api.staging.mola.tv/v2',
-      auth: 'http://staging.mola.tv/accounts/_',
+      api: 'https://staging.mola.tv/api/v2',
+      auth: 'https://staging.mola.tv/accounts/_',
       domain: 'https://staging.mola.tv',
       setting: {
         timeout: 10000,
@@ -67,10 +67,10 @@ module.exports = {
     port: 3000,
     endpoints: {
       clientUrl: '',
-      serverUrl: 'https://www.mola.tv',
-      api: 'https://api.supersoccer.tv/v2',
-      auth: 'https://www.mola.tv/accounts/_',
-      domain: 'https://www.mola.tv',
+      serverUrl: 'https://mola.tv',
+      api: 'https://mola.tv/api/v2',
+      auth: 'https://mola.tv/accounts/_',
+      domain: 'https://mola.tv',
       setting: {
         timeout: 10000,
         maxRedirects: 1
