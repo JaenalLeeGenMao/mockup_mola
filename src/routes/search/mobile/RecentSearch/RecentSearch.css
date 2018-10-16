@@ -59,7 +59,7 @@
 }
 
 .removeChip > i {
-  background-image: url('../../assets/ic_remove_black.png');
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxNCI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6I2ZmZjt9LmJ7c3Ryb2tlOiMwMDA7c3Ryb2tlLXdpZHRoOjJweDt9PC9zdHlsZT48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc2NCAtMjYzKSI+PGNpcmNsZSBjbGFzcz0iYSIgY3g9IjciIGN5PSI3IiByPSI3IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3NjQgMjYzKSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDc2Ny41IDI2Ni41KSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSI+PHBhdGggY2xhc3M9ImIiIGQ9Ik03LDEuMDA5LDYuNTk0LjYsMy41LDMuNy40MDYuNiwwLDEuMDA5LDMuMDk0LDQuMSwwLDcuMi40MDYsNy42LDMuNSw0LjUwOSw2LjU5NCw3LjYsNyw3LjIsMy45MDYsNC4xWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMC42MDMpIi8+PC9nPjwvZz48L2c+PC9nPjwvc3ZnPg==');
   background-repeat: no-repeat;
   background-size: contain;
   display: inline-block;

@@ -100,10 +100,7 @@ class Search extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       searchKeyword,
-      search: {
-        result: { meta },
-        recentSearch: { data: rsDt, meta: recentSearchMeta }
-      }
+      search: { result: { meta }, recentSearch: { data: rsDt, meta: recentSearchMeta } }
     } = this.props;
 
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
@@ -130,9 +127,7 @@ class Search extends React.Component {
 
   parseSearchResult = val => {
     this.searchText = val;
-    const {
-      search: { result }
-    } = this.props;
+    const { search: { result } } = this.props;
 
     const movieSuggestion = this.parseMovieSuggestion(result, val);
     const castSuggestion = this.parseCastSuggestion(result, val);
@@ -297,13 +292,7 @@ class Search extends React.Component {
 
   showNoResult = () => {
     const { isLoadingResult } = this.state;
-    const {
-      search: {
-        result: {
-          meta: { status: resultStatus }
-        }
-      }
-    } = this.props;
+    const { search: { result: { meta: { status: resultStatus } } } } = this.props;
 
     if (
       !isLoadingResult &&
@@ -321,12 +310,8 @@ class Search extends React.Component {
     const { isLoadingResult, isLoadingRecentSearch } = this.state;
     const {
       search: {
-        result: {
-          meta: { status: resultStatus }
-        },
-        recentSearch: {
-          meta: { status: recentStatus }
-        }
+        result: { meta: { status: resultStatus } },
+        recentSearch: { meta: { status: recentStatus } }
       }
     } = this.props;
 
@@ -353,11 +338,7 @@ class Search extends React.Component {
   render() {
     const {
       user: { sid },
-      search: {
-        result: {
-          meta: { status: resultStatus }
-        }
-      },
+      search: { result: { meta: { status: resultStatus } } },
       searchKeyword
     } = this.props;
     const { isLoadingResult, isLoadingRecentSearch, showRemoveIcon, isEmptyInput } = this.state;
@@ -402,7 +383,12 @@ class Search extends React.Component {
 
                   {!isLoadingRecentSearch &&
                     !this.showRecentSearch() &&
-                    !this.showError() && <Error errorText={'Please type to search'} />}
+                    !this.showError() && (
+                      <Error
+                        errorTitle={'Do you have something in mind?'}
+                        errorText={'Please type any movie name or cast name to search'}
+                      />
+                    )}
                   {this.showError() && <Error />}
                 </div>
               </div>
@@ -478,10 +464,4 @@ const mapDispatchToProps = dispatch => ({
   getSearchResult: searchText => dispatch(searchActions.getSearchResult(searchText))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Search);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Search);

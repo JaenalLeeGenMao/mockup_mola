@@ -50,6 +50,7 @@ class MovieSuggestion extends React.Component {
                       src={movie.coverUrl}
                       containerClassName={s.movieImg}
                       onErrorShowDefault
+                      errorImgClassName={s.movieErrorImg}
                     >
                       {startIdx > -1 ? (
                         <div className={s.movieTitle}>

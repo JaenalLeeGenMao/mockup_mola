@@ -1,3 +1,3 @@
-import MobileError from './error';
+import Error from './error';
 
-export default MobileError;
+export default Error;

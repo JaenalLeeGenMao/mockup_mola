@@ -9,7 +9,7 @@ const Cast = () => {
     <div className={s.resultRow}>
       <LoadingPlaceholder className={s.resultTitleLoading} />
       <div className={s.resultContentLoading}>
-        <div className={s.castBox}>
+        <div className={s.castBoxLoading}>
           <LoadingPlaceholder className={s.castImgLoading} />
           <div>
             <span>
@@ -17,7 +17,7 @@ const Cast = () => {
             </span>
           </div>
         </div>
-        <div className={s.castBox}>
+        <div className={s.castBoxLoading}>
           <LoadingPlaceholder className={s.castImgLoading} />
           <div>
             <span>
@@ -25,7 +25,7 @@ const Cast = () => {
             </span>
           </div>
         </div>
-        <div className={s.castBox}>
+        <div className={s.castBoxLoading}>
           <LoadingPlaceholder className={s.castImgLoading} />
           <div>
             <span>
