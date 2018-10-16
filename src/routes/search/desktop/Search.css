@@ -127,12 +127,6 @@
   width: 100%;
 }
 
-.resultRow {
-  padding-bottom: 32px;
-  margin: 0;
-  display: flex;
-}
-
 .resultTitle {
   color: #bababa;
   font-size: 1.7rem;

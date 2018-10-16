@@ -237,6 +237,7 @@ export const getRecentSearch = (sessionId, sid) => dispatch => {
     }
   });
   return Mola.getRecentSearch(sessionId, sid).then(result => {
+    console.log('MAKSKS');
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_RECENT_SEARCH_ERROR,

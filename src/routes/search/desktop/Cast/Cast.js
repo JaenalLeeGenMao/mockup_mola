@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
@@ -13,7 +13,7 @@ class Cast extends React.Component {
   render() {
     const { data, searchText } = this.props;
     return (
-      <Fragment>
+      <div className={s.resultRow}>
         <div className={s.resultTitle}>Cast</div>
         <div className={s.resultContent}>
           {data.map(cast => {
@@ -42,7 +42,7 @@ class Cast extends React.Component {
             );
           })}
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
