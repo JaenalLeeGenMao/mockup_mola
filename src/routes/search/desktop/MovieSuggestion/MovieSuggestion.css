@@ -47,6 +47,7 @@
   width: 270px;
   height: auto;
   margin: 0 auto;
+  min-height: 100px;
 }
 
 .movieErrorImg {
@@ -174,7 +175,7 @@
 
   .movieImgLoading {
     width: 175px;
-    height: auto;
+    height: 120px;
   }
 
   .movieTitleLoading {
