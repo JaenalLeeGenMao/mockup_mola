@@ -63,10 +63,9 @@ class Login extends React.Component {
     } else {
       this.setState({
         isError: true,
-        errMsg: result.meta.error.response.data.error_description
+        errMsg: 'haha'
       });
-      // console.log('result', result.meta.error.response.data);
-      // alert(result.meta.error.response.data.error_description);
+      console.log('result', result.meta.error.message);
     }
   };
 
