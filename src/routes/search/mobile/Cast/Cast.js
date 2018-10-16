@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-
+import { getMatchWordSearch } from '@routes/search/utils';
 import s from './Cast.css';
 
 class Cast extends React.Component {
@@ -17,25 +17,20 @@ class Cast extends React.Component {
         <div className={s.resultTitle}>Cast</div>
         <div className={s.resultContent}>
           {data.map(cast => {
-            const castName = cast.name;
-            const startIdx = castName.toLowerCase().indexOf(searchText.toLowerCase());
-
-            const castNameRes = castName.substr(startIdx, searchText.length);
-            const castNameFirst = castName.substr(0, startIdx);
-            const castNameSecond = castName.substr(startIdx + searchText.length, castName.length);
+            const castNameRes = getMatchWordSearch(cast.name, searchText);
 
             return (
               <div className={s.castBox} key={cast.id}>
                 <img className={s.castImg} src={cast.imageUrl} />
-                {startIdx > -1 ? (
+                {castNameRes[3] ? (
                   <div>
-                    <span>{castNameFirst}</span>
-                    <span className={s.castNameResult}>{castNameRes}</span>
-                    <span>{castNameSecond}</span>
+                    <span>{castNameRes[0]}</span>
+                    <span className={s.castNameResult}>{castNameRes[1]}</span>
+                    <span>{castNameRes[2]}</span>
                   </div>
                 ) : (
                   <div>
-                    <span>{castName}</span>
+                    <span>{cast.name}</span>
                   </div>
                 )}
               </div>
