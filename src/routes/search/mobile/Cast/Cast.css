@@ -1,12 +1,29 @@
+
+.resultRow {
+  padding-bottom: 32px;
+  margin: 0;
+  display: block;
+}
+
 .resultTitle {
   color: #bababa;
-  font-size: 17px;
+  font-size: 1.7rem;
   font-weight: normal;
   display: inline-block;
   flex: 1 0 160px;
+  padding-bottom: 15px;
 }
 
-.resultContent {
+.resultTitleLoading {
+  width: 120px;
+  height: 1.7rem;
+  margin-bottom: 15px;
+  padding-bottom: 0;
+  display: inline-block;
+}
+
+.resultContent,
+.resultContentLoading {
   color: #fff;
   font-size: 16px;
   font-weight: normal;
@@ -24,18 +41,26 @@
   line-height: 1.3;
 }
 
-.castBox > img {
+.castBox > img,
+.castImgLoading {
   height: 76px;
   width: 76px;
   border-radius: 100%;
   display: block;
   margin: 0 auto 8px;
+  object-fit: cover;
 }
 
 .castBox span {
   font-size: 13px;
   display: inline;
   color: #6f6f6f;
+}
+
+.castNameLoading {
+  width: 80%;
+  height: 1.3rem;
+  display: inline-block;
 }
 
 .castBox .castNameResult {
@@ -76,11 +101,6 @@
 }
 
 @media screen and (max-width: 500px) {
-  .resultTitle {
-    font-size: 14px;
-    padding-bottom: 15px;
-  }
-
   .resultContent {
     padding: 0;
     margin: 0;

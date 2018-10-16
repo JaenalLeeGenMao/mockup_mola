@@ -151,7 +151,7 @@ class Search extends React.Component {
     this.textSuggestion = firstMatch !== '' ? `${val}${textSugRemain}` : '';
     this.setState({
       searchText: val,
-      isLoadingResult: result.status != 'loading' ? false : true,
+      isLoadingResult: result.meta.status != 'loading' ? false : true,
       showAllRecentSearch: this.inputSearch.current.value ? false : true,
       showRemoveIcon: true
     });

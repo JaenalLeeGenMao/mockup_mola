@@ -1,8 +1,6 @@
 .resultRowWrap {
   display: block;
   padding-bottom: 100px;
-
-  /* padding-bottom: 0; */
   margin: 0;
 }
 
@@ -17,7 +15,7 @@
 
 .resultTitle {
   color: #bababa;
-  font-size: 17px;
+  font-size: 1.7rem;
   font-weight: normal;
   display: inline-block;
   flex: 1 0 160px;
@@ -27,7 +25,7 @@
 .resultTitleLoading {
   display: inline-block;
   width: 200px;
-  height: 17px;
+  height: 1.7rem;
   margin-bottom: 15px;
 }
 
@@ -49,7 +47,7 @@
 }
 
 .movieTitle {
-  font-size: 12px;
+  font-size: 1.2rem;
   display: block;
   padding: 8px 30px 0 0;
   color: #6f6f6f;
@@ -58,7 +56,7 @@
 .movieTitleLoading {
   width: 270px;
   display: block;
-  height: 12px;
+  height: 1.2rem;
   margin-top: 8px;
 }
 
@@ -69,7 +67,7 @@
 .resultContent__movieflex {
   width: 100%;
   overflow: hidden;
-  margin: 15px 0;
+  margin: 0 0 15px 0;
   -webkit-column-count: 2;
   -webkit-column-gap: 15px;
   -moz-column-count: 2;
@@ -160,10 +158,10 @@
   }
 
   .movieTitle {
-    font-size: 16px;
+    font-size: 1.6rem;
   }
 
   .movieTitleResult {
-    font-size: 16px;
+    font-size: 1.6rem;
   }
 }

@@ -53,11 +53,6 @@
   object-fit: cover;
 }
 
-.castImgLoading {
-  height: 76px;
-  width: 76px;
-}
-
 .castBox span {
   font-size: 13px;
   display: inline;

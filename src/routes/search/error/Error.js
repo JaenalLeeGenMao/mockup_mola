@@ -5,7 +5,6 @@ import errorImg from '../assets/error.png';
 import s from './Error.css';
 
 const SearchError = ({ errorTitle, errorText }) => {
-  console.log('ERRORimg', errorImg);
   return (
     <div className={s.searchErrorContainer}>
       <LazyLoad src={errorImg}>

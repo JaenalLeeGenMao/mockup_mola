@@ -25,11 +25,6 @@ function action({ isMobile, query }) {
         <SearchDesktop title={title} searchKeyword={qs} />
       </MolaLayout>
     )
-    // component: (
-    //   <MolaLayout>
-    //     <SearchDesktop title={title} searchKeyword={qs} />
-    //   </MolaLayout>
-    // )
   };
 }
 
