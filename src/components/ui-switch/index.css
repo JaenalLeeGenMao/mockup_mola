@@ -33,17 +33,18 @@
 }
 
 .switch_content_left {
-  flex: 3%;
+  width: 3%;
 }
 
 @media only screen and (max-width: 1024px) {
   .switch_content_left {
-    flex: 8%;
+    width: 8%;
   }
 }
 
 .switch_content_center {
-  flex: 50%;
+  width: 100%;
+  margin-left: 15px;
 }
 
 .switch_content_center > p {
@@ -57,7 +58,8 @@
 }
 
 .switch_content_right {
-  flex: 30%;
+  width: 30%;
+  float: right;
   clear: both;
 }
 

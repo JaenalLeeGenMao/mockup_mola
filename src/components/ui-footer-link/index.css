@@ -10,12 +10,13 @@
   }
 }
 
-.container_foter_link li::before {
+/* .container_foter_link li::before {
   content: '-';
   color: #fff;
   padding: 0 20px;
-  margin-left: -20px;
-}
+  position: relative;
+  left: -40px;
+} */
 
 .container_foter_link li:first-child::before {
   display: none;
