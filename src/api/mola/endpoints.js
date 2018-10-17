@@ -13,3 +13,6 @@ export const RECENT_SEARCH_ENDPOINT = `${SEARCH_ENDPOINT}histories`;
 
 export const MOVIE_DETAIL_ENDPOINT = `${endpoints.api}/videos`;
 export const MOVIE_STREAMING = `${endpoints.api}/videos`;
+
+// export const MOVIE_DETAIL_ENDPOINT = 'https://private-55a17-molawebver3.apiary-mock.com/videos';
+// export const MOVIE_STREAMING = 'https://private-55a17-molawebver3.apiary-mock.com/videos';

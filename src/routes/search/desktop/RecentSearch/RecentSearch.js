@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import MolaHandler from '@api/mola';
+import { getMatchWordSearch } from '@routes/search/utils';
 import s from './RecentSearch.css';
 
 class RecentSearch extends React.Component {
@@ -56,15 +57,7 @@ class RecentSearch extends React.Component {
             <div className={s.resultTitle}>Recent Search</div>
             <div className={s.resultContent}>
               {recentSearchData.map(data => {
-                const startIdx = data.keyword.toLowerCase().indexOf(searchTxt.toLowerCase());
-
-                const keywordRes =
-                  startIdx > -1 ? data.keyword.substr(startIdx, searchTxt.length) : '';
-                const keywordFirst = startIdx > -1 ? data.keyword.substr(0, startIdx) : '';
-                const keywordSecond =
-                  startIdx > -1
-                    ? data.keyword.substr(startIdx + searchTxt.length, data.keyword.length)
-                    : '';
+                const keywordRes = getMatchWordSearch(data.keyword, searchTxt);
 
                 return (
                   <span className={s.resultChip} key={data.id}>
@@ -72,11 +65,11 @@ class RecentSearch extends React.Component {
                       className={s.resultChipText}
                       onClick={() => this.handleClickItem(data.keyword)}
                     >
-                      {searchTxt != '' && startIdx > -1 ? (
+                      {searchTxt != '' && keywordRes[3] ? (
                         <Fragment>
-                          <span>{keywordFirst}</span>
-                          <span className={s.keywordResult}>{keywordRes}</span>
-                          <span>{keywordSecond}</span>
+                          <span>{keywordRes[0]}</span>
+                          <span className={s.keywordResult}>{keywordRes[1]}</span>
+                          <span>{keywordRes[2]}</span>
                         </Fragment>
                       ) : (
                         <span className={s.keywordResult}>{data.keyword}</span>
