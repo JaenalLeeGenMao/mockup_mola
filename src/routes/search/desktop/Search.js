@@ -60,7 +60,7 @@ class Search extends React.Component {
       sessionId = Tracker.sessionId();
     }
 
-    if (result.meta.status === 'loading' && prevState.result.length <= 0) {
+    if (recentSearch.meta.status === 'loading' && prevState.result.length <= 0) {
       var today = new Date();
       var expiredDateStamp = new Date(new Date().setDate(today.getDate() - 7));
       var expiredDate =
