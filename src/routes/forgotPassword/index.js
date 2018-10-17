@@ -8,24 +8,24 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Molalayout from '../../components/Molalayout';
 import ForgotDesktop from './desktop/Forgot';
 import ForgotMobile from './mobile/Forgot';
 
 const title = 'Forgot Password';
 
-function action(isMobile) {
+function action({ isMobile }) {
   return {
     chunks: ['forgotPassword'],
     title,
-    component: isMobile.isMobile ? (
-      <Layout>
+    component: isMobile ? (
+      <Molalayout>
         <ForgotMobile />
-      </Layout>
+      </Molalayout>
     ) : (
-      <Layout>
+      <Molalayout>
         <ForgotDesktop />
-      </Layout>
+      </Molalayout>
     )
   };
 }

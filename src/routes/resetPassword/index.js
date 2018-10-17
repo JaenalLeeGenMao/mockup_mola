@@ -8,24 +8,24 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Molalayout from '@components/Molalayout';
 import ResetDesktop from './desktop/Reset';
 import ResetMobile from './mobile/Reset';
 
 const title = 'Reset Password';
 
-function action(isMobile) {
+function action({ isMobile }) {
   return {
     chunks: ['resetPassword'],
     title,
-    component: isMobile.isMobile ? (
-      <Layout>
+    component: isMobile ? (
+      <Molalayout>
         <ResetMobile />
-      </Layout>
+      </Molalayout>
     ) : (
-      <Layout>
+      <Molalayout>
         <ResetDesktop />
-      </Layout>
+      </Molalayout>
     )
   };
 }

@@ -10,7 +10,7 @@
 import React from 'react';
 import LoginMobile from './mobile/Login';
 import LoginDesktop from './desktop/Login';
-import Layout from '../../components/Layout';
+import Molalayout from '@components/Molalayout';
 
 const title = 'Log In';
 
@@ -19,13 +19,13 @@ function action({ isMobile }) {
     title,
     chunks: ['login'],
     component: isMobile ? (
-      <Layout>
+      <Molalayout>
         <LoginMobile />
-      </Layout>
+      </Molalayout>
     ) : (
-      <Layout>
+      <Molalayout>
         <LoginDesktop />
-      </Layout>
+      </Molalayout>
     )
   };
 }

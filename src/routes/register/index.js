@@ -8,24 +8,24 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Molalayout from '@components/Molalayout';
 import RegisterDesktop from './desktop/Register';
 import RegisterMobile from './mobile/Register';
 
 const title = 'New User Registration';
 
-function action(isMobile) {
+function action({ isMobile }) {
   return {
     chunks: ['register'],
     title,
-    component: isMobile.isMobile ? (
-      <Layout>
+    component: isMobile ? (
+      <Molalayout>
         <RegisterMobile />
-      </Layout>
+      </Molalayout>
     ) : (
-      <Layout>
+      <Molalayout>
         <RegisterDesktop />
-      </Layout>
+      </Molalayout>
     )
   };
 }

@@ -52,6 +52,7 @@ class Forgot extends React.Component {
       email,
       csrf
     });
+
     if (result.meta.status === 'success') {
       $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
       console.info(`Please check your email Token's on ${email}`);
@@ -115,7 +116,7 @@ class Forgot extends React.Component {
                   </p>
                   <div
                     className={`${s.formGroup} ${s.form__otp}`}
-                    style={{ marginTop: '15px', marginBottom: '20px' }}
+                    style={{ marginTop: '1.5rem', marginBottom: '2rem' }}
                   >
                     <div className={s.verify__otp_input}>
                       <Form
