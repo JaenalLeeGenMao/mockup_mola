@@ -57,7 +57,7 @@ class Register extends React.Component {
     if (result.meta.status === 'success') {
       $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
     } else {
-      console.log('result', result.meta.error.response.data);
+      // console.log('result', result.meta.error.response.data);
       alert(result.meta.error.response.data.error_description);
     }
 

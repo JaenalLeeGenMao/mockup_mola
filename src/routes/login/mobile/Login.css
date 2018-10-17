@@ -12,55 +12,61 @@
   background-image: url('../../../global/style/icons/Signin.png'), linear-gradient(#0e1d3d, #000);
   background-position: left bottom, left top;
   background-repeat: no-repeat, no-repeat;
-  background-size: 360px, cover;
-  height: calc(100vh - 210px);
+  background-size: 36rem, cover;
+  height: 100vh;
   overflow-y: hidden;
-  margin: 0 auto;
-  padding: 105px 20px;
+  position: relative;
 }
 
 .root {
-  margin: 0 auto;
-  height: 430px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 43rem;
 }
 
 .container {
-  margin-top: -10px !important;
-  padding: 20px;
-  max-height: 470px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: -1rem !important;
+  padding: 2rem;
+  max-height: 47rem;
   background: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  line-height: 15px;
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0.4rem;
+  line-height: 1.5rem;
 }
 
 .container p {
-  font-size: 12px;
-  letter-spacing: 1.17px;
+  font-size: 1.2rem;
+  letter-spacing: 0.117rem;
   color: #6f6f6f;
 }
 
 .lead {
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 15px !important;
+  font-size: 1.5rem !important;
   font-weight: 500 !important;
   color: #fff !important;
-  letter-spacing: 1.45px !important;
+  letter-spacing: 0.145rem !important;
 }
 
 .formGroup {
-  margin-top: 15px;
+  margin-top: 1.5rem;
 }
 
 .forgotPassword {
-  font-size: 14px !important;
+  font-size: 1.4rem !important;
   font-weight: 500;
   color: #fff !important;
   float: right;
-  letter-spacing: 1.36px;
-  line-height: 19px;
-  margin: 10px 0;
+  letter-spacing: 0.136rem;
+  line-height: 1.9rem;
+  margin: 1rem 0;
   text-decoration: none;
 }
 
@@ -73,18 +79,18 @@
   display: block;
   box-sizing: border-box;
   margin: 0;
-  padding: 10px 16px;
-  height: 40px;
+  padding: 1rem 1.6rem;
+  height: 4rem;
   width: 100%;
   background: #2c56ff;
-  border: 1px solid #373277;
-  border-radius: 4px;
+  border: 0.1rem solid #373277;
+  border-radius: 0.4rem;
   color: #fff;
   text-align: center;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 1.5rem;
   cursor: pointer;
-  letter-spacing: 1.91px;
+  letter-spacing: 0.191rem;
   opacity: 100%;
   font-weight: 500;
 }
@@ -95,25 +101,25 @@
 
 .button:focus {
   border-color: #0074c2;
-  box-shadow: 0 0 8px rgba(0, 116, 194, 0.6);
+  box-shadow: 0 0 0.8rem rgba(0, 116, 194, 0.6);
 }
 
 .icon {
   display: inline-block;
-  margin: -2px 12px -2px 0;
-  width: 20px;
-  height: 20px;
+  margin: -0.2rem 1.2rem -0.2rem 0;
+  width: 2rem;
+  height: 2rem;
   vertical-align: middle;
   fill: currentColor;
 }
 
 .formMobile {
   width: 100% !important;
-  height: 40px !important;
+  height: 4rem !important;
 }
 
 .formMobile ::placeholder {
-  font-size: 15px !important;
+  font-size: 1.5rem !important;
 }
 
 .lineThrough {
@@ -121,41 +127,41 @@
   position: relative;
   z-index: 1;
   display: block;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   text-align: center;
-  font-size: 12px !important;
+  font-size: 1.2rem !important;
   font-weight: 500;
-  letter-spacing: 1.16px;
+  letter-spacing: 0.116rem;
 }
 
 .flexButton {
   display: flex;
   justify-content: space-between;
-  width: 280px;
+  width: 28rem;
   position: relative;
   z-index: 1;
 }
 
 .flexButton > button {
-  width: 88px;
-  height: 40px;
+  width: 8.8rem;
+  height: 4rem;
   outline: none;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   background: rgba(36, 37, 40, 0.8);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.44);
   cursor: pointer;
   text-align: center;
 }
 
 .labelSignup {
-  margin-top: 20px !important;
+  margin-top: 2rem !important;
   margin-bottom: 0 !important;
   color: #fff !important;
-  font-size: 14px !important ;
-  line-height: 19px;
-  letter-spacing: 1.36px !important;
+  font-size: 1.4rem !important ;
+  line-height: 1.9rem;
+  letter-spacing: 0.136rem !important;
   font-weight: 500;
 }
 
@@ -165,16 +171,16 @@
 }
 
 .buttonMobile {
-  width: 28px !important;
+  width: 2.8rem !important;
 }
 
 .errorLogin {
-  border-bottom: 1px solid red !important;
+  border-bottom: 0.1rem solid red !important;
 }
 
 .errorMsg {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
-  font-size: 10px !important;
+  font-size: 1rem !important;
   color: red !important;
-  margin-top: 12px;
+  margin-top: 1.2rem;
 }

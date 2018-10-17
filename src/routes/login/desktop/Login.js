@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import $ from 'jquery';
 
 import { setUserVariable } from '@actions/user';
 
@@ -71,9 +70,6 @@ class Login extends React.Component {
         isError: true,
         errMsg: result.meta.error.response.data.error_description
       });
-
-      // console.log('result', result.meta.error.response.data);
-      // alert(result.meta.error.response.data.error_description);
     }
   };
 
@@ -151,7 +147,6 @@ class Login extends React.Component {
               </div>
             </LazyLoad>
           </div>
-          <div className={s.rightWrapper} />
         </div>
       </Fragment>
     );
