@@ -32,14 +32,14 @@
 }
 
 .componentItem {
-  flex: 50%;
+  width: 50%;
   color: #fff;
   cursor: pointer;
 }
 
 @media only screen and (max-width: 1024px) {
   .componentItem {
-    flex: 100%;
+    width: 100%;
   }
 }
 
