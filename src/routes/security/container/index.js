@@ -1,36 +1,40 @@
 import React from 'react';
-import s from './index.css'
+import s from './index.css';
 
-import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components'
+import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+import { updatePassword } from '../../../actions/resetPassword/actions';
+import { connect } from 'react-redux';
+
 class Profile extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       currentPassword: '',
       newPassword: '',
       confirmPassword: ''
-    }
+    };
 
-    this.onChangeInput = this.onChangeInput.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onChangeInput = (e) => {
-    const target = e.target
-    const { id, value } = target
+  handleSubmit = e => {
+    this.props.handleUpdatePassword(this.state);
+  };
+
+  onChangeInput = e => {
+    const target = e.target;
+    const { id, value } = target;
     this.setState({
       [id]: value
-    })
-  }
+    });
+  };
 
   render() {
-    const { isMobile } = this.props
-    const {
-      currentPassword,
-      newPassword,
-      confirmPassword
-    } = this.state
+    const { isMobile } = this.props;
+    const { currentPassword, newPassword, confirmPassword } = this.state;
     const menus = [
       {
         title: 'PROFILE',
@@ -44,14 +48,11 @@ class Profile extends React.Component {
         title: 'SETTING',
         href: '/accounts/setting'
       }
-    ]
+    ];
 
     return (
       <div>
-        {
-          isMobile &&
-            <UiMobileNav menus={menus} />
-        }
+        {isMobile && <UiMobileNav menus={menus} />}
         <div className={s.root}>
           <div className={s.sideLeft}>
             <UiNavigation menus={menus} />
@@ -63,7 +64,8 @@ class Profile extends React.Component {
               uiStyle="box"
               onChange={this.onChangeInput}
               label="Current Password"
-              value={currentPassword} />
+              value={currentPassword}
+            />
 
             <UiInput
               type="password"
@@ -71,7 +73,8 @@ class Profile extends React.Component {
               uiStyle="box"
               onChange={this.onChangeInput}
               label="New Password"
-              value={newPassword} />
+              value={newPassword}
+            />
 
             <UiInput
               type="password"
@@ -79,16 +82,23 @@ class Profile extends React.Component {
               uiStyle="box"
               onChange={this.onChangeInput}
               label="Confirm Password"
-              value={confirmPassword} />
+              value={confirmPassword}
+            />
 
-            <UiButton type="button"
-              text="CHANGE PASSWORD" />
+            <UiButton type="button" text="CHANGE PASSWORD" onClick={this.handleSubmit} />
           </div>
-          <div className={s.sideRight}></div>
+          <div className={s.sideRight} />
         </div>
       </div>
     );
   }
 }
 
-export default withStyles(s)(Profile);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleUpdatePassword: params => dispatch(updatePassword(params))
+  };
+};
+
+const Default = withStyles(s)(Profile);
+export default connect(null, mapDispatchToProps)(Default);

@@ -157,8 +157,8 @@ const emailForgotPassword = ({ email = '', csrf = '' }) => {
     });
 };
 
-const verifyPasswordToken = ({ email = '', token = '', csrf = '' }) => {
-  const body = { email, token };
+const verifyPasswordToken = ({ email = '', token = '', csrf = '', password = '' }) => {
+  const body = { email, token, password };
   return post(`${AUTH_BASE_ENDPOINT}/v1/password/token`, body, {
     headers: {
       'x-csrf-token': csrf
@@ -186,6 +186,39 @@ const verifyPasswordToken = ({ email = '', token = '', csrf = '' }) => {
 const updateNewPassword = ({ password = '', csrf = '' }) => {
   const body = { password };
   return patch(`${AUTH_BASE_ENDPOINT}/v1/password`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
+const updateProfile = ({
+  name = '',
+  csrf = '',
+  birthdate = '',
+  gender = '',
+  location = '',
+  token
+}) => {
+  const body = { name, birthdate, gender, location, token };
+  return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
     headers: {
       'x-csrf-token': csrf
     }
