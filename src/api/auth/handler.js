@@ -157,8 +157,8 @@ const emailForgotPassword = ({ email = '', csrf = '' }) => {
     });
 };
 
-const verifyPasswordToken = ({ email = '', token = '', csrf = '' }) => {
-  const body = { email, token };
+const verifyPasswordToken = ({ email = '', token = '', csrf = '', password = '' }) => {
+  const body = { email, token, password };
   return post(`${AUTH_BASE_ENDPOINT}/v1/password/token`, body, {
     headers: {
       'x-csrf-token': csrf
