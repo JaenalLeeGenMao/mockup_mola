@@ -209,6 +209,39 @@ const updateNewPassword = ({ password = '', csrf = '' }) => {
     });
 };
 
+const updateProfile = ({
+  name = '',
+  csrf = '',
+  birthdate = '',
+  gender = '',
+  location = '',
+  token
+}) => {
+  const body = { name, birthdate, gender, location, token };
+  return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
 export default {
   createNewUser,
   verifyUserToken,

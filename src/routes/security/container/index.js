@@ -5,6 +5,7 @@ import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import { updatePassword } from '../../../actions/resetPassword/actions';
+import { connect } from 'react-redux';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Profile extends React.Component {
   }
 
   handleSubmit = e => {
-    updatePassword(this.state);
+    this.props.handleUpdatePassword(this.state);
   };
 
   onChangeInput = e => {
@@ -93,4 +94,11 @@ class Profile extends React.Component {
   }
 }
 
-export default withStyles(s)(Profile);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleUpdatePassword: params => dispatch(updatePassword(params))
+  };
+};
+
+const Default = withStyles(s)(Profile);
+export default connect(null, mapDispatchToProps)(Default);
