@@ -13,7 +13,7 @@ class Profile extends React.Component {
     this.state = {
       currentPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmNewPassword: ''
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -34,7 +34,7 @@ class Profile extends React.Component {
 
   render() {
     const { isMobile } = this.props;
-    const { currentPassword, newPassword, confirmPassword } = this.state;
+    const { currentPassword, newPassword, confirmNewPassword } = this.state;
     const menus = [
       {
         title: 'PROFILE',
@@ -78,11 +78,11 @@ class Profile extends React.Component {
 
             <UiInput
               type="password"
-              id="confirmPassword"
+              id="confirmNewPassword"
               uiStyle="box"
               onChange={this.onChangeInput}
               label="Confirm Password"
-              value={confirmPassword}
+              value={confirmNewPassword}
             />
 
             <UiButton type="button" text="CHANGE PASSWORD" onClick={this.handleSubmit} />
