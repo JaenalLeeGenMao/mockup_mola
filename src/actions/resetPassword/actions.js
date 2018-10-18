@@ -3,7 +3,7 @@ import { toastr } from 'react-redux-toastr';
 import Auth from '@api/auth';
 
 export const updatePassword = ({ currentPassword, newPassword, confirmNewPassword }) => {
-  return async (dispatch, getState, { history }) => {
+  return async (dispatch, getState) => {
     const { token } = getState().user;
     const { csrf } = getState().runtime;
 
@@ -34,7 +34,6 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
     }
 
     toastr.success('Notification', 'Update password is success');
-    history.replace('/accounts/profile');
     return null;
   };
 };
