@@ -23,7 +23,7 @@ export const updateSetting = params => {
 };
 
 export const updateProfile = params => {
-  return async (dispatch, getState, { history }) => {
+  return async (dispatch, getState) => {
     const { token } = getState().user;
     const { csrf } = getState().runtime;
 
