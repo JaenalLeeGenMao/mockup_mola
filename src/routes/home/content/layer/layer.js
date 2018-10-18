@@ -1,71 +1,46 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { Parallax } from 'react-scroll-parallax';
-
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link';
-
-import RightBlack from '@global/style/icons/right_arrow_black.png';
-import LineBlack from '@global/style/icons/right_line_black.png';
-
-import RightWhite from '@global/style/icons/right_arrow_white.png';
-import LineWhite from '@global/style/icons/right_line_white.png';
 
 import styles from './layer.css';
 
-const Layer = ({
-  id,
-  title,
-  description,
-  shortDescription,
-  isDark,
-  backgroundColor,
-  background /** background */,
-  coverBody /** subject */,
-  coverTitle /** title image */,
-  type,
-  isSafari,
-  ticking = false
-}) => {
+const ContentLayer = ({ isDark, background, shortDescription, isMobile }) => {
+  const version = isMobile ? 'mobile' : 'desktop',
+    fontColor = isDark ? '#000' : '#fff',
+    fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+    coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
   return (
-    <LazyLoad>
-      <div className={styles.layer__grid_container} style={{ backgroundColor }}>
-        <div className={styles.layer__grid_header}>
-          <LazyLoad alt="" src={background} />
+    <div
+      className={styles.layer__grid_desc_wrapper}
+      style={{ textAlign: isMobile ? 'center' : 'left' }}
+    >
+      <div
+        className={styles.layer__grid_desc_background}
+        style={{
+          background: isMobile ? '' : `url(${coverBackgroundImage}) repeat center`,
+          boxShadow: `inset 0 0 0 20000px ${fontBackgroundColor}`,
+          backgroundSize: 'cover',
+          width: isMobile ? '100vw' : '60vw',
+          height: '100vh',
+          top: '-175%',
+          left: '-4%'
+        }}
+      />
+      <div className={styles.layer__grid_desc_content}>
+        <div className={styles.layer__grid_desc_header}>
+          {!isMobile && <h1>STORYLINE</h1>}
+          <p>{shortDescription}</p>
         </div>
-        <div className={styles.layer__grid_title}>
-          <LazyLoad alt="" src={coverTitle} containerClassName={styles.layer__grid_images} />
-          <div className={styles.layer__parallax_layer_3}>
-            <div
-              className={styles.layer__parallax_layer_3_detail}
-              style={{ color: isDark ? 'black' : 'white' }}
-            >
-              <h4 className={styles.layer__parallax_layer_3_title}>OVERVIEW</h4>
-              <p className={styles.layer__parallax_layer_3_desc}>
-                {shortDescription}
-                {type !== 'playlists' && (
-                  <Link to={`/movie-detail/${id}`} className={styles.layer__see_more}>
-                    <img
-                      className={styles.layer__see_more_line}
-                      src={isDark ? LineBlack : LineWhite}
-                    />
-                    <img
-                      className={styles.layer__see_more_arrow}
-                      src={isDark ? RightBlack : RightWhite}
-                    />
-                    see movie
-                  </Link>
-                )}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.layer__grid_figure}>
-          <LazyLoad alt="" src={coverBody} />
+        <div
+          className={styles.layer__grid_desc_breakpoint}
+          style={{ borderBottom: `1px solid ${fontColor}` }}
+        />
+        <div className={styles.layer__grid_desc_footer}>
+          <i className={styles.layer__grid_desc_footer_quote}>{`"${shortDescription}"`}</i>
+          <strong>— Entertainment Weekly</strong>
         </div>
       </div>
-    </LazyLoad>
+    </div>
   );
 };
 
-export default withStyles(styles)(Layer);
+export default withStyles(styles)(ContentLayer);

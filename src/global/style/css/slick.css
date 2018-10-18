@@ -73,15 +73,17 @@
 
 :global(.slick-dark)::before {
   color: #000;
+  border-color: #000;
 }
 
 :global(.slick-white)::before {
   color: #fff;
+  border-color: #fff;
 }
 
 :global(.slick-next)::before,
 :global(.slick-prev)::before {
-  font-size: 20px;
+  font-size: 2rem;
   line-height: 1;
   opacity: 0.75;
 }

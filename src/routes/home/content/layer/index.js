@@ -1,3 +1,3 @@
-import layer from './layer';
+import ContentLayer from './layer';
 
-export default layer;
+export default ContentLayer;

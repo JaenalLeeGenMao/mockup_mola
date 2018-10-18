@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
-import { Parallax } from 'react-scroll-parallax';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -25,13 +24,14 @@ import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
+import HomeArrow from './arrow';
 import HomeMobileContent from '../content';
 import HomeMobileMenu from './menu';
 import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
 
 import styles from './home.css';
-import customSlickDotStyles from './homeSlickDots.css';
+import customArrowStyles from './arrow/arrow.css';
 
 let lastScrollY = 0,
   ticking = false,
@@ -49,12 +49,7 @@ class Home extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      onUpdatePlaylist,
-      onHandlePlaylist,
-      onHandleVideo,
-      home: { playlists }
-    } = nextProps;
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps;
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist();
@@ -104,7 +99,7 @@ class Home extends Component {
   }
 
   handleColorChange = () => {
-    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+    const activeSlick = $(`.active .slick-active .grid-slick`),
       isDark = parseInt(activeSlick.attr('isdark'), 10);
     if (typeof isDark === 'number') {
       this.setState({ isDark });
@@ -155,7 +150,7 @@ class Home extends Component {
 
   handleSwipe = event => {
     const { playlists, videos } = this.props.home,
-      activeSlickDots = $(`.${customSlickDotStyles.home__slick_dots}`);
+      activeArrows = $(`.${customArrowStyles.home__arrow}`);
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       return true;
     }
@@ -174,7 +169,7 @@ class Home extends Component {
       case 'swd' /* slide up ~ swipe down */:
         scrollIndex -= 1;
         this.handleKeyPress(scrollIndex);
-        activeSlickDots.css('padding', '0 5% 20.5% 0');
+        activeArrows.css('top', '84.25vh');
         break;
       case 'swl' /* slide to right ~ swipe left */:
         this.handleSlideNext(scrollIndex);
@@ -182,7 +177,7 @@ class Home extends Component {
       case 'swu' /* slide down ~ swipe up */:
         scrollIndex += 1;
         this.handleKeyPress(scrollIndex);
-        activeSlickDots.css('padding', '0 5% 5% 0');
+        activeArrows.css('top', '92.25vh');
         break;
       default:
         event.preventDefault();
@@ -228,39 +223,35 @@ class Home extends Component {
   };
 
   handleSlideNext = (scrollIndex = 0) => {
-    this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-    if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
-      this.sliderRefs[scrollIndex].slickNext();
-    }
+    try {
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext()) {
+        this.sliderRefs[scrollIndex].slickNext();
+      }
+    } catch {}
   };
 
   handleSlidePrev = (scrollIndex = 0) => {
-    this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-    if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
-      this.sliderRefs[scrollIndex].slickPrev();
-    }
+    try {
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev()) {
+        this.sliderRefs[scrollIndex].slickPrev();
+      }
+    } catch {}
   };
 
   render() {
     const {
         playlists,
-        playlists: {
-          meta: { status: playlistStatus = 'loading', error: playlistError = '' }
-        },
+        playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
-        videos: {
-          meta: { status: videoStatus = 'loading', error: videoError = '' }
-        }
+        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
       } = this.props.home,
       { isDark, isMenuOpen } = this.state,
       color = isDark ? 'black' : 'white',
       settings = {
         ...SETTINGS,
         speed: 300,
-        arrows: false,
-        dotsClass: `${customSlickDotStyles.home__slick_dots} ${
-          isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white
-        }`,
         onInit: () => {
           this.handleColorChange();
         },
@@ -358,10 +349,21 @@ class Home extends Component {
                       }
                     }}
                     {...settings}
+                    prevArrow={
+                      <HomeArrow direction="prev" isDark={isDark} onClick={this.handleSlideNext} />
+                    }
+                    nextArrow={
+                      <HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} />
+                    }
                   >
                     {video.data.map(eachVids => {
                       return (
-                        <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} />
+                        <HomeMobileContent
+                          {...eachVids}
+                          key={eachVids.id}
+                          isSafari={isSafari}
+                          isMobile
+                        />
                       );
                     })}
                   </Slider>
@@ -387,9 +389,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  withStyles(styles, customSlickDotStyles),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  withStyles(styles, customArrowStyles),
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home);

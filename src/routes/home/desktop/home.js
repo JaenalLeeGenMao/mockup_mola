@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
-import { Parallax } from 'react-scroll-parallax';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -32,7 +31,6 @@ import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
 
 import styles from './home.css';
-import customSlickDotStyles from './homeSlickDots.css';
 
 let lastScrollY = 0,
   ticking = false,
@@ -49,12 +47,7 @@ class Home extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      onUpdatePlaylist,
-      onHandlePlaylist,
-      onHandleVideo,
-      home: { playlists }
-    } = nextProps;
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps;
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist();
@@ -90,8 +83,9 @@ class Home extends Component {
   }
 
   handleColorChange = () => {
-    const activeSlick = $(`.active .slick-active .${styles.home__parallax}`),
+    const activeSlick = $(`.active .slick-active .grid-slick`),
       isDark = parseInt(activeSlick.attr('isdark'), 10);
+
     if (typeof isDark === 'number') {
       this.setState({ isDark });
     }
@@ -172,36 +166,37 @@ class Home extends Component {
   };
 
   handleSlideNext = (scrollIndex = 0) => {
-    this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-    if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext) {
-      this.sliderRefs[scrollIndex].slickNext();
-    }
+    try {
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext()) {
+        this.sliderRefs[scrollIndex].slickNext();
+      }
+    } catch {}
   };
 
   handleSlidePrev = (scrollIndex = 0) => {
-    this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-    if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev) {
-      this.sliderRefs[scrollIndex].slickPrev();
-    }
+    try {
+      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
+      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev()) {
+        this.sliderRefs[scrollIndex].slickPrev();
+      }
+    } catch {}
   };
 
   render() {
-    const {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+      {
         playlists,
-        playlists: {
-          meta: { status: playlistStatus = 'loading', error: playlistError = '' }
-        },
+        playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
-        videos: {
-          meta: { status: videoStatus = 'loading', error: videoError = '' }
-        }
+        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
       } = this.props.home,
       { isDark } = this.state,
       settings = {
         ...SETTINGS,
-        dotsClass: `${customSlickDotStyles.home__slick_dots} ${
-          isDark ? customSlickDotStyles.home__dark : customSlickDotStyles.home__white
-        }`,
+        fade: isSafari ? true : false,
+        slidesToShow: isSafari ? false : true,
+        slidesToScroll: isSafari ? false : true,
         onInit: () => {
           this.handleColorChange();
         },
@@ -209,7 +204,6 @@ class Home extends Component {
           this.handleColorChange();
         }
       },
-      isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
     activePlaylist =
@@ -273,8 +267,12 @@ class Home extends Component {
                       }
                     }}
                     {...settings}
-                    prevArrow={<HomeArrow direction="prev" isDark={isDark} />}
-                    nextArrow={<HomeArrow direction="next" isDark={isDark} />}
+                    prevArrow={
+                      <HomeArrow direction="prev" isDark={isDark} onClick={this.handleSlideNext} />
+                    }
+                    nextArrow={
+                      <HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} />
+                    }
                   >
                     {video.data.map(eachVids => (
                       <HomeDesktopContent
@@ -306,10 +304,4 @@ const mapDispatchToProps = dispatch => ({
   onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id))
 });
 
-export default compose(
-  withStyles(styles, customSlickDotStyles),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Home);
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Home);
