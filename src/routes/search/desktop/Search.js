@@ -19,7 +19,6 @@ import s from './Search.css';
 import searchDb from '../../../database/searchDb';
 import history from '../../../history';
 import Tracker from '../../../lib/tracker';
-
 let sessionId;
 
 class Search extends React.Component {
