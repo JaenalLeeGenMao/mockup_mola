@@ -65,8 +65,6 @@ class Login extends React.Component {
         isError: true,
         errMsg: result.meta.error.response.data.error_description
       });
-      // console.log('result', result.meta.error.response.data);
-      // alert(result.meta.error.response.data.error_description);
     }
   };
 
@@ -94,6 +92,7 @@ class Login extends React.Component {
                   Wah, we miss you! <br />
                   Input your data to login and lets start.
                 </p>
+                <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                 <div>
                   <Form
                     className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')}
@@ -117,7 +116,7 @@ class Login extends React.Component {
                     Password
                   </Form>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
+                    <div />
                     <div>
                       <a href="/accounts/forgotPassword" className={s.forgotPassword}>
                         Forgot password ?

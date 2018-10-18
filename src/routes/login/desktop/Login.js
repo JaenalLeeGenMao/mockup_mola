@@ -93,6 +93,7 @@ class Login extends React.Component {
                   Wah, we miss you! <br />
                   Input your data to login and lets start.
                 </p>
+                <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                 <div>
                   <Form
                     id="email"
@@ -116,7 +117,7 @@ class Login extends React.Component {
                     Password
                   </Form>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
+                    <div />
                     <div>
                       <Link className={s.forgotPassword} to="/accounts/forgotPassword">
                         Forgot password ?
