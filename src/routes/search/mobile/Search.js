@@ -408,7 +408,7 @@ class Search extends React.Component {
                           <div>
                             Your search for {`"${this.searchText}"`} did not have any matches
                           </div>
-                          <div>Try searching different keywords or browse by genre</div>
+                          <div>Try searching with different keywords</div>
                         </div>
                       </LazyLoad>
                     )}

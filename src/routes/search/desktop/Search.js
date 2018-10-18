@@ -19,7 +19,6 @@ import s from './Search.css';
 import searchDb from '../../../database/searchDb';
 import history from '../../../history';
 import Tracker from '../../../lib/tracker';
-
 let sessionId;
 
 class Search extends React.Component {
@@ -436,7 +435,7 @@ class Search extends React.Component {
                           <div>
                             Your search for {`"${this.searchText}"`} did not have any matches
                           </div>
-                          <div>Try searching different keywords or browse by genre</div>
+                          <div>Try searching with different keywords</div>
                         </div>
                       </LazyLoad>
                     )}
