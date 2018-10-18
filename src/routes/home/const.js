@@ -1,5 +1,5 @@
 export const SETTINGS = {
-  dots: true,
+  dots: false,
   arrows: true,
   infinite: false,
   edgeFriction: false,
@@ -11,5 +11,5 @@ export const SETTINGS = {
   autoplaySpeed: 3000,
   speed: 800,
   lazyLoad: 'ondemand',
-  cssEase: 'linear',
+  cssEase: 'linear'
 };

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import styles from './arrow.css';
-import customSlickDotStyles from '../homeSlickDots.css';
 
 class Arrow extends Component {
   render() {
@@ -23,4 +22,4 @@ class Arrow extends Component {
   }
 }
 
-export default withStyles(styles, customSlickDotStyles)(Arrow);
+export default withStyles(styles)(Arrow);

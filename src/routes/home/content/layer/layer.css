@@ -1,266 +1,59 @@
-/* .layer__parallax {
+.layer__grid_desc_wrapper {
   position: relative;
-  height: 100vh;
-  max-height: 100vh;
-  bottom: 0;
-  margin: 0;
-  padding: 0;
+  z-index: 2;
+  height: 60%;
+  margin: 5%;
+  border-radius: 3px;
   overflow: hidden;
 }
 
-.layer__parallax_layer_1_wrapper {
-  max-width: 100vw;
-  max-height: 100vh;
-  height: 100%;
-  width: 100%;
-}
-
-.layer__parallax_layer_1 {
-  height: 100%;
-}
-
-.layer__parallax_layer_1 img {
-  height: 100%;
-  width: 100%;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.layer__parallax_layer_2 {
+.layer__grid_desc_background {
   position: absolute;
   background-size: cover;
-  background-repeat: no-repeat;
   width: 100%;
-  right: 0;
-  bottom: 0;
+  height: 100%;
   z-index: 1;
-  display: inline-block;
-  text-align: right;
+  overflow: hidden;
+  border-radius: 2px;
 }
 
-.layer__parallax_layer_2 img {
-  height: auto;
-  width: auto;
-  max-width: 100vh;
-  max-height: 100vw;
-} */
-
-.layer__parallax_layer_3 {
+.layer__grid_desc_background::after {
+  content: '';
+  background: inherit;
   position: absolute;
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100%;
-  width: 100%;
   left: 0;
+  right: 2.5%;
+  top: 0;
   bottom: 0;
+  filter: blur(10px);
+}
+
+.layer__grid_desc_content {
+  position: relative;
   z-index: 2;
 }
 
-.layer__parallax_layer_3_info > img {
-  width: 75%;
-  margin: auto auto 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.layer__parallax_layer_3_info {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  min-width: 300px;
-  bottom: 0;
-  z-index: 3;
-  text-align: right;
-}
-
-.layer__parallax_layer_3_detail {
-  position: relative;
-}
-
-.layer__parallax_layer_3_title {
-  position: relative;
-  padding: 5% 10%;
-  letter-spacing: 0.08em;
-  min-width: 300px;
-  font-size: 0.875em;
-  text-transform: uppercase;
-}
-
-.layer__parallax_layer_3_desc {
-  padding: 0 10% 50%;
-  font-size: 1.4rem;
-  font-style: italic;
-  white-space: pre-line;
+.layer__grid_desc_header {
+  height: 40%;
+  opacity: 1;
+  padding: 2.5% 5%;
   overflow: hidden;
-  opacity: 0.8;
-  min-width: 300px;
 }
 
-.layer__see_more {
+.layer__grid_desc_breakpoint {
+  opacity: 1;
+  margin: 5%;
+  height: 0;
+}
+
+.layer__grid_desc_footer {
+  height: 40%;
+  opacity: 1;
+  margin: 0 5%;
+  overflow: hidden;
+}
+
+.layer__grid_desc_footer_quote {
   display: block;
-  color: inherit;
-  text-decoration: none;
-  font-variant: unicase;
-  padding-top: 15px;
-}
-
-.layer__see_more_arrow {
-  position: relative;
-  z-index: 1;
-  opacity: 1;
-  width: 1em !important;
-  animation: moves 2s infinite;
-}
-
-.layer__see_more_line {
-  position: relative;
-  z-index: 0;
-  opacity: 1;
-  width: 1em !important;
-}
-
-.layer__see_more:hover {
-  letter-spacing: 0.2em;
-  opacity: 0.8;
-}
-
-.layer__parallax_layer_3 :global(.parallax-inner) {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Desktop style
-@media screen and (min-width: 1024px) {
-  .layer__parallax_layer_3_detail {
-    position: relative;
-  }
-
-  .layer__parallax_layer_3_desc {
-    font-size: 1.6rem;
-    padding: 0 5% 15% 5%;
-    max-width: 420px;
-  }
-
-  .layer__parallax_layer_3_info {
-    width: auto;
-    max-width: 1080px;
-    text-align: left;
-  }
-
-  .layer__parallax_layer_3_info > img {
-    width: 25%;
-    margin: auto auto 0 5%;
-  }
-
-  .layer__parallax_layer_3_title {
-    padding: 1.5% 5%;
-  }
-
-  .layer__parallax_layer_2 img {
-    max-width: 60%;
-    max-height: 100vh;
-  }
-} */
-
-@keyframes spaceout {
-  0% { letter-spacing: 0; }
-
-  50% {
-    letter-spacing: 0.12em;
-  }
-  100% { letter-spacing: 0; }
-}
-
-@keyframes moves {
-  0% {
-    right: 1em;
-  }
-
-  50% {
-    right: 0.5em;
-  }
-
-  100% {
-    right: 1em;
-  }
-}
-
-/* NEW GRID STYLE BABE */
-
-.layer__grid_container {
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-  grid-gap: 0;
-  grid-template-areas:
-    'header'
-    'title'
-    'figure';
-  grid-template-rows: 1fr 3fr 4fr;
-  grid-template-columns: auto;
-}
-
-.layer__grid_header {
-  position: relative;
-  height: auto;
-  grid-area: header;
-  background-color: #8ca0ff;
-}
-
-.layer__grid_title {
-  position: relative;
-  height: 100%;
-  grid-area: title;
-  background-color: #8ca00f;
-}
-
-.layer__grid_figure {
-  position: relative;
-  height: 100%;
-  grid-area: figure;
-  background-color: #8c00af;
-}
-
-.layer__grid_images,
-.layer__grid_images img {
-  height: 100%;
-  max-height: 50vh;
-}
-
-/* Desktop style */
-
-@media screen and (min-width: 768px) {
-  .layer__grid_container {
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    grid-gap: 0;
-    grid-template-areas:
-      'title figure'
-      'title  figure'
-      'title  figure';
-    grid-template-rows: auto auto auto;
-    grid-template-columns: auto auto;
-  }
-
-  .layer__grid_header {
-    display: none;
-  }
-
-  .layer__grid_images,
-  .layer__grid_images img {
-    height: 100%;
-    max-height: 100vh;
-  }
-
-  .layer__grid_figure img {
-    height: 100vh;
-  }
+  padding: 2.5% 0;
 }
