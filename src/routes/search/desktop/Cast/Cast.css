@@ -2,7 +2,7 @@
 .resultRow {
   padding-bottom: 3.2rem;
   margin: 0;
-  display: flex;
+  display: block;
 }
 
 .resultTitle,
@@ -10,14 +10,15 @@
   color: #bababa;
   font-size: 17px;
   font-weight: normal;
-  display: inline-block;
-  flex: 1 0 160px;
+  display: block;
+  padding-bottom: 2rem;
 }
 
 .resultTitleLoading {
-  flex: 1 0 120px;
+  width: 150px;
   height: 1.7rem;
-  margin-bottom: 15px;
+  padding: 0;
+  margin-bottom: 2rem;
 }
 
 .resultContent,
@@ -28,12 +29,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  padding-right: 130px;
   margin-left: -10px;
-}
-
-.resultContentLoading {
-  margin-left: 35px;
 }
 
 .castBox {
@@ -59,7 +55,7 @@
 }
 
 .castBox span {
-  font-size: 13px;
+  font-size: 1.3rem;
   display: inline;
   color: #6f6f6f;
 }
@@ -185,7 +181,10 @@
   .resultTitle,
   .resultTitleLoading {
     font-size: 2rem;
-    flex: 1 0 400px;
+  }
+
+  .resultTitleLoading {
+    width: 400px;
   }
 
   .castBox > img,

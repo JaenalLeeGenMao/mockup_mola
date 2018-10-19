@@ -3,10 +3,20 @@
 
 .root {
   background-color: #000;
-  height: calc(100vh - 130px);
-  padding: 130px 0 0;
+  height: calc(100vh - 100px);
+  padding: 100px 0 0;
   overflow: hidden;
   font-family: var(--font-family-base);
+}
+
+.headerContainer {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.headerInner {
+  padding-top: 20px;
 }
 
 .container {
@@ -20,7 +30,10 @@
   position: relative;
   padding: 0;
   margin: 0 auto;
-  width: 65%;
+  width: 80%;
+  background-color: #2b2b2b;
+  height: 5.2rem;
+  border-radius: 200px;
 }
 
 .searchText {
@@ -35,18 +48,19 @@
 .searchAutocomplete {
   padding: 0;
   position: relative;
-  width: 65%;
-  z-index: 100;
+  width: 80%;
+  z-index: 101;
   box-sizing: border-box;
   font-size: 2.2rem;
   color: #6f6f6f;
   margin: 0 auto;
   line-height: 1;
+  border-radius: 200px;
 }
 
 .searchAutocomplete span {
-  top: 14px;
-  left: 48px;
+  top: 15px;
+  left: 75px;
   position: absolute;
 }
 
@@ -56,10 +70,11 @@
   background-size: contain;
   display: block;
   position: absolute;
-  top: 10px;
-  left: 0;
+  top: 50%;
+  left: 30px;
   width: 26px;
   height: 26px;
+  transform: translate(0, -50%);
 }
 
 .removeSearchIcon {
@@ -68,19 +83,19 @@
   background-size: contain;
   display: block;
   position: absolute;
-  top: 20px;
-  right: 0;
+  top: 50%;
+  right: 30px;
   width: 15px;
   height: 15px;
   z-index: 102;
   cursor: pointer;
+  transform: translate(0, -50%);
 }
 
 .searchInput,
 .searchInputSuggestion {
   background-color: transparent;
   border: 0;
-  border-bottom: 2px solid white;
   width: 100%;
   box-sizing: border-box;
   color: #fff;
@@ -88,7 +103,7 @@
   font-size: 2.2rem;
   line-height: 1;
   height: 52px;
-  padding: 10px 48px;
+  padding: 10px 75px;
   position: absolute;
   z-index: 101;
   font-family: 'Futura', 'HelveticaNeue-Light', sans-serif;
@@ -99,7 +114,7 @@
 }
 
 .resultWrapper {
-  padding-top: 130px;
+  padding-top: 65px;
   margin: 0 auto;
   overflow: hidden;
   width: 100%;
@@ -160,35 +175,24 @@
   }
 
   .searchAutocomplete {
-    width: 60%;
+    width: 70%;
   }
 
   .searchAutocomplete span {
-    left: 48px;
-    top: 46px;
     font-size: 2.2rem;
   }
 
   .searchInputWrapper {
-    width: 60%;
+    width: 70%;
   }
 
   .searchText {
     top: 30px;
   }
 
-  .searchIcon {
-    top: 40px;
-  }
-
-  .removeSearchIcon {
-    top: 50px;
-  }
-
   .searchInput {
     font-size: 2.2rem;
     position: absolute;
-    top: 32px;
   }
 
   .resultRow {
@@ -197,11 +201,6 @@
 
   .resultWrapper {
     width: 90%;
-    padding-top: 120px;
-  }
-
-  .resultContainer {
-    height: calc(100vh - 120px);
   }
 }
 
@@ -227,17 +226,7 @@
     font-size: 1.4rem;
   }
 
-  .searchIcon {
-    top: 17px;
-  }
-
-  .removeSearchIcon {
-    top: 27px;
-  }
-
   .searchInput {
-    position: absolute;
-    top: 10px;
     font-size: 1.8rem;
   }
 
@@ -268,28 +257,32 @@
 
   .searchInput {
     height: 5rem;
-    padding: 1rem 4rem;
+    padding: 1rem 5rem;
   }
 
   .searchAutocomplete span {
     top: 1.5rem;
-    left: 4rem;
+    left: 5rem;
   }
 
   .searchIcon {
     width: 2rem;
     height: 2rem;
-    top: 1.5rem;
+    left: 50px;
   }
 
   .removeSearchIcon {
     width: 1.5rem;
     height: 1.5rem;
-    top: 2rem;
+    right: 50px;
   }
 
   .resultWrapper {
-    padding-top: 300px;
+    padding-top: 200px;
+  }
+
+  .resultContainer {
+    height: calc(100vh - 600px);
   }
 
   .resultEmptyWrapper {

@@ -55,6 +55,9 @@ class RecentSearch extends React.Component {
         {recentSearchData.length > 0 && (
           <div className={s.resultRow}>
             <div className={s.resultTitle}>Recent Search</div>
+            <a className={s.clearRecentSearch} onClick={this.handleClearAllSearch}>
+              Clear all
+            </a>
             <div className={s.resultContent}>
               {recentSearchData.map(data => {
                 const keywordRes = getMatchWordSearch(data.keyword, searchTxt);
@@ -84,9 +87,6 @@ class RecentSearch extends React.Component {
                   </span>
                 );
               })}
-              <a className={s.clearRecentSearch} onClick={this.handleClearAllSearch}>
-                Clear all
-              </a>
             </div>
           </div>
         )}
