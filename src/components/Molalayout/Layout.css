@@ -10,8 +10,8 @@ body {
   height: 100%;
 }
 
-/* mobile TV Styles */
-@media screen and (min-height: 639px) and (max-height: 999px) {
+/* mobile Styles */
+@media screen and (min-width: 299px) and (max-width: 640px) {
   html {
     font-size: 82.5%;
   }
