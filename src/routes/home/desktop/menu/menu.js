@@ -20,8 +20,8 @@ class Menu extends Component {
     const { isOpen, isDark = 0, playlists } = this.props,
       backgroundColor = isDark ? 'black' : 'white';
     return (
-      <div className={[styles.mobile__menu_wrapper, isOpen ? styles.isActive : ''].join(' ')}>
-        <div className={styles.mobile__menu_content}>
+      <div className={[styles.desktop__menu_wrapper, isOpen ? styles.isActive : ''].join(' ')}>
+        <div className={styles.desktop__menu_content}>
           {playlists &&
             playlists.map(({ id, isActive }) => (
               <Link
@@ -29,12 +29,9 @@ class Menu extends Component {
                 id={id}
                 to="/"
                 onClick={this.handleNavigation}
-                className={[styles.mobile__menu_links, isActive ? styles.isActive : ''].join(' ')}
-              >
-                <div
-                  style={{ backgroundColor, height: `${100 / playlists.length}vh`, width: '25%' }}
-                />
-              </Link>
+                className={[styles.desktop__menu_links, isActive ? styles.isActive : ''].join(' ')}
+                style={{ backgroundColor }}
+              />
             ))}
         </div>
       </div>
