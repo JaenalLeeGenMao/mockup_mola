@@ -83,11 +83,3 @@
   color: #000;
   border-color: #000;
 }
-
-
-/* mobile TV Styles */
-@media screen and (min-height: 699px) {
-  html {
-    font-size: 82.5%;
-  }
-}
