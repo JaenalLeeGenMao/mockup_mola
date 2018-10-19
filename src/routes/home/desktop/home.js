@@ -27,6 +27,7 @@ import Link from '@components/Link';
 
 import HomeArrow from './arrow';
 import HomeDesktopContent from '../content';
+import HomeDesktopMenu from './menu';
 import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
 
@@ -227,7 +228,11 @@ class Home extends Component {
           )}
         {playlistStatus === 'success' &&
           videoStatus === 'success' && (
-            <Navbar isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />
+            <HomeDesktopMenu
+              isDark={isDark}
+              playlists={playlists.data}
+              onClick={this.handleScrollToIndex}
+            />
           )}
         {playlistStatus === 'success' &&
           videos &&

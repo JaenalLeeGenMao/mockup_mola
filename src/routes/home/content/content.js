@@ -35,7 +35,11 @@ class Content extends Component {
       coverTitleImage = isMobile ? coverTitle[version].portrait : coverTitle[version].landscape;
 
     return (
-      <div className="grid-slick" isDark={isDark}>
+      <div
+        className="grid-slick"
+        isDark={isDark}
+        style={{ boxShadow: `inset 100px 100px 100px 20000px ${fontBackgroundColor}` }}
+      >
         <LazyLoad
           alt=""
           src={coverBackgroundImage}
