@@ -1,29 +1,29 @@
 .resultRow {
   padding-bottom: 3.2rem;
   margin: 0;
-  display: flex;
+  display: block;
 }
 
 .resultTitle {
   color: #bababa;
-  font-size: 17px;
+  font-size: 1.7rem;
   font-weight: normal;
   display: inline-block;
-  flex: 1 0 160px;
+  padding-bottom: 2rem;
 }
 
 .resultTitleLoading {
-  width: 120px;
+  padding: 0;
+  width: 150px;
   height: 1.7rem;
 }
 
 .resultContent {
   color: #fff;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: normal;
   display: block;
   width: 100%;
-  padding-right: 130px;
 }
 
 .resultChip {
@@ -58,7 +58,7 @@
 
 .removeChip {
   position: absolute;
-  top: 5px;
+  top: auto;
   right: 8px;
 }
 
@@ -67,18 +67,17 @@
   background-repeat: no-repeat;
   background-size: contain;
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   cursor: pointer;
 }
 
 .clearRecentSearch {
-  padding: 6px 35px 6px 10px;
-  margin: 0 15px 15px 0;
   position: relative;
-  display: inline-block;
-  overflow: hidden;
+  display: block;
   color: #bababa;
+  float: right;
+  font-size: 1.7rem;
   cursor: pointer;
 }
 
@@ -96,11 +95,8 @@
     padding: 0;
   }
 
-  .clearRecentSearch__mobile {
-    display: inline-block;
-    float: right;
-    color: #bababa;
-    font-size: 14px;
+  .clearRecentSearch {
+    font-size: 1.4rem;
   }
 }
 
@@ -134,7 +130,6 @@
 @media screen and (min-height: 1080px) {
   .resultTitle {
     font-size: 2rem;
-    flex: 1 0 20rem;
   }
 
   .resultContent {

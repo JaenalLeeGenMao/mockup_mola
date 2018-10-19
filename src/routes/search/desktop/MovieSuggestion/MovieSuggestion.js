@@ -24,11 +24,12 @@ class MovieSuggestion extends React.Component {
 
   render() {
     const { data, searchText } = this.props;
+    const movieData = data.slice(0, 5);
     return (
       <div className={s.resultRowWrap}>
         <div className={s.resultTitle}>Movie</div>
-        <div className={s.resultContent__movie}>
-          {data.map(movie => {
+        <div className={s.resultContent}>
+          {movieData.map(movie => {
             const movieYear = movie.year ? ` (${movie.year})` : '';
             const movieTitle = `${movie.title}${movieYear}`;
             const movieTitleRes = getMatchWordSearch(movieTitle, searchText);

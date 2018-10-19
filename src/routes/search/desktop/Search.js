@@ -345,7 +345,19 @@ class Search extends React.Component {
     const showResult = this.searchText ? searchKeyword !== '' : false;
     return (
       <Fragment>
-        <Header isDark={isDark} libraryOff searchOff {...this.props} />
+        <div className={s.headerContainer}>
+          <div className={s.headerInner}>
+            <Header
+              stickyOff
+              isDark={isDark}
+              logoOff
+              libraryOff
+              backButtonOn
+              searchOff
+              {...this.props}
+            />
+          </div>
+        </div>
         <div className={s.root}>
           <div className={s.containerBg} />
           <div className={s.container}>
