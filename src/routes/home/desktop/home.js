@@ -25,9 +25,9 @@ import Navbar from '@components/Navigation';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
-import HomeArrow from './arrow';
+import HomeArrow from '../arrow';
 import HomeDesktopContent from '../content';
-import HomeDesktopMenu from './menu';
+import HomeDesktopMenu from '../menu';
 import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
 

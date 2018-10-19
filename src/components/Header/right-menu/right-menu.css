@@ -5,13 +5,13 @@
   position: relative;
   justify-content: flex-end;
   align-items: center;
-  right: 20px;
-  width: 75px;
+  right: 2rem;
+  width: 7.5rem;
 }
 
 .right__menu a,
 .right__menu span {
-  padding: 6px;
+  padding: 0.6rem;
   text-decoration: none;
   letter-spacing: 0.1em;
 }
@@ -100,17 +100,9 @@
   to { opacity: 1; }
 }
 
-@media screen and (max-width: 1024px) {
-  .right__menu {
-    right: 0;
-  }
-}
-
 /* Big TV Styles */
 @media screen and (min-height: 1080px) {
   .right__menu {
-    right: 60px;
-    width: 225px;
     justify-content: space-around;
   }
 }

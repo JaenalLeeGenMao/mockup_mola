@@ -10,6 +10,13 @@ body {
   height: 100%;
 }
 
+/* mobile TV Styles */
+@media screen and (min-height: 699px) {
+  html {
+    font-size: 82.5%;
+  }
+}
+
 /* Big TV Styles */
 @media screen and (min-height: 1080px) {
   html {

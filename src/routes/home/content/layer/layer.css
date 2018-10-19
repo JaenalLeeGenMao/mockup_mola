@@ -33,6 +33,17 @@
   z-index: 2;
 }
 
+.layer__grid_desc_content h1 {
+  font-size: 1.2rem;
+}
+
+.layer__grid_desc_content p,
+.layer__grid_desc_content i,
+.layer__grid_desc_content b,
+.layer__grid_desc_content span {
+  font-size: 0.8rem;
+}
+
 .layer__grid_desc_header {
   height: 40%;
   opacity: 1;

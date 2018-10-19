@@ -1,10 +1,10 @@
-.desktop__menu_wrapper {
+.menu_wrapper {
   position: fixed;
   width: 5%;
   z-index: 3;
 }
 
-.desktop__menu_content {
+.menu_content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,7 +12,7 @@
   min-height: 100vh;
 }
 
-.desktop__menu_content a {
+.menu_content a {
   font-size: 1.4rem;
   height: 0.8rem;
   width: 0.8rem;
@@ -23,11 +23,11 @@
   opacity: 0.4;
 }
 
-.desktop__menu_content a:hover {
+.menu_content a:hover {
   opacity: 1;
 }
 
-.desktop__menu_content a.isActive {
+.menu_content a.isActive {
   opacity: 1;
 }
 
