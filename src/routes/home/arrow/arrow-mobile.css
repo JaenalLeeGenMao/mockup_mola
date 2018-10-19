@@ -2,14 +2,14 @@
 
 .home__arrow {
   font-family: slick;
-  position: absolute;
-  top: 84.25vh;
+  position: fixed;
+  bottom: 5%;
   width: 40px;
   height: 40px;
   z-index: 99;
   outline: none;
-  padding-top: 18px;
   transform: translate(0, 5%);
+  visibility: hidden;
 }
 
 /* available chevrons
@@ -27,7 +27,7 @@
 .home__arrow_next::before,
 .home__arrow_prev::before {
   font-size: 2rem;
-  line-height: 0.5;
+  line-height: 0.3;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,7 +36,8 @@
 .home__arrow_next,
 .home__arrow_prev {
   display: block;
-  position: absolute;
+
+  /* position: absolute; */
   color: transparent;
   cursor: pointer;
   border: none;
@@ -53,7 +54,7 @@
 
 .home__arrow_next {
   right: 7.5%;
-  border-width: 0.2rem;
+  border-width: 0.12rem;
   border-radius: 0.3rem;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -63,7 +64,7 @@
 
 .home__arrow_prev {
   right: 12.5%;
-  border-width: 0.2rem;
+  border-width: 0.12rem;
   border-radius: 0.3rem;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -81,4 +82,12 @@
 .home__arrow_prev.dark {
   color: #000;
   border-color: #000;
+}
+
+
+/* mobile TV Styles */
+@media screen and (min-height: 699px) {
+  html {
+    font-size: 82.5%;
+  }
 }

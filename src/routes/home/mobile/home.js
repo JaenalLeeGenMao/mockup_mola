@@ -24,14 +24,14 @@ import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
 import Link from '@components/Link';
 
-import HomeArrow from './arrow';
+import HomeArrow from '../arrow';
 import HomeMobileContent from '../content';
-import HomeMobileMenu from './menu';
+import HomeMobileMenu from '../menu';
 import HomePlaceholder from './placeholder';
 import HomeError from '@components/common/error';
 
 import styles from './home.css';
-import customArrowStyles from './arrow/arrow.css';
+import customArrowStyles from '../arrow/arrow-mobile.css';
 
 let lastScrollY = 0,
   ticking = false,
@@ -150,7 +150,9 @@ class Home extends Component {
 
   handleSwipe = event => {
     const { playlists, videos } = this.props.home,
-      activeArrows = $(`.${customArrowStyles.home__arrow}`);
+      inactiveArrows = $(`.${customArrowStyles.home__arrow}`),
+      activeArrows = $(`.active .${customArrowStyles.home__arrow}`);
+
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       return true;
     }
@@ -162,6 +164,8 @@ class Home extends Component {
       return true;
     });
 
+    inactiveArrows.css('visibility', 'hidden');
+    activeArrows.css('visibility', 'visible');
     switch (event.type) {
       case 'swr' /* slide to left ~ swipe right */:
         this.handleSlidePrev(scrollIndex);
@@ -169,7 +173,6 @@ class Home extends Component {
       case 'swd' /* slide up ~ swipe down */:
         scrollIndex -= 1;
         this.handleKeyPress(scrollIndex);
-        activeArrows.css('top', '84.25vh');
         break;
       case 'swl' /* slide to right ~ swipe left */:
         this.handleSlideNext(scrollIndex);
@@ -177,7 +180,6 @@ class Home extends Component {
       case 'swu' /* slide down ~ swipe up */:
         scrollIndex += 1;
         this.handleKeyPress(scrollIndex);
-        activeArrows.css('top', '92.25vh');
         break;
       default:
         event.preventDefault();
@@ -292,10 +294,9 @@ class Home extends Component {
             <div>
               <HomeMobileMenu
                 isDark={isDark}
-                isOpen={isMenuOpen}
                 playlists={playlists.data}
                 onClick={this.handleScrollToIndex}
-                onToggle={this.handleToggleMenu}
+                isMobile
               />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                 <Link
@@ -350,10 +351,20 @@ class Home extends Component {
                     }}
                     {...settings}
                     prevArrow={
-                      <HomeArrow direction="prev" isDark={isDark} onClick={this.handleSlideNext} />
+                      <HomeArrow
+                        direction="prev"
+                        isDark={isDark}
+                        onClick={this.handleSlideNext}
+                        isMobile
+                      />
                     }
                     nextArrow={
-                      <HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} />
+                      <HomeArrow
+                        direction="next"
+                        isDark={isDark}
+                        onClick={this.handleSlidePrev}
+                        isMobile
+                      />
                     }
                   >
                     {video.data.map(eachVids => {

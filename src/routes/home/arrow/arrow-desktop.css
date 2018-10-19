@@ -29,7 +29,7 @@
 
 .home__arrow_next::before,
 .home__arrow_prev::before {
-  font-size: 2rem;
+  font-size: 1rem;
   line-height: 1;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
@@ -48,22 +48,26 @@
   font-size: 0;
   line-height: 0;
   background: 0 0;
-  width: 2.5%;
-  height: 5%;
+  width: 2%;
+  height: 3%;
   z-index: 99;
   transition: all 150ms ease;
 }
 
 .home__arrow_next {
-  right: 4.5%;
-  border-width: 0.2rem;
+  right: 4%;
+  border-width: 0.12rem;
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
   border-style: solid;
   border-left: none;
 }
 
 .home__arrow_prev {
-  right: 7%;
-  border-width: 0.2rem;
+  right: 6%;
+  border-width: 0.12rem;
+  border-top-left-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
   border-style: solid;
   border-right: none;
 }
