@@ -21,8 +21,8 @@ class Profile extends React.Component {
   }
 
   handleSubmit = e => {
-    this.props.handleUpdatePassword(this.state);
-    console.log('toaster log', this.props.toaster);
+    const update = this.props.handleUpdatePassword(this.state);
+    console.log('test update password', update);
   };
 
   onChangeInput = e => {
