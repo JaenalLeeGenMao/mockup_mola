@@ -4,7 +4,6 @@ import Auth from '@api/auth';
 
 export const updatePassword = ({ currentPassword, newPassword, confirmNewPassword }) => {
   return async (dispatch, getState) => {
-    const { token } = getState().user;
     const { csrf } = getState().runtime;
 
     if (newPassword !== confirmNewPassword) {
@@ -14,8 +13,7 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
 
     const checkCurrentPassword = await Auth.verifyPassword({
       password: currentPassword,
-      csrf: csrf,
-      token: token
+      csrf: csrf
     });
 
     if (checkCurrentPassword.meta.status !== 'success') {
