@@ -1,5 +1,6 @@
 import types from '../constants';
 import { toastr } from 'react-redux-toastr';
+import dateFormat from 'dateformat';
 
 import Auth from '@api/auth';
 
@@ -26,11 +27,17 @@ export const updateProfile = params => {
   return async (dispatch, getState) => {
     const { token } = getState().user;
     const { csrf } = getState().runtime;
+    const splitDate = params.birthdate.split('/');
+    let date = params.birthdate;
+
+    if (splitDate.length > 2) {
+      date = splitDate[1] + '/' + splitDate[0] + '' / +splitDate[2];
+    }
 
     const update = await Auth.updateProfile({
       name: params.username,
       csrf: csrf,
-      birthdate: params.birthdate,
+      birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
       location: params.location,
       token: token
