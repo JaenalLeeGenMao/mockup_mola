@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './index.css';
-import * as filestack from 'filstack-js';
+import * as filestack from 'filestack-js';
 import dateFormat from 'dateformat';
 
 const client = filestack.init('AXrDPoUaxQrinUeOmumBnz');
