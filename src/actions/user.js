@@ -31,7 +31,7 @@ export const updateProfile = params => {
     let date = params.birthdate;
 
     if (splitDate.length > 2) {
-      date = splitDate[1] + '/' + splitDate[0] + '' / +splitDate[2];
+      date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
     }
 
     const update = await Auth.updateProfile({

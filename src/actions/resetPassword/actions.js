@@ -8,7 +8,7 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
 
     if (newPassword !== confirmNewPassword) {
       toastr.warning('Notification', "Confirmation password doesn't match your new password.");
-      return null;
+      return false;
     }
 
     const checkCurrentPassword = await Auth.verifyPassword({
@@ -18,7 +18,7 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
 
     if (checkCurrentPassword.meta.status !== 'success') {
       toastr.warning('Notification', 'Current Password is invalid');
-      return null;
+      return false;
     }
 
     const updateNewPassword = await Auth.updateNewPassword({
@@ -28,10 +28,10 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
 
     if (updateNewPassword.meta.status !== 'success') {
       toastr.warning('Notification', 'Update password is failed');
-      return null;
+      return false;
     }
 
     toastr.success('Notification', 'Update password is success');
-    return null;
+    return true;
   };
 };
