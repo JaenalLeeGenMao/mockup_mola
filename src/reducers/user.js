@@ -16,8 +16,8 @@ const emptyData = {
 const fakeData = {
   username: 'Trisno Nino',
   email: 'ninotrisno34@gmail.com',
-  birthdate: '18/09/2018',
-  gender: 'male',
+  birthdate: '2018-09-29',
+  gender: 'm',
   phoneNumber: '0853-1501-5663',
   photo:
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
@@ -64,6 +64,13 @@ export default function runtime(state = initialState, action) {
     case types.UPDATE_SETTING_FAILURE:
       return {
         ...state,
+        isLoading: false
+      };
+
+    case types.FETCH_PROFILE_USER:
+      return {
+        ...state,
+        ...action.payload,
         isLoading: false
       };
 

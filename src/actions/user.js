@@ -53,6 +53,21 @@ export const updateProfile = params => {
   };
 };
 
+export function fetchProfile() {
+  return async (dispatch, getState) => {
+    const { csrf } = getState().runtime;
+
+    const profile = await Auth.fetchProfile({ csrf: csrf });
+    if (profile.meta.status === 'success') {
+      let data = profile.data;
+      data.username = `${data.first_name || ''} ${data.last_name || ''}`.trim();
+      data.phoneNumber = data.phone;
+
+      dispatch({ type: types.FETCH_PROFILE_USER, payload: data });
+    }
+  };
+}
+
 export function setUserVariable({ name, value }) {
   return {
     type: types.SET_USER_VARIABLE,

@@ -22,7 +22,7 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
     }
 
     const updateNewPassword = await Auth.updateNewPassword({
-      password: currentPassword,
+      password: newPassword,
       csrf: csrf
     });
 
