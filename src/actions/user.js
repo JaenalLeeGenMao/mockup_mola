@@ -27,7 +27,6 @@ export const updateProfile = params => {
     const { token } = getState().user;
     const { csrf } = getState().runtime;
 
-    dispatch(request());
     const update = await Auth.updateProfile({
       name: params.username,
       csrf: csrf,
