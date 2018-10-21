@@ -1,4 +1,4 @@
-import { post, patch } from 'axios';
+import { post, patch, get } from 'axios';
 import { AUTH_BASE_ENDPOINT } from './endpoints';
 
 const createNewUser = ({ email = '', password = '', csrf = '' }) => {
@@ -183,6 +183,32 @@ const verifyPasswordToken = ({ email = '', token = '', csrf = '', password = '' 
     });
 };
 
+const verifyPassword = ({ token = '', csrf = '', password = '' }) => {
+  const body = { token, password };
+  return post(`${AUTH_BASE_ENDPOINT}/v1/password/token`, body, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
 const updateNewPassword = ({ password = '', csrf = '' }) => {
   const body = { password };
   return patch(`${AUTH_BASE_ENDPOINT}/v1/password`, body, {
@@ -196,6 +222,31 @@ const updateNewPassword = ({ password = '', csrf = '' }) => {
           status: 'success'
         },
         data: response
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error
+        },
+        data: {}
+      };
+    });
+};
+
+const featchProfile = ({ csrf = '' }) => {
+  return get(`${AUTH_BASE_ENDPOINT}/v1/profile`, {
+    headers: {
+      'x-csrf-token': csrf
+    }
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: response.data.data
       };
     })
     .catch(error => {
@@ -250,5 +301,7 @@ export default {
   requestLogout,
   emailForgotPassword,
   verifyPasswordToken,
-  updateNewPassword
+  updateNewPassword,
+  verifyPassword,
+  featchProfile
 };

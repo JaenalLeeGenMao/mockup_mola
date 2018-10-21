@@ -12,7 +12,7 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
       return null;
     }
 
-    const checkCurrentPassword = await Auth.verifyUserToken({
+    const checkCurrentPassword = await Auth.verifyPassword({
       password: currentPassword,
       csrf: csrf,
       token: token
