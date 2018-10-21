@@ -16,8 +16,8 @@ class Profile extends React.Component {
     this.state = {
       username: '',
       email: '',
-      birthdate: '',
-      gender: '',
+      birthdate: '2018-10-10',
+      gender: 'm',
       phoneNumber: '',
       photo: '',
       location: '',
@@ -76,7 +76,7 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchProfile();
+    this.props.handleFetchProfile();
 
     const props = this.props;
     const payload = Object.assign(this.state, props);
