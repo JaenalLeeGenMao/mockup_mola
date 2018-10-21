@@ -82,8 +82,12 @@ class Profile extends React.Component {
       ...payload
     });
 
-    const test = await Auth.featchProfile({ csrf: this.props.csrf });
-    console.log('test only', test);
+    const profile = await Auth.featchProfile({ csrf: this.props.csrf });
+    this.setState({
+      username: profile.data.name,
+      email: profile.data.email
+    });
+    console.log('test only', profile);
   }
 
   updateProfile(e) {

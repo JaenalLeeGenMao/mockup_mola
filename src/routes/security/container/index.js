@@ -22,6 +22,7 @@ class Profile extends React.Component {
 
   handleSubmit = e => {
     this.props.handleUpdatePassword(this.state);
+    console.log('toaster log', this.props.toaster);
   };
 
   onChangeInput = e => {
@@ -94,6 +95,11 @@ class Profile extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    toaster: state.toastr.toastrs
+  };
+};
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params))
@@ -101,4 +107,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 const Default = withStyles(s)(Profile);
-export default connect(null, mapDispatchToProps)(Default);
+export default connect(mapStateToProps, mapDispatchToProps)(Default);
