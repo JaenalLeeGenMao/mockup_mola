@@ -40,7 +40,7 @@ class Tracker {
   };
 
   static getOrCreateToken = async () => {
-    // let token = window.Cookies.get(cookieName);
+    // try to get pubsub token from cookie first
     let token = _get(document, 'cookie')
       .trim()
       .split(';')
@@ -48,12 +48,10 @@ class Tracker {
         return item.indexOf(`${cookieName}=`) >= 0;
       });
     if (token.length > 0) {
+      // if theres token return it
       token = token[0].split('=')[1];
     } else {
-      token = null;
-    }
-
-    if (!token) {
+      // if there's no token request a new token
       token = await axios
         .post(TOKEN_ENDPOINT)
         .then(response => response.data)

@@ -210,9 +210,13 @@ const track = async store => {
     //   payload.data.referrer = referrer;
     // }
 
+    // Check if the pathname contains the word "search" === current page is the search page
+    const inSearchPage = ['search'].includes(currentLocation.pathname);
+
+    // get the token
     const token = await tracker.getOrCreateToken();
-    // Post to ds-feeder if there's token
-    if (token) tracker.sendPubSub(payload, token);
+    // Post to ds-feeder if there's token && not in search page
+    if (token && !inSearchPage) tracker.sendPubSub(payload, token);
 
     // HOTFIX need to find a way to get refferer in react
     currentLocation = location;
