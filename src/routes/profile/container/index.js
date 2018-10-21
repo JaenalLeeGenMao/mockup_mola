@@ -1,15 +1,15 @@
 import React from 'react';
 import s from './index.css';
-import * as filestack from 'filestack-js';
+import * as filestack from 'filstack-js';
+import dateFormat from 'dateformat';
 
 const client = filestack.init('AXrDPoUaxQrinUeOmumBnz');
 import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import { updateProfile } from '../../../actions/user';
+import { updateProfile, fetchProfile } from '../../../actions/user';
 import { connect } from 'react-redux';
 
-import Auth from '@api/auth';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -75,19 +75,14 @@ class Profile extends React.Component {
     });
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.props.fetchProfile();
+
     const props = this.props;
     const payload = Object.assign(this.state, props);
     this.setState({
       ...payload
     });
-
-    const profile = await Auth.featchProfile({ csrf: this.props.csrf });
-    this.setState({
-      username: profile.data.name,
-      email: profile.data.email
-    });
-    console.log('test only', profile);
   }
 
   updateProfile(e) {
@@ -109,6 +104,9 @@ class Profile extends React.Component {
       photo,
       disabledEdit
     } = this.state;
+    let { birthdate } = this.state;
+    birthdate = dateFormat(new Date(birthdate), 'dd/mm/yyyy');
+
     const menus = [
       {
         title: 'PROFILE',
@@ -123,6 +121,8 @@ class Profile extends React.Component {
         href: '/accounts/setting'
       }
     ];
+
+    const genderArray = [{ value: 'm', label: 'Male' }, { value: 'f', label: 'Female' }];
 
     return (
       <div>
@@ -192,14 +192,14 @@ class Profile extends React.Component {
                     type="text"
                     onChange={this.onChangeInput}
                     label="Gender"
-                    value={gender.replace(/^\w/, c => c.toUpperCase())}
+                    value={genderArray.find(x => x.value === gender).label}
                     disabled={disabledEdit}
                   />
                 ) : (
                   <UiRadio
                     id="gender"
                     label="Gender"
-                    options={['male', 'female']}
+                    options={genderArray}
                     onChange={this.onChangeRadio}
                     checked={gender}
                     rootStyle={{ marginBottom: '65px' }}
@@ -264,7 +264,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleUpdateProfile: params => dispatch(updateProfile(params))
+    handleUpdateProfile: params => dispatch(updateProfile(params)),
+    handleFetchProfile: () => dispatch(fetchProfile())
   };
 };
 

@@ -235,7 +235,7 @@ const updateNewPassword = ({ password = '', csrf = '' }) => {
     });
 };
 
-const featchProfile = ({ csrf = '' }) => {
+const fetchProfile = ({ csrf = '' }) => {
   return get(`${AUTH_BASE_ENDPOINT}/v1/profile`, {
     headers: {
       'x-csrf-token': csrf
@@ -303,6 +303,6 @@ export default {
   verifyPasswordToken,
   updateNewPassword,
   verifyPassword,
-  featchProfile,
+  fetchProfile,
   updateProfile
 };
