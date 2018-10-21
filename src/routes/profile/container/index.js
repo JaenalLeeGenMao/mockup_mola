@@ -94,16 +94,7 @@ class Profile extends React.Component {
 
   render() {
     const { isMobile } = this.props;
-    const {
-      username,
-      email,
-      birthdate,
-      gender,
-      phoneNumber,
-      location,
-      photo,
-      disabledEdit
-    } = this.state;
+    const { username, email, gender, phoneNumber, location, photo, disabledEdit } = this.state;
     let { birthdate } = this.state;
     birthdate = dateFormat(new Date(birthdate), 'dd/mm/yyyy');
 
