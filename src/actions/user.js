@@ -40,7 +40,8 @@ export const updateProfile = params => {
       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
       location: params.location,
-      token: token
+      token: token,
+      phone: params.phoneNumber
     });
 
     if (update.meta.status !== 'success') {

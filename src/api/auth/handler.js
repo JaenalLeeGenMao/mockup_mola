@@ -266,9 +266,10 @@ const updateProfile = ({
   birthdate = '',
   gender = '',
   location = '',
-  token = ''
+  token = '',
+  phone = ''
 }) => {
-  const body = { name, birthdate, gender, location, token };
+  const body = { name, birthdate, gender, location, token, phone };
   return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
     headers: {
       'x-csrf-token': csrf
