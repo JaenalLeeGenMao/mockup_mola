@@ -266,7 +266,7 @@ const updateProfile = ({
   birthdate = '',
   gender = '',
   location = '',
-  token
+  token = ''
 }) => {
   const body = { name, birthdate, gender, location, token };
   return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
@@ -303,5 +303,6 @@ export default {
   verifyPasswordToken,
   updateNewPassword,
   verifyPassword,
-  featchProfile
+  featchProfile,
+  updateProfile
 };

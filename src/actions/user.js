@@ -29,37 +29,22 @@ export const updateProfile = params => {
 
     dispatch(request());
     const update = await Auth.updateProfile({
+      name: params.username,
       csrf: csrf,
-      name: '',
-      csrf: '',
-      birthdate: '',
-      gender: '',
-      location: '',
-      token: token,
-      csrf: csrf
+      birthdate: params.birthdate,
+      gender: params.gender,
+      location: params.location,
+      token: token
     });
 
     if (update.meta.status !== 'success') {
-      const msg = 'Update profile is failed';
-      toastr.warning('Notification', msg);
-
-      dispatch(failure(msg));
+      toastr.warning('Notification', 'Update profile is failed');
       return null;
     }
 
-    dispatch(success(update.meta.data));
+    toastr.success('Notification', 'Update profile is success');
+    return null;
   };
-
-  function request() {
-    return { type: types.UPDATE_PROFILE_REQUEST };
-  }
-  function success(payload) {
-    toastr.success('Notification', 'Profile success to updated');
-    return { type: types.UPDATE_PROFILE_SUCCESS, payload: payload };
-  }
-  function failure(error) {
-    return { type: types.UPDATE_PROFILE_FAILURE };
-  }
 };
 
 export function setUserVariable({ name, value }) {
