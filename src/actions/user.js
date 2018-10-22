@@ -65,7 +65,10 @@ export function fetchProfile() {
       data.phoneNumber = data.phone;
 
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data });
+      return data;
     }
+
+    return false;
   };
 }
 
