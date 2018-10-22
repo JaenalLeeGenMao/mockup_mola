@@ -76,14 +76,14 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    this.props.handleFetchProfile();
-  }
-
-  componentDidUpdate() {
-    const props = this.props;
-    const payload = Object.assign(this.state, props);
-    this.setState({
-      ...payload
+    const profile = this.props.handleFetchProfile();
+    profile.then(data => {
+      if (data) {
+        const payload = Object.assign(this.state, data);
+        this.setState({
+          ...payload
+        });
+      }
     });
   }
 
