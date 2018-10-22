@@ -19,7 +19,8 @@ class Profile extends React.Component {
       birthdate: '2018-10-10',
       gender: 'm',
       phoneNumber: '',
-      photo: '',
+      photo:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
       location: '',
       disabledEdit: true
     };
