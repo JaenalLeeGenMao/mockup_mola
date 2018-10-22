@@ -76,6 +76,10 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
+    this.props.handleFetchProfile();
+  }
+
+  componentDidUpdate() {
     const props = this.props;
     const payload = Object.assign(this.state, props);
     this.setState({
@@ -113,7 +117,6 @@ class Profile extends React.Component {
 
     const genderArray = [{ value: 'm', label: 'Male' }, { value: 'f', label: 'Female' }];
 
-    this.props.handleFetchProfile();
     return (
       <div>
         {isMobile && <UiMobileNav menus={menus} />}
