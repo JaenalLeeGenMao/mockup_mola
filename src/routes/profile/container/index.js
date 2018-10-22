@@ -70,7 +70,7 @@ class Profile extends React.Component {
   };
 
   changeDate = date => {
-    let getDate = date.format('DD/MM/YYYY');
+    let getDate = date.format('YYYY-MM-DD');
     this.setState({
       birthdate: getDate
     });
