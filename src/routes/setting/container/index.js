@@ -1,78 +1,89 @@
 import React from 'react';
-import s from './index.css'
+import s from './index.css';
 
-import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink, UiButton } from '@components'
+import {
+  UiNavigation,
+  UiMobileNav,
+  UiSelect,
+  UiCheckbox,
+  UiRadio,
+  UiSwitch,
+  UiFooterLink,
+  UiButton
+} from '@components';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import { updateSetting } from '../../../actions/user'
+import { updateSetting } from '../../../actions/user';
 import { connect } from 'react-redux';
 
-import { toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr';
+
+import '@global/style/css/reactReduxToastr.css';
 
 class Setting extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       videoQuality: 1,
       location: 1,
       autoPlay: [],
       signOn: []
-    }
+    };
 
-    this.handleOnChange = this.handleOnChange.bind(this)
-    this.handleCheckbox = this.handleCheckbox.bind(this)
-    this.updateSetting = this.updateSetting.bind(this)
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleCheckbox = this.handleCheckbox.bind(this);
+    this.updateSetting = this.updateSetting.bind(this);
   }
 
-  handleOnChange (e) {
-    let target = e.target
+  handleOnChange(e) {
+    let target = e.target;
     this.setState({
       [target.name]: target.value
-    })
+    });
   }
 
-  handleCheckbox (e) {
-    let target = e.target
-    let collection = this.state[target.name]
-    if(collection.find(x => x == target.value)) {
-      collection = collection.filter(x => x != target.value)
-    }else{
-      collection.push(target.value)
+  handleCheckbox(e) {
+    let target = e.target;
+    let collection = this.state[target.name];
+    if (collection.find(x => x == target.value)) {
+      collection = collection.filter(x => x != target.value);
+    } else {
+      collection.push(target.value);
     }
 
     this.setState({
       [target.name]: collection
-    })
+    });
   }
 
-  handleSwitch (value) {
-    let collection = this.state.signOn
-    if(collection.find(x => x == value)) {
-      collection = collection.filter(x => x != value)
-    }else{
-      collection.push(value)
+  handleSwitch(value) {
+    let collection = this.state.signOn;
+    if (collection.find(x => x == value)) {
+      collection = collection.filter(x => x != value);
+    } else {
+      collection.push(value);
     }
 
     this.setState({
       signOn: collection
-    })
+    });
   }
 
-  componentWillMount () {
-    const props = this.props
-    const payload = Object.assign(this.state, props)
+  componentWillMount() {
+    const props = this.props;
+    const payload = Object.assign(this.state, props);
     this.setState({
       ...payload
-    })
+    });
   }
 
-  updateSetting (e) {
-    this.props.handleUpdateSetting(this.state)
+  updateSetting(e) {
+    this.props.handleUpdateSetting(this.state);
   }
 
   render() {
-    const { isMobile } = this.props
-    const { videoQuality, location, autoPlay, signOn } = this.state
+    const { isMobile } = this.props;
+    const { videoQuality, location, autoPlay, signOn } = this.state;
     const menus = [
       {
         title: 'PROFILE',
@@ -86,7 +97,7 @@ class Setting extends React.Component {
         title: 'SETTING',
         href: '/accounts/setting'
       }
-    ]
+    ];
     const footerMenus = [
       {
         title: 'PROFILE',
@@ -100,13 +111,10 @@ class Setting extends React.Component {
         title: 'SETTING',
         href: '/accounts/setting'
       }
-    ]
+    ];
     return (
       <div>
-        {
-          isMobile &&
-            <UiMobileNav menus={menus} />
-        }
+        {isMobile && <UiMobileNav menus={menus} />}
         <div className={s.root}>
           <div className={s.sideLeft}>
             <UiNavigation menus={menus} />
@@ -122,38 +130,42 @@ class Setting extends React.Component {
                   onChange: () => this.handleSwitch(1),
                   value: 1,
                   text: 'ghoniyyumaulidi@supersoccer.tv',
-                  img: 'https://projects.invisionapp.com/assets/15282308/181894875/DF77D7417690E726F26CDE4B9FD3274D83CFA0AFD82701FA13021E6B843A4731/thumbnail'
+                  img:
+                    'https://projects.invisionapp.com/assets/15282308/181894875/DF77D7417690E726F26CDE4B9FD3274D83CFA0AFD82701FA13021E6B843A4731/thumbnail'
                 },
                 {
                   onChange: () => this.handleSwitch(2),
                   value: 2,
                   text: 'ghoniyyumaulidi',
-                  img: 'https://projects.invisionapp.com/assets/15282308/181894975/BA2AC111BE9E47D252FB9C32AE34E36024145DB16BB81655B3F9B4B4B2F0D553/thumbnail'
+                  img:
+                    'https://projects.invisionapp.com/assets/15282308/181894975/BA2AC111BE9E47D252FB9C32AE34E36024145DB16BB81655B3F9B4B4B2F0D553/thumbnail'
                 },
                 {
                   onChange: () => this.handleSwitch(3),
                   value: 3,
                   text: 'Connect your Line account',
-                  img: 'https://projects.invisionapp.com/assets/15282308/181894848/1FAA68792ABF83F0443F292F1886F94532220C9B7754511D721F6E5CF168B14D/thumbnail'
+                  img:
+                    'https://projects.invisionapp.com/assets/15282308/181894848/1FAA68792ABF83F0443F292F1886F94532220C9B7754511D721F6E5CF168B14D/thumbnail'
                 }
-              ]} />
+              ]}
+            />
             <hr />
-            <UiSelect label="Language"
+            <UiSelect
+              label="Language"
               holder="Select countries"
               selected={location}
               onChange={this.handleOnChange}
-              options={
-                [
-                  {
-                    value: 1,
-                    text: 'Indonesia'
-                  },
-                  {
-                    value: 2,
-                    text: 'China'
-                  }
-                ]
-              } />
+              options={[
+                {
+                  value: 1,
+                  text: 'Indonesia'
+                },
+                {
+                  value: 2,
+                  text: 'China'
+                }
+              ]}
+            />
             <hr />
 
             <UiRadio
@@ -183,7 +195,8 @@ class Setting extends React.Component {
                 }
               ]}
               onChange={this.handleOnChange}
-              checked={videoQuality} />
+              checked={videoQuality}
+            />
 
             <hr />
 
@@ -199,7 +212,8 @@ class Setting extends React.Component {
               ]}
               onChange={this.handleCheckbox}
               selected={autoPlay}
-              rootStyle={{ marginBottom: '0px' }} />
+              rootStyle={{ marginBottom: '0px' }}
+            />
 
             <UiButton onClick={this.updateSetting} />
             <br />
@@ -207,7 +221,7 @@ class Setting extends React.Component {
             <hr />
             <UiFooterLink menus={footerMenus} />
           </div>
-          <div className={s.sideRight}></div>
+          <div className={s.sideRight} />
         </div>
       </div>
     );
@@ -215,15 +229,15 @@ class Setting extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const payload = state.user.setting
-  return payload
-}
+  const payload = state.user.setting;
+  return payload;
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleUpdateSetting: (params) => dispatch(updateSetting(params))
-  }
-}
+    handleUpdateSetting: params => dispatch(updateSetting(params))
+  };
+};
 
-const Default = withStyles(s)(Setting)
+const Default = withStyles(s)(Setting);
 export default connect(mapStateToProps, mapDispatchToProps)(Default);

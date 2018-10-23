@@ -7,6 +7,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { updatePassword } from '../../../actions/resetPassword/actions';
 import { connect } from 'react-redux';
 
+import '@global/style/css/reactReduxToastr.css';
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
