@@ -64,11 +64,11 @@ export function fetchProfile() {
       data.username = `${data.first_name || ''} ${data.last_name || ''}`.trim();
       data.phoneNumber = data.phone;
 
-      if (data.birthdate === '') {
+      if (data.birthdate == null) {
         data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd');
       }
 
-      if (data.gender === '') {
+      if (data.gender == null) {
         data.gender = 'm';
       }
 
