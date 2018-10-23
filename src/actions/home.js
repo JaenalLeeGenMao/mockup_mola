@@ -2,7 +2,14 @@
 import Mola from '@api/mola';
 import types from '../constants';
 
-export const getHomePlaylist = () => dispatch => {
+// import { getAction } from '../../../gandalf';
+// const home = getAction('home');
+
+// export default {
+//   ...home
+// };
+
+const getHomePlaylist = () => dispatch => {
   dispatch({
     type: types.GET_HOME_PLAYLIST_LOADING,
     payload: {
@@ -28,7 +35,7 @@ export const getHomePlaylist = () => dispatch => {
   });
 };
 
-export const getHomeVideo = playlist => dispatch => {
+const getHomeVideo = playlist => dispatch => {
   return Mola.getHomeVideo({ id: playlist.id }).then(result => {
     result = {
       meta: {
@@ -45,7 +52,7 @@ export const getHomeVideo = playlist => dispatch => {
   });
 };
 
-export const updateActivePlaylist = id => (dispatch, getState) => {
+const updateActivePlaylist = id => (dispatch, getState) => {
   const store = getState(),
     { home: { playlists: { meta, data: playlistsData } } } = store,
     data = playlistsData.map(playlist => {
@@ -61,4 +68,10 @@ export const updateActivePlaylist = id => (dispatch, getState) => {
       data: [...data]
     }
   });
+};
+
+export default {
+  getHomePlaylist,
+  getHomeVideo,
+  updateActivePlaylist
 };

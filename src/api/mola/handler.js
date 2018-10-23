@@ -9,7 +9,6 @@ import {
   MOVIE_STREAMING
 } from './endpoints';
 import utils from './util';
-import _get from 'lodash/get';
 
 import { endpoints } from '@source/config';
 
