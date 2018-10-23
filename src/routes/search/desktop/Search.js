@@ -7,7 +7,7 @@ import _debounce from 'lodash.debounce';
 import Header from '@components/Header';
 import LazyLoad from '@components/common/Lazyload';
 
-import * as searchActions from '@actions/search';
+import searchActions from '@actions/search';
 import RecentSearch from './RecentSearch/RecentSearch';
 import RecentSearchLoading from './RecentSearch/RecentSearchLoading';
 import Cast from './Cast/Cast';

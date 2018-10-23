@@ -12,6 +12,9 @@ import { IoIosArrowRoundBack } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import LazyLoad from '@components/common/Lazyload';
+// import { getComponent } from '../../../../gandalf';
+// const LazyLoad = getComponent('LazyLoad')
+
 import history from '../../history';
 import logoBlue from '@global/style/icons/mola_blue.svg';
 import logoGrey from '@global/style/icons/mola_grey.svg';

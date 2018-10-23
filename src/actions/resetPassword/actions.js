@@ -11,7 +11,7 @@ export const updatePassword = ({ currentPassword, newPassword, confirmNewPasswor
       return false;
     }
 
-    const checkCurrentPassword = await Auth.verifyPassword({
+    const checkCurrentPassword = await Auth.verifyPasswordToken({
       password: currentPassword,
       csrf: csrf
     });

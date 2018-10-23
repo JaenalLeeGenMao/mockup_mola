@@ -19,7 +19,8 @@ class Profile extends React.Component {
       birthdate: '2018-10-10',
       gender: 'm',
       phoneNumber: '',
-      photo: '',
+      photo:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
       location: '',
       disabledEdit: true
     };
@@ -69,17 +70,21 @@ class Profile extends React.Component {
   };
 
   changeDate = date => {
-    let getDate = date.format('DD/MM/YYYY');
+    let getDate = date.format('YYYY-MM-DD');
     this.setState({
       birthdate: getDate
     });
   };
 
   componentDidMount() {
-    const props = this.props;
-    const payload = Object.assign(this.state, props);
-    this.setState({
-      ...payload
+    const profile = this.props.handleFetchProfile();
+    profile.then(data => {
+      if (data) {
+        const payload = Object.assign(this.state, data);
+        this.setState({
+          ...payload
+        });
+      }
     });
   }
 
@@ -113,7 +118,6 @@ class Profile extends React.Component {
 
     const genderArray = [{ value: 'm', label: 'Male' }, { value: 'f', label: 'Female' }];
 
-    this.props.handleFetchProfile();
     return (
       <div>
         {isMobile && <UiMobileNav menus={menus} />}

@@ -16,7 +16,7 @@ import {
 import $ from 'jquery';
 
 import { SETTINGS } from '../const';
-import * as homeActions from '@actions/home';
+import homeActions from '@actions/home';
 
 import { swipeGestureListener, getErrorCode } from '@routes/home/util';
 
