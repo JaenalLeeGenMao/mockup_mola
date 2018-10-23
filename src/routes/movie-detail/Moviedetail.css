@@ -1,3 +1,7 @@
+.featured_container {
+  position: relative;
+}
+
 .casting_photo_container {
   text-align: center;
   overflow: hidden;
@@ -58,6 +62,14 @@
 
 .trailerImage {
   margin: 0 10px;
+}
+
+.titleImage {
+  position: absolute;
+  top: -160px;
+  left: 35px;
+  max-width: 305px;
+  width: auto;
 }
 
 .yearWrapper {
