@@ -29,7 +29,9 @@ class Forgot extends React.Component {
 
     this.state = {
       email: '',
-      token: ''
+      token: '',
+      isError: false,
+      errMsg: ''
     };
 
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -49,9 +51,7 @@ class Forgot extends React.Component {
 
   handleForgotPassword = async () => {
     const { email } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
 
     const result = await Auth.emailForgotPassword({
       email,
@@ -61,14 +61,17 @@ class Forgot extends React.Component {
     if (result.meta.status === 'success') {
       $(`.${s.flip}`).toggleClass(`${[s.flip__container]}`);
       console.info(`Please check your email Token's on ${email}`);
+    } else {
+      this.setState({
+        isError: true,
+        errMsg: result.meta.error.response.data.error_description
+      });
     }
   };
 
   handleVerificationToken = async () => {
     const { email, token } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
 
     const result = await Auth.verifyPasswordToken({
       email,
@@ -81,7 +84,7 @@ class Forgot extends React.Component {
   };
 
   render() {
-    const { email, token } = this.state;
+    const { email, token, isError, errMsg } = this.state;
     return (
       <Fragment>
         <div className={s.wrapper}>
@@ -91,6 +94,7 @@ class Forgot extends React.Component {
                 <div className={s.container}>
                   <p className={s.labelHeader}>Forgot password ?</p>
                   <p>Please enter your email below:</p>
+                  <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                   <div>
                     <Form
                       className={s.formMobile}
@@ -152,10 +156,4 @@ const mapDispatchToProps = dispatch => ({
   onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Forgot);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Forgot);
