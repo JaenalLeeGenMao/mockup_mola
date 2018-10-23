@@ -245,18 +245,18 @@ class Moviedetail extends React.Component {
     };
 
     //get moviedetaildata from redux stored in props
-    const {
-      movieDetail: { data: movieDetailData }
-    } = this.props;
+    const { movieDetail: { data: movieDetailData } } = this.props;
 
-    // cover banner
-    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images : null;
+    const bannerImage =
+      movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop : null;
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
-
     const playCopy = 'Play movie';
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
+    const title = movieDetailData.length > 0 ? movieDetailData[0].title : null;
+    const titleImage =
+      movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
     const year = movieDetailData.length > 0 ? movieDetailData[0].year : null;
 
     const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
@@ -309,11 +309,19 @@ class Moviedetail extends React.Component {
     return (
       <Fragment>
         <Slickcss />
-        <Logo isDark={movieDetailData.isDark} libraryOff {...this.props} />
+        <Logo
+          isDark={movieDetailData.isDark ? movieDetailData.isDark : 1}
+          libraryOff
+          {...this.props}
+        />
         <Layout>
           {!isLoading && (
             <Banner
-              bannerUrl={bannerImage.large}
+              bannerUrl={
+                bannerImage.landscape
+                  ? bannerImage.landscape
+                  : 'https://dummyimage.com/1920x634/000/fff'
+              }
               link={link}
               playBtn={Playbtn}
               playCopy={playCopy}
@@ -323,6 +331,19 @@ class Moviedetail extends React.Component {
 
           <Frame>
             {!isLoading &&
+              titleImage && (
+                <img
+                  className={s.titleImage}
+                  src={
+                    titleImage.landscape
+                      ? titleImage.landscape
+                      : 'https://dummyimage.com/453x170/fff/000'
+                  }
+                  alt={title}
+                />
+              )}
+
+            {!isLoading &&
               year && (
                 <div className={s.yearWrapper}>
                   <div className={s.yearInner}>
@@ -331,6 +352,7 @@ class Moviedetail extends React.Component {
                   </div>
                 </div>
               )}
+
             {!isLoading &&
               synopsisContent && (
                 <Synopsis
@@ -339,10 +361,12 @@ class Moviedetail extends React.Component {
                   synopsisLabel={synopsisLabel}
                 />
               )}
+
             {isLoading && <SynopsisLoading synopsisLabel={synopsisLabel} />}
             {isLoading && (
               <TestimoniLoading trailerTitle={'MOVIE TRAILER'} trailerText={trailerIsShow} />
             )}
+
             {!isLoading &&
               testimoniDt &&
               testimoniDt.text && (
@@ -355,6 +379,7 @@ class Moviedetail extends React.Component {
                 />
               )}
           </Frame>
+
           <Secondframe copy={castingCopy}>
             {!isLoading && (
               <Casting>
@@ -457,10 +482,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Moviedetail);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Moviedetail);
