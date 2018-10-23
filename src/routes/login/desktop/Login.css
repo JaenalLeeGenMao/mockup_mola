@@ -39,7 +39,7 @@
   z-index: 1;
 }
 
-.container p {
+.container > p {
   font-size: 1.2rem;
   letter-spacing: 0.117rem;
   color: #6f6f6f;
@@ -150,7 +150,7 @@
 .labelSignup {
   margin-top: 30px;
   color: #fff !important;
-  font-size: 1.4rem;
+  font-size: 1.4rem !important;
   letter-spacing: 0.136rem;
   font-weight: 500;
   opacity: 100%;
