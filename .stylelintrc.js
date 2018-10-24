@@ -1,54 +1,56 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+// stylelint configuration
+// https://stylelint.io/user-guide/configuration/
 module.exports = {
-  parser: 'babel-eslint',
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module'
-  },
-  plugins: ['react'],
-  extends: ['prettier', 'plugin:react/recommended'],
+  // The standard config based on a handful of CSS style guides
+  // https://github.com/stylelint/stylelint-config-standard
+  extends: 'stylelint-config-standard',
+
+  plugins: [
+    // stylelint plugin to sort CSS rules content with specified order
+    // https://github.com/hudochenkov/stylelint-order
+    'stylelint-order'
+  ],
+
   rules: {
-    indent: ['error', 4],
-    quotes: ['warn', 'single', 'avoid-escape'],
-    commadangle: 0,
-    'react/jsx-uses-vars': 1,
-    'react/react-in-jsx-scope': 1,
-    'react/display-name': 1,
-    'react/displayname': [true, { ignoreTranspilerName: true }],
-    'react/prop-types': 0,
-    'no-unused-vars': 'warn',
-    // 'no-unexpected-multiline': 'warn',
-    'array-bracket-spacing': ['error', 'never'],
-
-    // Enforce using camelCase
-    camelcase: ['error', { properties: 'always' }],
-
-    // Shouldn't use console.*  use a proper logger instead, e.g.
-    // https://www.npmjs.com/package/winston
-    'no-console': ['warn'],
-    'no-debugger': ['warn'],
-
-    // Indent at 4 spaces
-    indent: ['error', 2],
-
-    // No trailing spaces in code
-    'no-trailing-spaces': ['error'],
-    'array-bracket-spacing': ['error', 'never'],
-    'object-curly-spacing': ['error', 'always'],
-    'max-len': [
-      'error',
+    'property-no-unknown': [
+      true,
       {
-        code: 200,
-        ignoreUrls: true,
-        ignoreComments: false,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true
+        ignoreProperties: [
+          // CSS Modules composition
+          // https://github.com/css-modules/css-modules#composition
+          'composes'
+        ]
       }
-    ]
-  },
-  settings: {
-    react: {
-      pragma: 'React',
-      version: '16.2.0'
-    }
+    ],
+
+    'selector-pseudo-class-no-unknown': [
+      true,
+      {
+        ignorePseudoClasses: [
+          // CSS Modules :global scope
+          // https://github.com/css-modules/css-modules#exceptions
+          'global',
+          'local'
+        ]
+      }
+    ],
+
+    // Opinionated rule, you can disable it if you want
+    'string-quotes': 'single',
+
+    // https://github.com/hudochenkov/stylelint-order/blob/master/rules/order/README.md
+    'order/order': ['custom-properties', 'dollar-variables', 'declarations', 'at-rules', 'rules'],
+
+    // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md
+    'order/properties-order': []
   }
 };

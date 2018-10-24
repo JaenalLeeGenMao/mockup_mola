@@ -19,8 +19,7 @@ const fakeData = {
   birthdate: '2018-09-29',
   gender: 'm',
   phoneNumber: '0853-1501-5663',
-  photo:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
+  photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
   location: 'Indonesia',
   setting: {
     videoQuality: 1,

@@ -7,17 +7,11 @@ import search from './search';
 import movieDetail from './movie-detail';
 import movieLibrary from './movie-library';
 import movieStream from './movie-stream';
-// import { getReducer } from '../../../gandalf';
-// const user = getReducer('user').default;
-// const runtime = getReducer('runtime').default;
-// const home = getReducer('home').default;
-// const history = getReducer('history').default;
-// const search = getReducer('search').default;
-// const movieDetail = getReducer('movieDetail').default;
-// const movieLibrary = getReducer('movieLibrary').default;
-// const movieStream = getReducer('movieStream').default;
+import { reducer as toastr } from 'react-redux-toastr';
 
-import { reducer as toastrReducer } from 'react-redux-toastr';
+// import { getReducer } from '../../../gandalf';
+// import { getReducer } from 'gandalf';
+// const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
 
 export default combineReducers({
   user,
@@ -27,6 +21,6 @@ export default combineReducers({
   search,
   movieLibrary,
   movieDetail,
-  toastr: toastrReducer,
+  toastr,
   movieStream
 });

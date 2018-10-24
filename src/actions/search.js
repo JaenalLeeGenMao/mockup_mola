@@ -4,11 +4,11 @@ import searchDb from '../database/searchDb';
 import Dexie from 'dexie';
 
 // import { getAction } from '../../../gandalf';
-// const search = getAction('search');
+// const { search: { getSearchResult } } = getAction();
 
 // export default {
-//   ...search
-// }
+//   getSearchResult
+// };
 
 const getSearchResult = searchText => dispatch => {
   dispatch({
@@ -31,54 +31,48 @@ const getSearchResult = searchText => dispatch => {
   Dexie.exists('mola-search-cache-database').then(function(exists) {
     if (exists) {
       searchDb
-        .transaction(
-          'r',
-          searchDb.moviesResult,
-          searchDb.castsResult,
-          searchDb.searchKeyword,
-          async () => {
-            //check on cache IndexedDB if keyword and search result exists
-            await searchDb.searchKeyword
-              .where('keyword')
-              .equalsIgnoreCase(searchText)
-              .each(function(res) {
-                isExist = true; //if exist
-                if (res.movieId) {
-                  const movieIdArr = res.movieId.split(',');
-                  movieIdArr.map(id => {
-                    searchDb.moviesResult
-                      .where('movieId')
-                      .equals(id)
-                      .each(function(res) {
-                        cacheResult.data.push({
-                          id: res.movieId,
-                          type: res.type,
-                          title: res.title,
-                          year: res.year,
-                          coverUrl: res.coverUrl
-                        });
+        .transaction('r', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, async () => {
+          //check on cache IndexedDB if keyword and search result exists
+          await searchDb.searchKeyword
+            .where('keyword')
+            .equalsIgnoreCase(searchText)
+            .each(function(res) {
+              isExist = true; //if exist
+              if (res.movieId) {
+                const movieIdArr = res.movieId.split(',');
+                movieIdArr.map(id => {
+                  searchDb.moviesResult
+                    .where('movieId')
+                    .equals(id)
+                    .each(function(res) {
+                      cacheResult.data.push({
+                        id: res.movieId,
+                        type: res.type,
+                        title: res.title,
+                        year: res.year,
+                        coverUrl: res.coverUrl
                       });
-                  });
-                }
-                if (res.castId) {
-                  const castIdArr = res.castId.split(',');
-                  castIdArr.map(id => {
-                    searchDb.castsResult
-                      .where('castId')
-                      .equals(id)
-                      .each(function(res) {
-                        cacheResult.data.push({
-                          id: res.castId,
-                          type: res.type,
-                          name: res.name,
-                          imageUrl: res.imageUrl
-                        });
+                    });
+                });
+              }
+              if (res.castId) {
+                const castIdArr = res.castId.split(',');
+                castIdArr.map(id => {
+                  searchDb.castsResult
+                    .where('castId')
+                    .equals(id)
+                    .each(function(res) {
+                      cacheResult.data.push({
+                        id: res.castId,
+                        type: res.type,
+                        name: res.name,
+                        imageUrl: res.imageUrl
                       });
-                  });
-                }
-              });
-          }
-        )
+                    });
+                });
+              }
+            });
+        })
         .then(() => {
           if (!isExist) {
             //if keyword not exist in cache indexed DB then get from api and store in cache
@@ -96,82 +90,70 @@ const getSearchResult = searchText => dispatch => {
 
                 var curDate = new Date();
 
-                var createdDate =
-                  curDate.getFullYear() +
-                  '-' +
-                  ('0' + (curDate.getMonth() + 1)).slice(-2) +
-                  '-' +
-                  ('0' + curDate.getDate()).slice(-2) +
-                  ' 00:00:00';
+                var createdDate = curDate.getFullYear() + '-' + ('0' + (curDate.getMonth() + 1)).slice(-2) + '-' + ('0' + curDate.getDate()).slice(-2) + ' 00:00:00';
 
                 var movieIdAdded = [];
                 var castIdAdded = [];
-                searchDb.transaction(
-                  'rw',
-                  searchDb.moviesResult,
-                  searchDb.castsResult,
-                  searchDb.searchKeyword,
-                  async () => {
-                    //loop result from api to store to cache db
-                    for (const dt of result.data) {
-                      var isMovieIdExist = false;
-                      var isCastIdExist = false;
+                searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, async () => {
+                  //loop result from api to store to cache db
+                  for (const dt of result.data) {
+                    var isMovieIdExist = false;
+                    var isCastIdExist = false;
 
-                      //check type to store to related table
-                      if (dt.type == 'videos') {
-                        //check if movieid already exist in cache db so prevent duplication
-                        await searchDb.moviesResult
-                          .where('movieId')
-                          .equals(dt.id)
-                          .count(function(cnt) {
-                            isMovieIdExist = cnt > 0;
-                          })
-                          .then(() => {
-                            if (!isMovieIdExist) {
-                              //if not exist then store
-                              searchDb.moviesResult.add({
-                                movieId: dt.id,
-                                type: dt.type,
-                                title: dt.title,
-                                year: dt.year,
-                                coverUrl: dt.coverUrl,
-                                createdDate: createdDate
-                              });
-                            }
-                          });
-                        movieIdAdded.push(dt.id);
-                      } else {
-                        //check if castId already exist in cache db so prevent duplication
-                        await searchDb.castsResult
-                          .where('castId')
-                          .equals(dt.id)
-                          .count(function(cnt) {
-                            isCastIdExist = cnt > 0;
-                          })
-                          .then(() => {
-                            if (!isCastIdExist) {
-                              //if not exist then store
-                              searchDb.castsResult.add({
-                                type: dt.type,
-                                castId: dt.id,
-                                name: dt.name,
-                                imageUrl: dt.imageUrl,
-                                createdDate: createdDate
-                              });
-                            }
-                          });
-                        castIdAdded.push(dt.id);
-                      }
+                    //check type to store to related table
+                    if (dt.type == 'videos') {
+                      //check if movieid already exist in cache db so prevent duplication
+                      await searchDb.moviesResult
+                        .where('movieId')
+                        .equals(dt.id)
+                        .count(function(cnt) {
+                          isMovieIdExist = cnt > 0;
+                        })
+                        .then(() => {
+                          if (!isMovieIdExist) {
+                            //if not exist then store
+                            searchDb.moviesResult.add({
+                              movieId: dt.id,
+                              type: dt.type,
+                              title: dt.title,
+                              year: dt.year,
+                              coverUrl: dt.coverUrl,
+                              createdDate: createdDate
+                            });
+                          }
+                        });
+                      movieIdAdded.push(dt.id);
+                    } else {
+                      //check if castId already exist in cache db so prevent duplication
+                      await searchDb.castsResult
+                        .where('castId')
+                        .equals(dt.id)
+                        .count(function(cnt) {
+                          isCastIdExist = cnt > 0;
+                        })
+                        .then(() => {
+                          if (!isCastIdExist) {
+                            //if not exist then store
+                            searchDb.castsResult.add({
+                              type: dt.type,
+                              castId: dt.id,
+                              name: dt.name,
+                              imageUrl: dt.imageUrl,
+                              createdDate: createdDate
+                            });
+                          }
+                        });
+                      castIdAdded.push(dt.id);
                     }
-
-                    searchDb.searchKeyword.add({
-                      keyword: searchText,
-                      movieId: movieIdAdded.join(','),
-                      castId: castIdAdded.join(','),
-                      createdDate: createdDate
-                    });
                   }
-                );
+
+                  searchDb.searchKeyword.add({
+                    keyword: searchText,
+                    movieId: movieIdAdded.join(','),
+                    castId: castIdAdded.join(','),
+                    createdDate: createdDate
+                  });
+                });
               }
             });
           } else {

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { toastr } from 'react-redux-toastr';
 
 import { connect } from 'react-redux';
 
