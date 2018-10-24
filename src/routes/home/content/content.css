@@ -105,7 +105,7 @@
       'nav title empty'
       'nav desc  empty';
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 2fr 3fr 5fr;
+    grid-template-columns: 2fr 5fr 7fr;
   }
 
   .content__grid_nav {
