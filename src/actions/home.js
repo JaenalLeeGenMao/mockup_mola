@@ -3,10 +3,10 @@ import Mola from '@api/mola';
 import types from '../constants';
 
 // import { getAction } from '../../../gandalf';
-// const home = getAction('home');
+// const { home: { getHomePlaylist } } = getAction();
 
 // export default {
-//   ...home
+//   getHomePlaylist
 // };
 
 const getHomePlaylist = () => dispatch => {

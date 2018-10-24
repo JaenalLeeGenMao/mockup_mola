@@ -6,7 +6,7 @@ import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components';
 import '@global/style/css/reactReduxToastr.css';
 import { connect } from 'react-redux';
 
-import { updatePassword } from '../../../actions/resetPassword/actions';
+import { updatePassword } from '../../../actions/resetPassword';
 import s from './index.css';
 
 class Profile extends React.Component {

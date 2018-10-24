@@ -7,17 +7,7 @@ const normalizeHomePlaylist = response => {
           const {
             id,
             type,
-            attributes: {
-              title,
-              description,
-              shortDescription,
-              sortOrder,
-              iconUrl,
-              isDark,
-              images: {
-                cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor }
-              }
-            }
+            attributes: { title, description, shortDescription, sortOrder, iconUrl, isDark, images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } } }
           } = playlist;
           return {
             id,
@@ -26,7 +16,7 @@ const normalizeHomePlaylist = response => {
             description,
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
-            coverTitle: coverTitle,
+            // coverTitle: coverTitle,
             background: coverBG,
             backgroundColor: coverBGColor || '#000622',
             isDark: isDark || 0,
@@ -49,16 +39,7 @@ const normalizeHomeVideo = response => {
           const {
             id,
             type,
-            attributes: {
-              title,
-              description,
-              shortDescription,
-              displayOrder,
-              isDark,
-              images: {
-                cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor }
-              }
-            }
+            attributes: { title, description, shortDescription, displayOrder, isDark, images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } } }
           } = video;
           return {
             id,
@@ -66,7 +47,7 @@ const normalizeHomeVideo = response => {
             displayOrder,
             description,
             shortDescription: shortDescription || '',
-            coverTitle: coverTitle,
+            // coverTitle: coverTitle,
             background: coverBG,
             backgroundColor: coverBGColor || '#000622',
             isDark: isDark || 0,
@@ -183,20 +164,7 @@ const normalizeVideoDetail = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
     return data.map(result => {
-      const {
-        id,
-        attributes: {
-          title,
-          playlists,
-          images,
-          quotes,
-          trailers,
-          shortDescription,
-          people,
-          isDark,
-          year
-        }
-      } = result;
+      const { id, attributes: { title, playlists, images, quotes, trailers, shortDescription, people, isDark, year } } = result;
       return {
         id,
         title,

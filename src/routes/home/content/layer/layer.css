@@ -34,14 +34,15 @@
 }
 
 .layer__grid_desc_content h1 {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
 }
 
 .layer__grid_desc_content p,
 .layer__grid_desc_content i,
 .layer__grid_desc_content b,
+.layer__grid_desc_content strong,
 .layer__grid_desc_content span {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .layer__grid_desc_header {
@@ -53,7 +54,7 @@
 
 .layer__grid_desc_breakpoint {
   opacity: 1;
-  margin: 5%;
+  margin: 2.5% 5%;
   height: 0;
 }
 
