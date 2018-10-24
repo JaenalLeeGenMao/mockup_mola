@@ -1,24 +1,14 @@
 import React from 'react';
-import s from './index.css';
 
-import {
-  UiNavigation,
-  UiMobileNav,
-  UiSelect,
-  UiCheckbox,
-  UiRadio,
-  UiSwitch,
-  UiFooterLink,
-  UiButton
-} from '@components';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-
-import { updateSetting } from '../../../actions/user';
-import { connect } from 'react-redux';
-
 import { toastr } from 'react-redux-toastr';
 
-import '@global/style/css/reactReduxToastr.css';
+import { connect } from 'react-redux';
+
+import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink, UiButton } from '@components';
+
+import { updateSetting } from '../../../actions/user';
+import s from './index.css';
 
 class Setting extends React.Component {
   constructor(props) {
@@ -36,14 +26,14 @@ class Setting extends React.Component {
   }
 
   handleOnChange(e) {
-    let target = e.target;
+    const target = e.target;
     this.setState({
       [target.name]: target.value
     });
   }
 
   handleCheckbox(e) {
-    let target = e.target;
+    const target = e.target;
     let collection = this.state[target.name];
     if (collection.find(x => x == target.value)) {
       collection = collection.filter(x => x != target.value);
@@ -129,23 +119,20 @@ class Setting extends React.Component {
                 {
                   onChange: () => this.handleSwitch(1),
                   value: 1,
-                  text: 'ghoniyyumaulidi@supersoccer.tv',
-                  img:
-                    'https://projects.invisionapp.com/assets/15282308/181894875/DF77D7417690E726F26CDE4B9FD3274D83CFA0AFD82701FA13021E6B843A4731/thumbnail'
+                  text: 'ghoniyyumaulidi@mola.tv',
+                  img: 'https://projects.invisionapp.com/assets/15282308/181894875/DF77D7417690E726F26CDE4B9FD3274D83CFA0AFD82701FA13021E6B843A4731/thumbnail'
                 },
                 {
                   onChange: () => this.handleSwitch(2),
                   value: 2,
                   text: 'ghoniyyumaulidi',
-                  img:
-                    'https://projects.invisionapp.com/assets/15282308/181894975/BA2AC111BE9E47D252FB9C32AE34E36024145DB16BB81655B3F9B4B4B2F0D553/thumbnail'
+                  img: 'https://projects.invisionapp.com/assets/15282308/181894975/BA2AC111BE9E47D252FB9C32AE34E36024145DB16BB81655B3F9B4B4B2F0D553/thumbnail'
                 },
                 {
                   onChange: () => this.handleSwitch(3),
                   value: 3,
                   text: 'Connect your Line account',
-                  img:
-                    'https://projects.invisionapp.com/assets/15282308/181894848/1FAA68792ABF83F0443F292F1886F94532220C9B7754511D721F6E5CF168B14D/thumbnail'
+                  img: 'https://projects.invisionapp.com/assets/15282308/181894848/1FAA68792ABF83F0443F292F1886F94532220C9B7754511D721F6E5CF168B14D/thumbnail'
                 }
               ]}
             />
@@ -167,7 +154,6 @@ class Setting extends React.Component {
               ]}
             />
             <hr />
-
             <UiRadio
               uiStyle="multi"
               id="videoQuality"
@@ -197,9 +183,7 @@ class Setting extends React.Component {
               onChange={this.handleOnChange}
               checked={videoQuality}
             />
-
             <hr />
-
             <UiCheckbox
               id="autoPlay"
               label="Autoplay"
@@ -233,11 +217,9 @@ const mapStateToProps = state => {
   return payload;
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    handleUpdateSetting: params => dispatch(updateSetting(params))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  handleUpdateSetting: params => dispatch(updateSetting(params))
+});
 
 const Default = withStyles(s)(Setting);
 export default connect(mapStateToProps, mapDispatchToProps)(Default);

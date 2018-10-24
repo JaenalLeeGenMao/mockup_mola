@@ -1,13 +1,13 @@
 import React from 'react';
-import s from './index.css';
 
-import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import { updatePassword } from '../../../actions/resetPassword/actions';
+import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components';
+import '@global/style/css/reactReduxToastr.css';
 import { connect } from 'react-redux';
 
-import '@global/style/css/reactReduxToastr.css';
+import { updatePassword } from '../../../actions/resetPassword/actions';
+import s from './index.css';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -69,32 +69,11 @@ class Profile extends React.Component {
             <UiNavigation menus={menus} />
           </div>
           <div className={s.sideCenter}>
-            <UiInput
-              type="password"
-              id="currentPassword"
-              uiStyle="box"
-              onChange={this.onChangeInput}
-              label="Current Password"
-              value={currentPassword}
-            />
+            <UiInput type="password" id="currentPassword" uiStyle="box" onChange={this.onChangeInput} label="Current Password" value={currentPassword} />
 
-            <UiInput
-              type="password"
-              id="newPassword"
-              uiStyle="box"
-              onChange={this.onChangeInput}
-              label="New Password"
-              value={newPassword}
-            />
+            <UiInput type="password" id="newPassword" uiStyle="box" onChange={this.onChangeInput} label="New Password" value={newPassword} />
 
-            <UiInput
-              type="password"
-              id="confirmNewPassword"
-              uiStyle="box"
-              onChange={this.onChangeInput}
-              label="Confirm Password"
-              value={confirmNewPassword}
-            />
+            <UiInput type="password" id="confirmNewPassword" uiStyle="box" onChange={this.onChangeInput} label="Confirm Password" value={confirmNewPassword} />
 
             <UiButton type="button" text="CHANGE PASSWORD" onClick={this.handleSubmit} />
           </div>
