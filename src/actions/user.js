@@ -64,6 +64,14 @@ export function fetchProfile() {
       data.username = `${data.first_name || ''} ${data.last_name || ''}`.trim();
       data.phoneNumber = data.phone;
 
+      if (data.birthdate == null) {
+        data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd');
+      }
+
+      if (data.gender == null) {
+        data.gender = 'm';
+      }
+
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data });
       return data;
     }

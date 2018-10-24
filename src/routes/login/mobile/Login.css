@@ -8,11 +8,15 @@
  */
 @import '../../../components/variables.css';
 
+html {
+  font-size: 62.5% !important;
+}
+
 .wrapper {
   background-image: url('../../../global/style/icons/Signin.png'), linear-gradient(#0e1d3d, #000);
   background-position: left bottom, left top;
   background-repeat: no-repeat, no-repeat;
-  background-size: 36rem, cover;
+  background-size: 100%, cover;
   height: 100vh;
   overflow-y: hidden;
   position: relative;
