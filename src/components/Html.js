@@ -46,23 +46,10 @@ class Html extends React.Component {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
-          {styles.map(style => (
-            <style
-              key={style.id}
-              id={style.id}
-              dangerouslySetInnerHTML={{ __html: style.cssText }}
-            />
-          ))}
-          <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/ui.css"
-          />
+          {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
+          <link rel="stylesheet" type="text/css" href="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/ui.css" />
           <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js" />
-          <script
-            type="text/javascript"
-            src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
-          />
+          <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1" />
           <script src="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/THEOplayer.js" />
         </head>
         <body>
@@ -73,8 +60,8 @@ class Html extends React.Component {
             <script
               dangerouslySetInnerHTML={{
                 __html:
-                  'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
-                  `ga('create','${config.analytics.googleTrackingId}','auto');ga('send','pageview')`
+                  "window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;" +
+                  `ga("create","${config.analytics.googleTrackingId}","auto");ga("send","pageview")`
               }}
             />
           )}

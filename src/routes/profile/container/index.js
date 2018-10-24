@@ -1,14 +1,14 @@
 import React from 'react';
-import s from './index.css';
 import * as filestack from 'filestack-js';
 import dateFormat from 'dateformat';
-
-const client = filestack.init('AXrDPoUaxQrinUeOmumBnz');
-import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components';
+import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
+import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components';
+import s from './index.css';
 import { updateProfile, fetchProfile } from '../../../actions/user';
-import { connect } from 'react-redux';
+
+const client = filestack.init('AXrDPoUaxQrinUeOmumBnz');
 
 class Profile extends React.Component {
   constructor(props) {
@@ -19,8 +19,7 @@ class Profile extends React.Component {
       birthdate: '2018-10-10',
       gender: 'm',
       phoneNumber: '',
-      photo:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
+      photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
       location: '',
       disabledEdit: true
     };
@@ -129,94 +128,32 @@ class Profile extends React.Component {
             <div className={s.profileArea}>
               <div className={s.profilePhoto}>
                 <div style={{ position: 'relative' }}>
-                  <img
-                    src={photo}
-                    alt="profile"
-                    style={{ width: '140px', height: '140px', borderRadius: '50%' }}
-                    className={s.imgProfile}
-                  />
+                  <img src={photo} alt="profile" style={{ width: '140px', height: '140px', borderRadius: '50%' }} className={s.imgProfile} />
                   <button type="button" className={s.btnImage} onClick={this.changePhoto}>
-                    <img
-                      src="https://projects.invisionapp.com/assets/15282308/170468873/8D280095B9EADECDD8208913020DBD488157EFD460D3492C13D4EF90976362D5/thumbnail"
-                      alt="camera"
-                      width="25"
-                    />
+                    <img src="https://projects.invisionapp.com/assets/15282308/170468873/8D280095B9EADECDD8208913020DBD488157EFD460D3492C13D4EF90976362D5/thumbnail" alt="camera" width="25" />
                   </button>
                 </div>
               </div>
               <div className={s.profileInput}>
-                <UiInput
-                  id="username"
-                  onChange={this.onChangeInput}
-                  label="User Name"
-                  value={username}
-                  disabled={disabledEdit}
-                />
+                <UiInput id="username" onChange={this.onChangeInput} label="User Name" value={username} disabled={disabledEdit} />
 
-                <UiInput
-                  id="email"
-                  type="email"
-                  onChange={this.onChangeInput}
-                  label="Email"
-                  value={email}
-                  disabled={disabledEdit}
-                />
+                <UiInput id="email" type="email" onChange={this.onChangeInput} label="Email" value={email} disabled={disabledEdit} />
 
                 {disabledEdit ? (
-                  <UiInput
-                    id="birthdate"
-                    type="text"
-                    onChange={this.onChangeInput}
-                    label="Birthdate"
-                    value={birthdate}
-                    disabled={disabledEdit}
-                  />
+                  <UiInput id="birthdate" type="text" onChange={this.onChangeInput} label="Birthdate" value={birthdate} disabled={disabledEdit} />
                 ) : (
-                  <UiDtPicker
-                    id="birthdate"
-                    label="Birthdate"
-                    value={birthdate}
-                    onChange={this.changeDate}
-                  />
+                  <UiDtPicker id="birthdate" label="Birthdate" value={birthdate} onChange={this.changeDate} />
                 )}
 
                 {disabledEdit ? (
-                  <UiInput
-                    id="gender"
-                    type="text"
-                    onChange={this.onChangeInput}
-                    label="Gender"
-                    value={genderArray.find(x => x.value === gender).label}
-                    disabled={disabledEdit}
-                  />
+                  <UiInput id="gender" type="text" onChange={this.onChangeInput} label="Gender" value={genderArray.find(x => x.value === gender).label} disabled={disabledEdit} />
                 ) : (
-                  <UiRadio
-                    id="gender"
-                    label="Gender"
-                    options={genderArray}
-                    onChange={this.onChangeRadio}
-                    checked={gender}
-                    rootStyle={{ marginBottom: '65px' }}
-                  />
+                  <UiRadio id="gender" label="Gender" options={genderArray} onChange={this.onChangeRadio} checked={gender} rootStyle={{ marginBottom: '65px' }} />
                 )}
 
-                <UiInput
-                  id="phoneNumber"
-                  type="text"
-                  onChange={this.onChangeInput}
-                  label="Phone Number"
-                  value={phoneNumber}
-                  disabled={disabledEdit}
-                />
+                <UiInput id="phoneNumber" type="text" onChange={this.onChangeInput} label="Phone Number" value={phoneNumber} disabled={disabledEdit} />
 
-                <UiInput
-                  id="location"
-                  type="text"
-                  onChange={this.onChangeInput}
-                  label="Location"
-                  value={location}
-                  disabled={disabledEdit}
-                />
+                <UiInput id="location" type="text" onChange={this.onChangeInput} label="Location" value={location} disabled={disabledEdit} />
 
                 {disabledEdit ? (
                   <button type="button" className={s.button} onClick={this.toggleToEdit}>
