@@ -11,12 +11,12 @@
 // https://prettier.io/docs/en/configuration.html
 module.exports = {
   useTabs: false,
-  printWidth: 100,
+  printWidth: 200,
   tabWidth: 2,
   singleQuote: true,
   trailingComma: 'none',
   jsxBracketSameLine: false,
-  bracketSpacing: true,
-  arrowParens: 'avoid',
-  noSemi: true
+  parser: 'babylon',
+  noSemi: true,
+  rcVerbose: true
 };
