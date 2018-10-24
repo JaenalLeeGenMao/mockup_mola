@@ -8,8 +8,9 @@
  */
 
 import React, { Component } from 'react';
-import { IoIosArrowRoundBack } from 'react-icons/io';
+import { IoIosArrowRoundBack, IoIosArrowDown } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { endpoints } from '@source/config';
 
 import LazyLoad from '@components/common/Lazyload';
 // import { getComponent } from '../../../../gandalf';
@@ -27,12 +28,48 @@ import RightMenu from './right-menu';
 import styles from './Header.css';
 
 class Header extends Component {
+  state = {
+    isMenuToggled: false,
+    genre: { data: [] }
+  };
+
+  handleMenuToggleClick = () => {
+    this.setState(prevState => ({
+      isMenuToggled: !prevState.isMenuToggled
+    }));
+  };
+
   handleGoBack = () => {
     const { goBack } = history;
     if (goBack) {
       goBack();
     }
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const genre = nextProps.search.genre;
+
+    return { ...prevState, genre };
+  }
+
+  renderMenu() {
+    const genreData = this.state.genre.data;
+
+    return (
+      <div className={styles.header__menu}>
+        <ul>
+          {genreData.map(item => {
+            return (
+              <li key={`${item.id}-${item.title}`}>
+                <Link to="/">{item.title}</Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+
   render() {
     const {
       isDark = 1,
@@ -45,14 +82,14 @@ class Header extends Component {
       title = '',
       isLibraryCopy = false,
       activePlaylist,
-      stickyOff = false
+      stickyOff = false,
+      search = { genre: { data: [] } }
     } = this.props;
 
+    const { isMenuToggled } = this.state;
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
-    const typeHeader = stickyOff
-      ? styles.header__container + ' ' + styles.header__notsticky
-      : styles.header__container;
+    const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
 
     return (
       <div className={typeHeader}>
@@ -60,21 +97,9 @@ class Header extends Component {
           {!logoOff && (
             <LazyLoad>
               <Link to="/">
-                {logoDark && (
-                  <img
-                    alt="MOLA"
-                    src={isMobile ? logoLandscapeBlue : logoBlue}
-                    className={styles.header__logo}
-                  />
-                )}
+                {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-                {!logoDark && (
-                  <img
-                    alt="MOLA"
-                    src={isMobile ? logoLandscapeGrey : logoGrey}
-                    className={styles.header__logo}
-                  />
-                )}
+                {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />}
               </Link>
             </LazyLoad>
           )}
@@ -86,21 +111,33 @@ class Header extends Component {
             </LazyLoad>
           )}
         </div>
-        {/* <div className={styles.header__library_wrapper}> */}
         {!libraryOff && (
           <LazyLoad>
-            <Link
-              className={styles.header__library_link_wrapper}
-              to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`}
-              style={{ color }}
-            >
+            <Link className={styles.header__library_link_wrapper} to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`} style={{ color }}>
               <span className={styles[`header__library_logo_${color}`]} alt="library" />
             </Link>
           </LazyLoad>
         )}
-        {isLibraryCopy && <span className={styles.header__copy_library}>{title}</span>}
-        {/* </div> */}
+        {isLibraryCopy && (
+          <div className={styles.header__copy_library}>
+            <LazyLoad>
+              <div className={styles.header__logo_wrap}>
+                <Link to="/">
+                  {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
+
+                  {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />}
+                </Link>
+
+                <button className={styles.header__action_button} onClick={this.handleMenuToggleClick}>
+                  Action <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
+                </button>
+              </div>
+            </LazyLoad>
+          </div>
+        )}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} {...this.props} />}
+
+        {isLibraryCopy && isMenuToggled ? this.renderMenu() : null}
       </div>
     );
   }

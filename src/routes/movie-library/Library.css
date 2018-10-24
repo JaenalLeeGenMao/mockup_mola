@@ -7,6 +7,7 @@
 }
 
 .card_wrapper {
+  margin-top: 2rem;
   width: 100%;
   overflow: hidden;
   -webkit-column-count: 4;
