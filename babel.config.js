@@ -16,6 +16,35 @@ module.exports = {
     '@babel/preset-react'
   ],
   ignore: ['node_modules', 'build'],
+  env: {
+    production: {
+      plugins: ['emotion', { hoist: true }]
+    },
+    staging: {
+      plugins: [
+        [
+          'emotion',
+          {
+            sourceMap: true,
+            autoLabel: true,
+            labelFormat: '[filename]--[local]'
+          }
+        ]
+      ]
+    },
+    development: {
+      plugins: [
+        [
+          'emotion',
+          {
+            sourceMap: true,
+            autoLabel: true,
+            labelFormat: '[filename]--[local]'
+          }
+        ]
+      ]
+    }
+  },
   plugins: [
     // Stage 2
     ['@babel/plugin-proposal-decorators', { legacy: true }],
