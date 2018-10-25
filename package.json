@@ -19,6 +19,7 @@
     "dateformat": "3.0.3",
     "dexie": "2.0.4",
     "dotenv": "6.0.0",
+    "emotion": "9.2.12",
     "express": "4.16.3",
     "express-graphql": "0.6.12",
     "filestack-js": "1.5.1",
@@ -41,6 +42,7 @@
     "react-datepicker": "1.6.0",
     "react-device-detect": "1.5.9",
     "react-dom": "16.5.1",
+    "react-emotion": "9.2.12",
     "react-icons": "3.0.5",
     "react-lazyload": "2.3.0",
     "react-redux": "5.0.6",
@@ -193,8 +195,8 @@
     "render": "babel-node tools/run render",
     "serve": "babel-node tools/run runServer",
     "start": "babel-node tools/run start",
-    "dev": "REACT_APP_ENV=development yarn start",
-    "stag": "REACT_APP_ENV=staging yarn start",
-    "prod": "REACT_APP_ENV=production yarn start"
+    "dev": "REACT_APP_ENV=development BABEL_ENV=development yarn start",
+    "stag": "REACT_APP_ENV=staging BABEL_ENV=staging yarn start",
+    "prod": "REACT_APP_ENV=production BABEL_ENV=production yarn start"
   }
 }
