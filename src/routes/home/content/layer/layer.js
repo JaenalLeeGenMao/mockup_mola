@@ -11,20 +11,17 @@ const ContentLayer = ({ isDark, background, shortDescription = '', isMobile }) =
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
     filteredDesc = filterString(shortDescription);
   return (
-    <div
-      className={styles.layer__grid_desc_wrapper}
-      style={{ textAlign: isMobile ? 'center' : 'left' }}
-    >
+    <div className={styles.layer__grid_desc_wrapper} style={{ textAlign: isMobile ? 'center' : 'left' }}>
       <div
         className={styles.layer__grid_desc_background}
         style={{
-          background: isMobile ? '' : `url(${coverBackgroundImage}) repeat center`,
+          background: `url(${coverBackgroundImage}) repeat center`,
           boxShadow: `inset 0 0 0 20000px ${fontBackgroundColor}`,
           backgroundSize: 'cover',
-          width: isMobile ? '100vw' : '60vw',
+          width: isMobile ? '100vw' : '70vw',
           height: '100vh',
-          top: '-175%',
-          left: '-4%'
+          top: isMobile ? '-140%' : '-178%',
+          left: isMobile ? '-4%' : '-1.5%'
         }}
       />
       <div className={styles.layer__grid_desc_content}>
@@ -32,10 +29,7 @@ const ContentLayer = ({ isDark, background, shortDescription = '', isMobile }) =
           {!isMobile && <h1>STORYLINE</h1>}
           <p>{filteredDesc}</p>
         </div>
-        <div
-          className={styles.layer__grid_desc_breakpoint}
-          style={{ borderBottom: `1px solid ${fontColor}` }}
-        />
+        <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
         <div className={styles.layer__grid_desc_footer}>
           <i className={styles.layer__grid_desc_footer_quote}>{`"${filteredDesc}"`}</i>
           <strong>— Entertainment Weekly</strong>

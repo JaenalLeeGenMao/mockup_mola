@@ -27,7 +27,7 @@
 .home__arrow_next::before,
 .home__arrow_prev::before {
   font-size: 2rem;
-  line-height: 0.3;
+  line-height: 0.4;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
