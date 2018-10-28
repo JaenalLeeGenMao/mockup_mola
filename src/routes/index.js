@@ -170,8 +170,7 @@ const track = async store => {
 
     const browserName = _get(UA.getBrowser(), 'name', null);
     const browserVersion = _get(UA.getBrowser(), 'version', null);
-    const browser =
-      browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null;
+    const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null;
 
     // Initialize Payload
     const payload = {
@@ -210,8 +209,8 @@ const track = async store => {
     //   payload.data.referrer = referrer;
     // }
 
-    // Check if the pathname contains the word "search" === current page is the search page
-    const inSearchPage = ['search'].includes(currentLocation.pathname);
+    // Check if current path is in search page
+    const inSearchPage = currentLocation.pathname === '/search';
 
     // get the token
     const token = await tracker.getOrCreateToken();
