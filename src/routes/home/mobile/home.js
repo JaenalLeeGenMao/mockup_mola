@@ -5,14 +5,7 @@ import { compose } from 'redux';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import {
-  Link as RSLink,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller
-} from 'react-scroll';
+import { Link as RSLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
 import $ from 'jquery';
 
 import { SETTINGS } from '../const';
@@ -99,7 +92,7 @@ class Home extends Component {
   }
 
   handleColorChange = () => {
-    const activeSlick = $(`.active .slick-active .grid-slick`),
+    const activeSlick = $('.active .slick-active .grid-slick'),
       isDark = parseInt(activeSlick.attr('isdark'), 10);
     if (typeof isDark === 'number') {
       this.setState({ isDark });
@@ -264,50 +257,21 @@ class Home extends Component {
       isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
-    activePlaylist =
-      playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+    activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
     return (
       <div>
-        {playlistStatus !== 'error' && (
-          <Header
-            libraryOff
-            className={styles.placeholder__header}
-            isDark={isDark}
-            activePlaylist={activePlaylist}
-            isMobile
-            {...this.props}
-          />
-        )}
+        {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
         {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-        {playlistStatus === 'error' && (
-          <HomeError
-            status={playlistErrorCode}
-            message={playlistError || 'MOLA playlist is not loaded'}
-          />
-        )}
-        {videoStatus === 'error' && (
-          <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />
-        )}
+        {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
+        {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
         {playlistStatus === 'success' &&
           videoStatus === 'success' && (
             <div>
-              <HomeMobileMenu
-                isDark={isDark}
-                playlists={playlists.data}
-                onClick={this.handleScrollToIndex}
-                isMobile
-              />
+              <HomeMobileMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                <Link
-                  to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`}
-                  style={{ color }}
-                >
-                  <span
-                    className={styles[`header__library_logo_${color}`]}
-                    alt="library"
-                    style={{ width: '32px', height: '32px' }}
-                  />
+                <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`} style={{ color }}>
+                  <span className={styles[`header__library_logo_${color}`]} alt="library" />
                 </Link>
               </LazyLoad>
             </div>
@@ -319,15 +283,7 @@ class Home extends Component {
           videos.data.map(video => {
             const { id, sortOrder } = video.meta;
             return (
-              <RSLink
-                activeClass="active"
-                to={id}
-                spy
-                smooth
-                duration={500}
-                className={styles.home__slider_container}
-                key={id}
-              >
+              <RSLink activeClass="active" to={id} spy smooth duration={500} className={styles.home__slider_container} key={id}>
                 <Element name={id}>
                   <Slider
                     ref={node => {
@@ -335,11 +291,7 @@ class Home extends Component {
                         this.sliderRefs = [];
                         this.trackedSliderIds = [];
                       }
-                      if (
-                        this.trackedSliderIds.indexOf(id) === -1 &&
-                        this.sliderRefs.length < trackedPlaylistIds.length &&
-                        node !== null
-                      ) {
+                      if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
                         node = {
                           ...node,
                           id,
@@ -350,32 +302,11 @@ class Home extends Component {
                       }
                     }}
                     {...settings}
-                    prevArrow={
-                      <HomeArrow
-                        direction="prev"
-                        isDark={isDark}
-                        onClick={this.handleSlideNext}
-                        isMobile
-                      />
-                    }
-                    nextArrow={
-                      <HomeArrow
-                        direction="next"
-                        isDark={isDark}
-                        onClick={this.handleSlidePrev}
-                        isMobile
-                      />
-                    }
+                    prevArrow={<HomeArrow direction="prev" isDark={isDark} onClick={this.handleSlideNext} isMobile />}
+                    nextArrow={<HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} isMobile />}
                   >
                     {video.data.map(eachVids => {
-                      return (
-                        <HomeMobileContent
-                          {...eachVids}
-                          key={eachVids.id}
-                          isSafari={isSafari}
-                          isMobile
-                        />
-                      );
+                      return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile />;
                     })}
                   </Slider>
                 </Element>
@@ -399,7 +330,4 @@ const mapDispatchToProps = dispatch => ({
   onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id))
 });
 
-export default compose(
-  withStyles(styles, customArrowStyles),
-  connect(mapStateToProps, mapDispatchToProps)
-)(Home);
+export default compose(withStyles(styles, customArrowStyles), connect(mapStateToProps, mapDispatchToProps))(Home);
