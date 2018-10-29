@@ -60,8 +60,12 @@
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  width: 100px;
-  left: -33px;
+  width: 10rem;
+  left: -3.3rem;
+}
+
+.header__back_button:hover {
+  cursor: pointer;
 }
 
 .header__logo_wrap {
@@ -176,7 +180,7 @@
   padding: 6px 2px;
 }
 
-@media only screen and (max-device-width: 720px) and (-webkit-min-device-pixel-ratio: 1) {
+@media screen and (min-width: 299px) and (max-width: 640px) {
   .header__container {
     padding: 5%;
   }
@@ -188,11 +192,11 @@
   .header__logo {
     position: relative;
     top: 0.5rem;
-    width: 12rem;
+    width: 10rem;
     height: auto;
   }
 
   .header__back_button {
-    left: -11px;
+    left: -1.1rem;
   }
 }
