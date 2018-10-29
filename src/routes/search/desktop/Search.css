@@ -204,7 +204,7 @@
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 640px) {
   .root {
     padding: 120px 0 0;
     height: calc(100vh - 120px);
@@ -218,7 +218,7 @@
     position: relative;
     padding: 0;
     margin: 0 auto;
-    width: 70%;
+    width: 80%;
   }
 
   .searchText {
@@ -258,6 +258,10 @@
   .searchInput {
     height: 5rem;
     padding: 1rem 5rem;
+  }
+
+  .searchInputWrapper {
+    height: 5rem;
   }
 
   .searchAutocomplete span {
