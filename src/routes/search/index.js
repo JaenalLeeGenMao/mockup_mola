@@ -5,7 +5,7 @@ import SearchMobile from './mobile/Search';
 
 const title = 'Search';
 
-function action({ isMobile, query }) {
+function action({ query }) {
   const qs = query.q ? query.q : '';
   return {
     chunks: ['search'],

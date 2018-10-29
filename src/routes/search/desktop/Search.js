@@ -47,13 +47,7 @@ class Search extends React.Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getSearchResult,
-      getRecentSearch,
-      search: { result, recentSearch },
-      user: { sid },
-      searchKeyword
-    } = nextProps;
+    const { getSearchResult, getRecentSearch, search: { result, recentSearch }, user: { sid }, searchKeyword } = nextProps;
 
     if (process.env.BROWSER) {
       sessionId = Tracker.sessionId();
@@ -62,27 +56,15 @@ class Search extends React.Component {
     if (recentSearch.meta.status === 'loading' && prevState.result.length <= 0) {
       var today = new Date();
       var expiredDateStamp = new Date(new Date().setDate(today.getDate() - 7));
-      var expiredDate =
-        expiredDateStamp.getFullYear() +
-        '-' +
-        ('0' + (expiredDateStamp.getMonth() + 1)).slice(-2) +
-        '-' +
-        ('0' + expiredDateStamp.getDate()).slice(-2) +
-        ' 00:00:00';
+      var expiredDate = expiredDateStamp.getFullYear() + '-' + ('0' + (expiredDateStamp.getMonth() + 1)).slice(-2) + '-' + ('0' + expiredDateStamp.getDate()).slice(-2) + ' 00:00:00';
       //hanya delete keyword cache saja, data movie dan cast masih tersimpan
-      searchDb.transaction(
-        'rw',
-        searchDb.moviesResult,
-        searchDb.castsResult,
-        searchDb.searchKeyword,
-        () => {
-          searchDb.searchKeyword
-            .where('createdDate')
-            .belowOrEqual(expiredDate)
-            .delete()
-            .then(function(deleteCount) {});
-        }
-      );
+      searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, () => {
+        searchDb.searchKeyword
+          .where('createdDate')
+          .belowOrEqual(expiredDate)
+          .delete()
+          .then(function(deleteCount) {});
+      });
     }
 
     if (recentSearch.meta.status === 'loading' && prevState.recentSearch.length <= 0) {
@@ -97,10 +79,7 @@ class Search extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      searchKeyword,
-      search: { result: { meta }, recentSearch: { data: rsDt, meta: recentSearchMeta } }
-    } = this.props;
+    const { searchKeyword, search: { result: { meta }, recentSearch: { data: rsDt, meta: recentSearchMeta } } } = this.props;
 
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
       this.allRecentSearch = rsDt;
@@ -293,12 +272,7 @@ class Search extends React.Component {
     const { isLoadingResult } = this.state;
     const { search: { result: { meta: { status: resultStatus } } } } = this.props;
 
-    if (
-      !isLoadingResult &&
-      this.recentSearchData &&
-      this.recentSearchData.length == 0 &&
-      resultStatus == 'no_result'
-    ) {
+    if (!isLoadingResult && this.recentSearchData && this.recentSearchData.length == 0 && resultStatus == 'no_result') {
       return true;
     } else {
       return false;
@@ -307,19 +281,9 @@ class Search extends React.Component {
 
   showError = () => {
     const { isLoadingResult, isLoadingRecentSearch } = this.state;
-    const {
-      search: {
-        result: { meta: { status: resultStatus } },
-        recentSearch: { meta: { status: recentStatus } }
-      }
-    } = this.props;
+    const { search: { result: { meta: { status: resultStatus } }, recentSearch: { meta: { status: recentStatus } } } } = this.props;
 
-    if (
-      !isLoadingResult &&
-      resultStatus == 'error' &&
-      !isLoadingRecentSearch &&
-      recentStatus == 'error'
-    ) {
+    if (!isLoadingResult && resultStatus == 'error' && !isLoadingRecentSearch && recentStatus == 'error') {
       return true;
     } else {
       return false;
@@ -335,46 +299,26 @@ class Search extends React.Component {
   };
 
   render() {
-    const {
-      user: { sid },
-      search: { result: { meta: { status: resultStatus } } },
-      searchKeyword
-    } = this.props;
+    const { user: { sid }, search: { result: { meta: { status: resultStatus } } }, searchKeyword } = this.props;
     const { isLoadingResult, isLoadingRecentSearch, showRemoveIcon, isEmptyInput } = this.state;
     const isDark = false;
     const showResult = this.searchText ? searchKeyword !== '' : false;
+
     return (
       <Fragment>
         <div className={s.headerContainer}>
           <div className={s.headerInner}>
-            <Header
-              stickyOff
-              isDark={isDark}
-              logoOff
-              libraryOff
-              backButtonOn
-              searchOff
-              {...this.props}
-            />
+            <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn searchOff {...this.props} />
           </div>
         </div>
         <div className={s.root}>
           <div className={s.containerBg} />
           <div className={s.container}>
-            <div className={s.searchAutocomplete}>
-              {showResult && <span>{this.textSuggestion}</span>}
-            </div>
+            <div className={s.searchAutocomplete}>{showResult && <span>{this.textSuggestion}</span>}</div>
             <div className={s.searchInputWrapper}>
               <i className={s.searchIcon} />
-              <input
-                className={s.searchInput}
-                ref={this.inputSearch}
-                onChange={this.handleSearchChange}
-                onKeyDown={this.handleSearchKeyDown}
-              />
-              {showRemoveIcon && (
-                <i className={s.removeSearchIcon} onClick={this.handleRemoveSearch} />
-              )}
+              <input className={s.searchInput} ref={this.inputSearch} onChange={this.handleSearchChange} onKeyDown={this.handleSearchKeyDown} />
+              {showRemoveIcon && <i className={s.removeSearchIcon} onClick={this.handleRemoveSearch} />}
             </div>
 
             {isEmptyInput && (
@@ -383,23 +327,12 @@ class Search extends React.Component {
                   {isLoadingRecentSearch && <RecentSearchLoading />}
                   {!isLoadingRecentSearch &&
                     this.showRecentSearch() && (
-                      <RecentSearch
-                        onClick={this.handleClickRecentSearch}
-                        recentSearchData={this.recentSearchData}
-                        searchText={this.searchText}
-                        sessionId={sessionId}
-                        sid={sid}
-                      />
+                      <RecentSearch onClick={this.handleClickRecentSearch} recentSearchData={this.recentSearchData} searchText={this.searchText} sessionId={sessionId} sid={sid} />
                     )}
 
                   {!isLoadingRecentSearch &&
                     !this.showRecentSearch() &&
-                    !this.showError() && (
-                      <Error
-                        errorTitle={'Do you have something in mind?'}
-                        errorText={'Please type any movie name or cast name to search'}
-                      />
-                    )}
+                    !this.showError() && <Error errorTitle={'Do you have something in mind?'} errorText={'Please type any movie name or cast name to search'} />}
                   {this.showError() && <Error />}
                 </div>
               </div>
@@ -408,22 +341,12 @@ class Search extends React.Component {
               <Fragment>
                 <div className={s.resultWrapper}>
                   <div className={s.resultContainer}>
-                    {isLoadingRecentSearch && <RecentSearchLoading />}
-                    {!isLoadingRecentSearch &&
-                      this.showRecentSearch() && (
-                        <RecentSearch
-                          onClick={this.handleClickRecentSearch}
-                          recentSearchData={this.recentSearchData}
-                          searchText={this.searchText}
-                          sessionId={sessionId}
-                          sid={sid}
-                        />
-                      )}
+                    {isLoadingResult && <RecentSearchLoading />}
                     {!isLoadingResult &&
-                      this.searchedCast &&
-                      this.searchedCast.length > 0 && (
-                        <Cast data={this.searchedCast} searchText={this.searchText} />
+                      this.showRecentSearch() && (
+                        <RecentSearch onClick={this.handleClickRecentSearch} recentSearchData={this.recentSearchData} searchText={this.searchText} sessionId={sessionId} sid={sid} />
                       )}
+                    {!isLoadingResult && this.searchedCast && this.searchedCast.length > 0 && <Cast data={this.searchedCast} searchText={this.searchText} />}
                     {isLoadingResult && (
                       <Fragment>
                         <CastLoading />
@@ -433,20 +356,11 @@ class Search extends React.Component {
                     {!isLoadingResult &&
                       resultStatus != 'error' &&
                       this.searchedMovie &&
-                      this.searchedMovie.length > 0 && (
-                        <MovieSuggestion
-                          data={this.searchedMovie}
-                          searchText={this.searchText}
-                          sessionId={sessionId}
-                          sid={sid}
-                        />
-                      )}
+                      this.searchedMovie.length > 0 && <MovieSuggestion data={this.searchedMovie} searchText={this.searchText} sessionId={sessionId} sid={sid} />}
                     {this.showNoResult() && (
                       <LazyLoad>
                         <div className={s.resultEmptyWrapper}>
-                          <div>
-                            Your search for {`"${this.searchText}"`} did not have any matches
-                          </div>
+                          <div>Your search for {`"${this.searchText}"`} did not have any matches</div>
                           <div>Try searching with different keywords</div>
                         </div>
                       </LazyLoad>
