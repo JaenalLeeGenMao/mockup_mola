@@ -84,11 +84,6 @@
 }
 
 @media screen and (max-width: 960px) {
-  .resultTitle {
-    font-size: 14px;
-    padding-bottom: 15px;
-  }
-
   .resultContent {
     padding: 0;
     margin: 0;
@@ -109,10 +104,9 @@
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
   .resultTitle {
-    font-size: 14px;
-    padding-bottom: 15px;
+    font-size: 1.7rem;
   }
 
   .resultContent {
@@ -145,14 +139,14 @@
   .castImgLoading {
     padding: 0;
   }
+
+  .castBox span {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
 }
 
 @media screen and (max-width: 500px) {
-  .resultTitle {
-    font-size: 14px;
-    padding-bottom: 15px;
-  }
-
   .resultContent {
     padding: 0;
     margin: 0;
