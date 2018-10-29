@@ -3,7 +3,7 @@
 
 .root {
   background-color: #000;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   padding: 100px 0 0;
   overflow: hidden;
   font-family: var(--font-family-base);
@@ -207,7 +207,7 @@
 @media screen and (max-width: 640px) {
   .root {
     padding: 120px 0 0;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 200px);
   }
 
   .searchAutocomplete span {
