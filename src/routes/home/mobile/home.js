@@ -289,7 +289,7 @@ class Home extends Component {
               <HomeMobileMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                 <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`} style={{ color }}>
-                  <span className={styles[`header__library_logo_${color}`]} alt="library" style={{ width: '32px', height: '32px' }} />
+                  <span className={styles[`header__library_logo_${color}`]} alt="library" />
                 </Link>
               </LazyLoad>
             </div>

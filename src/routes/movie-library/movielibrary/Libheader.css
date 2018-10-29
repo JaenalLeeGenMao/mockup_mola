@@ -6,10 +6,10 @@
   align-items: baseline;
 }
 
-@media only screen and (max-device-width: 720px) and (-webkit-min-device-pixel-ratio: 1) {
+@media screen and (min-width: 299px) and (max-width: 640px) {
   .header {
     position: relative;
-    height: 66px;
+    height: 5rem;
     margin: 0;
   }
 }

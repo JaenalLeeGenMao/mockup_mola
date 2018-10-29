@@ -48,8 +48,8 @@
   font-size: 0;
   line-height: 0;
   background: 0 0;
-  width: 2%;
-  height: 3%;
+  width: 2.2rem;
+  height: 2.2rem;
   z-index: 99;
   transition: all 150ms ease;
 }
@@ -57,19 +57,15 @@
 .home__arrow_next {
   right: 4%;
   border-width: 0.12rem;
-  border-top-right-radius: 0.3rem;
-  border-bottom-right-radius: 0.3rem;
+  border-radius: 50%;
   border-style: solid;
-  border-left: none;
 }
 
 .home__arrow_prev {
-  right: 6%;
+  right: 7%;
   border-width: 0.12rem;
-  border-top-left-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
+  border-radius: 50%;
   border-style: solid;
-  border-right: none;
 }
 
 .home__arrow_next.white,

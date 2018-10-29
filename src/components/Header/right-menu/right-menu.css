@@ -85,7 +85,13 @@
   align-items: center;
 }
 
-@media only screen and (max-device-width: 720px) and (-webkit-min-device-pixel-ratio: 1) {
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* mobile Styles */
+@media screen and (min-width: 299px) and (max-width: 640px) {
   .right__menu {
     position: relative;
     display: flex;
@@ -93,11 +99,24 @@
     align-items: center;
     right: 0;
   }
-}
 
-@keyframes fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  .right__menu .right__menu_search_black {
+    padding: 0.8rem;
+  }
+
+  .right__menu .right__menu_search_white {
+    padding: 0.8rem;
+  }
+
+  .right__menu .right__menu_profile_black {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .right__menu .right__menu_profile_white {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
 }
 
 /* Big TV Styles */

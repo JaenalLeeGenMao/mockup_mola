@@ -61,7 +61,9 @@ class Header extends Component {
           {genreData.map(item => {
             return (
               <li key={`${item.id}-${item.title}`}>
-                <Link to="/">{item.title}</Link>
+                <LazyLoad>
+                  <Link to="/">{item.title}</Link>
+                </LazyLoad>
               </li>
             );
           })}
@@ -106,7 +108,7 @@ class Header extends Component {
           {backButtonOn && (
             <LazyLoad>
               <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                <IoIosArrowRoundBack size={32} color={color} />
+                <IoIosArrowRoundBack size={'2rem'} color={color} />
               </div>
             </LazyLoad>
           )}
