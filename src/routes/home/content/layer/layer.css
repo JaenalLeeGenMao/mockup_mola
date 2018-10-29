@@ -72,6 +72,6 @@
 
 @media screen and (max-width: 600px) {
   .layer__grid_desc_wrapper {
-    transform: translateY(25%);
+    /* transform: translateY(25%); */
   }
 }

@@ -20,7 +20,7 @@ const ContentLayer = ({ isDark, background, shortDescription = '', isMobile }) =
           backgroundSize: 'cover',
           width: isMobile ? '100vw' : '70vw',
           height: '100vh',
-          top: isMobile ? '-140%' : '-178%',
+          top: isMobile ? '-115%' : '-178%',
           left: isMobile ? '-4%' : '-1.5%'
         }}
       />

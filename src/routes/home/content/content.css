@@ -128,17 +128,17 @@
 /* Mobile style */
 @media screen and (max-width: 600px) {
   .content__grid_container {
-    height: calc(100vh - 56px);
+    /* height: calc(var(--vh, 1vh) * 100  - 56px); */
   }
 
   .content__grid_see_more_wrapper {
-    position: absolute;
-    bottom: -3.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    transform: none;
+    width: 100vw;
+    position: fixed;
   }
 
   .content__grid_see_more_mobile {
-    padding: 0.7rem 2rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
