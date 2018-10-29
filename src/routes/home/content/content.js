@@ -36,7 +36,7 @@ class Content extends Component {
     // coverTitleImage = isMobile ? coverTitle[version].portrait : coverTitle[version].landscape;
     const moreStyles = {
       bottom: 0,
-      transform: `translateY(${getCurrentScreenHeight()}px)`,
+      transform: isMobile ? `translateY(${getCurrentScreenHeight()}px)` : null,
       transition: 'all ease-in-out 300ms'
     };
 
