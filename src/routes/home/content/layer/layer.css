@@ -69,9 +69,3 @@
   display: block;
   padding: 2.5% 0;
 }
-
-@media screen and (max-width: 600px) {
-  .layer__grid_desc_wrapper {
-    /* transform: translateY(25%); */
-  }
-}

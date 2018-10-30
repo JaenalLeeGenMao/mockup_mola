@@ -38,8 +38,7 @@ class Home extends Component {
     isDark: undefined,
     isMenuOpen: false,
     playlists: [],
-    videos: [],
-    contentHeight: 0
+    videos: []
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -80,16 +79,6 @@ class Home extends Component {
     window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll);
     Events.scrollEvent.register('end', this.handleColorChange);
-
-    let vh = window.innerHeight * 0.01;
-    // Then we set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-    window.addEventListener('resize', () => {
-      // We execute the same script as before
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    });
   }
 
   componentWillUnmount() {
@@ -229,7 +218,7 @@ class Home extends Component {
   };
 
   getCurrentScreenHeight = () => {
-    let innerHeight = window.innerHeight - 35;
+    const innerHeight = window.innerHeight - 32;
     return innerHeight;
   };
 

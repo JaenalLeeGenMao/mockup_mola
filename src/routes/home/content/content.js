@@ -9,9 +9,7 @@ import ContentLayer from './layer';
 import styles from './content.css';
 
 class Content extends Component {
-  componentDidMount() {
-    console.log('-------MOUNTING!!!......');
-  }
+  componentDidMount() {}
 
   render() {
     const {

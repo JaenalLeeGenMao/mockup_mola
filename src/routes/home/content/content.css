@@ -127,10 +127,6 @@
 
 /* Mobile style */
 @media screen and (max-width: 600px) {
-  .content__grid_container {
-    /* height: calc(var(--vh, 1vh) * 100  - 56px); */
-  }
-
   .content__grid_see_more_wrapper {
     transform: none;
     width: 100vw;
