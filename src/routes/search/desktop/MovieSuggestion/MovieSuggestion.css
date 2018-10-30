@@ -34,8 +34,8 @@
 .movieBox {
   display: inline-block;
   width: calc(100% / 5);
-  padding: 0 0 20px;
-  overflow: auto;
+  padding: 0 5px 20px;
+  box-sizing: border-box;
 }
 
 .movieBoxInner {
@@ -136,11 +136,7 @@
   }
 }
 
-@media screen and (max-width: 600px) {
-  .resultRowWrap {
-    padding-top: 40px;
-  }
-
+@media screen and (max-width: 640px) {
   .movieBox {
     width: 100%;
   }
@@ -151,7 +147,7 @@
   }
 
   .movieTitle {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
   }
 
   .movieTitleResult {
