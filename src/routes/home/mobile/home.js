@@ -217,8 +217,14 @@ class Home extends Component {
     this.props.onUpdatePlaylist(id);
   };
 
+  getCurrentScreenHeight = () => {
+    const innerHeight = window.innerHeight - 32;
+    return innerHeight;
+  };
+
   handleSlideNext = (scrollIndex = 0) => {
     try {
+      this.getCurrentScreenHeight();
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
       if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext()) {
         this.sliderRefs[scrollIndex].slickNext();
@@ -228,6 +234,7 @@ class Home extends Component {
 
   handleSlidePrev = (scrollIndex = 0) => {
     try {
+      this.getCurrentScreenHeight();
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
       if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev()) {
         this.sliderRefs[scrollIndex].slickPrev();
@@ -306,7 +313,7 @@ class Home extends Component {
                     nextArrow={<HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} isMobile />}
                   >
                     {video.data.map(eachVids => {
-                      return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile />;
+                      return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} />;
                     })}
                   </Slider>
                 </Element>

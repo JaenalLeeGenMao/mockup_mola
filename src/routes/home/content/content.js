@@ -24,13 +24,19 @@ class Content extends Component {
         type,
         isSafari,
         ticking = false,
-        isMobile = false
+        isMobile = false,
+        getCurrentScreenHeight = window.innerHeight
       } = this.props,
       fontColor = isDark ? '#000' : '#fff',
       fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
     // coverTitleImage = isMobile ? coverTitle[version].portrait : coverTitle[version].landscape;
+    const moreStyles = {
+      bottom: 0,
+      transform: isMobile ? `translateY(${getCurrentScreenHeight()}px)` : null,
+      transition: 'all ease-in-out 300ms'
+    };
 
     return (
       <div className="grid-slick" isDark={isDark} style={{ boxShadow: `inset 100px 100px 100px 20000px ${fontBackgroundColor}` }}>
@@ -48,7 +54,7 @@ class Content extends Component {
           <div className={styles.content__grid_desc}>
             <ContentLayer {...this.props} />
             {type !== 'playlists' && (
-              <div className={styles.content__grid_see_more_wrapper}>
+              <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
                 {isMobile ? (
                   <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${isDark ? styles.black : styles.white}`}>
                     see movie

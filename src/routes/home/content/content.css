@@ -124,3 +124,17 @@
     transform: translateY(0%);
   }
 }
+
+/* Mobile style */
+@media screen and (max-width: 600px) {
+  .content__grid_see_more_wrapper {
+    transform: none;
+    width: 100vw;
+    position: fixed;
+  }
+
+  .content__grid_see_more_mobile {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
