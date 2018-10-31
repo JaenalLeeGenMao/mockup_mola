@@ -61,6 +61,7 @@
   align-items: flex-start;
   position: relative;
   width: 2rem;
+  transition: 1s ease-out;
 }
 
 .header__back_button:hover {
