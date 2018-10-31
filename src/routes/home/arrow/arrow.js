@@ -6,15 +6,7 @@ import stylesMobile from './arrow-mobile.css';
 
 class Arrow extends Component {
   render() {
-    const {
-        onClick,
-        direction,
-        isDark = 1,
-        currentSlide,
-        slideCount,
-        isMobile = false,
-        ...remainingProps
-      } = this.props,
+    const { onClick, direction, isDark = 1, currentSlide, slideCount, isMobile = false, ...remainingProps } = this.props,
       styles = isMobile ? stylesMobile : stylesDesktop;
     if (direction === 'prev') {
       return (
