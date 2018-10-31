@@ -83,6 +83,10 @@ app.get('/accounts/signin', (req, res) => {
   return res.redirect(domain || 'http://jaenal.mola.tv');
 });
 
+app.get('/accounts', (req, res) => {
+  return res.redirect(domain || 'http://localhost:3000/');
+});
+
 app.get('/signout', (req, res) => {
   res.clearCookie('UID');
   res.clearCookie('SID');
@@ -187,9 +191,7 @@ app.get('*', async (req, res, next) => {
     // }
 
     const userAgent = req.get('User-Agent');
-    const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(
-      userAgent
-    );
+    const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html

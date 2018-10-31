@@ -20,33 +20,21 @@ class RightMenu extends Component {
   };
 
   render() {
-    const { color, searchOff, user: { uid: userID = '', firstName = '' } } = this.props;
+    const { color, searchOff, user: { uid = '', sid = '', firstName = '' } } = this.props,
+      userID = uid || sid;
     return (
       <div className={styles.right__menu}>
         {!searchOff && (
           <span className={styles.right__menu_wrapper}>
             <LazyLoad>
-              <Link
-                className={
-                  color === 'black'
-                    ? styles.right__menu_search_black
-                    : styles.right__menu_search_white
-                }
-                to="/search"
-              />
+              <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} to="/search" />
             </LazyLoad>
           </span>
         )}
         <span className={styles.right__menu_wrapper}>
           {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
           <LazyLoad>
-            <div
-              className={
-                color === 'black'
-                  ? styles.right__menu_profile_black
-                  : styles.right__menu_profile_white
-              }
-            />
+            <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
           </LazyLoad>
           <div className={styles.right__menu_dropdown_wrapper}>
             <div className={styles.right__menu_dropdown} style={{ color }}>

@@ -28,7 +28,7 @@ class Content extends Component {
         getCurrentScreenHeight = window.innerHeight
       } = this.props,
       fontColor = isDark ? '#000' : '#fff',
-      fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+      fontBackgroundColor = !isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
     // coverTitleImage = isMobile ? coverTitle[version].portrait : coverTitle[version].landscape;
@@ -43,28 +43,23 @@ class Content extends Component {
         <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} className={styles.content__grid_background_images} lazy={false} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />
-          <div className={styles.content__grid_title}>
-            {/* <LazyLoad
-              alt=""
-              src={coverTitleImage}
-              containerClassName={styles.content__grid_images}
-              lazy={false}
-            /> */}
-          </div>
+          <div className={styles.content__grid_title} />
           <div className={styles.content__grid_desc}>
             <ContentLayer {...this.props} />
             {type !== 'playlists' && (
-              <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
-                {isMobile ? (
-                  <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${isDark ? styles.black : styles.white}`}>
-                    see movie
-                  </Link>
-                ) : (
-                  <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}`}>
-                    see movie
-                  </Link>
-                )}
-              </div>
+              <LazyLoad>
+                <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
+                  {isMobile ? (
+                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${isDark ? styles.black : styles.white}`}>
+                      see movie
+                    </Link>
+                  ) : (
+                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}`}>
+                      see movie
+                    </Link>
+                  )}
+                </div>
+              </LazyLoad>
             )}
           </div>
           <div className={styles.content__grid_empty} />
