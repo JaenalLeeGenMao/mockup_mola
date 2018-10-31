@@ -93,9 +93,13 @@ class Home extends Component {
 
   handleColorChange = () => {
     const activeSlick = $('.active .slick-active .grid-slick'),
-      isDark = parseInt(activeSlick.attr('isdark'), 10);
+      isDark = parseInt(activeSlick.attr('isdark'), 10),
+      inactiveArrows = $(`.${styles.home__slider_container} .${customArrowStyles.home__arrow}`),
+      activeArrows = $(`.${styles.home__slider_container}.active .${customArrowStyles.home__arrow}`);
     if (typeof isDark === 'number') {
       this.setState({ isDark });
+      inactiveArrows.css('visibility', 'hidden');
+      activeArrows.css('visibility', 'visible');
     }
   };
 
@@ -142,9 +146,7 @@ class Home extends Component {
   };
 
   handleSwipe = event => {
-    const { playlists, videos } = this.props.home,
-      inactiveArrows = $(`.${customArrowStyles.home__arrow}`),
-      activeArrows = $(`.active .${customArrowStyles.home__arrow}`);
+    const { playlists, videos } = this.props.home;
 
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       return true;
@@ -156,9 +158,6 @@ class Home extends Component {
       }
       return true;
     });
-
-    inactiveArrows.css('visibility', 'hidden');
-    activeArrows.css('visibility', 'visible');
     switch (event.type) {
       case 'swr' /* slide to left ~ swipe right */:
         this.handleSlidePrev(scrollIndex);

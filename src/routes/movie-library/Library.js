@@ -56,7 +56,7 @@ class MovieLibrary extends Component {
   }
 
   render() {
-    const { movieLibrary: { data: libraryDt }, search: { genre: { data: genreDt } } } = this.props;
+    const { movieLibrary: { data: libraryDt }, search: { genre: { data: genreDt } }, isMobile } = this.props;
     const { isLoading } = this.state;
     const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
     // const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
@@ -187,152 +187,152 @@ class MovieLibrary extends Component {
     const cardImageLoading = [
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '200px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '108px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '300px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '120px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '118px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '108px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '178px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '400px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '400px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '400px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '400px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '400px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '400px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       },
       {
         id: '12',
-        width: '266px',
+        width: isMobile ? 'auto' : '266px',
         height: '138px'
       }
     ];
