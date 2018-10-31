@@ -34,9 +34,13 @@ class Header extends Component {
   };
 
   handleMenuToggleClick = () => {
-    this.setState(prevState => ({
-      isMenuToggled: !prevState.isMenuToggled
-    }));
+    const genreData = this.state.genre.data;
+
+    if (genreData.length > 0) {
+      this.setState(prevState => ({
+        isMenuToggled: !prevState.isMenuToggled
+      }));
+    }
   };
 
   handleGoBack = () => {
@@ -88,7 +92,7 @@ class Header extends Component {
       search = { genre: { data: [] } }
     } = this.props;
 
-    const { isMenuToggled } = this.state;
+    const { isMenuToggled, genre: { data: genreDt } } = this.state;
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
@@ -129,10 +133,11 @@ class Header extends Component {
 
                   {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />}
                 </Link>
-
-                <button className={styles.header__action_button} onClick={this.handleMenuToggleClick}>
-                  Action <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
-                </button>
+                {genreDt.length <= 0 ? null : (
+                  <button className={styles.header__action_button} onClick={this.handleMenuToggleClick}>
+                    Action <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
+                  </button>
+                )}
               </div>
             </LazyLoad>
           </div>
