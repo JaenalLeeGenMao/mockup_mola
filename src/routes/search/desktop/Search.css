@@ -236,11 +236,33 @@
     padding-top: 70px;
   }
 
+  .resultContainer {
+    height: calc(100vh - 200px);
+  }
+
   .resultEmptyWrapper {
     margin: 0 auto;
     width: 80%;
     text-align: left;
     font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .root {
+    padding: 80px 0 0;
+    height: calc(100vh - 100px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .root {
+    padding: 60px 0 0;
+    height: calc(100vh - 80px);
+  }
+
+  .resultWrapper {
+    padding-top: 30px;
   }
 }
 
