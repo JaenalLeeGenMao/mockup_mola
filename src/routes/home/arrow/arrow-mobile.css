@@ -10,6 +10,11 @@
   outline: none;
   transform: translate(0, 5%);
   visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus {
+  outline: none !important;
 }
 
 /* available chevrons
@@ -46,8 +51,8 @@
   font-size: 0;
   line-height: 0;
   background: 0 0;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2rem;
+  height: 2rem;
   z-index: 99;
   transition: all 150ms ease;
 }
@@ -60,7 +65,7 @@
 }
 
 .home__arrow_prev {
-  right: 15.5%;
+  right: 18.5%;
   border-width: 0.12rem;
   border-radius: 50%;
   border-style: solid;
@@ -76,4 +81,16 @@
 .home__arrow_prev.dark {
   color: #000;
   border-color: #000;
+}
+
+.home__arrow_next.white:active,
+.home__arrow_prev.white:active {
+  color: #000;
+  background-color: #fff;
+}
+
+.home__arrow_next.dark:active,
+.home__arrow_prev.dark:active {
+  color: #fff;
+  background-color: #000;
 }
