@@ -50,8 +50,8 @@ class Content extends Component {
               <LazyLoad>
                 <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
                   {isMobile ? (
-                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${styles.black}`}>
-                      <span className={`${styles.icon__view_movie} ${isDark ? styles.black : styles.white}`} />
+                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${styles.white}`}>
+                      <span className={`${styles.icon__view_movie} ${styles.white}`} />
                       view movie
                     </Link>
                   ) : (
