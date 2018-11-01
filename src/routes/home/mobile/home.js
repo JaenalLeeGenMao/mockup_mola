@@ -263,8 +263,7 @@ class Home extends Component {
       isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
-    activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
-
+    let activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
     return (
       <div>
         {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
@@ -276,7 +275,7 @@ class Home extends Component {
             <div>
               <HomeMobileMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id}` : ''}`} style={{ color }}>
+                <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color }}>
                   <span className={styles[`header__library_logo_${color}`]} alt="library" />
                 </Link>
               </LazyLoad>
