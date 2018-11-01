@@ -52,11 +52,11 @@ class Content extends Component {
                   {isMobile ? (
                     <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${isDark ? styles.black : styles.white}`}>
                       <span className={`${styles.icon__view_movie} ${isDark ? styles.black : styles.white}`} />
-                      see movie
+                      view movie
                     </Link>
                   ) : (
                     <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}`}>
-                      see movie
+                      view movie
                     </Link>
                   )}
                 </div>

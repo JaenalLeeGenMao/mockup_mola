@@ -64,16 +64,19 @@
   font-weight: bold;
   padding: 2.5% 10%;
   text-transform: uppercase;
+  border-radius: 2rem;
 }
 
 .content__grid_see_more_desktop.black {
   border: 2px solid #000;
-  color: #000;
+  color: #fff;
+  background: #000;
 }
 
 .content__grid_see_more_desktop.white {
   border: 2px solid #fff;
-  color: #fff;
+  background: #fff;
+  color: #000;
 }
 
 .content__grid_see_more_mobile {
