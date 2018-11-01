@@ -17,6 +17,20 @@
   border-radius: 2px;
 }
 
+.layer__grid_desc_background.mobile {
+  width: 100vw;
+  height: 85vh;
+  top: -175%;
+  left: -5%;
+}
+
+.layer__grid_desc_background.desktop {
+  width: 80vw;
+  height: 100vh;
+  top: -178%;
+  left: -15.5%;
+}
+
 .layer__grid_desc_background::after {
   content: '';
   background: inherit;
@@ -68,4 +82,12 @@
 .layer__grid_desc_footer_quote {
   display: block;
   padding: 2.5% 0;
+}
+
+/* mobile Styles */
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .layer__grid_desc_wrapper {
+    margin: 65% 5% 0%;
+    height: auto;
+  }
 }

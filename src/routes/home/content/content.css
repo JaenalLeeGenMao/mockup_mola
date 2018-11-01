@@ -9,7 +9,7 @@
     'title title'
     'desc desc'
     'nav empty';
-  grid-template-rows: 5fr 8fr 2fr;
+  grid-template-rows: 5fr 12fr 2fr;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -24,17 +24,22 @@
 
 .content__grid_nav {
   grid-area: nav;
-  display: none;
+  background: #000;
+  display: block;
+  z-index: 1;
 }
 
 .content__grid_desc {
   position: relative;
   grid-area: desc;
+  background-image: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 1));
 }
 
 .content__grid_empty {
   grid-area: empty;
-  display: none;
+  background: #000;
+  display: block;
+  z-index: 1;
 }
 
 .content__grid_images,
@@ -128,14 +133,18 @@
     grid-template-columns: 2fr 5fr 7fr;
   }
 
+  .content__grid_desc {
+    background-image: none;
+  }
+
   .content__grid_nav {
     grid-area: nav;
-    display: block;
+    background: none;
   }
 
   .content__grid_empty {
     grid-area: empty;
-    display: block;
+    background: none;
   }
 
   .content__grid_see_more_wrapper {
