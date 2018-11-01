@@ -3,7 +3,7 @@
   flex-direction: row;
   text-decoration: none;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   right: 2rem;
   width: 7.5rem;
@@ -93,9 +93,7 @@
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .right__menu {
-    position: relative;
-    display: flex;
-    flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
     right: 0;
   }
@@ -122,6 +120,6 @@
 /* Big TV Styles */
 @media screen and (min-height: 1080px) {
   .right__menu {
-    justify-content: space-around;
+    justify-content: space-between;
   }
 }
