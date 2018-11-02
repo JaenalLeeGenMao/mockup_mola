@@ -6,7 +6,7 @@ const title = 'Movie Library';
 function action({ isMobile, pathname }) {
   const pathnameArr = pathname.split('/');
   return {
-    chunks: ['movie-library'],
+    chunks: ['admin'],
     title,
     component: <MovieLibrary isMobile={isMobile} genreId={pathnameArr[2]} />
   };

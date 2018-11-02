@@ -1,5 +1,5 @@
 import { get, post, delete as axiosDelete } from 'axios';
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints';
+import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints';
 import utils from './util';
 
 import { endpoints } from '@source/config';
@@ -254,6 +254,32 @@ const getMovieDetail = ({ id }) => {
     });
 };
 
+const getMovieLibraryList = () => {
+  return get(`${VIDEOS_ENDPOINT}`, {
+    ...endpoints.setting
+  })
+    .then(response => {
+      const result = utils.normalizeMovieLibraryList(response);
+      // const result = response.data;
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: ''
+        },
+        data: [...result] || []
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `search/getMovieLibraryList - ${error}`
+        },
+        data: []
+      };
+    });
+};
+
 const getMovieLibrary = id => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting
@@ -314,5 +340,6 @@ export default {
   deleteRecentSearchAll,
   getMovieDetail,
   getMovieLibrary,
+  getMovieLibraryList,
   getMovieStream
 };

@@ -210,6 +210,25 @@ const normalizeMovieLibrary = response => {
   };
 };
 
+const normalizeMovieLibraryList = response => {
+  const { data } = response.data;
+  if (data && data.length > 0) {
+    return data.map(({ attributes: { title: genreTitle, description: videoDesc, images: videoImg } }) => {
+      return {
+        genreTitle,
+        videoDesc,
+        thumbnail: videoImg.cover.background.desktop.portrait
+      };
+    });
+  }
+  return {
+    meta: {
+      status: 'no_result'
+    },
+    data: []
+  };
+};
+
 const normalizeVideoStream = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
@@ -234,5 +253,6 @@ export default {
   normalizeRecentSearch,
   normalizeVideoDetail,
   normalizeMovieLibrary,
+  normalizeMovieLibraryList,
   normalizeVideoStream
 };

@@ -3,8 +3,8 @@ import { endpoints } from '@source/config';
 
 export const HOME_PLAYLIST_ENDPOINT = `${endpoints.api}/videos/playlists`;
 
-export const VIDEOS_ENDPOINT = `${endpoints.api}/videos/videos`;
-
+// export const VIDEOS_ENDPOINT = `http://localhost:3099/${endpoints.api}/videos`;
+export const VIDEOS_ENDPOINT = 'https://private-86dd3-movie178.apiary-mock.com/videos';
 export const HISTORY_ENDPOINT = `${endpoints.api}/userdata`;
 
 export const SEARCH_ENDPOINT = `${endpoints.api}/search/`;
