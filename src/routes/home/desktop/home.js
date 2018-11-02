@@ -5,14 +5,7 @@ import { compose } from 'redux';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import {
-  Link as RSLink,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller
-} from 'react-scroll';
+import { Link as RSLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
 import $ from 'jquery';
 
 import { SETTINGS } from '../const';
@@ -84,7 +77,7 @@ class Home extends Component {
   }
 
   handleColorChange = () => {
-    const activeSlick = $(`.active .slick-active .grid-slick`),
+    const activeSlick = $('.active .slick-active .grid-slick'),
       isDark = parseInt(activeSlick.attr('isdark'), 10);
 
     if (typeof isDark === 'number') {
@@ -111,14 +104,12 @@ class Home extends Component {
 
         switch (event.which || event.keyCode) {
           case 37 /* left */:
-            this.handleSlidePrev(scrollIndex);
             return event.preventDefault();
           case 38 /* up */:
             scrollIndex -= 1;
             this.handleKeyPress(scrollIndex);
             break;
           case 39 /* right */:
-            this.handleSlideNext(scrollIndex);
             return event.preventDefault();
           case 40 /* down */:
             scrollIndex += 1;
@@ -166,24 +157,6 @@ class Home extends Component {
     this.props.onUpdatePlaylist(id);
   };
 
-  handleSlideNext = (scrollIndex = 0) => {
-    try {
-      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickNext()) {
-        this.sliderRefs[scrollIndex].slickNext();
-      }
-    } catch {}
-  };
-
-  handleSlidePrev = (scrollIndex = 0) => {
-    try {
-      this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
-      if (this.sliderRefs[scrollIndex] && this.sliderRefs[scrollIndex].slickPrev()) {
-        this.sliderRefs[scrollIndex].slickPrev();
-      }
-    } catch {}
-  };
-
   render() {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
@@ -195,9 +168,7 @@ class Home extends Component {
       { isDark } = this.state,
       settings = {
         ...SETTINGS,
-        fade: isSafari ? true : false,
-        slidesToShow: isSafari ? false : true,
-        slidesToScroll: isSafari ? false : true,
+        className: styles.home__slick_slider_fade,
         onInit: () => {
           this.handleColorChange();
         },
@@ -207,33 +178,15 @@ class Home extends Component {
       },
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
-    activePlaylist =
-      playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+    activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
     return (
       <div className={styles.home__container}>
-        {playlistStatus !== 'error' && (
-          <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />
-        )}
+        {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
         {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-        {playlistStatus === 'error' && (
-          <HomeError
-            status={playlistErrorCode}
-            message={playlistError || 'MOLA playlist is not loaded'}
-          />
-        )}
-        {videoStatus === 'error' &&
-          videoError !== '' && (
-            <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />
-          )}
-        {playlistStatus === 'success' &&
-          videoStatus === 'success' && (
-            <HomeDesktopMenu
-              isDark={isDark}
-              playlists={playlists.data}
-              onClick={this.handleScrollToIndex}
-            />
-          )}
+        {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
+        {videoStatus === 'error' && videoError !== '' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
+        {playlistStatus === 'success' && videoStatus === 'success' && <HomeDesktopMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />}
         {playlistStatus === 'success' &&
           videos &&
           videos.data.length > 0 &&
@@ -241,15 +194,7 @@ class Home extends Component {
           videos.data.map(video => {
             const { id, sortOrder } = video.meta;
             return (
-              <RSLink
-                activeClass="active"
-                to={id}
-                spy
-                smooth
-                duration={500}
-                className={styles.home__slider_container}
-                key={id}
-              >
+              <RSLink activeClass="active" to={id} spy smooth duration={500} className={styles.home__slider_container} key={id}>
                 <Element name={id}>
                   <Slider
                     ref={node => {
@@ -257,11 +202,7 @@ class Home extends Component {
                         this.sliderRefs = [];
                         this.trackedSliderIds = [];
                       }
-                      if (
-                        this.trackedSliderIds.indexOf(id) === -1 &&
-                        this.sliderRefs.length < trackedPlaylistIds.length &&
-                        node !== null
-                      ) {
+                      if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
                         node = {
                           ...node,
                           id,
@@ -270,23 +211,13 @@ class Home extends Component {
                         this.trackedSliderIds.push(id);
                         return this.sliderRefs.push(node);
                       }
+                      this.node = node;
                     }}
                     {...settings}
-                    prevArrow={
-                      <HomeArrow direction="prev" isDark={isDark} onClick={this.handleSlideNext} />
-                    }
-                    nextArrow={
-                      <HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} />
-                    }
+                    prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
+                    nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
                   >
-                    {video.data.map(eachVids => (
-                      <HomeDesktopContent
-                        {...eachVids}
-                        key={eachVids.id}
-                        isSafari={isSafari}
-                        ticking={ticking}
-                      />
-                    ))}
+                    {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} />)}
                   </Slider>
                 </Element>
               </RSLink>

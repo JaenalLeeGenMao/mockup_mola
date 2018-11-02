@@ -79,3 +79,15 @@
   color: #000;
   border-color: #000;
 }
+
+.home__arrow_next.white:hover,
+.home__arrow_prev.white:hover{
+  color: #000;
+  background-color: #fff;
+}
+
+.home__arrow_next.dark:hover,
+.home__arrow_prev.dark:hover{
+  color: #fff;
+  background-color: #000;
+}
