@@ -3,7 +3,7 @@
 .home__arrow {
   font-family: slick;
   position: fixed;
-  bottom: 5%;
+  bottom: 4%;
   width: 40px;
   height: 40px;
   z-index: 99;
@@ -31,7 +31,7 @@
 
 .home__arrow_next::before,
 .home__arrow_prev::before {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   line-height: 0.7;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
@@ -51,11 +51,18 @@
   font-size: 0;
   line-height: 0;
   background: 0 0;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   z-index: 99;
   transition: all 150ms ease;
 }
+
+.home__arrow_next:hover,
+.home__arrow_prev:hover,
+.home__arrow_next:focus,
+.home__arrow_prev:focus {
+  background: #fff;
+} 
 
 .home__arrow_next {
   right: 5%;
@@ -75,6 +82,13 @@
 .home__arrow_prev.white {
   color: #fff;
   border-color: #fff;
+}
+
+.home__arrow_next.white:hover,
+.home__arrow_prev.white:hover,
+.home__arrow_next.white:focus,
+.home__arrow_prev.white:focus {
+  color: #000;
 }
 
 .home__arrow_next.dark,

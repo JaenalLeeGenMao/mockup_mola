@@ -34,11 +34,7 @@ class Menu extends Component {
                 className={[styles.menu_links, isActive ? styles.isActive : ''].join(' ')}
                 style={{ backgroundColor: isMobile ? '' : backgroundColor }}
               >
-                {isMobile && (
-                  <div
-                    style={{ backgroundColor, height: `${100 / playlists.length}vh`, width: '25%' }}
-                  />
-                )}
+                {isMobile && <div className={styles.menu_bullet} />}
               </Link>
             ))}
         </div>

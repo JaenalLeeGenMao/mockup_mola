@@ -27,7 +27,7 @@ class Content extends Component {
         isMobile = false,
         getCurrentScreenHeight = window.innerHeight
       } = this.props,
-      fontColor = isDark ? '#000' : '#fff',
+      fontColor = '#fff',
       fontBackgroundColor = !isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
@@ -50,8 +50,8 @@ class Content extends Component {
               <LazyLoad>
                 <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
                   {isMobile ? (
-                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${isDark ? styles.black : styles.white}`}>
-                      <span className={`${styles.icon__view_movie} ${isDark ? styles.black : styles.white}`} />
+                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${styles.white}`}>
+                      <span className={`${styles.icon__view_movie} ${styles.white}`} />
                       view movie
                     </Link>
                   ) : (

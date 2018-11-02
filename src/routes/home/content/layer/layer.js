@@ -7,27 +7,31 @@ import { filterString } from './util';
 
 import styles from './layer.css';
 
-const ContentLayer = ({ isDark, background, shortDescription = '', isMobile }) => {
+const ContentLayer = ({ isDark, background, shortDescription = '', isMobile, getCurrentScreenHeight = () => {} }) => {
   const version = isMobile ? 'mobile' : 'desktop',
-    fontColor = isDark ? '#000' : '#fff',
+    fontColor = '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
-    filteredDesc = filterString(shortDescription);
+    filteredDesc = filterString(shortDescription).substring(0, isMobile ? 100 : 180);
+
+  const descWrpperStyle = {
+    transform: `translateY(calc(${getCurrentScreenHeight()}px - 65vh))`,
+    marginTop: '0'
+  };
+
   return (
-    <LazyLoad containerClassName={styles.layer__grid_desc_wrapper} style={{ textAlign: isMobile ? 'center' : 'left' }}>
-      <div
-        className={styles.layer__grid_desc_background}
-        style={{
-          background: `url(${coverBackgroundImage}) repeat center`,
-          boxShadow: `inset 0 0 0 20000px ${fontBackgroundColor}`,
-          backgroundSize: 'cover',
-          width: isMobile ? '100vw' : '80vw',
-          height: isMobile ? '85vh' : '100vh',
-          top: isMobile ? '-89%' : '-178%',
-          left: isMobile ? '-4%' : '-15.5%'
-        }}
-      />
-      <div className={styles.layer__grid_desc_content}>
+    <LazyLoad containerClassName={styles.layer__grid_desc_wrapper} containerStyle={isMobile ? descWrpperStyle : null}>
+      {!isMobile && (
+        <div
+          className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']}`}
+          style={{
+            background: `url(${coverBackgroundImage}) repeat center`,
+            boxShadow: `inset 0 0 0 20000px ${fontBackgroundColor}`,
+            backgroundSize: 'cover'
+          }}
+        />
+      )}
+      <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
         <div className={styles.layer__grid_desc_header}>
           {!isMobile && <h1>STORYLINE</h1>}
           <p>{filteredDesc}</p>

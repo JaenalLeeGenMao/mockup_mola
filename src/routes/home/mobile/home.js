@@ -273,10 +273,10 @@ class Home extends Component {
         {playlistStatus === 'success' &&
           videoStatus === 'success' && (
             <div>
-              <HomeMobileMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
+              <HomeMobileMenu isDark={false} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color }}>
-                  <span className={styles[`header__library_logo_${color}`]} alt="library" />
+                <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color: '#fff' }}>
+                  <span className={styles['header__library_logo_white']} alt="library" />
                 </Link>
               </LazyLoad>
             </div>
@@ -307,8 +307,8 @@ class Home extends Component {
                       }
                     }}
                     {...settings}
-                    prevArrow={<HomeArrow direction="prev" isDark={isDark} onClick={this.handleSlideNext} isMobile />}
-                    nextArrow={<HomeArrow direction="next" isDark={isDark} onClick={this.handleSlidePrev} isMobile />}
+                    prevArrow={<HomeArrow direction="prev" isDark={false} onClick={this.handleSlideNext} isMobile />}
+                    nextArrow={<HomeArrow direction="next" isDark={false} onClick={this.handleSlidePrev} isMobile />}
                   >
                     {video.data.map(eachVids => {
                       return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} />;
