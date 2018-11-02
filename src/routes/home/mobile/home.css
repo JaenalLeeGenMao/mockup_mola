@@ -54,6 +54,15 @@ body {
   padding: 0;
 }
 
+.home__slick_slider_fade {
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.8) 10%,
+      rgba(0, 0, 0, 1) 90%
+    );
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header__library_logo_white {

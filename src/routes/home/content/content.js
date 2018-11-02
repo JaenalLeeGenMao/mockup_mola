@@ -27,7 +27,7 @@ class Content extends Component {
         isMobile = false,
         getCurrentScreenHeight = window.innerHeight
       } = this.props,
-      fontColor = '#fff',
+      fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
       fontBackgroundColor = !isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
@@ -39,7 +39,7 @@ class Content extends Component {
     };
 
     return (
-      <div className="grid-slick" isDark={isDark} style={{ boxShadow: `inset 100px 100px 100px 20000px ${fontBackgroundColor}` }}>
+      <div className="grid-slick" isDark={isDark}>
         <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} className={styles.content__grid_background_images} lazy={false} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />

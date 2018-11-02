@@ -122,14 +122,14 @@ class Home extends Component {
 
         switch (event.which || event.keyCode) {
           case 37 /* left */:
-            this.handleSlidePrev(scrollIndex);
+            // this.handleSlidePrev(scrollIndex);
             return event.preventDefault();
           case 38 /* up */:
             scrollIndex -= 1;
             this.handleKeyPress(scrollIndex);
             break;
           case 39 /* right */:
-            this.handleSlideNext(scrollIndex);
+            // this.handleSlideNext(scrollIndex);
             return event.preventDefault();
           case 40 /* down */:
             scrollIndex += 1;
@@ -221,7 +221,7 @@ class Home extends Component {
     return innerHeight;
   };
 
-  handleSlideNext = (scrollIndex = 0) => {
+  handleSlideNext = () => {
     try {
       this.getCurrentScreenHeight();
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
@@ -231,7 +231,7 @@ class Home extends Component {
     } catch {}
   };
 
-  handleSlidePrev = (scrollIndex = 0) => {
+  handleSlidePrev = () => {
     try {
       this.getCurrentScreenHeight();
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
@@ -242,7 +242,8 @@ class Home extends Component {
   };
 
   render() {
-    const {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+      {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
@@ -252,7 +253,7 @@ class Home extends Component {
       color = isDark ? 'black' : 'white',
       settings = {
         ...SETTINGS,
-        speed: 300,
+        className: styles.home__slick_slider_fade,
         onInit: () => {
           this.handleColorChange();
         },
@@ -260,7 +261,6 @@ class Home extends Component {
           this.handleColorChange();
         }
       },
-      isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
     let activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
@@ -307,8 +307,8 @@ class Home extends Component {
                       }
                     }}
                     {...settings}
-                    prevArrow={<HomeArrow direction="prev" isDark={false} onClick={this.handleSlideNext} isMobile />}
-                    nextArrow={<HomeArrow direction="next" isDark={false} onClick={this.handleSlidePrev} isMobile />}
+                    prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
+                    nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
                   >
                     {video.data.map(eachVids => {
                       return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} />;
