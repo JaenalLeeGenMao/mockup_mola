@@ -1,3 +1,6 @@
+import _get from 'lodash/get';
+import _sample from 'lodash/sample';
+
 const normalizeHomePlaylist = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
@@ -192,12 +195,17 @@ const normalizeMovieLibrary = response => {
   if (data && data.length > 0) {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
-        const { title, thumbnail, coverUrl } = attributes;
+        // console.log(`these are the attributes`, attributes);
+        const { title } = attributes;
+        const height = _sample(['98', '108', '138', '238', '400']);
+        const dummy = `https://dummyimage.com/266x${height}/000/fff`;
+        const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '');
+
         return {
           genreTitle,
           id,
           title,
-          thumbnail: thumbnail || coverUrl
+          thumbnail: thumbnail !== '' ? thumbnail : dummy
         };
       })
     );

@@ -1,11 +1,14 @@
 .card {
-  margin-bottom: 15px;
+  margin-bottom: -10px;
+  margin-right: -10px;
+  width: 266px;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
   display: inline-block;
 }
 
 .card img {
-  width: 100%;
+  /* width: 100%; */
+  width: 266px;
   height: auto;
 }

@@ -255,7 +255,7 @@ const getMovieDetail = ({ id }) => {
 };
 
 const getMovieLibrary = id => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${'dcmt'}`, {
     ...endpoints.setting
   })
     .then(response => {
