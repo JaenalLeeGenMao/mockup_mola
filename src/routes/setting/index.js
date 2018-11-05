@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from './container';
 
-import Layout from '@components/Layout';
+import MolaLayout from '@components/Molalayout';
 
 const title = 'Setting';
 function action({ isMobile }) {
@@ -9,9 +9,9 @@ function action({ isMobile }) {
     chunks: ['setting'],
     title,
     component: (
-      <Layout>
+      <MolaLayout>
         <Container isMobile={isMobile} />
-      </Layout>
+      </MolaLayout>
     )
   };
 }

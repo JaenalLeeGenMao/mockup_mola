@@ -6,17 +6,20 @@
 }
 
 .header {
-  padding: 0 10px;
-  padding-top: 15px;
+  padding: 0 1rem;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
 }
 
 .title {
   color: #fff;
-  font-size: 18px;
+  font-size: 1.4rem;
 }
 
 .component {
-  padding: 0 20px;
+  padding: 0 2rem;
   margin: 0;
   display: flex;
   list-style: none;
@@ -25,7 +28,7 @@
 .component li {
   flex: 1;
   text-align: center;
-  padding: 10px;
+  padding: 1rem;
 }
 
 .active > a {
@@ -33,7 +36,7 @@
 }
 
 .component li a {
-  font-size: 14px;
+  font-size: 1rem;
   color: #6f6f6f;
   text-decoration: none;
 }

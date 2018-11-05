@@ -69,8 +69,8 @@
   }
 
   .imgProfile {
-    width: 100px !important;
-    height: 100px !important;
+    width: 10rem !important;
+    height: 10rem !important;
   }
 }
 
@@ -97,21 +97,21 @@
 .buttonCancel {
   cursor: pointer;
   border: 0;
-  padding: 15px 50px;
-  border-radius: 4px;
+  padding: 1.5rem 5rem;
+  border-radius: 0.4rem;
   background: none;
   float: right;
-  margin-right: 5px;
+  margin-right: 0.5rem;
   color: #fff;
 }
 
 @media only screen and (max-width: 1024px) {
   .button {
-    padding: 15px 25px;
+    padding: 1.5rem 2.5rem;
   }
 
   .buttonCancel {
-    padding: 15px 25px;
+    padding: 1.5rem 2.5rem;
   }
 }
 
@@ -130,9 +130,9 @@
   border: 0;
   background: #fff;
   border-radius: 50%;
-  left: 100px;
-  width: 30px;
-  height: 30px;
+  left: 10rem;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,7 +140,7 @@
 
 @media only screen and (max-width: 1024px) {
   .btnImage {
-    left: 80px;
+    left: 8rem;
   }
 }
 
