@@ -1,7 +1,7 @@
 @import '../variables.css';
 
 .root {
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
 }
 
 .label {
@@ -9,9 +9,9 @@
 }
 
 .component {
-  margin-top: 5px;
+  margin-top: 0.5rem;
   background: none;
-  padding: 10px 0;
+  padding: 1rem 0;
   width: 100%;
   border: none;
   border-bottom: 1px solid #1a202f;

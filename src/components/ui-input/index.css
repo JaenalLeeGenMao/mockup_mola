@@ -1,7 +1,7 @@
 @import '../variables.css';
 
 .root {
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
 }
 
 .label {
@@ -15,7 +15,7 @@
 
 .transparent,
 .box {
-  padding: 10px 0;
+  padding: 1rem 0;
   width: 100%;
   border: none;
   outline: none;
@@ -35,9 +35,9 @@
   background: #343434;
   border-radius: 4px;
   color: #fff;
-  padding: 15px 1.5%;
+  padding: 1.5rem 1.5%;
   width: 97%;
-  margin-top: 5px;
+  margin-top: 0.5rem;
 }
 
 .box:focus {
@@ -47,8 +47,8 @@
 .eye {
   cursor: pointer;
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 1.5rem;
+  right: 1.5rem;
 }
 
 input:-webkit-autofill {

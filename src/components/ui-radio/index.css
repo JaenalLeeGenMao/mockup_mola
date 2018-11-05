@@ -6,19 +6,19 @@
 
 .component {
   float: left;
-  margin-top: 10px;
-  margin-right: 20px;
+  margin-top: 1rem;
+  margin-right: 2rem;
 }
 
 .component input {
-  margin-right: 5px;
+  margin-right: 0.5rem;
 }
 
 .component label {
   color: #fff;
   cursor: pointer;
   position: relative;
-  top: 2px;
+  top: 0.2rem;
 }
 
 .label {
@@ -28,7 +28,7 @@
 .radioLongDesc {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin-top: 2rem;
 }
 
 .componentItem {
@@ -45,7 +45,7 @@
 
 .componentItem label {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
   cursor: pointer;
 }
 
@@ -56,10 +56,10 @@
 }
 
 .componentItem label div:nth-child(2) {
-  margin-top: 1px;
+  margin-top: 0.1rem;
 }
 
 .componentItem label p {
-  font-size: 14px;
+  font-size: 1rem;
   color: #6f6f6f;
 }
