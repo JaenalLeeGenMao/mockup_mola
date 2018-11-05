@@ -56,6 +56,8 @@ class Header extends Component {
     return { ...prevState, genre };
   }
 
+  componentDidMount() {}
+
   renderMenu() {
     const genreData = this.state.genre.data;
 
@@ -66,7 +68,7 @@ class Header extends Component {
             return (
               <li key={`${item.id}-${item.title}`}>
                 <LazyLoad>
-                  <Link to="/">{item.title}</Link>
+                  <Link to={`/movie-library/${item.title.toLowerCase()}`}>{item.title}</Link>
                 </LazyLoad>
               </li>
             );
@@ -137,7 +139,8 @@ class Header extends Component {
                 </Link>
                 {genreDt.length <= 0 ? null : (
                   <button className={styles.header__action_button} onClick={this.handleMenuToggleClick}>
-                    Action <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
+                    {this.props.genreId ? this.props.genreId : genreDt[0].title}{' '}
+                    <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? { transform: 'rotate(180deg) translateY(0%)', top: 0 } : ''} />
                   </button>
                 )}
               </div>

@@ -2,7 +2,8 @@
   margin-bottom: 15px;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
-  display: inline-block;
+
+  /* display: inline-block; */
 }
 
 .card img {

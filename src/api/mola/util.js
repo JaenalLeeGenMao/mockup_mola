@@ -213,11 +213,13 @@ const normalizeMovieLibrary = response => {
 const normalizeMovieLibraryList = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
-    return data.map(({ attributes: { title: genreTitle, description: videoDesc, images: videoImg } }) => {
+    return data.map(({ id, type, attributes: { title: genreTitle, description: videoDesc, images: videoImg } }) => {
       return {
+        id,
+        type,
         genreTitle,
         videoDesc,
-        thumbnail: videoImg.cover.background.desktop.portrait
+        thumbnail: videoImg.cover.library.desktop.portrait
       };
     });
   }

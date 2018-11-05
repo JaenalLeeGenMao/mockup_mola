@@ -1,6 +1,27 @@
 import types from '../constants';
 
-export default function searchResult(state = {}, action) {
+const initialState = {
+  recentSearch: {
+    meta: {
+      status: 'loading'
+    },
+    data: []
+  },
+  result: {
+    meta: {
+      status: 'loading'
+    },
+    data: []
+  },
+  genre: {
+    meta: {
+      status: 'loading'
+    },
+    data: []
+  }
+};
+
+export default function searchResult(state = initialState, action) {
   switch (action.type) {
     case types.GET_SEARCH_GENRE_LOADING:
       return { ...state, genre: { ...action.payload } };
@@ -35,25 +56,7 @@ export default function searchResult(state = {}, action) {
 
     default:
       return {
-        ...state,
-        recentSearch: {
-          meta: {
-            status: 'loading'
-          },
-          data: []
-        },
-        result: {
-          meta: {
-            status: 'loading'
-          },
-          data: []
-        },
-        genre: {
-          meta: {
-            status: 'loading'
-          },
-          data: []
-        }
+        ...state
       };
   }
 }

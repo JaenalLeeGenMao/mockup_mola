@@ -104,7 +104,7 @@ const getSearchResult = ({ q }) => {
     });
 };
 
-const getSearchGenre = payload => {
+const getSearchGenre = () => {
   return get(`${SEARCH_GENRE_ENDPOINT}`, {
     ...endpoints.setting
   })
@@ -260,7 +260,7 @@ const getMovieLibraryList = () => {
   })
     .then(response => {
       const result = utils.normalizeMovieLibraryList(response);
-      // const result = response.data;
+
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
