@@ -12,8 +12,6 @@ import PropTypes from 'prop-types';
 import serialize from 'serialize-javascript';
 import config from '../config';
 
-/* eslint-disable react/no-danger */
-
 class Html extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
@@ -21,18 +19,20 @@ class Html extends React.Component {
     styles: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
-        cssText: PropTypes.string.isRequired,
-      }).isRequired,
+        cssText: PropTypes.string.isRequired
+      }).isRequired
     ),
     scripts: PropTypes.arrayOf(PropTypes.string.isRequired),
     app: PropTypes.object, // eslint-disable-line
-    children: PropTypes.string.isRequired,
+    children: PropTypes.string.isRequired
   };
 
   static defaultProps = {
     styles: [],
-    scripts: [],
+    scripts: []
   };
+
+  static isMobile = true;
 
   render() {
     const { title, description, styles, scripts, app, children } = this.props;
@@ -44,43 +44,19 @@ class Html extends React.Component {
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {scripts.map(script => (
-            <link key={script} rel="preload" href={script} as="script" />
-          ))}
-          <link rel="manifest" href="/site.webmanifest" />
-          <link rel="apple-touch-icon" href="/icon.png" />
-          {styles.map(style => (
-            <style
-              key={style.id}
-              id={style.id}
-              dangerouslySetInnerHTML={{ __html: style.cssText }}
-            />
-          ))}
+          {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
+          <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
+          {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
+          <link rel="stylesheet" type="text/css" href="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/ui.css" />
+          <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js" />
+          <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1" />
+          <script src="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/THEOplayer.js" />
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
-          <script
-            dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }}
-          />
+          <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
           {scripts.map(script => <script key={script} src={script} />)}
-          {config.analytics.googleTrackingId && (
-            <script
-              dangerouslySetInnerHTML={{
-                __html:
-                  'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
-                  `ga('create','${
-                    config.analytics.googleTrackingId
-                  }','auto');ga('send','pageview')`,
-              }}
-            />
-          )}
-          {config.analytics.googleTrackingId && (
-            <script
-              src="https://www.google-analytics.com/analytics.js"
-              async
-              defer
-            />
-          )}
+          {/* <link rel="stylesheet" type="text/css" href="./Theoplayer/Theoverstyle.css" /> */}
         </body>
       </html>
     );

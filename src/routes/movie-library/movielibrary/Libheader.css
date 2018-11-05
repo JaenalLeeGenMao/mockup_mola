@@ -1,0 +1,15 @@
+.header {
+  position: relative;
+  height: 12rem;
+  margin-top: 2rem;
+  display: flex;
+  align-items: baseline;
+}
+
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .header {
+    position: relative;
+    height: 5rem;
+    margin: 0;
+  }
+}

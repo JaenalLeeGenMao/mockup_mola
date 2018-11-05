@@ -1,0 +1,33 @@
+/* @import url('https://fonts.googleapis.com/css?family=Roboto'); */
+
+html {
+  font-size: 62.5%;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/*
+ * Remove outline on click / focus
+ */
+
+button:focus {
+  outline: 0;
+}
+
+/* mobile Styles */
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  html {
+    font-size: 82.5%;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  html {
+    font-size: 187.5%;
+  }
+}

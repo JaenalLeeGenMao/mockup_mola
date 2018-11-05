@@ -1,0 +1,318 @@
+@import '../../../components/variables.css';
+@import '../../../global/style/css/grainBackground.css';
+
+.root {
+  background-color: #000;
+  height: calc(100vh - 120px);
+  padding: 100px 0 0;
+  overflow: hidden;
+  font-family: var(--font-family-base);
+}
+
+.headerContainer {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.headerInner {
+  padding-top: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  width: 1000px;
+  position: relative;
+  z-index: 102;
+}
+
+.searchInputWrapper {
+  position: relative;
+  padding: 0;
+  margin: 0 auto;
+  width: 80%;
+  background-color: #2b2b2b;
+  height: 52px;
+  border-radius: 200px;
+}
+
+.searchText {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  color: #bababa;
+  transform: translate(-50%, 0);
+  font-size: 1.8rem;
+}
+
+.searchAutocomplete {
+  padding: 0;
+  position: relative;
+  width: 80%;
+  z-index: 101;
+  box-sizing: border-box;
+  font-size: 2.2rem;
+  color: #6f6f6f;
+  margin: 0 auto;
+  line-height: 1;
+  border-radius: 200px;
+}
+
+.searchAutocomplete span {
+  top: 15px;
+  left: 75px;
+  position: absolute;
+}
+
+.searchIcon {
+  background-image: url('data:image/svg+xml;base64,PCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluICAtLT4KPHN2ZyB2ZXJzaW9uPSIxLjEiCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6YT0iaHR0cDovL25zLmFkb2JlLmNvbS9BZG9iZVNWR1ZpZXdlckV4dGVuc2lvbnMvMy4wLyIKICAgICB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjQ0LjRweCIgaGVpZ2h0PSI0NC41cHgiIHZpZXdCb3g9IjAgMCA0NC40IDQ0LjUiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQ0LjQgNDQuNTsiCiAgICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+CiAgICAuc3Qwe2ZpbGw6bm9uZTtzdHJva2U6I0ZGRkZGRjtzdHJva2Utd2lkdGg6MztzdHJva2UtbWl0ZXJsaW1pdDoxMDt9CiAgICAuc3Qxe2ZpbGw6bm9uZTtzdHJva2U6I0ZGRkZGRjtzdHJva2Utd2lkdGg6MztzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLW1pdGVybGltaXQ6MTA7fQo8L3N0eWxlPgo8ZGVmcz4KPC9kZWZzPgo8ZyBpZD0iWE1MSURfMThfIj4KICAgIDxjaXJjbGUgaWQ9IlhNTElEXzIwXyIgY2xhc3M9InN0MCIgY3g9IjE4LjQiIGN5PSIxOC40IiByPSIxNi45Ii8+CiAgICA8bGluZSBpZD0iWE1MSURfMTlfIiBjbGFzcz0ic3QxIiB4MT0iMzAuNCIgeTE9IjMwLjQiIHgyPSI0Mi45IiB5Mj0iNDMiLz4KPC9nPgo8L3N2Zz4=');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  width: 26px;
+  height: 26px;
+  transform: translate(0, -50%);
+}
+
+.removeSearchIcon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMy40MTQgMTMuNDE0Ij48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS13aWR0aDoycHg7fTwvc3R5bGU+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMjcuMjkzIC0yNy4yOTMpIj48bGluZSBjbGFzcz0iYSIgeDI9IjEyIiB5Mj0iMTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyOCAyOCkiLz48bGluZSBjbGFzcz0iYSIgeDE9IjEyIiB5Mj0iMTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyOCAyOCkiLz48L2c+PC9zdmc+');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  width: 15px;
+  height: 15px;
+  z-index: 102;
+  cursor: pointer;
+  transform: translate(0, -50%);
+}
+
+.searchInput,
+.searchInputSuggestion {
+  background-color: transparent;
+  border: 0;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+  outline: 0;
+  font-size: 2.2rem;
+  line-height: 1;
+  height: 52px;
+  padding: 10px 75px;
+  position: absolute;
+  z-index: 101;
+  font-family: 'Futura', 'HelveticaNeue-Light', sans-serif;
+}
+
+.searchInputSuggestion {
+  color: #6f6f6f;
+}
+
+.resultWrapper {
+  padding-top: 65px;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 100%;
+}
+
+.resultEmptyWrapper {
+  padding-top: 100px;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 100%;
+  color: #6f6f6f;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.resultEmptyWrapper div {
+  padding: 10px 0;
+}
+
+.resultContainer {
+  overflow-y: auto;
+  height: calc(100vh - 300px);
+  padding-right: 20px;
+  width: 100%;
+}
+
+.containerBg {
+  background-color: #11110f;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1280px) {
+  .container {
+    width: 900px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 800px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .container {
+    width: 100%;
+    height: calc(100vh - 200px);
+  }
+
+  .root {
+    padding: 100px 0 0;
+    height: calc(100vh - 100px);
+  }
+
+  .searchAutocomplete {
+    width: 70%;
+  }
+
+  .searchAutocomplete span {
+    font-size: 2.2rem;
+  }
+
+  .searchInputWrapper {
+    width: 70%;
+  }
+
+  .searchText {
+    top: 30px;
+  }
+
+  .searchInput {
+    font-size: 2.2rem;
+    position: absolute;
+  }
+
+  .resultRow {
+    display: block;
+  }
+
+  .resultWrapper {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .root {
+    padding: 120px 0 0;
+    height: calc(100vh - 200px);
+  }
+
+  .searchAutocomplete span {
+    display: none;
+  }
+
+  .searchInputWrapper {
+    position: relative;
+    padding: 0;
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  .searchText {
+    top: 17px;
+    font-size: 1.4rem;
+  }
+
+  .searchInput {
+    font-size: 1.8rem;
+  }
+
+  .resultWrapper {
+    margin: 0 auto;
+    width: 90%;
+    padding-top: 70px;
+  }
+
+  .resultContainer {
+    height: calc(100vh - 200px);
+  }
+
+  .resultEmptyWrapper {
+    margin: 0 auto;
+    width: 80%;
+    text-align: left;
+    font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .root {
+    padding: 80px 0 0;
+    height: calc(100vh - 100px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .root {
+    padding: 60px 0 0;
+    height: calc(100vh - 80px);
+  }
+
+  .resultWrapper {
+    padding-top: 30px;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .root {
+    height: calc(100vh - 230px);
+    padding: 230px 0 0;
+  }
+
+  .container {
+    width: 70%;
+  }
+
+  .searchInput {
+    height: 5rem;
+    padding: 1rem 5rem;
+  }
+
+  .searchInputWrapper {
+    height: 5rem;
+  }
+
+  .searchAutocomplete span {
+    top: 1.5rem;
+    left: 5rem;
+  }
+
+  .searchIcon {
+    width: 2rem;
+    height: 2rem;
+    left: 50px;
+  }
+
+  .removeSearchIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    right: 50px;
+  }
+
+  .resultWrapper {
+    padding-top: 200px;
+  }
+
+  .resultContainer {
+    height: calc(100vh - 600px);
+  }
+
+  .resultEmptyWrapper {
+    font-size: 2rem;
+    line-height: 2.7rem;
+  }
+}

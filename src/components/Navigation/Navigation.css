@@ -1,46 +1,73 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-.root {
-  float: right;
-  margin: 6px 0 0;
+.navigation__wrapper {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 250px;
+  left: 40px;
+  top: 184px;
+  z-index: 2;
 }
 
-.link {
-  display: inline-block;
-  padding: 3px 8px;
+.navigation__links {
+  height: 40px;
+  padding: 0 10px;
+  font-size: 1.4rem;
   text-decoration: none;
-  font-size: 1.125em; /* ~18px */
+  letter-spacing: 0.1em;
+  transition: 250ms ease-out;
+  opacity: 0.4;
+  cursor: pointer;
 }
 
-.link,
-.link:active,
-.link:visited {
-  color: rgba(255, 255, 255, 0.6);
+.navigation__links:hover {
+  text-shadow: 0.4px 0.4px;
+  opacity: 1;
 }
 
-.link:hover {
-  color: rgba(255, 255, 255, 1);
+.isActive {
+  letter-spacing: 0.4em;
+  text-shadow: 1px 1px;
+  opacity: 1;
 }
 
-.highlight {
-  margin-right: 8px;
-  margin-left: 8px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.15);
-  color: #fff;
+hr {
+  border: none;
+  width: 90%;
+  box-shadow: 0 20px 20px -20px inherit;
+  position: relative;
+  right: 95%;
+  top: 8px;
+  margin: 0;
 }
 
-.highlight:hover {
-  background: rgba(0, 0, 0, 0.3);
+/* On screens that are 1180px or less, set the background color to blue */
+@media only screen and (min-device-width: 1080px) and (max-device-width: 1920px) and (-webkit-min-device-pixel-ratio: 1) {
+  .navigation__wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 180px;
+    left: 40px;
+    top: 184px;
+  }
 }
 
-.spacer {
-  color: rgba(255, 255, 255, 0.3);
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .navigation__wrapper {
+    top: 25%;
+    left: 80px;
+  }
+
+  .navigation__links {
+    height: auto;
+    width: 360px;
+    padding: 2.5% 0;
+  }
+
+  hr {
+    top: 21px;
+  }
 }

@@ -1,0 +1,24 @@
+@import '../variables.css';
+
+.root {
+  margin-bottom: 4rem;
+}
+
+.label {
+  color: #6f6f6f;
+  font-weight: lighter;
+}
+
+.component {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 1rem;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: #343434;
+  border-radius: 0.4rem;
+  color: #fff;
+  margin-top: 0.5rem;
+}

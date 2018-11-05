@@ -1,0 +1,148 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+@import '../../../components/variables.css';
+@import '../../login/mobile/Login.css';
+
+html {
+  font-size: 62.5% !important;
+}
+
+.flip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.container {
+  padding: 2rem;
+  max-height: 47rem;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0.4rem;
+  line-height: 1.5rem;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+
+  /* transform: rotateY(0deg); */
+  z-index: 2;
+}
+
+.container p {
+  font-size: 1.2rem;
+  letter-spacing: 0.117rem;
+  color: #6f6f6f;
+}
+
+.containerBack {
+  padding: 2rem;
+  min-width: 29rem;
+  max-width: 32rem;
+  max-height: 47rem;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0.4rem;
+  line-height: 1.5rem;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+
+  /* transform: rotateY(0deg); */
+  z-index: 1;
+}
+
+.containerBack p {
+  font-size: 1.2rem;
+  letter-spacing: 0.117rem;
+  color: #6f6f6f;
+}
+
+.flip__container .container {
+  backface-visibility: hidden;
+  opacity: 0;
+
+  /* transform: rotateY(180deg); */
+  z-index: 900;
+}
+
+.flip__container .containerBack {
+  backface-visibility: hidden;
+  opacity: 1;
+
+  /* transform: rotateY(0deg); */
+  z-index: 1000;
+}
+
+.labelHeader {
+  margin-top: 0 !important;
+  color: #fff !important;
+  font-size: 1.5rem !important;
+  font-weight: 500;
+  letter-spacing: 0.191rem;
+}
+
+.label__resend {
+  font-size: 1.4rem;
+  letter-spacing: 0.136rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(44, 86, 255, 1);
+}
+
+.label__resend:hover {
+  cursor: pointer;
+}
+
+.verify__button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem 1.6rem;
+  height: 4rem;
+  width: 30%;
+  background: #2c56ff;
+  border: 0.1rem solid #373277;
+  border-radius: 0.4rem;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  letter-spacing: 0.191rem;
+  opacity: 100%;
+  font-weight: 500;
+}
+
+.form__otp {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.form__otp input {
+  margin: 0;
+}
+
+.form__otp__input {
+  width: 80% !important;
+  height: 4rem !important;
+}
+
+.form__otp__input ::placeholder {
+  font-size: 1.5rem !important;
+}
+

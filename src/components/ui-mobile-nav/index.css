@@ -1,0 +1,46 @@
+@import '../variables.css';
+
+.root {
+  margin: 0;
+  background: #0e1d3d;
+}
+
+.header {
+  padding: 0 1rem;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
+.title {
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.component {
+  padding: 0 2rem;
+  margin: 0;
+  display: flex;
+  list-style: none;
+}
+
+.component li {
+  flex: 1;
+  text-align: center;
+  padding: 1rem;
+}
+
+.active > a {
+  color: #fff !important;
+}
+
+.component li a {
+  font-size: 1rem;
+  color: #6f6f6f;
+  text-decoration: none;
+}
+
+.active {
+  border-bottom: 3px solid #fff;
+}

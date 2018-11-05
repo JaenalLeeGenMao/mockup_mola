@@ -1,0 +1,129 @@
+.layer__grid_desc_wrapper {
+  position: relative;
+  z-index: 2;
+  height: 65%;
+  margin: 5% 5% 3% 5%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.layer__grid_desc_wrapper.playlist {
+  height: 30%;
+}
+
+.layer__grid_desc_background {
+  position: absolute;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.layer__grid_desc_background.mobile {
+  width: 100vw;
+  height: 85vh;
+  top: -175%;
+  left: -5%;
+}
+
+.layer__grid_desc_background.desktop {
+  width: 80vw;
+  height: 100vh;
+  top: -178%;
+  left: -15.5%;
+}
+
+.layer__grid_desc_background.mobile.playlist {
+  width: 100vw;
+  height: 85vh;
+  top: -347%;
+  left: -3%;
+}
+
+.layer__grid_desc_background.desktop.playlist {
+  width: 80vw;
+  height: 100vh;
+  top: -350%;
+  left: -13.5%;
+}
+
+.layer__grid_desc_background::after {
+  content: '';
+  background: inherit;
+  position: absolute;
+  left: 0;
+  right: 2.5%;
+  top: 0;
+  bottom: 0;
+  filter: blur(10px);
+}
+
+.layer__grid_desc_content {
+  position: relative;
+  z-index: 2;
+}
+
+.layer__grid_desc_content h1 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  line-height: 15px;
+}
+
+.layer__grid_desc_content p,
+.layer__grid_desc_content b,
+.layer__grid_desc_content i,
+.layer__grid_desc_content strong,
+.layer__grid_desc_content span {
+  font-size: 1.2rem;
+  letter-spacing: 1.07px;
+  line-height: 1.8rem;
+}
+
+/* .layer__grid_desc_content i{
+  font-size: 14px;
+  letter-spacing: 1.24px;
+  line-height: 16px;
+} */
+.layer__grid_desc_header {
+  height: 40%;
+  opacity: 1;
+  padding: 2.5% 5%;
+  overflow: hidden;
+}
+
+.layer__grid_desc_breakpoint {
+  opacity: 1;
+  margin: 2.5% 5%;
+  height: 0;
+}
+
+.layer__grid_desc_footer {
+  height: 40%;
+  opacity: 1;
+  margin: 0 5%;
+  overflow: hidden;
+}
+
+.layer__grid_desc_footer_quote {
+  display: block;
+  padding: 2.5% 0;
+}
+
+/* mobile Styles */
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .layer__grid_desc_wrapper {
+    margin: 60% 5% 0%;
+    height: auto;
+  }
+
+  .layer__grid_desc_header p,
+  .layer__grid_desc_footer i,
+  .layer__grid_desc_content strong {
+    font-size: 0.9rem;
+    line-height: 1.5rem;
+    text-align: center;
+  }
+}

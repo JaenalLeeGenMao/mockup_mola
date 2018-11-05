@@ -1,0 +1,29 @@
+@import '../variables.css';
+
+.root {
+  margin-bottom: 3rem;
+}
+
+.label {
+  color: #6f6f6f;
+}
+
+.component {
+  margin-top: 0.5rem;
+  background: none;
+  padding: 1rem 0;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #1a202f;
+  color: #fff;
+  outline: none;
+}
+
+.container > div > div > div,
+.container > div > div:nth-child(1) {
+  width: 100%;
+}
+
+div.react-datepicker__input-container {
+  width: 100%;
+}

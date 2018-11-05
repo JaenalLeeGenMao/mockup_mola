@@ -42,16 +42,10 @@ function createCompilationPromise(name, compiler, config) {
       const timeEnd = new Date();
       const time = timeEnd.getTime() - timeStart.getTime();
       if (stats.hasErrors()) {
-        console.info(
-          `[${format(timeEnd)}] Failed to compile '${name}' after ${time} ms`,
-        );
+        console.info(`[${format(timeEnd)}] Failed to compile '${name}' after ${time} ms`);
         reject(new Error('Compilation failed!'));
       } else {
-        console.info(
-          `[${format(
-            timeEnd,
-          )}] Finished '${name}' compilation after ${time} ms`,
-        );
+        console.info(`[${format(timeEnd)}] Finished '${name}' compilation after ${time} ms`);
         resolve(stats);
       }
     });
@@ -75,56 +69,39 @@ async function start() {
   clientConfig.entry.client = ['./tools/lib/webpackHotDevClient']
     .concat(clientConfig.entry.client)
     .sort((a, b) => b.includes('polyfill') - a.includes('polyfill'));
-  clientConfig.output.filename = clientConfig.output.filename.replace(
-    'chunkhash',
-    'hash',
-  );
+  clientConfig.output.filename = clientConfig.output.filename.replace('chunkhash', 'hash');
   clientConfig.output.chunkFilename = clientConfig.output.chunkFilename.replace(
     'chunkhash',
-    'hash',
+    'hash'
   );
-  clientConfig.module.rules = clientConfig.module.rules.filter(
-    x => x.loader !== 'null-loader',
-  );
+  clientConfig.module.rules = clientConfig.module.rules.filter(x => x.loader !== 'null-loader');
   clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
   // Configure server-side hot module replacement
+  //   const serverConfig = webpackConfig.find(config => config.name === 'server');
   const serverConfig = webpackConfig.find(config => config.name === 'server');
   serverConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
-  serverConfig.output.hotUpdateChunkFilename =
-    'updates/[id].[hash].hot-update.js';
-  serverConfig.module.rules = serverConfig.module.rules.filter(
-    x => x.loader !== 'null-loader',
-  );
+  serverConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
+  serverConfig.module.rules = serverConfig.module.rules.filter(x => x.loader !== 'null-loader');
   serverConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
   // Configure compilation
   await run(clean);
   const multiCompiler = webpack(webpackConfig);
-  const clientCompiler = multiCompiler.compilers.find(
-    compiler => compiler.name === 'client',
-  );
-  const serverCompiler = multiCompiler.compilers.find(
-    compiler => compiler.name === 'server',
-  );
-  const clientPromise = createCompilationPromise(
-    'client',
-    clientCompiler,
-    clientConfig,
-  );
-  const serverPromise = createCompilationPromise(
-    'server',
-    serverCompiler,
-    serverConfig,
-  );
+  const clientCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'client');
+  //   const serverCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'server');
+  const serverCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'server');
+  const clientPromise = createCompilationPromise('client', clientCompiler, clientConfig);
+  //   const serverPromise = createCompilationPromise('server', serverCompiler, serverConfig);
+  const serverPromise = createCompilationPromise('server', serverCompiler, serverConfig);
 
   // https://github.com/webpack/webpack-dev-middleware
   server.use(
     webpackDevMiddleware(clientCompiler, {
       publicPath: clientConfig.output.publicPath,
       logLevel: 'silent',
-      watchOptions,
-    }),
+      watchOptions
+    })
   );
 
   // https://github.com/glenjamin/webpack-hot-middleware
@@ -133,6 +110,7 @@ async function start() {
   let appPromise;
   let appPromiseResolve;
   let appPromiseIsResolved = true;
+  //   serverCompiler.hooks.compile.tap('server', () => {
   serverCompiler.hooks.compile.tap('server', () => {
     if (!appPromiseIsResolved) return;
     appPromiseIsResolved = false;
@@ -142,9 +120,7 @@ async function start() {
 
   let app;
   server.use((req, res) => {
-    appPromise
-      .then(() => app.handle(req, res))
-      .catch(error => console.error(error));
+    appPromise.then(() => app.handle(req, res)).catch(error => console.error(error));
   });
 
   function checkForUpdate(fromUpdate) {
@@ -168,9 +144,7 @@ async function start() {
           console.info(`${hmrPrefix}Nothing hot updated.`);
         } else {
           console.info(`${hmrPrefix}Updated modules:`);
-          updatedModules.forEach(moduleId =>
-            console.info(`${hmrPrefix} - ${moduleId}`),
-          );
+          updatedModules.forEach(moduleId => console.info(`${hmrPrefix} - ${moduleId}`));
           checkForUpdate(true);
         }
       })
@@ -178,13 +152,13 @@ async function start() {
         if (['abort', 'fail'].includes(app.hot.status())) {
           console.warn(`${hmrPrefix}Cannot apply update.`);
           delete require.cache[require.resolve('../build/server')];
+          //   delete require.cache[require.resolve('../build/server')];
           // eslint-disable-next-line global-require, import/no-unresolved
           app = require('../build/server').default;
+          //   app = require('../build/server').default;
           console.warn(`${hmrPrefix}App has been reloaded.`);
         } else {
-          console.warn(
-            `${hmrPrefix}Update failed: ${error.stack || error.message}`,
-          );
+          console.warn(`${hmrPrefix}Update failed: ${error.stack || error.message}`);
         }
       });
   }
@@ -207,6 +181,7 @@ async function start() {
 
   // Load compiled src/server.js as a middleware
   // eslint-disable-next-line global-require, import/no-unresolved
+  //   app = require('../build/server').default;
   app = require('../build/server').default;
   appPromiseIsResolved = true;
   appPromiseResolve();
@@ -219,10 +194,11 @@ async function start() {
         server: 'src/server.js',
         middleware: [server],
         open: !process.argv.includes('--silent'),
-        ...(isDebug ? {} : { notify: false, ui: false }),
+        ...{ notify: false, ui: false }
+        // ...(isDebug ? {} : { notify: false, ui: false })
       },
-      (error, bs) => (error ? reject(error) : resolve(bs)),
-    ),
+      (error, bs) => (error ? reject(error) : resolve(bs))
+    )
   );
 
   const timeEnd = new Date();

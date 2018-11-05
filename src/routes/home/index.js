@@ -8,25 +8,23 @@
  */
 
 import React from 'react';
-import Home from './Home';
-import Layout from '../../components/Layout';
+import HomeDesktop from './desktop';
+import HomeMobile from './mobile';
+import MolaLayout from '@components/Molalayout';
 
-async function action({ fetch }) {
-  const resp = await fetch('/graphql', {
-    body: JSON.stringify({
-      query: '{news{title,link,content}}',
-    }),
-  });
-  const { data } = await resp.json();
-  if (!data || !data.news) throw new Error('Failed to load the news feed.');
+async function action({ isMobile }) {
   return {
-    title: 'React Starter Kit',
+    title: 'Mola - Watch TV Shows Online, Watch Movies Online',
     chunks: ['home'],
-    component: (
-      <Layout>
-        <Home news={data.news} />
-      </Layout>
-    ),
+    component: isMobile ? (
+      <MolaLayout>
+        <HomeMobile />
+      </MolaLayout>
+    ) : (
+      <MolaLayout>
+        <HomeDesktop />
+      </MolaLayout>
+    )
   };
 }
 

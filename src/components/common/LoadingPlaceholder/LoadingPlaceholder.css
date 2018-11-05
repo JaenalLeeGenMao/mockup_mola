@@ -1,0 +1,172 @@
+.loadingPlaceholder {
+  -webkit-animation-duration: 3.6s;
+  -moz-animation-duration: 3.6s;
+  -o-animation-duration: 3.6s;
+  animation-duration: 3.6s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-timing-function: ease-in-out;
+  -o-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+.lightAnimation {
+  -webkit-animation-name: lightShimmerAnimation;
+  -moz-animation-name: lightShimmerAnimation;
+  -o-animation-name: lightShimmerAnimation;
+  animation-name: lightShimmerAnimation;
+}
+
+.darkAnimation {
+  -webkit-animation-name: darkShimmerAnimation;
+  -moz-animation-name: darkShimmerAnimation;
+  -o-animation-name: darkShimmerAnimation;
+  animation-name: darkShimmerAnimation;
+}
+
+@-webkit-keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #333;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@-moz-keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #333;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@-o-keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #333;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@keyframes darkShimmerAnimation {
+  from {
+    background-color: #1a1a1a;
+  }
+
+  25% {
+    background-color: #313131;
+  }
+
+  50% {
+    background-color: #1a1a1a;
+  }
+
+  to {
+    background-color: #1a1a1a;
+  }
+}
+
+@-webkit-keyframes lightShimmerAnimation {
+  from {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  25% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  to {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+@-moz-keyframes lightShimmerAnimation {
+  from {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  25% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  to {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+@-o-keyframes lightShimmerAnimation {
+  from {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  25% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  to {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+@keyframes lightShimmerAnimation {
+  from {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  25% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  to {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}

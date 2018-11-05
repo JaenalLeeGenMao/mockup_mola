@@ -1,0 +1,99 @@
+.bannerWrapper {
+  position: relative;
+  height: 500px;
+}
+
+.bannerInner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.bannerBgImage {
+  max-width: 100%;
+  width: 100%;
+  max-height: 500px;
+  display: block;
+  object-fit: cover;
+  object-position: top;
+}
+
+.play_icon {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 20%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  z-index: 1000;
+  text-align: center;
+}
+
+.play_icon img {
+  border-radius: 50%;
+  opacity: 0.6;
+  width: 70%;
+}
+
+.play_icon span {
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: white;
+}
+
+.bannerBgImageLoading {
+  height: 500px;
+}
+
+.yearInner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+  width: 350px;
+}
+
+.yearLine {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #0045ff;
+  padding: 0;
+  width: 60%;
+}
+
+.yearInner span {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+  font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+@media screen and (max-width: 960px) {
+  .bannerWrapper,
+  .bannerBgImage,
+  .bannerBgImageLoading {
+    height: 300px;
+  }
+
+  .yearLine {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .bannerWrapper,
+  .bannerBgImage,
+  .bannerBgImageLoading {
+    height: 200px;
+  }
+
+  .yearLine {
+    width: 20%;
+  }
+}
+

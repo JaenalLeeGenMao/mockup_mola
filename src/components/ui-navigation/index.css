@@ -1,0 +1,34 @@
+@import '../variables.css';
+
+.root {
+  margin: 0;
+  padding: 2rem 5rem;
+}
+
+.title {
+  color: #2c56ff;
+  font-size: 3rem;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-top: 10rem;
+}
+
+.container > li {
+  margin-bottom: 1.5rem;
+}
+
+.container > li > a {
+  color: #6f6f6f;
+  text-decoration: none;
+  font-size: 1.4rem;
+}
+
+.container > li > a.active,
+.container > li > a:hover {
+  color: #fff;
+  position: relative;
+}

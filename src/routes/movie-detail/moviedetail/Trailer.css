@@ -1,0 +1,17 @@
+.trailer_box {
+  padding: 5px 28px 5px;
+  margin: 15px 0 20px;
+  height: auto;
+  position: relative;
+  left: -13px;
+}
+
+.inner_box {
+  background: white;
+  width: 470px;
+  position: relative;
+}
+
+.inner_box img:hover {
+  cursor: pointer;
+}

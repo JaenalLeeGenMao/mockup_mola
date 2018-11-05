@@ -1,0 +1,53 @@
+@import '../variables.css';
+
+.container {
+  clear: both;
+}
+
+.component {
+  float: left;
+  margin-top: 1rem;
+  margin-right: 2rem;
+}
+
+.component input {
+  margin-right: 0.5rem;
+}
+
+.component label {
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  top: 0.2rem;
+}
+
+.label {
+  color: #6f6f6f;
+}
+
+.radioLongDesc {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.componentItem {
+  flex: 50%;
+  color: #fff;
+  cursor: pointer;
+}
+
+.componentItem label {
+  display: flex;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+.componentItem label div:nth-child(2) {
+  margin-top: 0.1rem;
+}
+
+.componentItem label p {
+  font-size: 1rem;
+  color: #6f6f6f;
+}

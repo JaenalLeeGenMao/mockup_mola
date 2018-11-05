@@ -1,0 +1,39 @@
+.container_foter_link {
+  display: flex;
+  list-style: none;
+  padding: 0 20rem;
+}
+
+@media only screen and (max-width: 1024px) {
+  .container_foter_link {
+    padding: 0 1rem;
+  }
+}
+
+/* .container_foter_link li::before {
+  content: '-';
+  color: #fff;
+  padding: 0 20px;
+  position: relative;
+  left: -40px;
+} */
+
+.container_foter_link li:first-child::before {
+  display: none;
+}
+
+.container_foter_link li {
+  flex: 1;
+  text-align: center;
+  padding: 1rem;
+}
+
+.container_foter_link li a {
+  font-size: 1.2rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.container_foter_link li a:hover {
+  text-decoration: underline;
+}

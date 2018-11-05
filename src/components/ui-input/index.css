@@ -1,0 +1,57 @@
+@import '../variables.css';
+
+.root {
+  margin-bottom: 3rem;
+}
+
+.label {
+  color: #6f6f6f;
+  font-weight: lighter;
+}
+
+.container {
+  position: relative;
+}
+
+.transparent,
+.box {
+  padding: 1rem 0;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.transparent {
+  background: none;
+  border-bottom: 1px solid #1a202f;
+  color: #fff;
+}
+
+.transparent:focus {
+  border-bottom: 1px solid#fff;
+}
+
+.box {
+  background: #343434;
+  border-radius: 4px;
+  color: #fff;
+  padding: 1.5rem 1.5%;
+  width: 97%;
+  margin-top: 0.5rem;
+}
+
+.box:focus {
+  background: #2d2d2d;
+}
+
+.eye {
+  cursor: pointer;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #0e1d3d inset;
+  -webkit-text-fill-color: #fff !important;
+}

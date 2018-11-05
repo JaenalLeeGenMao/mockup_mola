@@ -9,13 +9,12 @@
 
 import path from 'path';
 import express from 'express';
+import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
-import { graphql } from 'graphql';
-import expressGraphQL from 'express-graphql';
-import jwt from 'jsonwebtoken';
-import nodeFetch from 'node-fetch';
+// import { graphql } from 'graphql';
+// import nodeFetch from 'node-fetch';
+// import request from 'request';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
@@ -23,16 +22,15 @@ import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
-import createFetch from './createFetch';
-import passport from './passport';
+// import createFetch from './createFetch';
 import router from './router';
-import models from './data/models';
-import schema from './data/schema';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
+// import { setUserVariable } from './actions/user';
 import config from './config';
+// import Auth from '@api/auth';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -60,65 +58,41 @@ app.set('trust proxy', config.trustProxy);
 // -----------------------------------------------------------------------------
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
+app.use(csurf({ cookie: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//
-// Authentication
-// -----------------------------------------------------------------------------
-app.use(
-  expressJwt({
-    secret: config.auth.jwt.secret,
-    credentialsRequired: false,
-    getToken: req => req.cookies.id_token,
-  }),
-);
-// Error handler for express-jwt
-app.use((err, req, res, next) => {
-  // eslint-disable-line no-unused-vars
-  if (err instanceof Jwt401Error) {
-    console.error('[express-jwt-error]', req.cookies.id_token);
-    // `clearCookie`, otherwise user can't use web-app until cookie expires
-    res.clearCookie('id_token');
+const domain = config.endpoints.domain;
+
+// set a cookie
+app.use(function(req, res, next) {
+  // check if client sent cookie
+  var cookie = req.cookies;
+  if (`${cookie.UID}` === 'undefined' || cookie.UID === undefined) {
+    if (req.query.uid) {
+      res.cookie('UID', req.query.uid, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+    }
   }
-  next(err);
+  if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
+    res.cookie('SID', req.cookies.SID, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+  }
+  next(); // <-- important!
 });
 
-app.use(passport.initialize());
+app.get('/accounts/signin', (req, res) => {
+  return res.redirect(domain || 'http://jaenal.mola.tv');
+});
 
-app.get(
-  '/login/facebook',
-  passport.authenticate('facebook', {
-    scope: ['email', 'user_location'],
-    session: false,
-  }),
-);
-app.get(
-  '/login/facebook/return',
-  passport.authenticate('facebook', {
-    failureRedirect: '/login',
-    session: false,
-  }),
-  (req, res) => {
-    const expiresIn = 60 * 60 * 24 * 180; // 180 days
-    const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
-    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
-  },
-);
+app.get('/accounts', (req, res) => {
+  return res.redirect(domain || 'http://localhost:3000/');
+});
 
-//
-// Register API middleware
-// -----------------------------------------------------------------------------
-app.use(
-  '/graphql',
-  expressGraphQL(req => ({
-    schema,
-    graphiql: __DEV__,
-    rootValue: { request: req },
-    pretty: __DEV__,
-  })),
-);
+app.get('/signout', (req, res) => {
+  res.clearCookie('UID');
+  res.clearCookie('SID');
+  // res.clearCookie('_exp');
+  return res.redirect(domain || 'http://jaenal.mola.tv');
+});
 
 //
 // Register server-side rendering middleware
@@ -134,41 +108,103 @@ app.get('*', async (req, res, next) => {
       styles.forEach(style => css.add(style._getCss()));
     };
 
-    // Universal HTTP client
-    const fetch = createFetch(nodeFetch, {
-      baseUrl: config.api.serverUrl,
-      cookie: req.headers.cookie,
-      schema,
-      graphql,
-    });
-
     const initialState = {
-      user: req.user || null,
+      user: req.user || {
+        uid: req.cookies.UID === 'undefined' ? '' : req.cookies.UID,
+        sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
+        firstName: '',
+        lastName: '',
+        email: '',
+        token: '',
+        refreshToken: '',
+        expire: '',
+        type: '',
+        lang: 'en'
+      },
+      runtime: {
+        csrf: req.csrfToken()
+      }
     };
 
-    const store = configureStore(initialState, {
-      fetch,
-      // I should not use `history` on server.. but how I do redirection? follow universal-router
-    });
+    const store = configureStore(initialState);
 
-    store.dispatch(
-      setRuntimeVariable({
-        name: 'initialNow',
-        value: Date.now(),
-      }),
-    );
+    store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }));
+    // store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || '' }));
+
+    // let apiCall;
+    // let result;
+    // let accessTokenLifespan = -1;
+    // const accessToken = req.cookies._at;
+    // const tokenExpiry = req.cookies._exp;
+    // const getUserInfo = async (token, updateCookie = true) => {
+    //   apiCall = await Auth.getUserInfo(token);
+    //   if (apiCall.meta.status === 'success') {
+    //     result = { ...result, ...apiCall.data };
+    //     Object.keys(result).forEach(function(key) {
+    //       store.dispatch(setUserVariable({ name: key, value: result[key] }));
+    //     });
+
+    //     if (updateCookie) {
+    //       const oneMonth = 30 * 24 * result.expire * 1000;
+    //       res.cookie('_at', result.token, {
+    //         maxAge: oneMonth,
+    //         httpOnly: true
+    //         // secure: !__DEV__,
+    //       });
+    //       res.cookie('_exp', oneMonth, {
+    //         maxAge: oneMonth,
+    //         httpOnly: true
+    //         // secure: !__DEV__,
+    //       });
+    //     }
+    //   }
+    // };
+
+    // if (accessToken && tokenExpiry) {
+    //   accessTokenLifespan = tokenExpiry - Date.now() / 1000;
+    //   if (accessTokenLifespan < 0) {
+    //     res.cookie('_at', '', { expires: new Date(0) });
+    //     res.cookie('_exp', '', { expires: new Date(0) });
+    //     return res.redirect(req.originalUrl);
+    //   } else if (accessTokenLifespan < 12 * 3600 * 1000) {
+    //     // if lifespan of token is less than 12 hours then get new access token
+    //     apiCall = await Auth.updateAuth(accessToken);
+
+    //     if (apiCall.meta.status === 'success') {
+    //       result = { ...apiCall.data };
+    //       await getUserInfo(apiCall.data.token);
+    //     }
+    //   } else {
+    //     /** GET EXISTING USER INFO  */
+    //     await getUserInfo(accessToken, false);
+    //   }
+    // } else if (req.query.code) {
+    //   /** ON CLICK LOGIN  */
+    //   apiCall = await Auth.getAuth({
+    //     code: req.query.code,
+    //     redirect_uri: domain || 'http://jaenal.mola.tv'
+    //   });
+    //   if (apiCall.meta.status === 'success') {
+    //     result = { ...apiCall.data };
+    //     await getUserInfo(apiCall.data.token);
+    //   }
+    // }
+
+    const userAgent = req.get('User-Agent');
+    const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
       insertCss,
-      fetch,
+      // fetch,
       // The twins below are wild, be careful!
       pathname: req.path,
       query: req.query,
       // You can access redux through react-redux connect
       store,
       storeSubscription: null,
+      isMobile
     };
 
     const route = await router.resolve(context);
@@ -179,9 +215,8 @@ app.get('*', async (req, res, next) => {
     }
 
     const data = { ...route };
-    data.children = ReactDOM.renderToString(
-      <App context={context}>{route.component}</App>,
-    );
+
+    data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
     const scripts = new Set();
@@ -198,8 +233,9 @@ app.get('*', async (req, res, next) => {
 
     data.scripts = Array.from(scripts);
     data.app = {
-      apiUrl: config.api.clientUrl,
+      apiUrl: config.endpoints.clientUrl,
       state: context.store.getState(),
+      isMobile: context.isMobile
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
@@ -227,7 +263,7 @@ app.use((err, req, res, next) => {
       styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
     >
       {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
-    </Html>,
+    </Html>
   );
   res.status(err.status || 500);
   res.send(`<!doctype html>${html}`);
@@ -236,12 +272,9 @@ app.use((err, req, res, next) => {
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-const promise = models.sync().catch(err => console.error(err.stack));
 if (!module.hot) {
-  promise.then(() => {
-    app.listen(config.port, () => {
-      console.info(`The server is running at http://localhost:${config.port}/`);
-    });
+  app.listen(config.port, () => {
+    console.info(`The server is running at http://localhost:${config.port}/`);
   });
 }
 

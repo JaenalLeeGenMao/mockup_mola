@@ -10,7 +10,13 @@
 // Prettier configuration
 // https://prettier.io/docs/en/configuration.html
 module.exports = {
-  printWidth: 80,
+  useTabs: false,
+  printWidth: 200,
+  tabWidth: 2,
   singleQuote: true,
-  trailingComma: 'all',
+  trailingComma: 'none',
+  jsxBracketSameLine: false,
+  parser: 'babylon',
+  noSemi: true,
+  rcVerbose: true
 };

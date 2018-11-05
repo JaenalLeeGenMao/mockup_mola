@@ -1,0 +1,70 @@
+.genreContainer,
+.genreContainer__mobile {
+  padding-top: 100px;
+  margin: 0 auto;
+  width: 65%;
+}
+
+.genreLink {
+  display: inline-block;
+  width: 45%;
+  height: 85px;
+  text-decoration: none;
+}
+
+.genreLink span {
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+.genreContainer .genreSplit {
+  display: inline-block;
+  width: 10%;
+}
+
+.genreImgLoading {
+  width: 100%;
+  height: 50px;
+}
+
+@media screen and (max-width: 960px) {
+  .genreContainer {
+    padding: 130px 0 0;
+    width: 60%;
+  }
+
+  .genreLink .genreText {
+    display: block;
+    height: auto;
+    font-size: 30px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .genreContainer {
+    padding: 70px 0 0;
+  }
+
+  .genreLink .genreText {
+    font-size: 20px;
+  }
+
+  .genreLink {
+    margin: 10px 0;
+    height: 30px;
+  }
+
+  .genreImgLoading {
+    height: 30px;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1080px) {
+  .genreContainer {
+    padding-top: 230px;
+  }
+}

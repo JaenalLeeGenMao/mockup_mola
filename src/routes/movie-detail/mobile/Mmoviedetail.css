@@ -1,0 +1,117 @@
+.header {
+  position: absolute;
+  padding: 5%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.main_container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.trailer_moviebox {
+  white-space: nowrap;
+  overflow: auto;
+  display: -webkit-box;
+}
+
+.trailer_moviebox__inner {
+  display: inline-block;
+  margin-right: 5px;
+  margin-top: 5px;
+  max-width: 50%;
+}
+
+.trailer_moviebox img {
+  display: inline-block;
+  width: 100%;
+  height: 147px;
+  object-fit: cover;
+}
+
+.trailer_moviebox > div {
+  margin-right: 10px;
+}
+
+.trailer_moviebox_imgloading {
+  width: calc(50% - 7px);
+  height: 100px;
+  float: left;
+}
+
+.trailer_moviebox_imgloading:first-child {
+  margin-right: 14px;
+}
+
+.inner_box {
+  display: inline-grid;
+  text-align: center;
+  width: 80px;
+}
+
+.casting_photo_img {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  max-width: 100%;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.inner_box p {
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 13px;
+  white-space: normal;
+}
+
+.yearWrapper {
+  position: relative;
+}
+
+.yearInner {
+  position: absolute;
+  top: -44px;
+  left: 0;
+  color: white;
+  width: 350px;
+}
+
+.yearLine {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #0045ff;
+  padding: 0;
+  width: 256px;
+}
+
+.yearInner span {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+  font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+.yearLoading {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+}
+
+.modal_container {
+  width: 250px;
+  max-width: 100%;
+}
+
+.tooltipContent {
+  padding: 20px 0 0;
+}

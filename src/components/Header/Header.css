@@ -1,54 +1,213 @@
 /**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
+* React Starter Kit (https://www.reactstarterkit.com/)
+*
+* Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+*
+* This source code is licensed under the MIT license found in the
+* LICENSE.txt file in the root directory of this source tree.
+*/
 
 @import '../variables.css';
 
-:root {
-  --brand-color: #61dafb;
+.header__container {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+  padding: 2.5% 0 0 0;
+  z-index: 100;
+  box-sizing: border-box;
 }
 
-.root {
-  background: #373277;
-  color: #fff;
-}
-
-.container {
-  margin: 0 auto;
-  padding: 20px 0;
-  max-width: var(--max-content-width);
-}
-
-.brand {
-  color: color(var(--brand-color) lightness(+10%));
-  text-decoration: none;
-  font-size: 1.75em; /* ~28px */
-}
-
-.brandTxt {
-  margin-left: 10px;
-}
-
-.banner {
-  text-align: center;
-}
-
-.bannerTitle {
-  margin: 0;
-  padding: 10px;
-  font-weight: normal;
-  font-size: 4em;
-  line-height: 1em;
-}
-
-.bannerDesc {
+.header__notsticky {
+  position: absolute;
   padding: 0;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.25em;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header__logo_wrapper {
+  position: relative;
+  left: 2.5%;
+}
+
+.header__logo {
+  position: relative;
+  top: 5px;
+  width: 6rem;
+  height: auto;
+}
+
+.header__copy_library {
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  display: block;
+  position: relative;
+  top: 0.7rem;
+  right: -3rem;
+}
+
+.header__back_button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  width: 2rem;
+  transition: 1s ease-out;
+}
+
+.header__back_button:hover {
+  cursor: pointer;
+}
+
+.header__logo_wrap {
+  display: flex;
+  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header__action_button {
+  font-size: 1rem;
+  background: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1rem;
+  margin-top: 1rem;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.header__action_button:focus {
+  outline: none;
+}
+
+.header__action_dropdown {
+  width: 1.2rem;
+  height: 1.2rem;
+  position: absolute;
+  right: -1rem;
+  top: 50%;
+  transform: translateY(-60%);
+}
+
+.header__menu {
+  background: #fff;
+  width: 100%;
+  position: absolute;
+  bottom: -18rem;
+  padding: 3rem 0 0 0;
+}
+
+.header__menu ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 10%;
+}
+
+.header__menu ul li {
+  width: 25%;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 3rem;
+  transition: 1s ease-out;
+}
+
+.header__menu ul li a {
+  color: #000;
+}
+
+.header__menu ul li a:hover {
+  text-decoration: underline;
+}
+
+.header__library_logo_white {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: block;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMjYgMjYiPjxkZWZzPjxzdHlsZT4uYXtmaWxsOiNhOGE4YTg7fS5ie2NsaXAtcGF0aDp1cmwoI2EpO30uY3tmaWxsOiNmZmY7fTwvc3R5bGU+PGNsaXBQYXRoIGlkPSJhIj48cmVjdCBjbGFzcz0iYSIgd2lkdGg9IjI2IiBoZWlnaHQ9IjI2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MjcgLTQ0KSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsYXNzPSJiIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjI3IDQ0KSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMyIC0xMTUpIj48cmVjdCBjbGFzcz0iYyIgd2lkdGg9IjQiIGhlaWdodD0iMTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY2MSA3MykiLz48cmVjdCBjbGFzcz0iYyIgd2lkdGg9IjQiIGhlaWdodD0iNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjYxIDkxKSIvPjxyZWN0IGNsYXNzPSJjIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjcwIDgyKSIvPjxyZWN0IGNsYXNzPSJjIiB3aWR0aD0iNCIgaGVpZ2h0PSI0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NzkgODIpIi8+PHJlY3QgY2xhc3M9ImMiIHdpZHRoPSIxMyIgaGVpZ2h0PSI0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NzAgNzMpIi8+PHJlY3QgY2xhc3M9ImMiIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY3OSA5MSkiLz48L2c+PC9nPjwvc3ZnPg==) no-repeat center;
+}
+
+.header__library_logo_black {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: block;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMjYgMjYiPjxkZWZzPjxzdHlsZT4uYXtmaWxsOiNhOGE4YTg7fS5ie2NsaXAtcGF0aDp1cmwoI2EpO30uY3tmaWxsOiMwMDA7fTwvc3R5bGU+PGNsaXBQYXRoIGlkPSJhIj48cmVjdCBjbGFzcz0iYSIgd2lkdGg9IjI2IiBoZWlnaHQ9IjI2IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MjcgLTQ0KSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsYXNzPSJiIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjI3IDQ0KSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMyIC0xMTUpIj48cmVjdCBjbGFzcz0iYyIgd2lkdGg9IjQiIGhlaWdodD0iMTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY2MSA3MykiLz48cmVjdCBjbGFzcz0iYyIgd2lkdGg9IjQiIGhlaWdodD0iNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjYxIDkxKSIvPjxyZWN0IGNsYXNzPSJjIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjcwIDgyKSIvPjxyZWN0IGNsYXNzPSJjIiB3aWR0aD0iNCIgaGVpZ2h0PSI0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NzkgODIpIi8+PHJlY3QgY2xhc3M9ImMiIHdpZHRoPSIxMyIgaGVpZ2h0PSI0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NzAgNzMpIi8+PHJlY3QgY2xhc3M9ImMiIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY3OSA5MSkiLz48L2c+PC9nPjwvc3ZnPg==) no-repeat center;
+}
+
+.header__library_text p {
   margin: 0;
+  padding: 0;
+}
+
+.header__library_text p.header__library_underlined {
+  padding-bottom: 4px;
+}
+
+.header__library_wrapper {
+  padding: 6px;
+}
+
+.header__library_link_wrapper {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  position: relative;
+}
+
+.header__library_wrapper:hover .header__library_underlined,
+.header__library_link_wrapper:hover .header__library_underlined {
+  box-shadow: 0 4px 2px -2px inherit;
+}
+
+.header__library_wrapper:hover p,
+.header__library_link_wrapper:hover p {
+  text-shadow: 0.4px 0.4px;
+}
+
+.header__library_text {
+  width: 100px;
+  font-size: 1.2rem;
+  padding: 6px 2px;
+}
+
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .header__container {
+    padding: 5%;
+  }
+
+  .header__notsticky {
+    padding: 0;
+  }
+
+  .header__logo {
+    position: relative;
+    top: 0.5rem;
+    width: 7rem;
+    height: auto;
+  }
+
+  .header__menu ul li {
+    width: 50%;
+    text-align: center;
+    font-size: 0.1rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
 }
