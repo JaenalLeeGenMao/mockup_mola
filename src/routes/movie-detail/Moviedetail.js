@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
@@ -36,6 +36,7 @@ import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/Loadi
 import LazyLoad from '@components/common/Lazyload';
 import TestimoniLoading from './moviedetail/TestimoniLoading';
 import Theoplayer from '../../components/Theoplayer/Theoplayer';
+import Joyride from 'react-joyride';
 
 const Right = props => (
   <div>
@@ -49,7 +50,7 @@ const Left = props => (
   </div>
 );
 
-class Moviedetail extends React.Component {
+class Moviedetail extends Component {
   state = {
     testimoniPhoto: 'https://dummyimage.com/120x120/3cab52/ffffff',
     synopsisContent:
@@ -63,7 +64,30 @@ class Moviedetail extends React.Component {
     open: false,
     movieDetail: [],
     isLoading: true,
-    trailerMovie: ''
+    trailerMovie: '',
+
+    //tour guide, step 1 -- init state
+    startGuide: false,
+    steps: [
+      {
+        target: '.playButton',
+        content: <div className={s.tooltipContent}> You can click this play button to start watching movie</div>,
+        placement: 'bottom',
+        disableBeacon: true,
+        styles: {
+          spotlight: {
+            borderRadius: '100%'
+          }
+        }
+      },
+      {
+        target: '.trailerArea',
+        content: <div className={s.tooltipContent}>This is trailer section. You can click on this to watch the trailer of this movie.</div>,
+        placement: 'top',
+        disableBeacon: true,
+        locale: { last: 'Close' }
+      }
+    ]
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -76,18 +100,53 @@ class Moviedetail extends React.Component {
       //getMovieDetail('tt1179056');
       getMovieDetail(movieId);
     }
-    // console.log(`[Moviedetail] getDerivedStateFromProps prevState `, prevState);
     return { ...prevState, movieDetail };
   }
+
+  handleTourCallback = data => {
+    /*tour guide, step 5 -- handle callback
+    set to cookie if user has finisher or skip tour*/
+    const { type } = data;
+    const { pathLoc } = this.props;
+    if (type == 'tour:end') {
+      document.cookie = `__tour=1; path=/${pathLoc};`;
+    }
+  };
 
   componentDidUpdate(prevProps) {
     const { movieDetail } = this.props;
 
     //update loading state
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
-      this.setState({
-        isLoading: false
-      });
+      this.setState(
+        {
+          isLoading: false
+        },
+        () => {
+          /*tour guide, step 4 -- check cookie if has done tour before
+        if yes then don't start tour
+        if no then start tour*/
+          let isTourDone = _get(document, 'cookie', '')
+            .trim()
+            .split(';')
+            .filter(function(item) {
+              return item.indexOf('__tour=') >= 0;
+            });
+
+          if (isTourDone && isTourDone.length) {
+            isTourDone = isTourDone[0].split('=')[1];
+            if (!isTourDone) {
+              this.setState({
+                startGuide: true
+              });
+            }
+          } else {
+            this.setState({
+              startGuide: true
+            });
+          }
+        }
+      );
     }
   }
 
@@ -216,7 +275,7 @@ class Moviedetail extends React.Component {
   ];
 
   render() {
-    const { trailerPlaytag, open, isLoading, trailerMovie } = this.state;
+    const { trailerPlaytag, open, isLoading, trailerMovie, steps, startGuide } = this.state;
 
     const casting = {
       dots: false,
@@ -241,7 +300,7 @@ class Moviedetail extends React.Component {
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
 
-    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop : null;
+    const bannerImageLandscape = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop.landscape : null;
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
     const playCopy = 'Play movie';
@@ -289,15 +348,27 @@ class Moviedetail extends React.Component {
     // trailer temporary image
     const temporaryImg = TrailerImg;
 
+    //tour guide, step 2 -- custom style
+    const customTourStyle = {
+      buttonNext: {
+        backgroundColor: '#2c56ff'
+      },
+      buttonBack: {
+        color: '#2c56ff'
+      }
+    };
+
     // sample movie
     // const sampleMovie = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8';
 
     return (
       <Fragment>
+        {/*tour guide, step 3 -- call Joyride*/}
+        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
         <Slickcss />
         <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
         <Layout>
-          {!isLoading && <Banner bannerUrl={bannerImage.landscape ? bannerImage.landscape : 'https://dummyimage.com/1920x634/000/fff'} link={link} playBtn={Playbtn} playCopy={playCopy} />}
+          {!isLoading && <Banner bannerUrl={bannerImageLandscape ? bannerImageLandscape : 'https://dummyimage.com/1920x634/000/fff'} link={link} playBtn={Playbtn} playCopy={playCopy} />}
           {isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} />}
 
           <Frame>
