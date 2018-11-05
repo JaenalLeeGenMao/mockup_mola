@@ -7,6 +7,7 @@ import Layout from '@components/Molalayout';
 import Logo from '../../../components/Header';
 import * as movieDetailActions from '@actions/movie-detail';
 import LazyLoad from '@components/common/Lazyload';
+import _get from 'lodash/get';
 
 import Banner from './Banner';
 import Synopsis from './Synopsis';
@@ -45,10 +46,7 @@ class Mmoviedetail extends Component {
   componentDidUpdate(prevProps) {
     const { movieDetail } = this.props;
 
-    if (
-      prevProps.movieDetail.meta.status !== movieDetail.meta.status &&
-      movieDetail.meta.status !== 'loading'
-    ) {
+    if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
       this.setState({
         isLoading: false
       });
@@ -108,9 +106,7 @@ class Mmoviedetail extends Component {
     const { open, isLoading, trailerPlaytag, trailerMovie } = this.state;
 
     //get moviedetaildata from redux stored in props
-    const {
-      movieDetail: { data: movieDetailData }
-    } = this.props;
+    const { movieDetail: { data: movieDetailData } } = this.props;
     const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images : null;
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
@@ -136,11 +132,8 @@ class Mmoviedetail extends Component {
     const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
 
     //get quotes/testimoni data
-    const testimoniDt = movieDetailData.length > 0 ? movieDetailData[0].quotes[0].attributes : null;
-    const testimoniSrc =
-      testimoniDt && testimoniDt.author
-        ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}`
-        : '';
+    const testimoniDt = _get(movieDetailData, '[0].quotes[0].attributes', null);
+    const testimoniSrc = testimoniDt && testimoniDt.author ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}` : '';
 
     // Trailer copy toogle
     const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers : [];
@@ -148,10 +141,7 @@ class Mmoviedetail extends Component {
     const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
 
     // css toogle
-    let ifOne =
-      trailerDt.length === 1
-        ? s.trailer_photo_container + ' ' + s.trailer_ifone
-        : s.trailer_photo_container;
+    let ifOne = trailerDt.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container;
 
     // trailer temporary image
     const temporaryImg = TrailerImg;
@@ -161,25 +151,11 @@ class Mmoviedetail extends Component {
         <Layout>
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
-            {!isLoading && (
-              <Banner
-                year={year}
-                imageTitle={bannerImgTitle}
-                bannerUrl={bannerImage ? bannerImage.large : null}
-                link={link}
-                playBtn={Playbtn}
-                playCopy={banner.playCopy}
-              />
-            )}
+            {!isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage ? bannerImage.large : null} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
             {isLoading && <BannerLoading />}
 
-            {isLoading && (
-              <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr} />
-            )}
-            {!isLoading &&
-              synopsisContent && (
-                <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} />
-              )}
+            {isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr} />}
+            {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} />}
 
             {!isLoading &&
               trailerDt.length > 0 && (
@@ -202,15 +178,7 @@ class Mmoviedetail extends Component {
               )}
             {isLoading && (
               <Trailer trailerTitle={trailerCopy} trailerText={true}>
-                <div className={s.trailer_moviebox}>
-                  {trailerDtPlaceholder.map(obj => (
-                    <LoadingPlaceholder
-                      key={obj.toString()}
-                      isLight
-                      className={s.trailer_moviebox_imgloading}
-                    />
-                  ))}
-                </div>
+                <div className={s.trailer_moviebox}>{trailerDtPlaceholder.map(obj => <LoadingPlaceholder key={obj.toString()} isLight className={s.trailer_moviebox_imgloading} />)}</div>
               </Trailer>
             )}
           </div>
@@ -220,10 +188,7 @@ class Mmoviedetail extends Component {
                 <Fragment key={id}>
                   <div className={s.inner_box}>
                     <LoadingPlaceholder isLight className={s.casting_photo_img} />
-                    <LoadingPlaceholder
-                      isLight
-                      style={{ width: '80%', height: '12px', margin: '5px auto 0' }}
-                    />
+                    <LoadingPlaceholder isLight style={{ width: '80%', height: '12px', margin: '5px auto 0' }} />
                   </div>
                 </Fragment>
               ))}
@@ -234,11 +199,7 @@ class Mmoviedetail extends Component {
               <Casting castTitle={casting.castTitle}>
                 {castingArtists.map(({ id, attributes }) => (
                   <Fragment key={id}>
-                    <LazyLoad
-                      containerClassName={s.inner_box}
-                      src={attributes.imageUrl}
-                      className={s.casting_photo_img}
-                    >
+                    <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
                       <p>{attributes.name}</p>
                     </LazyLoad>
                   </Fragment>
@@ -246,22 +207,10 @@ class Mmoviedetail extends Component {
               </Casting>
             )}
           {isLoading && <TestimoniLoading />}
-          {!isLoading &&
-            testimoniDt &&
-            testimoniDt.text && (
-              <Testimoni
-                testimoniContent={testimoniDt.text}
-                testimoniSource={testimoniSrc}
-                testimoniPhotoUrl={testimoniDt.imageUrl}
-              />
-            )}
+          {!isLoading && testimoniDt && testimoniDt.text && <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={testimoniDt.imageUrl} />}
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
-              <Theoplayer
-                movieUrl={trailerMovie}
-                handleOnPlay={this.handleOnPlay}
-                handleOnTime={this.handleOnTime}
-              />
+              <Theoplayer movieUrl={trailerMovie} handleOnPlay={this.handleOnPlay} handleOnTime={this.handleOnTime} />
             </div>
           </Modal>
         </Layout>
@@ -280,10 +229,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Mmoviedetail);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Mmoviedetail);

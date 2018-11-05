@@ -56,7 +56,7 @@ class Html extends React.Component {
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
           {scripts.map(script => <script key={script} src={script} />)}
-          <link rel="stylesheet" type="text/css" href="./Theoplayer/Theoverstyle.css" />
+          {/* <link rel="stylesheet" type="text/css" href="./Theoplayer/Theoverstyle.css" /> */}
         </body>
       </html>
     );

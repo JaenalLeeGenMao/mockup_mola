@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -55,8 +56,7 @@ class Moviedetail extends React.Component {
       'Autobots and Decepticons are at war, with humans on the sidelines. Optimus Prime is gone.The key to saving our future lies buried in the secrets of the past,' +
       'in the hidden history of Transformers on Earth. Swedish artist Anders Weberg, who according to his website is currently based in the small village Kölleröd.',
     synopsisDirected: 'Komarudin',
-    testimoniContent:
-      'The story-telling lends depth to the characters, leaving you emotionally invested in them. You feel their fear, regrets, insecurities and vulnerability.',
+    testimoniContent: 'The story-telling lends depth to the characters, leaving you emotionally invested in them. You feel their fear, regrets, insecurities and vulnerability.',
     testimoniSource: '- Zlatan Ibrahimovic, Footballer',
     trailerTitle: 'MOVIE TRAILER',
     trailerPlaytag: 'Play Trailer',
@@ -84,10 +84,7 @@ class Moviedetail extends React.Component {
     const { movieDetail } = this.props;
 
     //update loading state
-    if (
-      prevProps.movieDetail.meta.status !== movieDetail.meta.status &&
-      movieDetail.meta.status !== 'loading'
-    ) {
+    if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
       this.setState({
         isLoading: false
       });
@@ -127,9 +124,6 @@ class Moviedetail extends React.Component {
   }) => {
     // Parse Current Url
     const urlParams = queryString.parse(window.location.search);
-
-    // Get list of channels
-    const channels = dsClient.channels();
 
     // Get & Parse UA
     const UA = new UaParser();
@@ -247,16 +241,14 @@ class Moviedetail extends React.Component {
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
 
-    const bannerImage =
-      movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop : null;
+    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop : null;
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
     const playCopy = 'Play movie';
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
     const title = movieDetailData.length > 0 ? movieDetailData[0].title : null;
-    const titleImage =
-      movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
+    const titleImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
     const year = movieDetailData.length > 0 ? movieDetailData[0].year : null;
 
     const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
@@ -281,11 +273,8 @@ class Moviedetail extends React.Component {
     // console.log('stars', castingArtists)
 
     //get quotes/testimoni data
-    const testimoniDt = movieDetailData.length > 0 ? movieDetailData[0].quotes[0].attributes : null;
-    const testimoniSrc =
-      testimoniDt && testimoniDt.author
-        ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}`
-        : '';
+    const testimoniDt = _get(movieDetailData, '[0].quotes[0].attributes', null);
+    const testimoniSrc = testimoniDt && testimoniDt.author ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}` : '';
     // console.log('testimoni',testimoniDt)
 
     // Trailer copy toogle
@@ -295,10 +284,7 @@ class Moviedetail extends React.Component {
     // console.log('trailler',trailerDt);
 
     // css toogle
-    let ifOne =
-      trailerDt.length === 1
-        ? s.trailer_photo_container + ' ' + s.trailer_ifone
-        : s.trailer_photo_container;
+    let ifOne = trailerDt.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container;
 
     // trailer temporary image
     const temporaryImg = TrailerImg;
@@ -309,39 +295,13 @@ class Moviedetail extends React.Component {
     return (
       <Fragment>
         <Slickcss />
-        <Logo
-          isDark={movieDetailData.isDark ? movieDetailData.isDark : 1}
-          libraryOff
-          {...this.props}
-        />
+        <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
         <Layout>
-          {!isLoading && (
-            <Banner
-              bannerUrl={
-                bannerImage.landscape
-                  ? bannerImage.landscape
-                  : 'https://dummyimage.com/1920x634/000/fff'
-              }
-              link={link}
-              playBtn={Playbtn}
-              playCopy={playCopy}
-            />
-          )}
+          {!isLoading && <Banner bannerUrl={bannerImage.landscape ? bannerImage.landscape : 'https://dummyimage.com/1920x634/000/fff'} link={link} playBtn={Playbtn} playCopy={playCopy} />}
           {isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} />}
 
           <Frame>
-            {!isLoading &&
-              titleImage && (
-                <img
-                  className={s.titleImage}
-                  src={
-                    titleImage.landscape
-                      ? titleImage.landscape
-                      : 'https://dummyimage.com/453x170/fff/000'
-                  }
-                  alt={title}
-                />
-              )}
+            {!isLoading && titleImage && <img className={s.titleImage} src={titleImage.landscape ? titleImage.landscape : 'https://dummyimage.com/453x170/fff/000'} alt={title} />}
 
             {!isLoading &&
               year && (
@@ -353,30 +313,15 @@ class Moviedetail extends React.Component {
                 </div>
               )}
 
-            {!isLoading &&
-              synopsisContent && (
-                <Synopsis
-                  synopsisContent={synopsisContent}
-                  directedBy={directedByArr}
-                  synopsisLabel={synopsisLabel}
-                />
-              )}
+            {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} synopsisLabel={synopsisLabel} />}
 
             {isLoading && <SynopsisLoading synopsisLabel={synopsisLabel} />}
-            {isLoading && (
-              <TestimoniLoading trailerTitle={'MOVIE TRAILER'} trailerText={trailerIsShow} />
-            )}
+            {isLoading && <TestimoniLoading trailerTitle={'MOVIE TRAILER'} trailerText={trailerIsShow} />}
 
             {!isLoading &&
               testimoniDt &&
               testimoniDt.text && (
-                <Testimoni
-                  testimoniContent={testimoniDt.text}
-                  testimoniPhotoUrl={testimoniDt.imageUrl}
-                  trailerTitle={'MOVIE TRAILER'}
-                  testimoniSource={testimoniSrc}
-                  trailerText={trailerIsShow}
-                />
+                <Testimoni testimoniContent={testimoniDt.text} testimoniPhotoUrl={testimoniDt.imageUrl} trailerTitle={'MOVIE TRAILER'} testimoniSource={testimoniSrc} trailerText={trailerIsShow} />
               )}
           </Frame>
 
@@ -387,22 +332,13 @@ class Moviedetail extends React.Component {
                   {castingArtists.length > 0 &&
                     castingArtists.map(({ id, attributes }) => (
                       <div key={id} className={s.casting_photo_container}>
-                        <LazyLoad
-                          containerClassName={s.casting_photo_img_wrapper}
-                          alt={attributes.name}
-                          className={s.casting_photo_img}
-                          src={attributes.imageUrl}
-                        />
+                        <LazyLoad containerClassName={s.casting_photo_img_wrapper} alt={attributes.name} className={s.casting_photo_img} src={attributes.imageUrl} />
                         <p>{attributes.name}</p>
                       </div>
                     ))}
                   {castingArtists.length == 0 && (
                     <div className={s.casting_photo_container}>
-                      <LazyLoad
-                        containerClassName={s.casting_photo_img_wrapper}
-                        className={s.casting_photo_img}
-                        src={CastDefault}
-                      >
+                      <LazyLoad containerClassName={s.casting_photo_img_wrapper} className={s.casting_photo_img} src={CastDefault}>
                         <p>Unknown</p>
                       </LazyLoad>
                     </div>
@@ -418,10 +354,7 @@ class Moviedetail extends React.Component {
                       <div className={s.casting_photo_img_wrapper}>
                         <LoadingPlaceholder isLight className={s.casting_photo_img} />
                       </div>
-                      <LoadingPlaceholder
-                        isLight
-                        style={{ width: '80%', height: '12px', margin: '7px auto 0' }}
-                      />
+                      <LoadingPlaceholder isLight style={{ width: '80%', height: '12px', margin: '7px auto 0' }} />
                     </div>
                   ))}
                 </Slider>
@@ -459,11 +392,7 @@ class Moviedetail extends React.Component {
           </Secondframe>
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
-              <Theoplayer
-                movieUrl={trailerMovie}
-                handleOnPlay={this.handleOnPlay}
-                handleOnTime={this.handleOnTime}
-              />
+              <Theoplayer movieUrl={trailerMovie} handleOnPlay={this.handleOnPlay} handleOnTime={this.handleOnTime} />
             </div>
           </Modal>
         </Layout>
