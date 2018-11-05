@@ -1,6 +1,7 @@
 .trailer_box {
-  padding: 0 28px 32px;
-  height: 100px;
+  padding: 5px 28px 5px;
+  margin: 15px 0 20px;
+  height: auto;
   position: relative;
   left: -13px;
 }

@@ -58,7 +58,7 @@ const routes = {
     // Movie details
     {
       path: '/movie-detail',
-      load: () => import(/* webpackChunkName: 'admin' */ './movie-detail'),
+      load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
       children: [
         {
           path: '/:id'
@@ -68,7 +68,7 @@ const routes = {
     // Movie Library
     {
       path: '/movie-library',
-      load: () => import(/* webpackChunkName: 'admin' */ './movie-library'),
+      load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
       children: [
         {
           path: '/:id'
