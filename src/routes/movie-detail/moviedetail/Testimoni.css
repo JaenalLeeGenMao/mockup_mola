@@ -50,7 +50,7 @@
   background: white;
   border: 1px solid #5784ff;
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   right: 41px;
   color: #5784ff;
   padding: 7px 10px 7px 28px;

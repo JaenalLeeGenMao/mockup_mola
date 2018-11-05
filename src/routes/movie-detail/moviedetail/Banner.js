@@ -8,15 +8,15 @@ class Banner extends React.Component {
   static propTypes = {
     bannerUrl: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
-    playBtn: PropTypes.string.isRequired,
-    playCopy: PropTypes.string
+    playBtn: PropTypes.string.isRequired
   };
 
   render() {
     const { link, playCopy, bannerUrl, playBtn } = this.props;
     return (
       <div className={s.bannerWrapper}>
-        <a className={s.bannerInner} href={link}>
+        {/*tour guide, step 6 -- add class to element that need guide*/}
+        <a className={`${s.bannerInner} playButton`} href={link}>
           <div className={s.play_icon}>
             <img src={playBtn} />
             <span>{playCopy}</span>

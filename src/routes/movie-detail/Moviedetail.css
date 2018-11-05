@@ -113,3 +113,7 @@
   width: 700px;
   max-width: 100%;
 }
+
+.tooltipContent {
+  padding: 20px 0 0;
+}

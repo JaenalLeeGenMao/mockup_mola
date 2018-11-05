@@ -23,6 +23,7 @@ import SynopsisLoading from './SynopsisLoading';
 import LoadingPlaceholder from '../../../components/common/LoadingPlaceholder/LoadingPlaceholder';
 import TestimoniLoading from './TestimoniLoading';
 import Theoplayer from '../../../components/Theoplayer/Theoplayer';
+import Joyride from 'react-joyride';
 
 class Mmoviedetail extends Component {
   state = {
@@ -30,7 +31,28 @@ class Mmoviedetail extends Component {
     movieDetail: [],
     isLoading: true,
     trailerPlaytag: 'Play Trailer',
-    trailerMovie: ''
+    trailerMovie: '',
+    startGuide: false,
+    steps: [
+      {
+        target: '.playButtons',
+        content: <div className={s.tooltipContent}> You can click this play button to start watching movie</div>,
+        placement: 'bottom',
+        disableBeacon: true,
+        styles: {
+          spotlight: {
+            borderRadius: '100%'
+          }
+        }
+      },
+      {
+        target: '.trailerAreas',
+        content: <div className={s.tooltipContent}>This is trailer section. You can click on this to watch the trailer of this movie.</div>,
+        placement: 'top',
+        disableBeacon: true,
+        locale: { last: 'Close' }
+      }
+    ]
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -47,11 +69,47 @@ class Mmoviedetail extends Component {
     const { movieDetail } = this.props;
 
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
-      this.setState({
-        isLoading: false
-      });
+      this.setState(
+        {
+          isLoading: false
+        },
+        () => {
+          /*tour guide, step 4 -- check cookie if has done tour before
+        if yes then don't start tour
+        if no then start tour*/
+          let isTourDone = _get(document, 'cookie', '')
+            .trim()
+            .split(';')
+            .filter(function(item) {
+              return item.indexOf('__tour=') >= 0;
+            });
+
+          if (isTourDone && isTourDone.length) {
+            isTourDone = isTourDone[0].split('=')[1];
+            if (!isTourDone) {
+              this.setState({
+                startGuide: true
+              });
+            }
+          } else {
+            this.setState({
+              startGuide: true
+            });
+          }
+        }
+      );
     }
   }
+
+  handleTourCallback = data => {
+    /*tour guide, step 5 -- handle callback
+    set to cookie if user has finisher or skip tour*/
+    const { type } = data;
+    const { pathLoc } = this.props;
+    if (type == 'tour:end') {
+      document.cookie = `__tour=1; path=/${pathLoc};`;
+    }
+  };
 
   onOpenModal = trailerUrl => {
     this.setState({ open: true, trailerMovie: trailerUrl });
@@ -103,7 +161,7 @@ class Mmoviedetail extends Component {
       castTitle: 'cast'
     };
 
-    const { open, isLoading, trailerPlaytag, trailerMovie } = this.state;
+    const { open, isLoading, trailerPlaytag, trailerMovie, steps, startGuide } = this.state;
 
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
@@ -146,9 +204,27 @@ class Mmoviedetail extends Component {
     // trailer temporary image
     const temporaryImg = TrailerImg;
 
+    const customTourStyle = {
+      buttonNext: {
+        backgroundColor: '#2c56ff'
+      },
+      buttonBack: {
+        color: '#2c56ff'
+      }
+    };
+
     return (
       <Fragment>
         <Layout>
+          {/* <Joyride
+            continuous
+            showSkipButton
+            steps={steps}
+            run={startGuide}
+            // styles={customTourStyle}
+            floaterProps={{ disableAnimation: true }}
+            callback={this.handleTourCallback}
+          /> */}
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
             {!isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage ? bannerImage.large : null} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
