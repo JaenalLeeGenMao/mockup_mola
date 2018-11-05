@@ -9,7 +9,14 @@ import ContentLayer from './layer';
 import styles from './content.css';
 
 class Content extends Component {
-  componentDidMount() {}
+  handleClick = e => {
+    e.preventDefault();
+    const { sliderRefs, id } = this.props;
+    try {
+      const currentSlider = sliderRefs.filter(slider => slider.id === id)[0];
+      currentSlider.slickNext();
+    } catch {}
+  };
 
   render() {
     const {
@@ -46,22 +53,20 @@ class Content extends Component {
           <div className={styles.content__grid_title} />
           <div className={styles.content__grid_desc}>
             <ContentLayer {...this.props} />
-            {type !== 'playlists' && (
-              <LazyLoad>
-                <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
-                  {isMobile ? (
-                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${styles.white}`}>
-                      <span className={`${styles.icon__view_movie} ${styles.white}`} />
-                      view movie
-                    </Link>
-                  ) : (
-                    <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}`}>
-                      view movie
-                    </Link>
-                  )}
-                </div>
-              </LazyLoad>
-            )}
+            <LazyLoad>
+              <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
+                {isMobile ? (
+                  <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${styles.white}`} onClick={type === 'playlists' && this.handleClick}>
+                    <span className={`${styles.icon__view_movie} ${styles.white}`} />
+                    {type === 'playlists' ? 'discover' : 'view movie'}
+                  </Link>
+                ) : (
+                  <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}`} onClick={type === 'playlists' && this.handleClick}>
+                    {type === 'playlists' ? 'discover' : 'view movie'}
+                  </Link>
+                )}
+              </div>
+            </LazyLoad>
           </div>
           <div className={styles.content__grid_empty} />
         </div>

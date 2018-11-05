@@ -7,6 +7,10 @@
   overflow: hidden;
 }
 
+.layer__grid_desc_wrapper.playlist {
+  height: 30%;
+}
+
 .layer__grid_desc_background {
   position: absolute;
   background-size: cover;
@@ -29,6 +33,20 @@
   height: 100vh;
   top: -178%;
   left: -15.5%;
+}
+
+.layer__grid_desc_background.mobile.playlist {
+  width: 100vw;
+  height: 85vh;
+  top: -347%;
+  left: -3%;
+}
+
+.layer__grid_desc_background.desktop.playlist {
+  width: 80vw;
+  height: 100vh;
+  top: -350%;
+  left: -13.5%;
 }
 
 .layer__grid_desc_background::after {

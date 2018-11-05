@@ -34,7 +34,7 @@ class MovieLibrary extends Component {
 
     if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
       // getMovieLibrary('tt1179056');
-      // getMovieLibrary(genreId);
+      getMovieLibrary(genreId);
     }
 
     if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {

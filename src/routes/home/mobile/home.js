@@ -122,14 +122,14 @@ class Home extends Component {
 
         switch (event.which || event.keyCode) {
           case 37 /* left */:
-            // this.handleSlidePrev(scrollIndex);
+            this.handleSlidePrev(scrollIndex);
             return event.preventDefault();
           case 38 /* up */:
             scrollIndex -= 1;
             this.handleKeyPress(scrollIndex);
             break;
           case 39 /* right */:
-            // this.handleSlideNext(scrollIndex);
+            this.handleSlideNext(scrollIndex);
             return event.preventDefault();
           case 40 /* down */:
             scrollIndex += 1;
@@ -221,7 +221,7 @@ class Home extends Component {
     return innerHeight;
   };
 
-  handleSlideNext = () => {
+  handleSlideNext = (scrollIndex = 0) => {
     try {
       this.getCurrentScreenHeight();
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
@@ -231,7 +231,7 @@ class Home extends Component {
     } catch {}
   };
 
-  handleSlidePrev = () => {
+  handleSlidePrev = (scrollIndex = 0) => {
     try {
       this.getCurrentScreenHeight();
       this.sliderRefs.sort((a, b) => a.sortOrder - b.sortOrder);
@@ -311,7 +311,7 @@ class Home extends Component {
                     nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
                   >
                     {video.data.map(eachVids => {
-                      return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} />;
+                      return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} sliderRefs={this.sliderRefs} />;
                     })}
                   </Slider>
                 </Element>
