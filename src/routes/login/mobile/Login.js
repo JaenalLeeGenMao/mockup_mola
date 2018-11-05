@@ -50,9 +50,7 @@ class Login extends React.Component {
 
   handleLogin = async () => {
     const { email, password } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
     const result = await Auth.requestLogin({
       email,
       password,
@@ -94,25 +92,10 @@ class Login extends React.Component {
                 </p>
                 <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                 <div>
-                  <Form
-                    className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')}
-                    id="email"
-                    type="text"
-                    name="email"
-                    onChange={this.onChangeInput}
-                    value={email}
-                    autoFocus
-                  >
+                  <Form className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')} id="email" type="text" name="email" onChange={this.onChangeInput} value={email} autoFocus>
                     Email or username
                   </Form>
-                  <Form
-                    className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')}
-                    id="password"
-                    type="password"
-                    name="password"
-                    onChange={this.onChangeInput}
-                    value={password}
-                  >
+                  <Form className={[s.formMobile, isError ? s.errorLogin : ''].join(' ')} id="password" type="password" name="password" onChange={this.onChangeInput} value={password}>
                     Password
                   </Form>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -137,9 +120,9 @@ class Login extends React.Component {
                   <button onClick={() => this.handleLoginSocMed('facebook')}>
                     <img className={s.buttonMobile} src={facebook} />
                   </button>
-                  <button onClick={() => this.handleLoginSocMed('line')}>
+                  {/* <button onClick={() => this.handleLoginSocMed('line')}>
                     <img className={s.buttonMobile} src={line} />
-                  </button>
+                  </button> */}
                 </div>
                 <p className={s.labelSignup}>
                   New user ? <a href="/accounts/register">Register now</a>
@@ -161,10 +144,4 @@ const mapDispatchToProps = dispatch => ({
   onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Login);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Login);
