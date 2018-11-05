@@ -20,6 +20,7 @@ class MovieLibrary extends Component {
     search: {
       genre: []
     },
+    genreId: '',
     isLoading: true
   };
 
@@ -33,9 +34,14 @@ class MovieLibrary extends Component {
       genreId //passed as props from index.js
     } = nextProps;
 
+    if (typeof genreId !== 'undefined' && genreId !== '') {
+      if (genreId !== prevState.genreId) {
+        getMovieLibrary(genreId);
+      }
+    }
+
     if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
       if (typeof genreId !== 'undefined' && genreId !== '') {
-        // getMovieLibrary('tt1179056');
         getMovieLibrary(genreId);
       } else {
         getMovieLibraryList();
@@ -46,7 +52,7 @@ class MovieLibrary extends Component {
       getSearchGenre();
     }
 
-    return { ...prevState, movieLibrary, search };
+    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId };
   }
 
   componentDidUpdate(prevProps) {

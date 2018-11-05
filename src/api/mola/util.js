@@ -192,13 +192,8 @@ const normalizeMovieLibrary = response => {
   if (data && data.length > 0) {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
-        const { title, thumbnail, coverUrl } = attributes;
-        return {
-          genreTitle,
-          id,
-          title,
-          thumbnail: thumbnail || coverUrl
-        };
+        const { title, images } = attributes;
+        return { genreTitle, id, title, thumbnail: images.cover.library.desktop.portrait };
       })
     );
   }
