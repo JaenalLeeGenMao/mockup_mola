@@ -22,7 +22,8 @@
 
 .play_icon {
   width: 60px;
-  height: 60px;
+  height: auto;
+  border-radius: 100%;
 }
 
 .play_icon img {

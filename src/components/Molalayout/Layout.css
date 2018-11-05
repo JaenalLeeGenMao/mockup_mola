@@ -10,6 +10,14 @@ body {
   height: 100%;
 }
 
+/*
+ * Remove outline on click / focus
+ */
+
+button:focus {
+  outline: 0;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {

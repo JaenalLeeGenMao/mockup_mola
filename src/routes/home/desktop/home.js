@@ -211,13 +211,12 @@ class Home extends Component {
                         this.trackedSliderIds.push(id);
                         return this.sliderRefs.push(node);
                       }
-                      this.node = node;
                     }}
                     {...settings}
                     prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
                     nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
                   >
-                    {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} />)}
+                    {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} sliderRefs={this.sliderRefs} />)}
                   </Slider>
                 </Element>
               </RSLink>

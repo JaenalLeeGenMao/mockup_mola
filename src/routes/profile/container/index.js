@@ -128,9 +128,9 @@ class Profile extends React.Component {
             <div className={s.profileArea}>
               <div className={s.profilePhoto}>
                 <div style={{ position: 'relative' }}>
-                  <img src={photo} alt="profile" style={{ width: '140px', height: '140px', borderRadius: '50%' }} className={s.imgProfile} />
+                  <img src={photo} alt="profile" style={{ width: '14rem', height: '14rem', borderRadius: '50%' }} className={s.imgProfile} />
                   <button type="button" className={s.btnImage} onClick={this.changePhoto}>
-                    <img src="https://projects.invisionapp.com/assets/15282308/170468873/8D280095B9EADECDD8208913020DBD488157EFD460D3492C13D4EF90976362D5/thumbnail" alt="camera" width="25" />
+                    <img src="https://projects.invisionapp.com/assets/15282308/170468873/8D280095B9EADECDD8208913020DBD488157EFD460D3492C13D4EF90976362D5/thumbnail" alt="camera" width="100%" />
                   </button>
                 </div>
               </div>
