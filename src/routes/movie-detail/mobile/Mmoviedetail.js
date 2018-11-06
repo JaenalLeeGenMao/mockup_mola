@@ -215,7 +215,7 @@ class Mmoviedetail extends Component {
 
     return (
       <Fragment>
-        <Joyride
+        {/* <Joyride
           continuous
           showSkipButton
           steps={steps}
@@ -223,7 +223,7 @@ class Mmoviedetail extends Component {
           // styles={customTourStyle}
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        />
+        /> */}
         <Layout>
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
