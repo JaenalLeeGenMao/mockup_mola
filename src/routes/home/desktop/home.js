@@ -6,7 +6,6 @@ import { compose } from 'redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import { Link as RSLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
-import $ from 'jquery';
 
 import { SETTINGS } from '../const';
 import homeActions from '@actions/home';
@@ -165,7 +164,7 @@ class Home extends Component {
               } else {
                 for (var i = 0; i < videos.data.length; i++) {
                   if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    // document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
                   }
                 }
               }
@@ -184,12 +183,14 @@ class Home extends Component {
   }
 
   handleColorChange = () => {
-    const activeSlick = $('.active .slick-active .grid-slick'),
-      isDark = parseInt(activeSlick.attr('isdark'), 10);
-
-    if (typeof isDark === 'number') {
-      this.setState({ isDark });
-    }
+    const that = this;
+    setTimeout(function() {
+      const activeSlick = document.querySelector('.active .slick-active .grid-slick');
+      const isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
+      if (typeof isDark === 'number') {
+        that.setState({ isDark });
+      }
+    }, 550);
   };
 
   handleScroll = () => {
