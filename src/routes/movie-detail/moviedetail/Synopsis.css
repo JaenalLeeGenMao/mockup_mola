@@ -5,14 +5,15 @@
 
 .inner_box {
   background: white;
-  padding: 15px;
-  width: 409px;
+  padding: 2rem;
+  width: 560px;
+  width: 44rem;
   border: 1px solid rgba(87, 132, 255, 1);
   position: relative;
-  left: 33px;
+  left: 3.3rem;
   font-family: 'avenir', Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
 }
 
 .inner_box p {
@@ -20,14 +21,16 @@
 }
 
 .label_container {
-  width: 88px;
-  height: 34px;
+  width: 9rem;
+  height: 3rem;
   background: rgba(87, 132, 255, 1);
   color: white;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
   position: absolute;
-  top: 66px;
-  left: -27px;
+  top: 6rem;
+  left: -2.7rem;
 }
 
 .label_container p {
@@ -35,14 +38,14 @@
   top: 35%;
   right: 50%;
   transform: translate(50%, -100%);
-  font-size: 10px;
+  font-size: 1rem;
   line-height: 12px;
   letter-spacing: 2px;
 }
 
 .inner_box,
 .inner_box p:last-child {
-  margin-top: 10px;
+  margin-top: 1rem;
 }
 
 .inner_box span {
@@ -50,7 +53,7 @@
 }
 
 .synopsisPlaceholder {
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .synopsisPlaceholderDirector {
