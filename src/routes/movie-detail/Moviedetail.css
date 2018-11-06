@@ -6,19 +6,20 @@
   text-align: center;
   overflow: hidden;
   position: relative;
-  top: 31px;
-  height: 131px;
+  top: 3rem;
+  height: 12rem;
 }
 
 .casting_photo_container p {
   margin: 0;
-  margin-top: 7px;
+  margin-top: 0.9rem;
+  font-size: 1.2rem;
 }
 
 .casting_photo_img {
   border-radius: 50%;
-  width: 68px;
-  height: 68px;
+  width: 7rem;
+  height: 7rem;
   object-fit: cover;
   object-position: center;
 }
@@ -32,7 +33,7 @@
 .trailer_photo_container {
   text-align: center;
   overflow: hidden;
-  height: 131px;
+  height: 13rem;
   width: auto;
   position: relative;
   outline: 0;
@@ -43,7 +44,7 @@
   object-fit: cover;
   height: 100%;
   position: relative;
-  left: -6px;
+  left: -1.6rem;
 }
 
 .trailer_playtag {
@@ -52,7 +53,7 @@
   bottom: -4px;
   right: 24px;
   font-family: 'avenir', Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-size: 1.3rem;
   line-height: 12px;
 }
 
@@ -61,7 +62,7 @@
 }
 
 .trailerImage {
-  margin: 0 10px;
+  margin: 0 2.2rem;
 }
 
 .titleImage {
@@ -110,10 +111,22 @@
 }
 
 .modal_container {
-  width: 700px;
+  width: 80rem;
   max-width: 100%;
 }
 
 .tooltipContent {
   padding: 20px 0 0;
+}
+
+.next_btn {
+  width: 2rem !important;
+  height: 2rem !important;
+  right: -3rem !important;
+}
+
+.prev_btn {
+  width: 2rem !important;
+  height: 2rem !important;
+  left: -3rem !important;
 }

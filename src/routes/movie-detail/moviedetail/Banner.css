@@ -1,6 +1,7 @@
 .bannerWrapper {
   position: relative;
-  height: 500px;
+  max-height: 32rem;
+  min-height: 32rem;
 }
 
 .bannerInner {
@@ -14,14 +15,15 @@
 .bannerBgImage {
   max-width: 100%;
   width: 100%;
-  max-height: 500px;
+  max-height: 41rem;
+  min-height: 41rem;
   display: block;
   object-fit: cover;
   object-position: top;
 }
 
 .play_icon {
-  width: 60px;
+  width: 6rem;
   height: auto;
   border-radius: 100%;
 }
@@ -33,6 +35,6 @@
 
 .play_icon span {
   font-family: 'avenir', Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: white;
 }
