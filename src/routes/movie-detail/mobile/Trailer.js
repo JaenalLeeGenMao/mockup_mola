@@ -14,7 +14,7 @@ class Trailer extends React.Component {
   render() {
     return (
       <Fragment>
-        <div className={`${s.trailer_box} trailerArea`}>
+        <div className={s.trailer_box}>
           {this.props.trailerText && <div className={s.trailer_title}>{this.props.trailerTitle}</div>}
           <div className={s.inner_box}>{this.props.children}</div>
         </div>

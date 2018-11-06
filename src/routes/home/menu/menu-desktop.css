@@ -21,6 +21,7 @@
   text-decoration: none;
   transition: 250ms ease-out;
   opacity: 0.4;
+  display: block;
 }
 
 .menu_content a:hover {

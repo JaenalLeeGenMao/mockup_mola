@@ -24,19 +24,21 @@ class Menu extends Component {
     return (
       <div className={[styles.menu_wrapper, isOpen ? styles.isActive : ''].join(' ')}>
         <div className={styles.menu_content}>
-          {playlists &&
-            playlists.map(({ id, isActive }) => (
-              <Link
-                key={id}
-                id={id}
-                to="/"
-                onClick={this.handleNavigation}
-                className={[styles.menu_links, isActive ? styles.isActive : ''].join(' ')}
-                style={{ backgroundColor: isMobile ? '' : backgroundColor }}
-              >
-                {isMobile && <div className={styles.menu_bullet} />}
-              </Link>
-            ))}
+          <div className="tourCategory">
+            {playlists &&
+              playlists.map(({ id, isActive }) => (
+                <Link
+                  key={id}
+                  id={id}
+                  to="/"
+                  onClick={this.handleNavigation}
+                  className={[styles.menu_links, isActive ? styles.isActive : ''].join(' ')}
+                  style={{ backgroundColor: isMobile ? '' : backgroundColor }}
+                >
+                  {isMobile && <div className={styles.menu_bullet} />}
+                </Link>
+              ))}
+          </div>
         </div>
       </div>
     );
