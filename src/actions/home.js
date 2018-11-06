@@ -43,7 +43,7 @@ const getHomeVideo = playlist => dispatch => {
         id: playlist.id,
         sortOrder: playlist.sortOrder
       },
-      data: result.data //[playlist].concat(result.data)
+      data: [playlist].concat(result.data)
     };
     dispatch({
       type: types.GET_HOME_VIDEO,

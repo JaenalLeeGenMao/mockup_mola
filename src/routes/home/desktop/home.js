@@ -66,6 +66,13 @@ class Home extends Component {
         disableBeacon: true
       },
       {
+        target: '.tourMovieDiscover',
+        title: 'Discover Our Movie',
+        content: 'Click the button to discover our awesome list of movies',
+        placement: 'top',
+        disableBeacon: true
+      },
+      {
         target: '.tourMovieDetail',
         title: 'View Movie Detail',
         content: 'Click the button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
@@ -97,9 +104,15 @@ class Home extends Component {
   }
 
   handleTourCallback = data => {
-    const { type } = data;
+    const { type, action, index, lifecycle } = data;
     const { videos } = this.props.home;
 
+    if (action === 'next' && index === 4) {
+      this.sliderRefs[0].slickNext();
+    }
+    if (action === 'prev' && index === 4) {
+      this.sliderRefs[0].slickPrev();
+    }
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
         if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
