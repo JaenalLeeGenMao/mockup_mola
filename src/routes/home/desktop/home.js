@@ -49,39 +49,21 @@ class Home extends Component {
         title: 'Movie Category',
         content: 'Click the bullets to switch between playlist category',
         placement: 'right',
-        disableBeacon: true,
-        styles: {
-          tooltipTitle: {
-            fontSize: '1.6rem',
-            textAlign: 'left'
-          }
-        }
+        disableBeacon: true
       },
       {
         target: '.tourSlide',
         title: 'Movie List',
         content: 'Click the left or right arrow to view highlighted movies',
         placement: 'top',
-        disableBeacon: true,
-        styles: {
-          tooltipTitle: {
-            fontSize: '1.6rem',
-            textAlign: 'left'
-          }
-        }
+        disableBeacon: true
       },
       {
         target: '.tourLibrary',
         title: 'Movie Library',
         content: 'Click the icon to view all movie list per category',
         placement: 'bottom',
-        disableBeacon: true,
-        styles: {
-          tooltipTitle: {
-            fontSize: '1.6rem',
-            textAlign: 'left'
-          }
-        }
+        disableBeacon: true
       },
       {
         target: '.tourMovieDetail',
@@ -89,13 +71,7 @@ class Home extends Component {
         content: 'Click the button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
         placement: 'top',
         disableBeacon: true,
-        locale: { last: 'Finish' },
-        styles: {
-          tooltipTitle: {
-            fontSize: '1.6rem',
-            textAlign: 'left'
-          }
-        }
+        locale: { last: 'Finish' }
       }
     ]
   };
@@ -122,7 +98,14 @@ class Home extends Component {
 
   handleTourCallback = data => {
     const { type } = data;
+    const { videos } = this.props.home;
+
     if (type === EVENTS.TOUR_END) {
+      for (var i = 0; i < videos.data.length; i++) {
+        if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+          document.getElementsByClassName('tourSlideWrapper')[0].remove();
+        }
+      }
       document.cookie = '__trh=1; path=/;';
     }
   };
@@ -143,9 +126,8 @@ class Home extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { playlists: { meta: { status: playlistStatus } }, videos: { meta: { status: videoStatus } } } = this.props.home;
-
+  componentDidUpdate() {
+    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home;
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.playlistSuccess) {
@@ -167,11 +149,20 @@ class Home extends Component {
                 this.setState({
                   startGuide: true
                 });
+              } else {
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                  }
+                }
               }
             } else {
               this.setState({
                 startGuide: true
               });
+              for (var i = 1; i < videos.data.length; i++) {
+                document.getElementsByClassName('tourSlideWrapper')[1].remove();
+              }
             }
           }
         );
@@ -268,10 +259,10 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
       } = this.props.home,
-      { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
+      { isDark, startGuide, steps, playlistSuccess } = this.state,
       settings = {
         ...SETTINGS,
-        className: styles.home__slick_slider_fade,
+        className: `${styles.home__slick_slider_fade} home-slider`,
         onInit: () => {
           this.handleColorChange();
         },
@@ -285,78 +276,117 @@ class Home extends Component {
 
     const customTourStyle = {
       buttonNext: {
-        backgroundColor: '#2c56ff',
-        fontSize: '1.4rem',
+        backgroundColor: '#2C56FF',
+        fontSize: '1.3rem',
         lineHeight: '1',
         padding: '8px 15px',
         textTransform: 'uppercase',
-        letterSpacing: '1px',
+        letterSpacing: '1.67px',
         borderRadius: '30px'
       },
       buttonBack: {
-        color: '#2c56ff',
-        fontSize: '1.4rem'
+        color: '#000000',
+        fontSize: '1.3rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        fontWeight: '600'
       },
       buttonClose: {
         display: 'none'
       },
       buttonSkip: {
+        color: '#000000',
         fontWeight: '600',
-        fontSize: '1.4rem',
+        fontSize: '1.3rem',
         textTransform: 'uppercase',
-        letterSpacing: '1px'
+        letterSpacing: '1.67px'
       },
       tooltipContent: {
-        fontSize: '1.4rem',
+        fontSize: '1.3rem',
         padding: '0 0 20px',
         textAlign: 'left',
-        color: '#868686'
+        color: '#858585',
+        lineHeight: '14px',
+        letterSpacing: '0.5px'
+      },
+      tooltipTitle: {
+        fontSize: '1.3rem',
+        textAlign: 'left',
+        margin: '0px 0px 8px',
+        letterSpacing: '0.59px',
+        textTransform: 'uppercase'
       }
     };
 
     return (
-      <div className={styles.home__container}>
-        {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
-        {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-        {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
-        {videoStatus === 'error' && videoError !== '' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
-        {playlistSuccess && <HomeDesktopMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />}
-        {playlistSuccess &&
-          videos &&
-          videos.data.length > 0 &&
-          videos.data.length === playlists.data.length &&
-          videos.data.map(video => {
-            const { id, sortOrder } = video.meta;
-            return (
-              <RSLink activeClass="active" to={id} spy smooth duration={500} className={styles.home__slider_container} key={id}>
-                <Element name={id}>
-                  <Slider
-                    ref={node => {
-                      if (!this.sliderRefs) {
-                        this.sliderRefs = [];
-                        this.trackedSliderIds = [];
-                      }
-                      if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
-                        node = {
-                          ...node,
-                          id,
-                          sortOrder
-                        };
-                        this.trackedSliderIds.push(id);
-                        return this.sliderRefs.push(node);
-                      }
-                    }}
-                    {...settings}
-                    prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
-                    nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
-                  >
-                    {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} sliderRefs={this.sliderRefs} />)}
-                  </Slider>
-                </Element>
-              </RSLink>
-            );
-          })}
-      </div>
+      <Fragment>
+        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+
+        <div className={styles.home__container}>
+          {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
+          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
+          {videoStatus === 'error' && videoError !== '' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
+          {playlistSuccess && <HomeDesktopMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />}
+          {playlistSuccess &&
+            videos &&
+            videos.data.length > 0 &&
+            videos.data.length === playlists.data.length &&
+            videos.data.map(video => {
+              const { id, sortOrder } = video.meta;
+              return (
+                <RSLink activeClass="active" to={id} spy smooth duration={500} className={styles.home__slider_container} key={id}>
+                  <Element name={id}>
+                    <div className={`${styles.placeholderTourSlideWrapper} tourSlideWrapper`}>
+                      <div className={`${styles.placeholderTourSlide} tourSlide`}>
+                        <button
+                          className={`
+                              ${styles.home__arrow}
+                              ${styles.home__arrow_prev}
+                              ${styles[isDark ? 'dark' : 'white']}
+                          `}
+                        >
+                          prev
+                        </button>
+                        <button
+                          className={`
+                              ${styles.home__arrow}
+                              ${styles.home__arrow_next}
+                              ${styles[isDark ? 'dark' : 'white']}
+                          `}
+                        >
+                          prev
+                        </button>
+                      </div>
+                    </div>
+                    <Slider
+                      ref={node => {
+                        if (!this.sliderRefs) {
+                          this.sliderRefs = [];
+                          this.trackedSliderIds = [];
+                        }
+                        if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
+                          node = {
+                            ...node,
+                            id,
+                            sortOrder
+                          };
+                          this.trackedSliderIds.push(id);
+                          return this.sliderRefs.push(node);
+                        }
+                      }}
+                      {...settings}
+                      prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
+                      nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
+                    >
+                      {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} sliderRefs={this.sliderRefs} />)}
+                    </Slider>
+                  </Element>
+                </RSLink>
+              );
+            })}
+        </div>
+      </Fragment>
     );
   }
 }

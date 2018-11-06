@@ -75,7 +75,7 @@ class Moviedetail extends Component {
         content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
-        locale: { last: 'Close' },
+        locale: { last: 'Finish' },
         styles: {
           spotlight: {
             borderRadius: '100%'
@@ -346,32 +346,48 @@ class Moviedetail extends Component {
     //tour guide, step 2 -- custom style
     const customTourStyle = {
       buttonNext: {
-        backgroundColor: '#2c56ff',
-        fontSize: '1.4rem',
+        backgroundColor: '#2C56FF',
+        fontSize: '1.3rem',
         lineHeight: '1',
         padding: '8px 15px',
         textTransform: 'uppercase',
-        letterSpacing: '1px',
+        letterSpacing: '1.67px',
         borderRadius: '30px'
       },
       buttonBack: {
-        color: '#2c56ff',
-        fontSize: '1.4rem'
+        color: '#000000',
+        fontSize: '1.3rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        fontWeight: '600'
       },
       buttonClose: {
         display: 'none'
       },
       buttonSkip: {
+        color: '#000000',
         fontWeight: '600',
-        fontSize: '1.4rem',
+        fontSize: '1.3rem',
         textTransform: 'uppercase',
-        letterSpacing: '1px'
+        letterSpacing: '1.67px'
       },
       tooltipContent: {
-        fontSize: '1.4rem',
+        fontSize: '1.3rem',
         padding: '0 0 20px',
         textAlign: 'left',
-        color: '#868686'
+        color: '#858585',
+        lineHeight: '14px',
+        letterSpacing: '0.5px'
+      },
+      tooltipTitle: {
+        fontSize: '1.3rem',
+        textAlign: 'left',
+        margin: '0px 0px 8px',
+        letterSpacing: '0.59px',
+        textTransform: 'uppercase'
+      },
+      tooltipFooter: {
+        flexDirection: 'row-reverse'
       }
     };
 
@@ -381,7 +397,7 @@ class Moviedetail extends Component {
     return (
       <Fragment>
         {/*tour guide, step 3 -- call Joyride*/}
-        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
         <Slickcss />
         <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
         <Layout>

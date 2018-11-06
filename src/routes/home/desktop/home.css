@@ -77,3 +77,92 @@ body {
   font-size: 1.2rem;
   font-weight: normal;
 }
+
+/*** Style for Tour Arrow Slider ***/
+.placeholderTourSlideWrapper {
+  display: block;
+  position: absolute;
+  width: 100vw;
+  height: 25px;
+  bottom: 5.7vh;
+}
+
+.placeholderTourSlide {
+  width: 6.5%;
+  height: 25px;
+  float: right;
+  margin-right: 3%;
+}
+
+.home__arrow {
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  z-index: 99;
+  outline: none;
+  padding-top: 18px;
+  transform: translate(0, 5%);
+}
+
+.home__arrow_prev::before {
+  content: '❮';
+}
+
+.home__arrow_next::before,
+.home__arrow_prev::before {
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.home__arrow_next::before,
+[dir=rtl] .home__arrow_prev::before {
+  content: '❯';
+}
+
+.home__arrow_next,
+.home__arrow_prev {
+  display: block;
+  position: absolute;
+  color: transparent;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  outline: 0;
+  font-size: 0;
+  line-height: 0;
+  background: 0 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  z-index: 99;
+  transition: all 150ms ease;
+}
+
+.home__arrow_next {
+  right: 4%;
+  border-width: 0.12rem;
+  border-radius: 50%;
+  border-style: solid;
+}
+
+.home__arrow_prev {
+  right: 7%;
+  border-width: 0.12rem;
+  border-radius: 50%;
+  border-style: solid;
+}
+
+.home__arrow_next.white,
+.home__arrow_prev.white {
+  color: #fff;
+  border-color: #fff;
+}
+
+.home__arrow_next.dark,
+.home__arrow_prev.dark {
+  color: #000;
+  border-color: #000;
+}
