@@ -1,5 +1,7 @@
 .card {
-  margin-bottom: 15px;
+  margin-bottom: -10px;
+  margin-right: -10px;
+  width: 100%;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
 
@@ -7,6 +9,7 @@
 }
 
 .card img {
+  /* width: 100%; */
   width: 100%;
   height: auto;
 }
