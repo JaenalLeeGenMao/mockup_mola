@@ -55,9 +55,7 @@ class Login extends React.Component {
 
   handleLogin = async () => {
     const { email, password } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
     const result = await Auth.requestLogin({
       email,
       password,
@@ -95,25 +93,10 @@ class Login extends React.Component {
                 </p>
                 <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                 <div>
-                  <Form
-                    id="email"
-                    type="text"
-                    name="email"
-                    onChange={this.onChangeInput}
-                    value={email}
-                    className={isError ? s.errorLogin : ''}
-                    autoFocus
-                  >
+                  <Form id="email" type="text" name="email" onChange={this.onChangeInput} value={email} className={isError ? s.errorLogin : ''} autoFocus>
                     Email
                   </Form>
-                  <Form
-                    id="password"
-                    type="password"
-                    name="password"
-                    onChange={this.onChangeInput}
-                    className={isError ? s.errorLogin : ''}
-                    value={password}
-                  >
+                  <Form id="password" type="password" name="password" onChange={this.onChangeInput} className={isError ? s.errorLogin : ''} value={password}>
                     Password
                   </Form>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -132,15 +115,15 @@ class Login extends React.Component {
                 </div>
                 <strong className={s.lineThrough}>Or</strong>
                 <div className={s.flexButton}>
-                  <button onClick={() => this.handleLoginSocMed('google')}>
+                  <button onClick={() => this.handleLoginSocMed('google')} style={{ width: '100%' }}>
                     <img className={s.buttonImg} src={google} />
                   </button>
-                  <button onClick={() => this.handleLoginSocMed('facebook')}>
+                  {/* <button onClick={() => this.handleLoginSocMed('facebook')}>
                     <img className={s.buttonImg} src={facebook} />
                   </button>
-                  <button onClick={() => this.handleLoginSocMed('line')}>
+                  {/* <button onClick={() => this.handleLoginSocMed('line')}>
                     <img className={s.buttonImg} src={line} />
-                  </button>
+                  </button> */}
                 </div>
                 <p className={s.labelSignup}>
                   New user ? <a href="/accounts/register">Register now</a>
@@ -162,10 +145,4 @@ const mapDispatchToProps = dispatch => ({
   onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Login);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Login);

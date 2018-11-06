@@ -1,7 +1,7 @@
 .layer__grid_desc_wrapper {
   position: relative;
   z-index: 2;
-  height: 65%;
+  height: 45%;
   margin: 5% 5% 3% 5%;
   border-radius: 3px;
   overflow: hidden;
@@ -29,10 +29,10 @@
 }
 
 .layer__grid_desc_background.desktop {
-  width: 80vw;
+  width: 100vw;
   height: 100vh;
-  top: -178%;
-  left: -15.5%;
+  top: -250%;
+  left: -52.5%;
 }
 
 .layer__grid_desc_background.mobile.playlist {
@@ -43,10 +43,10 @@
 }
 
 .layer__grid_desc_background.desktop.playlist {
-  width: 80vw;
+  width: 100vw;
   height: 100vh;
   top: -350%;
-  left: -13.5%;
+  left: -43.5%;
 }
 
 .layer__grid_desc_background::after {

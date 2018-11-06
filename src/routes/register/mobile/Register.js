@@ -43,10 +43,7 @@ class Register extends React.Component {
 
   handleRegistration = async () => {
     const { email, password } = this.state,
-      {
-        runtime: { csrf },
-        onSetUserVariables
-      } = this.props;
+      { runtime: { csrf }, onSetUserVariables } = this.props;
 
     const result = await Auth.createNewUser({
       email,
@@ -68,9 +65,7 @@ class Register extends React.Component {
 
   handleVerificationToken = async () => {
     const { email, token } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
 
     const result = await Auth.verifyUserToken({
       token,
@@ -78,15 +73,13 @@ class Register extends React.Component {
       csrf
     });
     if (result.meta.status === 'success') {
-      window.location.href = `http://staging.mola.tv/accounts/login`;
+      window.location.href = 'http://staging.mola.tv/accounts/login';
     }
   };
 
   handleResendToken = async () => {
     const { email } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
 
     const result = await Auth.resendUserToken({
       email,
@@ -125,45 +118,16 @@ class Register extends React.Component {
                 <div className={s.container}>
                   <p className={s.labelHeader}>Register mola now !</p>
                   <div>
-                    <Form
-                      className={s.formMobile}
-                      id="username"
-                      type="text"
-                      name="username"
-                      onChange={this.onChangeInput}
-                      value={username}
-                      autoFocus
-                    >
+                    <Form className={s.formMobile} id="username" type="text" name="username" onChange={this.onChangeInput} value={username} autoFocus>
                       Username
                     </Form>
-                    <Form
-                      className={s.formMobile}
-                      id="email"
-                      type="text"
-                      name="email"
-                      onChange={this.onChangeInput}
-                      value={email}
-                    >
+                    <Form className={s.formMobile} id="email" type="text" name="email" onChange={this.onChangeInput} value={email}>
                       Email or Phonenumber
                     </Form>
-                    <Form
-                      className={s.formMobile}
-                      id="password"
-                      type="password"
-                      name="password"
-                      onChange={this.onChangeInput}
-                      value={password}
-                    >
+                    <Form className={s.formMobile} id="password" type="password" name="password" onChange={this.onChangeInput} value={password}>
                       Password
                     </Form>
-                    <Form
-                      className={s.formMobile}
-                      id="confirmPassword"
-                      type="password"
-                      name="confirmPassword"
-                      onChange={this.onChangeInput}
-                      value={confirmPassword}
-                    >
+                    <Form className={s.formMobile} id="confirmPassword" type="password" name="confirmPassword" onChange={this.onChangeInput} value={confirmPassword}>
                       Confirm password
                     </Form>
                     <div className={s.formGroup} style={{ marginTop: '15px' }}>
@@ -174,15 +138,15 @@ class Register extends React.Component {
                   </div>
                   <strong className={s.lineThrough}>Or</strong>
                   <div className={s.flexButton}>
-                    <button onClick={() => this.handleLoginSocMed('google')}>
+                    <button onClick={() => this.handleLoginSocMed('google')} style={{ width: '100%' }}>
                       <img src={google} className={s.buttonMobile} />
                     </button>
-                    <button onClick={() => this.handleLoginSocMed('facebook')}>
+                    {/* <button onClick={() => this.handleLoginSocMed('facebook')}>
                       <img src={facebook} className={s.buttonMobile} />
                     </button>
                     <button onClick={() => this.handleLoginSocMed('line')}>
                       <img src={line} className={s.buttonMobile} />
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 <div className={s.containerBack}>
@@ -191,18 +155,8 @@ class Register extends React.Component {
                     We need verify your email account, <br />
                     Please check your email to verify your account.
                   </p>
-                  <div
-                    className={`${s.formGroup} ${s.form__otp}`}
-                    style={{ marginTop: '15px', marginBottom: '20px' }}
-                  >
-                    <Form
-                      className={s.form__otp__input}
-                      id="token"
-                      type="text"
-                      name="token"
-                      onChange={this.onChangeInput}
-                      value={token}
-                    >
+                  <div className={`${s.formGroup} ${s.form__otp}`} style={{ marginTop: '15px', marginBottom: '20px' }}>
+                    <Form className={s.form__otp__input} id="token" type="text" name="token" onChange={this.onChangeInput} value={token}>
                       Enter OTP here
                     </Form>
                     <button className={s.verify__button} onClick={this.handleVerificationToken}>
@@ -232,10 +186,4 @@ const mapDispatchToProps = dispatch => ({
   onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Register);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Register);
