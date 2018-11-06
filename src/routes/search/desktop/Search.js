@@ -106,7 +106,6 @@ class Search extends React.Component {
   parseSearchResult = val => {
     this.searchText = val;
     const { search: { result } } = this.props;
-
     const movieSuggestion = this.parseMovieSuggestion(result, val);
     const castSuggestion = this.parseCastSuggestion(result, val);
     let firstMatch;
@@ -227,9 +226,7 @@ class Search extends React.Component {
     getSearchResult(val);
     this.parseSearchResult(val);
     this.setState({
-      searchText: val,
-      isLoadingResult: false,
-      showAllRecentSearch: false
+      isEmptyInput: false
     });
   };
 

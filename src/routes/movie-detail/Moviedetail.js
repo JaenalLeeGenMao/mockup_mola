@@ -71,21 +71,16 @@ class Moviedetail extends Component {
     steps: [
       {
         target: '.playButton',
-        content: <div className={s.tooltipContent}> You can click this play button to start watching movie</div>,
+        title: 'Play Movie',
+        content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
+        locale: { last: 'Close' },
         styles: {
           spotlight: {
             borderRadius: '100%'
           }
         }
-      },
-      {
-        target: '.trailerArea',
-        content: <div className={s.tooltipContent}>This is trailer section. You can click on this to watch the trailer of this movie.</div>,
-        placement: 'top',
-        disableBeacon: true,
-        locale: { last: 'Close' }
       }
     ]
   };
@@ -351,10 +346,32 @@ class Moviedetail extends Component {
     //tour guide, step 2 -- custom style
     const customTourStyle = {
       buttonNext: {
-        backgroundColor: '#2c56ff'
+        backgroundColor: '#2c56ff',
+        fontSize: '1.4rem',
+        lineHeight: '1',
+        padding: '8px 15px',
+        textTransform: 'uppercase',
+        letterSpacing: '1px',
+        borderRadius: '30px'
       },
       buttonBack: {
-        color: '#2c56ff'
+        color: '#2c56ff',
+        fontSize: '1.4rem'
+      },
+      buttonClose: {
+        display: 'none'
+      },
+      buttonSkip: {
+        fontWeight: '600',
+        fontSize: '1.4rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1px'
+      },
+      tooltipContent: {
+        fontSize: '1.4rem',
+        padding: '0 0 20px',
+        textAlign: 'left',
+        color: '#868686'
       }
     };
 

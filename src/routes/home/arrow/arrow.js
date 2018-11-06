@@ -46,6 +46,7 @@ class Arrow extends Component {
                     ${styles.home__arrow}
                     ${styles.home__arrow_next}
                     ${styles[isMobile ? 'white' : isDark ? 'dark' : 'white']}
+                    tourSlide
                 `}
         style={{ opacity: currentSlide === slideCount - 1 ? '.4' : '1' }}
       >
