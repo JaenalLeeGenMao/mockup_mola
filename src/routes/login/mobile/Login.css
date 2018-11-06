@@ -149,7 +149,7 @@ html {
 }
 
 .flexButton > button {
-  width: 8.8rem;
+  width: 48%;
   height: 4rem;
   outline: none;
   border: none;
@@ -164,7 +164,7 @@ html {
   margin-top: 2rem !important;
   margin-bottom: 0 !important;
   color: #fff !important;
-  font-size: 1.4rem !important ;
+  font-size: 1.4rem !important;
   line-height: 1.9rem;
   letter-spacing: 0.136rem !important;
   font-weight: 500;

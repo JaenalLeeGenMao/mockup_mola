@@ -120,7 +120,7 @@ class Login extends React.Component {
                   {/* <button onClick={() => this.handleLoginSocMed('facebook')}>
                     <img className={s.buttonMobile} src={facebook} />
                   </button>
-                  <button onClick={() => this.handleLoginSocMed('line')}>
+                  {/* <button onClick={() => this.handleLoginSocMed('line')}>
                     <img className={s.buttonMobile} src={line} />
                   </button> */}
                 </div>

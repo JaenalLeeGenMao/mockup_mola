@@ -199,6 +199,7 @@ const getSearchGenre = () => dispatch => {
       data: []
     }
   });
+
   return Mola.getSearchGenre().then(result => {
     if (result.meta.status === 'error') {
       dispatch({

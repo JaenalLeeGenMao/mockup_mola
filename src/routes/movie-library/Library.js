@@ -20,28 +20,39 @@ class MovieLibrary extends Component {
     search: {
       genre: []
     },
+    genreId: '',
     isLoading: true
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       getMovieLibrary,
+      getMovieLibraryList,
       getSearchGenre,
       search,
       movieLibrary,
       genreId //passed as props from index.js
     } = nextProps;
 
+    if (typeof genreId !== 'undefined' && genreId !== '') {
+      if (genreId !== prevState.genreId) {
+        getMovieLibrary(genreId);
+      }
+    }
+
     if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
-      // getMovieLibrary('tt1179056');
-      getMovieLibrary(genreId);
+      if (typeof genreId !== 'undefined' && genreId !== '') {
+        getMovieLibrary(genreId);
+      } else {
+        getMovieLibraryList();
+      }
     }
 
     if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {
       getSearchGenre();
     }
 
-    return { ...prevState, movieLibrary, search };
+    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId };
   }
 
   componentDidUpdate(prevProps) {
@@ -59,130 +70,7 @@ class MovieLibrary extends Component {
     const { movieLibrary: { data: libraryDt }, search: { genre: { data: genreDt } }, isMobile } = this.props;
     const { isLoading } = this.state;
     const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
-    // const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
-
-    const cardImageLib = [
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x200/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x300/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x108/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x238/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x108/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x108/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x98/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x98/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x188/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x238/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      }
-    ];
+    const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
 
     const cardImageLoading = [
       {
@@ -362,6 +250,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
   getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
+  getMovieLibraryList: () => dispatch(movieLibraryActions.getMovieLibraryList()),
   getMovieLibrary: genreId => dispatch(movieLibraryActions.getMovieLibrary(genreId))
 });
 
