@@ -7,27 +7,45 @@ class Synopsis extends React.Component {
   static propTypes = {
     synopsisContent: PropTypes.string.isRequired,
     directedBy: PropTypes.arrayOf(PropTypes.object).isRequired,
-    synopsisLabel: PropTypes.string.isRequired,
+    synopsisLabel: PropTypes.string.isRequired
   };
 
+  componentDidMount() {
+    const dataArray = document.getElementsByClassName('synopbox');
+    [].forEach.call(dataArray, function(el) {
+      let wordArray = el.innerHTML.split('');
+      while (el.scrollHeight > el.offsetHeight) {
+        if (wordArray.length > 1) {
+          wordArray.pop();
+        } else {
+          return;
+        }
+        el.innerHTML = `${wordArray.join('')}...`;
+      }
+    });
+  }
+
   render() {
+    const synopbox = {
+      height: '9rem'
+    };
     const { synopsisContent, directedBy, synopsisLabel } = this.props;
     return (
       <div className={s.box}>
         <div className={s.inner_box}>
-          <p>{synopsisContent}</p>
+          <p className="synopbox" style={synopbox}>
+            {synopsisContent}
+          </p>
           <p>
-              Directed by:
+            Directed by:
             <span>
-              {
-                directedBy.map( (dt, index) => {
-                  if( index == 0 ) {
-                    return dt.attributes.name;
-                  } else {
-                    return `, ${dt.attributes.name}`;
-                  }
-                })
-              }
+              {directedBy.map((dt, index) => {
+                if (index == 0) {
+                  return dt.attributes.name;
+                } else {
+                  return `, ${dt.attributes.name}`;
+                }
+              })}
             </span>
           </p>
         </div>
