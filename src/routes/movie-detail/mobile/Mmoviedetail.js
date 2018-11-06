@@ -176,16 +176,16 @@ class Mmoviedetail extends Component {
     const directedByArr =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'director';
-          })
+          return dt.attributes.peopleTypes == 'director';
+        })
         : [];
 
     //loop through array of people attribute to get cast/stars
     const castingArtists =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'stars';
-          })
+          return dt.attributes.peopleTypes == 'stars';
+        })
         : [];
     const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
 
@@ -225,6 +225,15 @@ class Mmoviedetail extends Component {
           callback={this.handleTourCallback}
         /> */}
         <Layout>
+          <Joyride
+            continuous
+            showSkipButton
+            steps={steps}
+            run={startGuide}
+            // styles={customTourStyle}
+            floaterProps={{ disableAnimation: true }}
+            callback={this.handleTourCallback}
+          />
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
             {!isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage ? bannerImage.large : null} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
@@ -235,23 +244,23 @@ class Mmoviedetail extends Component {
 
             {!isLoading &&
               trailerDt.length > 0 && (
-                <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
-                  <div className={s.trailer_moviebox}>
-                    {trailerDt.map(obj => (
-                      <LazyLoad
-                        key={obj.toString()}
-                        containerClassName={ifOne}
-                        alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
-                        src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
-                        onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
-                        className={s.trailerImage}
-                      >
-                        <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
-                      </LazyLoad>
-                    ))}
-                  </div>
-                </Trailer>
-              )}
+              <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
+                <div className={s.trailer_moviebox}>
+                  {trailerDt.map(obj => (
+                    <LazyLoad
+                      key={obj.toString()}
+                      containerClassName={ifOne}
+                      alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
+                      src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
+                      onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
+                      className={s.trailerImage}
+                    >
+                      <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
+                    </LazyLoad>
+                  ))}
+                </div>
+              </Trailer>
+            )}
             {isLoading && (
               <Trailer trailerTitle={trailerCopy} trailerText={true}>
                 <div className={s.trailer_moviebox}>{trailerDtPlaceholder.map(obj => <LoadingPlaceholder key={obj.toString()} isLight className={s.trailer_moviebox_imgloading} />)}</div>
@@ -272,16 +281,16 @@ class Mmoviedetail extends Component {
           )}
           {!isLoading &&
             castingArtists.length > 0 && (
-              <Casting castTitle={casting.castTitle}>
-                {castingArtists.map(({ id, attributes }) => (
-                  <Fragment key={id}>
-                    <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
-                      <p>{attributes.name}</p>
-                    </LazyLoad>
-                  </Fragment>
-                ))}
-              </Casting>
-            )}
+            <Casting castTitle={casting.castTitle}>
+              {castingArtists.map(({ id, attributes }) => (
+                <Fragment key={id}>
+                  <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
+                    <p>{attributes.name}</p>
+                  </LazyLoad>
+                </Fragment>
+              ))}
+            </Casting>
+          )}
           {isLoading && <TestimoniLoading />}
           {!isLoading && testimoniDt && testimoniDt.text && <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={testimoniDt.imageUrl} />}
           <Modal open={open} onClose={this.onCloseModal} center>

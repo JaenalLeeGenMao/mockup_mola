@@ -7,7 +7,6 @@ const title = 'Movie Detail';
 
 function action({ isMobile, pathname }) {
   const pathnameArr = pathname.split('/');
-  console.log('path', pathname);
   return {
     chunks: ['movie-detail'],
     title,
