@@ -215,16 +215,16 @@ class Mmoviedetail extends Component {
 
     return (
       <Fragment>
+        <Joyride
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          // styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
         <Layout>
-          {/* <Joyride
-            continuous
-            showSkipButton
-            steps={steps}
-            run={startGuide}
-            // styles={customTourStyle}
-            floaterProps={{ disableAnimation: true }}
-            callback={this.handleTourCallback}
-          /> */}
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
             {!isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage ? bannerImage.large : null} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
