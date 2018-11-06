@@ -114,10 +114,10 @@ class Login extends React.Component {
                 </div>
                 <strong className={s.lineThrough}>Or</strong>
                 <div className={s.flexButton}>
-                  <button onClick={() => this.handleLoginSocMed('google')}>
+                  <button onClick={() => this.handleLoginSocMed('google')} style={{ width: '100%' }}>
                     <img className={s.buttonMobile} src={google} />
                   </button>
-                  <button onClick={() => this.handleLoginSocMed('facebook')}>
+                  {/* <button onClick={() => this.handleLoginSocMed('facebook')}>
                     <img className={s.buttonMobile} src={facebook} />
                   </button>
                   {/* <button onClick={() => this.handleLoginSocMed('line')}>

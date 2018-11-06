@@ -52,7 +52,7 @@ class RightMenu extends Component {
                   Account
                 </Link>
               )}
-              {userID && (
+              {/* {userID && (
                 <Link style={{ color }} to="/accounts/history">
                   History
                 </Link>
@@ -61,7 +61,7 @@ class RightMenu extends Component {
                 <Link style={{ color }} to="/accounts/inbox">
                   Inbox
                 </Link>
-              )}
+              )} */}
               <Link style={{ color }} to="/">
                 System Info
               </Link>
