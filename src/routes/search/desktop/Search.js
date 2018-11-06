@@ -161,8 +161,10 @@ class Search extends React.Component {
     history.replace({
       search: `q=${encodeURIComponent(val)}`
     });
+
+    console.log('val', val);
     this.setState({
-      isEmptyInput: false,
+      isEmptyInput: val == '' ? true : false,
       isLoadingResult: true
     });
     this.processSearch(val);

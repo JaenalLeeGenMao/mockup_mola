@@ -152,7 +152,7 @@ class Home extends Component {
               } else {
                 for (var i = 0; i < videos.data.length; i++) {
                   if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                    // document.getElementsByClassName('tourSlideWrapper')[0].remove();
                   }
                 }
               }
