@@ -6,7 +6,6 @@ import { compose } from 'redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import { Link as RSLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
-import $ from 'jquery';
 
 import { SETTINGS } from '../const';
 import homeActions from '@actions/home';
@@ -186,7 +185,7 @@ class Home extends Component {
   handleColorChange = () => {
     const that = this;
     setTimeout(function() {
-      const activeSlick = document.querySelector('.active .slick-active .grid-slick'); //$('.active .slick-active .grid-slick'),
+      const activeSlick = document.querySelector('.active .slick-active .grid-slick');
       const isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
       if (typeof isDark === 'number') {
         that.setState({ isDark });
