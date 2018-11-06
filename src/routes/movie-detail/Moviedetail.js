@@ -75,12 +75,7 @@ class Moviedetail extends Component {
         content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
-        locale: { last: 'Finish' },
-        styles: {
-          spotlight: {
-            borderRadius: '100%'
-          }
-        }
+        locale: { last: 'Finish' }
       }
     ]
   };

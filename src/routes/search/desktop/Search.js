@@ -162,7 +162,6 @@ class Search extends React.Component {
       search: `q=${encodeURIComponent(val)}`
     });
 
-    console.log('val', val);
     this.setState({
       isEmptyInput: val == '' ? true : false,
       isLoadingResult: true
