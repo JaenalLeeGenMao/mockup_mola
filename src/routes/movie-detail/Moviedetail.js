@@ -40,13 +40,13 @@ import Joyride from 'react-joyride';
 
 const Right = props => (
   <div>
-    <img src={Next} onClick={props.onClick} className="slick-next" />
+    <img src={Next} onClick={props.onClick} className={`slick-next ${s.next_btn}`} />
   </div>
 );
 
 const Left = props => (
   <div>
-    <img src={Prev} onClick={props.onClick} className="slick-prev" />
+    <img src={Prev} onClick={props.onClick} className={`slick-prev ${s.prev_btn}`} />
   </div>
 );
 
@@ -306,9 +306,9 @@ class Moviedetail extends Component {
     const playCopy = 'Play movie';
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
-    const title = movieDetailData.length > 0 ? movieDetailData[0].title : null;
-    const titleImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
-    const year = movieDetailData.length > 0 ? movieDetailData[0].year : null;
+    // const title = movieDetailData.length > 0 ? movieDetailData[0].title : null;
+    // const titleImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
+    // const year = movieDetailData.length > 0 ? movieDetailData[0].year : null;
 
     const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
     //loop through array of people attribute to get director
@@ -372,8 +372,7 @@ class Moviedetail extends Component {
           {isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} />}
 
           <Frame>
-            {!isLoading && titleImage && <img className={s.titleImage} src={titleImage.landscape ? titleImage.landscape : 'https://dummyimage.com/453x170/fff/000'} alt={title} />}
-
+            {/* {!isLoading && titleImage && <img className={s.titleImage} src={titleImage.landscape ? titleImage.landscape : 'https://dummyimage.com/453x170/fff/000'} alt={title} />}
             {!isLoading &&
               year && (
                 <div className={s.yearWrapper}>
@@ -382,10 +381,8 @@ class Moviedetail extends Component {
                     <span>({year})</span>
                   </div>
                 </div>
-              )}
-
+              )} */}
             {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} synopsisLabel={synopsisLabel} />}
-
             {isLoading && <SynopsisLoading synopsisLabel={synopsisLabel} />}
             {isLoading && <TestimoniLoading trailerTitle={'MOVIE TRAILER'} trailerText={trailerIsShow} />}
 
