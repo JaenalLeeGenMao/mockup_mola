@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: baseline;
   height: auto;
   width: 100%;
   padding: 2.5% 0 0 0;
@@ -41,7 +41,7 @@
 .header__logo {
   position: relative;
   top: 5px;
-  width: 6rem;
+  width: 8rem;
   height: auto;
 }
 
@@ -197,7 +197,7 @@
   .header__logo {
     position: relative;
     top: 0.5rem;
-    width: 7rem;
+    width: 10rem;
     height: auto;
   }
 
