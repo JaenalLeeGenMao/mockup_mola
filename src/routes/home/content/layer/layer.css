@@ -1,7 +1,7 @@
 .layer__grid_desc_wrapper {
   position: relative;
   z-index: 2;
-  height: 45%;
+  height: 50%;
   margin: 5% 5% 3% 5%;
   border-radius: 3px;
   overflow: hidden;
@@ -96,7 +96,7 @@
 
 .layer__grid_desc_breakpoint {
   opacity: 1;
-  margin: 2.5% 5%;
+  margin: 1% 5%;
   height: 0;
 }
 

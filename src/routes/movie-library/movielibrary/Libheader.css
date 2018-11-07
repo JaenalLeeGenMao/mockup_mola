@@ -6,10 +6,56 @@
   align-items: baseline;
 }
 
+.header__menu {
+  background: #fff;
+  width: 100%;
+
+  /* position: absolute; */
+  bottom: 0;
+  padding: 0;
+}
+
+.header__menu ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 10%;
+}
+
+.header__menu ul li {
+  width: 25%;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 3rem;
+  transition: 1s ease-out;
+}
+
+.header__menu ul li a {
+  color: #000;
+}
+
+.header__menu ul li a:hover {
+  text-decoration: underline;
+}
+
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header {
     position: relative;
     height: 5rem;
     margin: 0;
+  }
+
+  .header__menu ul li {
+    width: 50%;
+    text-align: center;
+    font-size: 0.1rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 2rem;
   }
 }

@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
   height: auto;
   width: 100%;
   padding: 2.5% 0 0 0;
@@ -80,7 +80,7 @@
   background: none;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1rem;
+  letter-spacing: 0.5rem;
   margin-top: 1rem;
   border: none;
   position: relative;
@@ -98,41 +98,6 @@
   right: -1rem;
   top: 50%;
   transform: translateY(-60%);
-}
-
-.header__menu {
-  background: #fff;
-  width: 100%;
-  position: absolute;
-  bottom: -14rem;
-  padding: 3rem 0 0 0;
-}
-
-.header__menu ul {
-  list-style: none;
-  padding-left: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 10%;
-}
-
-.header__menu ul li {
-  width: 25%;
-  text-align: center;
-  font-size: 1rem;
-  letter-spacing: 0.2rem;
-  text-transform: uppercase;
-  font-weight: 300;
-  margin-bottom: 3rem;
-  transition: 1s ease-out;
-}
-
-.header__menu ul li a {
-  color: #000;
-}
-
-.header__menu ul li a:hover {
-  text-decoration: underline;
 }
 
 .header__library_logo_white {
@@ -188,6 +153,7 @@
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header__container {
     padding: 5%;
+    align-items: baseline;
   }
 
   .header__notsticky {
@@ -201,13 +167,7 @@
     height: auto;
   }
 
-  .header__menu ul li {
-    width: 50%;
-    text-align: center;
-    font-size: 0.1rem;
-    letter-spacing: 0.2rem;
-    text-transform: uppercase;
-    font-weight: 300;
-    margin-bottom: 2rem;
+  .header__action_button {
+    font-size: 0.8rem;
   }
 }
