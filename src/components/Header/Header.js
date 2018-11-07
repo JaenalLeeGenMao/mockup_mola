@@ -33,6 +33,12 @@ class Header extends Component {
     genre: { data: [] }
   };
 
+  constructor(props) {
+    super(props);
+
+    this.headerContainerRef = React.createRef();
+  }
+
   handleMenuToggleClick = () => {
     const genreData = this.state.genre.data;
 
@@ -56,28 +62,6 @@ class Header extends Component {
     return { ...prevState, genre };
   }
 
-  componentDidMount() {}
-
-  renderMenu() {
-    const genreData = this.state.genre.data;
-
-    return (
-      <div className={styles.header__menu}>
-        <ul>
-          {genreData.map(item => {
-            return (
-              <li key={`${item.id}-${item.title}`}>
-                <LazyLoad>
-                  <Link to={`/movie-library/${item.id}`}>{item.title}</Link>
-                </LazyLoad>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
-
   render() {
     const {
       isDark = 1,
@@ -91,6 +75,7 @@ class Header extends Component {
       isLibraryCopy = false,
       activePlaylist,
       stickyOff = false,
+      handleMenuToggleClick,
       search = { genre: { data: [] } }
     } = this.props;
 
@@ -100,7 +85,7 @@ class Header extends Component {
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
 
     return (
-      <div className={typeHeader}>
+      <div className={typeHeader} ref={this.headerContainerRef}>
         <div className={styles.header__logo_wrapper}>
           {!logoOff && (
             <LazyLoad>
@@ -108,7 +93,7 @@ class Header extends Component {
                 <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                 {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-                {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+            {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
             </LazyLoad>
           )}
@@ -135,10 +120,10 @@ class Header extends Component {
                   <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                   {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-                  {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+              {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
                 </Link>
                 {genreDt.length <= 0 ? null : (
-                  <button className={styles.header__action_button} onClick={this.handleMenuToggleClick}>
+                  <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
                     {this.props.title ? this.props.title : genreDt[0].title}{' '}
                     <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? { transform: 'rotate(180deg) translateY(0%)', top: 0 } : ''} />
                   </button>
@@ -148,8 +133,6 @@ class Header extends Component {
           </div>
         )}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} {...this.props} />}
-
-        {isLibraryCopy && isMenuToggled ? this.renderMenu() : null}
       </div>
     );
   }
