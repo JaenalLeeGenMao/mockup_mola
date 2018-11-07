@@ -351,7 +351,7 @@ class Home extends Component {
       spotlight: {
         borderRadius: '4rem',
         position: 'absolute',
-        transform: 'scale(.99, .95) translateY(2%)'
+        transform: 'scale(.99, .95) translateY(1%)'
       }
     };
 
