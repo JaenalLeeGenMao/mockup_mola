@@ -296,7 +296,8 @@ class Home extends Component {
         padding: '8px 15px',
         textTransform: 'uppercase',
         letterSpacing: '1.67px',
-        borderRadius: '30px'
+        borderRadius: '30px',
+        fontWeight: '600'
       },
       buttonBack: {
         color: '#000000',
@@ -313,7 +314,8 @@ class Home extends Component {
         fontWeight: '600',
         fontSize: '1.3rem',
         textTransform: 'uppercase',
-        letterSpacing: '1.67px'
+        letterSpacing: '1.67px',
+        padding: '0'
       },
       tooltipContent: {
         fontSize: '1.3rem',
@@ -329,6 +331,9 @@ class Home extends Component {
         margin: '0px 0px 8px',
         letterSpacing: '0.59px',
         textTransform: 'uppercase'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)'
       }
     };
 
