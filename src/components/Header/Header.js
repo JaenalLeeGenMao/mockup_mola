@@ -29,18 +29,7 @@ import styles from './Header.css';
 
 class Header extends Component {
   state = {
-    isMenuToggled: false,
     genre: { data: [] }
-  };
-
-  handleMenuToggleClick = () => {
-    const genreData = this.state.genre.data;
-
-    if (genreData.length > 0) {
-      this.setState(prevState => ({
-        isMenuToggled: !prevState.isMenuToggled
-      }));
-    }
   };
 
   handleGoBack = () => {
@@ -56,25 +45,40 @@ class Header extends Component {
     return { ...prevState, genre };
   }
 
-  componentDidMount() {}
+  findGenreDataById = (genreData = this.props.search.genre.data, genreId = this.props.genreId) => {
+    return genreData.filter(genre => {
+      return genre.id === genreId;
+    })[0];
+  };
 
-  renderMenu() {
-    const genreData = this.state.genre.data;
+  renderHeaderLibrary() {
+    const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId } = this.props;
+
+    const { genre: { data: genreDt } } = this.state;
+    const currentGenre = this.findGenreDataById(this.props.search.genre.data, genreId);
+    const iconToggleStyle = { transform: 'rotate(180deg) translateY(0%)', top: '-3px' };
+    const color = isDark ? 'black' : 'white';
 
     return (
-      <div className={styles.header__menu}>
-        <ul>
-          {genreData.map(item => {
-            return (
-              <li key={`${item.id}-${item.title}`}>
-                <LazyLoad>
-                  <Link to={`/movie-library/${item.id}`}>{item.title}</Link>
-                </LazyLoad>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      isLibraryCopy && (
+        <div className={styles.header__copy_library}>
+          <LazyLoad>
+            <div className={styles.header__logo_wrap}>
+              <Link to="/">
+                <img alt="MOLADD" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
+
+          {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+              </Link>
+              {genreDt.length <= 0 ? null : (
+                <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
+                  {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                </button>
+              )}
+            </div>
+          </LazyLoad>
+        </div>
+      )
     );
   }
 
@@ -91,10 +95,13 @@ class Header extends Component {
       isLibraryCopy = false,
       activePlaylist,
       stickyOff = false,
+      handleMenuToggleClick,
+      isMenuToggled = false,
+      genreId,
       search = { genre: { data: [] } }
     } = this.props;
 
-    const { isMenuToggled, genre: { data: genreDt } } = this.state;
+    const { genre: { data: genreDt } } = this.state;
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
@@ -108,7 +115,7 @@ class Header extends Component {
                 <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                 {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-                {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+        {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
             </LazyLoad>
           )}
@@ -127,29 +134,10 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         )}
-        {isLibraryCopy && (
-          <div className={styles.header__copy_library}>
-            <LazyLoad>
-              <div className={styles.header__logo_wrap}>
-                <Link to="/">
-                  <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-                  {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-                  {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
-                </Link>
-                {genreDt.length <= 0 ? null : (
-                  <button className={styles.header__action_button} onClick={this.handleMenuToggleClick}>
-                    {this.props.title ? this.props.title : genreDt[0].title}{' '}
-                    <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? { transform: 'rotate(180deg) translateY(0%)', top: 0 } : ''} />
-                  </button>
-                )}
-              </div>
-            </LazyLoad>
-          </div>
-        )}
+        {this.renderHeaderLibrary()}
+
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} {...this.props} />}
-
-        {isLibraryCopy && isMenuToggled ? this.renderMenu() : null}
       </div>
     );
   }
