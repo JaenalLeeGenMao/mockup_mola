@@ -75,7 +75,7 @@ class Moviedetail extends Component {
         content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
-        locale: { last: 'Finish' }
+        locale: { close: 'Finish' }
       }
     ]
   };
@@ -347,7 +347,8 @@ class Moviedetail extends Component {
         padding: '8px 15px',
         textTransform: 'uppercase',
         letterSpacing: '1.67px',
-        borderRadius: '30px'
+        borderRadius: '30px',
+        fontWeight: '600'
       },
       buttonBack: {
         color: '#000000',
@@ -364,7 +365,8 @@ class Moviedetail extends Component {
         fontWeight: '600',
         fontSize: '1.3rem',
         textTransform: 'uppercase',
-        letterSpacing: '1.67px'
+        letterSpacing: '1.67px',
+        padding: '0'
       },
       tooltipContent: {
         fontSize: '1.3rem',
@@ -383,6 +385,9 @@ class Moviedetail extends Component {
       },
       tooltipFooter: {
         flexDirection: 'row-reverse'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)'
       }
     };
 
