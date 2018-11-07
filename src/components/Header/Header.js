@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import { IoIosArrowRoundBack, IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowDown } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { endpoints } from '@source/config';
 
@@ -115,14 +115,14 @@ class Header extends Component {
                 <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                 {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-        {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+    {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
             </LazyLoad>
           )}
           {backButtonOn && (
             <LazyLoad>
               <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                <IoIosArrowRoundBack size={'2rem'} color={color} />
+                <button className={styles.header__back_arrow} />
               </div>
             </LazyLoad>
           )}
