@@ -9,12 +9,25 @@ import LazyLoad from '@components/common/Lazyload';
 
 class Libheader extends Component {
   state = {
-    isMenuToggled: false
+    isMenuToggled: false,
+    genre: { data: [] }
   };
 
   static propTypes = {
     cardTitle: PropTypes.string.isRequired
   };
+
+  constructor(props) {
+    super(props);
+
+    this.headerContainerRef = React.createRef();
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const genre = nextProps.search.genre;
+
+    return { ...prevState, genre };
+  }
 
   handleMenuToggleClick = () => {
     const genreData = this.props.search.genre.data;
@@ -25,12 +38,6 @@ class Libheader extends Component {
       }));
     }
   };
-
-  constructor(props) {
-    super(props);
-
-    this.headerContainerRef = React.createRef();
-  }
 
   renderMenu() {
     const { isMobile = false } = this.props;

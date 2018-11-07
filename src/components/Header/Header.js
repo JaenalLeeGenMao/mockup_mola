@@ -29,24 +29,7 @@ import styles from './Header.css';
 
 class Header extends Component {
   state = {
-    isMenuToggled: false,
     genre: { data: [] }
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.headerContainerRef = React.createRef();
-  }
-
-  handleMenuToggleClick = () => {
-    const genreData = this.state.genre.data;
-
-    if (genreData.length > 0) {
-      this.setState(prevState => ({
-        isMenuToggled: !prevState.isMenuToggled
-      }));
-    }
   };
 
   handleGoBack = () => {
@@ -85,7 +68,7 @@ class Header extends Component {
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
 
     return (
-      <div className={typeHeader} ref={this.headerContainerRef}>
+      <div className={typeHeader}>
         <div className={styles.header__logo_wrapper}>
           {!logoOff && (
             <LazyLoad>
