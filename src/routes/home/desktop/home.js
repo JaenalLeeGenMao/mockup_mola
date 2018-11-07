@@ -5,7 +5,7 @@ import { compose } from 'redux';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import { Link as RSLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll';
 
 import { SETTINGS } from '../const';
 import homeActions from '@actions/home';
@@ -13,9 +13,6 @@ import homeActions from '@actions/home';
 import { getErrorCode } from '@routes/home/util';
 
 import Header from '@components/Header';
-import Navbar from '@components/Navigation';
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link';
 
 import HomeArrow from '../arrow';
 import HomeDesktopContent from '../content';
@@ -27,9 +24,9 @@ import styles from './home.css';
 import Joyride from 'react-joyride';
 import { EVENTS } from 'react-joyride/lib/constants';
 import _get from 'lodash/get';
+import TourArrow from '../tourArrow';
 
-let lastScrollY = 0,
-  ticking = false,
+let ticking = false,
   activePlaylist,
   scrollIndex = 0;
 
@@ -110,8 +107,12 @@ class Home extends Component {
   }
 
   handleTourCallback = data => {
-    const { type, action, index, lifecycle } = data;
+    const { type, action, index } = data;
     const { videos } = this.props.home;
+    
+    if (document.getElementsByClassName('joyride-overlay').length > 0) {
+      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
+    }
 
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
@@ -195,11 +196,14 @@ class Home extends Component {
     const that = this;
     setTimeout(function() {
       const activeSlick = document.querySelector('.active .slick-active .grid-slick');
-      const isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
+      let isDark = 1;
+      if (activeSlick) {
+        isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
+      }
       if (typeof isDark === 'number') {
         that.setState({ isDark });
       }
-    }, 550);
+    }, 100);
   };
 
   handleScroll = () => {
@@ -289,7 +293,7 @@ class Home extends Component {
         onInit: () => {
           this.handleColorChange();
         },
-        afterChange: index => {
+        afterChange: () => {
           this.handleColorChange();
         }
       },
@@ -335,7 +339,7 @@ class Home extends Component {
         letterSpacing: '0.5px'
       },
       tooltipTitle: {
-        fontSize: '1.3rem',
+        fontSize: '1.4rem',
         textAlign: 'left',
         margin: '0px 0px 8px',
         letterSpacing: '0.59px',
@@ -353,7 +357,16 @@ class Home extends Component {
 
     return (
       <Fragment>
-        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride
+          disableOverlayClicks={true}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
 
         <div className={styles.home__container}>
           {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
@@ -368,30 +381,9 @@ class Home extends Component {
             videos.data.map(video => {
               const { id, sortOrder } = video.meta;
               return (
-                <RSLink activeClass="active" to={id} spy smooth duration={500} className={styles.home__slider_container} key={id}>
+                <RSLink activeClass="active" to={id} spy smooth className={styles.home__slider_container} key={id}>
                   <Element name={id}>
-                    <div className={`${styles.placeholderTourSlideWrapper} tourSlideWrapper`}>
-                      <div className={`${styles.placeholderTourSlide} tourSlide`}>
-                        <button
-                          className={`
-                              ${styles.home__arrow}
-                              ${styles.home__arrow_prev}
-                              ${styles[isDark ? 'dark' : 'white']}
-                          `}
-                        >
-                          prev
-                        </button>
-                        <button
-                          className={`
-                              ${styles.home__arrow}
-                              ${styles.home__arrow_next}
-                              ${styles[isDark ? 'dark' : 'white']}
-                          `}
-                        >
-                          prev
-                        </button>
-                      </div>
-                    </div>
+                    <TourArrow isDark={isDark} />
                     <Slider
                       ref={node => {
                         if (!this.sliderRefs) {
@@ -424,7 +416,7 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps = {}) => {
+const mapStateToProps = state => {
   return {
     ...state
   };

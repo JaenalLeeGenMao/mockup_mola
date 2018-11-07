@@ -30,21 +30,14 @@ class Content extends Component {
   render() {
     const {
         id,
-        title,
-        description,
-        shortDescription /** maximum 170 characters, average 25-30 wording */,
         isDark,
-        backgroundColor = '#fff',
         background /** background */,
         // coverTitle /** title image */,
         type,
-        isSafari,
-        ticking = false,
         isMobile = false,
         getCurrentScreenHeight = window.innerHeight
       } = this.props,
       fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
-      fontBackgroundColor = !isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
     // isImageLoaded = document.getElementById(`${styles.content__grid_background_images}`).complete;
@@ -77,14 +70,18 @@ class Content extends Component {
             <LazyLoad>
               <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
                 {isMobile ? (
-                  <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_mobile} ${styles.white}`} onClick={type === 'playlists' && this.handleClick}>
+                  <Link
+                    to={`/movie-detail/${id}`}
+                    className={`${styles.content__grid_see_more_mobile} ${styles.white} ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
+                    onClick={type === 'playlists' && this.handleClick}
+                  >
                     <span className={`${styles.icon__view_movie} ${styles.white}`} />
                     {type === 'playlists' ? 'discover' : 'view movie'}
                   </Link>
                 ) : (
                   <Link
                     to={`/movie-detail/${id}`}
-                    className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}  ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
+                    className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white} ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
                     onClick={type === 'playlists' && this.handleClick}
                   >
                     {type === 'playlists' ? 'discover' : 'view movie'}

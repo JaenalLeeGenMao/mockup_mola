@@ -21,7 +21,11 @@ class Lazyload extends PureComponent {
     children: node,
     onErrorShowDefault: bool,
     errorImgClassName: string,
+<<<<<<< HEAD
     handleCallback: func
+=======
+    onHandleCallback: func
+>>>>>>> update tour style and add tour in mobile
   };
 
   static defaultProps = {
