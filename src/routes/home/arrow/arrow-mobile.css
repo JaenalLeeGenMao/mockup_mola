@@ -32,7 +32,7 @@
 .home__arrow_next::before,
 .home__arrow_prev::before {
   font-size: 1.1rem;
-  line-height: 0.7;
+  line-height: 1.2;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

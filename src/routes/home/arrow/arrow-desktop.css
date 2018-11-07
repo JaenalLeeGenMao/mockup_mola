@@ -29,8 +29,8 @@
 
 .home__arrow_next::before,
 .home__arrow_prev::before {
-  font-size: 1rem;
-  line-height: 1;
+  font-size: 1.5rem;
+  line-height: 2;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -48,22 +48,22 @@
   font-size: 0;
   line-height: 0;
   background: 0 0;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 4rem;
+  height: 4rem;
   z-index: 99;
   transition: all 150ms ease;
 }
 
 .home__arrow_next {
-  right: 4%;
-  border-width: 0.12rem;
+  right: 7rem;
+  border-width: 0.2rem;
   border-radius: 50%;
   border-style: solid;
 }
 
 .home__arrow_prev {
-  right: 7%;
-  border-width: 0.12rem;
+  right: 14rem;
+  border-width: 0.2rem;
   border-radius: 50%;
   border-style: solid;
 }

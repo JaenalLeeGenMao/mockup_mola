@@ -47,7 +47,7 @@ class Content extends Component {
 
     return (
       <div className="grid-slick" isDark={isDark}>
-        <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} className={styles.content__grid_background_images} lazy={false} />
+        <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />
           <div className={styles.content__grid_title} />
