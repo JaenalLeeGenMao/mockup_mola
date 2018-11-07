@@ -15,8 +15,8 @@ class Banner extends Component {
     const { link, playCopy, bannerUrl, imageTitle, playBtn, year } = this.props;
     return (
       <div className={s.bannerWrapper}>
-        <a className={`${s.bannerInner} playButton`} href={link}>
-          <div className={s.play_icon}>
+        <a className={s.bannerInner} href={link}>
+          <div className={`${s.play_icon} playButton`}>
             <img src={playBtn} />
             <span>{playCopy}</span>
           </div>

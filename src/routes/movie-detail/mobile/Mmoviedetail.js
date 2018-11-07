@@ -35,22 +35,12 @@ class Mmoviedetail extends Component {
     startGuide: false,
     steps: [
       {
-        target: '.playButtons',
-        content: <div className={s.tooltipContent}> You can click this play button to start watching movie</div>,
+        target: '.playButton',
+        title: 'Play Movie',
+        content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
-        styles: {
-          spotlight: {
-            borderRadius: '100%'
-          }
-        }
-      },
-      {
-        target: '.trailerAreas',
-        content: <div className={s.tooltipContent}>This is trailer section. You can click on this to watch the trailer of this movie.</div>,
-        placement: 'top',
-        disableBeacon: true,
-        locale: { last: 'Close' }
+        locale: { last: 'Finish', close: 'Finish' }
       }
     ]
   };
@@ -106,6 +96,9 @@ class Mmoviedetail extends Component {
     set to cookie if user has finisher or skip tour*/
     const { type } = data;
     const { pathLoc } = this.props;
+    if (document.getElementsByClassName('joyride-overlay').length > 0) {
+      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
+    }
     if (type == 'tour:end') {
       document.cookie = `__tour=1; path=/${pathLoc};`;
     }
@@ -161,7 +154,7 @@ class Mmoviedetail extends Component {
       castTitle: 'cast'
     };
 
-    const { open, isLoading, trailerPlaytag, trailerMovie, steps, startGuide } = this.state;
+    const { open, isLoading, trailerMovie, steps, startGuide } = this.state;
 
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
@@ -176,16 +169,16 @@ class Mmoviedetail extends Component {
     const directedByArr =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-          return dt.attributes.peopleTypes == 'director';
-        })
+            return dt.attributes.peopleTypes == 'director';
+          })
         : [];
 
     //loop through array of people attribute to get cast/stars
     const castingArtists =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-          return dt.attributes.peopleTypes == 'stars';
-        })
+            return dt.attributes.peopleTypes == 'stars';
+          })
         : [];
     const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
 
@@ -206,34 +199,59 @@ class Mmoviedetail extends Component {
 
     const customTourStyle = {
       buttonNext: {
-        backgroundColor: '#2c56ff'
+        backgroundColor: '#2C56FF',
+        fontSize: '1.06rem',
+        lineHeight: '1',
+        padding: '8px 15px',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        borderRadius: '30px',
+        fontWeight: '600'
       },
       buttonBack: {
-        color: '#2c56ff'
+        color: '#000000',
+        fontSize: '1.06rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        fontWeight: '600'
+      },
+      buttonClose: {
+        display: 'none'
+      },
+      buttonSkip: {
+        color: '#000000',
+        fontWeight: '600',
+        fontSize: '1.06rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        padding: '0'
+      },
+      tooltipContent: {
+        fontSize: '1.06rem',
+        padding: '0 0 20px',
+        textAlign: 'left',
+        color: '#858585',
+        lineHeight: '1.2rem',
+        letterSpacing: '0.5px'
+      },
+      tooltipTitle: {
+        fontSize: '1.15rem',
+        textAlign: 'left',
+        margin: '0px 0px 8px',
+        letterSpacing: '0.59px',
+        textTransform: 'uppercase'
+      },
+      tooltipFooter: {
+        flexDirection: 'row-reverse'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)'
       }
     };
 
     return (
       <Fragment>
-        {/* <Joyride
-          continuous
-          showSkipButton
-          steps={steps}
-          run={startGuide}
-          // styles={customTourStyle}
-          floaterProps={{ disableAnimation: true }}
-          callback={this.handleTourCallback}
-        /> */}
         <Layout>
-          <Joyride
-            continuous
-            showSkipButton
-            steps={steps}
-            run={startGuide}
-            // styles={customTourStyle}
-            floaterProps={{ disableAnimation: true }}
-            callback={this.handleTourCallback}
-          />
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
             {!isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage ? bannerImage.large : null} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
@@ -244,23 +262,23 @@ class Mmoviedetail extends Component {
 
             {!isLoading &&
               trailerDt.length > 0 && (
-              <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
-                <div className={s.trailer_moviebox}>
-                  {trailerDt.map(obj => (
-                    <LazyLoad
-                      key={obj.toString()}
-                      containerClassName={ifOne}
-                      alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
-                      src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
-                      onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
-                      className={s.trailerImage}
-                    >
-                      <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
-                    </LazyLoad>
-                  ))}
-                </div>
-              </Trailer>
-            )}
+                <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
+                  <div className={s.trailer_moviebox}>
+                    {trailerDt.map(obj => (
+                      <LazyLoad
+                        key={obj.toString()}
+                        containerClassName={ifOne}
+                        alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
+                        src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
+                        onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
+                        className={s.trailerImage}
+                      >
+                        <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
+                      </LazyLoad>
+                    ))}
+                  </div>
+                </Trailer>
+              )}
             {isLoading && (
               <Trailer trailerTitle={trailerCopy} trailerText={true}>
                 <div className={s.trailer_moviebox}>{trailerDtPlaceholder.map(obj => <LoadingPlaceholder key={obj.toString()} isLight className={s.trailer_moviebox_imgloading} />)}</div>
@@ -281,16 +299,16 @@ class Mmoviedetail extends Component {
           )}
           {!isLoading &&
             castingArtists.length > 0 && (
-            <Casting castTitle={casting.castTitle}>
-              {castingArtists.map(({ id, attributes }) => (
-                <Fragment key={id}>
-                  <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
-                    <p>{attributes.name}</p>
-                  </LazyLoad>
-                </Fragment>
-              ))}
-            </Casting>
-          )}
+              <Casting castTitle={casting.castTitle}>
+                {castingArtists.map(({ id, attributes }) => (
+                  <Fragment key={id}>
+                    <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
+                      <p>{attributes.name}</p>
+                    </LazyLoad>
+                  </Fragment>
+                ))}
+              </Casting>
+            )}
           {isLoading && <TestimoniLoading />}
           {!isLoading && testimoniDt && testimoniDt.text && <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={testimoniDt.imageUrl} />}
           <Modal open={open} onClose={this.onCloseModal} center>
@@ -299,6 +317,7 @@ class Mmoviedetail extends Component {
             </div>
           </Modal>
         </Layout>
+        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
       </Fragment>
     );
   }
