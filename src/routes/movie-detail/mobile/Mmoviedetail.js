@@ -18,6 +18,7 @@ import s from './Mmoviedetail.css';
 
 import Playbtn from '../moviedetail/assets/player-icon.jpg';
 import TrailerImg from '../moviedetail/assets/notavailable.jpg';
+import EmptyStateTesti from '../moviedetail/assets/quote.png';
 import BannerLoading from './BannerLoading';
 import SynopsisLoading from './SynopsisLoading';
 import LoadingPlaceholder from '../../../components/common/LoadingPlaceholder/LoadingPlaceholder';
@@ -310,7 +311,9 @@ class Mmoviedetail extends Component {
               </Casting>
             )}
           {isLoading && <TestimoniLoading />}
-          {!isLoading && testimoniDt && testimoniDt.text && <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={testimoniDt.imageUrl} />}
+          {!isLoading &&
+            testimoniDt &&
+            testimoniDt.text && <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={!testimoniDt.imageUrl ? EmptyStateTesti : testimoniDt.imageUrl} />}
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
               <Theoplayer movieUrl={trailerMovie} handleOnPlay={this.handleOnPlay} handleOnTime={this.handleOnTime} />

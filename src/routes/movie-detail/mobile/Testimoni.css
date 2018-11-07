@@ -10,15 +10,15 @@
 }
 
 .inner_box {
-  background: rgba(2, 2, 2, 0.6);
+  background: white;
   padding: 10px 25px 10px 15px;
-  color: white;
   text-align: right;
   margin-top: 33px;
   margin-bottom: 20px;
   margin-left: 0;
   margin-right: 54px;
   position: relative;
+  border: 1px solid rgba(87, 132, 255, 1);
   font-family: 'avenir', Helvetica, Arial, sans-serif;
   font-size: 10px;
   line-height: 15px;
