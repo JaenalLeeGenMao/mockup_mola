@@ -67,7 +67,19 @@ class Libheader extends Component {
     const { cardTitle } = this.props;
     return (
       <div className={s.header} ref={this.headerContainerRef}>
-        <Header isDark logoOff libraryOff backButtonOn title={cardTitle} isLibrary isLibraryCopy stickyOff {...this.props} handleMenuToggleClick={this.handleMenuToggleClick} />
+        <Header
+          isDark
+          logoOff
+          libraryOff
+          backButtonOn
+          title={cardTitle}
+          isLibrary
+          isLibraryCopy
+          stickyOff
+          {...this.props}
+          handleMenuToggleClick={this.handleMenuToggleClick}
+          isMenuToggled={this.state.isMenuToggled}
+        />
 
         {this.state.isMenuToggled ? this.renderMenu() : null}
       </div>

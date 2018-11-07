@@ -45,6 +45,12 @@ class Header extends Component {
     return { ...prevState, genre };
   }
 
+  findGenreDataById = (genreData = this.props.search.genre.data, genreId = this.props.genreId) => {
+    return genreData.filter(genre => {
+      return genre.id === genreId;
+    })[0];
+  };
+
   render() {
     const {
       isDark = 1,
@@ -59,10 +65,13 @@ class Header extends Component {
       activePlaylist,
       stickyOff = false,
       handleMenuToggleClick,
+      isMenuToggled = false,
+      genreId,
       search = { genre: { data: [] } }
     } = this.props;
 
-    const { isMenuToggled, genre: { data: genreDt } } = this.state;
+    const currentGenre = this.findGenreDataById(this.props.search.genre.data, genreId);
+    const { genre: { data: genreDt } } = this.state;
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
@@ -76,7 +85,7 @@ class Header extends Component {
                 <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                 {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-            {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+        {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
             </LazyLoad>
           )}
@@ -103,11 +112,11 @@ class Header extends Component {
                   <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                   {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-              {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+          {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
                 </Link>
                 {genreDt.length <= 0 ? null : (
                   <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-                    {this.props.title ? this.props.title : genreDt[0].title}{' '}
+                    {genreId ? currentGenre.title : genreDt[0].title}{' '}
                     <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? { transform: 'rotate(180deg) translateY(0%)', top: 0 } : ''} />
                   </button>
                 )}
