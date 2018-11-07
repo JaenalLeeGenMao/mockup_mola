@@ -357,16 +357,7 @@ class Home extends Component {
 
     return (
       <Fragment>
-        <Joyride
-          disableOverlayClicks={true}
-          continuous
-          showSkipButton
-          steps={steps}
-          run={startGuide}
-          styles={customTourStyle}
-          floaterProps={{ disableAnimation: true }}
-          callback={this.handleTourCallback}
-        />
+        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
 
         <div className={styles.home__container}>
           {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
