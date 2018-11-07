@@ -31,6 +31,7 @@ import Prev from './moviedetail/assets/caret-left.png';
 import TrailerImg from './moviedetail/assets/notavailable.jpg';
 import Playbtn from './moviedetail/assets/player-icon.jpg';
 import CastDefault from './moviedetail/assets/cast-default.jpg';
+import EmptyStateTesti from './moviedetail/assets/quote.png';
 import BannerLoading from './moviedetail/BannerLoading';
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
 import LazyLoad from '@components/common/Lazyload';
@@ -87,7 +88,6 @@ class Moviedetail extends Component {
       movieId //passed as props from index.js
     } = nextProps;
     if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
-      //getMovieDetail('tt1179056');
       getMovieDetail(movieId);
     }
     return { ...prevState, movieDetail };
@@ -422,7 +422,13 @@ class Moviedetail extends Component {
             {!isLoading &&
               testimoniDt &&
               testimoniDt.text && (
-                <Testimoni testimoniContent={testimoniDt.text} testimoniPhotoUrl={testimoniDt.imageUrl} trailerTitle={'MOVIE TRAILER'} testimoniSource={testimoniSrc} trailerText={trailerIsShow} />
+                <Testimoni
+                  testimoniContent={testimoniDt.text}
+                  testimoniPhotoUrl={!testimoniDt.imageUrl ? EmptyStateTesti : testimoniDt.imageUrl}
+                  trailerTitle={'MOVIE TRAILER'}
+                  testimoniSource={testimoniSrc}
+                  trailerText={trailerIsShow}
+                />
               )}
           </Frame>
 
