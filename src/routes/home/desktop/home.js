@@ -109,7 +109,7 @@ class Home extends Component {
   handleTourCallback = data => {
     const { type, action, index } = data;
     const { videos } = this.props.home;
-    
+
     if (document.getElementsByClassName('joyride-overlay').length > 0) {
       document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
     }
@@ -172,19 +172,19 @@ class Home extends Component {
                   startGuide: true
                 });
               } else {
-                // for (var i = 0; i < videos.data.length; i++) {
-                //   if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                //     document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                //   }
-                // }
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                  }
+                }
               }
             } else {
               this.setState({
                 startGuide: true
               });
-              // for (var i = 1; i < videos.data.length; i++) {
-              //   document.getElementsByClassName('tourSlideWrapper')[1].remove();
-              // }
+              for (var i = 1; i < videos.data.length; i++) {
+                document.getElementsByClassName('tourSlideWrapper')[1].remove();
+              }
             }
           }
         );
