@@ -4,16 +4,16 @@
 }
 
 .inner_box {
-  background: rgba(2, 2, 2, 0.6);
+  background: white;
   padding: 1rem 3rem 1rem 1rem;
   width: 36rem;
   min-height: 9rem;
   max-height: 11rem;
-  color: white;
   text-align: right;
   margin-top: 3rem;
   position: absolute;
   right: 9rem;
+  border: 1px solid rgba(87, 132, 255, 1);
   font-family: 'avenir', Helvetica, Arial, sans-serif;
   font-size: 1.4rem;
   line-height: 1.7rem;
