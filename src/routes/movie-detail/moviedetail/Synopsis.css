@@ -36,12 +36,12 @@
 
 .label_container p {
   position: absolute;
-  top: 35%;
-  right: 50%;
+  top: 2rem;
+  right: 4.6rem;
   transform: translate(50%, -100%);
   font-size: 1rem;
-  line-height: 12px;
-  letter-spacing: 2px;
+  line-height: 1rem;
+  letter-spacing: 0.2rem;
 }
 
 .inner_box,
