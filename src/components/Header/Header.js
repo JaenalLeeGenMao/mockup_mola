@@ -75,6 +75,7 @@ class Header extends Component {
     const color = isDark ? 'black' : 'white';
     const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
+    const iconToggleStyle = { transform: 'rotate(180deg) translateY(0%)', top: '-3px' };
 
     return (
       <div className={typeHeader}>
@@ -116,8 +117,7 @@ class Header extends Component {
                 </Link>
                 {genreDt.length <= 0 ? null : (
                   <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-                    {genreId ? currentGenre.title : genreDt[0].title}{' '}
-                    <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? { transform: 'rotate(180deg) translateY(0%)', top: 0 } : ''} />
+                    {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
                   </button>
                 )}
               </div>
