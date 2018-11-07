@@ -42,7 +42,7 @@ hr {
 }
 
 /* On screens that are 1180px or less, set the background color to blue */
-@media only screen and (min-device-width: 1080px) and (max-device-width: 1920px) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-device-width: 1800px) and (max-device-width: 1920px) and (-webkit-min-device-pixel-ratio: 1) {
   .navigation__wrapper {
     position: fixed;
     display: flex;
@@ -55,7 +55,7 @@ hr {
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1080px) {
+@media screen and (min-height: 1800px) {
   .navigation__wrapper {
     top: 25%;
     left: 80px;

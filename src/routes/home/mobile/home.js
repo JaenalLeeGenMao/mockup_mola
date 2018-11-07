@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Slider from 'react-slick';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import { Link as RSLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
-import $ from 'jquery';
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll';
 
 import { SETTINGS } from '../const';
 import homeActions from '@actions/home';
@@ -25,9 +24,12 @@ import HomeError from '@components/common/error';
 
 import styles from './home.css';
 import customArrowStyles from '../arrow/arrow-mobile.css';
+import Joyride from 'react-joyride';
+import { EVENTS } from 'react-joyride/lib/constants';
+import TourArrow from '../tourArrow';
+import _get from 'lodash/get';
 
-let lastScrollY = 0,
-  ticking = false,
+let ticking = false,
   activePlaylist,
   scrollIndex = 0;
 
@@ -38,7 +40,46 @@ class Home extends Component {
     isDark: undefined,
     isMenuOpen: false,
     playlists: [],
-    videos: []
+    videos: [],
+    startGuide: false,
+    steps: [
+      {
+        target: '.tourCategory',
+        title: 'Movie Category',
+        content: 'Click the bullets to switch between playlist category',
+        placement: 'right',
+        disableBeacon: true
+      },
+      {
+        target: '.tourSlide',
+        title: 'Movie List',
+        content: 'Click the left or right arrow to view highlighted movies',
+        placement: 'top',
+        disableBeacon: true
+      },
+      {
+        target: '.tourLibrary',
+        title: 'Movie Library',
+        content: 'Click the icon to view all movie list per category',
+        placement: 'bottom',
+        disableBeacon: true
+      },
+      {
+        target: '.tourMovieDiscover',
+        title: 'Discover Our Movie',
+        content: 'Click the button to discover our awesome list of movies',
+        placement: 'top',
+        disableBeacon: true
+      },
+      {
+        target: '.tourMovieDetail',
+        title: 'View Movie Detail',
+        content: 'Click the button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
+        placement: 'top',
+        disableBeacon: true,
+        locale: { last: 'Finish' }
+      }
+    ]
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -91,16 +132,72 @@ class Home extends Component {
     }
   }
 
-  handleColorChange = () => {
-    const activeSlick = $('.active .slick-active .grid-slick'),
-      isDark = parseInt(activeSlick.attr('isdark'), 10),
-      inactiveArrows = $(`.${styles.home__slider_container} .${customArrowStyles.home__arrow}`),
-      activeArrows = $(`.${styles.home__slider_container}.active .${customArrowStyles.home__arrow}`);
-    if (typeof isDark === 'number') {
-      this.setState({ isDark });
-      inactiveArrows.css('visibility', 'hidden');
-      activeArrows.css('visibility', 'visible');
+  componentDidUpdate() {
+    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home;
+    //update loading state
+    if (playlistStatus === 'success') {
+      if (videoStatus === 'success' && !this.state.playlistSuccess) {
+        this.setState(
+          {
+            playlistSuccess: true
+          },
+          () => {
+            let isTourDone = _get(document, 'cookie', '')
+              .trim()
+              .split(';')
+              .filter(function(item) {
+                return item.indexOf('__trh=') >= 0;
+              });
+
+            if (isTourDone && isTourDone.length) {
+              isTourDone = isTourDone[0].split('=')[1];
+              if (!isTourDone) {
+                this.setState({
+                  startGuide: true
+                });
+              } else {
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                  }
+                }
+              }
+            } else {
+              this.setState({
+                startGuide: true
+              });
+              for (var i = 1; i < videos.data.length; i++) {
+                document.getElementsByClassName('tourSlideWrapper')[1].remove();
+              }
+            }
+          }
+        );
+      }
     }
+  }
+
+  handleColorChange = () => {
+    const that = this;
+    setTimeout(function() {
+      const activeSlick = document.querySelector('.active .slick-active .grid-slick');
+      let isDark = 1;
+      if (activeSlick) {
+        isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
+      }
+      const inactiveArrows = document.querySelectorAll(`.${styles.home__slider_container} .${customArrowStyles.home__arrow}`);
+      const activeArrows = document.querySelectorAll(`.${styles.home__slider_container}.active .${customArrowStyles.home__arrow}`);
+      if (typeof isDark === 'number') {
+        that.setState({ isDark });
+
+        inactiveArrows.forEach(arr => {
+          arr.style.visibility = 'hidden';
+        });
+
+        activeArrows.forEach(arr => {
+          arr.style.visibility = 'visible';
+        });
+      }
+    }, 200);
   };
 
   handleScroll = () => {
@@ -241,6 +338,30 @@ class Home extends Component {
     } catch {}
   };
 
+  handleTourCallback = data => {
+    const { type, action, index } = data;
+    const { videos } = this.props.home;
+
+    if (document.getElementsByClassName('joyride-overlay').length > 0) {
+      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
+    }
+
+    if (action === 'next' && index === 4) {
+      this.sliderRefs[0].slickNext();
+    }
+    if (action === 'prev' && index === 4) {
+      this.sliderRefs[0].slickPrev();
+    }
+    if (type === EVENTS.TOUR_END) {
+      for (var i = 0; i < videos.data.length; i++) {
+        if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+          document.getElementsByClassName('tourSlideWrapper')[0].remove();
+        }
+      }
+      document.cookie = '__trh=1; path=/;';
+    }
+  };
+
   render() {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
@@ -249,81 +370,144 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
       } = this.props.home,
-      { isDark, isMenuOpen } = this.state,
-      color = isDark ? 'black' : 'white',
+      { isDark, startGuide, steps, playlistSuccess } = this.state,
       settings = {
         ...SETTINGS,
         className: styles.home__slick_slider_fade,
         onInit: () => {
           this.handleColorChange();
         },
-        afterChange: index => {
+        afterChange: () => {
           this.handleColorChange();
         }
       },
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
     let activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+
+    const customTourStyle = {
+      buttonNext: {
+        backgroundColor: '#2C56FF',
+        fontSize: '1.06rem',
+        lineHeight: '1',
+        padding: '8px 15px',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        borderRadius: '30px',
+        fontWeight: '600'
+      },
+      buttonBack: {
+        color: '#000000',
+        fontSize: '1.06rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        fontWeight: '600'
+      },
+      buttonClose: {
+        display: 'none'
+      },
+      buttonSkip: {
+        color: '#000000',
+        fontWeight: '600',
+        fontSize: '1.06rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        padding: '0'
+      },
+      tooltipContent: {
+        fontSize: '1.06rem',
+        padding: '0 0 20px',
+        textAlign: 'left',
+        color: '#858585',
+        lineHeight: '1.2rem',
+        letterSpacing: '0.5px'
+      },
+      tooltipTitle: {
+        fontSize: '1.15rem',
+        textAlign: 'left',
+        margin: '0px 0px 8px',
+        letterSpacing: '0.59px',
+        textTransform: 'uppercase'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)'
+      },
+      spotlight: {
+        borderRadius: '4rem'
+      }
+    };
     return (
-      <div>
-        {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
-        {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-        {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
-        {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
-        {playlistStatus === 'success' &&
-          videoStatus === 'success' && (
+      <Fragment>
+        <Joyride
+          disableOverlayClicks={true}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
+        <div>
+          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
+          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
+          {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
+          {playlistSuccess && (
             <div>
               <HomeMobileMenu isDark={false} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                 <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color: '#fff' }}>
-                  <span className={styles['header__library_logo_white']} alt="library" />
+                  <span className={`${styles['header__library_logo_white']} tourLibrary`} alt="library" />
                 </Link>
               </LazyLoad>
             </div>
           )}
-        {playlistStatus === 'success' &&
-          videos &&
-          videos.data.length > 0 &&
-          videos.data.length === playlists.data.length &&
-          videos.data.map(video => {
-            const { id, sortOrder } = video.meta;
-            return (
-              <RSLink activeClass="active" to={id} spy smooth duration={500} className={styles.home__slider_container} key={id}>
-                <Element name={id}>
-                  <Slider
-                    ref={node => {
-                      if (!this.sliderRefs) {
-                        this.sliderRefs = [];
-                        this.trackedSliderIds = [];
-                      }
-                      if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
-                        node = {
-                          ...node,
-                          id,
-                          sortOrder
-                        };
-                        this.trackedSliderIds.push(id);
-                        return this.sliderRefs.push(node);
-                      }
-                    }}
-                    {...settings}
-                    prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
-                    nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
-                  >
-                    {video.data.map(eachVids => {
-                      return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} sliderRefs={this.sliderRefs} />;
-                    })}
-                  </Slider>
-                </Element>
-              </RSLink>
-            );
-          })}
-      </div>
+          {playlistSuccess &&
+            videos &&
+            videos.data.length > 0 &&
+            videos.data.length === playlists.data.length &&
+            videos.data.map(video => {
+              const { id, sortOrder } = video.meta;
+              return (
+                <RSLink activeClass="active" to={id} spy smooth className={styles.home__slider_container} key={id}>
+                  <Element name={id}>
+                    <TourArrow isDark={isDark} isMobile />
+                    <Slider
+                      ref={node => {
+                        if (!this.sliderRefs) {
+                          this.sliderRefs = [];
+                          this.trackedSliderIds = [];
+                        }
+                        if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
+                          node = {
+                            ...node,
+                            id,
+                            sortOrder
+                          };
+                          this.trackedSliderIds.push(id);
+                          return this.sliderRefs.push(node);
+                        }
+                      }}
+                      {...settings}
+                      prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
+                      nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} isMobile />}
+                    >
+                      {video.data.map(eachVids => {
+                        return <HomeMobileContent {...eachVids} key={eachVids.id} isSafari={isSafari} isMobile getCurrentScreenHeight={this.getCurrentScreenHeight} sliderRefs={this.sliderRefs} />;
+                      })}
+                    </Slider>
+                  </Element>
+                </RSLink>
+              );
+            })}
+        </div>
+      </Fragment>
     );
   }
 }
 
-const mapStateToProps = (state, ownProps = {}) => {
+const mapStateToProps = state => {
   return {
     ...state
   };

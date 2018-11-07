@@ -29,10 +29,10 @@
 }
 
 .layer__grid_desc_background.desktop {
-  width: 100vw;
+  width: 108vw;
   height: 100vh;
-  top: -350%;
-  left: -43.5%;
+  top: -220%;
+  left: -58%;
 }
 
 .layer__grid_desc_background.mobile.playlist {
