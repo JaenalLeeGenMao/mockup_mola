@@ -1,5 +1,4 @@
 import React from 'react';
-import { MdChevronLeft } from 'react-icons/md';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
 import s from './index.css';
@@ -28,7 +27,7 @@ class MobileNav extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.header}>
-          <MdChevronLeft style={{ color: '#fff', fontSize: '2.3rem', marginTop: '-.5rem' }} />
+          <span className={s.ui_mobile_nav_arrow_prev} />
           <b className={s.title}>Accounts</b>
         </div>
         <ul className={s.component}>

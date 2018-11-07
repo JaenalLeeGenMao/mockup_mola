@@ -18,6 +18,20 @@
   font-size: 1.4rem;
 }
 
+.ui_mobile_nav_arrow_prev {
+  padding-right: 1rem;
+}
+
+.ui_mobile_nav_arrow_prev::before {
+  content: '❮';
+  font-size: 1.4rem;
+  line-height: 1.2;
+  opacity: 0.75;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .component {
   padding: 0 2rem;
   margin: 0;

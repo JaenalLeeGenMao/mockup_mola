@@ -9,6 +9,10 @@ import ContentLayer from './layer';
 import styles from './content.css';
 
 class Content extends Component {
+  state = {
+    show: false
+  };
+
   handleClick = e => {
     e.preventDefault();
     const { sliderRefs, id } = this.props;
@@ -16,6 +20,11 @@ class Content extends Component {
       const currentSlider = sliderRefs.filter(slider => slider.id === id)[0];
       currentSlider.slickNext();
     } catch {}
+  };
+
+  handleTitleShow = (show = false) => {
+    this.setState({ show: show ? true : false });
+    console.log(show);
   };
 
   render() {
@@ -38,6 +47,7 @@ class Content extends Component {
       fontBackgroundColor = !isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
+    // isImageLoaded = document.getElementById(`${styles.content__grid_background_images}`).complete;
     // coverTitleImage = isMobile ? coverTitle[version].portrait : coverTitle[version].landscape;
     const moreStyles = {
       bottom: 0,
@@ -47,10 +57,21 @@ class Content extends Component {
 
     return (
       <div className="grid-slick" isDark={isDark}>
-        <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} />
+        <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} handleCallback={this.handleTitleShow} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />
-          <div className={styles.content__grid_title} />
+          <div className={styles.content__grid_title}>
+            {!this.state.show && (
+              <h1
+                ref={node => {
+                  this.titleRef = node;
+                }}
+                className={styles.content__grid_title_text}
+              >
+                {title}
+              </h1>
+            )}
+          </div>
           <div className={styles.content__grid_desc}>
             <ContentLayer {...this.props} />
             <LazyLoad>
