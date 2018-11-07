@@ -47,7 +47,7 @@
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1080px) {
+@media screen and (min-height: 1801px) {
   .error__mola_title {
     width: 10%;
     max-width: none;

@@ -267,7 +267,7 @@
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1080px) {
+@media screen and (min-height: 1800px) {
   .root {
     height: calc(100vh - 230px);
     padding: 230px 0 0;
