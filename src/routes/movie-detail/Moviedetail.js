@@ -71,21 +71,11 @@ class Moviedetail extends Component {
     steps: [
       {
         target: '.playButton',
-        content: <div className={s.tooltipContent}> You can click this play button to start watching movie</div>,
+        title: 'Play Movie',
+        content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
-        styles: {
-          spotlight: {
-            borderRadius: '100%'
-          }
-        }
-      },
-      {
-        target: '.trailerArea',
-        content: <div className={s.tooltipContent}>This is trailer section. You can click on this to watch the trailer of this movie.</div>,
-        placement: 'top',
-        disableBeacon: true,
-        locale: { last: 'Close' }
+        locale: { close: 'Finish' }
       }
     ]
   };
@@ -351,10 +341,53 @@ class Moviedetail extends Component {
     //tour guide, step 2 -- custom style
     const customTourStyle = {
       buttonNext: {
-        backgroundColor: '#2c56ff'
+        backgroundColor: '#2C56FF',
+        fontSize: '1.3rem',
+        lineHeight: '1',
+        padding: '8px 15px',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        borderRadius: '30px',
+        fontWeight: '600'
       },
       buttonBack: {
-        color: '#2c56ff'
+        color: '#000000',
+        fontSize: '1.3rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        fontWeight: '600'
+      },
+      buttonClose: {
+        display: 'none'
+      },
+      buttonSkip: {
+        color: '#000000',
+        fontWeight: '600',
+        fontSize: '1.3rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        padding: '0'
+      },
+      tooltipContent: {
+        fontSize: '1.3rem',
+        padding: '0 0 20px',
+        textAlign: 'left',
+        color: '#858585',
+        lineHeight: '14px',
+        letterSpacing: '0.5px'
+      },
+      tooltipTitle: {
+        fontSize: '1.3rem',
+        textAlign: 'left',
+        margin: '0px 0px 8px',
+        letterSpacing: '0.59px',
+        textTransform: 'uppercase'
+      },
+      tooltipFooter: {
+        flexDirection: 'row-reverse'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)'
       }
     };
 
@@ -364,7 +397,7 @@ class Moviedetail extends Component {
     return (
       <Fragment>
         {/*tour guide, step 3 -- call Joyride*/}
-        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
         <Slickcss />
         <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
         <Layout>

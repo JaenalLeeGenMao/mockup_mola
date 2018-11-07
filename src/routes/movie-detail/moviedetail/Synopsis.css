@@ -6,8 +6,9 @@
 .inner_box {
   background: white;
   padding: 2rem;
-  width: 560px;
   width: 44rem;
+  min-height: 9rem;
+  max-height: 11rem;
   border: 1px solid rgba(87, 132, 255, 1);
   position: relative;
   left: 3.3rem;
@@ -59,4 +60,9 @@
 .synopsisPlaceholderDirector {
   margin-bottom: 0;
   display: inline-block;
+}
+
+.foo {
+  height: 63px;
+  overflow: hidden;
 }

@@ -108,7 +108,7 @@ class Header extends Component {
         {!libraryOff && (
           <LazyLoad>
             <Link className={styles.header__library_link_wrapper} to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color }}>
-              <span className={styles[`header__library_logo_${color}`]} alt="library" />
+              <span className={`${styles[`header__library_logo_${color}`]} tourLibrary`} alt="library" />
             </Link>
           </LazyLoad>
         )}

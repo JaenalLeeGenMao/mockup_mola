@@ -61,7 +61,11 @@ class Content extends Component {
                     {type === 'playlists' ? 'discover' : 'view movie'}
                   </Link>
                 ) : (
-                  <Link to={`/movie-detail/${id}`} className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}`} onClick={type === 'playlists' && this.handleClick}>
+                  <Link
+                    to={`/movie-detail/${id}`}
+                    className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white}  ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
+                    onClick={type === 'playlists' && this.handleClick}
+                  >
                     {type === 'playlists' ? 'discover' : 'view movie'}
                   </Link>
                 )}
