@@ -48,35 +48,42 @@ class Home extends Component {
         title: 'Movie Category',
         content: 'Click the bullets to switch between playlist category',
         placement: 'right',
-        disableBeacon: true
+        disableBeacon: true,
+        disableOverlayClicks: true
       },
       {
         target: '.tourSlide',
         title: 'Movie List',
         content: 'Click the left or right arrow to view highlighted movies',
         placement: 'top',
-        disableBeacon: true
+        disableBeacon: true,
+        disableOverlayClicks: true
       },
       {
         target: '.tourLibrary',
         title: 'Movie Library',
         content: 'Click the icon to view all movie list per category',
         placement: 'bottom',
-        disableBeacon: true
+        disableBeacon: true,
+        disableOverlayClicks: true
       },
       {
         target: '.tourMovieDiscover',
         title: 'Discover Our Movie',
         content: 'Click the button to discover our awesome list of movies',
         placement: 'top',
-        disableBeacon: true
+        spotlightPadding: 0,
+        disableBeacon: true,
+        disableOverlayClicks: true
       },
       {
         target: '.tourMovieDetail',
         title: 'View Movie Detail',
         content: 'Click the button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
         placement: 'top',
+        spotlightPadding: 0,
         disableBeacon: true,
+        disableOverlayClicks: true,
         locale: { last: 'Finish' }
       }
     ]
@@ -106,12 +113,6 @@ class Home extends Component {
     const { type, action, index, lifecycle } = data;
     const { videos } = this.props.home;
 
-    if (action === 'next' && index === 4) {
-      this.sliderRefs[0].slickNext();
-    }
-    if (action === 'prev' && index === 4) {
-      this.sliderRefs[0].slickPrev();
-    }
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
         if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
@@ -119,6 +120,14 @@ class Home extends Component {
         }
       }
       document.cookie = '__trh=1; path=/;';
+      return true;
+    }
+
+    if (action === 'next' && index === 4) {
+      this.sliderRefs[0].slickNext();
+    }
+    if (action === 'prev' && index === 4) {
+      this.sliderRefs[0].slickPrev();
     }
   };
 
@@ -162,19 +171,19 @@ class Home extends Component {
                   startGuide: true
                 });
               } else {
-                for (var i = 0; i < videos.data.length; i++) {
-                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                  }
-                }
+                // for (var i = 0; i < videos.data.length; i++) {
+                //   if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                //     document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                //   }
+                // }
               }
             } else {
               this.setState({
                 startGuide: true
               });
-              for (var i = 1; i < videos.data.length; i++) {
-                document.getElementsByClassName('tourSlideWrapper')[1].remove();
-              }
+              // for (var i = 1; i < videos.data.length; i++) {
+              //   document.getElementsByClassName('tourSlideWrapper')[1].remove();
+              // }
             }
           }
         );
@@ -334,6 +343,11 @@ class Home extends Component {
       },
       overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)'
+      },
+      spotlight: {
+        borderRadius: '4rem',
+        position: 'absolute',
+        transform: 'scale(.99, .95) translateY(2%)'
       }
     };
 
