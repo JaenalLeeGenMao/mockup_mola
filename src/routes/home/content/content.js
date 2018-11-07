@@ -24,16 +24,21 @@ class Content extends Component {
 
   handleTitleShow = (show = false) => {
     this.setState({ show: show ? true : false });
-    console.log(show);
   };
 
   render() {
     const {
         id,
+        title,
+        description,
+        shortDescription /** maximum 170 characters, average 25-30 wording */,
         isDark,
+        backgroundColor = '#fff',
         background /** background */,
         // coverTitle /** title image */,
         type,
+        isSafari,
+        ticking = false,
         isMobile = false,
         getCurrentScreenHeight = window.innerHeight
       } = this.props,
