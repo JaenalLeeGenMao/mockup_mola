@@ -63,7 +63,7 @@
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1800px) {
+@media screen and (min-height: 1801px) {
   .genreContainer {
     padding-top: 230px;
   }
