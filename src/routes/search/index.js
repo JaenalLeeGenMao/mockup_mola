@@ -1,6 +1,6 @@
 import React from 'react';
 import MolaLayout from '../../components/Molalayout';
-import SearchDesktop from './desktop/Search';
+import SearchDesktop from './Search';
 
 const title = 'Search';
 

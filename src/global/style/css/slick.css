@@ -118,7 +118,6 @@
 }
 
 :global(.slick-track) {
-  overflow: hidden;
   top: 0;
   left: 0;
   transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);

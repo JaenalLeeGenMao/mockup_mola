@@ -64,10 +64,7 @@ class RecentSearch extends React.Component {
 
                 return (
                   <span className={s.resultChip} key={data.id}>
-                    <a
-                      className={s.resultChipText}
-                      onClick={() => this.handleClickItem(data.keyword)}
-                    >
+                    <a className={s.resultChipText} onClick={() => this.handleClickItem(data.keyword)}>
                       {searchTxt != '' && keywordRes[3] ? (
                         <Fragment>
                           <span>{keywordRes[0]}</span>
@@ -78,10 +75,7 @@ class RecentSearch extends React.Component {
                         <span className={s.keywordResult}>{data.keyword}</span>
                       )}
                     </a>
-                    <a
-                      className={s.removeChip}
-                      onClick={() => this.handleRemoveSearch(data.keyword)}
-                    >
+                    <a className={s.removeChip} onClick={() => this.handleRemoveSearch(data.keyword)}>
                       <i />
                     </a>
                   </span>

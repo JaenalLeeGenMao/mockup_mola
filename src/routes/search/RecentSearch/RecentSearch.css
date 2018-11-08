@@ -127,7 +127,7 @@
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1800px) {
+@media screen and (min-height: 1801px) {
   .resultTitle {
     font-size: 2rem;
   }

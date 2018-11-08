@@ -49,6 +49,10 @@
   padding: 5px;
   margin: 0 auto;
   min-height: 100px;
+
+  img {
+    height: auto;
+  }
 }
 
 .movieErrorImg {
@@ -156,7 +160,7 @@
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1800px) {
+@media screen and (min-height: 1801px) {
   .resultTitle {
     font-size: 2rem;
   }

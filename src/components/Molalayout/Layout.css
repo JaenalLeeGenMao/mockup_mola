@@ -32,7 +32,7 @@ button:focus {
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1800px) {
+@media screen and (min-height: 1801px) {
   html {
     font-size: 187.5%;
   }
