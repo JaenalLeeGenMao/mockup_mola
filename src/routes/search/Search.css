@@ -1,5 +1,5 @@
-@import '../../../components/variables.css';
-@import '../../../global/style/css/grainBackground.css';
+@import '../../components/variables.css';
+@import '../../global/style/css/grainBackground.css';
 
 .root {
   background-color: #000;
@@ -10,13 +10,13 @@
 }
 
 .headerContainer {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   position: relative;
 }
 
 .headerInner {
-  padding-top: 20px;
+  padding-top: 2rem;
 }
 
 .container {
@@ -269,7 +269,7 @@
 /* Big TV Styles */
 @media screen and (min-height: 1801px) {
   .root {
-    height: calc(100vh - 230px);
+    height: calc(100vh - 300px);
     padding: 230px 0 0;
   }
 
