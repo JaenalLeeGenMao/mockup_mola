@@ -86,3 +86,12 @@
   color: #000;
   border-color: #000;
 }
+
+@media screen and (min-width: 1801px) {
+  .placeholderTourSlide {
+    width: 10%;
+    height: 4rem;
+    float: right;
+    margin-right: 6rem;
+  }
+}
