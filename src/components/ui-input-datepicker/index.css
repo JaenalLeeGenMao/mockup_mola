@@ -1,14 +1,14 @@
 @import '../variables.css';
 
-.root {
+.ui_input_datepicker__wrapper {
   margin-bottom: 3rem;
 }
 
-.label {
+.ui_input_datepicker__label {
   color: #6f6f6f;
 }
 
-.component {
+.ui_input_datepicker__component {
   margin-top: 0.5rem;
   background: none;
   padding: 1rem 0;
@@ -19,8 +19,8 @@
   outline: none;
 }
 
-.container > div > div > div,
-.container > div > div:nth-child(1) {
+.ui_input_datepicker__container > div > div > div,
+.ui_input_datepicker__container > div > div:nth-child(1) {
   width: 100%;
 }
 

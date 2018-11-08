@@ -1,65 +1,65 @@
 @import '../variables.css';
 
-.container {
+.ui_radio__container {
   clear: both;
 }
 
-.component {
+.ui_radio__component {
   float: left;
   margin-top: 1rem;
   margin-right: 2rem;
 }
 
-.component input {
+.ui_radio__component input {
   margin-right: 0.5rem;
 }
 
-.component label {
+.ui_radio__component label {
   color: #fff;
   cursor: pointer;
   position: relative;
   top: 0.2rem;
 }
 
-.label {
+.ui_radio__label {
   color: #6f6f6f;
 }
 
-.radioLongDesc {
+.ui_radio__radioLongDesc {
   display: flex;
   flex-wrap: wrap;
   margin-top: 2rem;
 }
 
-.componentItem {
+.ui_radio__componentItem {
   width: 50%;
   color: #fff;
   cursor: pointer;
 }
 
 @media only screen and (max-width: 1024px) {
-  .componentItem {
+  .ui_radio__componentItem {
     width: 100%;
   }
 }
 
-.componentItem label {
+.ui_radio__componentItem label {
   display: flex;
   margin-bottom: 2rem;
   cursor: pointer;
 }
 
 @media only screen and (max-width: 1024px) {
-  .componentItem label {
+  .ui_radio__componentItem label {
     margin-bottom: 0;
   }
 }
 
-.componentItem label div:nth-child(2) {
+.ui_radio__componentItem label div:nth-child(2) {
   margin-top: 0.1rem;
 }
 
-.componentItem label p {
+.ui_radio__componentItem label p {
   font-size: 1rem;
   color: #6f6f6f;
 }

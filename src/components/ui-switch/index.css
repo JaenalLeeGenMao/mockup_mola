@@ -1,68 +1,51 @@
 @import '../variables.css';
 
-.container {
+.ui_switch__container {
   clear: both;
   padding-top: 1rem;
 }
 
-.component {
-  float: left;
-  margin-top: 1rem;
-  margin-right: 2rem;
-}
-
-.component input {
-  margin-right: 0.5rem;
-}
-
-.component label {
-  color: #fff;
-  cursor: pointer;
-  position: relative;
-  top: 0.2rem;
-}
-
-.label {
+.ui_switch__label {
   color: #6f6f6f;
 }
 
-.switch_item {
+.ui_switch_item {
   display: flex;
   color: #fff;
   padding: 0.5rem 0;
 }
 
-.switch_content_left {
+.ui_switch_content_left {
   width: 3%;
 }
 
 @media only screen and (max-width: 1024px) {
-  .switch_content_left {
+  .ui_switch_content_left {
     width: 8%;
   }
 }
 
-.switch_content_center {
+.ui_switch_content_center {
   width: 100%;
   margin-left: 1.5rem;
 }
 
-.switch_content_center > p {
+.ui_switch_content_center > p {
   margin-top: 0.3rem;
 }
 
 @media only screen and (max-width: 1024px) {
-  .switch_content_center > p {
+  .ui_switch_content_center > p {
     font-size: 1rem;
   }
 }
 
-.switch_content_right {
+.ui_switch_content_right {
   width: 30%;
   float: right;
   clear: both;
 }
 
-.switch_content_right > div {
+.ui_switch_content_right > div {
   float: right;
 }

@@ -1,15 +1,15 @@
 @import '../variables.css';
 
-.root {
+.ui_select__wrapper {
   margin-bottom: 4rem;
 }
 
-.label {
+.ui_select__label {
   color: #6f6f6f;
   font-weight: lighter;
 }
 
-.component {
+.ui_select__component {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
