@@ -66,164 +66,57 @@ class MovieLibrary extends Component {
     }
   }
 
-  render() {
-    const { movieLibrary: { data: libraryDt }, search: { genre: { data: genreDt } }, isMobile } = this.props;
+  renderLoading() {
+    const { isMobile } = this.props;
+
     const { isLoading } = this.state;
-    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
+    const cardImageLoading = [
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '20rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '10.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '30rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '12rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '11.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '10.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '17.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' }
+    ];
+
+    return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />);
+  }
+
+  renderContent() {
+    const { movieLibrary: { data: libraryDt } } = this.props;
+    const { isLoading } = this.state;
     const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
 
-    const cardImageLoading = [
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '200px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '108px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '300px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '120px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '118px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '108px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '178px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      }
-    ];
+    return !isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} imgUrl={obj.thumbnail} id={obj.id} />);
+  }
+
+  render() {
+    const { movieLibrary: { data: libraryDt } } = this.props;
+    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
 
     return (
       <Fragment>
@@ -231,9 +124,9 @@ class MovieLibrary extends Component {
           <div className={s.main_container}>
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_wrapper}>
-              {isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />)}
+              {this.renderLoading()}
 
-              {!isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} imgUrl={obj.thumbnail} id={obj.id} />)}
+              {this.renderContent()}
             </div>
           </div>
         </Layout>
