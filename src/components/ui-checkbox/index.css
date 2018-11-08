@@ -1,53 +1,53 @@
 @import '../variables.css';
 
-.container {
+.ui_checkbox__container {
   clear: both;
 }
 
-.component {
+.ui_checkbox__component {
   float: left;
   margin-top: 1rem;
   margin-right: 2rem;
 }
 
-.component input {
+.ui_checkbox__component input {
   margin-right: 0.5rem;
 }
 
-.component label {
+.ui_checkbox__component label {
   color: #fff;
   cursor: pointer;
   position: relative;
   top: 0.2rem;
 }
 
-.label {
+.ui_checkbox__label {
   color: #6f6f6f;
 }
 
-.radioLongDesc {
+.ui_checkbox__radioLongDesc {
   display: flex;
   flex-wrap: wrap;
   margin-top: 2rem;
 }
 
-.componentItem {
+.ui_checkbox__componentItem {
   flex: 50%;
   color: #fff;
   cursor: pointer;
 }
 
-.componentItem label {
+.ui_checkbox__componentItem label {
   display: flex;
   margin-bottom: 2rem;
   cursor: pointer;
 }
 
-.componentItem label div:nth-child(2) {
+.ui_checkbox__componentItem label div:nth-child(2) {
   margin-top: 0.1rem;
 }
 
-.componentItem label p {
+.ui_checkbox__componentItem label p {
   font-size: 1rem;
   color: #6f6f6f;
 }

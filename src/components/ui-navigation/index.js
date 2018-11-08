@@ -27,9 +27,9 @@ class Navigation extends React.Component {
   render() {
     const props = this.props;
     return (
-      <div className={s.root}>
+      <div className={s.ui_navigation__wrapper}>
         <img src={logo} style={{ marginTop: '50px', width: '7rem' }} />
-        <ul className={s.container}>
+        <ul className={s.ui_navigation__container}>
           {props.menus.map((menu, index) => {
             let className = '';
             if (menu.href === this.state.currentPath) {
