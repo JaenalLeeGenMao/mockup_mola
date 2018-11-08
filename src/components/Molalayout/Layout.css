@@ -24,6 +24,13 @@ button:focus {
   padding: 0;
 }
 
+/*
+ * Remove the white border on lazyload
+ */
+img:not([src]) {
+  visibility: hidden;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {
