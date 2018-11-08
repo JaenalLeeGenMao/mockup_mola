@@ -122,7 +122,7 @@ class Header extends Component {
           {backButtonOn && (
             <LazyLoad>
               <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                <button className={styles.header__back_arrow} />
+                <button className={styles.header__back_arrow} style={{ color }} />
               </div>
             </LazyLoad>
           )}
