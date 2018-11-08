@@ -119,7 +119,7 @@
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1800px) {
+@media screen and (min-height: 1801px) {
   .right__menu {
     justify-content: space-between;
   }
