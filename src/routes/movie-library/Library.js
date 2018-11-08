@@ -67,7 +67,7 @@ class MovieLibrary extends Component {
   }
 
   render() {
-    const { movieLibrary: { data: libraryDt }, search: { genre: { data: genreDt } }, isMobile } = this.props;
+    const { movieLibrary: { data: libraryDt }, isMobile } = this.props;
     const { isLoading } = this.state;
     const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
     const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
@@ -75,153 +75,153 @@ class MovieLibrary extends Component {
     const cardImageLoading = [
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '200px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '20rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '108px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '10.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '300px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '30rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '120px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '12rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '118px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '11.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '108px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '10.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '178px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '17.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '40rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '40rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '40rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '40rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '40rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '40rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       },
       {
         id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
+        width: isMobile ? 'auto' : '26.6rem',
+        height: '13.8rem'
       }
     ];
 
