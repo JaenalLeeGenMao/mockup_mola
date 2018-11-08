@@ -6,6 +6,7 @@ import Link from '@components/Link/Link';
 import MolaHandler from '@api/mola';
 import { getMatchWordSearch } from '@routes/search/utils';
 import s from './MovieSuggestion.css';
+import noImg from '@global/style/icons/no_img.png';
 
 class MovieSuggestion extends React.Component {
   state = {
@@ -33,11 +34,12 @@ class MovieSuggestion extends React.Component {
             const movieYear = movie.year ? ` (${movie.year})` : '';
             const movieTitle = `${movie.title}${movieYear}`;
             const movieTitleRes = getMatchWordSearch(movieTitle, searchText);
+            const movieUrl = movie.coverUrl ? movie.coverUrl : noImg;
             return (
               <div className={s.movieBox} key={movie.id}>
                 <div className={s.movieBoxInner}>
                   <Link onClick={() => this.handleClickMovie(movie.title)} to={`/movie-detail/${movie.id}`}>
-                    <LazyLoad src={movie.coverUrl} containerClassName={s.movieImg} onErrorShowDefault errorImgClassName={s.movieErrorImg}>
+                    <LazyLoad src={movieUrl} containerClassName={s.movieImg} onErrorShowDefault errorImgClassName={s.movieErrorImg}>
                       {movieTitleRes[3] ? (
                         <div className={s.movieTitle}>
                           <div>

@@ -6,3 +6,5 @@ yarn.lock
 
 lib
 build
+
+.DS_Store
