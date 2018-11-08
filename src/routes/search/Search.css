@@ -1,5 +1,5 @@
-@import '../../../components/variables.css';
-@import '../../../global/style/css/grainBackground.css';
+@import '../../components/variables.css';
+@import '../../global/style/css/grainBackground.css';
 
 .root {
   background-color: #000;
@@ -10,20 +10,20 @@
 }
 
 .headerContainer {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   position: relative;
 }
 
 .headerInner {
-  padding-top: 20px;
+  padding-top: 2rem;
 }
 
 .container {
   margin: 0 auto;
-  width: 1000px;
+  width: 80%;
   position: relative;
-  z-index: 102;
+  z-index: 99;
 }
 
 .searchInputWrapper {
@@ -151,18 +151,6 @@
   height: 100%;
 }
 
-@media screen and (max-width: 1280px) {
-  .container {
-    width: 900px;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .container {
-    width: 800px;
-  }
-}
-
 @media screen and (max-width: 960px) {
   .container {
     width: 100%;
@@ -269,7 +257,7 @@
 /* Big TV Styles */
 @media screen and (min-height: 1801px) {
   .root {
-    height: calc(100vh - 230px);
+    height: calc(100vh - 300px);
     padding: 230px 0 0;
   }
 

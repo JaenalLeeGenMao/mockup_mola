@@ -3,7 +3,7 @@
   flex-direction: row;
   text-decoration: none;
   position: relative;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   right: 5rem;
   width: 9rem;
@@ -14,6 +14,14 @@
   padding: 0.6rem;
   text-decoration: none;
   letter-spacing: 0.1em;
+}
+
+.right__menu span:first-child {
+  margin-right: 1rem;
+}
+
+.right__menu span:last-child {
+  margin-right: 0;
 }
 
 .right__menu .right__menu_search_black {
@@ -55,7 +63,7 @@
 
 .right__menu_dropdown_wrapper {
   position: absolute;
-  top: 24px;
+  top: 2.4rem;
   right: 0;
   visibility: hidden;
   transition: 150ms ease-out;
@@ -71,7 +79,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 200px;
+  width: 20rem;
   top: 30px;
 
   /* left: -200px; */
@@ -120,7 +128,7 @@
 
 /* Big TV Styles */
 @media screen and (min-height: 1801px) {
-  .right__menu {
-    justify-content: space-between;
+  .right__menu_dropdown_wrapper {
+    top: 3rem;
   }
 }

@@ -12,13 +12,13 @@ import RecentSearch from './RecentSearch/RecentSearch';
 import RecentSearchLoading from './RecentSearch/RecentSearchLoading';
 import Cast from './Cast/Cast';
 import CastLoading from './Cast/CastLoading';
-import Error from '../error/Error';
+import Error from './error/Error';
 import MovieSuggestion from './MovieSuggestion/MovieSuggestion';
 import MovieSuggestionLoading from './MovieSuggestion/MovieSuggestionLoading';
 import s from './Search.css';
-import searchDb from '../../../database/searchDb';
-import history from '../../../history';
-import Tracker from '../../../lib/tracker';
+import searchDb from '@source/database/searchDb';
+import history from '@source/history';
+import Tracker from '@source/lib/tracker';
 let sessionId;
 
 class Search extends React.Component {

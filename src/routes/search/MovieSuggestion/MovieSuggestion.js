@@ -36,16 +36,8 @@ class MovieSuggestion extends React.Component {
             return (
               <div className={s.movieBox} key={movie.id}>
                 <div className={s.movieBoxInner}>
-                  <Link
-                    onClick={() => this.handleClickMovie(movie.title)}
-                    to={`/movie-detail/${movie.id}`}
-                  >
-                    <LazyLoad
-                      src={movie.coverUrl}
-                      containerClassName={s.movieImg}
-                      onErrorShowDefault
-                      errorImgClassName={s.movieErrorImg}
-                    >
+                  <Link onClick={() => this.handleClickMovie(movie.title)} to={`/movie-detail/${movie.id}`}>
+                    <LazyLoad src={movie.coverUrl} containerClassName={s.movieImg} onErrorShowDefault errorImgClassName={s.movieErrorImg}>
                       {movieTitleRes[3] ? (
                         <div className={s.movieTitle}>
                           <div>
