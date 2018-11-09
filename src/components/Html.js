@@ -47,10 +47,6 @@ class Html extends React.Component {
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
-          <link rel="stylesheet" type="text/css" href="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/ui.css" />
-          <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js" />
-          <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1" />
-          <script src="https://cdn.theoplayer.com/dash/2a34c3ad-fc3b-4da9-b399-bccdff7c65fd/THEOplayer.js" />
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
