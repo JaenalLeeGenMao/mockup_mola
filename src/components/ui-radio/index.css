@@ -19,6 +19,7 @@
   cursor: pointer;
   position: relative;
   top: 0.2rem;
+  font-size: 1.4rem;
 }
 
 .ui_radio__label {
