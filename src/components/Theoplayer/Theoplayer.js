@@ -24,7 +24,7 @@ class Theoplayer extends Component {
 
   componentDidMount() {
     var playerConfig = {
-      libraryLocation: '//cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/',
+      libraryLocation: 'https://cdn.theoplayer.com/dash/b6a2095e-19b5-42a0-aedb-8cf91370f612/',
       ui: {
         fluid: true
       }
@@ -69,11 +69,7 @@ class Theoplayer extends Component {
     return (
       <Fragment>
         <Layout>
-          <div
-            className="video-container video-js theoplayer-skin"
-            onMouseEnter={this.getToggleArrow}
-            onMouseLeave={this.getToggleArrow}
-          >
+          <div className="video-container video-js theoplayer-skin" onMouseEnter={this.getToggleArrow} onMouseLeave={this.getToggleArrow} style={{ height: '100vh' }}>
             {this.props.isTrailer && (
               <div className={`${s.arrow} ${toogleArrow}`} onClick={this.handleGoBack}>
                 <img src={playerArrow} />
