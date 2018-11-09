@@ -59,6 +59,11 @@
   z-index: 0;
   transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
   transform: scale(1.05);
+  overflow: hidden;
+}
+
+.content__grid_background_images img {
+  height: 100vh;
 }
 
 .content__grid_see_more_wrapper {

@@ -25,7 +25,7 @@ import HomeError from '@components/common/error';
 import styles from './home.css';
 import customArrowStyles from '../arrow/arrow-mobile.css';
 import Joyride from 'react-joyride';
-import { EVENTS } from 'react-joyride/lib/constants';
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants';
 import TourArrow from '../tourArrow';
 import _get from 'lodash/get';
 
@@ -42,13 +42,19 @@ class Home extends Component {
     playlists: [],
     videos: [],
     startGuide: false,
+    stepIndex: 0,
     steps: [
       {
         target: '.tourCategory',
         title: 'Movie Category',
         content: 'Click the bullets to switch between playlist category',
         placement: 'right',
-        disableBeacon: true
+        disableBeacon: true,
+        styles: {
+          tooltip: {
+            maxWidth: '100%'
+          }
+        }
       },
       {
         target: '.tourSlide',
@@ -152,8 +158,13 @@ class Home extends Component {
             if (isTourDone && isTourDone.length) {
               isTourDone = isTourDone[0].split('=')[1];
               if (!isTourDone) {
+                let newWidth = Object.assign({}, this.state.steps);
+                if (window.innerWidth < 375) {
+                  newWidth[0].styles.tooltip.maxWidth = `${window.innerWidth - 100}px`;
+                }
                 this.setState({
-                  startGuide: true
+                  startGuide: true,
+                  steps: newWidth
                 });
               } else {
                 for (var i = 0; i < videos.data.length; i++) {
@@ -163,8 +174,13 @@ class Home extends Component {
                 }
               }
             } else {
+              let newWidth = Object.assign({}, this.state.steps);
+              if (window.innerWidth < 375) {
+                newWidth[0].styles.tooltip.maxWidth = `${window.innerWidth - 100}px`;
+              }
               this.setState({
-                startGuide: true
+                startGuide: true,
+                steps: newWidth
               });
               for (var i = 1; i < videos.data.length; i++) {
                 document.getElementsByClassName('tourSlideWrapper')[1].remove();
@@ -346,12 +362,6 @@ class Home extends Component {
       document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
     }
 
-    if (action === 'next' && index === 4) {
-      this.sliderRefs[0].slickNext();
-    }
-    if (action === 'prev' && index === 4) {
-      this.sliderRefs[0].slickPrev();
-    }
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
         if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
@@ -359,6 +369,34 @@ class Home extends Component {
         }
       }
       document.cookie = '__trh=1; path=/;';
+      return true;
+    }
+
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1
+      });
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState(
+        {
+          stepIndex: index - 1
+        },
+        () => {
+          if (index === 4) {
+            this.sliderRefs[0].slickPrev();
+          }
+        }
+      );
+    } else {
+      if (action === ACTIONS.NEXT && index === 4) {
+        if (videos.data[0].data.length > 1) {
+          this.sliderRefs[0].slickNext();
+        } else {
+          this.setState({
+            stepIndex: index + 1
+          });
+        }
+      }
     }
   };
 
@@ -370,7 +408,7 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
       } = this.props.home,
-      { isDark, startGuide, steps, playlistSuccess } = this.state,
+      { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
         ...SETTINGS,
         className: styles.home__slick_slider_fade,
@@ -439,6 +477,7 @@ class Home extends Component {
     return (
       <Fragment>
         <Joyride
+          stepIndex={stepIndex}
           disableOverlayClicks={true}
           continuous
           showSkipButton

@@ -22,7 +22,7 @@ import HomeError from '@components/common/error';
 
 import styles from './home.css';
 import Joyride from 'react-joyride';
-import { EVENTS } from 'react-joyride/lib/constants';
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants';
 import _get from 'lodash/get';
 import TourArrow from '../tourArrow';
 
@@ -32,6 +32,62 @@ let ticking = false,
 
 const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
+let customTourStyle = {
+  buttonNext: {
+    backgroundColor: '#2C56FF',
+    fontSize: '1.3rem',
+    lineHeight: '1rem',
+    padding: '0.8rem 1.5rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.167rem',
+    borderRadius: '3rem',
+    fontWeight: '600'
+  },
+  buttonBack: {
+    color: '#000000',
+    fontSize: '1.3rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.167rem',
+    fontWeight: '600',
+    marginRight: '0.5rem'
+  },
+  buttonClose: {
+    display: 'none'
+  },
+  buttonSkip: {
+    color: '#000000',
+    fontWeight: '600',
+    fontSize: '1.3rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.167rem',
+    padding: '0'
+  },
+  tooltipContent: {
+    fontSize: '1.3rem',
+    padding: '0 0 2rem',
+    textAlign: 'left',
+    color: '#858585',
+    lineHeight: '1.4rem',
+    letterSpacing: '0.5px'
+  },
+  tooltipTitle: {
+    fontSize: '1.4rem',
+    textAlign: 'left',
+    margin: '0 0 0.8rem',
+    letterSpacing: '0.59px',
+    textTransform: 'uppercase'
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)'
+  },
+  spotlight: {
+    borderRadius: '4rem',
+    position: 'absolute',
+    transform: 'scale(.99, .95) translateY(1%)'
+  },
+  tooltip: {}
+};
+
 class Home extends Component {
   state = {
     isDark: undefined,
@@ -39,6 +95,7 @@ class Home extends Component {
     videos: [],
     playlistSuccess: false,
     startGuide: false,
+    stepIndex: 0,
     steps: [
       {
         target: '.tourCategory',
@@ -116,19 +173,39 @@ class Home extends Component {
 
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
-        if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-          document.getElementsByClassName('tourSlideWrapper')[0].remove();
-        }
+        // if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+        //   document.getElementsByClassName('tourSlideWrapper')[0].remove();
+        // }
       }
       document.cookie = '__trh=1; path=/;';
       return true;
     }
 
-    if (action === 'next' && index === 4) {
-      this.sliderRefs[0].slickNext();
-    }
-    if (action === 'prev' && index === 4) {
-      this.sliderRefs[0].slickPrev();
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1
+      });
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState(
+        {
+          stepIndex: index - 1
+        },
+        () => {
+          if (index === 4) {
+            this.sliderRefs[0].slickPrev();
+          }
+        }
+      );
+    } else {
+      if (action === ACTIONS.NEXT && index === 4) {
+        if (videos.data[0].data.length > 1) {
+          this.sliderRefs[0].slickNext();
+        } else {
+          this.setState({
+            stepIndex: index + 1
+          });
+        }
+      }
     }
   };
 
@@ -136,6 +213,15 @@ class Home extends Component {
     window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll);
     Events.scrollEvent.register('end', this.handleColorChange);
+
+    if (window.innerHeight > 1801) {
+      const tvStyle = Object.assign({}, customTourStyle);
+      tvStyle.tooltip.width = '900px';
+      tvStyle.tooltip.height = '400px';
+      tvStyle.tooltip.padding = '1.6rem';
+      tvStyle.tooltipContent.padding = '0';
+      tvStyle.tooltipContent.minHeight = '140px';
+    }
   }
 
   componentWillUnmount() {
@@ -173,18 +259,18 @@ class Home extends Component {
                 });
               } else {
                 for (var i = 0; i < videos.data.length; i++) {
-                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                  }
+                  // if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                  //   document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                  // }
                 }
               }
             } else {
               this.setState({
                 startGuide: true
               });
-              for (var i = 1; i < videos.data.length; i++) {
-                document.getElementsByClassName('tourSlideWrapper')[1].remove();
-              }
+              // for (var i = 1; i < videos.data.length; i++) {
+              //   document.getElementsByClassName('tourSlideWrapper')[1].remove();
+              // }
             }
           }
         );
@@ -286,7 +372,7 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
       } = this.props.home,
-      { isDark, startGuide, steps, playlistSuccess } = this.state,
+      { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
         ...SETTINGS,
         className: `${styles.home__slick_slider_fade} home-slider`,
@@ -301,63 +387,9 @@ class Home extends Component {
       videoErrorCode = getErrorCode(videoError);
     activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
 
-    const customTourStyle = {
-      buttonNext: {
-        backgroundColor: '#2C56FF',
-        fontSize: '1.3rem',
-        lineHeight: '1',
-        padding: '8px 15px',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        borderRadius: '30px',
-        fontWeight: '600'
-      },
-      buttonBack: {
-        color: '#000000',
-        fontSize: '1.3rem',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        fontWeight: '600'
-      },
-      buttonClose: {
-        display: 'none'
-      },
-      buttonSkip: {
-        color: '#000000',
-        fontWeight: '600',
-        fontSize: '1.3rem',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        padding: '0'
-      },
-      tooltipContent: {
-        fontSize: '1.3rem',
-        padding: '0 0 20px',
-        textAlign: 'left',
-        color: '#858585',
-        lineHeight: '14px',
-        letterSpacing: '0.5px'
-      },
-      tooltipTitle: {
-        fontSize: '1.4rem',
-        textAlign: 'left',
-        margin: '0px 0px 8px',
-        letterSpacing: '0.59px',
-        textTransform: 'uppercase'
-      },
-      overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.6)'
-      },
-      spotlight: {
-        borderRadius: '4rem',
-        position: 'absolute',
-        transform: 'scale(.99, .95) translateY(1%)'
-      }
-    };
-
     return (
       <Fragment>
-        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride stepIndex={stepIndex} continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
 
         <div className={styles.home__container}>
           {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}

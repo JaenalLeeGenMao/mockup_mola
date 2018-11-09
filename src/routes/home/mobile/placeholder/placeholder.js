@@ -10,6 +10,11 @@ const Placeholder = () => {
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__line} />
       </div>
+      <div className={styles.placeholder__side_menu}>
+        <div className={styles.placeholder__dot} />
+        <div className={styles.placeholder__dot} />
+        <div className={styles.placeholder__dot} />
+      </div>
       <div className={styles.placeholder__detail}>
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__line} />
@@ -21,10 +26,11 @@ const Placeholder = () => {
       <div className={styles.placeholder__footer}>
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
       </div>
     </div>
-
-  )
-}
+  );
+};
 
 export default withStyles(styles)(Placeholder);

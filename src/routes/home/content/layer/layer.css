@@ -29,10 +29,10 @@
 }
 
 .layer__grid_desc_background.desktop {
-  width: 108vw;
-  height: 100vh;
-  top: -220%;
-  left: -58%;
+  width: 95vw;
+  height: 95vh;
+  top: -200%;
+  left: -38%;
 }
 
 .layer__grid_desc_background.mobile.playlist {
@@ -125,5 +125,25 @@
     font-size: 0.9rem;
     line-height: 1.5rem;
     text-align: center;
+  }
+}
+
+/* !Mac Styles */
+@media screen and (max-width: 2160px) {
+  .layer__grid_desc_background.desktop {
+    width: 105vw;
+    height: 105vh;
+    top: -222.5%;
+    left: -53.8%;
+  }
+}
+
+/* Big TV Styles */
+@media screen and (min-height: 1801px) {
+  .layer__grid_desc_background.desktop {
+    width: 105vw;
+    height: 105vh;
+    top: -222.5%;
+    left: -53.8%;
   }
 }

@@ -63,7 +63,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const domain = config.endpoints.domain;
-
+let count = 0;
+// var inboxInterval;
 // set a cookie
 app.use(function(req, res, next) {
   // check if client sent cookie
@@ -99,6 +100,8 @@ app.get('/signout', (req, res) => {
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
   try {
+    // global.clearInterval(inboxInterval);
+
     const css = new Set();
 
     // Enables critical path CSS rendering
@@ -123,72 +126,19 @@ app.get('*', async (req, res, next) => {
       },
       runtime: {
         csrf: req.csrfToken()
+        // unread: count
       }
     };
 
     const store = configureStore(initialState);
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }));
-    // store.dispatch(setUserVariable({ name: 'token', value: req.cookies._at || '' }));
 
-    // let apiCall;
-    // let result;
-    // let accessTokenLifespan = -1;
-    // const accessToken = req.cookies._at;
-    // const tokenExpiry = req.cookies._exp;
-    // const getUserInfo = async (token, updateCookie = true) => {
-    //   apiCall = await Auth.getUserInfo(token);
-    //   if (apiCall.meta.status === 'success') {
-    //     result = { ...result, ...apiCall.data };
-    //     Object.keys(result).forEach(function(key) {
-    //       store.dispatch(setUserVariable({ name: key, value: result[key] }));
-    //     });
-
-    //     if (updateCookie) {
-    //       const oneMonth = 30 * 24 * result.expire * 1000;
-    //       res.cookie('_at', result.token, {
-    //         maxAge: oneMonth,
-    //         httpOnly: true
-    //         // secure: !__DEV__,
-    //       });
-    //       res.cookie('_exp', oneMonth, {
-    //         maxAge: oneMonth,
-    //         httpOnly: true
-    //         // secure: !__DEV__,
-    //       });
-    //     }
-    //   }
-    // };
-
-    // if (accessToken && tokenExpiry) {
-    //   accessTokenLifespan = tokenExpiry - Date.now() / 1000;
-    //   if (accessTokenLifespan < 0) {
-    //     res.cookie('_at', '', { expires: new Date(0) });
-    //     res.cookie('_exp', '', { expires: new Date(0) });
-    //     return res.redirect(req.originalUrl);
-    //   } else if (accessTokenLifespan < 12 * 3600 * 1000) {
-    //     // if lifespan of token is less than 12 hours then get new access token
-    //     apiCall = await Auth.updateAuth(accessToken);
-
-    //     if (apiCall.meta.status === 'success') {
-    //       result = { ...apiCall.data };
-    //       await getUserInfo(apiCall.data.token);
-    //     }
-    //   } else {
-    //     /** GET EXISTING USER INFO  */
-    //     await getUserInfo(accessToken, false);
-    //   }
-    // } else if (req.query.code) {
-    //   /** ON CLICK LOGIN  */
-    //   apiCall = await Auth.getAuth({
-    //     code: req.query.code,
-    //     redirect_uri: domain || 'http://jaenal.mola.tv'
-    //   });
-    //   if (apiCall.meta.status === 'success') {
-    //     result = { ...apiCall.data };
-    //     await getUserInfo(apiCall.data.token);
-    //   }
-    // }
+    // inboxInterval = setInterval(() => {
+    //   console.log(`server inbox interval ${count}`);
+    //   count++;
+    //   store.dispatch(setRuntimeVariable({ name: 'unread', value: count }));
+    // }, 1000);
 
     const userAgent = req.get('User-Agent');
     const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);
@@ -236,6 +186,9 @@ app.get('*', async (req, res, next) => {
       apiUrl: config.endpoints.clientUrl,
       state: context.store.getState(),
       isMobile: context.isMobile
+      // inbox: {
+      //   unread: count
+      // }
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
