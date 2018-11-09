@@ -106,6 +106,43 @@ class Moviedetail extends Component {
     }
   };
 
+  componentDidMount() {
+    const { movieDetail } = this.props;
+
+    //update loading state
+    if (movieDetail.meta.status !== 'loading') {
+      this.setState(
+        {
+          isLoading: false
+        },
+        () => {
+          /*tour guide, step 4 -- check cookie if has done tour before
+        if yes then don't start tour
+        if no then start tour*/
+          let isTourDone = _get(document, 'cookie', '')
+            .trim()
+            .split(';')
+            .filter(function(item) {
+              return item.indexOf('__tour=') >= 0;
+            });
+
+          if (isTourDone && isTourDone.length) {
+            isTourDone = isTourDone[0].split('=')[1];
+            if (!isTourDone) {
+              this.setState({
+                startGuide: true
+              });
+            }
+          } else {
+            this.setState({
+              startGuide: true
+            });
+          }
+        }
+      );
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { movieDetail } = this.props;
 
