@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import history from '../../history';
 import Layout from '@components/Molalayout';
@@ -9,7 +10,8 @@ import s from './Theoplayer.css';
 
 class Theoplayer extends Component {
   state = {
-    toogleArrow: ''
+    toogleArrow: '',
+    isTheoplayerLoaded: false
   };
 
   static propTypes = {
@@ -22,7 +24,7 @@ class Theoplayer extends Component {
     theoConfig: PropTypes.array.isRequired
   };
 
-  componentDidMount() {
+  componentDidUpdate() {
     var playerConfig = {
       libraryLocation: '//cdn.theoplayer.com/dash/2a34c3ad-fc3b-4da9-b399-bccdff7c65fd/',
       ui: {
@@ -31,12 +33,17 @@ class Theoplayer extends Component {
     };
 
     var element = document.querySelector('.video-container');
-    var player = new THEOplayer.Player(element, playerConfig);
-    this.movieConfig(player);
-    // auto play when hit api
-    // player.autoplay = true;
-    player.muted = true;
-    player.play();
+
+    if (!this.state.isTheoplayerLoaded) {
+      var player = new THEOplayer.Player(element, playerConfig);
+      this.movieConfig(player);
+      // // auto play when hit api
+      // // player.autoplay = true;
+      player.muted = true;
+      player.play();
+
+      this.setState({ isTheoplayerLoaded: true });
+    }
   }
 
   handleGoBack = () => {
@@ -69,6 +76,12 @@ class Theoplayer extends Component {
     const { toogleArrow } = this.state;
     return (
       <Fragment>
+        <Helmet>
+          <link rel="stylesheet" type="text/css" href="https://cdn.theoplayer.com/dash/5acd847e-4a8d-4a7b-85a4-ccfd12d5562d/ui.css" />
+          <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js" />
+          <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1" />
+          <script src="https://cdn.theoplayer.com/dash/2a34c3ad-fc3b-4da9-b399-bccdff7c65fd/THEOplayer.js" />
+        </Helmet>
         <Layout>
           <div className="video-container video-js theoplayer-skin" onMouseEnter={this.getToggleArrow} onMouseLeave={this.getToggleArrow}>
             {this.props.isTrailer && (
