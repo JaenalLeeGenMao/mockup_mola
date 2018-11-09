@@ -32,3 +32,9 @@
   color: #fff;
   position: relative;
 }
+
+.logo {
+  margin-top: 50px;
+  width: 7rem;
+  min-height: 7rem;
+}

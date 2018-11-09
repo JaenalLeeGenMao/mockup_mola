@@ -29,7 +29,7 @@ const Checkbox = props => {
                 <div key={index} className={s.ui_checkbox__component}>
                   <input type="checkbox" name={props.id} value={option} id={'cxb-' + idInput} style={{ display: 'none' }} checked={elChecked} onChange={props.onChange} />
                   <label htmlFor={'cxb-' + idInput} style={{ textTransform: 'capitalize' }}>
-                    {elChecked ? <img src={imgActice} width="20" style={{ marginRight: '10px' }} /> : <img src={imgUnActice} width="20" style={{ marginRight: '10px' }} />}
+                    {elChecked ? <img src={imgActice} style={{ marginRight: '10px', width: '1.8rem' }} /> : <img src={imgUnActice} style={{ marginRight: '10px', width: '1.8rem' }} />}
                     {option}
                   </label>
                 </div>
@@ -48,7 +48,7 @@ const Checkbox = props => {
                 <div key={index} className={s.ui_checkbox__componentItem}>
                   <input type="checkbox" name={props.id} value={option.value} id={'cxb-' + idInput} style={{ display: 'none' }} checked={elChecked} onChange={props.onChange} />
                   <label htmlFor={'cxb-' + idInput} style={{ textTransform: 'capitalize' }}>
-                    <div>{elChecked ? <img src={imgActice} width="20" style={{ marginRight: '10px' }} /> : <img src={imgUnActice} width="20" style={{ marginRight: '10px' }} />}</div>
+                    <div>{elChecked ? <img src={imgActice} style={{ marginRight: '10px', width: '1.8rem' }} /> : <img src={imgUnActice} style={{ marginRight: '10px', width: '1.8rem' }} />}</div>
                     <div>
                       {option.name}
                       <p>{option.desc}</p>
