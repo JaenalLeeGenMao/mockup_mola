@@ -5,6 +5,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
 import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink, UiButton } from '@components';
+import fbIcon from '@global/style/icons/facebook.png';
+import googleIcon from '@global/style/icons/google.png';
+import lineIcon from '@global/style/icons/line.png';
 
 import { updateSetting } from '../../../actions/user';
 import s from './index.css';
@@ -119,23 +122,23 @@ class Setting extends React.Component {
                   onChange: () => this.handleSwitch(1),
                   value: 1,
                   text: 'ghoniyyumaulidi@mola.tv',
-                  img: 'https://projects.invisionapp.com/assets/15282308/181894875/DF77D7417690E726F26CDE4B9FD3274D83CFA0AFD82701FA13021E6B843A4731/thumbnail'
+                  img: googleIcon
                 },
                 {
                   onChange: () => this.handleSwitch(2),
                   value: 2,
                   text: 'ghoniyyumaulidi',
-                  img: 'https://projects.invisionapp.com/assets/15282308/181894975/BA2AC111BE9E47D252FB9C32AE34E36024145DB16BB81655B3F9B4B4B2F0D553/thumbnail'
+                  img: fbIcon
                 },
                 {
                   onChange: () => this.handleSwitch(3),
                   value: 3,
                   text: 'Connect your Line account',
-                  img: 'https://projects.invisionapp.com/assets/15282308/181894848/1FAA68792ABF83F0443F292F1886F94532220C9B7754511D721F6E5CF168B14D/thumbnail'
+                  img: lineIcon
                 }
               ]}
             />
-            <hr />
+            <hr className={s.line} />
             <UiSelect
               label="Language"
               holder="Select countries"
@@ -152,7 +155,7 @@ class Setting extends React.Component {
                 }
               ]}
             />
-            <hr />
+            <hr className={s.line} />
             <UiRadio
               uiStyle="multi"
               id="videoQuality"
@@ -182,7 +185,7 @@ class Setting extends React.Component {
               onChange={this.handleOnChange}
               checked={videoQuality}
             />
-            <hr />
+            <hr className={s.line} />
             <UiCheckbox
               id="autoPlay"
               label="Autoplay"
@@ -199,9 +202,8 @@ class Setting extends React.Component {
             />
 
             <UiButton onClick={this.updateSetting} />
-            <br />
 
-            <hr />
+            <hr className={s.line} />
             <UiFooterLink menus={footerMenus} />
           </div>
           <div className={s.sideRight} />

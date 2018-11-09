@@ -29,7 +29,7 @@ const Radio = props => {
                 <div key={index} className={s.ui_radio__component}>
                   <input type="radio" name={props.id} value={option.value} id={idInput} style={{ display: 'none' }} checked={elChecked} onChange={props.onChange} />
                   <label htmlFor={idInput} style={{ textTransform: 'capitalize' }}>
-                    {elChecked ? <img src={imgActice} width="20" style={{ marginRight: '10px' }} /> : <img src={imgUnActice} width="20" style={{ marginRight: '10px' }} />}
+                    {elChecked ? <img src={imgActice} style={{ marginRight: '10px', width: '2rem' }} /> : <img src={imgUnActice} style={{ marginRight: '10px', width: '2rem' }} />}
                     {option.label}
                   </label>
                 </div>
@@ -48,7 +48,7 @@ const Radio = props => {
                 <div key={index} className={s.ui_radio__componentItem}>
                   <input type="radio" name={props.id} value={option.value} id={idInput} style={{ display: 'none' }} checked={elChecked} onChange={props.onChange} />
                   <label htmlFor={idInput} style={{ textTransform: 'capitalize' }}>
-                    <div>{elChecked ? <img src={imgActice} width="20" style={{ marginRight: '10px' }} /> : <img src={imgUnActice} width="20" style={{ marginRight: '10px' }} />}</div>
+                    <div>{elChecked ? <img src={imgActice} style={{ marginRight: '10px', width: '1rem' }} /> : <img src={imgUnActice} style={{ marginRight: '10px', width: '1rem' }} />}</div>
                     <div>
                       {option.name}
                       <p>{option.desc}</p>

@@ -17,6 +17,7 @@
   border-bottom: 1px solid #1a202f;
   color: #fff;
   outline: none;
+  font-size: 1.4rem;
 }
 
 .ui_input_datepicker__container > div > div > div,

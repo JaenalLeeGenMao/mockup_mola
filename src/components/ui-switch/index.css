@@ -16,7 +16,7 @@
 }
 
 .ui_switch_content_left {
-  width: 3%;
+  width: 2.5rem;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -28,6 +28,8 @@
 .ui_switch_content_center {
   width: 100%;
   margin-left: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 1rem;
 }
 
 .ui_switch_content_center > p {

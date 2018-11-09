@@ -3,6 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Link from '@components/Link';
 import s from './index.css';
 import logo from '@global/style/icons/mola_blue.svg';
+import Lazyload from '../common/Lazyload/Lazyload';
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -28,7 +29,9 @@ class Navigation extends React.Component {
     const props = this.props;
     return (
       <div className={s.ui_navigation__wrapper}>
-        <img src={logo} style={{ marginTop: '50px', width: '7rem' }} />
+        <Link to="/">
+          <Lazyload src={logo} containerClassName={s.logo} />
+        </Link>
         <ul className={s.ui_navigation__container}>
           {props.menus.map((menu, index) => {
             let className = '';
