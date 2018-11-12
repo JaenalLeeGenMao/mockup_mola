@@ -87,7 +87,10 @@ class Moviedetail extends Component {
       movieDetail,
       movieId //passed as props from index.js
     } = nextProps;
+
     if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
+      getMovieDetail(movieId);
+    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
       getMovieDetail(movieId);
     }
     return { ...prevState, movieDetail };
@@ -97,16 +100,13 @@ class Moviedetail extends Component {
     /*tour guide, step 5 -- handle callback
     set to cookie if user has finisher or skip tour*/
     const { type } = data;
-    const { pathLoc } = this.props;
-
     if (type == 'tour:end') {
-      document.cookie = `__tour=1; path=/${pathLoc};`;
+      document.cookie = '__tour=1; path=/;';
     }
   };
 
   componentDidMount() {
     const { movieDetail } = this.props;
-
     //update loading state
     if (movieDetail.meta.status !== 'loading') {
       this.setState(
@@ -143,7 +143,6 @@ class Moviedetail extends Component {
 
   componentDidUpdate(prevProps) {
     const { movieDetail } = this.props;
-
     //update loading state
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
       this.setState(
@@ -329,6 +328,7 @@ class Moviedetail extends Component {
     const { movieDetail: { data: movieDetailData } } = this.props;
 
     const bannerImageLandscape = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop.landscape : null;
+    const isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
     const playCopy = 'Play movie';
@@ -438,7 +438,7 @@ class Moviedetail extends Component {
         <Slickcss />
         <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
         <Layout>
-          {!isLoading && <Banner bannerUrl={bannerImageLandscape ? bannerImageLandscape : 'https://dummyimage.com/1920x634/000/fff'} link={link} playBtn={Playbtn} playCopy={playCopy} />}
+          {!isLoading && <Banner bannerUrl={bannerImageLandscape} isBannerError={isBannerError} link={link} playBtn={Playbtn} playCopy={playCopy} />}
           {isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} />}
 
           <Frame>

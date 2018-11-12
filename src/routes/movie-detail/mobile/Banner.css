@@ -97,3 +97,9 @@
   }
 }
 
+.bannerError {
+  background-image: url('https://via.placeholder.com/1920x634.png/000000/868686/?text=Image+Not+Available');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
