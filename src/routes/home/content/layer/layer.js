@@ -15,8 +15,7 @@ const ContentLayer = ({ isDark, type, background, shortDescription = '', isMobil
     filteredDesc = filterString(shortDescription).substring(0, isMobile ? 100 : 180);
 
   const descWrpperStyle = {
-    transform: `translateY(calc(${getCurrentScreenHeight()}px - 65vh))`,
-    marginTop: '0'
+    transform: `translateY(calc(${getCurrentScreenHeight()}px - 80vh))`
   };
 
   return (

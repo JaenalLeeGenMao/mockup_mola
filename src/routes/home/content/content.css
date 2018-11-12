@@ -9,7 +9,7 @@
     'title title'
     'desc desc'
     'nav empty';
-  grid-template-rows: 5fr 12fr 2fr;
+  grid-template-rows: 10fr 12fr 2fr;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -132,6 +132,7 @@
 .content__grid_title_text {
   color: #fff;
   z-index: 0;
+  margin: auto 0;
 }
 
 /* Desktop style */
