@@ -12,9 +12,10 @@ class Banner extends React.Component {
   };
 
   render() {
-    const { link, playCopy, bannerUrl = 'https://dummyimage.com/1920x634/000/fff', playBtn } = this.props;
+    const { link, playCopy, bannerUrl, playBtn, isBannerError } = this.props;
+    const errorClassName = isBannerError ? s.bannerError : '';
     return (
-      <div className={s.bannerWrapper}>
+      <div className={`${s.bannerWrapper} ${errorClassName}`}>
         {/*tour guide, step 6 -- add class to element that need guide*/}
         <a className={`${s.bannerInner} playButton`} href={link}>
           <div className={s.play_icon}>
@@ -22,7 +23,7 @@ class Banner extends React.Component {
             <span>{playCopy}</span>
           </div>
         </a>
-        {bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} />}
+        <LazyLoad src={bannerUrl} className={s.bannerBgImage} />
       </div>
     );
   }

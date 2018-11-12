@@ -51,6 +51,8 @@ class Mmoviedetail extends Component {
     if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
       //getMovieDetail('tt1179056');
       getMovieDetail(movieId);
+    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
+      getMovieDetail(movieId);
     }
 
     return { ...prevState, movieDetail };
@@ -194,7 +196,9 @@ class Mmoviedetail extends Component {
 
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
-    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images : null;
+    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.mobile.portrait : null;
+    const isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.mobile.portrait ? false : true;
+
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
@@ -290,7 +294,17 @@ class Mmoviedetail extends Component {
         <Layout>
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
-            {!isLoading && <Banner year={year} imageTitle={bannerImgTitle} bannerUrl={bannerImage ? bannerImage.large : null} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
+            {!isLoading && (
+              <Banner
+                year={year}
+                isBannerError={isBannerError}
+                imageTitle={bannerImgTitle}
+                bannerUrl={bannerImage ? bannerImage.large : null}
+                link={link}
+                playBtn={Playbtn}
+                playCopy={banner.playCopy}
+              />
+            )}
             {isLoading && <BannerLoading />}
 
             {isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr} />}
