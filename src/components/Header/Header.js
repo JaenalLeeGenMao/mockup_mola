@@ -51,11 +51,21 @@ class Header extends Component {
     })[0];
   };
 
+  getCurrentGenre(genreId) {
+    const { genre: { data: genreDt } } = this.state;
+
+    if (typeof genreId === 'undefined' || genreId === '') {
+      return genreDt[0];
+    }
+
+    return genreId;
+  }
+
   renderHeaderLibrary() {
     const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId } = this.props;
 
     const { genre: { data: genreDt } } = this.state;
-    const currentGenre = this.findGenreDataById(this.props.search.genre.data, genreId);
+    const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId));
     const iconToggleStyle = { transform: 'rotate(180deg) translateY(0%)', top: '-3px' };
     const color = isDark ? 'black' : 'white';
 
@@ -68,7 +78,7 @@ class Header extends Component {
                 <img alt="MOLADD" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
                 {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
 
-          {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
+      {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
