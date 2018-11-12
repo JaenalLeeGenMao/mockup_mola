@@ -32,7 +32,11 @@
 } */
 
 :global(.video-container) {
-  height: 50% !important;
+  height: 100vh !important;
+}
+
+:global(.theoplayer-skin) {
+  padding: 0 !important;
 }
 
 :global(.theo-primary-color) {

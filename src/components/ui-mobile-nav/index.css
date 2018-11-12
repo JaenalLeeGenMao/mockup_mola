@@ -1,11 +1,11 @@
 @import '../variables.css';
 
-.root {
+.ui_mobile_nav__wrapper {
   margin: 0;
   background: #0e1d3d;
 }
 
-.header {
+.ui_mobile_nav__header {
   padding: 0 1rem;
   padding-top: 1.5rem;
   display: flex;
@@ -13,7 +13,7 @@
   align-items: end;
 }
 
-.title {
+.ui_mobile_nav__title {
   color: #fff;
   font-size: 1.4rem;
 }
@@ -32,14 +32,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.component {
+.ui_mobile_nav__component {
   padding: 0 2rem;
   margin: 0;
   display: flex;
   list-style: none;
 }
 
-.component li {
+.ui_mobile_nav__component li {
   flex: 1;
   text-align: center;
   padding: 1rem;
@@ -49,7 +49,7 @@
   color: #fff !important;
 }
 
-.component li a {
+.ui_mobile_nav__component li a {
   font-size: 1rem;
   color: #6f6f6f;
   text-decoration: none;

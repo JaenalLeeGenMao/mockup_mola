@@ -1,15 +1,16 @@
 @import '../variables.css';
 
-.root {
+.ui_input__wrapper {
   margin-bottom: 3rem;
 }
 
-.label {
+.ui_input__label {
   color: #6f6f6f;
   font-weight: lighter;
+  font-size: 1.2rem;
 }
 
-.container {
+.ui_input__container {
   position: relative;
 }
 
@@ -19,6 +20,8 @@
   width: 100%;
   border: none;
   outline: none;
+  font-size: 1.6rem;
+  font-weight: 500;
 }
 
 .transparent {
@@ -44,7 +47,7 @@
   background: #2d2d2d;
 }
 
-.eye {
+.ui_input__eye {
   cursor: pointer;
   position: absolute;
   top: 1.5rem;

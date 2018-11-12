@@ -25,12 +25,12 @@ class MobileNav extends React.Component {
   render() {
     const props = this.props;
     return (
-      <div className={s.root}>
-        <div className={s.header}>
+      <div className={s.ui_mobile_nav__wrapper}>
+        <div className={s.ui_mobile_nav__header}>
           <span className={s.ui_mobile_nav_arrow_prev} />
-          <b className={s.title}>Accounts</b>
+          <b className={s.ui_mobile_nav__title}>Accounts</b>
         </div>
-        <ul className={s.component}>
+        <ul className={s.ui_mobile_nav__component}>
           {props.menus.map((menu, index) => {
             let className = '';
             if (menu.href === this.state.currentPath) {

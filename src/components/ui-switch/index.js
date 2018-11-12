@@ -9,11 +9,11 @@ const Switch = props => {
   const rootStyle = props.rootStyle || {};
 
   return (
-    <div className={s.root} style={rootStyle}>
-      <label htmlFor={props.id} className={s.label}>
+    <div className={s.ui_switch__wrapper} style={rootStyle}>
+      <label htmlFor={props.id} className={s.ui_switch__label}>
         {props.label}
       </label>
-      <div className={s.container}>
+      <div className={s.ui_switch__container}>
         {options.map((option, index) => {
           let checked = false;
           if (selected.find(x => x == option.value)) {
@@ -54,14 +54,14 @@ class SwitchComponent extends React.Component {
     const { text, img } = option;
 
     return (
-      <div className={s.switch_item}>
-        <div className={s.switch_content_left}>
+      <div className={s.ui_switch_item}>
+        <div className={s.ui_switch_content_left}>
           <img src={img} alt="logo-switch" width="24" />
         </div>
-        <div className={s.switch_content_center}>
+        <div className={s.ui_switch_content_center}>
           <p>{text}</p>
         </div>
-        <div className={s.switch_content_right}>
+        <div className={s.ui_switch_content_right}>
           <ReactSwitch
             handleDiameter={20}
             height={16}

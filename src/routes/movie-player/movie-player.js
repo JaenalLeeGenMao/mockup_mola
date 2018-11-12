@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import history from '../../history';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as movieStreamActions from '@actions/movie-stream';
 
@@ -21,9 +22,7 @@ class Movieplayer extends Component {
   }
 
   isTheoPlayer() {
-    const {
-      movieStream: { data: movieStream }
-    } = this.props;
+    const { movieStream: { data: movieStream } } = this.props;
     const subtitlesDt = movieStream.length > 0 ? movieStream[0].subtitles : '';
     // console.log('data subtitles methode', subtitlesDt)
 
@@ -37,19 +36,28 @@ class Movieplayer extends Component {
     return myTheoPlayer;
   }
 
-  render() {
-    const {
-      movieStream: { data: movieStream }
-    } = this.props;
-    const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
+  handleGoBack() {
+    const { goBack } = history;
+    if (goBack) {
+      goBack();
+    }
+  }
 
+  render() {
+    const { movieStream: { data: movieStream } } = this.props;
+    const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
     return (
       <Fragment>
         <div id={s.movie_player}>
           {streamSource ? (
             <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />
           ) : (
-            ''
+            <div className={s.container}>
+              <div className={s.no_video}>Video not available</div>
+              <p className={s.novid_btn} onClick={this.handleGoBack}>
+                Go Back
+              </p>
+            </div>
           )}
         </div>
       </Fragment>
@@ -67,10 +75,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieStream: movieId => dispatch(movieStreamActions.getMovieStream(movieId))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Movieplayer);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Movieplayer);

@@ -145,7 +145,6 @@ class Home extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps;
-
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist();
     } else if (prevState.videos.length <= 0) {
@@ -167,15 +166,11 @@ class Home extends Component {
     const { type, action, index } = data;
     const { videos } = this.props.home;
 
-    if (document.getElementsByClassName('joyride-overlay').length > 0) {
-      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
-    }
-
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
-        // if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-        //   document.getElementsByClassName('tourSlideWrapper')[0].remove();
-        // }
+        if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+          document.getElementsByClassName('tourSlideWrapper')[0].remove();
+        }
       }
       document.cookie = '__trh=1; path=/;';
       return true;
@@ -222,6 +217,50 @@ class Home extends Component {
       tvStyle.tooltipContent.padding = '0';
       tvStyle.tooltipContent.minHeight = '140px';
     }
+
+    const { playlists, videos } = this.props.home;
+
+    if (playlists.meta.status !== 'loading') {
+      if (playlists.meta.status === 'success') {
+        if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
+          this.setState(
+            {
+              playlistSuccess: true
+            },
+            () => {
+              let isTourDone = _get(document, 'cookie', '')
+                .trim()
+                .split(';')
+                .filter(function(item) {
+                  return item.indexOf('__trh=') >= 0;
+                });
+
+              if (isTourDone && isTourDone.length) {
+                isTourDone = isTourDone[0].split('=')[1];
+                if (!isTourDone) {
+                  this.setState({
+                    startGuide: true
+                  });
+                } else {
+                  for (var i = 0; i < videos.data.length; i++) {
+                    if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                      document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                    }
+                  }
+                }
+              } else {
+                this.setState({
+                  startGuide: true
+                });
+                for (var i = 1; i < videos.data.length; i++) {
+                  document.getElementsByClassName('tourSlideWrapper')[1].remove();
+                }
+              }
+            }
+          );
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -259,18 +298,18 @@ class Home extends Component {
                 });
               } else {
                 for (var i = 0; i < videos.data.length; i++) {
-                  // if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                  //   document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                  // }
+                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
+                  }
                 }
               }
             } else {
               this.setState({
                 startGuide: true
               });
-              // for (var i = 1; i < videos.data.length; i++) {
-              //   document.getElementsByClassName('tourSlideWrapper')[1].remove();
-              // }
+              for (var i = 1; i < videos.data.length; i++) {
+                document.getElementsByClassName('tourSlideWrapper')[1].remove();
+              }
             }
           }
         );
@@ -389,7 +428,17 @@ class Home extends Component {
 
     return (
       <Fragment>
-        <Joyride stepIndex={stepIndex} continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride
+          disableOverlayClose={true}
+          stepIndex={stepIndex}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
 
         <div className={styles.home__container}>
           {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}

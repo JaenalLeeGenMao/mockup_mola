@@ -52,7 +52,6 @@ class Search extends React.Component {
     if (process.env.BROWSER) {
       sessionId = Tracker.sessionId();
     }
-
     if (recentSearch.meta.status === 'loading' && prevState.result.length <= 0) {
       var today = new Date();
       var expiredDateStamp = new Date(new Date().setDate(today.getDate() - 7));
@@ -80,7 +79,6 @@ class Search extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { searchKeyword, search: { result: { meta }, recentSearch: { data: rsDt, meta: recentSearchMeta } } } = this.props;
-
     if (prevProps.search.recentSearch.meta.status !== recentSearchMeta.status) {
       this.allRecentSearch = rsDt;
       this.recentSearchData = rsDt;
@@ -101,6 +99,22 @@ class Search extends React.Component {
 
   componentDidMount() {
     this.inputSearch.current.focus();
+    const { search: { result, recentSearch }, searchKeyword } = this.props;
+
+    if (recentSearch.meta.status !== 'loading') {
+      this.setState({
+        isLoadingRecentSearch: false
+      });
+    }
+
+    if (searchKeyword !== '' && result.meta.status !== 'loading') {
+      this.resultval = searchKeyword;
+      this.inputSearch.current.value = searchKeyword;
+      this.parseSearchResult(searchKeyword);
+      this.setState({
+        isLoadingResult: false
+      });
+    }
   }
 
   parseSearchResult = val => {
@@ -280,7 +294,6 @@ class Search extends React.Component {
   showError = () => {
     const { isLoadingResult, isLoadingRecentSearch } = this.state;
     const { search: { result: { meta: { status: resultStatus } }, recentSearch: { meta: { status: recentStatus } } } } = this.props;
-
     if (!isLoadingResult && resultStatus == 'error' && !isLoadingRecentSearch && recentStatus == 'error') {
       return true;
     } else {
@@ -301,7 +314,6 @@ class Search extends React.Component {
     const { isLoadingResult, isLoadingRecentSearch, showRemoveIcon, isEmptyInput } = this.state;
     const isDark = false;
     const showResult = this.searchText ? searchKeyword !== '' : false;
-
     return (
       <Fragment>
         <div className={s.headerContainer}>

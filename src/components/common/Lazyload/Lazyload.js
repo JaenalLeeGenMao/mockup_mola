@@ -20,6 +20,7 @@ class Lazyload extends PureComponent {
     onClick: func,
     children: node,
     onErrorShowDefault: bool,
+    onEmptyShowDefault: bool,
     errorImgClassName: string,
     handleCallback: func
   };
@@ -40,6 +41,7 @@ class Lazyload extends PureComponent {
     children: null,
     src: null,
     onErrorShowDefault: false,
+    onEmptyShowDefault: false,
     errorImgClassName: '',
     handleCallback: () => {}
   };
@@ -167,12 +169,20 @@ class Lazyload extends PureComponent {
 
   render() {
     const { sources, isError } = this.state;
-    const { alt, containerClassName, containerStyle, style, onClick, children, className, src, errorImgClassName } = this.props;
-
+    const { alt, containerClassName, containerStyle, style, onClick, children, className, src, errorImgClassName, onEmptyShowDefault } = this.props;
+    let showImg = true;
+    let showImgDefault = false;
+    if (onEmptyShowDefault) {
+      showImg = src && src !== '' && !isError;
+      showImgDefault = isError || src == '';
+    } else {
+      showImg = src && !isError;
+      showImgDefault = isError;
+    }
     return (
       <div className={`${containerClassName || ''} ${this.className}`} style={containerStyle} onClick={onClick}>
-        {src && !isError && <img ref={this.image} className={className} style={style} src={sources} alt={alt} />}
-        {isError && <div className={`${s.lazyload__errorBg} ${errorImgClassName}`} />}
+        {showImg && <img ref={this.image} className={className} style={style} src={sources} alt={alt} />}
+        {showImgDefault && <div className={`${s.lazyload__errorBg} ${errorImgClassName}`} />}
         {children}
       </div>
     );
