@@ -47,11 +47,11 @@ class RightMenu extends Component {
                   Login
                 </Link>
               )}
-              {/* {userID && ( */}
-              <Link style={{ color }} to="/accounts/profile">
-                Account
-              </Link>
-              {/* )} */}
+              {userID && (
+                <Link style={{ color }} to="/accounts/profile">
+                  Account
+                </Link>
+              )}
               {/* {userID && (
                 <Link style={{ color }} to="/accounts/history">
                   History

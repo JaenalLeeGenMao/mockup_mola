@@ -124,6 +124,14 @@
     width: 1.6rem;
     height: 1.6rem;
   }
+
+  .right__menu span:first-child {
+    margin-right: 0;
+  }
+
+  .right__menu_dropdown {
+    top: 1rem;
+  }
 }
 
 /* Big TV Styles */

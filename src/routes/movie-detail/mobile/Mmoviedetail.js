@@ -56,6 +56,43 @@ class Mmoviedetail extends Component {
     return { ...prevState, movieDetail };
   }
 
+  componentDidMount() {
+    const { movieDetail } = this.props;
+
+    //update loading state
+    if (movieDetail.meta.status !== 'loading') {
+      this.setState(
+        {
+          isLoading: false
+        },
+        () => {
+          /*tour guide, step 4 -- check cookie if has done tour before
+        if yes then don't start tour
+        if no then start tour*/
+          let isTourDone = _get(document, 'cookie', '')
+            .trim()
+            .split(';')
+            .filter(function(item) {
+              return item.indexOf('__tour=') >= 0;
+            });
+
+          if (isTourDone && isTourDone.length) {
+            isTourDone = isTourDone[0].split('=')[1];
+            if (!isTourDone) {
+              this.setState({
+                startGuide: true
+              });
+            }
+          } else {
+            this.setState({
+              startGuide: true
+            });
+          }
+        }
+      );
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { movieDetail } = this.props;
 
@@ -97,9 +134,7 @@ class Mmoviedetail extends Component {
     set to cookie if user has finisher or skip tour*/
     const { type } = data;
     const { pathLoc } = this.props;
-    if (document.getElementsByClassName('joyride-overlay').length > 0) {
-      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
-    }
+
     if (type == 'tour:end') {
       document.cookie = `__tour=1; path=/${pathLoc};`;
     }
@@ -320,7 +355,16 @@ class Mmoviedetail extends Component {
             </div>
           </Modal>
         </Layout>
-        <Joyride continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride
+          disableOverlayClose={true}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
       </Fragment>
     );
   }

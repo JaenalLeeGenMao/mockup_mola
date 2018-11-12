@@ -166,10 +166,6 @@ class Home extends Component {
     const { type, action, index } = data;
     const { videos } = this.props.home;
 
-    if (document.getElementsByClassName('joyride-overlay').length > 0) {
-      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
-    }
-
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
         if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
@@ -432,7 +428,17 @@ class Home extends Component {
 
     return (
       <Fragment>
-        <Joyride stepIndex={stepIndex} continuous showSkipButton steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride
+          disableOverlayClose={true}
+          stepIndex={stepIndex}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
 
         <div className={styles.home__container}>
           {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
