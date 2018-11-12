@@ -27,7 +27,7 @@ class Banner extends Component {
           <span className={s.yearLine} />
           <span>({year})</span>
         </div>
-        <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />
+        {bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />}
       </div>
     );
   }

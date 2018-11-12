@@ -23,7 +23,7 @@ class Banner extends React.Component {
             <span>{playCopy}</span>
           </div>
         </a>
-        <LazyLoad src={bannerUrl} className={s.bannerBgImage} />
+        {bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} />}
       </div>
     );
   }

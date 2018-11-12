@@ -100,9 +100,8 @@ class Moviedetail extends Component {
     /*tour guide, step 5 -- handle callback
     set to cookie if user has finisher or skip tour*/
     const { type } = data;
-    const { pathLoc } = this.props;
     if (type == 'tour:end') {
-      document.cookie = `__tour=1; path=/${pathLoc};`;
+      document.cookie = '__tour=1; path=/;';
     }
   };
 
