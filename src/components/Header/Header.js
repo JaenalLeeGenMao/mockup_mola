@@ -51,14 +51,14 @@ class Header extends Component {
     })[0];
   };
 
-  getCurrentGenre(genreId) {
+  getCurrentGenre(genreData) {
     const { genre: { data: genreDt } } = this.state;
 
-    if (typeof genreId === 'undefined' || genreId === '') {
+    if (typeof genreData === 'undefined' || genreData === '') {
       return genreDt[0];
     }
 
-    return genreId;
+    return genreData;
   }
 
   renderHeaderLibrary() {
