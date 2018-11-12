@@ -98,9 +98,7 @@ class Moviedetail extends Component {
     set to cookie if user has finisher or skip tour*/
     const { type } = data;
     const { pathLoc } = this.props;
-    if (document.getElementsByClassName('joyride-overlay').length > 0) {
-      document.getElementsByClassName('joyride-overlay')[0].style['pointer-events'] = 'none';
-    }
+
     if (type == 'tour:end') {
       document.cookie = `__tour=1; path=/${pathLoc};`;
     }
@@ -436,7 +434,7 @@ class Moviedetail extends Component {
 
     return (
       <Fragment>
-        <Joyride steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
+        <Joyride disableOverlayClose={true} steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
         <Slickcss />
         <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
         <Layout>
