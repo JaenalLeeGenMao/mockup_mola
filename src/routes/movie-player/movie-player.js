@@ -44,21 +44,22 @@ class Movieplayer extends Component {
   }
 
   render() {
-    const { movieStream: { data: movieStream } } = this.props;
+    const { movieStream: { meta: { status: movieStreamStatus }, data: movieStream } } = this.props;
     const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
+
     return (
       <Fragment>
         <div id={s.movie_player}>
-          {streamSource ? (
-            <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />
-          ) : (
-            <div className={s.container}>
-              <div className={s.no_video}>Video not available</div>
-              <p className={s.novid_btn} onClick={this.handleGoBack}>
-                Go Back
-              </p>
-            </div>
-          )}
+          {movieStreamStatus === 'success' && streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />}
+          {movieStreamStatus === 'success' &&
+            streamSource === '' && (
+              <div className={s.container}>
+                <div className={s.no_video}>Video not available</div>
+                <p className={s.novid_btn} onClick={this.handleGoBack}>
+                  Go Back
+                </p>
+              </div>
+            )}
         </div>
       </Fragment>
     );

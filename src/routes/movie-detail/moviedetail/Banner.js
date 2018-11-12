@@ -12,7 +12,7 @@ class Banner extends React.Component {
   };
 
   render() {
-    const { link, playCopy, bannerUrl, playBtn } = this.props;
+    const { link, playCopy, bannerUrl = 'https://dummyimage.com/1920x634/000/fff', playBtn } = this.props;
     return (
       <div className={s.bannerWrapper}>
         {/*tour guide, step 6 -- add class to element that need guide*/}
