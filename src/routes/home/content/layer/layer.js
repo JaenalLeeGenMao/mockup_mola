@@ -14,12 +14,12 @@ const ContentLayer = ({ isDark, type, background, shortDescription = '', isMobil
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
     filteredDesc = filterString(shortDescription).substring(0, isMobile ? 100 : 180);
 
-  const descWrpperStyle = {
+  const descWrapperStyle = {
     transform: `translateY(calc(${getCurrentScreenHeight()}px - 80vh))`
   };
 
   return (
-    <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrpperStyle : null}>
+    <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrapperStyle : null}>
       {!isMobile && (
         <div
           className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
