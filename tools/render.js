@@ -36,6 +36,7 @@ const routes = [
   '/search',
   '/about',
   '/privacy',
+  '/system-info',
   '/404' // https://help.github.com/articles/creating-a-custom-404-page-for-your-github-pages-site/
 ];
 
@@ -62,9 +63,7 @@ async function render() {
       await makeDir(dirName);
       await writeFile(dist, text);
       const time = timeEnd.getTime() - timeStart.getTime();
-      console.info(
-        `#${index + 1} ${dist} => ${response.status} ${response.statusText} (${time} ms)`
-      );
+      console.info(`#${index + 1} ${dist} => ${response.status} ${response.statusText} (${time} ms)`);
     })
   );
 

@@ -37,7 +37,7 @@ class RightMenu extends Component {
             <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
           </LazyLoad>
           <div className={styles.right__menu_dropdown_wrapper}>
-            <div className={styles.right__menu_dropdown} style={{ color }}>
+            <div className={styles.right__menu_dropdown} style={{ color, backgroundColor: color === 'black' ? '#fff' : '#000' }}>
               {userID ? (
                 <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>
                   {firstName ? `${firstName},` : ''} Sign out
@@ -62,7 +62,7 @@ class RightMenu extends Component {
                   Inbox
                 </Link>
               )} */}
-              <Link style={{ color }} to="/">
+              <Link style={{ color }} to="/system-info">
                 System Info
               </Link>
               <div className={styles.right__menu_dropdown_footer}>
