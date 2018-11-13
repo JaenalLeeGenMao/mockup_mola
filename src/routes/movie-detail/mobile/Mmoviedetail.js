@@ -196,7 +196,11 @@ class Mmoviedetail extends Component {
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
     const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.mobile.portrait : null;
-    const isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.mobile.portrait ? false : true;
+    let isBannerError = false;
+
+    if (!isLoading) {
+      isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
+    }
 
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
