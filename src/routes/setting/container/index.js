@@ -121,13 +121,13 @@ class Setting extends React.Component {
                 {
                   onChange: () => this.handleSwitch(1),
                   value: 1,
-                  text: 'ghoniyyumaulidi@mola.tv',
+                  text: 'mola.user@mola.tv',
                   img: googleIcon
                 },
                 {
                   onChange: () => this.handleSwitch(2),
                   value: 2,
-                  text: 'ghoniyyumaulidi',
+                  text: 'mola',
                   img: fbIcon
                 },
                 {
