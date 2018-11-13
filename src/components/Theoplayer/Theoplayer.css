@@ -1,14 +1,18 @@
 .arrow {
-  width: 50px;
-  height: 50px;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   position: relative;
   top: 2%;
   left: 2%;
   opacity: 0.5;
-  border: 3px solid white;
+  border: 0.3rem solid white;
   display: none;
   padding: 10px;
+}
+
+.arrow:hover {
+  background-color: #555;
 }
 
 .arrow img {
@@ -18,13 +22,6 @@
 .arrow_show {
   display: block;
   cursor: pointer;
-}
-
-@media all and (max-width: 500px) {
-  .arrow {
-    width: 30px;
-    height: 30px;
-  }
 }
 
 /* .mola_frame{
@@ -60,4 +57,17 @@
   /* opacity: 0 !important; */
   margin-top: 117% !important;
   height: 30% !important;
+}
+
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .arrow {
+    width: 3rem;
+    height: 3rem;
+    border: 0.16rem solid white;
+  }
+
+  :global(.video-container) {
+    height: 90vh !important;
+    width: 100vw;
+  }
 }

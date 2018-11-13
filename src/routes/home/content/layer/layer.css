@@ -115,7 +115,7 @@
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .layer__grid_desc_wrapper {
-    margin: 60% 5% 0%;
+    margin: auto 5%;
     height: auto;
   }
 
