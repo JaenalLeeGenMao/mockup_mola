@@ -123,19 +123,19 @@ class Setting extends React.Component {
                   value: 1,
                   text: 'mola.user@mola.tv',
                   img: googleIcon
-                },
-                {
-                  onChange: () => this.handleSwitch(2),
-                  value: 2,
-                  text: 'mola',
-                  img: fbIcon
-                },
-                {
-                  onChange: () => this.handleSwitch(3),
-                  value: 3,
-                  text: 'Connect your Line account',
-                  img: lineIcon
                 }
+                // {
+                //   onChange: () => this.handleSwitch(2),
+                //   value: 2,
+                //   text: 'mola',
+                //   img: fbIcon
+                // },
+                // {
+                //   onChange: () => this.handleSwitch(3),
+                //   value: 3,
+                //   text: 'Connect your Line account',
+                //   img: lineIcon
+                // }
               ]}
             />
             <hr className={s.line} />
