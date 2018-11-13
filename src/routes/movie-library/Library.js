@@ -111,7 +111,7 @@ class MovieLibrary extends Component {
     const { isLoading } = this.state;
     const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
 
-    return !isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} imgUrl={obj.thumbnail} id={obj.id} />);
+    return !isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail} id={obj.id} />);
   }
 
   render() {
