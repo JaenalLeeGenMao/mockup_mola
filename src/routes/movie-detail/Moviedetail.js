@@ -328,7 +328,12 @@ class Moviedetail extends Component {
     const { movieDetail: { data: movieDetailData } } = this.props;
 
     const bannerImageLandscape = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop.landscape : null;
-    const isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
+    let isBannerError = false;
+
+    if (!isLoading) {
+      isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
+    }
+
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
     const playCopy = 'Play movie';
