@@ -201,6 +201,8 @@ class Mmoviedetail extends Component {
       isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
     }
 
+    const isDark = movieDetailData.length > 0 && movieDetailData[0].isDark;
+
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
@@ -294,7 +296,7 @@ class Mmoviedetail extends Component {
     return (
       <Fragment>
         <Layout>
-          <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
+          <Logo isDark={isDark} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
             {!isLoading && <Banner year={year} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
             {isLoading && <BannerLoading />}

@@ -19,7 +19,7 @@
   min-height: 41rem;
   display: block;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
 }
 
 .play_icon {

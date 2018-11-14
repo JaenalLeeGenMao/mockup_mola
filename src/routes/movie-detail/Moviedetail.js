@@ -334,6 +334,8 @@ class Moviedetail extends Component {
       isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
     }
 
+    const isDark = movieDetailData.length > 0 && movieDetailData[0].isDark;
+
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
     const playCopy = 'Play movie';
@@ -441,7 +443,7 @@ class Moviedetail extends Component {
       <Fragment>
         <Joyride disableOverlayClose={true} steps={steps} run={startGuide} styles={customTourStyle} floaterProps={{ disableAnimation: true }} callback={this.handleTourCallback} />
         <Slickcss />
-        <Logo isDark={movieDetailData.isDark ? movieDetailData.isDark : 1} libraryOff {...this.props} />
+        <Logo isDark={isDark} libraryOff {...this.props} />
         <Layout>
           {!isLoading && <Banner bannerUrl={bannerImageLandscape} isBannerError={isBannerError} link={link} playBtn={Playbtn} playCopy={playCopy} />}
           {isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} />}
