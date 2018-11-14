@@ -195,9 +195,8 @@ class Mmoviedetail extends Component {
 
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
-    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.mobile.portrait : null;
+    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop.landscape : null;
     let isBannerError = false;
-
     if (!isLoading) {
       isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
     }
@@ -297,17 +296,7 @@ class Mmoviedetail extends Component {
         <Layout>
           <Logo isDark={0} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
-            {!isLoading && (
-              <Banner
-                year={year}
-                isBannerError={isBannerError}
-                imageTitle={bannerImgTitle}
-                bannerUrl={bannerImage ? bannerImage.large : null}
-                link={link}
-                playBtn={Playbtn}
-                playCopy={banner.playCopy}
-              />
-            )}
+            {!isLoading && <Banner year={year} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
             {isLoading && <BannerLoading />}
 
             {isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr} />}
