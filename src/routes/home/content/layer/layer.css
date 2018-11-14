@@ -63,6 +63,7 @@
 .layer__grid_desc_content {
   position: relative;
   z-index: 2;
+  height: 100%;
 }
 
 .layer__grid_desc_content h1 {
@@ -101,7 +102,7 @@
 }
 
 .layer__grid_desc_footer {
-  height: 40%;
+  height: 30%;
   opacity: 1;
   margin: 0 5%;
   overflow: hidden;
@@ -112,11 +113,19 @@
   padding: 2.5% 0;
 }
 
+.layer__grid_desc_author {
+  margin: 0 5%;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .layer__grid_desc_wrapper {
     margin: auto 5%;
     height: auto;
+  }
+
+  .layer__grid_desc_footer {
+    height: 40%;
   }
 
   .layer__grid_desc_header p,

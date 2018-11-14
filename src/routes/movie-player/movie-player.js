@@ -5,6 +5,8 @@ import history from '../../history';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as movieStreamActions from '@actions/movie-stream';
 
+import loader from '@global/style/animation/ellipsis.svg';
+
 import Theoplayer from '../../components/Theoplayer/Theoplayer';
 import s from './movie-player.css';
 
@@ -50,6 +52,7 @@ class Movieplayer extends Component {
     return (
       <Fragment>
         <div id={s.movie_player}>
+          {movieStreamStatus !== 'success' && !streamSource && <img alt="loader" src={loader} />}
           {movieStreamStatus === 'success' && streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />}
           {movieStreamStatus === 'success' &&
             streamSource === '' && (

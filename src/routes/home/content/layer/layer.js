@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import LazyLoad from '@components/common/Lazyload';
 
-import { filterString } from './util';
+import { setMultilineEllipsis } from './util';
 
 import styles from './layer.css';
 
@@ -12,11 +12,14 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
-    filteredDesc = filterString(type === 'playlists' ? description : shortDescription).substring(0, isMobile ? 100 : 180);
+    filteredDesc = type === 'playlists' ? description : shortDescription;
 
   const descWrapperStyle = {
     transform: `translateY(calc(${getCurrentScreenHeight()}px - 80vh))`
   };
+
+  setMultilineEllipsis(styles.layer__grid_desc_header);
+  setMultilineEllipsis(styles.layer__grid_desc_footer);
 
   return (
     <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrapperStyle : null}>
@@ -32,16 +35,16 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
       )}
       <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
         <div className={styles.layer__grid_desc_header}>
-          {!isMobile && <h1>STORYLINE</h1>}
-          <p>{filteredDesc}</p>
+          {!isMobile && <h1>OVERVIEW</h1>}
+          <p className="filtered_description">{filteredDesc}</p>
         </div>
         {type !== 'playlists' && (
           <Fragment>
             <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
             <div className={styles.layer__grid_desc_footer}>
               <i className={styles.layer__grid_desc_footer_quote}>{`"${quotes.attributes.text}"`}</i>
-              <strong>— {quotes.attributes.author}</strong>
             </div>
+            <strong className={styles.layer__grid_desc_author}>— {quotes.attributes.author}</strong>
           </Fragment>
         )}
       </div>
