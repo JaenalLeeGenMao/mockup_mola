@@ -70,13 +70,9 @@
   white-space: normal;
 }
 
-.yearWrapper {
-  position: relative;
-}
-
 .yearInner {
   position: absolute;
-  top: -44px;
+  top: 145px;
   left: 0;
   color: white;
   width: 350px;
@@ -88,7 +84,7 @@
   border: 0;
   border-top: 1px solid #0045ff;
   padding: 0;
-  width: 256px;
+  width: 60%;
 }
 
 .yearInner span {
@@ -97,7 +93,7 @@
   margin: 22px 0 22px 10px;
   vertical-align: bottom;
   font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .yearLoading {
@@ -114,4 +110,16 @@
 
 .tooltipContent {
   padding: 20px 0 0;
+}
+
+@media screen and (max-width: 960px) {
+  .yearLine {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .yearLine {
+    width: 20%;
+  }
 }
