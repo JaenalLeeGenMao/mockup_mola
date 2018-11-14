@@ -18,7 +18,7 @@ const Placeholder = () => {
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__button} />
       </div>
-      <div className={styles.placeholder__figure}>{[...Array(100)].map((x, i) => <div key={i} className={styles.placeholder__figure_line} style={{ width: `${Math.random() * 25}%` }} />)}</div>
+      {/* <div className={styles.placeholder__figure}>{[...Array(100)].map((x, i) => <div key={i} className={styles.placeholder__figure_line} style={{ width: `${Math.random() * 25}%` }} />)}</div> */}
       <div className={styles.placeholder__arrows}>
         <div className={styles.placeholder__arrow_prev} />
         <div className={styles.placeholder__arrow_next} />
