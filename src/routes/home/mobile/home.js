@@ -47,7 +47,9 @@ class Home extends Component {
       {
         target: '.tourCategory',
         title: 'Movie Category',
-        content: 'Click the bullets to switch between playlist category',
+        content: `
+        To navigate around different movie categories, you can simply click the navigation 
+        button or swipe up, down, right, and left on your awesome keyboard`,
         placement: 'right',
         disableBeacon: true,
         styles: {
@@ -58,29 +60,31 @@ class Home extends Component {
       },
       {
         target: '.tourSlide',
-        title: 'Movie List',
-        content: 'Click the left or right arrow to view highlighted movies',
+        title: 'Highlighted Movies',
+        content: `
+        You can browse through our top movies in each category with gentle click on the arrow buttons 
+        or using keyboards and swipe up, down, right, and left`,
         placement: 'top',
         disableBeacon: true
       },
       {
         target: '.tourLibrary',
         title: 'Movie Library',
-        content: 'Click the icon to view all movie list per category',
+        content: 'You can click this icon to view all movie list per category',
         placement: 'bottom',
         disableBeacon: true
       },
       {
         target: '.tourMovieDiscover',
         title: 'Discover Our Movie',
-        content: 'Click the button to discover our awesome list of movies',
+        content: 'Click this button to discover our awesome list of movies',
         placement: 'top',
         disableBeacon: true
       },
       {
         target: '.tourMovieDetail',
         title: 'View Movie Detail',
-        content: 'Click the button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
+        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
         placement: 'top',
         disableBeacon: true,
         locale: { last: 'Finish' }
