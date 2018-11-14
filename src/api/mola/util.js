@@ -40,10 +40,28 @@ const normalizeHomeVideo = response => {
       videos
         .map(video => {
           const {
-            id,
-            type,
-            attributes: { title, description, shortDescription, displayOrder, isDark, images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } } }
-          } = video;
+              id,
+              type,
+              attributes: {
+                title,
+                description,
+                shortDescription,
+                displayOrder,
+                isDark,
+                images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } },
+                quotes: quoteLists
+              }
+            } = video,
+            dummyQuote = {
+              attributes: {
+                author: 'Lorem Ipsum',
+                imageUrl: '',
+                role: 'Media',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'
+              },
+              id: 1,
+              type: 'quotes'
+            };
           return {
             id,
             title,
@@ -54,6 +72,7 @@ const normalizeHomeVideo = response => {
             background: coverBG,
             backgroundColor: coverBGColor || '#000622',
             isDark: isDark || 0,
+            quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
             type
           };
         })

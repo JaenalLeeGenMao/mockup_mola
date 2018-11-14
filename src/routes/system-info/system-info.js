@@ -10,7 +10,7 @@ class SystemInfo extends Component {
     info: null
   };
   componentDidMount() {
-    get('http://ip-api.com/json').then(({ data }) => {
+    get('//ip-api.com/json').then(({ data }) => {
       this.setState({ info: data });
     });
   }
