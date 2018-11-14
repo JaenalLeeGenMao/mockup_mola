@@ -54,10 +54,10 @@ const normalizeHomeVideo = response => {
             } = video,
             dummyQuote = {
               attributes: {
-                author: 'Lorem Ipsum',
+                author: 'Comming Soon',
                 imageUrl: '',
                 role: 'Media',
-                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'
+                text: title
               },
               id: 1,
               type: 'quotes'
