@@ -501,7 +501,7 @@ class Home extends Component {
         padding: '0 0 20px',
         textAlign: 'left',
         color: '#858585',
-        lineHeight: '1.2rem',
+        lineHeight: '1.3',
         letterSpacing: '0.5px'
       },
       tooltipTitle: {
