@@ -49,7 +49,7 @@ class Home extends Component {
         title: 'Movie Category',
         content: `
         To navigate around different movie categories, you can simply click the navigation 
-        button or swipe up, down, right, and left on your awesome keyboard`,
+        button or swipe up and down on your awesome keyboard`,
         placement: 'right',
         disableBeacon: true,
         styles: {
@@ -63,7 +63,7 @@ class Home extends Component {
         title: 'Highlighted Movies',
         content: `
         You can browse through our top movies in each category with gentle click on the arrow buttons 
-        or using keyboards and swipe up, down, right, and left`,
+        or using keyboards and swipe right and left`,
         placement: 'top',
         disableBeacon: true
       },
