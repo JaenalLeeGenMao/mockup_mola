@@ -47,9 +47,11 @@ class Home extends Component {
       {
         target: '.tourCategory',
         title: 'Movie Category',
-        content: `
-        To navigate around different movie categories, you can simply click the navigation 
-        button or swipe up and down on your awesome keyboard`,
+        content: (
+          <div>
+            To navigate around different movie categories, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} /> up and down on your awesome keyboard
+          </div>
+        ),
         placement: 'right',
         disableBeacon: true,
         styles: {
@@ -61,9 +63,12 @@ class Home extends Component {
       {
         target: '.tourSlide',
         title: 'Highlighted Movies',
-        content: `
-        You can browse through our top movies in each category with gentle click on the arrow buttons 
-        or using keyboards and swipe right and left`,
+        content: (
+          <div>
+            {' '}
+            You can browse through our top movies in each category with gentle click on the arrow buttons or using keyboards and swipe <span className={styles.swipeNextIcon} /> right and left
+          </div>
+        ),
         placement: 'top',
         disableBeacon: true
       },
