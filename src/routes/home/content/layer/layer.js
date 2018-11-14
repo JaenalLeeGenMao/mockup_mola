@@ -7,12 +7,12 @@ import { filterString } from './util';
 
 import styles from './layer.css';
 
-const ContentLayer = ({ isDark, type, background, shortDescription = '', isMobile, getCurrentScreenHeight = () => {} }) => {
+const ContentLayer = ({ isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {} }) => {
   const version = isMobile ? 'mobile' : 'desktop',
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
-    filteredDesc = filterString(shortDescription).substring(0, isMobile ? 100 : 180);
+    filteredDesc = filterString(type === 'playlists' ? description : shortDescription).substring(0, isMobile ? 100 : 180);
 
   const descWrapperStyle = {
     transform: `translateY(calc(${getCurrentScreenHeight()}px - 80vh))`
@@ -39,8 +39,8 @@ const ContentLayer = ({ isDark, type, background, shortDescription = '', isMobil
           <Fragment>
             <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
             <div className={styles.layer__grid_desc_footer}>
-              <i className={styles.layer__grid_desc_footer_quote}>{`"${filteredDesc}"`}</i>
-              <strong>— Entertainment Weekly</strong>
+              <i className={styles.layer__grid_desc_footer_quote}>{`"${quotes.attributes.text}"`}</i>
+              <strong>— {quotes.attributes.author}</strong>
             </div>
           </Fragment>
         )}

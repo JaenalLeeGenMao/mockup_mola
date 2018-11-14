@@ -22,7 +22,7 @@ const getHomePlaylist = () => {
       return {
         meta: {
           status: 'error',
-          error: 'Mola loves watchin playlist from home'
+          error: 'Mola loves watchin playlist from home, but Mola is no where to be found'
         },
         data: []
       };

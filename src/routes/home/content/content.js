@@ -35,7 +35,6 @@ class Content extends Component {
         isDark,
         backgroundColor = '#fff',
         background /** background */,
-        // coverTitle /** title image */,
         type,
         isSafari,
         ticking = false,
@@ -45,8 +44,7 @@ class Content extends Component {
       fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
-    // isImageLoaded = document.getElementById(`${styles.content__grid_background_images}`).complete;
-    // coverTitleImage = isMobile ? coverTitle[version].portrait : coverTitle[version].landscape;
+
     const moreStyles = {
       bottom: 0,
       transform: isMobile ? `translateY(${getCurrentScreenHeight()}px)` : null,
