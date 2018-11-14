@@ -67,7 +67,7 @@ let customTourStyle = {
     padding: '0 0 2rem',
     textAlign: 'left',
     color: '#858585',
-    lineHeight: '1.4rem',
+    lineHeight: '1.5',
     letterSpacing: '0.5px'
   },
   tooltipTitle: {
@@ -100,15 +100,19 @@ class Home extends Component {
       {
         target: '.tourCategory',
         title: 'Movie Category',
-        content: 'Click the bullets to switch between playlist category',
+        content: `
+        To navigate around different movie categories, you can simply click the navigation 
+        button or press ↑ up and ↓ down on your awesome keyboard`,
         placement: 'right',
         disableBeacon: true,
         disableOverlayClicks: true
       },
       {
         target: '.tourSlide',
-        title: 'Movie List',
-        content: 'Click the left or right arrow to view highlighted movies',
+        title: 'Highlighted Movies',
+        content: `
+        You can browse through our top movies in each category with gentle click on the arrow buttons 
+        or using keyboards and toggle → right and ← left`,
         placement: 'top',
         disableBeacon: true,
         disableOverlayClicks: true
@@ -116,7 +120,7 @@ class Home extends Component {
       {
         target: '.tourLibrary',
         title: 'Movie Library',
-        content: 'Click the icon to view all movie list per category',
+        content: 'You can click this icon to view all movie list per category',
         placement: 'bottom',
         disableBeacon: true,
         disableOverlayClicks: true
@@ -124,7 +128,7 @@ class Home extends Component {
       {
         target: '.tourMovieDiscover',
         title: 'Discover Our Movie',
-        content: 'Click the button to discover our awesome list of movies',
+        content: 'Click this button to discover our awesome list of movies',
         placement: 'top',
         spotlightPadding: 0,
         disableBeacon: true,
@@ -133,7 +137,7 @@ class Home extends Component {
       {
         target: '.tourMovieDetail',
         title: 'View Movie Detail',
-        content: 'Click the button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
+        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
         placement: 'top',
         spotlightPadding: 0,
         disableBeacon: true,
