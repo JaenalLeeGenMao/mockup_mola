@@ -120,12 +120,20 @@
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .layer__grid_desc_wrapper {
-    margin: auto 5%;
+    margin: 10% 5% 0;
     height: auto;
   }
 
+  .layer__grid_desc_header {
+    height: 5rem;
+    padding: 0 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
   .layer__grid_desc_footer {
-    height: 40%;
+    height: 5rem;
   }
 
   .layer__grid_desc_header p,
