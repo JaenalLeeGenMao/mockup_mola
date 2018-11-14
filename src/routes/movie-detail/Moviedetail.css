@@ -79,10 +79,10 @@
 
 .yearInner {
   position: absolute;
-  top: -44px;
-  left: 23px;
+  top: -4.4rem;
+  left: 2.3rem;
   color: white;
-  width: 350px;
+  width: 35rem;
 }
 
 .yearLine {
@@ -91,16 +91,16 @@
   border: 0;
   border-top: 1px solid #0045ff;
   padding: 0;
-  width: 256px;
+  width: 25.6rem;
 }
 
 .yearInner span {
   display: inline-block;
   top: 0;
-  margin: 22px 0 22px 10px;
+  margin: 2.2rem 0 2.2rem 1rem;
   vertical-align: bottom;
   font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
-  font-size: 15px;
+  font-size: 1.5rem;
 }
 
 .yearLoading {

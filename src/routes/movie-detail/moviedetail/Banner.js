@@ -12,7 +12,7 @@ class Banner extends React.Component {
   };
 
   render() {
-    const { link, playCopy, bannerUrl, playBtn, isBannerError } = this.props;
+    const { link, playCopy, bannerUrl, playBtn, isDark, isBannerError } = this.props;
     const errorClassName = isBannerError ? s.bannerError : '';
     return (
       <div className={`${s.bannerWrapper} ${errorClassName}`}>
@@ -20,7 +20,7 @@ class Banner extends React.Component {
         <a className={`${s.bannerInner} playButton`} href={link}>
           <div className={s.play_icon}>
             <img src={playBtn} />
-            <span>{playCopy}</span>
+            <span style={{ color: isDark ? 'black' : 'white' }}>{playCopy}</span>
           </div>
         </a>
         {bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} />}

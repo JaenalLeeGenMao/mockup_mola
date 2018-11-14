@@ -338,12 +338,12 @@ class Moviedetail extends Component {
 
     // const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // console.log('Banner', bannerImage);
-    const playCopy = 'Play movie';
+    const playCopy = 'Play Movie';
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
     // const title = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     // const titleImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
-    // const year = movieDetailData.length > 0 ? movieDetailData[0].year : null;
+    const year = movieDetailData.length > 0 && movieDetailData[0].year ? movieDetailData[0].year : '1998';
 
     const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
     //loop through array of people attribute to get director
@@ -445,20 +445,20 @@ class Moviedetail extends Component {
         <Slickcss />
         <Logo isDark={isDark} libraryOff {...this.props} />
         <Layout>
-          {!isLoading && <Banner bannerUrl={bannerImageLandscape} isBannerError={isBannerError} link={link} playBtn={Playbtn} playCopy={playCopy} />}
+          {!isLoading && <Banner isDark={isDark} bannerUrl={bannerImageLandscape} isBannerError={isBannerError} link={link} playBtn={Playbtn} playCopy={playCopy} />}
           {isLoading && <BannerLoading playBtn={Playbtn} playCopy={playCopy} />}
 
           <Frame>
-            {/* {!isLoading && titleImage && <img className={s.titleImage} src={titleImage.landscape ? titleImage.landscape : 'https://dummyimage.com/453x170/fff/000'} alt={title} />}
+            {/* {!isLoading && titleImage && <img className={s.titleImage} src={titleImage.landscape ? titleImage.landscape : 'https://dummyimage.com/453x170/fff/000'} alt={title} />*/}
             {!isLoading &&
               year && (
                 <div className={s.yearWrapper}>
                   <div className={s.yearInner}>
                     <span className={s.yearLine} />
-                    <span>({year})</span>
+                    <span style={{ color: isDark ? 'black' : 'white' }}>({year})</span>
                   </div>
                 </div>
-              )} */}
+              )}
             {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} synopsisLabel={synopsisLabel} />}
             {isLoading && <SynopsisLoading synopsisLabel={synopsisLabel} />}
             {isLoading && <TestimoniLoading trailerTitle={'MOVIE TRAILER'} trailerText={trailerIsShow} />}

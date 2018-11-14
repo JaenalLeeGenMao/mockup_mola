@@ -207,7 +207,7 @@ class Mmoviedetail extends Component {
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
     const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
-    const year = movieDetailData.length > 0 ? movieDetailData[0].year : 'AAAA';
+    const year = movieDetailData.length > 0 && movieDetailData[0].year ? movieDetailData[0].year : null;
 
     //loop through array of people attribute to get director
     const directedByArr =
@@ -298,8 +298,20 @@ class Mmoviedetail extends Component {
         <Layout>
           <Logo isDark={isDark} libraryOff isMobile stickyOff {...this.props} />
           <div className={s.main_container}>
-            {!isLoading && <Banner year={year} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />}
+            {!isLoading && (
+              <Banner isDark={isDark} year={year} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />
+            )}
             {isLoading && <BannerLoading />}
+
+            {!isLoading &&
+              year && (
+                <div className={s.yearWrapper}>
+                  <div className={s.yearInner}>
+                    <span className={s.yearLine} />
+                    <span style={{ color: isDark ? 'black' : 'white' }}>({year})</span>
+                  </div>
+                </div>
+              )}
 
             {isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr} />}
             {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} />}
