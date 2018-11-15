@@ -12,7 +12,7 @@ stages:
     - docker info
     - ./.gitlab-ci/auth_gcloud.sh
     - ./.gitlab-ci/push_docker.sh
-    - ./.gitlab-ci/deploy.sh
+    # - ./.gitlab-ci/deploy.sh
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
@@ -26,22 +26,21 @@ push_docker_staging:
   stage: push_docker
   <<: *push_docker
   variables:
-    GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_STAG
-    GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_STAG
+    GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_STAG
+    GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
     DEPLOYMENT_REPO: core-staging-cluster-01
   only:
-    - develop@apps/mola/mola-web
+    - develop
 
 push_docker_production:
   stage: push_docker
   <<: *push_docker
   variables:
-    GCLOUD_SERVICE_KEY: $GCLOUD_SERVICE_KEY_PROD
-    GCLOUD_PROJECT_ID: $GCLOUD_PROJECT_ID_PROD
+    GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_PROD
+    GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
-    DEPLOYMENT_REPO: core-prod-cluster-01
   only:
-    - master@apps/mola/mola-web
+    - master
