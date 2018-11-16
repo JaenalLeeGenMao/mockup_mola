@@ -66,9 +66,18 @@ class Theoplayer extends Component {
   }
 
   getToggleArrow = () => {
-    this.setState({
-      toogleArrow: this.state.toogleArrow === '' ? s.arrow_show : ''
-    });
+    if (!this.state.toogleArrow) {
+      this.setState(
+        {
+          toogleArrow: s.arrow_show
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({ toogleArrow: '' });
+          }, 5000);
+        }
+      );
+    }
   };
 
   render() {
@@ -83,7 +92,7 @@ class Theoplayer extends Component {
           <script src="https://cdn.theoplayer.com/dash/2a34c3ad-fc3b-4da9-b399-bccdff7c65fd/THEOplayer.js" />
         </Helmet>
         <Layout>
-          <div className="video-container video-js theoplayer-skin" onMouseEnter={this.getToggleArrow} onMouseLeave={this.getToggleArrow}>
+          <div className="video-container video-js theoplayer-skin" onMouseMove={this.getToggleArrow} onMouseLeave={this.getToggleArrow}>
             {this.props.isTrailer && (
               <div className={`${s.arrow} ${toogleArrow}`} onClick={this.handleGoBack}>
                 <img src={playerArrow} />
