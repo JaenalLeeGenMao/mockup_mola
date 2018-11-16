@@ -10,7 +10,6 @@
 import React, { Component } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { endpoints } from '@source/config';
 
 import LazyLoad from '@components/common/Lazyload';
 // import { getComponent } from '../../../../gandalf';
@@ -18,9 +17,7 @@ import LazyLoad from '@components/common/Lazyload';
 
 import history from '../../history';
 import logoBlue from '@global/style/icons/mola_blue.svg';
-import logoGrey from '@global/style/icons/mola_grey.svg';
 import logoLandscapeBlue from '@global/style/icons/mola_landscape_blue.svg';
-import logoLandscapeGrey from '@global/style/icons/mola_landscape_grey.svg';
 
 import Link from '../Link';
 
@@ -76,9 +73,6 @@ class Header extends Component {
             <div className={styles.header__logo_wrap}>
               <Link to="/">
                 <img alt="MOLADD" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-                {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
-
-      {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
@@ -94,38 +88,29 @@ class Header extends Component {
 
   render() {
     const {
+      activePlaylist,
       isDark = 1,
       logoOff = false,
       libraryOff = false,
       rightMenuOff = false,
       searchOff = false,
-      backButtonOn = false,
       isMobile = false,
-      title = '',
-      isLibraryCopy = false,
-      activePlaylist,
       stickyOff = false,
-      handleMenuToggleClick,
-      isMenuToggled = false,
-      genreId,
-      search = { genre: { data: [] } }
+      profileOff = false,
+      backButtonOn = false,
+      shareButtonOn = false
     } = this.props;
 
-    const { genre: { data: genreDt } } = this.state;
     const color = isDark ? 'black' : 'white';
-    const logoDark = isDark ? true : false;
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
 
     return (
       <div className={typeHeader}>
-        <div className={styles.header__logo_wrapper}>
+        <div className={styles.header__logo_wrapper} style={{ left: backButtonOn ? '0' : '2.5%' }}>
           {!logoOff && (
             <LazyLoad>
               <Link to="/">
                 <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-                {/* {logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />}
-
-    {!logoDark && <img alt="MOLA" src={isMobile ? logoLandscapeGrey : logoGrey} className={styles.header__logo} />} */}
               </Link>
             </LazyLoad>
           )}
@@ -147,7 +132,7 @@ class Header extends Component {
 
         {this.renderHeaderLibrary()}
 
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} {...this.props} />}
+        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
       </div>
     );
   }

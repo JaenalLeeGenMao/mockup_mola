@@ -6,7 +6,7 @@ import s from './Secondframe.css';
 class Secondframe extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    copy: PropTypes.string.isRequired,
+    copy: PropTypes.string.isRequired
   };
 
   render() {

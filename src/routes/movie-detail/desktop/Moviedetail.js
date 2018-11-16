@@ -15,28 +15,28 @@ import s from './Moviedetail.css';
 
 import * as movieDetailActions from '@actions/movie-detail';
 import Layout from '@components/Molalayout';
-import Frame from './moviedetail/Frame';
-import Secondframe from './moviedetail/Secondframe';
-import Banner from './moviedetail/Banner';
-import Synopsis from './moviedetail/Synopsis';
-import SynopsisLoading from './moviedetail/SynopsisLoading';
-import Testimoni from './moviedetail/Testimoni';
-import Casting from './moviedetail/Casting';
-import Trailer from './moviedetail/Trailer';
-import Logo from '../../components/Header';
-import Slickcss from '../../components/Reactslick';
+import Frame from './Frame';
+import Secondframe from './Secondframe';
+import Banner from './Banner';
+import Synopsis from './Synopsis';
+import SynopsisLoading from './SynopsisLoading';
+import Testimoni from './Testimoni';
+import Casting from './Casting';
+import Trailer from './Trailer';
+import Logo from '@components/Header';
+import Slickcss from '@components/Reactslick';
 
-import Next from './moviedetail/assets/caret-right.png';
-import Prev from './moviedetail/assets/caret-left.png';
-import TrailerImg from './moviedetail/assets/notavailable.jpg';
-import Playbtn from './moviedetail/assets/player-icon.jpg';
-import CastDefault from './moviedetail/assets/cast-default.jpg';
-import EmptyStateTesti from './moviedetail/assets/quote.png';
-import BannerLoading from './moviedetail/BannerLoading';
-import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
+import Next from '../assets/caret-right.png';
+import Prev from '../assets/caret-left.png';
+import TrailerImg from '../assets/notavailable.jpg';
+import Playbtn from '../assets/player-icon.jpg';
+import CastDefault from '../assets/cast-default.jpg';
+import EmptyStateTesti from '../assets/quote.png';
+import BannerLoading from './BannerLoading';
+import LoadingPlaceholder from '@components/common/LoadingPlaceholder/LoadingPlaceholder';
 import LazyLoad from '@components/common/Lazyload';
-import TestimoniLoading from './moviedetail/TestimoniLoading';
-import Theoplayer from '../../components/Theoplayer/Theoplayer';
+import TestimoniLoading from './TestimoniLoading';
+import Theoplayer from '@components/Theoplayer/Theoplayer';
 import Joyride from 'react-joyride';
 
 const Right = props => (
@@ -345,7 +345,7 @@ class Moviedetail extends Component {
     // const titleImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.title.desktop : null;
     const year = movieDetailData.length > 0 && movieDetailData[0].year ? movieDetailData[0].year : '1998';
 
-    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
+    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].description : null;
     //loop through array of people attribute to get director
     const directedByArr =
       movieDetailData.length > 0

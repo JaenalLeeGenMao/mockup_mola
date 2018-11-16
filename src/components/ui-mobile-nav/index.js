@@ -1,6 +1,9 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+
 import Link from '@components/Link';
+
+import history from '../../history';
 import s from './index.css';
 
 class MobileNav extends React.Component {
@@ -22,13 +25,22 @@ class MobileNav extends React.Component {
     });
   }
 
+  handleGoBack() {
+    const { goBack } = history;
+    if (goBack) {
+      goBack();
+    }
+  }
+
   render() {
     const props = this.props;
     return (
       <div className={s.ui_mobile_nav__wrapper}>
         <div className={s.ui_mobile_nav__header}>
           <span className={s.ui_mobile_nav_arrow_prev} />
-          <b className={s.ui_mobile_nav__title}>Accounts</b>
+          <b className={s.ui_mobile_nav__title} onClick={this.handleGoBack}>
+            Accounts
+          </b>
         </div>
         <ul className={s.ui_mobile_nav__component}>
           {props.menus.map((menu, index) => {

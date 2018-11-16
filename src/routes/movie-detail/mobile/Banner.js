@@ -12,16 +12,11 @@ class Banner extends Component {
   };
 
   render() {
-    const { link, playCopy, bannerUrl, imageTitle, playBtn, isDark, isBannerError } = this.props;
+    const { link, bannerUrl, imageTitle, isDark, isBannerError } = this.props;
     const errorClassName = isBannerError ? s.bannerError : '';
     return (
       <div className={`${s.bannerWrapper} ${errorClassName}`}>
-        <a className={s.bannerInner} href={link}>
-          <div className={`${s.play_icon} playButton`}>
-            <img src={playBtn} />
-            <span style={{ color: isDark ? 'black' : 'white' }}>{playCopy}</span>
-          </div>
-        </a>
+        <a className={s.bannerInner} href={link} onClick={e => e.preventDefault()} />
         {bannerUrl && <LazyLoad src={bannerUrl} className={s.bannerBgImage} alt={imageTitle} />}
       </div>
     );

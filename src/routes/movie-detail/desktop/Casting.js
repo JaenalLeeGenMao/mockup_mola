@@ -6,7 +6,7 @@ import s from './Casting.css';
 
 class Casting extends React.Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired
   };
 
   render() {

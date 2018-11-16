@@ -1,8 +1,7 @@
-.header {
-  position: absolute;
-  padding: 5%;
-  box-sizing: border-box;
-  width: 100%;
+html,
+body {
+  background-color: #000;
+  color: #fff;
 }
 
 .main_container {
@@ -21,15 +20,15 @@
 
 .trailer_moviebox__inner {
   display: inline-block;
-  margin-right: 5px;
-  margin-top: 5px;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
   max-width: 50%;
 }
 
 .trailer_moviebox img {
   display: inline-block;
   width: 100%;
-  height: 147px;
+  height: 14.7rem;
   object-fit: cover;
 }
 
@@ -38,78 +37,71 @@
 }
 
 .trailer_moviebox_imgloading {
-  width: calc(50% - 7px);
+  width: calc(50% - 0.7rem);
   height: 100px;
   float: left;
 }
 
 .trailer_moviebox_imgloading:first-child {
-  margin-right: 14px;
+  margin-right: 1.4rem;
 }
 
 .inner_box {
   display: inline-grid;
   text-align: center;
-  width: 80px;
+  width: 8rem;
+}
+
+.inner_box p {
+  font-size: 1.2rem;
+  line-height: 1.3rem;
+  white-space: normal;
 }
 
 .casting_photo_img {
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 6rem;
+  height: 6rem;
   max-width: 100%;
   margin: 0 auto;
   object-fit: cover;
   object-position: center;
 }
 
-.inner_box p {
-  font-family: 'avenir', Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  line-height: 13px;
-  white-space: normal;
+.movie_detail__characters_container {
+  padding: 0 2.9rem 1.6rem;
+  color: #b5b5b5;
+  line-height: 1.6rem;
 }
 
-.yearInner {
-  position: absolute;
-  top: 145px;
-  left: 0;
-  color: white;
-  width: 350px;
+.movie_detail__characters_container p {
+  color: #fff;
 }
 
-.yearLine {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #0045ff;
-  padding: 0;
-  width: 60%;
+.movie_detail__button_wrapper {
+  width: 100%;
+  padding: 5% 0;
+  position: sticky;
+  bottom: 0;
+  text-align: center;
+  transition: all ease-out 500ms;
 }
 
-.yearInner span {
+.movie_detail__button_play {
+  color: #000;
+  background: #fff;
+  padding: 1rem 2.4rem;
+  border-radius: 5rem;
   display: inline-block;
-  top: 0;
-  margin: 22px 0 22px 10px;
-  vertical-align: bottom;
-  font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
-  font-size: 12px;
-}
-
-.yearLoading {
-  display: inline-block;
-  top: 0;
-  margin: 22px 0 22px 10px;
-  vertical-align: bottom;
 }
 
 .modal_container {
-  width: 250px;
+  width: 25rem;
   max-width: 100%;
 }
 
 .tooltipContent {
-  padding: 20px 0 0;
+  padding: 2rem 0 0;
 }
 
 @media screen and (max-width: 960px) {
