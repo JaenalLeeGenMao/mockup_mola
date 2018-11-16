@@ -186,14 +186,13 @@ const normalizeVideoDetail = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, playlists, images, quotes, trailers, shortDescription, people, isDark, year } } = result;
+      const { id, attributes: { title, images, quotes, trailers, description, people, isDark, year } } = result;
       return {
         id,
         title,
-        playlists,
         quotes,
         trailers,
-        shortDescription,
+        description,
         people,
         isDark,
         year,

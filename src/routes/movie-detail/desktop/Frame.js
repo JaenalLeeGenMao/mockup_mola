@@ -5,7 +5,7 @@ import s from './Frame.css';
 
 class Frame extends React.Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired
   };
 
   render() {

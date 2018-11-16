@@ -4,9 +4,10 @@ import Modal from 'react-responsive-modal';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Layout from '@components/Molalayout';
-import Logo from '../../../components/Header';
+import Header from '@components/Header/Header';
 import * as movieDetailActions from '@actions/movie-detail';
 import LazyLoad from '@components/common/Lazyload';
+import Link from '@components/Link';
 import _get from 'lodash/get';
 
 import Banner from './Banner';
@@ -14,19 +15,18 @@ import Synopsis from './Synopsis';
 import Trailer from './Trailer';
 import Casting from './Casting';
 import Testimoni from './Testimoni';
-import s from './Mmoviedetail.css';
+import s from './Moviedetail.css';
 
-import Playbtn from '../moviedetail/assets/player-icon.jpg';
-import TrailerImg from '../moviedetail/assets/notavailable.jpg';
-import EmptyStateTesti from '../moviedetail/assets/quote.png';
+import TrailerImg from '../assets/notavailable.jpg';
+import EmptyStateTesti from '../assets/quote.png';
 import BannerLoading from './BannerLoading';
 import SynopsisLoading from './SynopsisLoading';
-import LoadingPlaceholder from '../../../components/common/LoadingPlaceholder/LoadingPlaceholder';
+import LoadingPlaceholder from '@components/common/LoadingPlaceholder/LoadingPlaceholder';
 import TestimoniLoading from './TestimoniLoading';
-import Theoplayer from '../../../components/Theoplayer/Theoplayer';
+import Theoplayer from '@components/Theoplayer/Theoplayer';
 import Joyride from 'react-joyride';
 
-class Mmoviedetail extends Component {
+class Moviedetail extends Component {
   state = {
     open: false,
     movieDetail: [],
@@ -149,11 +149,77 @@ class Mmoviedetail extends Component {
     this.setState({ open: false });
   };
 
+  renderCharacters = () => {
+    const { movieDetail: { data: movieDetailData } } = this.props;
+    //loop through array of people attribute to get director
+    const directors =
+      movieDetailData.length > 0
+        ? movieDetailData[0].people.filter(dt => {
+            return dt.attributes.peopleTypes == 'director';
+          })
+        : [];
+
+    //loop through array of people attribute to get cast/stars
+    const casters =
+      movieDetailData.length > 0
+        ? movieDetailData[0].people.filter(dt => {
+            return dt.attributes.peopleTypes == 'stars';
+          })
+        : [];
+
+    const writers = [];
+
+    return (
+      <Fragment>
+        <LazyLoad containerClassName={s.movie_detail__characters_container}>
+          Casts:
+          <p>
+            {casters.length === 0 && 'Unknown'}
+            {casters.length > 0 &&
+              casters.map((dt, index) => {
+                if (index == 0) {
+                  return dt.attributes.name;
+                } else {
+                  return `, ${dt.attributes.name}`;
+                }
+              })}
+          </p>
+        </LazyLoad>
+        <LazyLoad containerClassName={s.movie_detail__characters_container}>
+          Directors:
+          <p>
+            {directors.length === 0 && 'Unknown'}
+            {directors.map((dt, index) => {
+              if (index == 0) {
+                return dt.attributes.name;
+              } else {
+                return `, ${dt.attributes.name}`;
+              }
+            })}
+          </p>
+        </LazyLoad>
+        <LazyLoad containerClassName={s.movie_detail__characters_container}>
+          Writers:
+          <p>
+            {writers.length === 0 && 'Unknown'}
+            {writers.map((dt, index) => {
+              if (index == 0) {
+                return dt.attributes.name;
+              } else {
+                return `, ${dt.attributes.name}`;
+              }
+            })}
+          </p>
+        </LazyLoad>
+      </Fragment>
+    );
+  };
+
   render() {
-    const banner = {
-      bannerUrl: 'https://dummyimage.com/360x262/2b4bcc/fff',
-      playCopy: 'Play movie'
-    };
+    // const banner = {
+    //   bannerUrl: 'https://dummyimage.com/360x262/2b4bcc/fff',
+    //   playCopy: 'Play movie'
+    // };
 
     // const synopsis = {
     //   synopsisContent: 'Autobots and Decepticons are at war, with humans on the sidelines.' +
@@ -187,10 +253,6 @@ class Mmoviedetail extends Component {
     //   }
     // ];
 
-    const casting = {
-      castTitle: 'cast'
-    };
-
     const { open, isLoading, trailerMovie, steps, startGuide } = this.state;
 
     //get moviedetaildata from redux stored in props
@@ -206,34 +268,13 @@ class Mmoviedetail extends Component {
     const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
     const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
 
-    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].shortDescription : null;
-    const year = movieDetailData.length > 0 && movieDetailData[0].year ? movieDetailData[0].year : null;
-
-    //loop through array of people attribute to get director
-    const directedByArr =
-      movieDetailData.length > 0
-        ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'director';
-          })
-        : [];
-
-    //loop through array of people attribute to get cast/stars
-    const castingArtists =
-      movieDetailData.length > 0
-        ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'stars';
-          })
-        : [];
-    const castingArtistsPlaceholder = [1, 2, 3, 4]; //for placeholder
-
-    //get quotes/testimoni data
-    const testimoniDt = _get(movieDetailData, '[0].quotes[0].attributes', null);
-    const testimoniSrc = testimoniDt && testimoniDt.author ? `- ${testimoniDt.author || ''}, ${testimoniDt.role || ''}` : '';
+    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].description : null;
 
     // Trailer copy toogle
     const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers : [];
     const trailerDtPlaceholder = [1, 2];
     const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
+    const trailerIsShow = movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : [];
 
     // css toogle
     let ifOne = trailerDt.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container;
@@ -296,25 +337,10 @@ class Mmoviedetail extends Component {
     return (
       <Fragment>
         <Layout>
-          <Logo isDark={isDark} libraryOff isMobile stickyOff {...this.props} />
+          <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={isDark} backButtonOn shareButtonOn {...this.props} />
           <div className={s.main_container}>
-            {!isLoading && (
-              <Banner isDark={isDark} year={year} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} playBtn={Playbtn} playCopy={banner.playCopy} />
-            )}
+            {!isLoading && <Banner isDark={isDark} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} />}
             {isLoading && <BannerLoading />}
-
-            {!isLoading &&
-              year && (
-                <div className={s.yearWrapper}>
-                  <div className={s.yearInner}>
-                    <span className={s.yearLine} />
-                    <span style={{ color: isDark ? 'black' : 'white' }}>({year})</span>
-                  </div>
-                </div>
-              )}
-
-            {isLoading && <SynopsisLoading synopsisContent={synopsisContent} directedBy={directedByArr} />}
-            {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} directedBy={directedByArr} />}
 
             {!isLoading &&
               trailerDt.length > 0 && (
@@ -341,7 +367,30 @@ class Mmoviedetail extends Component {
               </Trailer>
             )}
           </div>
-          {isLoading && (
+
+          {isLoading && <SynopsisLoading synopsisContent={synopsisContent} />}
+          {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} />}
+          {!isLoading && this.renderCharacters()}
+          <div className={s.movie_detail__button_wrapper}>
+            <Link className={`playButton ${s.movie_detail__button_play}`} to={link}>
+              Play Movie
+            </Link>
+          </div>
+
+          {/* {!isLoading &&
+            castingArtists.length > 0 && (
+            <Casting castTitle={casting.castTitle}>
+              {castingArtists.map(({ id, attributes }) => (
+                <Fragment key={id}>
+                  <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
+                    <p>{attributes.name}</p>
+                  </LazyLoad>
+                </Fragment>
+              ))}
+            </Casting>
+          )} */}
+
+          {/* {isLoading && (
             <Casting castTitle={casting.castTitle}>
               {castingArtistsPlaceholder.map(({ id }) => (
                 <Fragment key={id}>
@@ -352,23 +401,19 @@ class Mmoviedetail extends Component {
                 </Fragment>
               ))}
             </Casting>
-          )}
-          {!isLoading &&
+          )} */}
+          {/* {!isLoading &&
             castingArtists.length > 0 && (
-              <Casting castTitle={casting.castTitle}>
-                {castingArtists.map(({ id, attributes }) => (
-                  <Fragment key={id}>
-                    <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
-                      <p>{attributes.name}</p>
-                    </LazyLoad>
-                  </Fragment>
-                ))}
-              </Casting>
-            )}
-          {isLoading && <TestimoniLoading />}
-          {!isLoading &&
-            testimoniDt &&
-            testimoniDt.text && <Testimoni testimoniContent={testimoniDt.text} testimoniSource={testimoniSrc} testimoniPhotoUrl={!testimoniDt.imageUrl ? EmptyStateTesti : testimoniDt.imageUrl} />}
+            <Casting castTitle={casting.castTitle}>
+              {castingArtists.map(({ id, attributes }) => (
+                <Fragment key={id}>
+                  <LazyLoad containerClassName={s.inner_box} src={attributes.imageUrl} className={s.casting_photo_img}>
+                    <p>{attributes.name}</p>
+                  </LazyLoad>
+                </Fragment>
+              ))}
+            </Casting>
+          )} */}
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
               <Theoplayer movieUrl={trailerMovie} handleOnPlay={this.handleOnPlay} handleOnTime={this.handleOnTime} />
@@ -400,4 +445,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId))
 });
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Mmoviedetail);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Moviedetail);

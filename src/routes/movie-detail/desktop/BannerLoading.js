@@ -6,10 +6,9 @@ import LoadingPlaceholder from '@components/common/LoadingPlaceholder/LoadingPla
 const BannerLoading = () => {
   return (
     <div className={s.bannerWrapper}>
-      <LoadingPlaceholder isLight className={s.bannerBgImage} style={{ height: '500px', }} />
+      <LoadingPlaceholder isLight className={s.bannerBgImage} style={{ height: '500px' }} />
     </div>
   );
-}
-
+};
 
 export default withStyles(s)(BannerLoading);

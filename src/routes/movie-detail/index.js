@@ -1,7 +1,9 @@
 import React from 'react';
-import Moviedetail from './Moviedetail';
+
 import MolaLayout from '@components/Molalayout';
-import Mobile from './mobile';
+
+import MovieDetailDesktop from './desktop';
+import MovieDetailMobile from './mobile';
 
 const title = 'Movie Detail';
 
@@ -10,14 +12,13 @@ function action({ isMobile, pathname }) {
   return {
     chunks: ['movie-detail'],
     title,
-    // component: <Moviedetail />,
     component: isMobile ? (
       <MolaLayout>
-        <Mobile pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} />
+        <MovieDetailMobile pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <Moviedetail pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} />
+        <MovieDetailDesktop pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} />
       </MolaLayout>
     )
   };
