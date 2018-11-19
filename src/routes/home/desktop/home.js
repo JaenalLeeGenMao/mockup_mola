@@ -2,6 +2,7 @@ import React, { Fragment, Component } from 'react';
 import Slider from 'react-slick';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import $ from 'jquery';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
@@ -209,7 +210,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll);
     Events.scrollEvent.register('end', this.handleColorChange);
 
@@ -268,7 +269,7 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    // window.removeEventListener('scroll', this.handleScroll);
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
 
@@ -338,6 +339,7 @@ class Home extends Component {
   handleScroll = () => {
     const { playlists, videos } = this.props.home;
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
+      scrollIndex = 0;
       return true;
     }
     playlists.data.map((playlist, index) => {
@@ -349,62 +351,123 @@ class Home extends Component {
     });
 
     if (!ticking) {
-      document.onkeyup = event => {
-        ticking = false;
-
-        switch (event.which || event.keyCode) {
-          case 37 /* left */:
-            return event.preventDefault();
-          case 38 /* up */:
-            scrollIndex -= 1;
-            this.handleKeyPress(scrollIndex);
-            break;
-          case 39 /* right */:
-            return event.preventDefault();
-          case 40 /* down */:
-            scrollIndex += 1;
-            this.handleKeyPress(scrollIndex);
-            break;
-          default:
-            event.preventDefault();
-            break;
-        }
-      };
+      this.handleMouseClick();
+      this.handleMouseScroll();
+      this.handleKeyboardEvent();
 
       ticking = true;
     }
   };
 
-  handleKeyPress = scrollIndex => {
-    const result = this.props.home.playlists.data
-      .map((playlist, index) => {
-        if (index === scrollIndex) {
-          this.handleColorChange();
-          return { ...playlist };
-        }
-      })
-      .filter(data => data !== undefined);
-    if (result && result.length >= 1) {
-      this.handleScrollToIndex(result[0].id);
+  handleMouseClick = () => {
+    /** handle mouse click */
+    (this.prevmouseDownY = 0), (this.currentMouseDownY = 0);
+    document.onmousedown = event => {
+      ticking = false;
+      this.prevMouseDownY = event.y;
+    };
+    document.onmouseup = event => {
+      ticking = false;
+
+      this.currentMouseDownY = event.y;
+
+      if (this.prevMouseDownY < this.currentMouseDownY) {
+        scrollIndex -= 1;
+        this.handleKeyPress(scrollIndex);
+      } else if (this.prevMouseDownY > this.currentMouseDownY) {
+        scrollIndex += 1;
+        this.handleKeyPress(scrollIndex);
+      }
+    };
+  };
+
+  handleMouseScroll = () => {
+    /** handle mouse scroll */
+    document.onwheel = event => {
+      ticking = false;
+      const that = this;
+
+      clearTimeout($.data(this, 'scrollCheck'));
+      $.data(
+        this,
+        'scrollCheck',
+        setTimeout(function() {
+          if (event.wheelDeltaY < 0) {
+            scrollIndex += 1;
+            that.handleKeyPress();
+          } else if (event.wheelDeltaY > 0) {
+            scrollIndex -= 1;
+            that.handleKeyPress();
+          }
+        }, 250)
+      );
+    };
+  };
+
+  handleKeyboardEvent = () => {
+    /** handle keyboard pressed */
+    document.onkeyup = event => {
+      ticking = false;
+
+      switch (event.which || event.keyCode) {
+        case 37 /* left */:
+          return event.preventDefault();
+        case 38 /* up */:
+          scrollIndex -= 1;
+          this.handleKeyPress();
+          break;
+        case 39 /* right */:
+          return event.preventDefault();
+        case 40 /* down */:
+          scrollIndex += 1;
+          this.handleKeyPress();
+          break;
+        default:
+          event.preventDefault();
+          break;
+      }
+    };
+  };
+
+  handleKeyPress = () => {
+    const { data: playlists } = this.props.home.playlists;
+    if (scrollIndex < 0) {
+      scrollIndex = playlists.length - 1;
     }
+    if (scrollIndex > playlists.length - 1) {
+      scrollIndex = 0;
+    }
+
+    // const result = playlists
+    //   .map((playlist, index) => {
+    //     if (index === scrollIndex) {
+    //       this.handleColorChange();
+    //       return { ...playlist };
+    //     }
+    //   })
+    //   .filter(data => data !== undefined);
+    // if (result && result.length >= 1) {
+    //   this.handleScrollToIndex(result[0].id);
+    // }
+    this.handleColorChange();
+    this.handleScrollToIndex(playlists[scrollIndex].id);
   };
 
   handleScrollToIndex = id => {
     const { playlists } = this.props.home;
     playlists.data.map((playlist, index) => {
       if (id === playlist.id) {
-        scrollIndex = index;
         scroller.scrollTo(id, {
           duration: 250,
           delay: 0,
           smooth: 'easeInOutQuart'
         });
+        this.props.onUpdatePlaylist(id);
+        scrollIndex = index;
         return false;
       }
       return true;
     });
-
-    this.props.onUpdatePlaylist(id);
   };
 
   render() {
@@ -418,6 +481,7 @@ class Home extends Component {
       { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
         ...SETTINGS,
+        draggable: false,
         className: `${styles.home__slick_slider_fade} home-slider`,
         onInit: () => {
           this.handleColorChange();
