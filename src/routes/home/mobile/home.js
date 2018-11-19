@@ -132,7 +132,7 @@ class Home extends Component {
     document.body.addEventListener('swd', handleSwipeEvent, false);
     /** swipe EventListener ends */
 
-    window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll);
     Events.scrollEvent.register('end', this.handleColorChange);
 
@@ -182,7 +182,7 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    // window.removeEventListener('scroll', this.handleScroll);
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
 
@@ -272,6 +272,7 @@ class Home extends Component {
   handleScroll = () => {
     const { playlists, videos } = this.props.home;
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
+      scrollIndex = 0;
       return true;
     }
     playlists.data.map((playlist, index) => {
@@ -351,35 +352,44 @@ class Home extends Component {
   };
 
   handleKeyPress = scrollIndex => {
-    const result = this.props.home.playlists.data
-      .map((playlist, index) => {
-        if (index === scrollIndex) {
-          this.handleColorChange();
-          return playlist;
-        }
-      })
-      .filter(data => data !== undefined);
-    if (result && result.length >= 1) {
-      this.handleScrollToIndex(result[0].id);
+    const { data: playlists } = this.props.home.playlists;
+    if (scrollIndex < 0) {
+      scrollIndex = playlists.length - 1;
     }
+    if (scrollIndex > playlists.length - 1) {
+      scrollIndex = 0;
+    }
+
+    // const result = playlists
+    //   .map((playlist, index) => {
+    //     if (index === scrollIndex) {
+    //       this.handleColorChange();
+    //       return playlist;
+    //     }
+    //   })
+    //   .filter(data => data !== undefined);
+    // if (result && result.length >= 1) {
+    //   this.handleScrollToIndex(result[0].id);
+    // }
+    this.handleColorChange();
+    this.handleScrollToIndex(playlists[scrollIndex].id);
   };
 
   handleScrollToIndex = id => {
     const { playlists } = this.props.home;
     playlists.data.map((playlist, index) => {
       if (id === playlist.id) {
-        scrollIndex = index;
         scroller.scrollTo(id, {
           duration: 250,
           delay: 0,
           smooth: 'easeInOutQuart'
         });
+        this.props.onUpdatePlaylist(id);
+        scrollIndex = index;
         return false;
       }
       return true;
     });
-
-    this.props.onUpdatePlaylist(id);
   };
 
   getCurrentScreenHeight = () => {
