@@ -53,7 +53,9 @@ class Libheader extends Component {
             return (
               <li key={`${item.id}-${item.title}`}>
                 <LazyLoad>
-                  <Link to={`/movie-library/${item.id}`}>{item.title}</Link>
+                  <Link to={`/movie-library/${item.id}`} onClick={this.handleMenuToggleClick}>
+                    {item.title}
+                  </Link>
                 </LazyLoad>
               </li>
             );
