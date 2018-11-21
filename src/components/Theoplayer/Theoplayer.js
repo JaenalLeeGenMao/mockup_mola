@@ -21,8 +21,7 @@ class Theoplayer extends Component {
     // subTitleUrl: PropTypes.string.isRequired,
     // srclang: PropTypes.string.isRequired,
     isTrailer: PropTypes.bool.isRequired,
-    theoConfig: PropTypes.array.isRequired,
-    isMobile: PropTypes.bool.isRequired
+    theoConfig: PropTypes.array.isRequired
   };
 
   componentDidUpdate() {
@@ -36,18 +35,21 @@ class Theoplayer extends Component {
     var element = document.querySelector('.video-container');
 
     if (!this.state.isTheoplayerLoaded) {
-      var player = new THEOplayer.Player(element, playerConfig);
-      this.movieConfig(player);
+      this.player = new THEOplayer.Player(element, playerConfig);
+      this.movieConfig();
       // // auto play when hit api
-      player.muted = true;
-      player.autoplay = true;
-      player.play();
+      this.player.muted = true;
+      this.player.autoplay = true;
+      this.player.play();
 
       this.setState({ isTheoplayerLoaded: true });
+      this.props.handleTheoplayerLoaded(true);
     }
+  }
 
-    if (window && this.props.isMobile) {
-      window.screen.orientation.lock('landscape-secondary');
+  componentWillUnmount() {
+    if (this.player) {
+      this.player.destroy();
     }
   }
 
@@ -58,17 +60,14 @@ class Theoplayer extends Component {
     }
   };
 
-  movieConfig(player) {
-    player.source = {
+  movieConfig() {
+    this.player.source = {
       sources: [
         {
           src: this.props.movieUrl,
           type: 'application/x-mpegurl' // sets type to HLS
         }
       ],
-      enterOnRotate: true,
-      alwaysInLandscapeMode: this.props.isMobile ? true : false,
-      iOS: true,
       textTracks: this.props.theoConfig
     };
   }

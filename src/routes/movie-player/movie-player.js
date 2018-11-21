@@ -12,7 +12,8 @@ import s from './movie-player.css';
 
 class Movieplayer extends Component {
   state = {
-    movieStream: []
+    movieStream: [],
+    isTheoplayerLoaded: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -22,6 +23,10 @@ class Movieplayer extends Component {
     }
     return { ...prevState, movieStream };
   }
+
+  handleTheoplayerLoaded = loaded => {
+    this.setState({ isTheoplayerLoaded: loaded });
+  };
 
   isTheoPlayer() {
     const { movieStream: { data: movieStream } } = this.props;
@@ -52,8 +57,13 @@ class Movieplayer extends Component {
     return (
       <Fragment>
         <div id={s.movie_player}>
-          {movieStreamStatus !== 'success' && !streamSource && <img alt="loader" src={loader} />}
-          {movieStreamStatus === 'success' && streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} isMobile={isMobile} />}
+          {!this.state.isTheoplayerLoaded && (
+            <div className={s.movie_player__loader}>
+              <img alt="loader" src={loader} />
+            </div>
+          )}
+          {movieStreamStatus === 'success' &&
+            streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} handleTheoplayerLoaded={this.handleTheoplayerLoaded} movieUrl={streamSource} isTrailer={true} isMobile={isMobile} />}
           {movieStreamStatus === 'success' &&
             streamSource === '' && (
               <div className={s.container}>
