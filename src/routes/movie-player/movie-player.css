@@ -11,3 +11,33 @@ div#movie_player {
   height: 100%;
   background: black;
 }
+
+.no_video {
+  color: white;
+  font-size: 2.5rem;
+}
+
+.novid_btn {
+  border: 1px solid white;
+  padding: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  color: white;
+  width: 10rem;
+}
+
+.movie_player__loader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  margin: auto;
+}
+
+.movie_player__loader img {
+  margin: 50vh;
+}

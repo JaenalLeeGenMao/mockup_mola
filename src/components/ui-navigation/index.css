@@ -1,34 +1,40 @@
 @import '../variables.css';
 
-.root {
+.ui_navigation__wrapper {
   margin: 0;
   padding: 2rem 5rem;
 }
 
-.title {
+.ui_navigation__title {
   color: #2c56ff;
   font-size: 3rem;
 }
 
-.container {
+.ui_navigation__container {
   margin: 0;
   padding: 0;
   list-style: none;
   margin-top: 10rem;
 }
 
-.container > li {
+.ui_navigation__container > li {
   margin-bottom: 1.5rem;
 }
 
-.container > li > a {
+.ui_navigation__container > li > a {
   color: #6f6f6f;
   text-decoration: none;
   font-size: 1.4rem;
 }
 
-.container > li > a.active,
-.container > li > a:hover {
+.ui_navigation__container > li > a.active,
+.ui_navigation__container > li > a:hover {
   color: #fff;
   position: relative;
+}
+
+.logo {
+  margin-top: 50px;
+  width: 7rem;
+  min-height: 7rem;
 }

@@ -1,15 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import history from '../../history';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as movieStreamActions from '@actions/movie-stream';
+
+import loader from '@global/style/animation/ellipsis.svg';
 
 import Theoplayer from '../../components/Theoplayer/Theoplayer';
 import s from './movie-player.css';
 
 class Movieplayer extends Component {
   state = {
-    movieStream: []
+    movieStream: [],
+    isTheoplayerLoaded: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -20,10 +24,12 @@ class Movieplayer extends Component {
     return { ...prevState, movieStream };
   }
 
+  handleTheoplayerLoaded = loaded => {
+    this.setState({ isTheoplayerLoaded: loaded });
+  };
+
   isTheoPlayer() {
-    const {
-      movieStream: { data: movieStream }
-    } = this.props;
+    const { movieStream: { data: movieStream } } = this.props;
     const subtitlesDt = movieStream.length > 0 ? movieStream[0].subtitles : '';
     // console.log('data subtitles methode', subtitlesDt)
 
@@ -37,20 +43,36 @@ class Movieplayer extends Component {
     return myTheoPlayer;
   }
 
+  handleGoBack() {
+    const { goBack } = history;
+    if (goBack) {
+      goBack();
+    }
+  }
+
   render() {
-    const {
-      movieStream: { data: movieStream }
-    } = this.props;
+    const { movieStream: { meta: { status: movieStreamStatus }, data: movieStream }, isMobile } = this.props;
     const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
 
     return (
       <Fragment>
         <div id={s.movie_player}>
-          {streamSource ? (
-            <Theoplayer theoConfig={this.isTheoPlayer()} movieUrl={streamSource} isTrailer={true} />
-          ) : (
-            ''
+          {!this.state.isTheoplayerLoaded && (
+            <div className={s.movie_player__loader}>
+              <img alt="loader" src={loader} />
+            </div>
           )}
+          {movieStreamStatus === 'success' &&
+            streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} handleTheoplayerLoaded={this.handleTheoplayerLoaded} movieUrl={streamSource} isTrailer={true} isMobile={isMobile} />}
+          {movieStreamStatus === 'success' &&
+            streamSource === '' && (
+              <div className={s.container}>
+                <div className={s.no_video}>Video not available</div>
+                <p className={s.novid_btn} onClick={this.handleGoBack}>
+                  Go Back
+                </p>
+              </div>
+            )}
         </div>
       </Fragment>
     );
@@ -67,10 +89,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieStream: movieId => dispatch(movieStreamActions.getMovieStream(movieId))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Movieplayer);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Movieplayer);

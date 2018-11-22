@@ -20,28 +20,39 @@ class MovieLibrary extends Component {
     search: {
       genre: []
     },
+    genreId: '',
     isLoading: true
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       getMovieLibrary,
+      getMovieLibraryList,
       getSearchGenre,
       search,
       movieLibrary,
       genreId //passed as props from index.js
     } = nextProps;
 
+    if (typeof genreId !== 'undefined' && genreId !== '') {
+      if (genreId !== prevState.genreId) {
+        getMovieLibrary(genreId);
+      }
+    }
+
     if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
-      // getMovieLibrary('tt1179056');
-      getMovieLibrary(genreId);
+      if (typeof genreId !== 'undefined' && genreId !== '') {
+        getMovieLibrary(genreId);
+      } else {
+        getMovieLibraryList();
+      }
     }
 
     if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {
       getSearchGenre();
     }
 
-    return { ...prevState, movieLibrary, search };
+    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId };
   }
 
   componentDidUpdate(prevProps) {
@@ -55,287 +66,57 @@ class MovieLibrary extends Component {
     }
   }
 
-  render() {
-    const { movieLibrary: { data: libraryDt }, search: { genre: { data: genreDt } }, isMobile } = this.props;
+  renderLoading() {
+    const { isMobile } = this.props;
+
     const { isLoading } = this.state;
-    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
-    // const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
-
-    const cardImageLib = [
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x200/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x300/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x108/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x238/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x108/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x108/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x98/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x98/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x188/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x238/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x400/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      },
-      {
-        id: '12',
-        thumbnail: 'https://dummyimage.com/266x138/000/fff'
-      }
-    ];
-
     const cardImageLoading = [
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '200px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '108px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '300px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '120px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '118px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '108px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '178px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '400px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      },
-      {
-        id: '12',
-        width: isMobile ? 'auto' : '266px',
-        height: '138px'
-      }
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '20rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '10.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '30rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '12rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '11.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '10.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '17.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' }
     ];
+
+    return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />);
+  }
+
+  renderContent() {
+    const { movieLibrary: { data: libraryDt } } = this.props;
+    const { isLoading } = this.state;
+    const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
+
+    return !isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail} id={obj.id} />);
+  }
+
+  render() {
+    const { movieLibrary: { data: libraryDt } } = this.props;
+    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
 
     return (
       <Fragment>
@@ -343,9 +124,9 @@ class MovieLibrary extends Component {
           <div className={s.main_container}>
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_wrapper}>
-              {isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />)}
+              {this.renderLoading()}
 
-              {!isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} imgUrl={obj.thumbnail} id={obj.id} />)}
+              {this.renderContent()}
             </div>
           </div>
         </Layout>
@@ -362,6 +143,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
   getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
+  getMovieLibraryList: () => dispatch(movieLibraryActions.getMovieLibraryList()),
   getMovieLibrary: genreId => dispatch(movieLibraryActions.getMovieLibrary(genreId))
 });
 

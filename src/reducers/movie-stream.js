@@ -1,6 +1,13 @@
 import types from '../constants';
 
-export default function moviestream(state = {}, action) {
+const initialState = {
+  meta: {
+    status: 'loading'
+  },
+  data: []
+};
+
+export default function moviestream(state = initialState, action) {
   switch (action.type) {
     case types.GET_MOVIE_STREAM_LOADING:
       // console.log('loading', action.payload)
@@ -13,11 +20,7 @@ export default function moviestream(state = {}, action) {
       return { ...state, ...action.payload };
     default:
       return {
-        ...state,
-        meta: {
-          status: 'loading'
-        },
-        data: []
+        ...state
       };
   }
 }

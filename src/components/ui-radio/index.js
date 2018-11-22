@@ -12,11 +12,11 @@ const Radio = props => {
   const rootStyle = props.rootStyle || {};
 
   return (
-    <div className={s.root} style={rootStyle}>
-      <label htmlFor={props.id} className={s.label}>
+    <div className={s.ui_radio__wrapper} style={rootStyle}>
+      <label htmlFor={props.id} className={s.ui_radio__label}>
         {props.label}
       </label>
-      <div className={s.container}>
+      <div className={s.ui_radio__container}>
         {uiStyle === 'single' ? (
           <div>
             {options.map((option, index) => {
@@ -26,22 +26,10 @@ const Radio = props => {
                 elChecked = true;
               }
               return (
-                <div key={index} className={s.component}>
-                  <input
-                    type="radio"
-                    name={props.id}
-                    value={option.value}
-                    id={idInput}
-                    style={{ display: 'none' }}
-                    checked={elChecked}
-                    onChange={props.onChange}
-                  />
+                <div key={index} className={s.ui_radio__component}>
+                  <input type="radio" name={props.id} value={option.value} id={idInput} style={{ display: 'none' }} checked={elChecked} onChange={props.onChange} />
                   <label htmlFor={idInput} style={{ textTransform: 'capitalize' }}>
-                    {elChecked ? (
-                      <img src={imgActice} width="20" style={{ marginRight: '10px' }} />
-                    ) : (
-                      <img src={imgUnActice} width="20" style={{ marginRight: '10px' }} />
-                    )}
+                    {elChecked ? <img src={imgActice} style={{ marginRight: '10px', width: '2rem' }} /> : <img src={imgUnActice} style={{ marginRight: '10px', width: '2rem' }} />}
                     {option.label}
                   </label>
                 </div>
@@ -49,7 +37,7 @@ const Radio = props => {
             })}
           </div>
         ) : (
-          <div className={s.radioLongDesc}>
+          <div className={s.ui_radio__radioLongDesc}>
             {options.map((option, index) => {
               let idInput = option.value + '-' + index;
               let elChecked = false;
@@ -57,24 +45,10 @@ const Radio = props => {
                 elChecked = true;
               }
               return (
-                <div key={index} className={s.componentItem}>
-                  <input
-                    type="radio"
-                    name={props.id}
-                    value={option.value}
-                    id={idInput}
-                    style={{ display: 'none' }}
-                    checked={elChecked}
-                    onChange={props.onChange}
-                  />
+                <div key={index} className={s.ui_radio__componentItem}>
+                  <input type="radio" name={props.id} value={option.value} id={idInput} style={{ display: 'none' }} checked={elChecked} onChange={props.onChange} />
                   <label htmlFor={idInput} style={{ textTransform: 'capitalize' }}>
-                    <div>
-                      {elChecked ? (
-                        <img src={imgActice} width="20" style={{ marginRight: '10px' }} />
-                      ) : (
-                        <img src={imgUnActice} width="20" style={{ marginRight: '10px' }} />
-                      )}
-                    </div>
+                    <div>{elChecked ? <img src={imgActice} style={{ marginRight: '10px', width: '1rem' }} /> : <img src={imgUnActice} style={{ marginRight: '10px', width: '1rem' }} />}</div>
                     <div>
                       {option.name}
                       <p>{option.desc}</p>

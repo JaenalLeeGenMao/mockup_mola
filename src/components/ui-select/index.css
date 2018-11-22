@@ -1,15 +1,33 @@
 @import '../variables.css';
 
-.root {
-  margin-bottom: 4rem;
+.ui_select__wrapper {
+  margin-bottom: 3rem;
 }
 
-.label {
+.ui_select__label {
   color: #6f6f6f;
   font-weight: lighter;
 }
 
-.component {
+.ui_select__container {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.ui_select__container::after {
+  content: '';
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIxM3B4IiBoZWlnaHQ9IjEzcHgiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTMgMTMiIHhtbDpzcGFjZT0icHJlc2VydmUiPiAgPGltYWdlIGlkPSJpbWFnZTAiIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgeD0iMCIgeT0iMCIKICAgIGhyZWY9ImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQTBBQUFBTkNBUUFBQURZNGl6M0FBQUFCR2RCVFVFQUFMR1BDL3hoQlFBQUFDQmpTRkpOCkFBQjZKZ0FBZ0lRQUFQb0FBQUNBNkFBQWRUQUFBT3BnQUFBNm1BQUFGM0NjdWxFOEFBQUFBbUpMUjBRQS80ZVB6TDhBQUFBSGRFbE4KUlFmaUN3Z1JGUTF4M0ZvNUFBQUFjVWxFUVZRWTA3WFFzUTJEQUF4RTBVZkJGclNJQlJLRkFWaUJjWmlDSGFoZ0NUYWhwcVJDRkthQQpTQ2hLcWdoWFBwMTAvajV1bU5JZ3ZlalU0SFdzbzlCSlRpUFJDZU1oTXBQUW5sWXJUTEozUkdFV0dqVENyTGplZTFxRVhsZzhQbUVxCnE3Q3F2cEhXTnZXdk4vTC9tOWdCMDhjYkdxeTN5QjBBQUFBbGRFVllkR1JoZEdVNlkzSmxZWFJsQURJd01UZ3RNVEV0TURsVU1EQTYKTWpFNk1UTXRNRGM2TURDdHB0OVhBQUFBSlhSRldIUmtZWFJsT20xdlpHbG1lUUF5TURFNExURXhMVEE1VkRBd09qSXhPakV6TFRBMwpPakF3M1B0bjZ3QUFBQUJKUlU1RXJrSmdnZz09IiAvPgo8L3N2Zz4K');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.ui_select__component {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -17,8 +35,9 @@
   width: 100%;
   border: none;
   outline: none;
-  background: #343434;
+  background: #fff;
   border-radius: 0.4rem;
-  color: #fff;
-  margin-top: 0.5rem;
+  color: #000;
+  font-size: 1.6rem;
+  margin: 0;
 }

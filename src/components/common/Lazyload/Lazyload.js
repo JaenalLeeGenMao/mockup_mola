@@ -20,7 +20,9 @@ class Lazyload extends PureComponent {
     onClick: func,
     children: node,
     onErrorShowDefault: bool,
-    errorImgClassName: string
+    onEmptyShowDefault: bool,
+    errorImgClassName: string,
+    handleCallback: func
   };
 
   static defaultProps = {
@@ -39,7 +41,9 @@ class Lazyload extends PureComponent {
     children: null,
     src: null,
     onErrorShowDefault: false,
-    errorImgClassName: ''
+    onEmptyShowDefault: false,
+    errorImgClassName: '',
+    handleCallback: () => {}
   };
 
   constructor(props) {
@@ -56,6 +60,7 @@ class Lazyload extends PureComponent {
 
   componentDidMount() {
     const { src } = this.props;
+    this.props.handleCallback(false);
     if (src) {
       if (this.props.lazy) {
         if (this.loadPolyfills()) {
@@ -67,6 +72,10 @@ class Lazyload extends PureComponent {
         this.loadImage(global.webpSupport && this.props.webp);
       }
     }
+  }
+
+  componentDidUpdate() {
+    this.props.handleCallback(this.state.load);
   }
 
   get className() {
@@ -155,38 +164,25 @@ class Lazyload extends PureComponent {
   };
 
   supportsIntersectionObserver = () => {
-    return (
-      'IntersectionObserver' in global &&
-      'IntersectionObserverEntry' in global &&
-      'intersectionRatio' in IntersectionObserverEntry.prototype
-    );
+    return 'IntersectionObserver' in global && 'IntersectionObserverEntry' in global && 'intersectionRatio' in IntersectionObserverEntry.prototype;
   };
 
   render() {
     const { sources, isError } = this.state;
-    const {
-      alt,
-      containerClassName,
-      containerStyle,
-      style,
-      onClick,
-      children,
-      className,
-      src,
-      errorImgClassName
-    } = this.props;
-
+    const { alt, containerClassName, containerStyle, style, onClick, children, className, src, errorImgClassName, onEmptyShowDefault } = this.props;
+    let showImg = true;
+    let showImgDefault = false;
+    if (onEmptyShowDefault) {
+      showImg = src && src !== '' && !isError;
+      showImgDefault = isError || src == '';
+    } else {
+      showImg = src && !isError;
+      showImgDefault = isError;
+    }
     return (
-      <div
-        className={`${containerClassName || ''} ${this.className}`}
-        style={containerStyle}
-        onClick={onClick}
-      >
-        {src &&
-          !isError && (
-            <img ref={this.image} className={className} style={style} src={sources} alt={alt} />
-          )}
-        {isError && <div className={`${s.lazyload__errorBg} ${errorImgClassName}`} />}
+      <div className={`${containerClassName || ''} ${this.className}`} style={containerStyle} onClick={onClick}>
+        {showImg && <img ref={this.image} className={className} style={style} src={sources} alt={alt} />}
+        {showImgDefault && <div className={`${s.lazyload__errorBg} ${errorImgClassName}`} />}
         {children}
       </div>
     );

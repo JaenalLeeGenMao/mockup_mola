@@ -3,24 +3,26 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import LazyLoad from '@components/common/Lazyload';
 
-import { filterString } from './util';
+import { setMultilineEllipsis } from './util';
 
 import styles from './layer.css';
 
-const ContentLayer = ({ isDark, type, background, shortDescription = '', isMobile, getCurrentScreenHeight = () => {} }) => {
+const ContentLayer = ({ isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {} }) => {
   const version = isMobile ? 'mobile' : 'desktop',
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
-    filteredDesc = filterString(shortDescription).substring(0, isMobile ? 100 : 180);
+    filteredDesc = type === 'playlists' ? description : shortDescription;
 
-  const descWrpperStyle = {
-    transform: `translateY(calc(${getCurrentScreenHeight()}px - 50vh))`,
-    marginTop: '0'
+  const descWrapperStyle = {
+    transform: `translateY(calc(${getCurrentScreenHeight()}px - 80vh))`
   };
 
+  setMultilineEllipsis(styles.layer__grid_desc_header);
+  setMultilineEllipsis(styles.layer__grid_desc_footer);
+
   return (
-    <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrpperStyle : null}>
+    <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrapperStyle : null}>
       {!isMobile && (
         <div
           className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
@@ -33,16 +35,16 @@ const ContentLayer = ({ isDark, type, background, shortDescription = '', isMobil
       )}
       <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
         <div className={styles.layer__grid_desc_header}>
-          {!isMobile && <h1>STORYLINE</h1>}
-          <p>{filteredDesc}</p>
+          {!isMobile && <h1>OVERVIEW</h1>}
+          <p className="filtered_description">{filteredDesc}</p>
         </div>
         {type !== 'playlists' && (
           <Fragment>
             <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
             <div className={styles.layer__grid_desc_footer}>
-              <i className={styles.layer__grid_desc_footer_quote}>{`"${filteredDesc}"`}</i>
-              <strong>— Entertainment Weekly</strong>
+              <i className={styles.layer__grid_desc_footer_quote}>{`"${quotes.attributes.text}"`}</i>
             </div>
+            <strong className={styles.layer__grid_desc_author}>— {quotes.attributes.author}</strong>
           </Fragment>
         )}
       </div>

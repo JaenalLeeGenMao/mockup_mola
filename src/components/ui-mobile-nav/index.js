@@ -1,7 +1,9 @@
 import React from 'react';
-import { MdChevronLeft } from 'react-icons/md';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+
 import Link from '@components/Link';
+
+import history from '../../history';
 import s from './index.css';
 
 class MobileNav extends React.Component {
@@ -23,15 +25,24 @@ class MobileNav extends React.Component {
     });
   }
 
+  handleGoBack() {
+    const { goBack } = history;
+    if (goBack) {
+      goBack();
+    }
+  }
+
   render() {
     const props = this.props;
     return (
-      <div className={s.root}>
-        <div className={s.header}>
-          <MdChevronLeft style={{ color: '#fff', fontSize: '2.3rem', marginTop: '-.5rem' }} />
-          <b className={s.title}>Accounts</b>
+      <div className={s.ui_mobile_nav__wrapper}>
+        <div className={s.ui_mobile_nav__header}>
+          <span className={s.ui_mobile_nav_arrow_prev} />
+          <b className={s.ui_mobile_nav__title} onClick={this.handleGoBack}>
+            Accounts
+          </b>
         </div>
-        <ul className={s.component}>
+        <ul className={s.ui_mobile_nav__component}>
           {props.menus.map((menu, index) => {
             let className = '';
             if (menu.href === this.state.currentPath) {

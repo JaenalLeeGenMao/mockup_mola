@@ -18,6 +18,19 @@ button:focus {
   outline: 0;
 }
 
+* {
+  outline: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Remove the white border on lazyload
+ */
+img:not([src]) {
+  visibility: hidden;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {
@@ -26,7 +39,7 @@ button:focus {
 }
 
 /* Big TV Styles */
-@media screen and (min-height: 1080px) {
+@media screen and (min-height: 1801px) {
   html {
     font-size: 187.5%;
   }

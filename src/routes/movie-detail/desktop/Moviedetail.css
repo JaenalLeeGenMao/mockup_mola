@@ -1,0 +1,128 @@
+.featured_container {
+  position: relative;
+}
+
+.casting_photo_container {
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  top: 3rem;
+  height: 12rem;
+}
+
+.casting_photo_container p {
+  margin: 0;
+  margin-top: 0.9rem;
+  font-size: 1.2rem;
+}
+
+.casting_photo_img {
+  border-radius: 50%;
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+.casting_photo_img_wrapper {
+  position: relative;
+  left: 1.7rem;
+  width: 6.6rem;
+}
+
+.trailer_photo_container {
+  text-align: center;
+  overflow: hidden;
+  height: 13rem;
+  width: auto;
+  position: relative;
+  outline: 0;
+}
+
+.trailer_photo_container img {
+  width: initial;
+  object-fit: cover;
+  height: 100%;
+  position: relative;
+  left: -1.6rem;
+}
+
+.trailer_playtag {
+  color: white;
+  position: absolute;
+  bottom: -4px;
+  right: 24px;
+  font-family: 'avenir', Helvetica, Arial, sans-serif;
+  font-size: 1.3rem;
+  line-height: 4rem;
+}
+
+.trailer_ifone {
+  left: 244px;
+}
+
+.trailerImage {
+  margin: 0 2.2rem;
+}
+
+.titleImage {
+  position: absolute;
+  top: -160px;
+  left: 35px;
+  max-width: 305px;
+  width: auto;
+}
+
+.yearWrapper {
+  position: relative;
+}
+
+.yearInner {
+  position: absolute;
+  top: -4.4rem;
+  left: 2.3rem;
+  color: white;
+  width: 35rem;
+}
+
+.yearLine {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #0045ff;
+  padding: 0;
+  width: 25.6rem;
+}
+
+.yearInner span {
+  display: inline-block;
+  top: 0;
+  margin: 2.2rem 0 2.2rem 1rem;
+  vertical-align: bottom;
+  font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+}
+
+.yearLoading {
+  display: inline-block;
+  top: 0;
+  margin: 22px 0 22px 10px;
+  vertical-align: bottom;
+}
+
+.modal_container {
+  width: 80rem;
+  max-width: 100%;
+}
+
+.next_btn {
+  width: 2rem !important;
+  height: 2rem !important;
+  right: -3rem !important;
+}
+
+.prev_btn {
+  width: 2rem !important;
+  height: 2rem !important;
+  left: -3rem !important;
+}

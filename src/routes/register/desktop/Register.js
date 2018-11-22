@@ -51,10 +51,7 @@ class Register extends React.Component {
 
   handleRegistration = async () => {
     const { email, password } = this.state,
-      {
-        runtime: { csrf },
-        onSetUserVariables
-      } = this.props;
+      { runtime: { csrf }, onSetUserVariables } = this.props;
     const result = await Auth.createNewUser({
       email,
       password,
@@ -75,9 +72,7 @@ class Register extends React.Component {
 
   handleVerificationToken = async () => {
     const { email, token } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
 
     const result = await Auth.verifyUserToken({
       token,
@@ -85,15 +80,13 @@ class Register extends React.Component {
       csrf
     });
     if (result.meta.status === 'success') {
-      window.location.href = `http://staging.mola.tv/accounts/login`;
+      window.location.href = 'http://staging.mola.tv/accounts/login';
     }
   };
 
   handleResendToken = async () => {
     const { email } = this.state,
-      {
-        runtime: { csrf }
-      } = this.props;
+      { runtime: { csrf } } = this.props;
 
     const result = await Auth.resendUserToken({
       email,
@@ -124,41 +117,16 @@ class Register extends React.Component {
                 <div className={s.container}>
                   <p className={s.labelHeader}>Register mola now !</p>
                   <div>
-                    <Form
-                      id="username"
-                      type="text"
-                      name="username"
-                      onChange={this.onChangeInput}
-                      value={username}
-                      autoFocus
-                    >
+                    <Form id="username" type="text" name="username" onChange={this.onChangeInput} value={username} autoFocus>
                       Username
                     </Form>
-                    <Form
-                      id="email"
-                      type="text"
-                      name="email"
-                      onChange={this.onChangeInput}
-                      value={email}
-                    >
+                    <Form id="email" type="text" name="email" onChange={this.onChangeInput} value={email}>
                       Email
                     </Form>
-                    <Form
-                      id="password"
-                      type="password"
-                      name="password"
-                      onChange={this.onChangeInput}
-                      value={password}
-                    >
+                    <Form id="password" type="password" name="password" onChange={this.onChangeInput} value={password}>
                       Password
                     </Form>
-                    <Form
-                      id="confirmPassword"
-                      type="password"
-                      name="confirmPassword"
-                      onChange={this.onChangeInput}
-                      value={confirmPassword}
-                    >
+                    <Form id="confirmPassword" type="password" name="confirmPassword" onChange={this.onChangeInput} value={confirmPassword}>
                       Confirm password
                     </Form>
                     <div className={s.formGroup} style={{ marginTop: '15px' }}>
@@ -169,15 +137,15 @@ class Register extends React.Component {
                   </div>
                   <strong className={s.lineThrough}>Or</strong>
                   <div className={s.flexButton}>
-                    <button onClick={() => this.handleLoginSocMed('google')}>
+                    <button onClick={() => this.handleLoginSocMed('google')} style={{ width: '100%' }}>
                       <img className={s.buttonImg} src={google} />
                     </button>
-                    <button onClick={() => this.handleLoginSocMed('facebook')}>
+                    {/* <button onClick={() => this.handleLoginSocMed('facebook')}>
                       <img className={s.buttonImg} src={facebook} />
                     </button>
                     <button onClick={() => this.handleLoginSocMed('line')}>
                       <img className={s.buttonImg} src={line} />
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 <div className={s.containerBack}>
@@ -186,18 +154,9 @@ class Register extends React.Component {
                     We need verify your email account, <br />
                     Please check your email to verify your account.
                   </p>
-                  <div
-                    className={`${s.formGroup} ${s.form__otp}`}
-                    style={{ marginTop: '15px', marginBottom: '20px' }}
-                  >
+                  <div className={`${s.formGroup} ${s.form__otp}`} style={{ marginTop: '15px', marginBottom: '20px' }}>
                     <div className={s.verify__otp_input}>
-                      <Form
-                        id="token"
-                        type="text"
-                        name="token"
-                        onChange={this.onChangeInput}
-                        value={token}
-                      >
+                      <Form id="token" type="text" name="token" onChange={this.onChangeInput} value={token}>
                         Enter OTP here
                       </Form>
                     </div>
@@ -229,10 +188,4 @@ const mapDispatchToProps = dispatch => ({
   onSetUserVariables: ({ name, value }) => dispatch(setUserVariable({ name, value }))
 });
 
-export default compose(
-  withStyles(s),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Register);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Register);

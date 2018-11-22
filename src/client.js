@@ -19,6 +19,11 @@ import configureStore from './store/configureStore';
 import history from './history';
 import { updateMeta } from './DOMUtils';
 import router from './router';
+// import { setRuntimeVariable } from './actions/runtime';
+
+// let inboxInterval;
+// let count = window.App.inbox.unread;
+// clearInterval(inboxInterval);
 
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
@@ -42,6 +47,12 @@ const context = {
   storeSubscription: null,
   isMobile: window.App.isMobile
 };
+
+// inboxInterval = setInterval(() => {
+//   console.log(`client inbox interval ${count}`);
+//   count++;
+//   context.store.dispatch(setRuntimeVariable({ name: 'unread', value: count }));
+// }, 1000);
 
 const container = document.getElementById('app');
 let currentLocation = history.location;

@@ -1,5 +1,5 @@
 import { get, post, delete as axiosDelete } from 'axios';
-import { HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints';
+import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints';
 import utils from './util';
 
 import { endpoints } from '@source/config';
@@ -22,7 +22,7 @@ const getHomePlaylist = () => {
       return {
         meta: {
           status: 'error',
-          error: `home/getHomePlaylist - ${error}`
+          error: 'Mola loves watchin playlist from home, but Mola is no where to be found'
         },
         data: []
       };
@@ -47,7 +47,7 @@ const getHomeVideo = ({ id }) => {
       return {
         meta: {
           status,
-          error: `home/getHomeVideo - ${error}`
+          error: "Mola loves video but sadly it's not available, cheer up!"
         },
         data: []
       };
@@ -71,7 +71,7 @@ const getAllHistory = ({ userId }) => {
       return {
         meta: {
           status: 'error',
-          text: `history/getAllHistory - ${error}`
+          text: 'Mola could not reach through the history, because Mola is positive and stays in the present'
         },
         data: []
       };
@@ -97,14 +97,14 @@ const getSearchResult = ({ q }) => {
       return {
         meta: {
           status: 'error',
-          error: `search/getSearchResult - ${error}`
+          error: "We've searched every corner of our empire, looks like the your search is history"
         },
         data: []
       };
     });
 };
 
-const getSearchGenre = payload => {
+const getSearchGenre = () => {
   return get(`${SEARCH_GENRE_ENDPOINT}`, {
     ...endpoints.setting
   })
@@ -122,7 +122,7 @@ const getSearchGenre = payload => {
       return {
         meta: {
           status: 'error',
-          error: `search/getSearchGenre - ${error}`
+          error: 'Searching genre is probably missing, off we go to hunt'
         },
         data: []
       };
@@ -149,7 +149,7 @@ const getRecentSearch = (sessionId, sid) => {
       return {
         meta: {
           status: 'error',
-          error: `search/getRecentSearch - ${error}`
+          error: "Looks like you have not searched recently, what've you been up to?"
         },
         data: []
       };
@@ -177,7 +177,7 @@ const postRecentSearch = (sessionId, sid, keyword) => {
       return {
         meta: {
           status: 'error',
-          error: 'Error add recent search ' + err
+          error: "Aha! Couldn't add recent search, seems like we detected some spooky search result "
         }
       };
     });
@@ -200,7 +200,7 @@ const deleteRecentSearchAll = (sessionId, sid) => {
       return {
         meta: {
           status: 'error',
-          error: err
+          error: 'Sure deleting all your recent search, we will miss you'
         }
       };
     });
@@ -223,7 +223,7 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
       return {
         meta: {
           status: 'error',
-          error: err
+          error: 'Recent search is refusing to be removed, since it loves you'
         }
       };
     });
@@ -247,7 +247,33 @@ const getMovieDetail = ({ id }) => {
       return {
         meta: {
           status: 'error',
-          error: `home/getMovieDetail - ${error}`
+          error: 'Movie details are missing, contact officer Mola immediately'
+        },
+        data: []
+      };
+    });
+};
+
+const getMovieLibraryList = () => {
+  return get(`${VIDEOS_ENDPOINT}`, {
+    ...endpoints.setting
+  })
+    .then(response => {
+      const result = utils.normalizeMovieLibraryList(response);
+
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: ''
+        },
+        data: [...result] || []
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: 'Apparently Mola is having difficulty to list down movie library'
         },
         data: []
       };
@@ -272,7 +298,7 @@ const getMovieLibrary = id => {
       return {
         meta: {
           status: 'error',
-          error: `search/getMovieLibrary - ${error}`
+          error: "We've searched thoroughly in our Movie Library, your sure you're not entering your password?"
         },
         data: []
       };
@@ -295,7 +321,7 @@ const getMovieStream = ({ id }) => {
       return {
         meta: {
           status: 'error',
-          error: `home/getMovieStream - ${error}`
+          error: 'Something amazing is happening behind the scene, to kickstart your stream make sure to browse other movies'
         },
         data: []
       };
@@ -314,5 +340,6 @@ export default {
   deleteRecentSearchAll,
   getMovieDetail,
   getMovieLibrary,
+  getMovieLibraryList,
   getMovieStream
 };

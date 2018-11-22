@@ -1,5 +1,5 @@
 .main_container {
-  width: 1190px;
+  width: 100%;
   margin: 0 auto;
   max-width: 100%;
   padding: 0 10px;
@@ -7,7 +7,7 @@
 }
 
 .card_wrapper {
-  margin-top: 2rem;
+  margin-top: 6rem;
   width: 100%;
   overflow: hidden;
   -webkit-column-count: 4;
@@ -64,6 +64,12 @@
     -moz-column-gap: 0;
     column-count: 2;
     column-gap: 20px;
+  }
+}
+
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .card_wrapper {
+    margin-top: 2rem;
   }
 }
 

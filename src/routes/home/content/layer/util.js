@@ -1,14 +1,37 @@
-/**
- *
- * @param str string to be filtered into 200 character at maximum
- */
-export const filterString = str => {
-  if (str.length > 200) {
-    const splitString = str.substring(0, 200).split(' ');
-    splitString.pop();
+/*
+  Multiline Ellipsis Simple Library
+  Need to set container height and overflow:hidden
+  example:
+  export const ThumbnailTitle = styled('div')`{
+    font-size: 2rem;
+    ...
+    height: 48px;
+    overflow: hidden;
+    ...
+  }`;
 
-    return splitString.join(' ') + '...';
+  How to Call:
+  import { setMultilineEllipsis } from '@source/lib/ellipsis';
+  //on componentdidmount
+  componentDidMount () {
+    setMultilineEllipsis('multilineEllipsis');
   }
 
-  return str;
+  //on render, can multiple component using the same classname
+  <ThumbnailTitle className={'multilineEllipsis'}>{`"Grannies Try Weed For The First Time" GROUP CHAT "`}</ThumbnailTitle>
+  <MovieTitle className={'multilineEllipsis'}>{`This is example of long long text`}</ThumbnailTitle>
+ */
+export const setMultilineEllipsis = className => {
+  const dataArray = document.getElementsByClassName(className);
+  [].forEach.call(dataArray, function(el) {
+    let wordArray = el.innerHTML.split(' ');
+    while (el.scrollHeight > el.offsetHeight) {
+      if (wordArray.length > 1) {
+        wordArray.pop();
+      } else {
+        return;
+      }
+      el.innerHTML = `${wordArray.join(' ')}...`;
+    }
+  });
 };

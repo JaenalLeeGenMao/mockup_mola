@@ -1,3 +1,6 @@
+import _get from 'lodash/get';
+import _sample from 'lodash/sample';
+
 const normalizeHomePlaylist = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
@@ -37,10 +40,28 @@ const normalizeHomeVideo = response => {
       videos
         .map(video => {
           const {
-            id,
-            type,
-            attributes: { title, description, shortDescription, displayOrder, isDark, images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } } }
-          } = video;
+              id,
+              type,
+              attributes: {
+                title,
+                description,
+                shortDescription,
+                displayOrder,
+                isDark,
+                images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } },
+                quotes: quoteLists
+              }
+            } = video,
+            dummyQuote = {
+              attributes: {
+                author: 'Comming Soon',
+                imageUrl: '',
+                role: 'Media',
+                text: title
+              },
+              id: 1,
+              type: 'quotes'
+            };
           return {
             id,
             title,
@@ -51,6 +72,7 @@ const normalizeHomeVideo = response => {
             background: coverBG,
             backgroundColor: coverBGColor || '#000622',
             isDark: isDark || 0,
+            quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
             type
           };
         })
@@ -164,14 +186,13 @@ const normalizeVideoDetail = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, playlists, images, quotes, trailers, shortDescription, people, isDark, year } } = result;
+      const { id, attributes: { title, images, quotes, trailers, description, people, isDark, year } } = result;
       return {
         id,
         title,
-        playlists,
         quotes,
         trailers,
-        shortDescription,
+        description,
         people,
         isDark,
         year,
@@ -192,15 +213,40 @@ const normalizeMovieLibrary = response => {
   if (data && data.length > 0) {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
-        const { title, thumbnail, coverUrl } = attributes;
+        const { title } = attributes;
+        const height = _sample(['98', '108', '138', '238', '400']);
+        const dummy = `https://dummyimage.com/266x${height}/000/fff`;
+        const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '');
+
         return {
           genreTitle,
           id,
           title,
-          thumbnail: thumbnail || coverUrl
+          thumbnail: thumbnail !== '' ? thumbnail : dummy
         };
       })
     );
+  }
+  return {
+    meta: {
+      status: 'no_result'
+    },
+    data: []
+  };
+};
+
+const normalizeMovieLibraryList = response => {
+  const { data } = response.data;
+  if (data && data.length > 0) {
+    return data.map(({ id, type, attributes: { title: genreTitle, description: videoDesc, images: videoImg } }) => {
+      return {
+        id,
+        type,
+        genreTitle,
+        videoDesc,
+        thumbnail: videoImg.cover.library.desktop.portrait
+      };
+    });
   }
   return {
     meta: {
@@ -234,5 +280,6 @@ export default {
   normalizeRecentSearch,
   normalizeVideoDetail,
   normalizeMovieLibrary,
+  normalizeMovieLibraryList,
   normalizeVideoStream
 };

@@ -114,6 +114,10 @@ const routes = {
       path: '/accounts/setting',
       load: () => import(/* webpackChunkName: 'setting' */ './setting')
     },
+    {
+      path: '/system-info',
+      load: () => import(/* webpackChunkName: 'system-info' */ './system-info')
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
