@@ -25,13 +25,13 @@ class Arrow extends Component {
         <button
           {...remainingProps}
           onClick={this.handleClick}
-          disabled={currentSlide === 0}
+          // disabled={currentSlide === 0}
           className={`
                       ${styles.home__arrow}
                       ${styles.home__arrow_prev}
                       ${styles[isMobile ? 'white' : isDark ? 'dark' : 'white']}
                   `}
-          style={{ opacity: currentSlide === 0 ? '.4' : '1' }}
+          // style={{ opacity: currentSlide === 0 ? '.4' : '1' }}
         >
           {direction}
         </button>
@@ -40,15 +40,14 @@ class Arrow extends Component {
     return (
       <button
         {...remainingProps}
-        disabled={currentSlide === slideCount - 1}
+        // disabled={currentSlide === slideCount - 1}
         onClick={this.handleClick}
         className={`
                     ${styles.home__arrow}
                     ${styles.home__arrow_next}
                     ${styles[isMobile ? 'white' : isDark ? 'dark' : 'white']}
-                  
                 `}
-        style={{ opacity: currentSlide === slideCount - 1 ? '.4' : '1' }}
+        // style={{ opacity: currentSlide === slideCount - 1 ? '.4' : '1' }}
       >
         {direction}
       </button>
