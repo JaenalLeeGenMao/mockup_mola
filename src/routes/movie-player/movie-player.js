@@ -57,11 +57,12 @@ class Movieplayer extends Component {
     return (
       <Fragment>
         <div id={s.movie_player}>
-          {!this.state.isTheoplayerLoaded && (
-            <div className={s.movie_player__loader}>
-              <img alt="loader" src={loader} />
-            </div>
-          )}
+          {!this.state.isTheoplayerLoaded &&
+            streamSource !== '' && (
+              <div className={s.movie_player__loader}>
+                <img alt="loader" src={loader} />
+              </div>
+            )}
           {movieStreamStatus === 'success' &&
             streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} handleTheoplayerLoaded={this.handleTheoplayerLoaded} movieUrl={streamSource} isTrailer={true} isMobile={isMobile} />}
           {movieStreamStatus === 'success' &&
