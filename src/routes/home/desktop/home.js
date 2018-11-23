@@ -210,7 +210,6 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll);
     Events.scrollEvent.register('end', this.handleColorChange);
 
@@ -269,9 +268,14 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('scroll', this.handleScroll);
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
+
+    document.removeEventListener('mouseup', () => {}, false);
+    document.removeEventListener('mousedown', () => {}, false);
+    document.removeEventListener('keyup', () => {}, false);
+    document.removeEventListener('wheel', () => {}, false);
+    document.removeEventListener('DOMMouseScroll', () => {}, false);
 
     for (let i = 0; i < 100; i += 1) {
       window.clearInterval(i);
@@ -366,6 +370,7 @@ class Home extends Component {
       ticking = false;
       this.prevMouseDownY = event.y;
     };
+
     document.onmouseup = event => {
       ticking = false;
 
@@ -382,8 +387,9 @@ class Home extends Component {
   };
 
   handleMouseScroll = () => {
+    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel';
     /** handle mouse scroll */
-    document.onwheel = event => {
+    document.addEventListener(mouseWheelEvent, event => {
       ticking = false;
       const that = this;
 
@@ -392,16 +398,18 @@ class Home extends Component {
         this,
         'scrollCheck',
         setTimeout(function() {
-          if (event.wheelDeltaY < 0) {
+          /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
+          var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1;
+          if (delta < 0) {
             scrollIndex += 1;
             that.handleKeyPress();
-          } else if (event.wheelDeltaY > 0) {
+          } else if (delta > 0) {
             scrollIndex -= 1;
             that.handleKeyPress();
           }
         }, 250)
       );
-    };
+    });
   };
 
   handleKeyboardEvent = () => {
