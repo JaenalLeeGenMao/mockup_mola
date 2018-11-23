@@ -86,19 +86,6 @@ class Theoplayer extends Component {
       }
     });
 
-    // if (document) {
-    //   document.querySelector('.vjs-fullscreen-control').click();
-    //   document.querySelector('.vjs-fullscreen-control').click();
-    //   const elem = document.querySelector('.video-container');
-    //   if (elem !== null) {
-    //     if (elem.webkitRequestFullScreen) {
-    //       elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-    //     } else {
-    //       elem.mozRequestFullScreen();
-    //     }
-    //   }
-    // }
-
     this.setState({ isTheoplayerLoaded: true });
     handleTheoplayerLoaded(true);
   }
