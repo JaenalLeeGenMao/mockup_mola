@@ -53,6 +53,7 @@ class Movieplayer extends Component {
   render() {
     const { movieStream: { meta: { status: movieStreamStatus }, data: movieStream }, isMobile } = this.props;
     const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
+    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8';
 
     return (
       <Fragment>
@@ -64,7 +65,7 @@ class Movieplayer extends Component {
               </div>
             )}
           {movieStreamStatus === 'success' &&
-            streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} handleTheoplayerLoaded={this.handleTheoplayerLoaded} movieUrl={streamSource} isTrailer={true} isMobile={isMobile} />}
+            streamSource && <Theoplayer theoConfig={this.isTheoPlayer()} autoPlay handleTheoplayerLoaded={this.handleTheoplayerLoaded} movieUrl={streamSource} isTrailer={true} isMobile={isMobile} />}
           {movieStreamStatus === 'success' &&
             streamSource === '' && (
               <div className={s.container}>
