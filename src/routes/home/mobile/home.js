@@ -130,6 +130,11 @@ class Home extends Component {
     document.body.addEventListener('swr', handleSwipeEvent, false);
     document.body.addEventListener('swu', handleSwipeEvent, false);
     document.body.addEventListener('swd', handleSwipeEvent, false);
+
+    document.body.addEventListener('ontouchmove', (e) => {
+      e.preventDefault;
+      return false;
+    });
     /** swipe EventListener ends */
 
     // window.addEventListener('scroll', this.handleScroll);
