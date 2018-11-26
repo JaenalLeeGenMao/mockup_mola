@@ -29,7 +29,7 @@ body {
 .header__library_link_wrapper {
   position: fixed;
   bottom: 0;
-  padding: 7.5%;
+  padding: 6.5%;
   z-index: 1;
 }
 
@@ -65,7 +65,7 @@ body {
 
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
-  .header__library_logo_white {
+  /* .header__library_logo_white {
     width: 2rem;
     height: 2rem;
   }
@@ -73,7 +73,7 @@ body {
   .header__library_logo_black {
     width: 2rem;
     height: 2rem;
-  }
+  } */
 }
 
 .swipeUpIcon {

@@ -130,6 +130,11 @@ class Home extends Component {
     document.body.addEventListener('swr', handleSwipeEvent, false);
     document.body.addEventListener('swu', handleSwipeEvent, false);
     document.body.addEventListener('swd', handleSwipeEvent, false);
+
+    document.body.addEventListener('ontouchmove', (e) => {
+      e.preventDefault;
+      return false;
+    });
     /** swipe EventListener ends */
 
     // window.addEventListener('scroll', this.handleScroll);
@@ -382,7 +387,7 @@ class Home extends Component {
         scroller.scrollTo(id, {
           duration: 250,
           delay: 0,
-          smooth: 'easeInOutBounce'
+          smooth: 'easeInOutQuart'
         });
         this.props.onUpdatePlaylist(id);
         scrollIndex = index;
