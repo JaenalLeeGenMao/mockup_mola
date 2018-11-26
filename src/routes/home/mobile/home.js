@@ -382,7 +382,7 @@ class Home extends Component {
         scroller.scrollTo(id, {
           duration: 250,
           delay: 0,
-          smooth: 'easeInOutQuart'
+          smooth: 'easeInOutBounce'
         });
         this.props.onUpdatePlaylist(id);
         scrollIndex = index;
