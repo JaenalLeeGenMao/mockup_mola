@@ -23,6 +23,14 @@ div[class^='Error-searchErrorDetail-'] {
   color: #000;
 }
 
+div[class^='Error-searchErrorContainer-'] {
+  transform: translateY(50%);
+}
+
+div[class^='Error-searchErrorContainer-'] img {
+  width: 13%;
+}
+
 @media screen and (max-width: 1280px) {
   .card_wrapper {
     width: 100%;
