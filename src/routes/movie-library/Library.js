@@ -6,6 +6,9 @@ import * as movieLibraryActions from '@actions/movie-library';
 import searchActions from '@actions/search';
 import CardLibrary from './movielibrary/Card';
 import Layout from '../../components/Molalayout';
+import Error from '../search/error/Error';
+
+import commonError from '../../global/style/icons/error/common_error.png';
 
 // import Header from '../../components/Header';
 // import Navbar from '../../components/Navigation';
@@ -66,7 +69,7 @@ class MovieLibrary extends Component {
     }
   }
 
-  renderLoading() {
+  renderLoading = () => {
     const { isMobile } = this.props;
 
     const { isLoading } = this.state;
@@ -104,24 +107,29 @@ class MovieLibrary extends Component {
     ];
 
     return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />);
-  }
+  };
 
-  renderContent() {
+  renderContent = () => {
     const { movieLibrary: { data: libraryDt } } = this.props;
     const { isLoading } = this.state;
     const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
 
     return !isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail} id={obj.id} />);
-  }
+  };
+
+  renderNotFound = isLoading => {
+    return isLoading === 'error' ? <Error errorTitle="Video not found" errorText={`Video with category ${this.props.genreId} does not exists`} /> : null;
+  };
 
   render() {
     const { movieLibrary: { data: libraryDt } } = this.props;
+    const status = this.props.movieLibrary.meta.status;
     const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
 
     return (
       <Fragment>
         <Layout>
-          <div className={s.main_container}>
+          <div className={s.main_container} id="main-container">
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_wrapper}>
               {this.renderLoading()}
@@ -129,6 +137,8 @@ class MovieLibrary extends Component {
               {this.renderContent()}
             </div>
           </div>
+
+          {this.renderNotFound(status)}
         </Layout>
       </Fragment>
     );
