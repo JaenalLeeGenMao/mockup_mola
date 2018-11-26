@@ -8,8 +8,6 @@ import CardLibrary from './movielibrary/Card';
 import Layout from '../../components/Molalayout';
 import Error from '../search/error/Error';
 
-import commonError from '../../global/style/icons/error/common_error.png';
-
 // import Header from '../../components/Header';
 // import Navbar from '../../components/Navigation';
 
