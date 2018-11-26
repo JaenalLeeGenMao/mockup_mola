@@ -31,6 +31,10 @@ img:not([src]) {
   visibility: hidden;
 }
 
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {

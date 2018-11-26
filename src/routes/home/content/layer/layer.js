@@ -15,7 +15,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
     filteredDesc = type === 'playlists' ? description : shortDescription;
 
   const descWrapperStyle = {
-    transform: `translateY(calc(${getCurrentScreenHeight()}px - 80vh))`
+    transform: `translateY(calc(${getCurrentScreenHeight()}px - 85vh))`
   };
 
   setMultilineEllipsis(styles.layer__grid_desc_header);
@@ -23,17 +23,16 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
 
   return (
     <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrapperStyle : null}>
-      {!isMobile && (
-        <div
-          className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
-          style={{
-            background: `url(${coverBackgroundImage}) repeat center`,
-            boxShadow: `inset 0 0 0 20000px ${fontBackgroundColor}`,
-            backgroundSize: 'cover'
-          }}
-        />
-      )}
-      <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
+      <div
+        className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
+        style={{
+          background: !isMobile ? `url(${coverBackgroundImage}) repeat center` : 'transparent',
+          boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
+          backgroundSize: 'cover',
+          opacity: !isMobile ? 1 : 0.1
+        }}
+      />
+      <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left', padding: '.5rem' }}>
         <div className={styles.layer__grid_desc_header}>
           {!isMobile && <h1>OVERVIEW</h1>}
           <p className="filtered_description">{filteredDesc}</p>

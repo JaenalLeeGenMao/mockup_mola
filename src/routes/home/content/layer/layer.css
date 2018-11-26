@@ -126,7 +126,8 @@
 
   .layer__grid_desc_header {
     height: 5rem;
-    padding: 0 5%;
+
+    /* padding: 5%; */
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
