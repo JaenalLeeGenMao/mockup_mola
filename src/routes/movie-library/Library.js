@@ -71,8 +71,8 @@ class MovieLibrary extends Component {
 
   renderLoading = () => {
     const { isMobile } = this.props;
+    const isLoading = this.props.movieLibrary.meta.status === 'loading';
 
-    const { isLoading } = this.state;
     const cardImageLoading = [
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '20rem' },
@@ -118,7 +118,7 @@ class MovieLibrary extends Component {
   };
 
   renderNotFound = isLoading => {
-    return isLoading === 'error' ? <Error errorTitle="Video not found" errorText={`Video with category ${this.props.genreId} does not exists`} /> : null;
+    return isLoading === 'error' ? <Error errorTitle="Video not found" errorText={`Video with genre ${this.props.genreId} does not exists`} /> : null;
   };
 
   render() {
