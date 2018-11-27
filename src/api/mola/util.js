@@ -1,5 +1,7 @@
 import _get from 'lodash/get';
 import _sample from 'lodash/sample';
+import defaultImage1 from '../../routes/movie-library/assets/default-img-mola_library-01.jpg';
+import defaultImage2 from '../../routes/movie-library/assets/default-img-mola_library-02.jpg';
 
 const normalizeHomePlaylist = response => {
   const { data } = response.data;
@@ -214,15 +216,18 @@ const normalizeMovieLibrary = response => {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
         const { title } = attributes;
-        const height = _sample(['98', '108', '138', '238', '400']);
-        const dummy = `https://dummyimage.com/266x${height}/000/fff`;
+        const random = () => {
+          return Math.floor(Math.random() * (Math.floor(1) - Math.ceil(0) + 1)) + Math.ceil(0);
+        };
+
+        const placeholder = random() % 2 === 0 ? defaultImage1 : defaultImage2;
         const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '');
 
         return {
           genreTitle,
           id,
           title,
-          thumbnail: thumbnail !== '' ? thumbnail : dummy
+          thumbnail: thumbnail !== '' ? thumbnail : placeholder
         };
       })
     );
