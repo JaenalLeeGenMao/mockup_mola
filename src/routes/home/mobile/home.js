@@ -180,11 +180,7 @@ class Home extends Component {
       }
     }
 
-    const preventDefault = e => {
-      e.preventDefault();
-    };
-
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+    document.body.addEventListener('touchmove', this.preventDefault, { passive: false });
   }
 
   componentWillUnmount() {
@@ -195,6 +191,8 @@ class Home extends Component {
     for (let i = 0; i < 100; i += 1) {
       window.clearInterval(i);
     }
+
+    document.body.removeEventListener('touchmove', this.preventDefault);
   }
 
   componentDidUpdate() {
@@ -250,6 +248,10 @@ class Home extends Component {
       }
     }
   }
+
+  preventDefault = e => {
+    e.preventDefault();
+  };
 
   handleColorChange = () => {
     const that = this;
