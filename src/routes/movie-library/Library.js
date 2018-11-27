@@ -127,7 +127,7 @@ class MovieLibrary extends Component {
     return (
       <Fragment>
         <Layout>
-          <div className={s.main_container} id="main-container">
+          <div className={s.main_container}>
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_wrapper}>
               {this.renderLoading()}
