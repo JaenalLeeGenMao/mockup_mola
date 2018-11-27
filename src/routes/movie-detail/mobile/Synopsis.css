@@ -53,7 +53,7 @@
 
 .synopsis__info_read_more span {
   display: inline-block;
-  transform: scale(-2.5, -1) translate(-5%, 25%);
+  transform: scale(-1.5, -1) translate(-5%, 25%);
   vertical-align: initial;
 }
 
@@ -64,4 +64,10 @@
 .synopsisPlaceholderDirector {
   margin-bottom: 0;
   display: inline-block;
+}
+
+@media screen and (max-width: 370px) {
+  .synopsis__info_read_more span {
+    transform: scale(-2.5, -1) translate(-5%, 25%);
+  }
 }
