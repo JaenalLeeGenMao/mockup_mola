@@ -7,12 +7,12 @@ import * as movieStreamActions from '@actions/movie-stream';
 
 import loader from '@global/style/animation/ellipsis.svg';
 
-import Theoplayer from '../../components/Theoplayer/Theoplayer';
+// import Theoplayer from '../../components/Theoplayer/Theoplayer';
 import s from './movie-player.css';
 
-// import { customTheoplayer } from './theoplayer-style';
-// const { getComponent } = require(process.env.REACT_APP_ENV === 'staging' ? '../../../../gandalf' : '@supersoccer/gandalf');
-// const Theoplayer = getComponent('theoplayer');
+import { customTheoplayer } from './theoplayer-style';
+const { getComponent } = require(process.env.REACT_APP_ENV === 'development' ? '../../../../gandalf' : '@supersoccer/gandalf');
+const Theoplayer = getComponent('theoplayer');
 
 class Movieplayer extends Component {
   state = {
@@ -65,30 +65,31 @@ class Movieplayer extends Component {
         <div id={s.movie_player}>
           {!this.state.isTheoplayerLoaded &&
             streamSource !== '' && (
-            <div className={s.movie_player__loader}>
-              <img alt="loader" src={loader} />
-            </div>
-          )}
+              <div className={s.movie_player__loader}>
+                <img alt="loader" src={loader} />
+              </div>
+            )}
           {movieStreamStatus === 'success' &&
-            streamSource && <Theoplayer
-            // className={customTheoplayer}
-            theoConfig={this.isTheoPlayer()}
-            autoPlay
-            handleTheoplayerLoaded={this.handleTheoplayerLoaded}
-            movieUrl={streamSource}
-            isTrailer={true}
-            isMobile={isMobile}
-          />
-          }
+            streamSource && (
+              <Theoplayer
+                className={customTheoplayer}
+                theoConfig={this.isTheoPlayer()}
+                autoPlay
+                handleTheoplayerLoaded={this.handleTheoplayerLoaded}
+                movieUrl={streamSource}
+                isTrailer={true}
+                isMobile={isMobile}
+              />
+            )}
           {movieStreamStatus === 'success' &&
             streamSource === '' && (
-            <div className={s.container}>
-              <div className={s.no_video}>Video not available</div>
-              <p className={s.novid_btn} onClick={this.handleGoBack}>
+              <div className={s.container}>
+                <div className={s.no_video}>Video not available</div>
+                <p className={s.novid_btn} onClick={this.handleGoBack}>
                   Go Back
-              </p>
-            </div>
-          )}
+                </p>
+              </div>
+            )}
         </div>
       </Fragment>
     );
