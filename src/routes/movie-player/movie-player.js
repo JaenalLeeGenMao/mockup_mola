@@ -11,7 +11,7 @@ import loader from '@global/style/animation/ellipsis.svg';
 import s from './movie-player.css';
 
 import { customTheoplayer } from './theoplayer-style';
-const { getComponent } = require(process.env.REACT_APP_ENV === 'staging' ? '../../../../gandalf' : '@supersoccer/gandalf');
+const { getComponent } = require(process.env.REACT_APP_ENV === 'development' ? '../../../../gandalf' : '@supersoccer/gandalf');
 const Theoplayer = getComponent('theoplayer');
 
 class Movieplayer extends Component {
