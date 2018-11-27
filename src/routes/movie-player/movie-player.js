@@ -58,6 +58,7 @@ class Movieplayer extends Component {
     const { movieStream: { meta: { status: movieStreamStatus }, data: movieStream }, isMobile } = this.props;
     const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8';
+    // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/HLS/VOD/f7e2c67e-0ef9-4f7f-bc7f-7ffaef22d574/c0de6451-cd85-84e0-fcd7-ea805ff7a6f2/index.m3u8?hdnts=st=1543293273~exp=1543296873~acl=/*~hmac=c5f88ed48821603d1b087c29666e89587bb5df96d5025cfe8c75915f21e29b1e';
 
     return (
       <Fragment>
@@ -70,7 +71,7 @@ class Movieplayer extends Component {
           )}
           {movieStreamStatus === 'success' &&
             streamSource && <Theoplayer
-            className={customTheoplayer}
+            // className={customTheoplayer}
             theoConfig={this.isTheoPlayer()}
             autoPlay
             handleTheoplayerLoaded={this.handleTheoplayerLoaded}

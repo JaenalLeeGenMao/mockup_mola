@@ -45,14 +45,13 @@ class Content extends Component {
       version = isMobile ? 'mobile' : 'desktop',
       coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
 
-    const iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
-      moreStyles = {
-        bottom: 0,
-        transform: isMobile
-          ? `translateY(${getCurrentScreenHeight() - (iOS ? 4 : 0)}px)`
-          : null,
-        transition: 'all ease-in-out 300ms'
-      };
+    const moreStyles = {
+      bottom: 0,
+      transform: isMobile
+        ? `translateY(${getCurrentScreenHeight()}px)`
+        : null,
+      transition: 'all ease-in-out 300ms'
+    };
 
     return (
       <div className="grid-slick" isDark={isDark}>

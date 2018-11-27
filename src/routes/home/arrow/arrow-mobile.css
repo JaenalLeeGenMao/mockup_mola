@@ -3,7 +3,7 @@
 .home__arrow {
   font-family: slick;
   position: fixed;
-  bottom: 4.25%;
+  bottom: 4%;
   width: 40px;
   height: 40px;
   z-index: 99;
@@ -88,4 +88,10 @@
 .home__arrow_prev.white:hover{
   color: #000;
   background-color: #fff;
+}
+
+@media screen and (max-width: 370px) {
+  .home__arrow {
+    bottom: 5.25%;
+  }
 }

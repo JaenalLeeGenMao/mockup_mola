@@ -4,7 +4,7 @@
   position: fixed;
   width: 100vw;
   height: 33px;
-  bottom: 4.25%;
+  bottom: 4%;
   z-index: 99;
 }
 
@@ -17,7 +17,7 @@
 
 .home__arrow {
   position: fixed;
-  bottom: 4.25%;
+  bottom: 4%;
   width: 40px;
   height: 40px;
   z-index: 99;
@@ -83,4 +83,14 @@
 .home__arrow_prev.white {
   color: #fff;
   border-color: #fff;
+}
+
+@media screen and (max-width: 370px) {
+  .home__arrow {
+    bottom: 5.25%;
+  }
+
+  .placeholderTourSlideWrapper {
+    bottom: 5.25%;
+  }
 }
