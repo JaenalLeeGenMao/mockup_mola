@@ -12,7 +12,22 @@ const normalizeHomePlaylist = response => {
           const {
             id,
             type,
-            attributes: { title, description, shortDescription, sortOrder, iconUrl, isDark, images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } } }
+            attributes: {
+              title,
+              description,
+              shortDescription,
+              sortOrder,
+              iconUrl,
+              isDark,
+              images: {
+                cover: {
+                  // title: coverTitle,
+                  background,
+                  details,
+                  backgroundColor: coverBGColor
+                }
+              }
+            }
           } = playlist;
           return {
             id,
@@ -22,8 +37,9 @@ const normalizeHomePlaylist = response => {
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
             // coverTitle: coverTitle,
-            background: coverBG,
+            background,
             backgroundColor: coverBGColor || '#000622',
+            details,
             isDark: isDark || 0,
             isActive: false,
             type
@@ -50,7 +66,14 @@ const normalizeHomeVideo = response => {
                 shortDescription,
                 displayOrder,
                 isDark,
-                images: { cover: { title: coverTitle, background: coverBG, backgroundColor: coverBGColor } },
+                images: {
+                  cover: {
+                    // title: coverTitle,
+                    details,
+                    background,
+                    backgroundColor: coverBGColor
+                  }
+                },
                 quotes: quoteLists
               }
             } = video,
@@ -71,8 +94,9 @@ const normalizeHomeVideo = response => {
             description,
             shortDescription: shortDescription || '',
             // coverTitle: coverTitle,
-            background: coverBG,
+            background,
             backgroundColor: coverBGColor || '#000622',
+            details,
             isDark: isDark || 0,
             quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
             type
@@ -188,7 +212,19 @@ const normalizeVideoDetail = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, images, quotes, trailers, description, people, isDark, year } } = result;
+      const {
+        id,
+        attributes: {
+          title,
+          images,
+          quotes,
+          trailers,
+          description,
+          people,
+          isDark,
+          year
+        }
+      } = result;
       return {
         id,
         title,
@@ -217,11 +253,18 @@ const normalizeMovieLibrary = response => {
       videos.map(({ id, attributes }) => {
         const { title } = attributes;
         const random = () => {
-          return Math.floor(Math.random() * (Math.floor(1) - Math.ceil(0) + 1)) + Math.ceil(0);
+          return (
+            Math.floor(Math.random() * (Math.floor(1) - Math.ceil(0) + 1)) +
+            Math.ceil(0)
+          );
         };
 
         const placeholder = random() % 2 === 0 ? defaultImage1 : defaultImage2;
-        const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '');
+        const thumbnail = _get(
+          attributes,
+          'images.cover.library.desktop.portrait',
+          ''
+        );
 
         return {
           genreTitle,
@@ -243,15 +286,25 @@ const normalizeMovieLibrary = response => {
 const normalizeMovieLibraryList = response => {
   const { data } = response.data;
   if (data && data.length > 0) {
-    return data.map(({ id, type, attributes: { title: genreTitle, description: videoDesc, images: videoImg } }) => {
-      return {
+    return data.map(
+      ({
         id,
         type,
-        genreTitle,
-        videoDesc,
-        thumbnail: videoImg.cover.library.desktop.portrait
-      };
-    });
+        attributes: {
+          title: genreTitle,
+          description: videoDesc,
+          images: videoImg
+        }
+      }) => {
+        return {
+          id,
+          type,
+          genreTitle,
+          videoDesc,
+          thumbnail: videoImg.cover.library.desktop.portrait
+        };
+      }
+    );
   }
   return {
     meta: {

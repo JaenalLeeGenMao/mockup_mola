@@ -11,7 +11,7 @@ import loader from '@global/style/animation/ellipsis.svg';
 import s from './movie-player.css';
 
 import { customTheoplayer } from './theoplayer-style';
-const { getComponent } = require(process.env.REACT_APP_ENV === 'development' ? '../../../../gandalf' : '@supersoccer/gandalf');
+const { getComponent } = require('@supersoccer/gandalf');
 const Theoplayer = getComponent('theoplayer');
 
 class Movieplayer extends Component {
@@ -22,7 +22,10 @@ class Movieplayer extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { getMovieStream, movieStream, movieId } = nextProps;
-    if (nextProps.movieStream.meta.status === 'loading' && prevState.movieStream.length <= 0) {
+    if (
+      nextProps.movieStream.meta.status === 'loading' &&
+      prevState.movieStream.length <= 0
+    ) {
       getMovieStream(movieId);
     }
     return { ...prevState, movieStream };
@@ -55,8 +58,12 @@ class Movieplayer extends Component {
   }
 
   render() {
-    const { movieStream: { meta: { status: movieStreamStatus }, data: movieStream }, isMobile } = this.props;
-    const streamSource = movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
+    const {
+      movieStream: { meta: { status: movieStreamStatus }, data: movieStream },
+      isMobile
+    } = this.props;
+    const streamSource =
+      movieStream.length > 0 ? movieStream[0].streamSourceUrl : '';
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8';
     // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/HLS/VOD/f7e2c67e-0ef9-4f7f-bc7f-7ffaef22d574/c0de6451-cd85-84e0-fcd7-ea805ff7a6f2/index.m3u8?hdnts=st=1543293273~exp=1543296873~acl=/*~hmac=c5f88ed48821603d1b087c29666e89587bb5df96d5025cfe8c75915f21e29b1e';
 
@@ -103,7 +110,11 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMovieStream: movieId => dispatch(movieStreamActions.getMovieStream(movieId))
+  getMovieStream: movieId =>
+    dispatch(movieStreamActions.getMovieStream(movieId))
 });
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Movieplayer);
+export default compose(
+  withStyles(s),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Movieplayer);
