@@ -28,6 +28,7 @@ RUN apk --no-cache update && apk --no-cache add g++ make bash zlib-dev libpng-de
 
 ARG REACT_APP_ENV
 
+COPY .npmrc .
 COPY package*.json .
 
 # Install Node.js dependencies
