@@ -8,6 +8,7 @@ body {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  min-height: 110vh;
   padding: 0;
   overflow: hidden;
 }
@@ -81,7 +82,7 @@ body {
 .movie_detail__button_wrapper {
   width: 100%;
   padding: 5% 0;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   text-align: center;
   transition: all ease-out 500ms;
