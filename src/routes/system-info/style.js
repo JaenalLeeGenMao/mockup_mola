@@ -19,9 +19,18 @@ export const SystemInfoContainer = css`
    {
     color: white;
     opacity: 0.8;
-    padding: 2rem;
     padding: 2rem 3rem;
     background: rgba(0, 0, 0, 0.75);
     letter-spacing: 0.1rem;
+  }
+
+  @media screen and (min-width: 299px) and (max-width: 640px) {
+     {
+      color: white;
+      opacity: 0.8;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.75);
+      letter-spacing: 0.1rem;
+    }
   }
 `;

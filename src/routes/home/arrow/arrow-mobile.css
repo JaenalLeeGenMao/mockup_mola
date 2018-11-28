@@ -31,8 +31,8 @@
 
 .home__arrow_next::before,
 .home__arrow_prev::before {
-  font-size: 1.1rem;
-  line-height: 1.2;
+  font-size: .85rem;
+  line-height: 1.1;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -88,4 +88,10 @@
 .home__arrow_prev.white:hover{
   color: #000;
   background-color: #fff;
+}
+
+@media screen and (max-width: 370px) {
+  .home__arrow {
+    bottom: 5.25%;
+  }
 }

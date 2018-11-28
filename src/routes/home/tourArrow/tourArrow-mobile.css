@@ -84,3 +84,13 @@
   color: #fff;
   border-color: #fff;
 }
+
+@media screen and (max-width: 370px) {
+  .home__arrow {
+    bottom: 5.25%;
+  }
+
+  .placeholderTourSlideWrapper {
+    bottom: 5.25%;
+  }
+}

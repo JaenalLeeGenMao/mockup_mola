@@ -118,7 +118,7 @@
 }
 
 /* mobile Styles */
-@media screen and (min-width: 299px) and (max-width: 640px) {
+@media screen and (max-width: 640px) {
   .layer__grid_desc_wrapper {
     margin: 10% 5% 0;
     height: auto;
@@ -126,7 +126,8 @@
 
   .layer__grid_desc_header {
     height: 5rem;
-    padding: 0 5%;
+
+    /* padding: 5%; */
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -142,6 +143,15 @@
     font-size: 0.9rem;
     line-height: 1.5rem;
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .layer__grid_desc_header {
+    height: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 }
 

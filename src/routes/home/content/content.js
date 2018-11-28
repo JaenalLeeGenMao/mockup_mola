@@ -47,7 +47,9 @@ class Content extends Component {
 
     const moreStyles = {
       bottom: 0,
-      transform: isMobile ? `translateY(${getCurrentScreenHeight()}px)` : null,
+      transform: isMobile
+        ? `translateY(${getCurrentScreenHeight()}px)`
+        : null,
       transition: 'all ease-in-out 300ms'
     };
 

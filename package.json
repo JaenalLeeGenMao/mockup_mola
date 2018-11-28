@@ -9,6 +9,7 @@
   "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
   "dependencies": {
     "@babel/polyfill": "7.0.0",
+    "@supersoccer/gandalf": "^1.0.4",
     "axios": "0.18.0",
     "bluebird": "3.5.1",
     "body-parser": "1.18.2",
@@ -23,6 +24,7 @@
     "express": "4.16.3",
     "filestack-js": "1.5.1",
     "history": "4.7.2",
+    "husky": "^0.14.3",
     "intersection-observer": "0.5.0",
     "isomorphic-style-loader": "4.0.0",
     "jquery": "3.3.1",
@@ -116,7 +118,6 @@
     "flow-bin": "0.68.0",
     "front-matter": "2.3.0",
     "glob": "7.1.2",
-    "husky": "0.14.3",
     "identity-obj-proxy": "3.0.0",
     "image-webpack-loader": "4.3.1",
     "jest": "22.4.3",
@@ -186,7 +187,7 @@
     "copy": "babel-node tools/run copy",
     "bundle": "babel-node tools/run bundle",
     "build": "babel-node tools/run build",
-    "build-dev": "REACT_APP_ENV=development yarn build",
+    "build-dev": "REACT_APP_ENV=staging yarn build",
     "build-stag": "REACT_APP_ENV=staging yarn build",
     "build-prod": "REACT_APP_ENV=production yarn build",
     "build-stats": "yarn run build --release --analyse",
@@ -194,7 +195,7 @@
     "render": "babel-node tools/run render",
     "serve": "babel-node tools/run runServer",
     "start": "babel-node tools/run start",
-    "dev": "REACT_APP_ENV=development BABEL_ENV=development yarn start",
+    "dev": "REACT_APP_ENV=staging BABEL_ENV=staging yarn start",
     "stag": "REACT_APP_ENV=staging BABEL_ENV=staging yarn start",
     "prod": "REACT_APP_ENV=production BABEL_ENV=production yarn start"
   }

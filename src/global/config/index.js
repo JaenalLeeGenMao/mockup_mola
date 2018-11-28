@@ -17,10 +17,10 @@ module.exports = {
     port: 3000,
     endpoints: {
       clientUrl: '',
-      serverUrl: 'https://staging.mola.tv',
-      api: 'https://staging.mola.tv/api/v2',
-      auth: 'https://staging.mola.tv/accounts/_',
-      domain: 'https://staging.mola.tv',
+      serverUrl: 'https://stag.mola.tv',
+      api: 'https://stag.mola.tv/api/v2',
+      auth: 'https://stag.mola.tv/accounts/_',
+      domain: 'https://stag.mola.tv',
       setting: {
         timeout: 10000,
         maxRedirects: 1

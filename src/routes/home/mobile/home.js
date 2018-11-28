@@ -179,6 +179,8 @@ class Home extends Component {
         }
       }
     }
+
+    document.body.addEventListener('touchmove', this.preventDefault, { passive: false });
   }
 
   componentWillUnmount() {
@@ -189,6 +191,8 @@ class Home extends Component {
     for (let i = 0; i < 100; i += 1) {
       window.clearInterval(i);
     }
+
+    document.body.removeEventListener('touchmove', this.preventDefault);
   }
 
   componentDidUpdate() {
@@ -244,6 +248,10 @@ class Home extends Component {
       }
     }
   }
+
+  preventDefault = e => {
+    e.preventDefault();
+  };
 
   handleColorChange = () => {
     const that = this;
@@ -382,7 +390,7 @@ class Home extends Component {
         scroller.scrollTo(id, {
           duration: 250,
           delay: 0,
-          smooth: 'easeInOutQuart'
+          smooth: 'easeInOutBounce'
         });
         this.props.onUpdatePlaylist(id);
         scrollIndex = index;
