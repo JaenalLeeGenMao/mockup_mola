@@ -48,10 +48,16 @@ class Moviedetail extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { getMovieDetail, movieDetail, movieId } = nextProps;
-    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
+    if (
+      nextProps.movieDetail.meta.status === 'loading' &&
+      prevState.movieDetail.length <= 0
+    ) {
       //getMovieDetail('tt1179056');
       getMovieDetail(movieId);
-    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
+    } else if (
+      nextProps.movieDetail.meta.status === 'success' &&
+      nextProps.movieDetail.data[0].id != movieId
+    ) {
       getMovieDetail(movieId);
     }
 
@@ -98,7 +104,10 @@ class Moviedetail extends Component {
   componentDidUpdate(prevProps) {
     const { movieDetail } = this.props;
 
-    if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
+    if (
+      prevProps.movieDetail.meta.status !== movieDetail.meta.status &&
+      movieDetail.meta.status !== 'loading'
+    ) {
       this.setState(
         {
           isLoading: false
@@ -257,27 +266,45 @@ class Moviedetail extends Component {
 
     //get moviedetaildata from redux stored in props
     const { movieDetail: { data: movieDetailData } } = this.props;
-    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop.landscape : null;
+    const bannerImage =
+      movieDetailData.length > 0
+        ? movieDetailData[0].images.cover.background.desktop.landscape
+        : null;
     let isBannerError = false;
     if (!isLoading) {
-      isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true;
+      isBannerError =
+        movieDetailData.length > 0 &&
+        movieDetailData[0].images.cover.background.desktop.landscape
+          ? false
+          : true;
     }
 
     const isDark = movieDetailData.length > 0 && movieDetailData[0].isDark;
 
-    const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null;
-    const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : '';
+    const bannerImgTitle =
+      movieDetailData.length > 0 ? movieDetailData[0].title : null;
+    const link =
+      movieDetailData.length > 0
+        ? '/movie-player/' + movieDetailData[0].id
+        : '';
 
-    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].description : null;
+    const synopsisContent =
+      movieDetailData.length > 0 ? movieDetailData[0].description : null;
 
     // Trailer copy toogle
-    const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers : [];
+    const trailerDt =
+      movieDetailData.length > 0 ? movieDetailData[0].trailers : [];
     const trailerDtPlaceholder = [1, 2];
-    const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
-    const trailerIsShow = movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : [];
+    const trailerIsHide =
+      movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
+    const trailerIsShow =
+      movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : [];
 
     // css toogle
-    let ifOne = trailerDt.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container;
+    let ifOne =
+      trailerDt.length === 1
+        ? s.trailer_photo_container + ' ' + s.trailer_ifone
+        : s.trailer_photo_container;
 
     // trailer temporary image
     const temporaryImg = TrailerImg;
@@ -337,22 +364,54 @@ class Moviedetail extends Component {
     return (
       <Fragment>
         <Layout>
-          <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={isDark} backButtonOn shareButtonOn {...this.props} />
+          <Header
+            logoOff
+            stickyOff
+            libraryOff
+            searchOff
+            profileOff
+            isMobile
+            isDark={isDark}
+            backButtonOn
+            shareButtonOn
+            {...this.props}
+          />
           <div className={s.main_container}>
-            {!isLoading && <Banner isDark={isDark} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} />}
+            {!isLoading && (
+              <Banner
+                isDark={isDark}
+                isBannerError={isBannerError}
+                imageTitle={bannerImgTitle}
+                bannerUrl={bannerImage}
+                link={link}
+              />
+            )}
             {isLoading && <BannerLoading />}
 
             {!isLoading &&
               trailerDt.length > 0 && (
-                <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
+                <Trailer
+                  trailerTitle={trailerCopy}
+                  trailerText={!trailerIsHide}
+                >
                   <div className={s.trailer_moviebox}>
                     {trailerDt.map(obj => (
                       <LazyLoad
                         key={obj.toString()}
                         containerClassName={ifOne}
-                        alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
-                        src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
-                        onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
+                        alt={
+                          !obj.movieImageAlt
+                            ? 'Movie trailer'
+                            : obj.movieImageAlt
+                        }
+                        src={
+                          !obj.attributes.coverUrl
+                            ? temporaryImg
+                            : obj.attributes.coverUrl
+                        }
+                        onClick={() =>
+                          this.onOpenModal(obj.attributes.streamSourceUrl)
+                        }
                         className={s.trailerImage}
                       >
                         <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
@@ -363,16 +422,27 @@ class Moviedetail extends Component {
               )}
             {isLoading && (
               <Trailer trailerTitle={trailerCopy} trailerText={true}>
-                <div className={s.trailer_moviebox}>{trailerDtPlaceholder.map(obj => <LoadingPlaceholder key={obj.toString()} isLight className={s.trailer_moviebox_imgloading} />)}</div>
+                <div className={s.trailer_moviebox}>
+                  {trailerDtPlaceholder.map(obj => (
+                    <LoadingPlaceholder
+                      key={obj.toString()}
+                      isLight
+                      className={s.trailer_moviebox_imgloading}
+                    />
+                  ))}
+                </div>
               </Trailer>
             )}
+            {isLoading && <SynopsisLoading synopsisContent={synopsisContent} />}
+            {!isLoading &&
+              synopsisContent && <Synopsis synopsisContent={synopsisContent} />}
+            {!isLoading && this.renderCharacters()}
           </div>
-
-          {isLoading && <SynopsisLoading synopsisContent={synopsisContent} />}
-          {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} />}
-          {!isLoading && this.renderCharacters()}
           <div className={s.movie_detail__button_wrapper}>
-            <Link className={`playButton ${s.movie_detail__button_play}`} to={link}>
+            <Link
+              className={`playButton ${s.movie_detail__button_play}`}
+              to={link}
+            >
               Play Movie
             </Link>
           </div>
@@ -416,7 +486,11 @@ class Moviedetail extends Component {
           )} */}
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
-              <Theoplayer movieUrl={trailerMovie} handleOnPlay={this.handleOnPlay} handleOnTime={this.handleOnTime} />
+              <Theoplayer
+                movieUrl={trailerMovie}
+                handleOnPlay={this.handleOnPlay}
+                handleOnTime={this.handleOnTime}
+              />
             </div>
           </Modal>
         </Layout>
@@ -442,7 +516,11 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId))
+  getMovieDetail: movieId =>
+    dispatch(movieDetailActions.getMovieDetail(movieId))
 });
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Moviedetail);
+export default compose(
+  withStyles(s),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Moviedetail);
