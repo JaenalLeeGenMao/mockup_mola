@@ -41,7 +41,10 @@ class MovieLibrary extends Component {
       }
     }
 
-    if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
+    if (
+      movieLibrary.meta.status === 'loading' &&
+      prevState.movieLibrary.length <= 0
+    ) {
       if (typeof genreId !== 'undefined' && genreId !== '') {
         getMovieLibrary(genreId);
       } else {
@@ -49,7 +52,10 @@ class MovieLibrary extends Component {
       }
     }
 
-    if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {
+    if (
+      search.genre.meta.status === 'loading' &&
+      prevState.search.genre.length <= 0
+    ) {
       getSearchGenre();
     }
 
@@ -60,7 +66,10 @@ class MovieLibrary extends Component {
     const { movieLibrary } = this.props;
 
     //update loading state
-    if (prevProps.movieLibrary.meta.status !== movieLibrary.meta.status && movieLibrary.meta.status !== 'loading') {
+    if (
+      prevProps.movieLibrary.meta.status !== movieLibrary.meta.status &&
+      movieLibrary.meta.status !== 'loading'
+    ) {
       this.setState({
         isLoading: false
       });
@@ -104,7 +113,16 @@ class MovieLibrary extends Component {
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' }
     ];
 
-    return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />);
+    return (
+      isLoading &&
+      cardImageLoading.map(obj => (
+        <LoadingPlaceholder
+          isLight
+          style={{ width: obj.width, height: obj.height, marginBottom: '15px' }}
+          key={obj.id}
+        />
+      ))
+    );
   };
 
   renderContent = () => {
@@ -112,17 +130,46 @@ class MovieLibrary extends Component {
     const { isLoading } = this.state;
     const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
 
-    return !isLoading && cardImageLib && cardImageLib.map(obj => <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail} id={obj.id} />);
+    return (
+      !isLoading &&
+      cardImageLib &&
+      cardImageLib.map(obj => (
+        <CardLibrary
+          key={obj.id}
+          title={obj.title}
+          imgUrl={obj.thumbnail}
+          id={obj.id}
+        />
+      ))
+    );
   };
 
   renderNotFound = isLoading => {
-    return isLoading === 'error' ? <Error errorTitle="Video not found" errorText={`Video with genre ${this.props.genreId} does not exists`} /> : null;
+    const wrapperStyle = {
+      height: '80vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      marginTop: '10rem'
+    };
+
+    return isLoading === 'error' ? (
+      <Error
+        errorTitle="Video not found"
+        errorText={`Video with genre ${this.props.genreId} does not exists`}
+        wrapperStyle={wrapperStyle}
+        imageClass={s.errorImage}
+        titleStyle={{ color: '#000' }}
+        detailStyle={{ color: '#000' }}
+      />
+    ) : null;
   };
 
   render() {
     const { movieLibrary: { data: libraryDt } } = this.props;
     const status = this.props.movieLibrary.meta.status;
-    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
+    const title =
+      libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
 
     return (
       <Fragment>
@@ -151,8 +198,13 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
   getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
-  getMovieLibraryList: () => dispatch(movieLibraryActions.getMovieLibraryList()),
-  getMovieLibrary: genreId => dispatch(movieLibraryActions.getMovieLibrary(genreId))
+  getMovieLibraryList: () =>
+    dispatch(movieLibraryActions.getMovieLibraryList()),
+  getMovieLibrary: genreId =>
+    dispatch(movieLibraryActions.getMovieLibrary(genreId))
 });
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(MovieLibrary);
+export default compose(
+  withStyles(s),
+  connect(mapStateToProps, mapDispatchToProps)
+)(MovieLibrary);
