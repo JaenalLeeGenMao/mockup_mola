@@ -160,29 +160,17 @@ class Home extends Component {
               playlistSuccess: true
             },
             () => {
-              let isTourDone = _get(document, 'cookie', '')
-                .trim()
-                .split(';')
-                .filter(function(item) {
-                  return item.indexOf('__trh=') >= 0;
-                });
+              let isTourDone = localStorage.getItem('tour-home');
 
-              if (isTourDone && isTourDone.length) {
-                isTourDone = isTourDone[0].split('=')[1];
-                if (!isTourDone) {
-                  this.setState({
-                    startGuide: true
-                  });
-                } else {
-                  for (var i = 0; i < videos.data.length; i++) {
-                    if (
-                      document.getElementsByClassName('tourSlideWrapper')
-                        .length > 0
-                    ) {
-                      document
-                        .getElementsByClassName('tourSlideWrapper')[0]
-                        .remove();
-                    }
+              if (isTourDone) {
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (
+                    document.getElementsByClassName('tourSlideWrapper').length >
+                    0
+                  ) {
+                    document
+                      .getElementsByClassName('tourSlideWrapper')[0]
+                      .remove();
                   }
                 }
               } else {
@@ -232,46 +220,21 @@ class Home extends Component {
             playlistSuccess: true
           },
           () => {
-            let isTourDone = _get(document, 'cookie', '')
-              .trim()
-              .split(';')
-              .filter(function(item) {
-                return item.indexOf('__trh=') >= 0;
-              });
+            let isTourDone = localStorage.getItem('tour-home');
 
-            if (isTourDone && isTourDone.length) {
-              isTourDone = isTourDone[0].split('=')[1];
-              if (!isTourDone) {
-                let newWidth = Object.assign({}, this.state.steps);
-                if (window.innerWidth < 375) {
-                  newWidth[0].styles.tooltip.maxWidth = `${window.innerWidth -
-                    100}px`;
-                }
-                this.setState({
-                  startGuide: true,
-                  steps: newWidth
-                });
-              } else {
-                for (var i = 0; i < videos.data.length; i++) {
-                  if (
-                    document.getElementsByClassName('tourSlideWrapper').length >
-                    0
-                  ) {
-                    document
-                      .getElementsByClassName('tourSlideWrapper')[0]
-                      .remove();
-                  }
+            if (isTourDone) {
+              for (var i = 0; i < videos.data.length; i++) {
+                if (
+                  document.getElementsByClassName('tourSlideWrapper').length > 0
+                ) {
+                  document
+                    .getElementsByClassName('tourSlideWrapper')[0]
+                    .remove();
                 }
               }
             } else {
-              let newWidth = Object.assign({}, this.state.steps);
-              if (window.innerWidth < 375) {
-                newWidth[0].styles.tooltip.maxWidth = `${window.innerWidth -
-                  100}px`;
-              }
               this.setState({
-                startGuide: true,
-                steps: newWidth
+                startGuide: true
               });
               for (var i = 1; i < videos.data.length; i++) {
                 document.getElementsByClassName('tourSlideWrapper')[1].remove();
@@ -483,7 +446,7 @@ class Home extends Component {
           document.getElementsByClassName('tourSlideWrapper')[0].remove();
         }
       }
-      document.cookie = '__trh=1; path=/;';
+      localStorage.setItem('tour-home', true);
       return true;
     }
 
