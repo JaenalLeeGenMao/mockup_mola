@@ -77,21 +77,9 @@ class Moviedetail extends Component {
           /*tour guide, step 4 -- check cookie if has done tour before
         if yes then don't start tour
         if no then start tour*/
-          let isTourDone = _get(document, 'cookie', '')
-            .trim()
-            .split(';')
-            .filter(function(item) {
-              return item.indexOf('__tour=') >= 0;
-            });
+          let isTourDone = localStorage.getItem('tour-movie');
 
-          if (isTourDone && isTourDone.length) {
-            isTourDone = isTourDone[0].split('=')[1];
-            if (!isTourDone) {
-              this.setState({
-                startGuide: true
-              });
-            }
-          } else {
+          if (!isTourDone) {
             this.setState({
               startGuide: true
             });
@@ -116,21 +104,9 @@ class Moviedetail extends Component {
           /*tour guide, step 4 -- check cookie if has done tour before
         if yes then don't start tour
         if no then start tour*/
-          let isTourDone = _get(document, 'cookie', '')
-            .trim()
-            .split(';')
-            .filter(function(item) {
-              return item.indexOf('__tour=') >= 0;
-            });
+          let isTourDone = localStorage.getItem('tour-movie');
 
-          if (isTourDone && isTourDone.length) {
-            isTourDone = isTourDone[0].split('=')[1];
-            if (!isTourDone) {
-              this.setState({
-                startGuide: true
-              });
-            }
-          } else {
+          if (!isTourDone) {
             this.setState({
               startGuide: true
             });
@@ -146,7 +122,7 @@ class Moviedetail extends Component {
     const { type } = data;
 
     if (type == 'tour:end') {
-      document.cookie = '__tour=1; path=/;';
+      localStorage.setItem('tour-movie', true);
     }
   };
 
