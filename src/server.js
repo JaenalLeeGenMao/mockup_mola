@@ -151,7 +151,7 @@ app.get('*', async (req, res, next) => {
 
     const userAgent = req.get('User-Agent');
     const md = new MobileDetect(userAgent);
-    const isMobile = md.phone() ? true : false;
+    const isMobile = md.phone() !== null ? true : false;
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
