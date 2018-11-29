@@ -18,6 +18,7 @@ import bodyParser from 'body-parser';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
+import MobileDetect from 'mobile-detect';
 import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
@@ -71,11 +72,19 @@ app.use(function(req, res, next) {
   var cookie = req.cookies;
   if (`${cookie.UID}` === 'undefined' || cookie.UID === undefined) {
     if (req.query.uid) {
-      res.cookie('UID', req.query.uid, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+      res.cookie('UID', req.query.uid, {
+        path: '/',
+        maxAge: 7 * 24 * 3600 * 1000,
+        httpOnly: true
+      });
     }
   }
   if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
-    res.cookie('SID', req.cookies.SID, { path: '/', maxAge: 7 * 24 * 3600 * 1000, httpOnly: true });
+    res.cookie('SID', req.cookies.SID, {
+      path: '/',
+      maxAge: 7 * 24 * 3600 * 1000,
+      httpOnly: true
+    });
   }
   next(); // <-- important!
 });
@@ -141,7 +150,8 @@ app.get('*', async (req, res, next) => {
     // }, 1000);
 
     const userAgent = req.get('User-Agent');
-    const isMobile = /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent);
+    const md = new MobileDetect(userAgent);
+    const isMobile = md.phone() ? true : false;
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
@@ -166,7 +176,9 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route };
 
-    data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
+    data.children = ReactDOM.renderToString(
+      <App context={context}>{route.component}</App>
+    );
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
     const scripts = new Set();
