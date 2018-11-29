@@ -138,7 +138,8 @@ class Home extends Component {
       {
         target: '.tourMovieDetail',
         title: 'View Movie Detail',
-        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
+        content:
+          'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
         placement: 'top',
         spotlightPadding: 0,
         disableBeacon: true,
@@ -149,8 +150,16 @@ class Home extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps;
-    if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
+    const {
+      onUpdatePlaylist,
+      onHandlePlaylist,
+      onHandleVideo,
+      home: { playlists }
+    } = nextProps;
+    if (
+      playlists.meta.status === 'loading' &&
+      prevState.playlists.length <= 0
+    ) {
       onHandlePlaylist();
     } else if (prevState.videos.length <= 0) {
       playlists.data.map((playlist, index) => {
@@ -177,7 +186,10 @@ class Home extends Component {
           document.getElementsByClassName('tourSlideWrapper')[0].remove();
         }
       }
-      document.cookie = '__trh=1; path=/;';
+
+      localStorage.setItem('tour-home', true);
+
+      // document.cookie = '__trh=1; path=/;';
       return true;
     }
 
@@ -232,24 +244,24 @@ class Home extends Component {
               playlistSuccess: true
             },
             () => {
-              let isTourDone = _get(document, 'cookie', '')
-                .trim()
-                .split(';')
-                .filter(function(item) {
-                  return item.indexOf('__trh=') >= 0;
-                });
+              // let isTourDone = _get(document, 'cookie', '')
+              //   .trim()
+              //   .split(';')
+              //   .filter(function(item) {
+              //     return item.indexOf('__trh=') >= 0;
+              //   });
 
-              if (isTourDone && isTourDone.length) {
-                isTourDone = isTourDone[0].split('=')[1];
-                if (!isTourDone) {
-                  this.setState({
-                    startGuide: true
-                  });
-                } else {
-                  for (var i = 0; i < videos.data.length; i++) {
-                    if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                      document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                    }
+              let isTourDone = localStorage.getItem('tour-home');
+
+              if (isTourDone) {
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (
+                    document.getElementsByClassName('tourSlideWrapper').length >
+                    0
+                  ) {
+                    document
+                      .getElementsByClassName('tourSlideWrapper')[0]
+                      .remove();
                   }
                 }
               } else {
@@ -257,7 +269,9 @@ class Home extends Component {
                   startGuide: true
                 });
                 for (var i = 1; i < videos.data.length; i++) {
-                  document.getElementsByClassName('tourSlideWrapper')[1].remove();
+                  document
+                    .getElementsByClassName('tourSlideWrapper')[1]
+                    .remove();
                 }
               }
             }
@@ -283,7 +297,11 @@ class Home extends Component {
   }
 
   componentDidUpdate() {
-    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home;
+    const {
+      playlists: { meta: { status: playlistStatus } },
+      videos,
+      videos: { meta: { status: videoStatus } }
+    } = this.props.home;
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.playlistSuccess) {
@@ -292,24 +310,16 @@ class Home extends Component {
             playlistSuccess: true
           },
           () => {
-            let isTourDone = _get(document, 'cookie', '')
-              .trim()
-              .split(';')
-              .filter(function(item) {
-                return item.indexOf('__trh=') >= 0;
-              });
+            let isTourDone = localStorage.getItem('tour-home');
 
-            if (isTourDone && isTourDone.length) {
-              isTourDone = isTourDone[0].split('=')[1];
-              if (!isTourDone) {
-                this.setState({
-                  startGuide: true
-                });
-              } else {
-                for (var i = 0; i < videos.data.length; i++) {
-                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                  }
+            if (isTourDone) {
+              for (var i = 0; i < videos.data.length; i++) {
+                if (
+                  document.getElementsByClassName('tourSlideWrapper').length > 0
+                ) {
+                  document
+                    .getElementsByClassName('tourSlideWrapper')[0]
+                    .remove();
                 }
               }
             } else {
@@ -329,7 +339,9 @@ class Home extends Component {
   handleColorChange = () => {
     const that = this;
     setTimeout(function() {
-      const activeSlick = document.querySelector('.active .slick-active .grid-slick');
+      const activeSlick = document.querySelector(
+        '.active .slick-active .grid-slick'
+      );
       let isDark = 1;
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
@@ -387,7 +399,9 @@ class Home extends Component {
   };
 
   handleMouseScroll = () => {
-    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel';
+    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent)
+      ? 'DOMMouseScroll'
+      : 'wheel';
     /** handle mouse scroll */
     document.addEventListener(mouseWheelEvent, event => {
       ticking = false;
@@ -399,7 +413,8 @@ class Home extends Component {
         'scrollCheck',
         setTimeout(function() {
           /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
-          var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1;
+          var delta =
+            (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1;
           if (delta < 0) {
             scrollIndex += 1;
             that.handleKeyPress();
@@ -482,9 +497,16 @@ class Home extends Component {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
         playlists,
-        playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
+        playlists: {
+          meta: {
+            status: playlistStatus = 'loading',
+            error: playlistError = ''
+          }
+        },
         videos,
-        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
+        videos: {
+          meta: { status: videoStatus = 'loading', error: videoError = '' }
+        }
       } = this.props.home,
       { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
@@ -500,7 +522,9 @@ class Home extends Component {
       },
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError);
-    activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+    activePlaylist =
+      playlists.data.length > 1 &&
+      playlists.data.filter(playlist => playlist.isActive)[0];
 
     return (
       <Fragment>
@@ -517,11 +541,35 @@ class Home extends Component {
         />
 
         <div className={styles.home__container}>
-          {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
-          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
-          {videoStatus === 'error' && videoError !== '' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
-          {playlistSuccess && <HomeDesktopMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />}
+          {playlistStatus !== 'error' && (
+            <Header
+              isDark={isDark}
+              activePlaylist={activePlaylist}
+              {...this.props}
+            />
+          )}
+          {playlistStatus === 'loading' &&
+            videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'error' && (
+            <HomeError
+              status={playlistErrorCode}
+              message={playlistError || 'MOLA playlist is not loaded'}
+            />
+          )}
+          {videoStatus === 'error' &&
+            videoError !== '' && (
+              <HomeError
+                status={videoErrorCode}
+                message={videoError || 'MOLA video is not loaded'}
+              />
+            )}
+          {playlistSuccess && (
+            <HomeDesktopMenu
+              isDark={isDark}
+              playlists={playlists.data}
+              onClick={this.handleScrollToIndex}
+            />
+          )}
           {playlistSuccess &&
             videos &&
             videos.data.length > 0 &&
@@ -529,7 +577,14 @@ class Home extends Component {
             videos.data.map(video => {
               const { id, sortOrder } = video.meta;
               return (
-                <RSLink activeClass="active" to={id} spy smooth className={styles.home__slider_container} key={id}>
+                <RSLink
+                  activeClass="active"
+                  to={id}
+                  spy
+                  smooth
+                  className={styles.home__slider_container}
+                  key={id}
+                >
                   <Element name={id}>
                     <TourArrow isDark={isDark} />
                     <Slider
@@ -538,7 +593,11 @@ class Home extends Component {
                           this.sliderRefs = [];
                           this.trackedSliderIds = [];
                         }
-                        if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
+                        if (
+                          this.trackedSliderIds.indexOf(id) === -1 &&
+                          this.sliderRefs.length < trackedPlaylistIds.length &&
+                          node !== null
+                        ) {
                           node = {
                             ...node,
                             id,
@@ -549,10 +608,32 @@ class Home extends Component {
                         }
                       }}
                       {...settings}
-                      prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
-                      nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
+                      prevArrow={
+                        <HomeArrow
+                          direction="prev"
+                          isDark={isDark}
+                          id={id}
+                          sliderRefs={this.sliderRefs}
+                        />
+                      }
+                      nextArrow={
+                        <HomeArrow
+                          direction="next"
+                          isDark={isDark}
+                          id={id}
+                          sliderRefs={this.sliderRefs}
+                        />
+                      }
                     >
-                      {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} sliderRefs={this.sliderRefs} />)}
+                      {video.data.map(eachVids => (
+                        <HomeDesktopContent
+                          {...eachVids}
+                          key={eachVids.id}
+                          isSafari={isSafari}
+                          ticking={ticking}
+                          sliderRefs={this.sliderRefs}
+                        />
+                      ))}
                     </Slider>
                   </Element>
                 </RSLink>
@@ -576,4 +657,7 @@ const mapDispatchToProps = dispatch => ({
   onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id))
 });
 
-export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Home);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Home);
