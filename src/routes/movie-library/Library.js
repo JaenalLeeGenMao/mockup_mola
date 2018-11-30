@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as movieLibraryActions from '@actions/movie-library';
 import searchActions from '@actions/search';
 import CardLibrary from './movielibrary/Card';
-import Layout from '../../components/Molalayout';
+import Layout from '@components/Molalayout';
 import Error from '../search/error/Error';
 
 // import Header from '../../components/Header';

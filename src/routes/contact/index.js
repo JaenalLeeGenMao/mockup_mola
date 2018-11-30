@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Layout from '@components/Molalayout';
 import Contact from './Contact';
 
 const title = 'Contact Us';
@@ -21,7 +21,7 @@ function action() {
       <Layout>
         <Contact title={title} />
       </Layout>
-    ),
+    )
   };
 }
 

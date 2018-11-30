@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Layout from '@components/Molalayout';
 import NotFound from './NotFound';
 
 const title = 'Page Not Found';
@@ -22,7 +22,7 @@ function action() {
         <NotFound title={title} />
       </Layout>
     ),
-    status: 404,
+    status: 404
   };
 }
 
