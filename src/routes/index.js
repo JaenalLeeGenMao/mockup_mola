@@ -32,6 +32,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home')
     },
     {
+      path: '/inbox',
+      load: () => import(/* webpackChunkName: 'inbox' */ './inbox')
+    },
+    {
       path: '/contact',
       load: () => import(/* webpackChunkName: 'contact' */ './contact')
     },
@@ -58,7 +62,8 @@ const routes = {
     // Movie details
     {
       path: '/movie-detail',
-      load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
+      load: () =>
+        import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
       children: [
         {
           path: '/:id'
@@ -68,7 +73,8 @@ const routes = {
     // Movie Library
     {
       path: '/movie-library',
-      load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
+      load: () =>
+        import(/* webpackChunkName: 'movie-library' */ './movie-library'),
       children: [
         {
           path: '/:id'
@@ -91,7 +97,8 @@ const routes = {
     // Movie-player
     {
       path: '/movie-player',
-      load: () => import(/* webpackChunkName: 'movie-player' */ './movie-player'),
+      load: () =>
+        import(/* webpackChunkName: 'movie-player' */ './movie-player'),
       children: [
         {
           path: '/:id'
@@ -100,11 +107,13 @@ const routes = {
     },
     {
       path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword')
+      load: () =>
+        import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword')
     },
     {
       path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword')
+      load: () =>
+        import(/* webpackChunkName: 'resetPassword' */ './resetPassword')
     },
     {
       path: '/accounts/security',
@@ -167,20 +176,27 @@ const track = async store => {
     const platform = _get(UA.getDevice(), 'type', null);
     const osName = _get(UA.getOS(), 'name', null);
     const osVersion = _get(UA.getOS(), 'version', null);
-    const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null;
+    const os =
+      osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null;
     const vendor = _get(UA.getDevice(), 'vendor', null);
     const mobile = _get(UA.getDevice(), 'mobile', null);
-    const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null;
+    const device =
+      vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null;
 
     const browserName = _get(UA.getBrowser(), 'name', null);
     const browserVersion = _get(UA.getBrowser(), 'version', null);
-    const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null;
+    const browser =
+      browserName !== null && browserVersion !== null
+        ? `${browserName} ${browserVersion}`
+        : null;
 
     // Initialize Payload
     const payload = {
       data: {
         project_id: 'molatv',
-        referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
+        referrer: `${window.location.host}${currentLocation.pathname}${
+          currentLocation.search
+        }`,
         host: `${window.location.host}`,
         path: `${window.location.host}${location.pathname}${location.search}`,
         session_id: tracker.sessionId(window), // Try get+set session_id
