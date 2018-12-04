@@ -37,12 +37,19 @@ class Header extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const genre = nextProps.search.genre;
+    const searchDt = nextProps.search;
+    const genre =
+      typeof searchDt !== 'undefined' && searchDt !== null
+        ? searchDt.genre
+        : null;
 
     return { ...prevState, genre };
   }
 
-  findGenreDataById = (genreData = this.props.search.genre.data, genreId = this.props.genreId) => {
+  findGenreDataById = (
+    genreData = this.props.search.genre.data,
+    genreId = this.props.genreId
+  ) => {
     return genreData.filter(genre => {
       return genre.id === genreId;
     })[0];
@@ -59,11 +66,23 @@ class Header extends Component {
   }
 
   renderHeaderLibrary() {
-    const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId } = this.props;
+    const {
+      isDark = 1,
+      isMobile = false,
+      isLibraryCopy = false,
+      handleMenuToggleClick,
+      isMenuToggled = false,
+      genreId
+    } = this.props;
 
     const { genre: { data: genreDt } } = this.state;
-    const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId));
-    const iconToggleStyle = { transform: 'rotate(180deg) translateY(0%)', top: '-3px' };
+    const currentGenre = this.getCurrentGenre(
+      this.findGenreDataById(this.props.search.genre.data, genreId)
+    );
+    const iconToggleStyle = {
+      transform: 'rotate(180deg) translateY(0%)',
+      top: '-3px'
+    };
     const color = isDark ? 'black' : 'white';
 
     return (
@@ -72,11 +91,24 @@ class Header extends Component {
           <LazyLoad>
             <div className={styles.header__logo_wrap}>
               <Link to="/">
-                <img alt="MOLADD" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <img
+                  alt="MOLADD"
+                  src={isMobile ? logoLandscapeBlue : logoBlue}
+                  className={styles.header__logo}
+                />
               </Link>
               {genreDt.length <= 0 ? null : (
-                <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-                  {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                <button
+                  className={styles.header__action_button}
+                  onClick={handleMenuToggleClick}
+                >
+                  {genreId ? currentGenre.title : genreDt[0].title}{' '}
+                  <IoIosArrowDown
+                    className={styles.header__action_dropdown}
+                    size={32}
+                    color={color}
+                    style={isMenuToggled ? iconToggleStyle : ''}
+                  />
                 </button>
               )}
             </div>
@@ -102,37 +134,71 @@ class Header extends Component {
     } = this.props;
 
     const color = isDark ? 'black' : 'white';
-    const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container;
+    const typeHeader = stickyOff
+      ? styles.header__container + ' ' + styles.header__notsticky
+      : styles.header__container;
 
     return (
       <div className={typeHeader}>
-        <div className={styles.header__logo_wrapper} style={{ left: backButtonOn ? '0' : '2.5%' }}>
+        <div
+          className={styles.header__logo_wrapper}
+          style={{ left: backButtonOn ? '0' : '2.5%' }}
+        >
           {!logoOff && (
             <LazyLoad>
               <Link to="/">
-                <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <img
+                  alt="MOLA"
+                  src={isMobile ? logoLandscapeBlue : logoBlue}
+                  className={styles.header__logo}
+                />
               </Link>
             </LazyLoad>
           )}
           {backButtonOn && (
             <LazyLoad>
-              <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                <button className={styles.header__back_arrow} style={{ color }} />
+              <div
+                className={styles.header__back_button}
+                onClick={this.handleGoBack}
+              >
+                <button
+                  className={styles.header__back_arrow}
+                  style={{ color }}
+                />
               </div>
             </LazyLoad>
           )}
         </div>
         {!libraryOff && (
           <LazyLoad>
-            <Link className={styles.header__library_link_wrapper} to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color }}>
-              <span className={`${styles[`header__library_logo_${color}`]} tourLibrary`} alt="library" />
+            <Link
+              className={styles.header__library_link_wrapper}
+              to={`/movie-library${
+                activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''
+              }`}
+              style={{ color }}
+            >
+              <span
+                className={`${
+                  styles[`header__library_logo_${color}`]
+                } tourLibrary`}
+                alt="library"
+              />
             </Link>
           </LazyLoad>
         )}
 
         {this.renderHeaderLibrary()}
 
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
+        {!rightMenuOff && (
+          <RightMenu
+            color={color}
+            searchOff={searchOff}
+            profileOff={profileOff}
+            shareButtonOn={shareButtonOn}
+            {...this.props}
+          />
+        )}
       </div>
     );
   }
