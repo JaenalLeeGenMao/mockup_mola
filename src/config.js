@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv')
+dotenv.config()
 
-const env = process.env.REACT_APP_ENV || 'staging';
+const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
 
 // const options = {
 //   development: {
@@ -53,11 +53,11 @@ const env = process.env.REACT_APP_ENV || 'staging';
 // baseConfig.updateConfig(options);
 // const config = baseConfig.default[env];
 
-const config = require('@source/global/config')[env];
+const config = require('@source/global/config')[env]
 
 module.exports = {
   // Node.js app
   ...config,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
-  port: process.env.PORT || 3000
-};
+  port: process.env.PORT || 3000,
+}
