@@ -1,0 +1,56 @@
+.wrap {
+  display: flex;
+  padding: 2rem 2rem;
+}
+
+.iconWrap {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 0 1rem 0 0;
+}
+
+.contentWrap {
+  height: auto;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0 2rem 0;
+}
+
+.isActive::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  top: 50%;
+  left: 10rem;
+  transform: translateY(-50%);
+  background: #2c56ff;
+  border-radius: 10rem;
+}
+
+.iconWrap img {
+  border-radius: 10rem;
+  width: 5rem;
+  height: auto;
+}
+
+.title {
+  color: #fff;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.time {
+  color: #6f6f6f;
+  font-size: 1.2rem;
+}
+
+.content p {
+  color: #fff;
+  line-height: 1.8rem;
+  font-size: 1.4rem;
+}

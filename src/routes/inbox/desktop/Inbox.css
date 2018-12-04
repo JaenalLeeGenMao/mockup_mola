@@ -9,6 +9,7 @@ body {
 
 .colItem {
   height: 100vh;
+  overflow-y: scroll;
 }
 
 .sidebarMenu {
@@ -38,12 +39,13 @@ body {
   font-size: 1.4rem;
   font-weight: 300;
   letter-spacing: 1.5rem;
+  text-decoration: none;
 }
 
 .menuWrapper li::before {
   position: absolute;
   content: '';
-  height: 2px;
+  height: 0.2rem;
   background: #fff;
   width: 20%;
   top: 50%;
@@ -53,4 +55,52 @@ body {
 
 .inboxDetail {
   width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
 }
+
+.pageTitle {
+  font-size: 1.8rem;
+  letter-spacing: 1.5px;
+  color: #fff;
+  font-weight: bold;
+  margin: 8rem 0 5rem 3rem;
+}
+
+.titleWrap {
+  position: relative;
+}
+
+.messageIcon {
+  margin-bottom: 4rem;
+  width: 15rem;
+  height: 10rem;
+}
+
+.messageTitle {
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.messageLabel {
+  color: #767676;
+  font-size: 1.4rem;
+  margin: 0 5rem;
+}
+
+/* .pageTitle::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  top: 50%;
+  left: 10rem;
+  transform: translateY(-50%);
+  background: #2C56FF;
+  border-radius: 10rem;
+} */
