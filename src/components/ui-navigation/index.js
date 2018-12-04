@@ -1,32 +1,32 @@
-import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import Link from '@components/Link';
-import s from './index.css';
-import logo from '@global/style/icons/mola_blue.svg';
-import Lazyload from '../common/Lazyload/Lazyload';
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import Link from '@components/Link'
+import s from './index.css'
+import logo from '@global/style/icons/mola-blue.svg'
+import Lazyload from '../common/Lazyload/Lazyload'
 
 class Navigation extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      currentPath: '/'
-    };
+      currentPath: '/',
+    }
   }
 
   componentDidMount() {
-    let currentLocation = '/';
+    let currentLocation = '/'
     if (typeof window !== 'undefined') {
-      currentLocation = window.location.pathname;
+      currentLocation = window.location.pathname
     }
 
     this.setState({
-      currentPath: currentLocation
-    });
+      currentPath: currentLocation,
+    })
   }
 
   render() {
-    const props = this.props;
+    const props = this.props
     return (
       <div className={s.ui_navigation__wrapper}>
         <Link to="/">
@@ -34,9 +34,9 @@ class Navigation extends React.Component {
         </Link>
         <ul className={s.ui_navigation__container}>
           {props.menus.map((menu, index) => {
-            let className = '';
+            let className = ''
             if (menu.href === this.state.currentPath) {
-              className = s.active;
+              className = s.active
             }
             return (
               <li key={index}>
@@ -44,12 +44,12 @@ class Navigation extends React.Component {
                   {menu.title}
                 </Link>
               </li>
-            );
+            )
           })}
         </ul>
       </div>
-    );
+    )
   }
 }
 
-export const UiNavigation = withStyles(s)(Navigation);
+export const UiNavigation = withStyles(s)(Navigation)

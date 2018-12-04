@@ -13,7 +13,7 @@ html {
 }
 
 .wrapper {
-  background-image: url('../../../global/style/icons/Signin.png'), linear-gradient(#0e1d3d, #000);
+  background-image: url('../../../global/style/icons/signin.png'), linear-gradient(#0e1d3d, #000);
   background-position: left bottom, left top;
   background-repeat: no-repeat, no-repeat;
   background-size: 100%, cover;

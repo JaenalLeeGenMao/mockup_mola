@@ -7,11 +7,11 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Layout from '@components/Molalayout';
-import NotFound from './NotFound';
+import React from 'react'
+import Layout from '@components/Molalayout'
+import NotFound from './not-found'
 
-const title = 'Page Not Found';
+const title = 'Page Not Found'
 
 function action() {
   return {
@@ -22,8 +22,8 @@ function action() {
         <NotFound title={title} />
       </Layout>
     ),
-    status: 404
-  };
+    status: 404,
+  }
 }
 
-export default action;
+export default action
