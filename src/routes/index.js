@@ -10,16 +10,16 @@
 /* eslint-disable global-require */
 /* eslint-disable */
 
-import dateFormat from 'dateformat';
-import _get from 'lodash/get';
-import queryString from 'query-string';
-import UaParser from 'ua-parser-js';
-import history from '../history';
+import dateFormat from 'dateformat'
+import _get from 'lodash/get'
+import queryString from 'query-string'
+import UaParser from 'ua-parser-js'
+import history from '../history'
 
-import tracker from '../lib/tracker';
+import tracker from '../lib/tracker'
 
 // let firstRender = true;
-let currentLocation = history.location;
+let currentLocation = history.location
 
 // The top-level (parent) route
 const routes = {
@@ -29,31 +29,31 @@ const routes = {
   children: [
     {
       path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home')
+      load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
     {
       path: '/contact',
-      load: () => import(/* webpackChunkName: 'contact' */ './contact')
+      load: () => import(/* webpackChunkName: 'contact' */ './contact'),
     },
     {
       path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'login' */ './login')
+      load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
     {
       path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register')
+      load: () => import(/* webpackChunkName: 'register' */ './register'),
     },
     {
       path: '/about',
-      load: () => import(/* webpackChunkName: 'about' */ './about')
+      load: () => import(/* webpackChunkName: 'about' */ './about'),
     },
     {
       path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy')
+      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
     },
     {
       path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin')
+      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
     },
     // Movie details
     {
@@ -61,9 +61,9 @@ const routes = {
       load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
       children: [
         {
-          path: '/:id'
-        }
-      ]
+          path: '/:id',
+        },
+      ],
     },
     // Movie Library
     {
@@ -71,22 +71,22 @@ const routes = {
       load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
       children: [
         {
-          path: '/:id'
-        }
-      ]
+          path: '/:id',
+        },
+      ],
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './history')
+      load: () => import(/* webpackChunkName: 'history' */ './history'),
     },
     {
       path: '/search',
-      load: () => import(/* webpackChunkName: 'search' */ './search')
+      load: () => import(/* webpackChunkName: 'search' */ './search'),
     },
     {
       path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './profile')
+      load: () => import(/* webpackChunkName: 'profile' */ './profile'),
     },
     // Movie-player
     {
@@ -94,67 +94,67 @@ const routes = {
       load: () => import(/* webpackChunkName: 'movie-player' */ './movie-player'),
       children: [
         {
-          path: '/:id'
-        }
-      ]
+          path: '/:id',
+        },
+      ],
     },
     {
       path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword')
+      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
     },
     {
       path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword')
+      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
     },
     {
       path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './security')
+      load: () => import(/* webpackChunkName: 'security' */ './security'),
     },
     {
       path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './setting')
+      load: () => import(/* webpackChunkName: 'setting' */ './setting'),
     },
     {
       path: '/system-info',
-      load: () => import(/* webpackChunkName: 'system-info' */ './system-info')
+      load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
-      load: () => import(/* webpackChunkName: 'not-found' */ './not-found')
-    }
+      load: () => import(/* webpackChunkName: 'not-found' */ './not-found'),
+    },
   ],
 
   async action({ next, store }) {
-    track(store);
+    track(store)
 
     // Execute each child route until one of them return the result
-    const route = await next();
+    const route = await next()
 
     // Provide default values for title, description etc.
-    route.title = `${route.title || 'Untitled Page'}`;
-    route.description = route.description || '';
-    return route;
-  }
-};
+    route.title = `${route.title || 'Untitled Page'}`
+    route.description = route.description || ''
+    return route
+  },
+}
 
 const track = async store => {
   if (process.env.BROWSER) {
-    const { location } = window;
+    const { location } = window
     // Parse Current URL
-    const { search, pathname } = window.location;
-    const urlParams = queryString.parse(search);
+    const { search, pathname } = window.location
+    const urlParams = queryString.parse(search)
 
     // Get & Parse UA
-    const UA = new UaParser();
-    UA.setUA(navigator.userAgent);
+    const UA = new UaParser()
+    UA.setUA(navigator.userAgent)
 
     // Try get user_id & subs
-    const users = _get(store.getState(), 'data.users', {});
+    const users = _get(store.getState(), 'data.users', {})
 
-    let userId;
+    let userId
 
-    let adjustedSubs = [];
+    let adjustedSubs = []
     // if (userId !== null || userId !== undefined) {
     //   adjustedSubs = await users.subscriptions.map(
     //     subs => `${_get(subs, 'subscriptionId', null)}`,
@@ -164,17 +164,17 @@ const track = async store => {
     // }
 
     // Try get platform and browser
-    const platform = _get(UA.getDevice(), 'type', null);
-    const osName = _get(UA.getOS(), 'name', null);
-    const osVersion = _get(UA.getOS(), 'version', null);
-    const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null;
-    const vendor = _get(UA.getDevice(), 'vendor', null);
-    const mobile = _get(UA.getDevice(), 'mobile', null);
-    const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null;
+    const platform = _get(UA.getDevice(), 'type', null)
+    const osName = _get(UA.getOS(), 'name', null)
+    const osVersion = _get(UA.getOS(), 'version', null)
+    const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
+    const vendor = _get(UA.getDevice(), 'vendor', null)
+    const mobile = _get(UA.getDevice(), 'mobile', null)
+    const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null
 
-    const browserName = _get(UA.getBrowser(), 'name', null);
-    const browserVersion = _get(UA.getBrowser(), 'version', null);
-    const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null;
+    const browserName = _get(UA.getBrowser(), 'name', null)
+    const browserVersion = _get(UA.getBrowser(), 'version', null)
+    const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
 
     // Initialize Payload
     const payload = {
@@ -194,10 +194,10 @@ const track = async store => {
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
         user_id: userId,
         current_subscription_id: adjustedSubs,
-        hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss')
+        hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
       },
-      table: 'event_pages'
-    };
+      table: 'event_pages',
+    }
 
     // if (isChannel || pathname === '/') {
     //   payload.data.channel = urlParams.v || 'sstv';
@@ -214,24 +214,24 @@ const track = async store => {
     // }
 
     // Check if current path is in search page
-    const inSearchPage = currentLocation.pathname === '/search';
+    const inSearchPage = currentLocation.pathname === '/search'
 
     // get the token
-    const token = await tracker.getOrCreateToken();
+    const token = await tracker.getOrCreateToken()
     // Post to ds-feeder if there's token && not in search page
-    if (token && !inSearchPage) tracker.sendPubSub(payload, token);
+    if (token && !inSearchPage) tracker.sendPubSub(payload, token)
 
     // HOTFIX need to find a way to get refferer in react
-    currentLocation = location;
+    currentLocation = location
   }
-};
+}
 
 // The error page is available by permanent url for development mode
 if (__DEV__) {
   routes.children.unshift({
     path: '/error',
-    action: require('./error').default
-  });
+    action: require('./error').default,
+  })
 }
 
-export default routes;
+export default routes

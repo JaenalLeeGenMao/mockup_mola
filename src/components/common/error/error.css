@@ -7,7 +7,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 5%;
+
+  /* padding-top: 5%; */
   letter-spacing: 0.25em;
   background: #000622;
   overflow: hidden;
@@ -16,7 +17,7 @@
 .error__wrapper {
   display: block;
   text-align: center;
-  padding-top: 4rem;
+  padding-top: 10%;
   width: 40%;
 }
 
@@ -27,7 +28,7 @@
 
 .error__mola_background {
   width: 80%;
-  max-width: 27.5rem;
+  max-width: 27.5vh;
 }
 
 .error__title {
