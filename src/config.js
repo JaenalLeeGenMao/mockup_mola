@@ -2,6 +2,10 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
+console.log('GGWP')
+console.log(process.env)
+console.log('<----->')
+
 const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
 
 // const options = {
