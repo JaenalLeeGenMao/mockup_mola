@@ -97,10 +97,7 @@
   width: 20rem;
   top: 3rem;
   padding: 1rem;
-
-  /* left: -200px; */
   border-radius: 0.4em;
-  opacity: 0.6;
 }
 
 .right__menu_dropdown_footer {
@@ -156,7 +153,8 @@
 
 .right__menu_tooltip:hover .right__menu_tooltip_text {
   visibility: visible;
-  opacity: 0.8;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.85);
 }
 
 @keyframes fadein {

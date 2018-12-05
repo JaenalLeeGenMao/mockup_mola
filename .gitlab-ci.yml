@@ -1,18 +1,22 @@
+image: google/cloud-sdk
+services:
+  - docker:dind
+
 stages:
-#   - test
-#   - build
+  #   - test
+  #   - build
   - push_docker
 
-.job_template: &push_docker
-  image: google/cloud-sdk
-  services:
-    - docker:dind
-  script:
-    - export DOCKER_HOST="tcp://localhost:2375"
-    - docker info
-    - ./.gitlab-ci/auth_gcloud.sh
-    - ./.gitlab-ci/push_docker.sh
-    # - ./.gitlab-ci/deploy.sh
+# .job_template: &push_docker
+#   image: google/cloud-sdk
+#   services:
+#     - docker:dind
+#   script:
+#     - docker info
+#     - export DOCKER_HOST="tcp://localhost:2375"
+#     - ./.gitlab-ci/auth_gcloud.sh
+#     - ./.gitlab-ci/push_docker.sh
+# - ./.gitlab-ci/deploy.sh
 
 variables:
   REPOSITORY_HOST: asia.gcr.io
@@ -24,23 +28,40 @@ variables:
 
 push_docker_staging:
   stage: push_docker
-  <<: *push_docker
+  # <<: *push_docker
   variables:
     GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_STAG
     GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
-    DEPLOYMENT_REPO: core-staging-cluster-01
+  script:
+    - export DOCKER_HOST="tcp://localhost:2375"
+    - ./.gitlab-ci/auth_gcloud.sh
+    - echo "Building docker image..."
+    - REPOSITORY_ADDRESS="${REPOSITORY_HOST}/${GCLOUD_PROJECT_ID}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+    - docker build --tag "${REPOSITORY_ADDRESS,,}:${CI_PIPELINE_IID}" -f ./Dockerfile.staging .
+    - echo "Pushing docker image..."
+    - gcloud auth configure-docker --quiet
+    - docker push ${REPOSITORY_ADDRESS,,}:${CI_PIPELINE_IID}
   only:
     - develop
 
 push_docker_production:
   stage: push_docker
-  <<: *push_docker
+  # <<: *push_docker
   variables:
     GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_PROD
     GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_PROD
     NODE_ENV: production
     REACT_APP_ENV: production
+  script:
+    - export DOCKER_HOST="tcp://localhost:2375"
+    - ./.gitlab-ci/auth_gcloud.sh
+    - echo "Building docker image..."
+    - REPOSITORY_ADDRESS="${REPOSITORY_HOST}/${GCLOUD_PROJECT_ID}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+    - docker build --tag "${REPOSITORY_ADDRESS,,}:${CI_PIPELINE_IID}" -f ./Dockerfile.production .
+    - echo "Pushing docker image..."
+    - gcloud auth configure-docker --quiet
+    - docker push ${REPOSITORY_ADDRESS,,}:${CI_PIPELINE_IID}
   only:
     - master

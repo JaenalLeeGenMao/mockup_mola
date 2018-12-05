@@ -16,18 +16,20 @@ import notFoundActions from '@actions/not-found'
 
 import { getComponent } from '@supersoccer/gandalf'
 import LazyLoad from '@components/common/Lazyload'
+import Link from '@components/Link'
 import HomeError from '@components/common/error'
 import styles from './not-found.css'
 
-const relatedVideos = (style = {}, className = '') => {
+const RelatedVideos = ({ style = {}, className = '', videos = [] }) => {
   const VideoThumbnail = getComponent('video-thumbnail')
   return (
     <div className={`${className} ${styles.video_container}`} style={style}>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(data => {
+      {videos.map(({ id, background }) => {
+        const imageSource = background.desktop.landscape || require('@global/style/icons/unavailable-image.png')
         return (
-          <div key={data} className={styles.video_wrapper}>
-            <VideoThumbnail thumbnailUrl={require('@global/style/icons/unavailable-image.png')} thumbnailPosition="wrap" />
-          </div>
+          <Link to={`/movie-detail/${id}`} key={id} className={styles.video_wrapper}>
+            <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" />
+          </Link>
         )
       })}
     </div>
@@ -35,29 +37,22 @@ const relatedVideos = (style = {}, className = '') => {
 }
 
 class NotFound extends React.Component {
-  state = {
-    playlists: null,
-  }
-
   componentWillMount() {
     const { notFound: { meta, data }, onHandleHotPlaylist } = this.props
     if (meta.status === 'loading') {
       onHandleHotPlaylist()
     }
   }
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const { notFound: { meta, data }, onHandleHotPlaylist } = nextProps
-  //   if (meta.status === 'loading' && !this.state.playlists) {
-  //     onHandleHotPlaylist()
-  //   }
-  //   return prevState
-  // }
 
   render() {
     return (
       <Fragment>
         <HomeError status={400} message={'Sorry, the page you were trying to view does not exist.'} />
-        <LazyLoad>{relatedVideos()}</LazyLoad>
+        {this.props.notFound.meta.status === 'success' && (
+          <LazyLoad>
+            <RelatedVideos videos={this.props.notFound.data} />
+          </LazyLoad>
+        )}
       </Fragment>
     )
   }
