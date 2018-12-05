@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoad from '@components/common/Lazyload'
 
-import { setMultilineEllipsis, unsetMultilineEllipsis } from '../util';
+import { setMultilineEllipsis, unsetMultilineEllipsis } from '../util'
 
-import InfoImageSource from '../assets/actor.svg';
+import InfoImageSource from '../assets/actor.svg'
 
-import s from './Synopsis.css';
+import s from './Synopsis.css'
 
 class Synopsis extends Component {
   state = {
-    show: false
-  };
+    show: false,
+  }
 
   static propTypes = {
     synopsisContent: PropTypes.string.isRequired,
-    directedBy: PropTypes.arrayOf(PropTypes.object).isRequired
-  };
+    directedBy: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }
 
   componentDidMount() {
-    setMultilineEllipsis('synopsis__info_content');
+    setMultilineEllipsis('synopsis__info_content')
   }
 
   handleClick = () => {
-    this.setState({ show: true });
-  };
+    this.setState({ show: true })
+  }
 
   render() {
     const { synopsisContent } = this.props,
-      { show } = this.state;
+      { show } = this.state
 
     if (show) {
-      unsetMultilineEllipsis('synopsis__info_content', synopsisContent);
+      unsetMultilineEllipsis('synopsis__info_content', synopsisContent)
     }
 
     return (
@@ -46,13 +46,13 @@ class Synopsis extends Component {
           <p className={`synopsis__info_content ${show ? s.show : ''}`}>{synopsisContent}</p>
           {!show && (
             <button className={s.synopsis__info_read_more} onClick={this.handleClick}>
-              Read More <span>&#8963;</span>
+              Read More <div className={s.expand_collapse} />
             </button>
           )}
         </div>
       </LazyLoad>
-    );
+    )
   }
 }
 
-export default withStyles(s)(Synopsis);
+export default withStyles(s)(Synopsis)

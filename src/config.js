@@ -1,13 +1,9 @@
 /* eslint-disable camelcase */
 const dotenv = require('dotenv')
 dotenv.config()
-
-console.log('GGWP')
-console.log(process.env)
-console.log('<----->')
-
+console.log('HAPPY HAPPY', process.env.REACT_APP_ENV)
 const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
-
+console.log('env', env)
 // const options = {
 //   development: {
 //     port: 3000,

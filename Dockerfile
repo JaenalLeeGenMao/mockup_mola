@@ -35,7 +35,7 @@ COPY package*.json .
 RUN yarn install --no-progress
 
 COPY . .
-RUN REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${REACT_APP_ENV} yarn build --release
+RUN REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${REACT_APP_ENV} yarn build-stag --release
 
 # Run the container under "node" user by default
 USER node
