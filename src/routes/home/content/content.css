@@ -9,7 +9,7 @@
     'title title'
     'desc desc'
     'nav empty';
-  grid-template-rows: 10fr 12fr 2fr;
+  grid-template-rows: 2fr 2fr 1fr;
   grid-template-columns: 1fr 1fr;
 }
 

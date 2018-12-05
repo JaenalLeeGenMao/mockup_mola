@@ -1,160 +1,160 @@
-import { get, post, delete as axiosDelete } from 'axios';
-import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints';
-import utils from './util';
+import { get, post, delete as axiosDelete } from 'axios'
+import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints'
+import utils from './util'
 
-import { endpoints } from '@source/config';
+import { endpoints } from '@source/config'
 
 const getHomePlaylist = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomePlaylist(response);
+      const result = utils.normalizeHomePlaylist(response)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result[0]] || []
-      };
+        data: [...result[0]] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: 'Mola loves watchin playlist from home, but Mola is no where to be found'
+          error: 'Mola loves watchin playlist from home, but Mola is no where to be found',
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getHomeVideo = ({ id }) => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomeVideo(response);
+      const result = utils.normalizeHomeVideo(response)
       return {
         meta: {
           status: 'success',
-          error: ''
+          error: '',
         },
-        data: [...result[0]] || []
-      };
+        data: [...result[0]] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status,
-          error: "Mola loves video but sadly it's not available, cheer up!"
+          error: "Mola loves video but sadly it's not available, cheer up!",
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getAllHistory = ({ userId }) => {
   return get(`${HISTORY_ENDPOINT}/${userId}/videos/histories`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHistory(response);
+      const result = utils.normalizeHistory(response)
       return {
         meta: {
-          status: result.length > 0 ? 'success' : 'no_result'
+          status: result.length > 0 ? 'success' : 'no_result',
         },
-        data: [...result] || []
-      };
+        data: [...result] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          text: 'Mola could not reach through the history, because Mola is positive and stays in the present'
+          text: 'Mola could not reach through the history, because Mola is positive and stays in the present',
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getSearchResult = ({ q }) => {
   return get(`${SEARCH_ENDPOINT}`, {
     params: { q: q },
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeSearchResult(response);
+      const result = utils.normalizeSearchResult(response)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result] || []
-      };
+        data: [...result] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: "We've searched every corner of our empire, looks like the your search is history"
+          error: "We've searched every corner of our empire, looks like the your search is history",
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getSearchGenre = () => {
   return get(`${SEARCH_GENRE_ENDPOINT}`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeSearchGenre(response);
+      const result = utils.normalizeSearchGenre(response)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result[0]] || []
-      };
+        data: [...result[0]] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: 'Searching genre is probably missing, off we go to hunt'
+          error: 'Searching genre is probably missing, off we go to hunt',
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getRecentSearch = (sessionId, sid) => {
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
     params: { sessionId: sessionId },
     ...endpoints.setting,
-    headers: { Authorization: `Bearer ${sid}` }
+    headers: { Authorization: `Bearer ${sid}` },
   })
     .then(response => {
-      const result = utils.normalizeRecentSearch(response);
+      const result = utils.normalizeRecentSearch(response)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: result.length > 0 ? [...result] : []
-      };
+        data: result.length > 0 ? [...result] : [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: "Looks like you have not searched recently, what've you been up to?"
+          error: "Looks like you have not searched recently, what've you been up to?",
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const postRecentSearch = (sessionId, sid, keyword) => {
   post(
@@ -162,171 +162,196 @@ const postRecentSearch = (sessionId, sid, keyword) => {
     {},
     {
       ...endpoints.setting,
-      headers: { Authorization: `Bearer ${sid}` }
+      headers: { Authorization: `Bearer ${sid}` },
     }
   )
     .then(result => {
       return {
         meta: {
           status: 'success',
-          error: ''
-        }
-      };
+          error: '',
+        },
+      }
     })
     .catch(err => {
       return {
         meta: {
           status: 'error',
-          error: "Aha! Couldn't add recent search, seems like we detected some spooky search result "
-        }
-      };
-    });
-};
+          error: "Aha! Couldn't add recent search, seems like we detected some spooky search result ",
+        },
+      }
+    })
+}
 
 const deleteRecentSearchAll = (sessionId, sid) => {
   return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}`, {
     ...endpoints.setting,
-    headers: { Authorization: `Bearer ${sid}` }
+    headers: { Authorization: `Bearer ${sid}` },
   })
     .then(result => {
       return {
         meta: {
           status: 'success',
-          error: ''
-        }
-      };
+          error: '',
+        },
+      }
     })
     .catch(err => {
       return {
         meta: {
           status: 'error',
-          error: 'Sure deleting all your recent search, we will miss you'
-        }
-      };
-    });
-};
+          error: 'Sure deleting all your recent search, we will miss you',
+        },
+      }
+    })
+}
 
 const deleteRecentSearch = (sessionId, sid, keyword) => {
   return axiosDelete(`${RECENT_SEARCH_ENDPOINT}?sessionId=${sessionId}&q=${keyword}`, {
     ...endpoints.setting,
-    headers: { Authorization: `Bearer ${sid}` }
+    headers: { Authorization: `Bearer ${sid}` },
   })
     .then(result => {
       return {
         meta: {
           status: 'success',
-          error: ''
-        }
-      };
+          error: '',
+        },
+      }
     })
     .catch(err => {
       return {
         meta: {
           status: 'error',
-          error: 'Recent search is refusing to be removed, since it loves you'
-        }
-      };
-    });
-};
+          error: 'Recent search is refusing to be removed, since it loves you',
+        },
+      }
+    })
+}
 
 const getMovieDetail = ({ id }) => {
   return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeVideoDetail(response);
+      const result = utils.normalizeVideoDetail(response)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result] || []
-      };
+        data: [...result] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: 'Movie details are missing, contact officer Mola immediately'
+          error: 'Movie details are missing, contact officer Mola immediately',
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getMovieLibraryList = () => {
   return get(`${VIDEOS_ENDPOINT}`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeMovieLibraryList(response);
+      const result = utils.normalizeMovieLibraryList(response)
 
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result] || []
-      };
+        data: [...result] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: 'Apparently Mola is having difficulty to list down movie library'
+          error: 'Apparently Mola is having difficulty to list down movie library',
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getMovieLibrary = id => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...endpoints.setting
+    ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeMovieLibrary(response);
+      const result = utils.normalizeMovieLibrary(response)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result[0]] || []
-      };
+        data: [...result[0]] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: "We've searched thoroughly in our Movie Library, your sure you're not entering your password?"
+          error: "We've searched thoroughly in our Movie Library, your sure you're not entering your password?",
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
 
 const getMovieStream = ({ id }) => {
   return get(`${MOVIE_STREAMING}/${id}`)
     .then(response => {
-      const result = utils.normalizeVideoStream(response);
+      const result = utils.normalizeVideoStream(response)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',
-          error: ''
+          error: '',
         },
-        data: [...result] || []
-      };
+        data: [...result] || [],
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: 'Something amazing is happening behind the scene, to kickstart your stream make sure to browse other movies'
+          error: 'Something amazing is happening behind the scene, to kickstart your stream make sure to browse other movies',
         },
-        data: []
-      };
-    });
-};
+        data: [],
+      }
+    })
+}
+
+const getHotPlaylist = () => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeHomeVideo(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: 'Mola is feeling so hot right now,\n Someone bring some hot movies!',
+        },
+        data: [],
+      }
+    })
+}
 
 export default {
   getHomePlaylist,
@@ -341,5 +366,6 @@ export default {
   getMovieDetail,
   getMovieLibrary,
   getMovieLibraryList,
-  getMovieStream
-};
+  getMovieStream,
+  getHotPlaylist,
+}

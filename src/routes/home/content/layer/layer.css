@@ -120,7 +120,7 @@
 /* mobile Styles */
 @media screen and (max-width: 640px) {
   .layer__grid_desc_wrapper {
-    margin: 10% 5% 0;
+    margin: 20% 5% 0;
     height: auto;
   }
 

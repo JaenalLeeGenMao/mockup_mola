@@ -1,13 +1,14 @@
-import { combineReducers } from 'redux';
-import user from './user';
-import runtime from './runtime';
-import home from './home';
-import history from './history';
-import search from './search';
-import movieDetail from './movie-detail';
-import movieLibrary from './movie-library';
-import movieStream from './movie-stream';
-import { reducer as toastr } from 'react-redux-toastr';
+import { combineReducers } from 'redux'
+import user from './user'
+import runtime from './runtime'
+import home from './home'
+import history from './history'
+import search from './search'
+import movieDetail from './movie-detail'
+import movieLibrary from './movie-library'
+import movieStream from './movie-stream'
+import notFound from './not-found'
+import { reducer as toastr } from 'react-redux-toastr'
 
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
@@ -22,5 +23,6 @@ export default combineReducers({
   movieLibrary,
   movieDetail,
   toastr,
-  movieStream
-});
+  movieStream,
+  notFound,
+})

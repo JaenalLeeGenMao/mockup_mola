@@ -22,17 +22,8 @@
   column-gap: 0;
 }
 
-div[class^='Error-searchErrorTitle-'],
-div[class^='Error-searchErrorDetail-'] {
-  color: #000;
-}
-
-div[class^='Error-searchErrorContainer-'] {
-  transform: translateY(50%);
-}
-
-div[class^='Error-searchErrorContainer-'] img {
-  width: 13%;
+.errorImage {
+  width: 30rem !important;
 }
 
 @media screen and (max-width: 1280px) {

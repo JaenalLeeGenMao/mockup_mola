@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Layout from '@components/Molalayout';
 import Admin from './Admin';
 
 const title = 'Admin Page';
@@ -26,7 +26,7 @@ function action() {
       <Layout>
         <Admin title={title} />
       </Layout>
-    ),
+    )
   };
 }
 
