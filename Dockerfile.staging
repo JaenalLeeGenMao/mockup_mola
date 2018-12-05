@@ -1,5 +1,7 @@
 # Before RUNNING Dockerfile, Please make sure to run `yarn build-{env} --release`
 FROM node:8-alpine
+RUN apk --no-cache update && apk --no-cache add g++ make bash zlib-dev libpng-dev && rm -fr /var/cache/apk/*
+
 
 WORKDIR /var/www/mola-web
 
