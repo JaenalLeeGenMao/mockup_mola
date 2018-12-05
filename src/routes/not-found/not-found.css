@@ -29,6 +29,7 @@
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
+  background: #000311;
 }
 
 .video_wrapper {
@@ -37,5 +38,4 @@
   width: 20vw;
   height: 100%;
   padding: 0.8rem;
-  background: #000311;
 }

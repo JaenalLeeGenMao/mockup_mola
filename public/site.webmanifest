@@ -4,7 +4,6 @@
   "description": "Mola - Watch TV Shows Online, Watch Movies Online",
   "start_url": ".",
   "display": "standalone",
-  ​​"orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#0f4a73",
   "icons": [

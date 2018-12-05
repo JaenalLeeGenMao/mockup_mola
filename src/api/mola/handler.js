@@ -333,7 +333,7 @@ const getHotPlaylist = () => {
     ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomePlaylist(response)
+      const result = utils.normalizeHomeVideo(response)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
