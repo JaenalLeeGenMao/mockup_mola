@@ -1,0 +1,23 @@
+# Before RUNNING Dockerfile, Please make sure to run `yarn build-{env} --release`
+FROM node:8-alpine
+RUN apk --no-cache update && apk --no-cache add g++ make bash zlib-dev libpng-dev && rm -fr /var/cache/apk/*
+
+WORKDIR /var/www/mola-web
+
+ARG REACT_APP_ENV=production
+
+COPY .npmrc .
+COPY package*.json .
+
+# Install Node.js dependencies
+RUN yarn install --no-progress
+
+RUN echo $REACT_APP_ENV
+
+COPY . .
+RUN yarn build -- --release --docker REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${REACT_APP_ENV}
+
+# Run the container under "node" user by default
+USER node
+
+CMD [ "node", "./build/server.js" ]

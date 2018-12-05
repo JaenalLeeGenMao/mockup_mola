@@ -1,37 +1,37 @@
-import React, { Fragment, Component } from 'react';
-import Slider from 'react-slick';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import $ from 'jquery';
+import React, { Fragment, Component } from 'react'
+import Slider from 'react-slick'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import $ from 'jquery'
 
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll';
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 
-import { SETTINGS } from '../const';
-import homeActions from '@actions/home';
+import { SETTINGS } from '../const'
+import homeActions from '@actions/home'
 
-import { getErrorCode } from '@routes/home/util';
+import { getErrorCode } from '@routes/home/util'
 
-import Header from '@components/Header';
+import Header from '@components/Header'
 
-import HomeArrow from '../arrow';
-import HomeDesktopContent from '../content';
-import HomeDesktopMenu from '../menu';
-import HomePlaceholder from './placeholder';
-import HomeError from '@components/common/error';
+import HomeArrow from '../arrow'
+import HomeDesktopContent from '../content'
+import HomeDesktopMenu from '../menu'
+import HomePlaceholder from './placeholder'
+import HomeError from '@components/common/error'
 
-import styles from './home.css';
-import Joyride from 'react-joyride';
-import { EVENTS, ACTIONS } from 'react-joyride/lib/constants';
-import _get from 'lodash/get';
-import TourArrow from '../tourArrow';
+import styles from './home.css'
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
+import _get from 'lodash/get'
+import TourArrow from '../tourArrow'
 
 let ticking = false,
   activePlaylist,
-  scrollIndex = 0;
+  scrollIndex = 0
 
-const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
+const trackedPlaylistIds = [] /** tracked playlist/videos id both similar */
 
 let customTourStyle = {
   buttonNext: {
@@ -42,7 +42,7 @@ let customTourStyle = {
     textTransform: 'uppercase',
     letterSpacing: '0.167rem',
     borderRadius: '3rem',
-    fontWeight: '600'
+    fontWeight: '600',
   },
   buttonBack: {
     color: '#000000',
@@ -50,10 +50,10 @@ let customTourStyle = {
     textTransform: 'uppercase',
     letterSpacing: '0.167rem',
     fontWeight: '600',
-    marginRight: '0.5rem'
+    marginRight: '0.5rem',
   },
   buttonClose: {
-    display: 'none'
+    display: 'none',
   },
   buttonSkip: {
     color: '#000000',
@@ -61,7 +61,7 @@ let customTourStyle = {
     fontSize: '1.3rem',
     textTransform: 'uppercase',
     letterSpacing: '0.167rem',
-    padding: '0'
+    padding: '0',
   },
   tooltipContent: {
     fontSize: '1.3rem',
@@ -69,25 +69,25 @@ let customTourStyle = {
     textAlign: 'left',
     color: '#858585',
     lineHeight: '1.5',
-    letterSpacing: '0.5px'
+    letterSpacing: '0.5px',
   },
   tooltipTitle: {
     fontSize: '1.4rem',
     textAlign: 'left',
     margin: '0 0 0.8rem',
     letterSpacing: '0.59px',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)'
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   spotlight: {
     borderRadius: '4rem',
     position: 'absolute',
-    transform: 'scale(.99, .95) translateY(1%)'
+    transform: 'scale(.99, .95) translateY(1%)',
   },
-  tooltip: {}
-};
+  tooltip: {},
+}
 
 class Home extends Component {
   state = {
@@ -106,7 +106,7 @@ class Home extends Component {
         button or press ↑ up and ↓ down on your awesome keyboard`,
         placement: 'right',
         disableBeacon: true,
-        disableOverlayClicks: true
+        disableOverlayClicks: true,
       },
       {
         target: '.tourSlide',
@@ -116,7 +116,7 @@ class Home extends Component {
         or using keyboards and toggle → right and ← left`,
         placement: 'top',
         disableBeacon: true,
-        disableOverlayClicks: true
+        disableOverlayClicks: true,
       },
       {
         target: '.tourLibrary',
@@ -124,7 +124,7 @@ class Home extends Component {
         content: 'You can click this icon to view all movie list per category',
         placement: 'bottom',
         disableBeacon: true,
-        disableOverlayClicks: true
+        disableOverlayClicks: true,
       },
       {
         target: '.tourMovieDiscover',
@@ -133,7 +133,7 @@ class Home extends Component {
         placement: 'top',
         spotlightPadding: 0,
         disableBeacon: true,
-        disableOverlayClicks: true
+        disableOverlayClicks: true,
       },
       {
         target: '.tourMovieDetail',
@@ -143,307 +143,293 @@ class Home extends Component {
         spotlightPadding: 0,
         disableBeacon: true,
         disableOverlayClicks: true,
-        locale: { last: 'Finish' }
-      }
-    ]
-  };
+        locale: { last: 'Finish' },
+      },
+    ],
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps;
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
-      onHandlePlaylist();
+      onHandlePlaylist()
     } else if (prevState.videos.length <= 0) {
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-          trackedPlaylistIds.push(playlist.id);
-          onHandleVideo(playlist);
+          trackedPlaylistIds.push(playlist.id)
+          onHandleVideo(playlist)
         }
         if (!activePlaylist && index === 0) {
-          activePlaylist = playlists.data[0];
-          onUpdatePlaylist(activePlaylist.id);
+          activePlaylist = playlists.data[0]
+          onUpdatePlaylist(activePlaylist.id)
         }
-      });
+      })
     }
-    return { ...prevState, playlists };
+    return { ...prevState, playlists }
   }
 
   handleTourCallback = data => {
-    const { type, action, index } = data;
-    const { videos } = this.props.home;
+    const { type, action, index } = data
+    const { videos } = this.props.home
 
     if (type === EVENTS.TOUR_END) {
       for (var i = 0; i < videos.data.length; i++) {
         if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-          document.getElementsByClassName('tourSlideWrapper')[0].remove();
+          document.getElementsByClassName('tourSlideWrapper')[0].remove()
         }
       }
-      document.cookie = '__trh=1; path=/;';
-      return true;
+
+      localStorage.setItem('tour-home', true)
+
+      // document.cookie = '__trh=1; path=/;';
+      return true
     }
 
     if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
       this.setState({
-        stepIndex: index + 1
-      });
+        stepIndex: index + 1,
+      })
     } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
       this.setState(
         {
-          stepIndex: index - 1
+          stepIndex: index - 1,
         },
         () => {
           if (index === 4) {
-            this.sliderRefs[0].slickPrev();
+            this.sliderRefs[0].slickPrev()
           }
         }
-      );
+      )
     } else {
       if (action === ACTIONS.NEXT && index === 4) {
         if (videos.data[0].data.length > 1) {
-          this.sliderRefs[0].slickNext();
+          this.sliderRefs[0].slickNext()
         } else {
           this.setState({
-            stepIndex: index + 1
-          });
+            stepIndex: index + 1,
+          })
         }
       }
     }
-  };
+  }
 
   componentDidMount() {
-    Events.scrollEvent.register('begin', this.handleScroll);
-    Events.scrollEvent.register('end', this.handleColorChange);
+    Events.scrollEvent.register('begin', this.handleScroll)
+    Events.scrollEvent.register('end', this.handleColorChange)
 
     if (window.innerHeight > 1801) {
-      const tvStyle = Object.assign({}, customTourStyle);
-      tvStyle.tooltip.width = '900px';
-      tvStyle.tooltip.height = '400px';
-      tvStyle.tooltip.padding = '1.6rem';
-      tvStyle.tooltipContent.padding = '0';
-      tvStyle.tooltipContent.minHeight = '140px';
+      const tvStyle = Object.assign({}, customTourStyle)
+      tvStyle.tooltip.width = '900px'
+      tvStyle.tooltip.height = '400px'
+      tvStyle.tooltip.padding = '1.6rem'
+      tvStyle.tooltipContent.padding = '0'
+      tvStyle.tooltipContent.minHeight = '140px'
     }
 
-    const { playlists, videos } = this.props.home;
+    const { playlists, videos } = this.props.home
 
     if (playlists.meta.status !== 'loading') {
       if (playlists.meta.status === 'success') {
         if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
           this.setState(
             {
-              playlistSuccess: true
+              playlistSuccess: true,
             },
             () => {
-              let isTourDone = _get(document, 'cookie', '')
-                .trim()
-                .split(';')
-                .filter(function(item) {
-                  return item.indexOf('__trh=') >= 0;
-                });
+              // let isTourDone = _get(document, 'cookie', '')
+              //   .trim()
+              //   .split(';')
+              //   .filter(function(item) {
+              //     return item.indexOf('__trh=') >= 0;
+              //   });
 
-              if (isTourDone && isTourDone.length) {
-                isTourDone = isTourDone[0].split('=')[1];
-                if (!isTourDone) {
-                  this.setState({
-                    startGuide: true
-                  });
-                } else {
-                  for (var i = 0; i < videos.data.length; i++) {
-                    if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                      document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                    }
+              let isTourDone = localStorage.getItem('tour-home')
+
+              if (isTourDone) {
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove()
                   }
                 }
               } else {
                 this.setState({
-                  startGuide: true
-                });
+                  startGuide: true,
+                })
                 for (var i = 1; i < videos.data.length; i++) {
-                  document.getElementsByClassName('tourSlideWrapper')[1].remove();
+                  document.getElementsByClassName('tourSlideWrapper')[1].remove()
                 }
               }
             }
-          );
+          )
         }
       }
     }
   }
 
   componentWillUnmount() {
-    Events.scrollEvent.remove('begin');
-    Events.scrollEvent.remove('end');
+    Events.scrollEvent.remove('begin')
+    Events.scrollEvent.remove('end')
 
-    document.removeEventListener('mouseup', () => {}, false);
-    document.removeEventListener('mousedown', () => {}, false);
-    document.removeEventListener('keyup', () => {}, false);
-    document.removeEventListener('wheel', () => {}, false);
-    document.removeEventListener('DOMMouseScroll', () => {}, false);
+    document.removeEventListener('mouseup', () => {}, false)
+    document.removeEventListener('mousedown', () => {}, false)
+    document.removeEventListener('keyup', () => {}, false)
+    document.removeEventListener('wheel', () => {}, false)
+    document.removeEventListener('DOMMouseScroll', () => {}, false)
 
     for (let i = 0; i < 100; i += 1) {
-      window.clearInterval(i);
+      window.clearInterval(i)
     }
   }
 
   componentDidUpdate() {
-    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home;
+    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.playlistSuccess) {
         this.setState(
           {
-            playlistSuccess: true
+            playlistSuccess: true,
           },
           () => {
-            let isTourDone = _get(document, 'cookie', '')
-              .trim()
-              .split(';')
-              .filter(function(item) {
-                return item.indexOf('__trh=') >= 0;
-              });
+            let isTourDone = localStorage.getItem('tour-home')
 
-            if (isTourDone && isTourDone.length) {
-              isTourDone = isTourDone[0].split('=')[1];
-              if (!isTourDone) {
-                this.setState({
-                  startGuide: true
-                });
-              } else {
-                for (var i = 0; i < videos.data.length; i++) {
-                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    document.getElementsByClassName('tourSlideWrapper')[0].remove();
-                  }
+            if (isTourDone) {
+              for (var i = 0; i < videos.data.length; i++) {
+                if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                  document.getElementsByClassName('tourSlideWrapper')[0].remove()
                 }
               }
             } else {
               this.setState({
-                startGuide: true
-              });
+                startGuide: true,
+              })
               for (var i = 1; i < videos.data.length; i++) {
-                document.getElementsByClassName('tourSlideWrapper')[1].remove();
+                document.getElementsByClassName('tourSlideWrapper')[1].remove()
               }
             }
           }
-        );
+        )
       }
     }
   }
 
   handleColorChange = () => {
-    const that = this;
+    const that = this
     setTimeout(function() {
-      const activeSlick = document.querySelector('.active .slick-active .grid-slick');
-      let isDark = 1;
+      const activeSlick = document.querySelector('.active .slick-active .grid-slick')
+      let isDark = 1
       if (activeSlick) {
-        isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
+        isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
-        that.setState({ isDark });
+        that.setState({ isDark })
       }
-    }, 100);
-  };
+    }, 100)
+  }
 
   handleScroll = () => {
-    const { playlists, videos } = this.props.home;
+    const { playlists, videos } = this.props.home
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
-      scrollIndex = 0;
-      return true;
+      scrollIndex = 0
+      return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
-        scrollIndex = index;
-        return false;
+        scrollIndex = index
+        return false
       }
-      return true;
-    });
+      return true
+    })
 
     if (!ticking) {
-      this.handleMouseClick();
-      this.handleMouseScroll();
-      this.handleKeyboardEvent();
+      this.handleMouseClick()
+      this.handleMouseScroll()
+      this.handleKeyboardEvent()
 
-      ticking = true;
+      ticking = true
     }
-  };
+  }
 
   handleMouseClick = () => {
     /** handle mouse click */
-    (this.prevmouseDownY = 0), (this.currentMouseDownY = 0);
+    ;(this.prevmouseDownY = 0), (this.currentMouseDownY = 0)
     document.onmousedown = event => {
-      ticking = false;
-      this.prevMouseDownY = event.y;
-    };
+      ticking = false
+      this.prevMouseDownY = event.y
+    }
 
     document.onmouseup = event => {
-      ticking = false;
+      ticking = false
 
-      this.currentMouseDownY = event.y;
+      this.currentMouseDownY = event.y
 
       if (this.prevMouseDownY < this.currentMouseDownY) {
-        scrollIndex -= 1;
-        this.handleKeyPress(scrollIndex);
+        scrollIndex -= 1
+        this.handleKeyPress(scrollIndex)
       } else if (this.prevMouseDownY > this.currentMouseDownY) {
-        scrollIndex += 1;
-        this.handleKeyPress(scrollIndex);
+        scrollIndex += 1
+        this.handleKeyPress(scrollIndex)
       }
-    };
-  };
+    }
+  }
 
   handleMouseScroll = () => {
-    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel';
+    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel'
     /** handle mouse scroll */
     document.addEventListener(mouseWheelEvent, event => {
-      ticking = false;
-      const that = this;
+      ticking = false
+      const that = this
 
-      clearTimeout($.data(this, 'scrollCheck'));
+      clearTimeout($.data(this, 'scrollCheck'))
       $.data(
         this,
         'scrollCheck',
         setTimeout(function() {
           /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
-          var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1;
+          var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
           if (delta < 0) {
-            scrollIndex += 1;
-            that.handleKeyPress();
+            scrollIndex += 1
+            that.handleKeyPress()
           } else if (delta > 0) {
-            scrollIndex -= 1;
-            that.handleKeyPress();
+            scrollIndex -= 1
+            that.handleKeyPress()
           }
         }, 250)
-      );
-    });
-  };
+      )
+    })
+  }
 
   handleKeyboardEvent = () => {
     /** handle keyboard pressed */
     document.onkeyup = event => {
-      ticking = false;
+      ticking = false
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
-          return event.preventDefault();
+          return event.preventDefault()
         case 38 /* up */:
-          scrollIndex -= 1;
-          this.handleKeyPress();
-          break;
+          scrollIndex -= 1
+          this.handleKeyPress()
+          break
         case 39 /* right */:
-          return event.preventDefault();
+          return event.preventDefault()
         case 40 /* down */:
-          scrollIndex += 1;
-          this.handleKeyPress();
-          break;
+          scrollIndex += 1
+          this.handleKeyPress()
+          break
         default:
-          event.preventDefault();
-          break;
+          event.preventDefault()
+          break
       }
-    };
-  };
+    }
+  }
 
   handleKeyPress = () => {
-    const { data: playlists } = this.props.home.playlists;
+    const { data: playlists } = this.props.home.playlists
     if (scrollIndex < 0) {
-      scrollIndex = playlists.length - 1;
+      scrollIndex = playlists.length - 1
     }
     if (scrollIndex > playlists.length - 1) {
-      scrollIndex = 0;
+      scrollIndex = 0
     }
 
     // const result = playlists
@@ -457,26 +443,26 @@ class Home extends Component {
     // if (result && result.length >= 1) {
     //   this.handleScrollToIndex(result[0].id);
     // }
-    this.handleColorChange();
-    this.handleScrollToIndex(playlists[scrollIndex].id);
-  };
+    this.handleColorChange()
+    this.handleScrollToIndex(playlists[scrollIndex].id)
+  }
 
   handleScrollToIndex = id => {
-    const { playlists } = this.props.home;
+    const { playlists } = this.props.home
     playlists.data.map((playlist, index) => {
       if (id === playlist.id) {
         scroller.scrollTo(id, {
           duration: 250,
           delay: 0,
-          smooth: 'easeInOutQuart'
-        });
-        this.props.onUpdatePlaylist(id);
-        scrollIndex = index;
-        return false;
+          smooth: 'easeInOutQuart',
+        })
+        this.props.onUpdatePlaylist(id)
+        scrollIndex = index
+        return false
       }
-      return true;
-    });
-  };
+      return true
+    })
+  }
 
   render() {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
@@ -484,7 +470,7 @@ class Home extends Component {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
-        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } }
+        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
       } = this.props.home,
       { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
@@ -492,15 +478,15 @@ class Home extends Component {
         draggable: false,
         className: `${styles.home__slick_slider_fade} home-slider`,
         onInit: () => {
-          this.handleColorChange();
+          this.handleColorChange()
         },
         afterChange: () => {
-          this.handleColorChange();
-        }
+          this.handleColorChange()
+        },
       },
       playlistErrorCode = getErrorCode(playlistError),
-      videoErrorCode = getErrorCode(videoError);
-    activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0];
+      videoErrorCode = getErrorCode(videoError)
+    activePlaylist = playlists.data.length > 1 && playlists.data.filter(playlist => playlist.isActive)[0]
 
     return (
       <Fragment>
@@ -527,7 +513,7 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length &&
             videos.data.map(video => {
-              const { id, sortOrder } = video.meta;
+              const { id, sortOrder } = video.meta
               return (
                 <RSLink activeClass="active" to={id} spy smooth className={styles.home__slider_container} key={id}>
                   <Element name={id}>
@@ -535,17 +521,17 @@ class Home extends Component {
                     <Slider
                       ref={node => {
                         if (!this.sliderRefs) {
-                          this.sliderRefs = [];
-                          this.trackedSliderIds = [];
+                          this.sliderRefs = []
+                          this.trackedSliderIds = []
                         }
                         if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
                           node = {
                             ...node,
                             id,
-                            sortOrder
-                          };
-                          this.trackedSliderIds.push(id);
-                          return this.sliderRefs.push(node);
+                            sortOrder,
+                          }
+                          this.trackedSliderIds.push(id)
+                          return this.sliderRefs.push(node)
                         }
                       }}
                       {...settings}
@@ -556,24 +542,24 @@ class Home extends Component {
                     </Slider>
                   </Element>
                 </RSLink>
-              );
+              )
             })}
         </div>
       </Fragment>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    ...state
-  };
-};
+    ...state,
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
   onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
-  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id))
-});
+  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
+})
 
-export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Home);
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Home)

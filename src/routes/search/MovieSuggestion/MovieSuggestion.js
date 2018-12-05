@@ -1,40 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link/Link';
-import MolaHandler from '@api/mola';
-import { getMatchWordSearch } from '@routes/search/utils';
-import s from './MovieSuggestion.css';
-import noImg from '@global/style/icons/no_img.png';
+import React from 'react'
+import PropTypes from 'prop-types'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import LazyLoad from '@components/common/Lazyload'
+import Link from '@components/Link'
+import MolaHandler from '@api/mola'
+import { getMatchWordSearch } from '@routes/search/utils'
+import s from './MovieSuggestion.css'
+import noImg from '@global/style/icons/no-img.png'
 
 class MovieSuggestion extends React.Component {
   state = {
-    allImgLoaded: false
-  };
+    allImgLoaded: false,
+  }
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     searchText: PropTypes.string,
-    sessionId: PropTypes.string
-  };
+    sessionId: PropTypes.string,
+  }
 
   handleClickMovie = title => {
-    const { sessionId, sid } = this.props;
-    MolaHandler.postRecentSearch(sessionId, sid, title);
-  };
+    const { sessionId, sid } = this.props
+    MolaHandler.postRecentSearch(sessionId, sid, title)
+  }
 
   render() {
-    const { data, searchText } = this.props;
-    const movieData = data.slice(0, 5);
+    const { data, searchText } = this.props
+    const movieData = data.slice(0, 5)
     return (
       <div className={s.resultRowWrap}>
         <div className={s.resultTitle}>Movie</div>
         <div className={s.resultContent}>
           {movieData.map(movie => {
-            const movieYear = movie.year ? ` (${movie.year})` : '';
-            const movieTitle = `${movie.title}${movieYear}`;
-            const movieTitleRes = getMatchWordSearch(movieTitle, searchText);
-            const movieUrl = movie.coverUrl ? movie.coverUrl : noImg;
+            const movieYear = movie.year ? ` (${movie.year})` : ''
+            const movieTitle = `${movie.title}${movieYear}`
+            const movieTitleRes = getMatchWordSearch(movieTitle, searchText)
+            const movieUrl = movie.coverUrl ? movie.coverUrl : noImg
             return (
               <div className={s.movieBox} key={movie.id}>
                 <div className={s.movieBoxInner}>
@@ -57,12 +57,12 @@ class MovieSuggestion extends React.Component {
                   </Link>
                 </div>
               </div>
-            );
+            )
           })}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(s)(MovieSuggestion);
+export default withStyles(s)(MovieSuggestion)

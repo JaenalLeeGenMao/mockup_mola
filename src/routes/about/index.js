@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import Layout from '../../components/Layout';
+import Layout from '@components/Molalayout';
 import Page from '../../components/Page';
 import about from './about.md';
 
@@ -20,7 +20,7 @@ function action() {
       <Layout>
         <Page {...about} />
       </Layout>
-    ),
+    )
   };
 }
 

@@ -1,53 +1,53 @@
-import React, { Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import $ from 'jquery';
+import React, { Component } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import $ from 'jquery'
 
-import Auth from '@api/auth';
+import Auth from '@api/auth'
 
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link';
+import LazyLoad from '@components/common/Lazyload'
+import Link from '@components/Link'
 
-import styles from './right-menu.css';
+import styles from './right-menu.css'
 
 class RightMenu extends Component {
   state = {
-    link: ''
-  };
+    link: '',
+  }
 
   componentDidMount() {
-    this.setState({ link: window.location.href });
+    this.setState({ link: window.location.href })
   }
 
   handleSignOut = e => {
-    e.preventDefault();
-    const { user: { uid }, runtime: { csrf } } = this.props;
+    e.preventDefault()
+    const { user: { uid }, runtime: { csrf } } = this.props
     Auth.requestLogout({ uid, csrf }).then(response => {
       if (response.meta.status === 'success') {
-        window.location.href = '/signout';
+        window.location.href = '/signout'
       }
-    });
-  };
+    })
+  }
 
   handleCopyToClipboard = e => {
-    e.preventDefault();
-    var copyText = document.getElementById('myInput');
-    copyText.select();
-    copyText.disabled = true;
-    document.execCommand('copy');
+    e.preventDefault()
+    var copyText = document.getElementById('myInput')
+    copyText.select()
+    copyText.disabled = true
+    document.execCommand('copy')
 
-    var tooltip = document.getElementById('myTooltip');
-    tooltip.innerHTML = 'Copied';
-  };
+    var tooltip = document.getElementById('myTooltip')
+    tooltip.innerHTML = 'Copied'
+  }
 
   outFunc = e => {
-    e.preventDefault();
-    var tooltip = document.getElementById('myTooltip');
-    tooltip.innerHTML = 'Copy to clipboard';
-  };
+    e.preventDefault()
+    var tooltip = document.getElementById('myTooltip')
+    tooltip.innerHTML = 'Copy to clipboard'
+  }
 
   render() {
     const { color, searchOff, profileOff, shareButtonOn, user: { uid = '', sid = '', firstName = '' } } = this.props,
-      userID = uid || sid;
+      userID = uid || sid
     return (
       <div className={styles.right__menu}>
         {!searchOff && (
@@ -64,7 +64,7 @@ class RightMenu extends Component {
               <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
             </LazyLoad>
             <div className={styles.right__menu_dropdown_wrapper}>
-              <div className={styles.right__menu_dropdown} style={{ color, backgroundColor: color === 'black' ? '#fff' : '#000' }}>
+              <div className={styles.right__menu_dropdown} style={{ color, backgroundColor: color === 'black' ? 'rgba(255, 255, 255, .85)' : 'rgba(0, 0, 0, .85)' }}>
                 {userID ? (
                   <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>
                     {firstName ? `${firstName},` : ''} Sign out
@@ -125,8 +125,8 @@ class RightMenu extends Component {
           </span>
         )}
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(RightMenu);
+export default withStyles(styles)(RightMenu)

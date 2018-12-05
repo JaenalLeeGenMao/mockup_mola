@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../../components/Layout';
+import Layout from '@components/Molalayout';
 import History from './History';
 
 const title = 'History';
@@ -10,9 +10,9 @@ function action({ isMobile }) {
     title,
     component: (
       <Layout>
-        <History isMobile={isMobile}/>
+        <History isMobile={isMobile} />
       </Layout>
-    ),
+    )
   };
 }
 
