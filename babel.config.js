@@ -8,17 +8,17 @@ module.exports = {
       '@babel/preset-env',
       {
         targets: {
-          node: 'current'
-        }
-      }
+          node: 'current',
+        },
+      },
     ],
     '@babel/preset-flow',
-    '@babel/preset-react'
+    '@babel/preset-react',
   ],
   ignore: ['node_modules', 'build'],
   env: {
     production: {
-      plugins: ['emotion', { hoist: true }]
+      plugins: ['emotion'],
     },
     staging: {
       plugins: [
@@ -27,10 +27,10 @@ module.exports = {
           {
             sourceMap: true,
             autoLabel: true,
-            labelFormat: '[filename]--[local]'
-          }
-        ]
-      ]
+            labelFormat: '[filename]--[local]',
+          },
+        ],
+      ],
     },
     development: {
       plugins: [
@@ -39,11 +39,11 @@ module.exports = {
           {
             sourceMap: true,
             autoLabel: true,
-            labelFormat: '[filename]--[local]'
-          }
-        ]
-      ]
-    }
+            labelFormat: '[filename]--[local]',
+          },
+        ],
+      ],
+    },
   },
   plugins: [
     // Stage 2
@@ -56,6 +56,6 @@ module.exports = {
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-syntax-import-meta',
     ['@babel/plugin-proposal-class-properties', { loose: false }],
-    '@babel/plugin-proposal-json-strings'
-  ]
-};
+    '@babel/plugin-proposal-json-strings',
+  ],
+}
