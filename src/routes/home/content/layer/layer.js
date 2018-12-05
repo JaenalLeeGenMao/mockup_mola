@@ -1,25 +1,25 @@
-import React, { Fragment } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React, { Fragment } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import LazyLoad from '@components/common/Lazyload';
+import LazyLoad from '@components/common/Lazyload'
 
-import { setMultilineEllipsis } from './util';
+import { setMultilineEllipsis } from './util'
 
-import styles from './layer.css';
+import styles from './layer.css'
 
 const ContentLayer = ({ isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {} }) => {
   const version = isMobile ? 'mobile' : 'desktop',
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
-    filteredDesc = type === 'playlists' ? description : shortDescription;
+    filteredDesc = type === 'playlists' ? description : shortDescription
 
   const descWrapperStyle = {
-    transform: `translateY(calc(${getCurrentScreenHeight()}px - 85vh))`
-  };
+    transform: `translateY(calc(${getCurrentScreenHeight()}px - 85vh))`,
+  }
 
-  setMultilineEllipsis(styles.layer__grid_desc_header);
-  setMultilineEllipsis(styles.layer__grid_desc_footer);
+  setMultilineEllipsis(styles.layer__grid_desc_header)
+  setMultilineEllipsis(styles.layer__grid_desc_footer)
 
   return (
     <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrapperStyle : null}>
@@ -29,10 +29,10 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
           background: !isMobile ? `url(${coverBackgroundImage}) repeat center` : 'transparent',
           boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
           backgroundSize: 'cover',
-          opacity: !isMobile ? 1 : 0.1
+          opacity: !isMobile ? 1 : 0.1,
         }}
       />
-      <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left', padding: '.5rem' }}>
+      <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
         <div className={styles.layer__grid_desc_header}>
           {!isMobile && <h1>OVERVIEW</h1>}
           <p className="filtered_description">{filteredDesc}</p>
@@ -48,7 +48,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
         )}
       </div>
     </LazyLoad>
-  );
-};
+  )
+}
 
-export default withStyles(styles)(ContentLayer);
+export default withStyles(styles)(ContentLayer)
