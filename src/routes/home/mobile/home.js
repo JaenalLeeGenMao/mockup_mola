@@ -155,7 +155,7 @@ class Home extends Component {
                 }
               } else {
                 var stepsProp = { ...this.state.steps }
-                stepsProp[0].styles.tooltip.width = window.innerWidth - 100 + 'px'
+                stepsProp[0].styles.tooltip.width = window.innerWidth - 90 + 'px'
 
                 this.setState({
                   steps: stepsProp,
@@ -208,7 +208,7 @@ class Home extends Component {
               }
             } else {
               var stepsProp = { ...this.state.steps }
-              stepsProp[0].styles.tooltip.width = window.innerWidth - 100 + 'px'
+              stepsProp[0].styles.tooltip.width = window.innerWidth - 90 + 'px'
 
               this.setState({
                 steps: stepsProp,
