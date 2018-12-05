@@ -1,6 +1,35 @@
 .wrap {
   display: flex;
   padding: 2rem 2rem;
+  position: relative;
+}
+
+.wrap:hover,
+.wrap.active {
+  background-color: #22272f;
+  color: #6f6f6f;
+  cursor: pointer;
+}
+
+.content p {
+  color: #fff;
+  line-height: 1.8rem;
+  font-size: 1.4rem;
+}
+
+.wrap:hover p {
+  color: #6f6f6f;
+}
+
+.wrap::before {
+  position: absolute;
+  content: '';
+  width: 90%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
 }
 
 .iconWrap {
@@ -32,6 +61,22 @@
   border-radius: 10rem;
 }
 
+.meta.unopened {
+  position: relative;
+}
+
+.meta.unopened::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: #2c56ff;
+  border-radius: 10rem;
+}
+
 .iconWrap img {
   border-radius: 10rem;
   width: 5rem;
@@ -47,10 +92,4 @@
 .time {
   color: #6f6f6f;
   font-size: 1.2rem;
-}
-
-.content p {
-  color: #fff;
-  line-height: 1.8rem;
-  font-size: 1.4rem;
 }
