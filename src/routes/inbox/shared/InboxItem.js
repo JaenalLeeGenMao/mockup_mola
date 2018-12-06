@@ -11,7 +11,7 @@ class InboxItem extends React.Component {
     const active = true ? styles.active : null
 
     return (
-      <div className={[styles.wrap, isActive ? styles.active : null].join(' ')} onClick={() => this.props.handleInboxItemClick()}>
+      <div className={[styles.wrap, isActive ? styles.active : null].join(' ')} onClick={() => this.props.handleInboxItemClick(this.props.message)}>
         <div className={styles.iconWrap}>
           <img src={avatar} alt={title} />
         </div>

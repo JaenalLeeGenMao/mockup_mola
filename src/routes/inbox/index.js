@@ -7,25 +7,27 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-// import InboxMobile from './mobile/Inbox';
-import InboxDesktop from './desktop/Inbox';
-import Molalayout from '@components/Molalayout';
+import React from 'react'
+import InboxMobile from './mobile/Inbox'
+import InboxDesktop from './desktop/Inbox'
+import Molalayout from '@components/Molalayout'
 
-const title = 'Inbox';
+const title = 'Inbox'
 
 function action({ isMobile }) {
   return {
     title,
     chunks: ['inbox'],
     component: isMobile ? (
-      <Molalayout>{/* <InboxMobile /> */}</Molalayout>
+      <Molalayout>
+        <InboxMobile />
+      </Molalayout>
     ) : (
       <Molalayout>
         <InboxDesktop />
       </Molalayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

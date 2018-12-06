@@ -131,15 +131,13 @@ class Inbox extends React.Component {
     return (
       <Fragment>
         <div className={styles.wrap}>
-          {this.renderSidebar()}
-
           <div className={[styles.colItem, styles.inboxList].join(' ')}>
             <InboxList {...this.state} handleInboxItemClick={this.handleInboxItemClick} />
           </div>
 
-          <div className={[styles.colItem, styles.inboxDetail].join(' ')}>
+          {/* <div className={[styles.colItem, styles.inboxDetail].join(' ')}>
             <InboxDetail {...this.state} />
-          </div>
+          </div> */}
         </div>
       </Fragment>
     )
