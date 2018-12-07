@@ -7,9 +7,9 @@ import stylesMobile from './arrow-mobile.css'
 
 class Arrow extends Component {
   handleClick = () => {
-    const { sliderRefs, id, direction } = this.props
+    const { sliderRefs = [], id, direction } = this.props
     try {
-      const currentSlider = sliderRefs.filter(slider => slider.id === id)[0]
+      const currentSlider = sliderRefs[0]
       if (direction === 'next') {
         currentSlider.slickNext()
       } else {
