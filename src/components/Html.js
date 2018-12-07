@@ -42,8 +42,13 @@ class Html extends React.Component {
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           <title>{title}</title>
-          <meta name="description" content={description} />
+          <meta name="description" content={`Mola, Mola TV, Mola Sport, Mola Channel, TV, sport, premiere league, ${description}`} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta
+            name="keywords"
+            content="Mola, Mola TV, mola, mola tv, molatv, mola.tv, mola premiere, mola premiere league, premiere league, watch mola, watch movies, movies online, watch TV, watch Mola TV, TV online, TV shows online, watch TV shows, stream movies, stream tv, instant streaming, watch online, movies, watch movies Indonesia, watch TV online, no download, full length movies"
+          />
+          <meta name="robots" content="index, follow" />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />

@@ -6,8 +6,6 @@ import LazyLoad from '@components/common/Lazyload'
 
 import { setMultilineEllipsis, unsetMultilineEllipsis } from '../util'
 
-import InfoImageSource from '../assets/actor.svg'
-
 import s from './Synopsis.css'
 
 class Synopsis extends Component {
@@ -40,7 +38,7 @@ class Synopsis extends Component {
       <LazyLoad containerClassName={s.container}>
         <div className={s.inner_box}>
           <div className={s.inner_box_header}>
-            <img className={s.synopsis__info_icon} alt="info" src={InfoImageSource} />
+            <div className={s.synopsis__info_icon} />
             <span>info</span>
           </div>
           <p className={`synopsis__info_content ${show ? s.show : ''}`}>{synopsisContent}</p>

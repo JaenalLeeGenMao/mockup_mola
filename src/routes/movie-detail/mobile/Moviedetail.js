@@ -1,30 +1,25 @@
-import React, { Fragment, Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import Modal from 'react-responsive-modal';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import Layout from '@components/Molalayout';
-import Header from '@components/Header/Header';
-import * as movieDetailActions from '@actions/movie-detail';
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link';
-import _get from 'lodash/get';
+import React, { Fragment, Component } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import Modal from 'react-responsive-modal'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import Layout from '@components/Molalayout'
+import Header from '@components/Header/Header'
+import * as movieDetailActions from '@actions/movie-detail'
+import LazyLoad from '@components/common/Lazyload'
+import Link from '@components/Link'
+import _get from 'lodash/get'
 
-import Banner from './Banner';
-import Synopsis from './Synopsis';
-import Trailer from './Trailer';
-import Casting from './Casting';
-import Testimoni from './Testimoni';
-import s from './Moviedetail.css';
+import Banner from './Banner'
+import Synopsis from './Synopsis'
+import Trailer from './Trailer'
+import s from './Moviedetail.css'
 
-import TrailerImg from '../assets/notavailable.jpg';
-import EmptyStateTesti from '../assets/quote.png';
-import BannerLoading from './BannerLoading';
-import SynopsisLoading from './SynopsisLoading';
-import LoadingPlaceholder from '@components/common/LoadingPlaceholder/LoadingPlaceholder';
-import TestimoniLoading from './TestimoniLoading';
-import Theoplayer from '@components/Theoplayer/Theoplayer';
-import Joyride from 'react-joyride';
+import BannerLoading from './BannerLoading'
+import SynopsisLoading from './SynopsisLoading'
+import LoadingPlaceholder from '@components/common/LoadingPlaceholder/LoadingPlaceholder'
+import Theoplayer from '@components/Theoplayer/Theoplayer'
+import Joyride from 'react-joyride'
 
 class Moviedetail extends Component {
   state = {
@@ -41,118 +36,109 @@ class Moviedetail extends Component {
         content: 'You can click this play button to start watching movie',
         placement: 'bottom',
         disableBeacon: true,
-        locale: { last: 'Finish', close: 'Finish' }
-      }
-    ]
-  };
+        locale: { last: 'Finish', close: 'Finish' },
+      },
+    ],
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { getMovieDetail, movieDetail, movieId } = nextProps;
-    if (
-      nextProps.movieDetail.meta.status === 'loading' &&
-      prevState.movieDetail.length <= 0
-    ) {
+    const { getMovieDetail, movieDetail, movieId } = nextProps
+    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
       //getMovieDetail('tt1179056');
-      getMovieDetail(movieId);
-    } else if (
-      nextProps.movieDetail.meta.status === 'success' &&
-      nextProps.movieDetail.data[0].id != movieId
-    ) {
-      getMovieDetail(movieId);
+      getMovieDetail(movieId)
+    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
+      getMovieDetail(movieId)
     }
 
-    return { ...prevState, movieDetail };
+    return { ...prevState, movieDetail }
   }
 
   componentDidMount() {
-    const { movieDetail } = this.props;
+    const { movieDetail } = this.props
 
     //update loading state
     if (movieDetail.meta.status !== 'loading') {
       this.setState(
         {
-          isLoading: false
+          isLoading: false,
         },
         () => {
           /*tour guide, step 4 -- check cookie if has done tour before
         if yes then don't start tour
         if no then start tour*/
-          let isTourDone = localStorage.getItem('tour-movie');
+          let isTourDone = localStorage.getItem('tour-movie')
 
           if (!isTourDone) {
             this.setState({
-              startGuide: true
-            });
+              startGuide: true,
+            })
           }
         }
-      );
+      )
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { movieDetail } = this.props;
+    const { movieDetail } = this.props
 
-    if (
-      prevProps.movieDetail.meta.status !== movieDetail.meta.status &&
-      movieDetail.meta.status !== 'loading'
-    ) {
+    if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status !== 'loading') {
       this.setState(
         {
-          isLoading: false
+          isLoading: false,
         },
         () => {
           /*tour guide, step 4 -- check cookie if has done tour before
         if yes then don't start tour
         if no then start tour*/
-          let isTourDone = localStorage.getItem('tour-movie');
+          let isTourDone = localStorage.getItem('tour-movie')
 
           if (!isTourDone) {
             this.setState({
-              startGuide: true
-            });
+              startGuide: true,
+            })
           }
         }
-      );
+      )
     }
   }
 
   handleTourCallback = data => {
     /*tour guide, step 5 -- handle callback
     set to cookie if user has finisher or skip tour*/
-    const { type } = data;
+    const { type } = data
 
     if (type == 'tour:end') {
-      localStorage.setItem('tour-movie', true);
+      localStorage.setItem('tour-movie', true)
     }
-  };
+  }
 
   onOpenModal = trailerUrl => {
-    this.setState({ open: true, trailerMovie: trailerUrl });
-  };
+    this.setState({ open: true, trailerMovie: trailerUrl })
+  }
 
   onCloseModal = () => {
-    this.setState({ open: false });
-  };
+    this.setState({ open: false })
+  }
 
   renderCharacters = () => {
-    const { movieDetail: { data: movieDetailData } } = this.props;
+    const { movieDetail: { data: movieDetailData } } = this.props
     //loop through array of people attribute to get director
     const directors =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'director';
+            return dt.attributes.peopleTypes == 'director'
           })
-        : [];
+        : []
 
     //loop through array of people attribute to get cast/stars
     const casters =
       movieDetailData.length > 0
         ? movieDetailData[0].people.filter(dt => {
-            return dt.attributes.peopleTypes == 'stars';
+            return dt.attributes.peopleTypes == 'stars'
           })
-        : [];
+        : []
 
-    const writers = [];
+    const writers = []
 
     return (
       <Fragment>
@@ -163,9 +149,9 @@ class Moviedetail extends Component {
             {casters.length > 0 &&
               casters.map((dt, index) => {
                 if (index == 0) {
-                  return dt.attributes.name;
+                  return dt.attributes.name
                 } else {
-                  return `, ${dt.attributes.name}`;
+                  return `, ${dt.attributes.name}`
                 }
               })}
           </p>
@@ -176,9 +162,9 @@ class Moviedetail extends Component {
             {directors.length === 0 && 'Unknown'}
             {directors.map((dt, index) => {
               if (index == 0) {
-                return dt.attributes.name;
+                return dt.attributes.name
               } else {
-                return `, ${dt.attributes.name}`;
+                return `, ${dt.attributes.name}`
               }
             })}
           </p>
@@ -189,16 +175,16 @@ class Moviedetail extends Component {
             {writers.length === 0 && 'Unknown'}
             {writers.map((dt, index) => {
               if (index == 0) {
-                return dt.attributes.name;
+                return dt.attributes.name
               } else {
-                return `, ${dt.attributes.name}`;
+                return `, ${dt.attributes.name}`
               }
             })}
           </p>
         </LazyLoad>
       </Fragment>
-    );
-  };
+    )
+  }
 
   render() {
     // const banner = {
@@ -213,7 +199,7 @@ class Moviedetail extends Component {
     //   directedBy: 'directedBy'
     // };
 
-    const trailerCopy = 'movie trailer';
+    const trailerCopy = 'movie trailer'
 
     // const trailerMovie = [
     //   {
@@ -238,52 +224,34 @@ class Moviedetail extends Component {
     //   }
     // ];
 
-    const { open, isLoading, trailerMovie, steps, startGuide } = this.state;
+    const { open, isLoading, trailerMovie, steps, startGuide } = this.state
 
     //get moviedetaildata from redux stored in props
-    const { movieDetail: { data: movieDetailData } } = this.props;
-    const bannerImage =
-      movieDetailData.length > 0
-        ? movieDetailData[0].images.cover.background.desktop.landscape
-        : null;
-    let isBannerError = false;
+    const { movieDetail: { data: movieDetailData } } = this.props
+    const bannerImage = movieDetailData.length > 0 ? movieDetailData[0].images.cover.background.desktop.landscape : null
+    let isBannerError = false
     if (!isLoading) {
-      isBannerError =
-        movieDetailData.length > 0 &&
-        movieDetailData[0].images.cover.background.desktop.landscape
-          ? false
-          : true;
+      isBannerError = movieDetailData.length > 0 && movieDetailData[0].images.cover.background.desktop.landscape ? false : true
     }
 
-    const isDark = movieDetailData.length > 0 && movieDetailData[0].isDark;
+    const isDark = movieDetailData.length > 0 && movieDetailData[0].isDark
 
-    const bannerImgTitle =
-      movieDetailData.length > 0 ? movieDetailData[0].title : null;
-    const link =
-      movieDetailData.length > 0
-        ? '/movie-player/' + movieDetailData[0].id
-        : '';
+    const bannerImgTitle = movieDetailData.length > 0 ? movieDetailData[0].title : null
+    const link = movieDetailData.length > 0 ? '/movie-player/' + movieDetailData[0].id : ''
 
-    const synopsisContent =
-      movieDetailData.length > 0 ? movieDetailData[0].description : null;
+    const synopsisContent = movieDetailData.length > 0 ? movieDetailData[0].description : null
 
     // Trailer copy toogle
-    const trailerDt =
-      movieDetailData.length > 0 ? movieDetailData[0].trailers : [];
-    const trailerDtPlaceholder = [1, 2];
-    const trailerIsHide =
-      movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : [];
-    const trailerIsShow =
-      movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : [];
+    const trailerDt = movieDetailData.length > 0 ? movieDetailData[0].trailers : []
+    const trailerDtPlaceholder = [1, 2]
+    const trailerIsHide = movieDetailData.length > 0 ? movieDetailData[0].trailers.length < 0 : []
+    const trailerIsShow = movieDetailData.length > 0 ? movieDetailData[0].trailers.length > 0 : []
 
     // css toogle
-    let ifOne =
-      trailerDt.length === 1
-        ? s.trailer_photo_container + ' ' + s.trailer_ifone
-        : s.trailer_photo_container;
+    let ifOne = trailerDt.length === 1 ? s.trailer_photo_container + ' ' + s.trailer_ifone : s.trailer_photo_container
 
     // trailer temporary image
-    const temporaryImg = TrailerImg;
+    const temporaryImg = require('../../../global/style/icons/unavailable-image.png')
 
     const customTourStyle = {
       buttonNext: {
@@ -294,17 +262,17 @@ class Moviedetail extends Component {
         textTransform: 'uppercase',
         letterSpacing: '1.67px',
         borderRadius: '30px',
-        fontWeight: '600'
+        fontWeight: '600',
       },
       buttonBack: {
         color: '#000000',
         fontSize: '1.06rem',
         textTransform: 'uppercase',
         letterSpacing: '1.67px',
-        fontWeight: '600'
+        fontWeight: '600',
       },
       buttonClose: {
-        display: 'none'
+        display: 'none',
       },
       buttonSkip: {
         color: '#000000',
@@ -312,7 +280,7 @@ class Moviedetail extends Component {
         fontSize: '1.06rem',
         textTransform: 'uppercase',
         letterSpacing: '1.67px',
-        padding: '0'
+        padding: '0',
       },
       tooltipContent: {
         fontSize: '1.06rem',
@@ -320,74 +288,42 @@ class Moviedetail extends Component {
         textAlign: 'left',
         color: '#858585',
         lineHeight: '1.2rem',
-        letterSpacing: '0.5px'
+        letterSpacing: '0.5px',
       },
       tooltipTitle: {
         fontSize: '1.15rem',
         textAlign: 'left',
         margin: '0px 0px 8px',
         letterSpacing: '0.59px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
       },
       tooltipFooter: {
-        flexDirection: 'row-reverse'
+        flexDirection: 'row-reverse',
       },
       overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.6)'
-      }
-    };
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      },
+    }
 
     return (
       <Fragment>
         <Layout>
-          <Header
-            logoOff
-            stickyOff
-            libraryOff
-            searchOff
-            profileOff
-            isMobile
-            isDark={isDark}
-            backButtonOn
-            shareButtonOn
-            {...this.props}
-          />
+          <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={isDark} backButtonOn shareButtonOn {...this.props} />
           <div className={s.main_container}>
-            {!isLoading && (
-              <Banner
-                isDark={isDark}
-                isBannerError={isBannerError}
-                imageTitle={bannerImgTitle}
-                bannerUrl={bannerImage}
-                link={link}
-              />
-            )}
+            {!isLoading && <Banner isDark={isDark} isBannerError={isBannerError} imageTitle={bannerImgTitle} bannerUrl={bannerImage} link={link} />}
             {isLoading && <BannerLoading />}
 
             {!isLoading &&
               trailerDt.length > 0 && (
-                <Trailer
-                  trailerTitle={trailerCopy}
-                  trailerText={!trailerIsHide}
-                >
+                <Trailer trailerTitle={trailerCopy} trailerText={!trailerIsHide}>
                   <div className={s.trailer_moviebox}>
                     {trailerDt.map(obj => (
                       <LazyLoad
                         key={obj.toString()}
                         containerClassName={ifOne}
-                        alt={
-                          !obj.movieImageAlt
-                            ? 'Movie trailer'
-                            : obj.movieImageAlt
-                        }
-                        src={
-                          !obj.attributes.coverUrl
-                            ? temporaryImg
-                            : obj.attributes.coverUrl
-                        }
-                        onClick={() =>
-                          this.onOpenModal(obj.attributes.streamSourceUrl)
-                        }
+                        alt={!obj.movieImageAlt ? 'Movie trailer' : obj.movieImageAlt}
+                        src={!obj.attributes.coverUrl ? temporaryImg : obj.attributes.coverUrl}
+                        onClick={() => this.onOpenModal(obj.attributes.streamSourceUrl)}
                         className={s.trailerImage}
                       >
                         <p className={s.trailer_playtag}>{obj.trailerCopy}</p>
@@ -398,27 +334,15 @@ class Moviedetail extends Component {
               )}
             {isLoading && (
               <Trailer trailerTitle={trailerCopy} trailerText={true}>
-                <div className={s.trailer_moviebox}>
-                  {trailerDtPlaceholder.map(obj => (
-                    <LoadingPlaceholder
-                      key={obj.toString()}
-                      isLight
-                      className={s.trailer_moviebox_imgloading}
-                    />
-                  ))}
-                </div>
+                <div className={s.trailer_moviebox}>{trailerDtPlaceholder.map(obj => <LoadingPlaceholder key={obj.toString()} isLight className={s.trailer_moviebox_imgloading} />)}</div>
               </Trailer>
             )}
             {isLoading && <SynopsisLoading synopsisContent={synopsisContent} />}
-            {!isLoading &&
-              synopsisContent && <Synopsis synopsisContent={synopsisContent} />}
+            {!isLoading && synopsisContent && <Synopsis synopsisContent={synopsisContent} />}
             {!isLoading && this.renderCharacters()}
           </div>
           <div className={s.movie_detail__button_wrapper}>
-            <Link
-              className={`playButton ${s.movie_detail__button_play}`}
-              to={link}
-            >
+            <Link className={`playButton ${s.movie_detail__button_play}`} to={link}>
               Play Movie
             </Link>
           </div>
@@ -462,11 +386,7 @@ class Moviedetail extends Component {
           )} */}
           <Modal open={open} onClose={this.onCloseModal} center>
             <div className={s.modal_container}>
-              <Theoplayer
-                movieUrl={trailerMovie}
-                handleOnPlay={this.handleOnPlay}
-                handleOnTime={this.handleOnTime}
-              />
+              <Theoplayer movieUrl={trailerMovie} handleOnPlay={this.handleOnPlay} handleOnTime={this.handleOnTime} />
             </div>
           </Modal>
         </Layout>
@@ -481,22 +401,18 @@ class Moviedetail extends Component {
           callback={this.handleTourCallback}
         />
       </Fragment>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
-    ...state
-  };
+    ...state,
+  }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMovieDetail: movieId =>
-    dispatch(movieDetailActions.getMovieDetail(movieId))
-});
+  getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
+})
 
-export default compose(
-  withStyles(s),
-  connect(mapStateToProps, mapDispatchToProps)
-)(Moviedetail);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Moviedetail)
