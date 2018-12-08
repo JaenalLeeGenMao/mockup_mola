@@ -1,21 +1,15 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import LazyLoad from '@components/common/Lazyload'
 
-import { setMultilineEllipsis, unsetMultilineEllipsis } from '../util'
+import { setMultilineEllipsis, unsetMultilineEllipsis } from '@routes/movie-detail/util'
 
-import s from './Synopsis.css'
+import s from './synopsis.css'
 
 class Synopsis extends Component {
   state = {
     show: false,
-  }
-
-  static propTypes = {
-    synopsisContent: PropTypes.string.isRequired,
-    directedBy: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   componentDidMount() {
@@ -27,11 +21,11 @@ class Synopsis extends Component {
   }
 
   render() {
-    const { synopsisContent } = this.props,
+    const { content } = this.props,
       { show } = this.state
 
     if (show) {
-      unsetMultilineEllipsis('synopsis__info_content', synopsisContent)
+      unsetMultilineEllipsis('synopsis__info_content', content)
     }
 
     return (
@@ -41,7 +35,7 @@ class Synopsis extends Component {
             <div className={s.synopsis__info_icon} />
             <span>info</span>
           </div>
-          <p className={`synopsis__info_content ${show ? s.show : ''}`}>{synopsisContent}</p>
+          <p className={`synopsis__info_content ${show ? s.show : ''}`}>{content}</p>
           {!show && (
             <button className={s.synopsis__info_read_more} onClick={this.handleClick}>
               Read More <div className={s.expand_collapse} />

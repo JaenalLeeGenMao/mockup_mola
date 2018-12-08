@@ -1,49 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import _get from 'lodash/get'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
 
+import Header from '@components/Header'
+// import Theoplayer from '@components/Theoplayer'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
-import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
+import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
 
 import { handleTracker } from './tracker'
 
-import {
-  playButton,
-  movieDetailContainer,
-  controllerContainer,
-  videoPlayerContainer,
-  videoSuggestionContainer,
-  videoSuggestionWrapper,
-  videoSuggestionPlayer,
-  videoSuggestionPlayerDetail,
-  videoSuggestionTitle,
-} from './style'
+import { playButton, movieDetailContainer, videoPlayerContainer, videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 const VideoThumbnail = getComponent('video-thumbnail')
-
-const Controller = ({ isActive = 'overview', onClick }) => {
-  return (
-    <div className={controllerContainer}>
-      <div className={isActive === 'overview' ? 'active' : ''} onClick={() => onClick('overview')}>
-        overview
-      </div>
-      <div className={isActive === 'trailers' ? 'active' : ''} onClick={() => onClick('trailers')}>
-        trailers
-      </div>
-      <div className={isActive === 'review' ? 'active' : ''} onClick={() => onClick('review')}>
-        review
-      </div>
-    </div>
-  )
-}
 
 const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
   return (
@@ -111,10 +88,6 @@ class MovieDetail extends Component {
     // }
   }
 
-  handleControllerClick = name => {
-    this.setState({ isControllerActive: name })
-  }
-
   handleOnVideoPause = (payload = false, player) => {
     this.handleOnTimePerMinute({ action: 'pause' })
     this.setState({ toggleSuggestion: true })
@@ -135,54 +108,44 @@ class MovieDetail extends Component {
     this.handleOnTimePerMinute({ action: 'closed' })
     window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
   }
-  // isTheoPlayer() {
-  //   const { movieStream: { data: movieStream } } = this.props;
-  //   const subtitlesDt = movieStream.length > 0 ? movieStream[0].subtitles : '';
-
-  //   const myTheoPlayer = subtitlesDt.map(obj => ({
-  //     kind: obj.type,
-  //     srclang: obj.attributes.locale,
-  //     src: obj.attributes.url,
-  //     label: obj.attributes.label
-  //   }));
-
-  //   return myTheoPlayer;
-  // }
 
   render() {
     const { isControllerActive, movieDetail, toggleSuggestion } = this.state
     const apiFetched = movieDetail.meta.status === 'success' && movieDetail.data.length > 0
     const dataFetched = apiFetched ? movieDetail.data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+
     return (
       <>
         {dataFetched && (
-          <div className={movieDetailContainer}>
-            <div className={videoPlayerContainer}>
-              <Theoplayer
-                className={customTheoplayer}
-                // theoConfig={this.isTheoPlayer()}
-                poster={poster}
-                autoPlay={false}
-                movieUrl={streamSource}
-                handleOnVideoPause={this.handleOnVideoPause}
-                handleOnVideoPlay={this.handleOnVideoPlay}
-                showChildren
-              >
-                {toggleSuggestion && (
-                  <LazyLoad containerClassName={videoSuggestionContainer}>
-                    <h2 className={videoSuggestionTitle}>Suggestions</h2>
-                    <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                  </LazyLoad>
-                )}
-              </Theoplayer>
+          <>
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={dataFetched.isDark} backButtonOn shareButtonOn {...this.props} />
+            <div className={movieDetailContainer}>
+              <div className={videoPlayerContainer}>
+                <Theoplayer
+                  className={customTheoplayer}
+                  // theoConfig={this.isTheoPlayer()}
+                  poster={poster}
+                  autoPlay={false}
+                  movieUrl={streamSource}
+                  handleOnVideoPause={this.handleOnVideoPause}
+                  handleOnVideoPlay={this.handleOnVideoPlay}
+                  showBackBtn={false}
+                  showChildren
+                >
+                  {toggleSuggestion && (
+                    <LazyLoad containerClassName={videoSuggestionContainer}>
+                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
+                    </LazyLoad>
+                  )}
+                </Theoplayer>
+              </div>
+              <ContentSynopsis content={dataFetched.description} />
+              <ContentCreator people={dataFetched.people} />
             </div>
-            {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
-            {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}
-            {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
-            <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
-          </div>
+          </>
         )}
       </>
     )
