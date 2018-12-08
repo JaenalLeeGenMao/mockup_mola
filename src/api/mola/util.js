@@ -212,13 +212,14 @@ const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, images, quotes, trailers, description, streamSourceUrl, subtitles, people, isDark, year, duration } } = result
+      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, isDark, year, duration } } = result
       return {
         id,
         title,
         quotes,
         trailers,
         description,
+        source,
         streamSourceUrl,
         subtitles,
         people,

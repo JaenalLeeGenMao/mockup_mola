@@ -14,10 +14,10 @@ export const customTheoplayer = css`
       color: #fff !important;
     }
 
-    // &.video-container .theoplayer-poster {
-    //   background-position: center !important;
-    //   background-size: cover !important;
-    // }
+    &.video-container .theoplayer-poster {
+      //   background-position: center !important;
+      background-size: cover !important;
+    }
 
     &.video-container .vjs-play-progress {
       color: #0070b2 !important;
@@ -50,7 +50,7 @@ export const customTheoplayer = css`
     @media (max-width: 640px) {
       &.video-container,
       &.video-container.video-js.vjs-fluid {
-        height: 90vh !important;
+        height: 15.4rem !important;
         width: 100vw;
       }
 
