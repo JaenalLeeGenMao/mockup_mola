@@ -6,7 +6,7 @@ import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
 
 import Header from '@components/Header'
-// import Theoplayer from '@components/Theoplayer'
+import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
@@ -147,6 +147,7 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
+        {!dataFetched && <MovieDetailError message={movieDetail.meta.error} />}
       </>
     )
   }
