@@ -152,8 +152,9 @@ class MovieDetail extends Component {
 
   render() {
     const { isControllerActive, movieDetail, toggleSuggestion } = this.state
-    const apiFetched = movieDetail.meta.status === 'success' && movieDetail.data.length > 0
-    const dataFetched = apiFetched ? movieDetail.data[0] : undefined
+    const { meta: { status }, data } = movieDetail
+    const apiFetched = status === 'success' && data.length > 0
+    const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
@@ -186,7 +187,7 @@ class MovieDetail extends Component {
             <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
           </div>
         )}
-        {!dataFetched && <MovieDetailError message={movieDetail.meta.error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={movieDetail.meta.error} />}
       </>
     )
   }

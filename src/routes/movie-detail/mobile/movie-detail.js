@@ -43,7 +43,6 @@ class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
     movieDetail: [],
-    isControllerActive: 'overview',
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -110,9 +109,10 @@ class MovieDetail extends Component {
   }
 
   render() {
-    const { isControllerActive, movieDetail, toggleSuggestion } = this.state
-    const apiFetched = movieDetail.meta.status === 'success' && movieDetail.data.length > 0
-    const dataFetched = apiFetched ? movieDetail.data[0] : undefined
+    const { movieDetail, toggleSuggestion } = this.state
+    const { meta: { status }, data } = movieDetail
+    const apiFetched = status === 'success' && data.length > 0
+    const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
@@ -147,7 +147,7 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {!dataFetched && <MovieDetailError message={movieDetail.meta.error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={movieDetail.meta.error} />}
       </>
     )
   }
