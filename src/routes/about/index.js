@@ -7,21 +7,25 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Layout from '@components/Molalayout';
-import Page from '../../components/Page';
-import about from './about.md';
+import React from 'react'
+import Layout from '@components/Molalayout'
+import Page from '../../components/Page'
+import about from './about.md'
+
+const title = 'About Page'
+const description = 'Daily dose of Mola TV'
 
 function action() {
   return {
     chunks: ['about'],
-    title: about.title,
+    title,
+    description,
     component: (
       <Layout>
         <Page {...about} />
       </Layout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

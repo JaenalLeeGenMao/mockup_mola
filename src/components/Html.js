@@ -35,7 +35,7 @@ class Html extends React.Component {
   static isMobile = true
 
   render() {
-    const { title, description, styles, scripts, app, children } = this.props
+    const { title, description, url, styles, scripts, app, children } = this.props
     return (
       <html className="no-js" lang="en">
         <head>
@@ -43,14 +43,20 @@ class Html extends React.Component {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <title>{title}</title>
+          <title>{`Mola TV - ${title}`}</title>
           <meta name="description" content={`Mola, Mola TV, Mola Sport, Mola Channel, TV, sport, premiere league, ${description}`} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta
             name="keywords"
-            content="Mola, Mola TV, mola, mola tv, molatv, mola.tv, mola premiere, mola premiere league, premiere league, watch mola, watch movies, movies online, watch TV, watch Mola TV, TV online, TV shows online, watch TV shows, stream movies, stream tv, instant streaming, watch online, movies, watch movies Indonesia, watch TV online, no download, full length movies"
+            content="Mola, Mola TV, mola, mola tv, molatv, mola.tv, mola premiere, mola premiere league, premiere league, watch mola, watch movies, movies online, watch TV, watch Mola TV, Mola online, Mola TV online, watch Mola TV shows, stream Mola movies, watch online, movies, watch Mola online, watch Mola TV online"
           />
           <meta name="robots" content="index, follow" />
+          <meta property="og:site_name" content="Mola TV" />
+          <meta property="og:title" content={`Mola TV - ${description}`} />
+          <meta property="og:description" content={description} />
+          <meta property="og:image" content="https://mola.tv/assets/da6c98c2.svg" />
+          <meta property="og:url" content={'https://mola.tv/' || url} />
+          <meta property="og:type" content="website" />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
