@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
 
+import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
@@ -155,6 +156,7 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? movieDetail.data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+
     return (
       <>
         {dataFetched && (
@@ -184,6 +186,7 @@ class MovieDetail extends Component {
             <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
           </div>
         )}
+        {!dataFetched && <MovieDetailError message={movieDetail.meta.error} />}
       </>
     )
   }
