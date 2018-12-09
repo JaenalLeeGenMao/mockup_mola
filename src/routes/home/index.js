@@ -7,14 +7,18 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import HomeDesktop from './desktop';
-import HomeMobile from './mobile';
-import MolaLayout from '@components/Molalayout';
+import React from 'react'
+import HomeDesktop from './desktop'
+import HomeMobile from './mobile'
+import MolaLayout from '@components/Molalayout'
+
+const title = 'Homepage'
+const description = 'Watch TV Shows Online, Watch Movies Online'
 
 async function action({ isMobile }) {
   return {
-    title: 'Mola - Watch TV Shows Online, Watch Movies Online',
+    title,
+    description,
     chunks: ['home'],
     component: isMobile ? (
       <MolaLayout>
@@ -24,8 +28,8 @@ async function action({ isMobile }) {
       <MolaLayout>
         <HomeDesktop />
       </MolaLayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

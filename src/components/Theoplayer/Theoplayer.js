@@ -1,20 +1,20 @@
-import React, { Component, Fragment } from 'react';
-import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
-import history from '../../history';
+import React, { Component, Fragment } from 'react'
+import { Helmet } from 'react-helmet'
+import PropTypes from 'prop-types'
+import history from '../../history'
 
-import { theoScripts, theoStyle, theoLibraryLocation } from './config';
+import { theoScripts, theoStyle, theoLibraryLocation } from './config'
 
-import playerArrow from './assets/arrowback.png';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Theoplayer.css';
+import playerArrow from './assets/arrowback.png'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import s from './Theoplayer.css'
 
 class Theoplayer extends Component {
   state = {
     toggleArrow: '',
     isTheoplayerLoaded: false,
-    isFullscreen: false
-  };
+    isFullscreen: false,
+  }
 
   static propTypes = {
     movieUrl: PropTypes.string.isRequired,
@@ -23,173 +23,173 @@ class Theoplayer extends Component {
     // subTitleUrl: PropTypes.string.isRequired,
     // srclang: PropTypes.string.isRequired,
     isTrailer: PropTypes.bool.isRequired,
-    theoConfig: PropTypes.array.isRequired
-  };
+    theoConfig: PropTypes.array.isRequired,
+  }
 
   configTheoPlayer = () => {
     const playerConfig = {
       libraryLocation: theoLibraryLocation,
       ui: {
-        fluid: true
-      }
-    };
-    this.theoPlayer = new window.THEOplayer.Player(this.containerPlayer, playerConfig);
-    return this.theoPlayer;
-  };
+        fluid: true,
+      },
+    }
+    this.theoPlayer = new window.THEOplayer.Player(this.containerPlayer, playerConfig)
+    return this.theoPlayer
+  }
 
   configVideoPlayer = () => {
     this.player.source = {
       sources: [
         {
           src: this.props.movieUrl,
-          type: 'application/x-mpegurl' // sets type to HLS
-        }
+          type: 'application/x-mpegurl', // sets type to HLS
+        },
       ],
-      textTracks: this.props.theoConfig
-    };
-  };
+      textTracks: this.props.theoConfig,
+    }
+  }
 
   loadTheoPlayer() {
-    const { autoPlay, noPause, allowMutedAutoplay, showReplayButton, callbackOnPlay, handleTheoplayerLoaded } = this.props;
+    const { autoPlay, noPause, allowMutedAutoplay, showReplayButton, callbackOnPlay, handleTheoplayerLoaded } = this.props
 
-    this.player = this.configTheoPlayer();
-    this.configVideoPlayer();
-    this.player.muted = true;
+    this.player = this.configTheoPlayer()
+    this.configVideoPlayer()
+    this.player.muted = true
     if (autoPlay) {
       if (allowMutedAutoplay) {
-        this.player.muted = true;
+        this.player.muted = true
       }
-      this.player.play();
+      this.player.play()
     }
 
-    const that = this;
+    const that = this
     this.player.addEventListener('pause', function() {
       if (noPause) {
-        that.player.play();
+        that.player.play()
       }
-    });
+    })
 
     this.player.addEventListener('ended', function() {
       // console.log("ENDED")
       if (showReplayButton) {
-        that.player.stop();
+        that.player.stop()
         this.setState({
-          isEnded: true
-        });
+          isEnded: true,
+        })
       }
-    });
+    })
 
     this.player.addEventListener('playing', function() {
       if (callbackOnPlay) {
         // console.log("MASUKKKK")
-        callbackOnPlay(true);
+        callbackOnPlay(true)
       }
-    });
+    })
 
-    this.setState({ isTheoplayerLoaded: true });
-    handleTheoplayerLoaded(true);
+    this.setState({ isTheoplayerLoaded: true })
+    handleTheoplayerLoaded(true)
   }
 
   loadDynamicScript = () => {
-    let existingScript = true;
+    let existingScript = true
     theoScripts.map(dt => {
-      const el = document.getElementById(dt.id);
-      const elExist = el ? true : false;
-      existingScript = existingScript && elExist;
-    });
+      const el = document.getElementById(dt.id)
+      const elExist = el ? true : false
+      existingScript = existingScript && elExist
+    })
 
     if (!existingScript) {
-      const scriptCount = theoScripts.length;
-      let loadedScriptCount = 0;
+      const scriptCount = theoScripts.length
+      let loadedScriptCount = 0
       theoScripts.map(dt => {
-        const script = document.createElement('script');
-        script.src = dt.src;
-        script.id = dt.id;
-        document.body.appendChild(script);
+        const script = document.createElement('script')
+        script.src = dt.src
+        script.id = dt.id
+        document.body.appendChild(script)
         script.onload = () => {
-          loadedScriptCount += 1;
+          loadedScriptCount += 1
           if (loadedScriptCount >= scriptCount) {
-            this.loadTheoPlayer();
+            this.loadTheoPlayer()
           }
-        };
-      });
+        }
+      })
     } else {
-      this.loadTheoPlayer();
+      this.loadTheoPlayer()
     }
-    return false;
-  };
+    return false
+  }
 
   loadDynamicStyle = () => {
-    let existingStyle = true;
+    let existingStyle = true
     theoStyle.map(dt => {
-      const el = document.getElementById(dt.id);
-      const elExist = el ? true : false;
-      existingStyle = existingStyle && elExist;
-    });
+      const el = document.getElementById(dt.id)
+      const elExist = el ? true : false
+      existingStyle = existingStyle && elExist
+    })
 
     if (!existingStyle) {
       theoStyle.map(dt => {
-        const head = document.getElementsByTagName('head')[0];
-        const link = document.createElement('link');
-        link.id = dt.id;
-        link.rel = dt.rel;
-        link.type = dt.type;
-        link.href = dt.href;
-        link.media = dt.media;
-        head.appendChild(link);
-      });
+        const head = document.getElementsByTagName('head')[0]
+        const link = document.createElement('link')
+        link.id = dt.id
+        link.rel = dt.rel
+        link.type = dt.type
+        link.href = dt.href
+        link.media = dt.media
+        head.appendChild(link)
+      })
     }
-  };
+  }
 
   componentDidMount() {
-    this.loadDynamicStyle();
-    this.loadDynamicScript();
-    this.loadFullscreenEvent();
+    this.loadDynamicStyle()
+    this.loadDynamicScript()
+    this.loadFullscreenEvent()
   }
 
   componentWillUnmount() {
     if (this.player) {
-      window.screen.orientation.unlock();
-      this.player.destroy();
+      window.screen.orientation.unlock()
+      this.player.destroy()
     }
   }
 
   loadFullscreenEvent = () => {
-    ['', 'webkit', 'moz', 'ms'].forEach(prefix => document.addEventListener(prefix + 'fullscreenchange', this.handleFullscreen, false));
-  };
+    ;['', 'webkit', 'moz', 'ms'].forEach(prefix => document.addEventListener(prefix + 'fullscreenchange', this.handleFullscreen, false))
+  }
 
   handleFullscreen = () => {
-    const { isFullscreen } = this.state;
+    const { isFullscreen } = this.state
     this.setState({ isFullscreen: !isFullscreen }, () => {
       if (!isFullscreen) {
-        window.screen.orientation.lock('landscape');
+        window.screen.orientation.lock('landscape')
       } else {
-        window.screen.orientation.unlock();
+        window.screen.orientation.unlock()
       }
-    });
-  };
+    })
+  }
 
   handleGoBack = () => {
-    const { goBack } = history;
+    const { goBack } = history
     if (goBack) {
-      goBack();
+      goBack()
     }
-  };
+  }
 
   getToggleArrow = () => {
     if (!this.state.toggleArrow) {
       this.setState(
         {
-          toggleArrow: s.arrow_show
+          toggleArrow: s.arrow_show,
         },
         () => {
           setTimeout(() => {
-            this.setState({ toggleArrow: '' });
-          }, 5000);
+            this.setState({ toggleArrow: '' })
+          }, 5000)
         }
-      );
+      )
     }
-  };
+  }
 
   render() {
     // const addOnClass = `${s.mola_frame}`;
@@ -201,14 +201,14 @@ class Theoplayer extends Component {
     //       {/* <script src="https://cdn.theoplayer.com/dash/2a34c3ad-fc3b-4da9-b399-bccdff7c65fd/THEOplayer.js" /> */}
     //       {/* <script src="https://cdn.theoplayer.com/dash/theoplayer/THEOplayer.js" /> */}
     //     {/* </Helmet> */}
-    const { toggleArrow } = this.state;
+    const { toggleArrow } = this.state
     return (
       <div
         className="video-container video-js theoplayer-skin"
         onMouseMove={this.getToggleArrow}
         onMouseLeave={this.getToggleArrow}
         ref={el => {
-          this.containerPlayer = el;
+          this.containerPlayer = el
         }}
       >
         {this.props.isTrailer && (
@@ -217,8 +217,8 @@ class Theoplayer extends Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(s)(Theoplayer);
+export default withStyles(s)(Theoplayer)

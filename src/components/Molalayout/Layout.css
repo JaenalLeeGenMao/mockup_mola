@@ -8,6 +8,7 @@ html {
 html,
 body {
   height: 100%;
+  background: #000311;
 }
 
 /*
@@ -39,6 +40,13 @@ a {
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {
     font-size: 82.5%;
+  }
+}
+
+/* Mac Styles */
+@media screen and (min-height: 1599px) and (max-height: 1800px) {
+  html {
+    font-size: 125%;
   }
 }
 

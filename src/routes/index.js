@@ -36,6 +36,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'contact' */ './contact'),
     },
     {
+      path: '/accounts/inbox',
+      load: () => import(/* webpackChunkName: 'inbox' */ './inbox'),
+    },
+    {
       path: '/accounts/login',
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },

@@ -1,18 +1,22 @@
-import React from 'react';
-import SystemInfo from './system-info';
+import React from 'react'
+import SystemInfo from './system-info'
 
-import MolaLayout from '@components/Molalayout';
+import MolaLayout from '@components/Molalayout'
+
+const title = 'SystemInfo Page'
+const description = 'Info Usage OS details'
 
 async function action({ isMobile }) {
   return {
     chunks: ['system-info'],
-    title: 'Mola - System Info',
+    title,
+    description,
     component: (
       <MolaLayout>
         <SystemInfo isMobile={isMobile} />
       </MolaLayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

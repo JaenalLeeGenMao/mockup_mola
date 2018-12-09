@@ -20,15 +20,17 @@ import Link from '@components/Link'
 import HomeError from '@components/common/error'
 import styles from './not-found.css'
 
-const RelatedVideos = ({ style = {}, className = '', videos = [] }) => {
+const RelatedVideos = ({ style = {}, containerClassName = '', className = '', detailClassName = '', videos = [] }) => {
   const VideoThumbnail = getComponent('video-thumbnail')
   return (
-    <div className={`${className} ${styles.video_container}`} style={style}>
+    <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
         const imageSource = background.desktop.landscape || require('@global/style/icons/unavailable-image.png')
         return (
-          <Link to={`/movie-detail/${id}`} key={id} className={styles.video_wrapper}>
-            <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" />
+          <Link to={`/movie-detail/${id}`} key={id} className={className}>
+            <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={detailClassName}>
+              <div className={styles.play_button} />
+            </VideoThumbnail>
           </Link>
         )
       })}
@@ -50,7 +52,7 @@ class NotFound extends React.Component {
         <HomeError status={400} message={'Sorry, the page you were trying to view does not exist.'} />
         {this.props.notFound.meta.status === 'success' && (
           <LazyLoad>
-            <RelatedVideos videos={this.props.notFound.data} />
+            <RelatedVideos videos={this.props.notFound.data} containerClassName={styles.video_container} className={styles.video_wrapper} detailClassName={styles.video_detail_wrapper} />
           </LazyLoad>
         )}
       </Fragment>

@@ -27,11 +27,14 @@ html {
   line-height: 1.375; /* ~22px */
 }
 
-html, body{
+html,
+body {
   height: 100%;
+  background: #000311;
 }
 
-div, body {
+div,
+body {
   margin: 0;
   padding: 0;
 }
