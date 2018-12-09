@@ -7,14 +7,18 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import ErrorPage from './ErrorPage';
+import React from 'react'
+import ErrorPage from './ErrorPage'
+
+const title = 'Error Page'
+const description = 'Mola unable to resolve current page'
 
 function action() {
   return {
-    title: 'Demo Error',
+    title,
+    description,
     component: <ErrorPage />,
-  };
+  }
 }
 
-export default action;
+export default action

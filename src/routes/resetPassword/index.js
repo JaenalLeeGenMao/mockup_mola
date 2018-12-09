@@ -7,17 +7,19 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Molalayout from '@components/Molalayout';
-import ResetDesktop from './desktop/Reset';
-import ResetMobile from './mobile/Reset';
+import React from 'react'
+import Molalayout from '@components/Molalayout'
+import ResetDesktop from './desktop/Reset'
+import ResetMobile from './mobile/Reset'
 
-const title = 'Reset Password';
+const title = 'Reset Password Page'
+const description = "Reset password couldn't be easier with Mola"
 
 function action({ isMobile }) {
   return {
     chunks: ['resetPassword'],
     title,
+    description,
     component: isMobile ? (
       <Molalayout>
         <ResetMobile />
@@ -26,8 +28,8 @@ function action({ isMobile }) {
       <Molalayout>
         <ResetDesktop />
       </Molalayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

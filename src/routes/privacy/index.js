@@ -7,21 +7,25 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Layout from '@components/Molalayout';
-import Page from '../../components/Page';
-import privacy from './privacy.md';
+import React from 'react'
+import Layout from '@components/Molalayout'
+import Page from '../../components/Page'
+import privacy from './privacy.md'
+
+const title = 'Privacy Page'
+const description = 'Privacy Policy'
 
 function action() {
   return {
     chunks: ['privacy'],
-    title: privacy.title,
+    title,
+    description,
     component: (
       <Layout>
         <Page {...privacy} />
       </Layout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

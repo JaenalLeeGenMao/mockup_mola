@@ -12,11 +12,13 @@ import Layout from '@components/Molalayout'
 import NotFound from './not-found'
 
 const title = 'Page Not Found'
+const description = 'Missing page'
 
 function action() {
   return {
     chunks: ['not-found'],
     title,
+    description,
     component: (
       <Layout>
         <NotFound title={title} />

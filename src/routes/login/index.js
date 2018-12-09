@@ -7,16 +7,18 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import LoginMobile from './mobile/Login';
-import LoginDesktop from './desktop/Login';
-import Molalayout from '@components/Molalayout';
+import React from 'react'
+import LoginMobile from './mobile/Login'
+import LoginDesktop from './desktop/Login'
+import Molalayout from '@components/Molalayout'
 
-const title = 'Log In';
+const title = 'Login'
+const description = 'Login to watch premium HD videos'
 
 function action({ isMobile }) {
   return {
     title,
+    description,
     chunks: ['login'],
     component: isMobile ? (
       <Molalayout>
@@ -26,8 +28,8 @@ function action({ isMobile }) {
       <Molalayout>
         <LoginDesktop />
       </Molalayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action
