@@ -12,6 +12,8 @@ import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
 import config from '../config'
 
+import yoastSEOPlugin from './yoastSEOPlugin.json'
+
 class Html extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
@@ -36,6 +38,7 @@ class Html extends React.Component {
 
   render() {
     const { title, description, url, styles, scripts, app, children } = this.props
+
     return (
       <html className="no-js" lang="en">
         <head>
@@ -44,12 +47,9 @@ class Html extends React.Component {
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="mobile-web-app-capable" content="yes" />
           <title>{`Mola TV - ${title}`}</title>
-          <meta name="description" content={`Mola, Mola TV, Mola Sport, Mola Channel, TV, sport, premiere league, ${description}`} />
+          <meta name="description" content={`Mola TV, Mola Sport, Premier League, Daniel Fisher, Sport, ${description}`} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta
-            name="keywords"
-            content="Mola, Mola TV, MolaTV, mola, mola tv, molatv, mola.tv, www.mola.tv, mola premiere, mola premier league, premier league, watch mola, watch movies, movies online, watch TV, watch Mola TV, Mola online, Mola TV online, watch Mola TV shows, stream Mola movies, watch online, movies, watch Mola online, watch Mola TV online"
-          />
+          <meta name="keywords" content="Mola TV, Mola Sport, Premier League, Daniel Fisher, Sport, Ocean sunfish" />
           <meta name="robots" content="index, follow" />
           <meta name="googlebot" content="index,follow" />
           <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
@@ -59,6 +59,9 @@ class Html extends React.Component {
           <meta property="og:image" content="https://mola.tv/assets/da6c98c2.svg" />
           <meta property="og:url" content={'https://mola.tv/' || url} />
           <meta property="og:type" content="website" />
+          <meta name="referrer" content="origin" />
+          <meta name="referrer" content="origin-when-cross-origin" />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />

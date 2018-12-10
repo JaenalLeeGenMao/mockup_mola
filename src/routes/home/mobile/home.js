@@ -79,13 +79,13 @@ class Home extends Component {
         placement: 'bottom',
         disableBeacon: true,
       },
-      {
-        target: '.tourMovieDiscover',
-        title: 'Discover Our Movie',
-        content: 'Click this button to discover our awesome list of movies',
-        placement: 'top',
-        disableBeacon: true,
-      },
+      // {
+      //   target: '.tourMovieDiscover',
+      //   title: 'Discover Our Movie',
+      //   content: 'Click this button to discover our awesome list of movies',
+      //   placement: 'top',
+      //   disableBeacon: true,
+      // },
       {
         target: '.tourMovieDetail',
         title: 'View Movie Detail',
