@@ -1,0 +1,15 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "molatv",
+  "url": "https://mola.tv",
+  "sameAs": [
+    "https://www.facebook.com/molaTV",
+    "https://twitter.com/molaTV",
+    "https://instagram.com/molaTV",
+    "https://www.youtube.com/user/molaTV",
+    "https://www.pinterest.com/molaTV",
+    "https://plus.google.com/+molaTV"
+  ],
+  "logo": "https://mola.tv/assets/da6c98c2.svg"
+}
