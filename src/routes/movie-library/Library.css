@@ -4,10 +4,11 @@
 
 html,
 body {
-  background: transparent;
+  background: white !important;
 }
 
 .main_container {
+  background: white;
   width: 100%;
   margin: 0 auto;
   max-width: 100%;
