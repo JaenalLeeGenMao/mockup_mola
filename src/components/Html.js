@@ -48,9 +48,11 @@ class Html extends React.Component {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta
             name="keywords"
-            content="Mola, Mola TV, mola, mola tv, molatv, mola.tv, mola premiere, mola premiere league, premiere league, watch mola, watch movies, movies online, watch TV, watch Mola TV, Mola online, Mola TV online, watch Mola TV shows, stream Mola movies, watch online, movies, watch Mola online, watch Mola TV online"
+            content="Mola, Mola TV, MolaTV, mola, mola tv, molatv, mola.tv, www.mola.tv, mola premiere, mola premier league, premier league, watch mola, watch movies, movies online, watch TV, watch Mola TV, Mola online, Mola TV online, watch Mola TV shows, stream Mola movies, watch online, movies, watch Mola online, watch Mola TV online"
           />
           <meta name="robots" content="index, follow" />
+          <meta name="googlebot" content="index,follow" />
+          <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
           <meta property="og:site_name" content="Mola TV" />
           <meta property="og:title" content={`Mola TV - ${description}`} />
           <meta property="og:description" content={description} />
