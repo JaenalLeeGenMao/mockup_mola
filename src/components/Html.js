@@ -45,20 +45,26 @@ class Html extends React.Component {
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="#0f4a73" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <title>{`Mola TV - ${title}`}</title>
-          <meta name="description" content={`Mola TV, Mola Sport, Premier League, Daniel Fisher, Sport, ${description}`} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="keywords" content="Mola TV, Mola Sport, Premier League, Daniel Fisher, Sport, Ocean sunfish" />
+          <meta name="keywords" content="molatv mola tv Mola TV Mola Sport molasport Premier League TV Sport M.O.L.A " />
+          <meta name="description" content={`MolaTV Online Now Exclusively Offers Streaming Movies Playlists and MolaSport Premier League on your desktop or mobile device..L.A ${description}`} />
+          <title>{`Mola TV Online - ${title}`}</title>
           <meta name="robots" content="index, follow" />
           <meta name="googlebot" content="index,follow" />
           <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
-          <meta property="og:site_name" content="Mola TV" />
+
+          <meta property="og:site_name" content="MolaTV" />
           <meta property="og:title" content={`Mola TV - ${description}`} />
-          <meta property="og:description" content={description} />
+          <meta
+            property="og:description"
+            content={`MolaTV Online Now Exclusively Offers Streaming Movies Playlists and MolaSport Premier League on your desktop or mobile device..L.A ${description}`}
+          />
           <meta property="og:image" content="https://mola.tv/assets/da6c98c2.svg" />
           <meta property="og:url" content={'https://mola.tv/' || url} />
           <meta property="og:type" content="website" />
+
           <meta name="referrer" content="origin" />
           <meta name="referrer" content="origin-when-cross-origin" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />

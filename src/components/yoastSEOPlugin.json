@@ -3,6 +3,11 @@
   "@type": "Organization",
   "name": "molatv",
   "url": "https://mola.tv",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "/search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
   "sameAs": [
     "https://www.facebook.com/molaTV",
     "https://twitter.com/molaTV",
