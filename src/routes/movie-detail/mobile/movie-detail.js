@@ -65,13 +65,12 @@ class MovieDetail extends Component {
 
   /* eslint-disable */
   handleOnTimePerMinute = ({ action }) => {
-    const currentDuration = document.querySelector('.vjs-current-time-display').innerText || ''
-    const totalDuration = document.querySelector('.vjs-duration-display').innerText || ''
+    const currentDuration = this.player.currentTime || ''
+    const totalDuration = this.player.duration || ''
     const payload = {
       action,
       clientIp: undefined,
       userId: this.props.user.uid,
-      videoType: undefined,
       heartbeat: true,
       window: window,
       currentDuration,
@@ -88,24 +87,20 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
-    this.handleOnTimePerMinute({ action: 'pause' })
+    this.player = player
     this.setState({ toggleSuggestion: true })
   }
 
   handleOnVideoPlay = (payload = true, player) => {
-    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-
-    // ev.preventDefault()
-    // return (ev.returnValue = 'Are you sure you want to close?')
-
-    this.handleOnTimePerMinute({ action: 'play' })
+    this.player = player
     this.setState({ toggleSuggestion: false })
   }
 
-  componentWillUnmount() {
-    this.handleOnTimePerMinute({ action: 'closed' })
-    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+  handleVideoTimeUpdate = (payload = 0, player) => {
+    this.player = player
+    if (Math.round(payload) % 60 === 0) {
+      this.handleOnTimePerMinute({ action: 'timeupdate' })
+    }
   }
 
   render() {
@@ -132,6 +127,7 @@ class MovieDetail extends Component {
                   movieUrl={streamSource}
                   handleOnVideoPause={this.handleOnVideoPause}
                   handleOnVideoPlay={this.handleOnVideoPlay}
+                  handleVideoTimeUpdate={this.handleVideoTimeUpdate}
                   showBackBtn={false}
                   showChildren
                 >

@@ -69,7 +69,7 @@ export const handleTracker = async (data, props) => {
     },
     table: 'event_video_plays',
   }
-  console.log(payload)
+  // console.log(payload)
   const token = await Tracker.getOrCreateToken()
 
   /* Post to ds-feeder */

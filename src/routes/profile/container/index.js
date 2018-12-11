@@ -1,18 +1,18 @@
-import React from 'react';
-import * as filestack from 'filestack-js';
-import dateFormat from 'dateformat';
-import { connect } from 'react-redux';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React from 'react'
+import * as filestack from 'filestack-js'
+import dateFormat from 'dateformat'
+import { connect } from 'react-redux'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components';
-import s from './index.css';
-import { updateProfile, fetchProfile } from '../../../actions/user';
+import { UiInput, UiNavigation, UiRadio, UiDtPicker, UiMobileNav } from '@components'
+import s from './index.css'
+import { updateProfile, fetchProfile } from '../../../actions/user'
 
-const client = filestack.init('AXrDPoUaxQrinUeOmumBnz');
+const client = filestack.init('AXrDPoUaxQrinUeOmumBnz')
 
 class Profile extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       username: '',
       email: '',
@@ -21,101 +21,101 @@ class Profile extends React.Component {
       phoneNumber: '',
       photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
       location: '',
-      disabledEdit: true
-    };
+      disabledEdit: true,
+    }
 
-    this.onChangeInput = this.onChangeInput.bind(this);
-    this.onChangeRadio = this.onChangeRadio.bind(this);
-    this.toggleToEdit = this.toggleToEdit.bind(this);
-    this.changePhoto = this.changePhoto.bind(this);
-    this.changeDate = this.changeDate.bind(this);
-    this.updateProfile = this.updateProfile.bind(this);
+    this.onChangeInput = this.onChangeInput.bind(this)
+    this.onChangeRadio = this.onChangeRadio.bind(this)
+    this.toggleToEdit = this.toggleToEdit.bind(this)
+    this.changePhoto = this.changePhoto.bind(this)
+    this.changeDate = this.changeDate.bind(this)
+    this.updateProfile = this.updateProfile.bind(this)
   }
 
   onChangeInput = e => {
-    const target = e.target;
-    const { id, value } = target;
+    const target = e.target
+    const { id, value } = target
     this.setState({
-      [id]: value
-    });
-  };
+      [id]: value,
+    })
+  }
 
   onChangeRadio = e => {
-    const target = e.target;
-    const { name, value } = target;
+    const target = e.target
+    const { name, value } = target
     this.setState({
-      [name]: value
-    });
-  };
+      [name]: value,
+    })
+  }
 
   toggleToEdit = () => {
     this.setState({
-      disabledEdit: !this.state.disabledEdit
-    });
-  };
+      disabledEdit: !this.state.disabledEdit,
+    })
+  }
 
   changePhoto = e => {
     const options = {
       accept: 'image/*',
       maxFiles: 1,
       onUploadDone: res => {
-        let photo = res.filesUploaded[0].url;
+        let photo = res.filesUploaded[0].url
         this.setState({
-          photo: photo
-        });
-      }
-    };
-    client.picker(options).open();
-  };
+          photo: photo,
+        })
+      },
+    }
+    client.picker(options).open()
+  }
 
   changeDate = date => {
-    let getDate = date.format('YYYY-MM-DD');
+    let getDate = date.format('YYYY-MM-DD')
     this.setState({
-      birthdate: getDate
-    });
-  };
+      birthdate: getDate,
+    })
+  }
 
   componentDidMount() {
-    const profile = this.props.handleFetchProfile();
+    const profile = this.props.handleFetchProfile()
     profile.then(data => {
       if (data) {
-        const payload = Object.assign(this.state, data);
+        const payload = Object.assign(this.state, data)
         this.setState({
-          ...payload
-        });
+          ...payload,
+        })
       }
-    });
+    })
   }
 
   updateProfile(e) {
-    this.props.handleUpdateProfile(this.state);
+    this.props.handleUpdateProfile(this.state)
     this.setState({
-      disabledEdit: true
-    });
+      disabledEdit: true,
+    })
   }
 
   render() {
-    const { isMobile } = this.props;
-    const { username, email, gender, phoneNumber, location, photo, disabledEdit } = this.state;
-    let { birthdate } = this.state;
-    birthdate = dateFormat(new Date(birthdate), 'dd/mm/yyyy');
+    const { isMobile } = this.props
+    const { username, email, gender, phoneNumber, location, photo, disabledEdit } = this.state
+    let { birthdate } = this.state
+    birthdate = dateFormat(new Date(birthdate), 'dd/mm/yyyy')
 
     const menus = [
       {
         title: 'PROFILE',
-        href: '/accounts/profile'
+        href: '/accounts/profile',
       },
       {
         title: 'SECURITY',
-        href: '/accounts/security'
+        href: '/accounts/security',
       },
       {
         title: 'SETTING',
-        href: '/accounts/setting'
-      }
-    ];
+        href: '/accounts/setting',
+      },
+    ]
 
-    const genderArray = [{ value: 'm', label: 'Male' }, { value: 'f', label: 'Female' }];
+    const genderArray = [{ value: 'm', label: 'Male' }, { value: 'f', label: 'Female' }]
 
     return (
       <div>
@@ -128,7 +128,7 @@ class Profile extends React.Component {
             <div className={s.profileArea}>
               <div className={s.profilePhoto}>
                 <div style={{ position: 'relative' }}>
-                  <img src={photo} alt="profile" style={{ width: '14rem', height: '14rem', borderRadius: '50%' }} className={s.imgProfile} />
+                  <img src={photo} alt="mola online profile" style={{ width: '14rem', height: '14rem', borderRadius: '50%' }} className={s.imgProfile} />
                   <button type="button" className={s.btnImage} onClick={this.changePhoto} />
                 </div>
               </div>
@@ -173,12 +173,12 @@ class Profile extends React.Component {
           <div className={s.sideRight} />
         </div>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  const payload = state.user;
+  const payload = state.user
   return {
     username: payload.username,
     email: payload.email,
@@ -187,16 +187,16 @@ const mapStateToProps = state => {
     phoneNumber: payload.phoneNumber,
     photo: payload.photo,
     location: payload.location,
-    csrf: state.runtime.csrf
-  };
-};
+    csrf: state.runtime.csrf,
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdateProfile: params => dispatch(updateProfile(params)),
-    handleFetchProfile: () => dispatch(fetchProfile())
-  };
-};
+    handleFetchProfile: () => dispatch(fetchProfile()),
+  }
+}
 
-const Default = withStyles(s)(Profile);
-export default connect(mapStateToProps, mapDispatchToProps)(Default);
+const Default = withStyles(s)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Default)

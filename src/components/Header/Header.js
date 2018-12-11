@@ -75,7 +75,7 @@ class Header extends Component {
           <LazyLoad>
             <div className={styles.header__logo_wrap}>
               <Link to="/">
-                <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
               </Link>
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
@@ -113,7 +113,7 @@ class Header extends Component {
           {!logoOff && (
             <LazyLoad>
               <Link to="/">
-                <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
               </Link>
             </LazyLoad>
           )}
