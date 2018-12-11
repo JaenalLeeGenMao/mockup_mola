@@ -27,7 +27,6 @@ class MobileNav extends React.Component {
 
   handleGoBack() {
     const { goBack } = history
-    console.log(history)
 
     if (goBack) {
       goBack()
