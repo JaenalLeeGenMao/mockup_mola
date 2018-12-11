@@ -5,10 +5,10 @@ import styles from './Inbox.css'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import HeaderMobile from './Header'
+import HeaderMobile from './header'
 import InboxList from '../shared/InboxList'
 import InboxDetail from '../shared/InboxDetail'
-import history from '../../../history'
+import history from '@source/history'
 
 class Inbox extends React.Component {
   state = {
