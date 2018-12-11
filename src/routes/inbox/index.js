@@ -8,7 +8,7 @@
  */
 
 import React from 'react'
-// import InboxMobile from './mobile/Inbox';
+import InboxMobile from './mobile/Inbox'
 import InboxDesktop from './desktop/Inbox'
 import Molalayout from '@components/Molalayout'
 
@@ -21,10 +21,12 @@ function action({ isMobile }) {
     description,
     chunks: ['inbox'],
     component: isMobile ? (
-      <Molalayout>{/* <InboxMobile /> */}</Molalayout>
+      <Molalayout>
+        <InboxMobile isMobile={isMobile} />
+      </Molalayout>
     ) : (
       <Molalayout>
-        <InboxDesktop />
+        <InboxDesktop isMobile={isMobile} />
       </Molalayout>
     ),
   }
