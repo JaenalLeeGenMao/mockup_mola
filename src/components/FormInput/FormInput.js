@@ -7,9 +7,9 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import style from './FormInput.css';
+import style from './FormInput.css'
 import visible from '@global/style/icons/eye/visible.png'
 import unVisible from '@global/style/icons/eye/notvisible.png'
 
@@ -19,42 +19,42 @@ class FormInput extends React.Component {
     this.state = {
       visible: false,
       focus: false,
-      type: 'text'
+      type: 'text',
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
   }
 
-  handleKeyUp (e) {
-    if(this.state.type === 'password') {
+  handleKeyUp(e) {
+    if (this.state.type === 'password') {
       const value = e.target.value
       let focus = false
-      if(value.length > 0) {
+      if (value.length > 0) {
         focus = true
       }
 
       this.setState({
-        focus: focus
+        focus: focus,
       })
     }
   }
 
-  toggle (target) {
+  toggle(target) {
     this.setState({
-      [target]: !this.state[target]
+      [target]: !this.state[target],
     })
 
     this.toggleVisible(this.state.visible)
   }
 
-  toggleVisible (condition) {
+  toggleVisible(condition) {
     let type = 'password'
-    if(!condition) {
+    if (!condition) {
       type = 'text'
     }
 
     this.setState({
-      type: type
+      type: type,
     })
   }
 
@@ -63,7 +63,7 @@ class FormInput extends React.Component {
     type = type || 'text'
 
     this.setState({
-      type: type
+      type: type,
     })
   }
 
@@ -73,29 +73,29 @@ class FormInput extends React.Component {
 
     return (
       <div className={style.form__formGroup}>
-        <input type={type}
+        <input
+          type={type}
           className={[style.form__input, props.className].join(' ')}
           id={props.id}
           name={props.id}
           value={props.value || ''}
           onChange={props.onChange}
           placeholder={props.children}
-          onKeyUp={this.handleKeyUp}>
-        </input>
-        {
-          (this.props.type === 'password' && this.state.focus) &&
-              <div className={style.eye}>
-                {
-                  (this.state.visible) ?
-                    <img src={unVisible} alt="unVisible" onClick={() => this.toggle('visible')} />
-                    :
-                    <img src={visible} alt="visible" onClick={() => this.toggle('visible')} />
-                }
-              </div>
-        }
+          onKeyUp={this.handleKeyUp}
+        />
+        {this.props.type === 'password' &&
+          this.state.focus && (
+            <div className={style.eye}>
+              {this.state.visible ? (
+                <img src={unVisible} alt="mola tv hidden" onClick={() => this.toggle('visible')} />
+              ) : (
+                <img src={visible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
+              )}
+            </div>
+          )}
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(style)(FormInput);
+export default withStyles(style)(FormInput)

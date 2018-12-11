@@ -1,30 +1,30 @@
-import React, { Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React, { Component } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link';
+import LazyLoad from '@components/common/Lazyload'
+import Link from '@components/Link'
 
-import ContentLayer from './layer';
+import ContentLayer from './layer'
 
-import styles from './content.css';
+import styles from './content.css'
 
 class Content extends Component {
   state = {
-    show: false
-  };
+    show: false,
+  }
 
   handleClick = e => {
-    e.preventDefault();
-    const { sliderRefs, id } = this.props;
+    e.preventDefault()
+    const { sliderRefs, id } = this.props
     try {
-      const currentSlider = sliderRefs.filter(slider => slider.id === id)[0];
-      currentSlider.slickNext();
+      const currentSlider = sliderRefs.filter(slider => slider.id === id)[0]
+      currentSlider.slickNext()
     } catch {}
-  };
+  }
 
   handleTitleShow = (show = false) => {
-    this.setState({ show: show ? true : false });
-  };
+    this.setState({ show: show ? true : false })
+  }
 
   render() {
     const {
@@ -39,30 +39,28 @@ class Content extends Component {
         isSafari,
         ticking = false,
         isMobile = false,
-        getCurrentScreenHeight = window.innerHeight
+        getCurrentScreenHeight = window.innerHeight,
       } = this.props,
       fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
       version = isMobile ? 'mobile' : 'desktop',
-      coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape;
+      coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape
 
     const moreStyles = {
       bottom: 0,
-      transform: isMobile
-        ? `translateY(${getCurrentScreenHeight()}px)`
-        : null,
-      transition: 'all ease-in-out 300ms'
-    };
+      transform: isMobile ? `translateY(${getCurrentScreenHeight()}px)` : null,
+      transition: 'all ease-in-out 300ms',
+    }
 
     return (
       <div className="grid-slick" isDark={isDark}>
-        <LazyLoad alt="" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} handleCallback={this.handleTitleShow} />
+        <LazyLoad alt="mola grid style" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} handleCallback={this.handleTitleShow} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />
           <div className={styles.content__grid_title}>
             {!this.state.show && (
               <h1
                 ref={node => {
-                  this.titleRef = node;
+                  this.titleRef = node
                 }}
                 className={styles.content__grid_title_text}
               >
@@ -98,8 +96,8 @@ class Content extends Component {
           <div className={styles.content__grid_empty} />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(Content);
+export default withStyles(styles)(Content)
