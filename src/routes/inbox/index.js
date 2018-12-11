@@ -13,18 +13,20 @@ import InboxDesktop from './desktop/Inbox'
 import Molalayout from '@components/Molalayout'
 
 const title = 'Inbox'
+const description = 'Notification gets easier with Mola TV news'
 
 function action({ isMobile }) {
   return {
     title,
+    description,
     chunks: ['inbox'],
     component: isMobile ? (
       <Molalayout>
-        <InboxMobile />
+        <InboxMobile isMobile={isMobile} />
       </Molalayout>
     ) : (
       <Molalayout>
-        <InboxDesktop />
+        <InboxDesktop isMobile={isMobile} />
       </Molalayout>
     ),
   }

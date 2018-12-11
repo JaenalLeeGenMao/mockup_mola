@@ -5,6 +5,12 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import PropTypes from 'prop-types'
 
 class InboxItem extends React.Component {
+  limitDescription = text => {
+    const { isMobile } = this.props
+
+    return isMobile ? text.substring(0, 100) + '...' : text.substring(0, 200) + '...'
+  }
+
   render() {
     const { service, title, date, isOpened, isActive, avatar, message } = this.props.message
     const openend = isOpened ? null : styles.unopened
@@ -25,7 +31,7 @@ class InboxItem extends React.Component {
           </div>
 
           <div className={styles.content}>
-            <p>{message.substring(0, 200) + '...'}</p>
+            <p>{this.limitDescription(message)}</p>
           </div>
         </div>
       </div>

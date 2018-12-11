@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styles from '../shared/InboxList.css'
 import { connect } from 'react-redux'
@@ -12,21 +12,19 @@ class InboxList extends Component {
   }
 
   render() {
-    const inbox = this.props.inbox
-    console.log(this.props)
+    const { inbox, isMobile } = this.props
 
     return (
-      <>
-        <h2 className={styles.pageTitle}>Inbox</h2>
-
+      <Fragment>
+        {!isMobile && <h2 className={styles.pageTitle}>Inbox</h2>}
         <div className={styles.itemWrap}>
           {typeof inbox !== 'undefined' &&
             inbox.length > 0 &&
             inbox.map((item, idx) => {
-              return <InboxItem message={item} key={idx} handleInboxItemClick={this.props.handleInboxItemClick} />
+              return <InboxItem message={item} key={idx} handleInboxItemClick={this.props.handleInboxItemClick} {...this.props} />
             })}
         </div>
-      </>
+      </Fragment>
     )
   }
 }

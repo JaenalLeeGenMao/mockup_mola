@@ -7,17 +7,19 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Molalayout from '@components/Molalayout';
-import RegisterDesktop from './desktop/Register';
-import RegisterMobile from './mobile/Register';
+import React from 'react'
+import Molalayout from '@components/Molalayout'
+import RegisterDesktop from './desktop/Register'
+import RegisterMobile from './mobile/Register'
 
-const title = 'New User Registration';
+const title = 'Register Page'
+const description = 'New User Registration'
 
 function action({ isMobile }) {
   return {
     chunks: ['register'],
     title,
+    description,
     component: isMobile ? (
       <Molalayout>
         <RegisterMobile />
@@ -26,8 +28,8 @@ function action({ isMobile }) {
       <Molalayout>
         <RegisterDesktop />
       </Molalayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

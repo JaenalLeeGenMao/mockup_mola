@@ -7,16 +7,17 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Layout from '@components/Molalayout';
-import Admin from './Admin';
+import React from 'react'
+import Layout from '@components/Molalayout'
+import Admin from './Admin'
 
-const title = 'Admin Page';
-const isAdmin = false;
+const title = 'Admin Page'
+const description = 'Admin to the rescue'
+const isAdmin = false
 
 function action() {
   if (!isAdmin) {
-    return { redirect: '/accounts/login' };
+    return { redirect: '/accounts/login' }
   }
 
   return {
@@ -26,8 +27,8 @@ function action() {
       <Layout>
         <Admin title={title} />
       </Layout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

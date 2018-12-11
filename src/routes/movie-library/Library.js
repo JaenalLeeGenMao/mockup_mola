@@ -1,29 +1,32 @@
-import React, { Fragment, Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import * as movieLibraryActions from '@actions/movie-library';
-import searchActions from '@actions/search';
-import CardLibrary from './movielibrary/Card';
-import Layout from '@components/Molalayout';
-import Error from '../search/error/Error';
+import React, { Fragment, Component } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import * as movieLibraryActions from '@actions/movie-library'
+import searchActions from '@actions/search'
+import CardLibrary from './movielibrary/Card'
+import Layout from '@components/Molalayout'
+import Error from '../search/error/Error'
 
 // import Header from '../../components/Header';
 // import Navbar from '../../components/Navigation';
 
-import Libheader from './movielibrary/Libheader';
-import s from './Library.css';
-import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder';
+import Libheader from './movielibrary/Libheader'
+import s from './Library.css'
+import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder'
+
+import defaultImagePortrait from './assets/default-img-mola_library-01.jpg'
+import defaultImageLandscape from './assets/default-img-mola_library-02.jpg'
 
 class MovieLibrary extends Component {
   state = {
     movieLibrary: [],
     search: {
-      genre: []
+      genre: [],
     },
     genreId: '',
-    isLoading: true
-  };
+    isLoading: true,
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
@@ -32,53 +35,44 @@ class MovieLibrary extends Component {
       getSearchGenre,
       search,
       movieLibrary,
-      genreId //passed as props from index.js
-    } = nextProps;
+      genreId, //passed as props from index.js
+    } = nextProps
 
     if (typeof genreId !== 'undefined' && genreId !== '') {
       if (genreId !== prevState.genreId) {
-        getMovieLibrary(genreId);
+        getMovieLibrary(genreId)
       }
     }
 
-    if (
-      movieLibrary.meta.status === 'loading' &&
-      prevState.movieLibrary.length <= 0
-    ) {
+    if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
       if (typeof genreId !== 'undefined' && genreId !== '') {
-        getMovieLibrary(genreId);
+        getMovieLibrary(genreId)
       } else {
-        getMovieLibraryList();
+        getMovieLibraryList()
       }
     }
 
-    if (
-      search.genre.meta.status === 'loading' &&
-      prevState.search.genre.length <= 0
-    ) {
-      getSearchGenre();
+    if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {
+      getSearchGenre()
     }
 
-    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId };
+    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId }
   }
 
   componentDidUpdate(prevProps) {
-    const { movieLibrary } = this.props;
+    const { movieLibrary } = this.props
 
     //update loading state
-    if (
-      prevProps.movieLibrary.meta.status !== movieLibrary.meta.status &&
-      movieLibrary.meta.status !== 'loading'
-    ) {
+    if (prevProps.movieLibrary.meta.status !== movieLibrary.meta.status && movieLibrary.meta.status !== 'loading') {
       this.setState({
-        isLoading: false
-      });
+        isLoading: false,
+      })
     }
   }
 
   renderLoading = () => {
-    const { isMobile } = this.props;
-    const isLoading = this.props.movieLibrary.meta.status === 'loading';
+    const { isMobile } = this.props
+    const isLoading = this.props.movieLibrary.meta.status === 'loading'
 
     const cardImageLoading = [
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
@@ -110,39 +104,26 @@ class MovieLibrary extends Component {
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
       { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' }
-    ];
+      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+    ]
 
-    return (
-      isLoading &&
-      cardImageLoading.map(obj => (
-        <LoadingPlaceholder
-          isLight
-          style={{ width: obj.width, height: obj.height, marginBottom: '15px' }}
-          key={obj.id}
-        />
-      ))
-    );
-  };
+    return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />)
+  }
 
   renderContent = () => {
-    const { movieLibrary: { data: libraryDt } } = this.props;
-    const { isLoading } = this.state;
-    const cardImageLib = libraryDt.length > 0 ? libraryDt : null;
+    const { movieLibrary: { data: libraryDt } } = this.props
+    const { isLoading } = this.state
+    const cardImageLib = libraryDt.length > 0 ? libraryDt : null
 
     return (
       !isLoading &&
       cardImageLib &&
-      cardImageLib.map(obj => (
-        <CardLibrary
-          key={obj.id}
-          title={obj.title}
-          imgUrl={obj.thumbnail}
-          id={obj.id}
-        />
-      ))
-    );
-  };
+      cardImageLib.map((obj, index) => {
+        const placeholder = index % 2 === 0 ? defaultImagePortrait : defaultImageLandscape
+        return <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail || placeholder} id={obj.id} />
+      })
+    )
+  }
 
   renderNotFound = isLoading => {
     const wrapperStyle = {
@@ -150,8 +131,8 @@ class MovieLibrary extends Component {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
-      marginTop: '10rem'
-    };
+      marginTop: '10rem',
+    }
 
     return isLoading === 'error' ? (
       <Error
@@ -162,14 +143,13 @@ class MovieLibrary extends Component {
         titleStyle={{ color: '#000' }}
         detailStyle={{ color: '#000' }}
       />
-    ) : null;
-  };
+    ) : null
+  }
 
   render() {
-    const { movieLibrary: { data: libraryDt } } = this.props;
-    const status = this.props.movieLibrary.meta.status;
-    const title =
-      libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : '';
+    const { movieLibrary: { data: libraryDt } } = this.props
+    const status = this.props.movieLibrary.meta.status
+    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : ''
 
     return (
       <Fragment>
@@ -186,25 +166,20 @@ class MovieLibrary extends Component {
           {this.renderNotFound(status)}
         </Layout>
       </Fragment>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
-    ...state
-  };
+    ...state,
+  }
 }
 
 const mapDispatchToProps = dispatch => ({
   getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
-  getMovieLibraryList: () =>
-    dispatch(movieLibraryActions.getMovieLibraryList()),
-  getMovieLibrary: genreId =>
-    dispatch(movieLibraryActions.getMovieLibrary(genreId))
-});
+  getMovieLibraryList: () => dispatch(movieLibraryActions.getMovieLibraryList()),
+  getMovieLibrary: genreId => dispatch(movieLibraryActions.getMovieLibrary(genreId)),
+})
 
-export default compose(
-  withStyles(s),
-  connect(mapStateToProps, mapDispatchToProps)
-)(MovieLibrary);
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(MovieLibrary)

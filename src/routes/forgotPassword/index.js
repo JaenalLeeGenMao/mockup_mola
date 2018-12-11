@@ -7,17 +7,19 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React from 'react';
-import Molalayout from '../../components/Molalayout';
-import ForgotDesktop from './desktop/Forgot';
-import ForgotMobile from './mobile/Forgot';
+import React from 'react'
+import Molalayout from '../../components/Molalayout'
+import ForgotDesktop from './desktop/Forgot'
+import ForgotMobile from './mobile/Forgot'
 
-const title = 'Forgot Password';
+const title = 'Forgot Password'
+const description = 'Mola helps identify your account and password'
 
 function action({ isMobile }) {
   return {
     chunks: ['forgotPassword'],
     title,
+    description,
     component: isMobile ? (
       <Molalayout>
         <ForgotMobile />
@@ -26,8 +28,8 @@ function action({ isMobile }) {
       <Molalayout>
         <ForgotDesktop />
       </Molalayout>
-    )
-  };
+    ),
+  }
 }
 
-export default action;
+export default action

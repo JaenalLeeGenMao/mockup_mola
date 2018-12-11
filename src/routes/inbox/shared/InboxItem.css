@@ -99,3 +99,18 @@
   font-size: 1.2rem;
   letter-spacing: 1.17px;
 }
+
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .content p {
+    font-size: 1.1rem;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .iconWrap img {
+    width: 4rem;
+  }
+}

@@ -1,16 +1,19 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import styles from './Inbox.css'
 import { compose } from 'redux'
-import Header from '@components/Header'
-import InboxDetail from '../shared/InboxDetail'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+
+import HeaderMobile from './header'
 import InboxList from '../shared/InboxList'
+import InboxDetail from '../shared/InboxDetail'
+import history from '../../../history'
 
 class Inbox extends React.Component {
   state = {
     currentItem: null,
+    isDetailOpenend: false,
     inbox: [
       {
         id: 1,
@@ -97,7 +100,23 @@ class Inbox extends React.Component {
     this.setState({
       inbox: newInbox,
       currentItem: this.state.inbox[currentIndex],
+      isDetailOpenend: true,
     })
+  }
+
+  handleGoBack = () => {
+    const { isDetailOpenend } = this.state
+    const { goBack } = history
+
+    if (isDetailOpenend) {
+      this.setState({
+        isDetailOpenend: false,
+      })
+    } else {
+      if (goBack) {
+        goBack()
+      }
+    }
   }
 
   findIndexById = (items, id) => {
@@ -109,35 +128,25 @@ class Inbox extends React.Component {
     }
   }
 
-  renderSidebar = () => {
-    const isDark = true
-
-    return (
-      <aside className={[styles.colItem, styles.sidebarMenu].join(' ')}>
-        <Header isDark={isDark} libraryOff rightMenuOff {...this.props} />
-
-        <div className={styles.menuWrapper}>
-          <ul>
-            <li>
-              <a href="#">Inbox</a>
-            </li>
-          </ul>
-        </div>
-      </aside>
-    )
-  }
-
   render() {
+    const { isDetailOpenend } = this.state
+
     return (
       <Fragment>
         <div className={styles.wrap}>
-          <div className={[styles.colItem, styles.inboxList].join(' ')}>
-            <InboxList {...this.state} handleInboxItemClick={this.handleInboxItemClick} />
-          </div>
+          <HeaderMobile title="Inbox" isDetailOpenend={this.state.isDetailOpenend} handleGoBack={this.handleGoBack} />
 
-          {/* <div className={[styles.colItem, styles.inboxDetail].join(' ')}>
-            <InboxDetail {...this.state} />
-          </div> */}
+          {!isDetailOpenend && (
+            <div className={[styles.colItem, styles.inboxList].join(' ')}>
+              <InboxList {...this.state} handleInboxItemClick={this.handleInboxItemClick} {...this.props} />
+            </div>
+          )}
+
+          {isDetailOpenend && (
+            <div className={[styles.colItem, styles.inboxDetail].join(' ')}>
+              <InboxDetail {...this.state} />
+            </div>
+          )}
         </div>
       </Fragment>
     )

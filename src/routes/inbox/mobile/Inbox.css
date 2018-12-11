@@ -5,10 +5,11 @@ body {
 
 .wrap {
   display: flex;
+  flex-direction: column;
 }
 
 .colItem {
-  height: 100vh;
+  height: 100%;
   overflow-y: scroll;
 }
 
@@ -122,14 +123,8 @@ body {
   line-height: 2.1rem;
 }
 
-/* .pageTitle::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  position: absolute;
-  top: 50%;
-  left: 10rem;
-  transform: translateY(-50%);
-  background: #2C56FF;
-  border-radius: 10rem;
-} */
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .inboxList {
+    margin-top: 5rem;
+  }
+}

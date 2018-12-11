@@ -17,6 +17,8 @@ import bodyParser from 'body-parser'
 // import request from 'request';
 import React from 'react'
 import ReactDOM from 'react-dom/server'
+import { renderStylesToString } from 'emotion-server'
+import { IntlProvider } from 'react-intl'
 import { isTablet } from 'react-device-detect'
 import PrettyError from 'pretty-error'
 import App from './components/App'
@@ -176,7 +178,13 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route }
 
-    data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>)
+    data.children = renderStylesToString(
+      ReactDOM.renderToString(
+        <IntlProvider locale={'id'}>
+          <App context={context}>{route.component}</App>
+        </IntlProvider>
+      )
+    )
     data.styles = [{ id: 'css', cssText: [...css].join('') }]
 
     const scripts = new Set()
