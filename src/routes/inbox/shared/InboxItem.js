@@ -19,7 +19,7 @@ class InboxItem extends React.Component {
     return (
       <div className={[styles.wrap, isActive ? styles.active : null].join(' ')} onClick={() => this.props.handleInboxItemClick(this.props.message)}>
         <div className={styles.iconWrap}>
-          <img src={avatar} alt={title} />
+          <img src={avatar} alt={`mola ${title}`} />
         </div>
 
         <div className={styles.contentWrap}>

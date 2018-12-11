@@ -56,7 +56,7 @@ export const handleTracker = async (data, props) => {
       device,
       app: browser,
       videoType: source || null,
-      action,
+      // action,
       client: 'mola-web',
       screenResolution: `${clientWindow.screen.width}x${clientWindow.screen.height}`,
       userId: userId,
@@ -69,7 +69,7 @@ export const handleTracker = async (data, props) => {
     },
     table: 'event_video_plays',
   }
-  console.log(payload)
+  // console.log(payload)
   const token = await Tracker.getOrCreateToken()
 
   /* Post to ds-feeder */

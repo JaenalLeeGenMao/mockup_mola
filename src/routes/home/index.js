@@ -13,7 +13,7 @@ import HomeMobile from './mobile'
 import MolaLayout from '@components/Molalayout'
 
 const title = 'Homepage'
-const description = 'Watch TV Shows Online, Watch Movies Online'
+const description = 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
 
 async function action({ isMobile }) {
   return {

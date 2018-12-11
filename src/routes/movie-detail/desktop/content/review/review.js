@@ -38,7 +38,7 @@ const Review = ({ data }) => {
           return (
             <div key={index} className={reviewSliderWrapper}>
               <div className={reviewSliderDetail}>
-                <img className={reviewSliderProfile} alt="" src={url} />
+                <img className={reviewSliderProfile} alt="mola profile" src={url} />
                 <div className={reviewSliderQuotes}>
                   <h1>Zlatan Ibrahimovic, Footballer</h1>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus at ultrices mi tempus.</p>

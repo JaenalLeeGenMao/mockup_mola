@@ -26,16 +26,17 @@ class Menu extends Component {
         <div className={styles.menu_content}>
           <div className="tourCategory">
             {playlists &&
-              playlists.map(({ id, isActive }) => (
+              playlists.map(({ id, title, isActive }) => (
                 <Link
                   key={id}
                   id={id}
                   to="/"
                   onClick={this.handleNavigation}
                   className={[styles.menu_links, isActive ? styles.isActive : ''].join(' ')}
-                  style={{ backgroundColor: isMobile ? '' : backgroundColor }}
+                  style={{ backgroundColor: isMobile ? '' : backgroundColor, color: backgroundColor }}
                 >
                   {isMobile && <div className={styles.menu_bullet} />}
+                  {!isMobile && <div className={styles.menu_text}>{title.replace('Featured ', '')}</div>}
                 </Link>
               ))}
           </div>
