@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
 
+import { endpoints } from '@source/config'
+
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
 
@@ -11,6 +13,7 @@ import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
 import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
+import { videoSettings as defaultVideoSettings } from '../const'
 
 import { handleTracker } from './tracker'
 
@@ -64,13 +67,32 @@ class MovieDetail extends Component {
   }
 
   /* eslint-disable */
+  updateEncryption() {
+    const { clientIp, uid, sessionId } = this.props.user
+    const { data } = this.props.movieDetail
+
+    /* eslint-disable */
+    const payload = {
+      project_id: '2',
+      video_id: data.length > 0 ? data[0].id : '',
+      app_id: 'supersoccertv_ads',
+      session_id: sessionId,
+      client_ip: clientIp,
+      user_id: uid,
+    }
+
+    this.encryptPayload = window.btoa(JSON.stringify(payload))
+  }
+
   handleOnTimePerMinute = ({ action }) => {
+    const { clientIp, uid, sessionId } = this.props.user
     const currentDuration = this.player.currentTime || ''
     const totalDuration = this.player.duration || ''
     const payload = {
       action,
-      clientIp: undefined,
-      userId: this.props.user.uid,
+      clientIp,
+      sessionId,
+      userId: uid,
       heartbeat: true,
       window: window,
       currentDuration,
@@ -92,6 +114,7 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPlay = (payload = true, player) => {
+    this.updateEncryption()
     this.player = player
     this.setState({ toggleSuggestion: false })
   }
@@ -112,6 +135,12 @@ class MovieDetail extends Component {
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
+    const videoSettings = {
+      ...defaultVideoSettings,
+      adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
+      adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+    }
+
     return (
       <>
         {dataFetched && (
@@ -129,6 +158,7 @@ class MovieDetail extends Component {
                   handleOnVideoPlay={this.handleOnVideoPlay}
                   handleVideoTimeUpdate={this.handleVideoTimeUpdate}
                   showBackBtn={false}
+                  {...videoSettings}
                   showChildren
                 >
                   {toggleSuggestion && (

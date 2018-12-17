@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { endpoints } from '@source/config'
+
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
 
@@ -9,6 +11,7 @@ import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
+import { videoSettings as defaultVideoSettings } from '../const'
 
 import { handleTracker } from './tracker'
 
@@ -89,13 +92,32 @@ class MovieDetail extends Component {
   }
 
   /* eslint-disable */
+  updateEncryption() {
+    const { clientIp, uid, sessionId } = this.props.user
+    const { data } = this.props.movieDetail
+
+    /* eslint-disable */
+    const payload = {
+      project_id: '2',
+      video_id: data.length > 0 ? data[0].id : '',
+      app_id: 'supersoccertv_ads',
+      session_id: sessionId,
+      client_ip: clientIp,
+      user_id: uid,
+    }
+
+    this.encryptPayload = window.btoa(JSON.stringify(payload))
+  }
+
   handleOnTimePerMinute = ({ action }) => {
+    const { clientIp, uid, sessionId } = this.props.user
     const currentDuration = this.player.currentTime || ''
     const totalDuration = this.player.duration || ''
     const payload = {
       action,
-      clientIp: undefined,
-      userId: this.props.user.uid,
+      clientIp,
+      sessionId,
+      userId: uid,
       heartbeat: true,
       window: window,
       currentDuration,
@@ -121,6 +143,7 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPlay = (payload = true, player) => {
+    this.updateEncryption()
     this.player = player
     this.setState({ toggleSuggestion: false })
   }
@@ -160,32 +183,31 @@ class MovieDetail extends Component {
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
-    // console.log('=============+++>')
-    // console.log(document.querySelector('.theo-primary-color vjs-big-play-button'))
+    const videoSettings = {
+      ...defaultVideoSettings,
+      adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
+      adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+    }
 
     return (
       <>
         {dataFetched && (
           <div className={movieDetailContainer}>
-            <div className={videoPlayerContainer}>
-              <Theoplayer
-                className={customTheoplayer}
-                // theoConfig={this.isTheoPlayer()}
-                poster={poster}
-                autoPlay={false}
-                movieUrl={streamSource}
-                handleOnVideoPause={this.handleOnVideoPause}
-                handleOnVideoPlay={this.handleOnVideoPlay}
-                handleVideoTimeUpdate={this.handleVideoTimeUpdate}
-                showChildren
-              >
-                {toggleSuggestion && (
-                  <LazyLoad containerClassName={videoSuggestionContainer}>
-                    <h2 className={videoSuggestionTitle}>Suggestions</h2>
-                    <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                  </LazyLoad>
-                )}
-              </Theoplayer>
+            <div style={{ width: '100vw', background: '#000' }}>
+              <div className={videoPlayerContainer}>
+                <Theoplayer
+                  className={customTheoplayer}
+                  // theoConfig={this.isTheoPlayer()}
+                  poster={poster}
+                  autoPlay={false}
+                  movieUrl={streamSource}
+                  handleOnVideoPause={this.handleOnVideoPause}
+                  handleOnVideoPlay={this.handleOnVideoPlay}
+                  handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                  {...videoSettings}
+                  showChildren
+                />
+              </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
             {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}

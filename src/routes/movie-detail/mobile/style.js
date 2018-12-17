@@ -22,14 +22,14 @@ export const movieDetailContainer = css`
 `
 
 export const videoPlayerContainer = css`
-  height: 15.4rem;
+  height: 16rem;
 `
 
 export const videoSuggestionContainer = css`
   position: absolute;
-  bottom: 3.6rem;
+  bottom: 5rem;
+  height: 10rem;
   width: 100vw;
-  height: 12.5rem;
   background: transparent;
 `
 
@@ -46,7 +46,7 @@ export const videoSuggestionWrapper = css`
 
 export const videoSuggestionPlayer = css`
   display: inline-block;
-  min-width: 15.4rem;
+  min-width: 16rem;
   width: 20vw;
   height: 100%;
   padding: 0.8rem;
