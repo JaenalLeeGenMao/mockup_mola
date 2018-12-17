@@ -146,6 +146,12 @@ class MovieDetail extends Component {
   //   return myTheoPlayer;
   // }
 
+  componentDidMount() {
+    setTimeout(() => {
+      document.querySelector('.vjs-big-play-button').style.display = 'none'
+    }, 3000)
+  }
+
   render() {
     const { isControllerActive, movieDetail, toggleSuggestion } = this.state
     const { meta: { status }, data } = movieDetail
@@ -153,6 +159,9 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+
+    // console.log('=============+++>')
+    // console.log(document.querySelector('.theo-primary-color vjs-big-play-button'))
 
     return (
       <>
