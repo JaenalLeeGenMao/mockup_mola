@@ -15,7 +15,7 @@ COPY yarn.lock .
 RUN yarn install --no-progress
 # Build!
 COPY . .
-RUN yarn build -- --release --docker REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${NODE_ENV}
+RUN node_modules/.bin/babel-node tools/run build -- --release --docker REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${NODE_ENV}
 
 # Base Image
 FROM node:8-alpine
