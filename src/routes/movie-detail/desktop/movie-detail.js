@@ -200,7 +200,14 @@ class MovieDetail extends Component {
                   handleVideoTimeUpdate={this.handleVideoTimeUpdate}
                   {...videoSettings}
                   showChildren
-                />
+                >
+                  {toggleSuggestion && (
+                    <LazyLoad containerClassName={videoSuggestionContainer}>
+                      <h2 className={videoSuggestionTitle}>Suggestions</h2>
+                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
+                    </LazyLoad>
+                  )}
+                </Theoplayer>
               </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
