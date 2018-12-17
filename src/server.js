@@ -122,10 +122,19 @@ app.get('*', async (req, res, next) => {
       styles.forEach(style => css.add(style._getCss()))
     }
 
+    // Get IP
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null)
+    if (ip !== null) {
+      if (ip.length >= 15) {
+        ip = ip.replace(/^.*:/, '')
+      }
+    }
+
     const initialState = {
       user: req.user || {
         uid: req.cookies.UID === 'undefined' ? '' : req.cookies.UID,
         sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
+        sessionId: req.cookies.__sessId === 'undefined' ? '' : req.cookies.__sessId,
         firstName: '',
         lastName: '',
         email: '',
@@ -134,6 +143,7 @@ app.get('*', async (req, res, next) => {
         expire: '',
         type: '',
         lang: 'en',
+        clientIp: ip,
       },
       runtime: {
         csrf: req.csrfToken(),

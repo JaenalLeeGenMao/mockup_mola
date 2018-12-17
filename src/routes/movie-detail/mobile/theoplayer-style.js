@@ -15,7 +15,7 @@ export const customTheoplayer = css`
     }
 
     &.video-container .theoplayer-poster {
-      //   background-position: center !important;
+      // background-position: center !important;
       background-size: cover !important;
     }
 
@@ -50,7 +50,7 @@ export const customTheoplayer = css`
     @media (max-width: 640px) {
       &.video-container,
       &.video-container.video-js.vjs-fluid {
-        height: 15.4rem !important;
+        height: 16rem !important;
         width: 100vw;
       }
 
