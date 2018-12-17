@@ -66,6 +66,7 @@ class Html extends React.Component {
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
+          <link rel="canonical" href="https://www.mola.tv" />
           {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
         </head>
         <body>

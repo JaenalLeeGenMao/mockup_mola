@@ -41,7 +41,11 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
           <Fragment>
             <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
             <div className={styles.layer__grid_desc_footer}>
-              <i className={styles.layer__grid_desc_footer_quote}>{`"${quotes.attributes.text}"`}</i>
+              <i className={styles.layer__grid_desc_footer_quote}>
+                {
+                  '"Into the Spider-Verse akan mengisahkan tentang alam yang berbeda dari dunia Spider-Man. Pertemuan manusia laba-laba versi Miles Morales yang masuk kedalam dimensi paralel dimana ia akan bekerja sama dengan Spider-Man dari berbagai dimensi lainnya untuk menghentikan ancaman berbahaya."'
+                }
+              </i>
             </div>
             <strong className={styles.layer__grid_desc_author}>— {quotes.attributes.author}</strong>
           </Fragment>
