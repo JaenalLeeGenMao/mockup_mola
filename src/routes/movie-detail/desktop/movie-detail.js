@@ -169,6 +169,19 @@ class MovieDetail extends Component {
   //   return myTheoPlayer;
   // }
 
+  componentDidMount() {
+    setTimeout(() => {
+      const { movieDetail } = this.state
+      const { meta: { status }, data } = movieDetail
+      const apiFetched = status === 'success' && data.length > 0
+      const dataFetched = apiFetched ? data[0] : undefined
+      const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+      console.log(streamSource)
+
+      streamSource === '' ? (document.querySelector('.vjs-big-play-button').style.display = 'none') : null
+    }, 3000)
+  }
+
   render() {
     const { isControllerActive, movieDetail, toggleSuggestion } = this.state
     const { meta: { status }, data } = movieDetail
