@@ -27,7 +27,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
         className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
         style={{
           background: !isMobile ? `url(${coverBackgroundImage}) repeat center` : 'transparent',
-          boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
+          // boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
           backgroundSize: 'cover',
           opacity: !isMobile ? 1 : 0.1,
         }}
@@ -41,11 +41,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
           <Fragment>
             <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
             <div className={styles.layer__grid_desc_footer}>
-              <i className={styles.layer__grid_desc_footer_quote}>
-                {
-                  '"Into the Spider-Verse akan mengisahkan tentang alam yang berbeda dari dunia Spider-Man. Pertemuan manusia laba-laba versi Miles Morales yang masuk kedalam dimensi paralel dimana ia akan bekerja sama dengan Spider-Man dari berbagai dimensi lainnya untuk menghentikan ancaman berbahaya."'
-                }
-              </i>
+              <i className={styles.layer__grid_desc_footer_quote}>{`“${description}”`}</i>
             </div>
             <strong className={styles.layer__grid_desc_author}>— {quotes.attributes.author}</strong>
           </Fragment>
