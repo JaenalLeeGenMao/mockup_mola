@@ -68,6 +68,7 @@ export const sectionMiddleText = css`
   font-size: 1.2rem;
   margin-bottom: 1.2rem;
   color: #ababab;
+  text-align: justify;
 `
 
 export const sectionRightTitle = css`

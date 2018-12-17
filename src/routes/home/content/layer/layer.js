@@ -27,7 +27,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
         className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
         style={{
           background: !isMobile ? `url(${coverBackgroundImage}) repeat center` : 'transparent',
-          boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
+          // boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
           backgroundSize: 'cover',
           opacity: !isMobile ? 1 : 0.1,
         }}
@@ -41,7 +41,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
           <Fragment>
             <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
             <div className={styles.layer__grid_desc_footer}>
-              <i className={styles.layer__grid_desc_footer_quote}>{`"${quotes.attributes.text}"`}</i>
+              <i className={styles.layer__grid_desc_footer_quote}>{`“${description}”`}</i>
             </div>
             <strong className={styles.layer__grid_desc_author}>— {quotes.attributes.author}</strong>
           </Fragment>

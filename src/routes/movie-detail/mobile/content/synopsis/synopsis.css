@@ -24,6 +24,7 @@
   margin: 0;
   padding: 0;
   height: 6rem;
+  text-align: justify;
 }
 
 .inner_box p.show {
