@@ -12,7 +12,7 @@ COPY .npmrc .
 COPY package*.json .
 COPY yarn.lock .
 # Install Node.js dependencies
-RUN yarn install --no-progress
+RUN yarn install --no-progress --production=false
 # Build!
 COPY . .
 RUN node_modules/.bin/babel-node tools/run build -- --release --docker REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${NODE_ENV}
