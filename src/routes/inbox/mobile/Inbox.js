@@ -128,6 +128,8 @@ class Inbox extends React.Component {
     }
   }
 
+  componentDidMount() {}
+
   render() {
     const { isDetailOpenend } = this.state
 
