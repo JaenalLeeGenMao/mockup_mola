@@ -27,5 +27,5 @@ export const videoSettings = {
   // adsBannerUrl:
   //   'https://api.stag.supersoccer.tv/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=eyJwcm9qZWN0X2lkIjoiNSIsInZpZGVvX2lkIjoic3N0diIsImFwcF9pZCI6InN1cGVyc29jY2VydHZfYWRzIiwic2Vzc2lvbl9pZCI6Im1oNWhvZXhucmQ5cHY0dHFzNGgxOXVoMmJnc3h1NzFtIiwiY2xpZW50X2lwIjoiOjoxIn0=', //'http://api-d.supersoccer.tv/v1-alpha/ad-banner.json',
   adsBannerOptions: AdBannerOptions,
-  resizeBannerAndCBarEnabled: false, //kalau false maka banner sesuai parent player, kalau true maka player sesuai banner
+  resizeBannerAndCBarEnabled: true, //kalau false maka banner sesuai parent player, kalau true maka player sesuai banner
 }
