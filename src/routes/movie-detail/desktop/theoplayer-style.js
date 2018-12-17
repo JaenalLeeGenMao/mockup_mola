@@ -14,10 +14,10 @@ export const customTheoplayer = css`
       color: #fff !important;
     }
 
-    // &.video-container .theoplayer-poster {
-    //   background-position: center !important;
-    //   background-size: cover !important;
-    // }
+    &.video-container .theoplayer-poster {
+      //   background-position: center !important;
+      background-size: cover !important;
+    }
 
     &.video-container .vjs-play-progress {
       color: #0070b2 !important;

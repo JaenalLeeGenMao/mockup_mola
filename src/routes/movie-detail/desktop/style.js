@@ -46,13 +46,15 @@ export const controllerContainer = css`
 `
 export const videoPlayerContainer = css`
   height: 65.5vh;
+  width: 60vw;
+  margin: auto;
 `
 
 export const videoSuggestionContainer = css`
   position: absolute;
-  bottom: 5%;
+  bottom: 19.5%;
   width: 100vw;
-  height: 30vh;
+  height: 25vh;
   background: rgba(0, 0, 0, 0.25);
 `
 
@@ -60,7 +62,7 @@ export const videoSuggestionWrapper = css`
   position: absolute;
   bottom: 0;
   width: 100vw;
-  height: 25vh;
+  height: 20vh;
   color: #fff;
   white-space: nowrap;
   overflow-x: auto;
