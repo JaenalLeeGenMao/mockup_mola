@@ -203,13 +203,13 @@ const track = async store => {
       table: 'event_pages',
     }
 
-    // if (isChannel || pathname === '/') {
-    //   payload.data.channel = urlParams.v || 'sstv';
-    //   payload.table = 'event_videos';
-    // } else if (isVideo) {
-    //   payload.data.video_id = urlParams.v;
-    //   payload.table = 'event_videos';
-    // }
+    const paths = pathname.split('/')
+    const lastPathIndex = paths.length - 1
+
+    if (pathname.includes('movie-detail')) {
+      payload.data.video_id = paths[lastPathIndex]
+      payload.table = 'event_videos'
+    }
 
     // if (firstRender) {
     //   firstRender = false;
