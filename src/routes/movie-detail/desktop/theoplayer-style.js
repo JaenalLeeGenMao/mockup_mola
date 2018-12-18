@@ -15,7 +15,7 @@ export const customTheoplayer = css`
     }
 
     &.video-container .theoplayer-poster {
-      //   background-position: center !important;
+      // background-position: center !important;
       background-size: cover !important;
     }
 
