@@ -52,16 +52,16 @@ export const videoPlayerContainer = css`
 
 export const videoSuggestionContainer = css`
   position: absolute;
-  bottom: 19.5%;
-  width: 100vw;
+  bottom: 7.5%;
+  width: 100%;
   height: 25vh;
-  background: rgba(0, 0, 0, 0.25);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0));
 `
 
 export const videoSuggestionWrapper = css`
   position: absolute;
   bottom: 0;
-  width: 100vw;
+  width: 100%;
   height: 20vh;
   color: #fff;
   white-space: nowrap;

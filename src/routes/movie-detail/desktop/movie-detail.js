@@ -138,6 +138,7 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
+    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content')
     this.player = player
     this.setState({ toggleSuggestion: true })
   }
@@ -214,12 +215,16 @@ class MovieDetail extends Component {
                   {...videoSettings}
                   showChildren
                 >
-                  {toggleSuggestion && (
-                    <LazyLoad containerClassName={videoSuggestionContainer}>
-                      <h2 className={videoSuggestionTitle}>Suggestions</h2>
-                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                    </LazyLoad>
-                  )}
+                  <LazyLoad
+                    containerClassName={videoSuggestionContainer}
+                    containerStyle={{
+                      display: toggleSuggestion ? 'inline-block' : 'none',
+                      bottom: this.isAds ? '9.5%' : '',
+                    }}
+                  >
+                    <h2 className={videoSuggestionTitle}>Suggestions</h2>
+                    <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
+                  </LazyLoad>
                 </Theoplayer>
               </div>
             </div>
