@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import _get from 'lodash/get'
 
 import { endpoints } from '@source/config'
 
@@ -139,18 +140,15 @@ class MovieDetail extends Component {
 
   handleOnVideoPause = (payload = false, player) => {
     this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content')
-    this.player = player
     this.setState({ toggleSuggestion: true })
   }
 
   handleOnVideoPlay = (payload = true, player) => {
     this.updateEncryption()
-    this.player = player
     this.setState({ toggleSuggestion: false })
   }
 
   handleVideoTimeUpdate = (payload = 0, player) => {
-    this.player = player
     if (Math.round(payload) % 60 === 0) {
       this.handleOnTimePerMinute({ action: 'timeupdate' })
     }
@@ -170,14 +168,29 @@ class MovieDetail extends Component {
   //   return myTheoPlayer;
   // }
 
+  handleOnVideoLoad = player => {
+    if (!player.src) {
+      document.querySelector('.vjs-big-play-button').style.display = 'none'
+    }
+    /** handle keyboard pressed */
+    document.onkeyup = event => {
+      switch (event.which || event.keyCode) {
+        case 13 /* enter */:
+          player.play()
+          break
+        default:
+          event.preventDefault()
+          break
+      }
+    }
+
+    this.player = player
+  }
+
   componentDidMount() {
+    const that = this
     setTimeout(() => {
-      const { movieDetail } = this.state
-      const { meta: { status }, data } = movieDetail
-      const apiFetched = status === 'success' && data.length > 0
-      const dataFetched = apiFetched ? data[0] : undefined
-      const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-      console.log(streamSource)
+      const streamSource = _get(that.player, 'src', '')
 
       streamSource === '' ? (document.querySelector('.vjs-big-play-button').style.display = 'none') : null
     }, 3000)
@@ -209,6 +222,7 @@ class MovieDetail extends Component {
                   poster={poster}
                   autoPlay={false}
                   movieUrl={streamSource}
+                  handleOnVideoLoad={this.handleOnVideoLoad}
                   handleOnVideoPause={this.handleOnVideoPause}
                   handleOnVideoPlay={this.handleOnVideoPlay}
                   handleVideoTimeUpdate={this.handleVideoTimeUpdate}
