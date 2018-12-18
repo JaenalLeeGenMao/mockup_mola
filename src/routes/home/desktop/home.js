@@ -321,6 +321,7 @@ class Home extends Component {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
+        that.currentMovieId = activeSlick.getAttribute('movieid')
         that.setState({ isDark })
       }
     }, 100)
@@ -415,6 +416,9 @@ class Home extends Component {
         case 40 /* down */:
           scrollIndex += 1
           this.handleKeyPress()
+          break
+        case 13 /* enter */:
+          window.location.href = `/movie-detail/${this.currentMovieId}`
           break
         default:
           event.preventDefault()
