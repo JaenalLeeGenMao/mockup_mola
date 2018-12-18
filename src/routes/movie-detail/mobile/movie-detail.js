@@ -109,21 +109,34 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
-    this.player = player
     this.setState({ toggleSuggestion: true })
   }
 
   handleOnVideoPlay = (payload = true, player) => {
     this.updateEncryption()
-    this.player = player
     this.setState({ toggleSuggestion: false })
   }
 
   handleVideoTimeUpdate = (payload = 0, player) => {
-    this.player = player
     if (Math.round(payload) % 60 === 0) {
       this.handleOnTimePerMinute({ action: 'timeupdate' })
     }
+  }
+
+  handleOnVideoLoad = player => {
+    if (!player.src) {
+      document.querySelector('.vjs-big-play-button').style.display = 'none'
+    }
+    this.player = player
+  }
+
+  componentDidMount() {
+    const that = this
+    setTimeout(() => {
+      const streamSource = _get(that.player, 'src', '')
+
+      streamSource === '' ? (document.querySelector('.vjs-big-play-button').style.display = 'none') : null
+    }, 3000)
   }
 
   render() {
@@ -154,6 +167,7 @@ class MovieDetail extends Component {
                   poster={poster}
                   autoPlay={false}
                   movieUrl={streamSource}
+                  handleOnVideoLoad={this.handleOnVideoLoad}
                   handleOnVideoPause={this.handleOnVideoPause}
                   handleOnVideoPlay={this.handleOnVideoPlay}
                   handleVideoTimeUpdate={this.handleVideoTimeUpdate}

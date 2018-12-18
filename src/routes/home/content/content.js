@@ -52,7 +52,7 @@ class Content extends Component {
     }
 
     return (
-      <div className="grid-slick" isDark={isDark}>
+      <div className="grid-slick" isDark={isDark} movieId={id}>
         <LazyLoad alt="mola grid style" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} handleCallback={this.handleTitleShow} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />
