@@ -144,6 +144,9 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPlay = (payload = true, player) => {
+    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+    window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+
     this.updateEncryption()
     this.setState({ toggleSuggestion: false })
   }
@@ -169,14 +172,18 @@ class MovieDetail extends Component {
   // }
 
   handleOnVideoLoad = player => {
+    const playerButton = document.querySelector('.vjs-button')
     if (!player.src) {
-      document.querySelector('.vjs-big-play-button').style.display = 'none'
+      playerButton.style.display = 'none'
     }
     /** handle keyboard pressed */
     document.onkeyup = event => {
       switch (event.which || event.keyCode) {
         case 13 /* enter */:
-          player.play()
+          playerButton.click()
+          break
+        case 32 /* space */:
+          playerButton.click()
           break
         default:
           event.preventDefault()
@@ -194,6 +201,10 @@ class MovieDetail extends Component {
 
       streamSource === '' ? (document.querySelector('.vjs-big-play-button').style.display = 'none') : null
     }, 3000)
+  }
+
+  componentWillUnmount() {
+    this.handleOnTimePerMinute({ action: 'closed' })
   }
 
   render() {

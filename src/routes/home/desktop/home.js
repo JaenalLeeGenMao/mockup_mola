@@ -420,6 +420,9 @@ class Home extends Component {
         case 13 /* enter */:
           window.location.href = `/movie-detail/${this.currentMovieId}`
           break
+        case 32 /* space */:
+          window.location.href = `/movie-detail/${this.currentMovieId}`
+          break
         default:
           event.preventDefault()
           break
