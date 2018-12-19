@@ -67,6 +67,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
+let ticker = [0] /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -110,10 +111,22 @@ class MovieDetail extends Component {
     this.encryptPayload = window.btoa(JSON.stringify(payload))
   }
 
+  updatePlayerButton() {
+    const that = this
+    setTimeout(() => {
+      const streamSource = _get(that.player, 'src', '')
+      const bigPlayButton = document.querySelector('.vjs-big-play-button')
+
+      if (bigPlayButton && !streamSource) {
+        bigPlayButton.style.display = 'none'
+      }
+    }, 3000)
+  }
+
   handleOnTimePerMinute = ({ action }) => {
     const { clientIp, uid, sessionId } = this.props.user
-    const currentDuration = this.player.currentTime || ''
-    const totalDuration = this.player.duration || ''
+    const currentDuration = this.player ? this.player.currentTime : ''
+    const totalDuration = this.player ? this.player.duration : ''
     const payload = {
       action,
       clientIp,
@@ -139,18 +152,24 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
-    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content')
+    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
     this.setState({ toggleSuggestion: true })
   }
 
   handleOnVideoPlay = (payload = true, player) => {
-    this.updateEncryption()
+    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+    window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+
     this.setState({ toggleSuggestion: false })
   }
 
   handleVideoTimeUpdate = (payload = 0, player) => {
-    if (Math.round(payload) % 60 === 0) {
-      this.handleOnTimePerMinute({ action: 'timeupdate' })
+    const time = Math.round(payload)
+    if (time % 60 === 0) {
+      if (!ticker.includes(time)) {
+        ticker.push(time)
+        this.handleOnTimePerMinute({ action: 'timeupdate' })
+      }
     }
   }
 
@@ -169,14 +188,19 @@ class MovieDetail extends Component {
   // }
 
   handleOnVideoLoad = player => {
-    if (!player.src) {
-      document.querySelector('.vjs-big-play-button').style.display = 'none'
-    }
+    const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
       switch (event.which || event.keyCode) {
         case 13 /* enter */:
-          player.play()
+          if (player.src) {
+            playerButton.click()
+          }
+          break
+        case 32 /* space */:
+          if (player.src) {
+            playerButton.click()
+          }
           break
         default:
           event.preventDefault()
@@ -188,12 +212,8 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
-    const that = this
-    setTimeout(() => {
-      const streamSource = _get(that.player, 'src', '')
-
-      streamSource === '' ? (document.querySelector('.vjs-big-play-button').style.display = 'none') : null
-    }, 3000)
+    this.updateEncryption()
+    this.updatePlayerButton()
   }
 
   render() {

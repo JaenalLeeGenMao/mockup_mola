@@ -30,7 +30,7 @@ export function register(config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = '/service-worker.js'
+      const swUrl = 'service-worker.js'
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -41,14 +41,14 @@ export function register(config) {
         navigator.serviceWorker.ready.then(() => {
           console.log('This web app is being served cache-first by a service ' + 'worker. To learn more, visit http://bit.ly/CRA-PWA')
         })
-
-        window.addEventListener('fetch', function(event) {
-          // it can be empty if you just want to get rid of that error
-        })
       } else {
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config)
       }
+    })
+
+    window.addEventListener('fetch', function(event) {
+      // it can be empty if you just want to get rid of that error
     })
   }
 }
