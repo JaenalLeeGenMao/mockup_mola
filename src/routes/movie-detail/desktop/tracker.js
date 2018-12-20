@@ -6,7 +6,7 @@ import _get from 'lodash/get'
 import Tracker from '@source/lib/tracker'
 
 export const handleTracker = async (data, props) => {
-  const { action, userId, heartbeat, window: clientWindow, currentDuration, totalDuration } = data
+  const { action, clientIp, sessionId, userId, heartbeat, window: clientWindow, currentDuration, totalDuration } = data
   const { id: videoId, source } = props
 
   /* Parse Current Url */
@@ -42,30 +42,30 @@ export const handleTracker = async (data, props) => {
 
   const payload = {
     data: {
-      projectId: 'molatv',
+      project_id: 'molatv',
       // referrer: `${clientWindow.location.origin}${currentLocation.pathname}${
       //   currentLocation.search
       // }`,
       host: `${clientWindow.location.host}`,
       path: `${clientWindow.location.host}${location.pathname}${location.search}`,
-      // sessionId: Tracker.sessionId(), // Try get+set session_id
+      session_id: sessionId, // Try get+set session_id
       // pageContent: document.title || null,
-      // ip: clientIp || null,
+      ip: clientIp || null,
       platform: 'desktop',
       os,
       device,
       app: browser,
-      videoType: source || null,
+      video_type: source || null,
       action,
       client: 'mola-web',
-      screenResolution: `${clientWindow.screen.width}x${clientWindow.screen.height}`,
-      userId: userId,
-      videoId: videoId,
-      currentDuration: currentDuration,
-      totalDuration: totalDuration,
+      screen_resolution: `${clientWindow.screen.width}x${clientWindow.screen.height}`,
+      user_id: userId,
+      video_id: videoId,
+      current_duration: currentDuration,
+      total_duration: totalDuration,
       // currentSubscriptionId: adjustedSubs,
-      hitTimestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
-      intervalBeats: heartbeat ? 60 : 0,
+      hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
+      interval_beats: heartbeat ? 60 : 0,
     },
     table: 'event_video_plays',
   }
