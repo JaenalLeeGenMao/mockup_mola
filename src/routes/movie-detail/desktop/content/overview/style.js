@@ -48,7 +48,7 @@ export const sectionLeftTitle = css`
 `
 
 export const sectionLeftText = css`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 1.2rem;
   color: #ababab;
 `
@@ -65,7 +65,7 @@ export const sectionMiddleTitle = css`
 `
 
 export const sectionMiddleText = css`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 1.2rem;
   color: #ababab;
   text-align: justify;
@@ -78,7 +78,7 @@ export const sectionRightTitle = css`
 `
 
 export const sectionRightText = css`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 1.2rem;
   color: #ababab;
 `

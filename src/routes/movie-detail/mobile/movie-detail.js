@@ -76,7 +76,7 @@ class MovieDetail extends Component {
     const payload = {
       project_id: '2',
       video_id: data.length > 0 ? data[0].id : '',
-      app_id: 'supersoccertv_ads',
+      app_id: 'sent_ads',
       session_id: sessionId,
       client_ip: clientIp,
       user_id: uid,
