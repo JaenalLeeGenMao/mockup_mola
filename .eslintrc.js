@@ -23,9 +23,6 @@ module.exports = {
     'no-unexpected-multiline': 'warn',
     'array-bracket-spacing': ['error', 'never'],
 
-    // Enforce using camelCase
-    camelcase: ['error', { properties: 'always' }],
-
     // Shouldn't use console.*  use a proper logger instead, e.g.
     // https://www.npmjs.com/package/winston
     'no-console': ['warn'],
