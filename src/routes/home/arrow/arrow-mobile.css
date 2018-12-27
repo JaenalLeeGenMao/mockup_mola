@@ -3,12 +3,11 @@
 .home__arrow {
   font-family: slick;
   position: fixed;
-  bottom: 4%;
+  bottom: 0;
   width: 40px;
   height: 40px;
   z-index: 99;
   outline: none;
-  transform: translate(0, 5%);
   visibility: hidden;
   -webkit-tap-highlight-color: transparent;
 }
@@ -21,7 +20,7 @@
 ‹›〈〉❬❭❮❯❰❱
 */
 .home__arrow_next::before,
-[dir=rtl] .home__arrow_prev::before {
+[dir='rtl'] .home__arrow_prev::before {
   content: '❯';
 }
 
@@ -31,7 +30,7 @@
 
 .home__arrow_next::before,
 .home__arrow_prev::before {
-  font-size: .85rem;
+  font-size: 0.85rem;
   line-height: 1.1;
   opacity: 0.75;
   -webkit-font-smoothing: antialiased;
@@ -47,6 +46,7 @@
   cursor: pointer;
   border: none;
   padding: 0;
+  margin: 7%;
   outline: 0;
   font-size: 0;
   line-height: 0;
@@ -65,14 +65,14 @@
 }
 
 .home__arrow_next {
-  right: 5%;
+  right: 0;
   border-width: 0.12rem;
   border-radius: 50%;
   border-style: solid;
 }
 
 .home__arrow_prev {
-  right: 16.5%;
+  right: 11.5%;
   border-width: 0.12rem;
   border-radius: 50%;
   border-style: solid;
@@ -85,13 +85,7 @@
 }
 
 .home__arrow_next.white:hover,
-.home__arrow_prev.white:hover{
+.home__arrow_prev.white:hover {
   color: #000;
   background-color: #fff;
-}
-
-@media screen and (max-width: 370px) {
-  .home__arrow {
-    bottom: 5.25%;
-  }
 }

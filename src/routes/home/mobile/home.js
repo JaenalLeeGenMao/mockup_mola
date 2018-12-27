@@ -119,19 +119,14 @@ class Home extends Component {
 
   componentDidMount() {
     /** swipe EventListener start */
-    window.onload = swipeGestureListener()
-    const handleSwipeEvent = e => {
-      // console.log(e.type,e)
-      this.handleSwipe(e)
-    }
+    window.addEventListener('load', swipeGestureListener)
 
-    document.body.addEventListener('swl', handleSwipeEvent, false)
-    document.body.addEventListener('swr', handleSwipeEvent, false)
-    document.body.addEventListener('swu', handleSwipeEvent, false)
-    document.body.addEventListener('swd', handleSwipeEvent, false)
+    document.body.addEventListener('swl', this.handleSwipe, true)
+    document.body.addEventListener('swr', this.handleSwipe, true)
+    document.body.addEventListener('swu', this.handleSwipe, true)
+    document.body.addEventListener('swd', this.handleSwipe, true)
     /** swipe EventListener ends */
 
-    // window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll)
     Events.scrollEvent.register('end', this.handleColorChange)
 
@@ -177,13 +172,15 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('scroll', this.handleScroll);
     Events.scrollEvent.remove('begin')
     Events.scrollEvent.remove('end')
 
-    for (let i = 0; i < 100; i += 1) {
-      window.clearInterval(i)
-    }
+    window.removeEventListener('unload', swipeGestureListener)
+
+    document.body.removeEventListener('swl', this.handleSwipe, true)
+    document.body.removeEventListener('swr', this.handleSwipe, true)
+    document.body.removeEventListener('swu', this.handleSwipe, true)
+    document.body.removeEventListener('swd', this.handleSwipe, true)
 
     document.body.removeEventListener('touchmove', this.preventDefault)
   }
@@ -257,7 +254,7 @@ class Home extends Component {
     const { playlists, videos } = this.props.home
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       scrollIndex = 0
-      return true
+      // return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
@@ -300,7 +297,8 @@ class Home extends Component {
     const { playlists, videos } = this.props.home
 
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
-      return true
+      scrollIndex = 0
+      // return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
