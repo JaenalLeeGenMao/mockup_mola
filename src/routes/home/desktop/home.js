@@ -272,12 +272,11 @@ class Home extends Component {
     document.removeEventListener('mouseup', () => {}, false)
     document.removeEventListener('mousedown', () => {}, false)
     document.removeEventListener('keyup', () => {}, false)
-    document.removeEventListener('wheel', () => {}, false)
-    document.removeEventListener('DOMMouseScroll', () => {}, false)
 
-    for (let i = 0; i < 100; i += 1) {
-      window.clearInterval(i)
-    }
+    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel'
+
+    /** handle mouse scroll */
+    document.removeEventListener(mouseWheelEvent, this.mouseScrollCallback, true)
   }
 
   componentDidUpdate() {
@@ -331,7 +330,7 @@ class Home extends Component {
     const { playlists, videos } = this.props.home
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       scrollIndex = 0
-      return true
+      // return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
@@ -373,30 +372,35 @@ class Home extends Component {
     }
   }
 
+  mouseScrollCallback = event => {
+    ticking = false
+    const that = this
+
+    clearTimeout($.data(that, 'scrollCheck'))
+    $.data(
+      that,
+      'scrollCheck',
+      setTimeout(function() {
+        /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
+        var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
+        if (delta < 0) {
+          scrollIndex += 1
+          that.handleKeyPress()
+          return
+        } else if (delta > 0) {
+          scrollIndex -= 1
+          that.handleKeyPress()
+          return
+        }
+      }, 250)
+    )
+  }
+
   handleMouseScroll = () => {
     const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel'
-    /** handle mouse scroll */
-    document.addEventListener(mouseWheelEvent, event => {
-      ticking = false
-      const that = this
 
-      clearTimeout($.data(this, 'scrollCheck'))
-      $.data(
-        this,
-        'scrollCheck',
-        setTimeout(function() {
-          /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
-          var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
-          if (delta < 0) {
-            scrollIndex += 1
-            that.handleKeyPress()
-          } else if (delta > 0) {
-            scrollIndex -= 1
-            that.handleKeyPress()
-          }
-        }, 250)
-      )
-    })
+    /** handle mouse scroll */
+    document.addEventListener(mouseWheelEvent, this.mouseScrollCallback, true)
   }
 
   handleKeyboardEvent = () => {
