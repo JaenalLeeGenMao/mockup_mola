@@ -101,7 +101,7 @@ class MovieDetail extends Component {
     /* eslint-disable */
     const payload = {
       project_id: '2',
-      video_id: data.length > 0 ? data[0].id : '',
+      video_id: this.props.movieId,
       app_id: 'sent_ads',
       session_id: sessionId,
       client_ip: clientIp,
