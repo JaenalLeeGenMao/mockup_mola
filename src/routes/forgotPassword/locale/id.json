@@ -1,0 +1,9 @@
+{
+  "forget_password_title": "Lupa Password",
+  "forget_password_subtitle": "Silakan masukkan email Anda di bawah ini",
+  "enter_otp": "Masukan OTP disini",
+  "verify_account": "Verifikasi Akun",
+  "verify_account_label": "Silahkan cek email anda, \n dan masukkan OTP.",
+  "verify": "Verifikasi",
+  "next": "Selanjutnya"
+}

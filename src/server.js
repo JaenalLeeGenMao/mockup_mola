@@ -142,7 +142,7 @@ app.get('*', async (req, res, next) => {
         refreshToken: '',
         expire: '',
         type: '',
-        lang: 'en',
+        lang: 'id',
         clientIp: ip,
       },
       runtime: {
