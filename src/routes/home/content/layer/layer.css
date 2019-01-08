@@ -145,9 +145,9 @@
     opacity: 1;
     margin: 2.5% 10%;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 4px;
   }
 
   .layer__grid_desc_header p,

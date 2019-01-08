@@ -7,11 +7,14 @@ import Auth from '@api/auth'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
+import { getLocale } from '../locale'
+
 import styles from './right-menu.css'
 
 class RightMenu extends Component {
   state = {
     link: '',
+    locale: getLocale(),
   }
 
   componentDidMount() {
@@ -46,6 +49,7 @@ class RightMenu extends Component {
   }
 
   render() {
+    const { locale } = this.state
     const { color, searchOff, profileOff, shareButtonOn, user: { uid = '', sid = '', firstName = '' } } = this.props,
       userID = uid || sid
     return (
@@ -67,42 +71,42 @@ class RightMenu extends Component {
               <div className={styles.right__menu_dropdown} style={{ color, backgroundColor: color === 'black' ? 'rgba(255, 255, 255, .85)' : 'rgba(0, 0, 0, .85)' }}>
                 {userID ? (
                   <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>
-                    {firstName ? `${firstName},` : ''} Sign out
+                    {firstName ? `${firstName},` : ''} {locale['sign_out']}
                   </Link>
                 ) : (
                   <Link style={{ color }} to="/accounts/login">
-                    Login
+                    {locale['login']}
                   </Link>
                 )}
                 {userID && (
                   <Link style={{ color }} to="/accounts/profile">
-                    Account
+                    {locale['account']}
                   </Link>
                 )}
                 {/* {userID && (
                 <Link style={{ color }} to="/accounts/history">
-                  History
+                  {locale['history']}
                 </Link>
               )}
               {userID && (
                 <Link style={{ color }} to="/accounts/inbox">
-                  Inbox
+                  {locale['inbox']}
                 </Link>
               )} */}
                 <Link style={{ color }} to="/system-info">
-                  System Info
+                  {locale['system_info']}
                 </Link>
                 <div className={styles.right__menu_dropdown_footer}>
                   <Link style={{ color }} to="/">
-                    Privacy
+                    {locale['privacy']}
                   </Link>
                   &bull;
                   <Link style={{ color }} to="/">
-                    Terms
+                    {locale['terms']}
                   </Link>
                   &bull;
                   <Link style={{ color }} to="/">
-                    Help
+                    {locale['help']}
                   </Link>
                 </div>
               </div>

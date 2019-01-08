@@ -59,6 +59,7 @@ html {
 
 .container p {
   font-size: 1.2rem;
+  padding: 0.3rem;
   letter-spacing: 0.117rem;
   color: #6f6f6f;
 }
@@ -157,10 +158,9 @@ html {
   display: block;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  margin: 0;
-  padding: 1rem 1.6rem;
+  margin: 0 1rem;
+  padding: 0 1rem;
   height: 4rem;
-  width: 30%;
   background: #2c56ff;
   border: 0.1rem solid #373277;
   border-radius: 0.4rem;
@@ -181,12 +181,14 @@ html {
   align-items: center;
 }
 
-.form__otp input {
+.form__otp input,
+.form__otp input::placeholder {
   margin: 0;
+  font-size: 0.8rem;
 }
 
 .form__otp__input {
-  width: 80% !important;
+  /* width: 80% !important; */
   height: 4rem !important;
 }
 

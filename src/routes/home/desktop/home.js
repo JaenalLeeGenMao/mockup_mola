@@ -320,7 +320,9 @@ class Home extends Component {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
-        that.currentMovieId = activeSlick.getAttribute('movieid')
+        if (activeSlick) {
+          that.currentMovieId = activeSlick.getAttribute('movieid')
+        }
         that.setState({ isDark })
       }
     }, 100)
