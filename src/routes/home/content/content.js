@@ -4,6 +4,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
+import { getLocale } from '@routes/home/locale'
+
 import ContentLayer from './layer'
 
 import styles from './content.css'
@@ -11,6 +13,7 @@ import styles from './content.css'
 class Content extends Component {
   state = {
     show: false,
+    locale: getLocale(),
   }
 
   handleClick = e => {
@@ -51,6 +54,7 @@ class Content extends Component {
       transition: 'all ease-in-out 300ms',
     }
 
+    const { locale } = this.state
     return (
       <div className="grid-slick" isDark={isDark} movieId={id}>
         <LazyLoad alt="mola grid style" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} handleCallback={this.handleTitleShow} />
@@ -79,7 +83,7 @@ class Content extends Component {
                     onClick={type === 'playlists' && this.handleClick}
                   >
                     <span className={`${styles.icon__view_movie} ${styles.white}`} />
-                    {type === 'playlists' ? 'discover' : 'view movie'}
+                    {type === 'playlists' ? 'discover' : locale['view_movie']}
                   </Link>
                 ) : (
                   <Link
@@ -87,7 +91,7 @@ class Content extends Component {
                     className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white} ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
                     onClick={type === 'playlists' && this.handleClick}
                   >
-                    {type === 'playlists' ? 'discover' : 'view movie'}
+                    {type === 'playlists' ? 'discover' : locale['view_movie']}
                   </Link>
                 )}
               </div>
