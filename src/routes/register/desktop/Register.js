@@ -15,6 +15,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import $ from 'jquery'
 
 import Auth from '@api/auth'
+import config from '@source/config'
 
 import Header from '@components/Header'
 import Form from '@components/FormInput'
@@ -80,7 +81,7 @@ class Register extends React.Component {
       csrf,
     })
     if (result.meta.status === 'success') {
-      window.location.href = 'http://staging.mola.tv/accounts/login'
+      window.location.href = `${config.endpoints.domain}/accounts/login`
     }
   }
 
