@@ -17,6 +17,7 @@ import s from './Forgot.css'
 import $ from 'jquery'
 
 import Auth from '@api/auth'
+import config from '@source/config'
 
 import Form from '@components/FormInput'
 import LazyLoad from '@components/common/Lazyload'
@@ -83,7 +84,7 @@ class Forgot extends React.Component {
       csrf,
     })
     if (result.meta.status === 'success') {
-      window.location.href = 'https://staging.mola.tv/accounts/resetPassword'
+      window.location.href = `${config.endpoints.domain}/accounts/resetPassword`
     }
   }
 

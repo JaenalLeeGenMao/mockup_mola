@@ -1,11 +1,11 @@
 {
   "sign_out": "Keluar",
   "login": "Masuk",
-  "account": "Akun",
+  "profile": "Profile",
   "history": "Riwayat",
-  "inbox": "Inbox",
+  "inbox": "Pesan",
   "system_info": "Sistem Info",
   "privacy": "Privasi",
-  "terms": "Ketentuan",
-  "help": "Bantuan"
+  "terms": "Syarat",
+  "condition": "Ketentuan"
 }
