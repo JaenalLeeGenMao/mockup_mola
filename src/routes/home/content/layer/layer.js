@@ -27,24 +27,26 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
         <>
           <div
             className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
-            style={{
-              background: `url(${coverBackgroundImage}) repeat center`,
-              // boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
-              backgroundSize: 'cover',
-              opacity: 0.1,
-            }}
+            style={
+              {
+                // background: `url(${coverBackgroundImage}) repeat center`,
+                // boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
+                // backgroundSize: 'cover',
+                // opacity: 0.1,
+              }
+            }
           />
           <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
             <div className={styles.layer__grid_desc_header}>
-              <i className={styles.layer__grid_desc_footer_quote}>{description}</i>
+              <i className="filtered_description">{`“${quote}”`}</i>
             </div>
+            <i className={styles.layer__grid_desc_author}>{author}</i>
+            <p className={styles.layer__grid_desc_breakpoint}>—</p>
             {type !== 'playlists' && (
               <Fragment>
-                <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
-                <div className={styles.layer__grid_desc_footer}>
-                  <p className="filtered_description">{`“${quote}”`}</p>
+                <div className={`${styles.layer__grid_desc_footer} ${styles[!isDark ? 'background_white' : 'background_black']}`}>
+                  <p className="filtered_description">{description}</p>
                 </div>
-                <strong className={styles.layer__grid_desc_author}>— {author}</strong>
               </Fragment>
             )}
           </div>
@@ -58,7 +60,7 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
             <i className={styles.layer__grid_desc_author}>— {author}</i>
           </div>
           <div className={styles.layer__grid_desc_footer}>
-            <p className={styles.layer__grid_desc_footer_quote}>{description}</p>
+            <p className={styles.layer__grid_desc_footer_desc}>{description}</p>
           </div>
         </>
       )}
