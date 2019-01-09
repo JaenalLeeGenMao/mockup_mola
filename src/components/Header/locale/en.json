@@ -1,11 +1,11 @@
 {
   "sign_out": "Sign Out",
   "login": "Login",
-  "account": "Account",
+  "profile": "Profile",
   "history": "History",
   "inbox": "Inbox",
   "system_info": "System Info",
   "privacy": "Privacy",
   "terms": "Terms",
-  "help": "Help"
+  "condition": "Condition"
 }

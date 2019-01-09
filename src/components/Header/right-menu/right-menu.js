@@ -80,7 +80,7 @@ class RightMenu extends Component {
                 )}
                 {userID && (
                   <Link style={{ color }} to="/accounts/profile">
-                    {locale['account']}
+                    {locale['profile']}
                   </Link>
                 )}
                 {/* {userID && (
@@ -106,7 +106,7 @@ class RightMenu extends Component {
                   </Link>
                   &bull;
                   <Link style={{ color }} to="/">
-                    {locale['help']}
+                    {locale['condition']}
                   </Link>
                 </div>
               </div>

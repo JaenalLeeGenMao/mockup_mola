@@ -1,31 +1,31 @@
 import React, { Fragment, Component } from 'react'
 import Slider from 'react-slick'
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _get from 'lodash/get'
 
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
-
-import { SETTINGS } from '../const'
 import homeActions from '@actions/home'
 
 import { getErrorCode } from '@routes/home/util'
 
 import Header from '@components/Header'
+import HomeError from '@components/common/error'
 
 import HomeArrow from '../arrow'
 import HomeDesktopContent from '../content'
 import HomeDesktopMenu from '../menu'
 import HomePlaceholder from './placeholder'
-import HomeError from '@components/common/error'
 
+import { SETTINGS } from '../const'
 import styles from './home.css'
-import Joyride from 'react-joyride'
-import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
-import _get from 'lodash/get'
 import TourArrow from '../tourArrow'
+import { tourSteps } from './const'
 
 let ticking = false,
   activePlaylist,
@@ -86,7 +86,10 @@ let customTourStyle = {
     position: 'absolute',
     transform: 'scale(.99, .95) translateY(1%)',
   },
-  tooltip: {},
+  tooltip: {
+    width: '30rem',
+    borderRadius: '.4rem',
+  },
 }
 
 class Home extends Component {
@@ -97,55 +100,7 @@ class Home extends Component {
     playlistSuccess: false,
     startGuide: false,
     stepIndex: 0,
-    steps: [
-      {
-        target: '.tourCategory',
-        title: 'Movie Category',
-        content: `
-        To navigate around different movie categories, you can simply click the navigation 
-        button or press ↑ up and ↓ down on your awesome keyboard`,
-        placement: 'right',
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      {
-        target: '.tourSlide',
-        title: 'Highlighted Movies',
-        content: `
-        You can browse through our top movies in each category with gentle click on the arrow buttons 
-        or using keyboards and toggle → right and ← left`,
-        placement: 'top',
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      {
-        target: '.tourLibrary',
-        title: 'Movie Library',
-        content: 'You can click this icon to view all movie list per category',
-        placement: 'bottom',
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      // {
-      //   target: '.tourMovieDiscover',
-      //   title: 'Discover Our Movie',
-      //   content: 'Click this button to discover our awesome list of movies',
-      //   placement: 'top',
-      //   spotlightPadding: 0,
-      //   disableBeacon: true,
-      //   disableOverlayClicks: true,
-      // },
-      {
-        target: '.tourMovieDetail',
-        title: 'View Movie Detail',
-        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
-        placement: 'top',
-        spotlightPadding: 0,
-        disableBeacon: true,
-        disableOverlayClicks: true,
-        locale: { last: 'Finish' },
-      },
-    ],
+    steps: tourSteps[this.props.user.lang],
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -213,16 +168,20 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    if (activePlaylist) {
+      scrollIndex = 0
+      this.props.onUpdatePlaylist(this.state.playlists.data[scrollIndex].id)
+    }
     Events.scrollEvent.register('begin', this.handleScroll)
     Events.scrollEvent.register('end', this.handleColorChange)
 
     if (window.innerHeight > 1801) {
       const tvStyle = Object.assign({}, customTourStyle)
-      tvStyle.tooltip.width = '900px'
-      tvStyle.tooltip.height = '400px'
+      // tvStyle.tooltip.width = '30rem'
+      // tvStyle.tooltip.height = '18rem'
       tvStyle.tooltip.padding = '1.6rem'
       tvStyle.tooltipContent.padding = '0'
-      tvStyle.tooltipContent.minHeight = '140px'
+      tvStyle.tooltipContent.minHeight = '1.4rem'
     }
 
     const { playlists, videos } = this.props.home
