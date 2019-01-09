@@ -66,7 +66,6 @@
 
 .layer__grid_desc_footer p {
   font-size: 1.6rem;
-  font-weight: 600;
 }
 
 .layer__grid_desc_footer_desc {
@@ -98,8 +97,8 @@
   }
 
   .layer__grid_desc_header {
-    height: 4rem;
-    margin: 2.5% 10%;
+    height: 3rem;
+    margin: 2.5% 12%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -125,6 +124,7 @@
 
   .layer__grid_desc_footer p {
     font-size: 1rem;
+    line-height: 1.25rem;
     font-weight: 600;
   }
 
