@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import Slider from 'react-slick'
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _get from 'lodash/get'
 
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
-
-import { SETTINGS } from '../const'
 import homeActions from '@actions/home'
 
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
@@ -16,18 +17,17 @@ import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
+import HomeError from '@components/common/error'
+import HomePlaceholder from './placeholder'
 import HomeArrow from '../arrow'
 import HomeMobileContent from '../content'
 import HomeMobileMenu from '../menu'
-import HomePlaceholder from './placeholder'
-import HomeError from '@components/common/error'
 
 import styles from './home.css'
 import customArrowStyles from '../arrow/arrow-mobile.css'
-import Joyride from 'react-joyride'
-import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
+import { SETTINGS } from '../const'
+import { tourSteps } from './const'
 import TourArrow from '../tourArrow'
-import _get from 'lodash/get'
 
 let ticking = false,
   activePlaylist,
@@ -43,58 +43,7 @@ class Home extends Component {
     videos: [],
     startGuide: false,
     stepIndex: 0,
-    steps: [
-      {
-        target: '.tourCategory',
-        title: 'Movie Category',
-        content: (
-          <div>
-            To navigate around different movie categories, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} /> up and down on your awesome keyboard
-          </div>
-        ),
-        placement: 'right',
-        disableBeacon: true,
-        styles: {
-          tooltip: {
-            maxWidth: '100%',
-          },
-        },
-      },
-      {
-        target: '.tourSlide',
-        title: 'Highlighted Movies',
-        content: (
-          <div>
-            {' '}
-            You can browse through our top movies in each category with gentle click on the arrow buttons or using keyboards and swipe <span className={styles.swipeNextIcon} /> right and left
-          </div>
-        ),
-        placement: 'top',
-        disableBeacon: true,
-      },
-      {
-        target: '.tourLibrary',
-        title: 'Movie Library',
-        content: 'You can click this icon to view all movie list per category',
-        placement: 'bottom',
-        disableBeacon: true,
-      },
-      // {
-      //   target: '.tourMovieDiscover',
-      //   title: 'Discover Our Movie',
-      //   content: 'Click this button to discover our awesome list of movies',
-      //   placement: 'top',
-      //   disableBeacon: true,
-      // },
-      {
-        target: '.tourMovieDetail',
-        title: 'View Movie Detail',
-        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
-        placement: 'top',
-        disableBeacon: true,
-        locale: { last: 'Finish' },
-      },
-    ],
+    steps: tourSteps[this.props.user.lang],
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -118,6 +67,10 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    if (activePlaylist) {
+      scrollIndex = 0
+      this.props.onUpdatePlaylist(this.state.playlists.data[scrollIndex].id)
+    }
     /** swipe EventListener start */
     window.addEventListener('load', swipeGestureListener)
 
