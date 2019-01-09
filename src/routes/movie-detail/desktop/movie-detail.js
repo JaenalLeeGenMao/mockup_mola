@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
 
+import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import { endpoints } from '@source/config'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -123,6 +124,27 @@ class MovieDetail extends Component {
     }, 3000)
   }
 
+  updateMetaTag() {
+    // When audio starts playing...
+    if ('mediaSession' in navigator) {
+      const { movieDetail } = this.props,
+        currentMovie = movieDetail.data.length > 0 ? movieDetail.data[0] : { title: 'Mola TV' }
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentMovie.title,
+        artist: 'Mola TV',
+        album: 'Watch Movies & Streaming Online',
+        artwork: [
+          { src: logoLandscapeBlue, sizes: '96x96', type: 'image/svg' },
+          { src: logoLandscapeBlue, sizes: '128x128', type: 'image/svg' },
+          { src: logoLandscapeBlue, sizes: '192x192', type: 'image/svg' },
+          { src: logoLandscapeBlue, sizes: '256x256', type: 'image/svg' },
+          { src: logoLandscapeBlue, sizes: '384x384', type: 'image/svg' },
+          { src: logoLandscapeBlue, sizes: '512x512', type: 'image/svg' },
+        ],
+      })
+    }
+  }
+
   handleOnTimePerMinute = ({ action }) => {
     const { clientIp, uid, sessionId } = this.props.user
     const currentDuration = this.player ? this.player.currentTime : ''
@@ -159,6 +181,8 @@ class MovieDetail extends Component {
   handleOnVideoPlay = (payload = true, player) => {
     window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+
+    updateMetaTag()
 
     this.setState({ toggleSuggestion: false })
   }
