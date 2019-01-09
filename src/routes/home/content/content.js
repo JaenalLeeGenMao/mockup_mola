@@ -57,6 +57,7 @@ class Content extends Component {
     const { locale } = this.state
     return (
       <div className="grid-slick" isDark={isDark} movieId={id}>
+        {isMobile && <div className={styles.content__gradient_cover} />}
         <LazyLoad alt="mola grid style" src={coverBackgroundImage} containerClassName={styles.content__grid_background_images} lazy={false} handleCallback={this.handleTitleShow} />
         <div className={styles.content__grid_container} style={{ color: fontColor }}>
           <div className={styles.content__grid_nav} />

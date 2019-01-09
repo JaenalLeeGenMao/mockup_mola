@@ -2,6 +2,7 @@
   position: fixed;
   width: 7%;
   z-index: 3;
+  transition: opacity 300ms ease-out;
 }
 
 .menu_content {
@@ -45,7 +46,6 @@
 }
 
 .isActive {
-  transition: opacity 300ms ease-out;
   opacity: 1;
   z-index: 200;
 }
