@@ -125,7 +125,7 @@ class MovieDetail extends Component {
   }
 
   updateMetaTag() {
-    // When audio starts playing...
+    /* When audio starts playing... */
     if ('mediaSession' in navigator) {
       const { movieDetail } = this.props,
         currentMovie = movieDetail.data.length > 0 ? movieDetail.data[0] : { title: 'Mola TV' }
