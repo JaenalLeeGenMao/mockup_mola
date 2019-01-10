@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
 
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -134,12 +134,12 @@ class MovieDetail extends Component {
         artist: 'Mola TV',
         album: 'Watch Movies & Streaming Online',
         artwork: [
-          { src: 'https://via.placeholder.com/268x60?text=Mola+TV+Now%20C/O%20https://mola.tv/', sizes: '96x96', type: 'image/png' },
-          { src: 'https://via.placeholder.com/268x60?text=Mola+TV+Now%20C/O%20https://mola.tv/', sizes: '128x128', type: 'image/png' },
-          { src: 'https://via.placeholder.com/268x60?text=Mola+TV+Now%20C/O%20https://mola.tv/', sizes: '192x192', type: 'image/png' },
-          { src: 'https://via.placeholder.com/268x60?text=Mola+TV+Now%20C/O%20https://mola.tv/', sizes: '256x256', type: 'image/png' },
-          { src: 'https://via.placeholder.com/268x60?text=Mola+TV+Now%20C/O%20https://mola.tv/', sizes: '384x384', type: 'image/png' },
-          { src: 'https://via.placeholder.com/268x60?text=Mola+TV+Now%20C/O%20https://mola.tv/', sizes: '512x512', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '96x96', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '128x128', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '192x192', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '256x256', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '384x384', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '512x512', type: 'image/png' },
         ],
       })
     }
