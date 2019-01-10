@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
 
-import notificationBarBackground from '@global/style/icons/notification-bar-left.png'
+import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
 
 import * as movieDetailActions from '@actions/movie-detail'
