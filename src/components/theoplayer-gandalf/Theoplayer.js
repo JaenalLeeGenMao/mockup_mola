@@ -249,26 +249,24 @@ class Theoplayer extends Component {
   }
 
   handleFullscreen = () => {
-    this.isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-
     const { isFullscreen } = this.state
-    if (!this.isSafari) {
-      this.setState({ isFullscreen: !isFullscreen }, () => {
-        if (window.screen.orientation) {
-          if (!isFullscreen) {
-            window.screen.orientation.lock('landscape')
-          } else {
-            window.screen.orientation.unlock()
-          }
-        }
-      })
-    }
+    this.setState({ isFullscreen: !isFullscreen }, () => {
+      if (!isFullscreen) {
+        window.screen.orientation.lock('landscape')
+      } else {
+        window.screen.orientation.unlock()
+      }
+    })
   }
 
   componentDidMount() {
     this.loadDynamicStyle()
     this.loadDynamicScript()
-    this.loadFullscreenEvent()
+
+    this.isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    if (!this.isSafari) {
+      this.loadFullscreenEvent()
+    }
   }
 
   loadDynamicScript = () => {
