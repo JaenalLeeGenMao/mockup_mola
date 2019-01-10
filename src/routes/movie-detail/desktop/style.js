@@ -1,4 +1,5 @@
 import { css } from 'react-emotion'
+import '../../../global/style/css/grainBackground.css'
 
 export const playButton = css`
   position: absolute;
@@ -23,6 +24,17 @@ export const movieDetailContainer = css`
   max-height: 100vh;
 `
 
+export const movieDetailNotAvailableContainer = css`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 2rem;
+`
+
 export const controllerContainer = css`
   display: block;
   position: absolute;
@@ -45,6 +57,7 @@ export const controllerContainer = css`
   }
 `
 export const videoPlayerContainer = css`
+  @import '../../../../global/style/css/grainBackground.css';
   height: 65.5vh;
   width: 60vw;
   margin: auto;

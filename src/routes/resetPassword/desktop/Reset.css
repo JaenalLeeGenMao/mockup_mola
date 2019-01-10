@@ -48,6 +48,7 @@
 }
 
 .labelHeader {
+  line-height: 3rem;
   color: #fff !important;
   font-size: 1.6rem !important;
   font-weight: 500;

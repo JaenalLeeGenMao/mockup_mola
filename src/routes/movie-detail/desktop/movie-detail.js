@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import _get from 'lodash/get'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
@@ -20,6 +22,7 @@ import { handleTracker } from './tracker'
 import {
   playButton,
   movieDetailContainer,
+  movieDetailNotAvailableContainer,
   controllerContainer,
   videoPlayerContainer,
   videoSuggestionContainer,
@@ -28,6 +31,8 @@ import {
   videoSuggestionPlayerDetail,
   videoSuggestionTitle,
 } from './style'
+
+import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
@@ -110,18 +115,6 @@ class MovieDetail extends Component {
     }
 
     this.encryptPayload = window.btoa(JSON.stringify(payload))
-  }
-
-  updatePlayerButton() {
-    const that = this
-    setTimeout(() => {
-      const streamSource = _get(that.player, 'src', '')
-      const bigPlayButton = document.querySelector('.vjs-big-play-button')
-
-      if (bigPlayButton && !streamSource) {
-        bigPlayButton.style.display = 'none'
-      }
-    }, 3000)
   }
 
   updateMetaTag() {
@@ -237,7 +230,6 @@ class MovieDetail extends Component {
 
   componentDidMount() {
     this.updateEncryption()
-    this.updatePlayerButton()
   }
 
   render() {
@@ -260,30 +252,36 @@ class MovieDetail extends Component {
           <div className={movieDetailContainer}>
             <div style={{ width: '100vw', background: '#000' }}>
               <div className={videoPlayerContainer}>
-                <Theoplayer
-                  className={customTheoplayer}
-                  // theoConfig={this.isTheoPlayer()}
-                  poster={poster}
-                  autoPlay={false}
-                  movieUrl={streamSource}
-                  handleOnVideoLoad={this.handleOnVideoLoad}
-                  handleOnVideoPause={this.handleOnVideoPause}
-                  handleOnVideoPlay={this.handleOnVideoPlay}
-                  handleVideoTimeUpdate={this.handleVideoTimeUpdate}
-                  {...videoSettings}
-                  showChildren
-                >
-                  <LazyLoad
-                    containerClassName={videoSuggestionContainer}
-                    containerStyle={{
-                      display: toggleSuggestion ? 'inline-block' : 'none',
-                      bottom: this.isAds ? '9.5%' : '',
-                    }}
+                {streamSource ? (
+                  <Theoplayer
+                    className={customTheoplayer}
+                    // theoConfig={this.isTheoPlayer()}
+                    poster={poster}
+                    autoPlay={false}
+                    movieUrl={streamSource}
+                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    handleOnVideoPause={this.handleOnVideoPause}
+                    handleOnVideoPlay={this.handleOnVideoPlay}
+                    handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                    {...videoSettings}
+                    showChildren
                   >
-                    <h2 className={videoSuggestionTitle}>Suggestions</h2>
-                    <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                  </LazyLoad>
-                </Theoplayer>
+                    <LazyLoad
+                      containerClassName={videoSuggestionContainer}
+                      containerStyle={{
+                        display: toggleSuggestion ? 'inline-block' : 'none',
+                        bottom: this.isAds ? '9.5%' : '',
+                      }}
+                    >
+                      <h2 className={videoSuggestionTitle}>Suggestions</h2>
+                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
+                    </LazyLoad>
+                  </Theoplayer>
+                ) : (
+                  <div className={movieDetailNotAvailableContainer}>
+                    <div className={styles.root}>Video Not Available</div>
+                  </div>
+                )}
               </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
@@ -309,4 +307,4 @@ const mapDispatchToProps = dispatch => ({
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)
