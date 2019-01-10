@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import _get from 'lodash/get'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -17,9 +20,20 @@ import { videoSettings as defaultVideoSettings } from '../const'
 
 import { handleTracker } from './tracker'
 
-import { playButton, movieDetailContainer, videoPlayerContainer, videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail } from './style'
+import {
+  playButton,
+  movieDetailContainer,
+  movieDetailNotAvailableContainer,
+  videoPlayerContainer,
+  videoSuggestionContainer,
+  videoSuggestionWrapper,
+  videoSuggestionPlayer,
+  videoSuggestionPlayerDetail,
+} from './style'
+import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
+
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
@@ -97,6 +111,27 @@ class MovieDetail extends Component {
     }, 3000)
   }
 
+  updateMetaTag() {
+    /* When audio starts playing... */
+    if ('mediaSession' in navigator) {
+      const { movieDetail } = this.props,
+        currentMovie = movieDetail.data.length > 0 ? movieDetail.data[0] : { title: 'Mola TV' }
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentMovie.title,
+        artist: 'Mola TV',
+        album: 'Watch Movies & Streaming Online',
+        artwork: [
+          { src: notificationBarBackground, sizes: '96x96', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '128x128', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '192x192', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '256x256', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '384x384', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '512x512', type: 'image/png' },
+        ],
+      })
+    }
+  }
+
   handleOnTimePerMinute = ({ action }) => {
     const { clientIp, uid, sessionId } = this.props.user
     const currentDuration = this.player ? this.player.currentTime : ''
@@ -129,6 +164,8 @@ class MovieDetail extends Component {
     window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
 
+    this.updateMetaTag()
+
     this.setState({ toggleSuggestion: false })
   }
 
@@ -156,8 +193,8 @@ class MovieDetail extends Component {
     const { meta: { status }, data } = movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
+    // const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
     const videoSettings = {
@@ -170,29 +207,36 @@ class MovieDetail extends Component {
       <>
         {dataFetched && (
           <>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={dataFetched.isDark} backButtonOn shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
-                <Theoplayer
-                  className={customTheoplayer}
-                  // theoConfig={this.isTheoPlayer()}
-                  poster={poster}
-                  autoPlay={false}
-                  movieUrl={streamSource}
-                  handleOnVideoLoad={this.handleOnVideoLoad}
-                  handleOnVideoPause={this.handleOnVideoPause}
-                  handleOnVideoPlay={this.handleOnVideoPlay}
-                  handleVideoTimeUpdate={this.handleVideoTimeUpdate}
-                  showBackBtn={false}
-                  {...videoSettings}
-                  showChildren
-                >
-                  {toggleSuggestion && (
-                    <LazyLoad containerClassName={videoSuggestionContainer}>
-                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                    </LazyLoad>
-                  )}
-                </Theoplayer>
+                {streamSource ? (
+                  <Theoplayer
+                    className={customTheoplayer}
+                    // theoConfig={this.isTheoPlayer()}
+                    poster={poster}
+                    autoPlay={false}
+                    movieUrl={streamSource}
+                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    handleOnVideoPause={this.handleOnVideoPause}
+                    handleOnVideoPlay={this.handleOnVideoPlay}
+                    handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                    showBackBtn={false}
+                    {...videoSettings}
+                    showChildren
+                    isMobile
+                  >
+                    {toggleSuggestion && (
+                      <LazyLoad containerClassName={videoSuggestionContainer}>
+                        <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
+                      </LazyLoad>
+                    )}
+                  </Theoplayer>
+                ) : (
+                  <div className={movieDetailNotAvailableContainer}>
+                    <div className={styles.root}>Video Not Available</div>
+                  </div>
+                )}
               </div>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
@@ -216,4 +260,4 @@ const mapDispatchToProps = dispatch => ({
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

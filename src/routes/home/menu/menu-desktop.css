@@ -2,6 +2,7 @@
   position: fixed;
   width: 5%;
   z-index: 3;
+  transition: 500ms ease-out;
 }
 
 .menu_content {
@@ -19,7 +20,6 @@
   margin: 1.8rem;
   border-radius: 50%;
   text-decoration: none;
-  transition: 250ms ease-out;
   opacity: 0.4;
   display: block;
   color: inherit;
@@ -46,7 +46,6 @@
 }
 
 .isActive {
-  transition: opacity 300ms ease-out;
   opacity: 1;
   z-index: 200;
 }

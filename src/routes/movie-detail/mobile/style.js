@@ -21,6 +21,17 @@ export const movieDetailContainer = css`
   min-height: 100vh;
 `
 
+export const movieDetailNotAvailableContainer = css`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  fontsize: 1rem;
+`
+
 export const videoPlayerContainer = css`
   height: 16rem;
 `
@@ -59,8 +70,10 @@ export const videoSuggestionPlayerDetail = css`
   height: 100%;
 
   div {
+    position: absolute;
     width: 100%;
     height: 85%;
     left: 0;
+    bottom: 1rem;
   }
 `

@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:100');
+@import url('https://fonts.googleapis.com/css?family=Lato:300&subset=latin-ext');
 
 .layer__grid_desc_wrapper {
   position: relative;
   z-index: 2;
   height: 70%;
-  margin-bottom: 3rem;
   border-radius: 3px;
   overflow: hidden;
 }
@@ -76,6 +75,7 @@
 .layer__grid_desc_author {
   margin: 0 5%;
   opacity: 0.456;
+  font-size: 0.87rem;
   line-height: 1rem !important;
 }
 
@@ -88,9 +88,11 @@
 /* mobile Styles */
 @media screen and (max-width: 640px) {
   .layer__grid_desc_wrapper {
-    position: relative;
+    position: absolute;
+    bottom: 0;
     z-index: 2;
-    margin: 20% 0% 0;
+
+    /* margin: 20% 0% 0; */
     height: auto;
     border-radius: 3px;
     overflow: hidden;
@@ -98,7 +100,7 @@
 
   .layer__grid_desc_header {
     height: 3rem;
-    margin: 2.5% 12%;
+    margin: 1.125% 20%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -108,6 +110,7 @@
   .layer__grid_desc_header i {
     opacity: 0.652;
     font-size: 0.87rem;
+    line-height: 1.35rem;
   }
 
   .layer__grid_desc_footer {
@@ -117,14 +120,14 @@
     opacity: 1;
     margin: 2.5% 10%;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1.25rem;
+    border-radius: 0.3rem;
   }
 
   .layer__grid_desc_footer p {
     font-size: 1rem;
-    line-height: 1.25rem;
+    line-height: 1.35rem;
     font-weight: 600;
   }
 
@@ -138,7 +141,7 @@
 
 @media screen and (max-width: 370px) {
   .layer__grid_desc_header {
-    height: 3rem;
+    height: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

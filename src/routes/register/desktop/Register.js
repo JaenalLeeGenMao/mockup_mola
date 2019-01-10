@@ -27,11 +27,13 @@ import line from '@global/style/icons/line.png'
 
 import { setUserVariable } from '@actions/user'
 import s from './Register.css'
+import { getLocale } from '../locale'
 
 class Register extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      locale: getLocale(),
       username: '',
       email: '',
       password: '',
@@ -105,7 +107,7 @@ class Register extends React.Component {
   }
 
   render() {
-    const { username, email, password, confirmPassword, token } = this.state
+    const { locale, username, email, password, confirmPassword, token } = this.state
     // console.log(token);
     const isDark = true
     return (
@@ -116,7 +118,7 @@ class Register extends React.Component {
             <LazyLoad>
               <div className={s.flip}>
                 <div className={s.container}>
-                  <p className={s.labelHeader}>Register mola now !</p>
+                  <p className={s.labelHeader}>Register mola {locale['now']} !</p>
                   <div>
                     <Form id="username" type="text" name="username" onChange={this.onChangeInput} value={username} autoFocus>
                       Username
@@ -128,15 +130,15 @@ class Register extends React.Component {
                       Password
                     </Form>
                     <Form id="confirmPassword" type="password" name="confirmPassword" onChange={this.onChangeInput} value={confirmPassword}>
-                      Confirm password
+                      {`${locale['confirm']} password`}
                     </Form>
                     <div className={s.formGroup} style={{ marginTop: '15px' }}>
                       <button className={s.button} onClick={this.handleRegistration}>
-                        SIGN UP
+                        {locale['sign_up']}
                       </button>
                     </div>
                   </div>
-                  <strong className={s.lineThrough}>Or</strong>
+                  <strong className={s.lineThrough}>{locale['or']}</strong>
                   <div className={s.flexButton}>
                     <button onClick={() => this.handleLoginSocMed('google')} style={{ width: '100%' }}>
                       <img className={s.buttonImg} src={google} />
@@ -150,24 +152,24 @@ class Register extends React.Component {
                   </div>
                 </div>
                 <div className={s.containerBack}>
-                  <p className={s.labelHeader}>Verify Account !</p>
+                  <p className={s.labelHeader}>{locale['verify_account']} !</p>
                   <p>
-                    We need verify your email account, <br />
-                    Please check your email to verify your account.
+                    {locale['verify_account_subtitle_top']} <br />
+                    {locale['verify_account_subtitle_bottom']}
                   </p>
                   <div className={`${s.formGroup} ${s.form__otp}`} style={{ marginTop: '15px', marginBottom: '20px' }}>
                     <div className={s.verify__otp_input}>
                       <Form id="token" type="text" name="token" onChange={this.onChangeInput} value={token}>
-                        Enter OTP here
+                        {locale['enter_otp']}
                       </Form>
                     </div>
                     <button className={s.verify__button} onClick={this.handleVerificationToken}>
-                      Verify
+                      {locale['verify']}
                     </button>
                   </div>
                   <p style={{ textAlign: 'center' }}>
                     <a className={s.label__resend} onClick={this.handleResendToken}>
-                      Resend OTP
+                      {locale['resend_otp']}
                     </a>
                   </p>
                 </div>

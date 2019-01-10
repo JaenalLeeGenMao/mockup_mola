@@ -26,6 +26,8 @@ import facebook from '@global/style/icons/facebook.png'
 import google from '@global/style/icons/google.png'
 import line from '@global/style/icons/line.png'
 
+import { getLocale } from '../locale'
+
 import s from './Login.css'
 
 class Login extends React.Component {
@@ -37,6 +39,7 @@ class Login extends React.Component {
       isError: false,
       errMsg: '',
       errCode: '',
+      locale: getLocale(),
     }
 
     this.onChangeInput = this.onChangeInput.bind(this)
@@ -78,7 +81,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email, password, isError, errMsg } = this.state
+    const { locale, email, password, isError, errMsg } = this.state
 
     const isDark = true
     return (
@@ -88,10 +91,11 @@ class Login extends React.Component {
           <div className={s.root}>
             <LazyLoad>
               <div className={s.container}>
-                <p className={s.lead}>Login Mola</p>
+                <p className={s.lead}>{locale['login_title']}</p>
                 <p>
-                  Wah, we miss you! <br />
-                  Input your data to login and lets start.
+                  {locale['login_subtitle_top']}
+                  <br />
+                  {locale['login_subtitle_bottom']}
                 </p>
                 <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                 <div>
@@ -105,17 +109,17 @@ class Login extends React.Component {
                     <div />
                     <div>
                       <Link className={s.forgotPassword} to="/accounts/forgotPassword">
-                        Forgot password ?
+                        {locale['forget_password']} ?
                       </Link>
                     </div>
                   </div>
                   <div className={s.formGroup}>
                     <button className={s.button} onClick={this.handleLogin}>
-                      SIGN IN
+                      {locale['sign_in']}
                     </button>
                   </div>
                 </div>
-                <strong className={s.lineThrough}>Or</strong>
+                <strong className={s.lineThrough}>{locale['or']}</strong>
                 <div className={s.flexButton}>
                   <button onClick={() => this.handleLoginSocMed('google')} style={{ width: '100%' }}>
                     <img className={s.buttonImg} src={google} />
@@ -128,7 +132,7 @@ class Login extends React.Component {
                   </button> */}
                 </div>
                 <p className={s.labelSignup}>
-                  New user ? <a href="/accounts/register">Register now</a>
+                  {locale['new_user']} ? <a href="/accounts/register">{locale['register_now']}</a>
                 </p>
               </div>
             </LazyLoad>
