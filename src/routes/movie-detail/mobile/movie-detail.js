@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import _get from 'lodash/get'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
@@ -18,9 +20,20 @@ import { videoSettings as defaultVideoSettings } from '../const'
 
 import { handleTracker } from './tracker'
 
-import { playButton, movieDetailContainer, videoPlayerContainer, videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail } from './style'
+import {
+  playButton,
+  movieDetailContainer,
+  movieDetailNotAvailableContainer,
+  videoPlayerContainer,
+  videoSuggestionContainer,
+  videoSuggestionWrapper,
+  videoSuggestionPlayer,
+  videoSuggestionPlayerDetail,
+} from './style'
+import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
+
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
@@ -180,8 +193,8 @@ class MovieDetail extends Component {
     const { meta: { status }, data } = movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
+    // const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
     const videoSettings = {
@@ -189,34 +202,41 @@ class MovieDetail extends Component {
       adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
       adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
     }
-    console.log(toggleSuggestion)
+
     return (
       <>
         {dataFetched && (
           <>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={dataFetched.isDark} backButtonOn shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
-                <Theoplayer
-                  className={customTheoplayer}
-                  // theoConfig={this.isTheoPlayer()}
-                  poster={poster}
-                  autoPlay={false}
-                  movieUrl={streamSource}
-                  handleOnVideoLoad={this.handleOnVideoLoad}
-                  handleOnVideoPause={this.handleOnVideoPause}
-                  handleOnVideoPlay={this.handleOnVideoPlay}
-                  handleVideoTimeUpdate={this.handleVideoTimeUpdate}
-                  showBackBtn={false}
-                  {...videoSettings}
-                  showChildren
-                >
-                  {toggleSuggestion && (
-                    <LazyLoad containerClassName={videoSuggestionContainer}>
-                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                    </LazyLoad>
-                  )}
-                </Theoplayer>
+                {streamSource ? (
+                  <Theoplayer
+                    className={customTheoplayer}
+                    // theoConfig={this.isTheoPlayer()}
+                    poster={poster}
+                    autoPlay={false}
+                    movieUrl={streamSource}
+                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    handleOnVideoPause={this.handleOnVideoPause}
+                    handleOnVideoPlay={this.handleOnVideoPlay}
+                    handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                    showBackBtn={false}
+                    {...videoSettings}
+                    showChildren
+                    isMobile
+                  >
+                    {toggleSuggestion && (
+                      <LazyLoad containerClassName={videoSuggestionContainer}>
+                        <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
+                      </LazyLoad>
+                    )}
+                  </Theoplayer>
+                ) : (
+                  <div className={movieDetailNotAvailableContainer}>
+                    <div className={styles.root}>Video Not Available</div>
+                  </div>
+                )}
               </div>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
@@ -240,4 +260,4 @@ const mapDispatchToProps = dispatch => ({
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

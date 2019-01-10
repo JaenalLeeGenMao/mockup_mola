@@ -48,11 +48,11 @@ export const customTheoplayer = css`
     }
 
     @media (max-width: 640px) {
-      &.video-container,
-      &.video-container.video-js.vjs-fluid {
-        height: 16rem !important;
-        width: 100vw;
-      }
+      // &.video-container,
+      // &.video-container.video-js.vjs-fluid {
+      //   height: 16rem !important;
+      //   width: 100vw;
+      // }
 
       .arrow {
         width: 3rem;

@@ -20,10 +20,13 @@ import Form from '@components/FormInput'
 import s from './Reset.css'
 import { setUserVariable } from '@actions/user'
 
+import { getLocale } from '../locale'
+
 class Reset extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      locale: getLocale(),
       password: '',
       confirmPassword: '',
       token: '',
@@ -58,7 +61,7 @@ class Reset extends React.Component {
   }
 
   render() {
-    const { password, confirmPassword } = this.state
+    const { locale, password, confirmPassword } = this.state
 
     return (
       <Fragment>
@@ -66,17 +69,17 @@ class Reset extends React.Component {
           <div className={s.root}>
             <div className={s.container}>
               <p className={s.labelHeader}>Reset password</p>
-              <p>Create your new password!</p>
+              <p>{locale['subtitle']}</p>
               <div>
                 <Form id="password" type="password" name="password" onChange={this.onChangeInput} value={password} autoFocus>
-                  New Password
+                  {locale['new_password']}
                 </Form>
                 <Form id="confirmPassword" type="password" name="confirmPassword" onChange={this.onChangeInput} value={confirmPassword}>
-                  Confirm password
+                  {`${locale['confirm']} password`}
                 </Form>
                 <div className={s.formGroup}>
                   <button className={s.button} onClick={this.handleResetPassword}>
-                    KIRIM
+                    {locale['send']}
                   </button>
                 </div>
               </div>

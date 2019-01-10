@@ -1,0 +1,13 @@
+{
+  "enter_otp": "Enter OTP here",
+  "resend_otp": "Resend OTP",
+  "verify_account": "Verify Account",
+  "verify_account_subtitle_top": "We need verify your email account",
+  "verify_account_subtitle_bottom": "Please check your email to verify your account.",
+  "verify": "Verify",
+  "next": "Next",
+  "now": "now",
+  "or": "Or",
+  "confirm": "Confirm",
+  "sign_up": "SIGN UP"
+}
