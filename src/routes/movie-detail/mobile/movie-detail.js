@@ -151,7 +151,7 @@ class MovieDetail extends Component {
     window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
 
-    updateMetaTag()
+    this.updateMetaTag()
 
     this.setState({ toggleSuggestion: false })
   }
@@ -189,7 +189,7 @@ class MovieDetail extends Component {
       adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
       adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
     }
-
+    console.log(toggleSuggestion)
     return (
       <>
         {dataFetched && (
