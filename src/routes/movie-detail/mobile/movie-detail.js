@@ -23,8 +23,7 @@ import { playButton, movieDetailContainer, videoPlayerContainer, videoSuggestion
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
-// const Theoplayer = getComponent('theoplayer')
-import Theoplayer from '@components/theoplayer-gandalf'
+const Theoplayer = getComponent('theoplayer')
 const VideoThumbnail = getComponent('video-thumbnail')
 
 const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
