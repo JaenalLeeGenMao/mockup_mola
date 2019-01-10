@@ -59,8 +59,10 @@ export const videoSuggestionPlayerDetail = css`
   height: 100%;
 
   div {
+    position: absolute;
     width: 100%;
     height: 85%;
     left: 0;
+    bottom: 1rem;
   }
 `

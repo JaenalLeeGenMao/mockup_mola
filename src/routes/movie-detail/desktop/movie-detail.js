@@ -182,7 +182,7 @@ class MovieDetail extends Component {
     window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
 
-    updateMetaTag()
+    this.updateMetaTag()
 
     this.setState({ toggleSuggestion: false })
   }

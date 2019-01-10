@@ -29,7 +29,8 @@ import { tourSteps } from './const'
 
 let ticking = false,
   activePlaylist,
-  scrollIndex = 0
+  scrollIndex = 0,
+  flag = false
 
 const trackedPlaylistIds = [] /** tracked playlist/videos id both similar */
 
@@ -169,9 +170,11 @@ class Home extends Component {
 
   componentDidMount() {
     if (activePlaylist) {
+      flag = false /* Set to false upon loading, so must execute only once */
       scrollIndex = 0
       this.props.onUpdatePlaylist(this.state.playlists.data[scrollIndex].id)
     }
+
     Events.scrollEvent.register('begin', this.handleScroll)
     Events.scrollEvent.register('end', this.handleColorChange)
 
@@ -228,9 +231,9 @@ class Home extends Component {
     Events.scrollEvent.remove('begin')
     Events.scrollEvent.remove('end')
 
-    document.removeEventListener('mouseup', () => {}, false)
-    document.removeEventListener('mousedown', () => {}, false)
-    document.removeEventListener('keyup', () => {}, false)
+    // document.removeEventListener('mouseup', () => {}, false)
+    // document.removeEventListener('mousedown', () => {}, false)
+    // document.removeEventListener('keyup', () => {}, false)
 
     const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel'
 
@@ -267,6 +270,13 @@ class Home extends Component {
           }
         )
       }
+    }
+
+    /* Auto Focus on page loaded, to enable keypress eventListener */
+    var input = document.querySelector('.grid-slick')
+    if (input && !flag) {
+      input.click()
+      flag = true
     }
   }
 
@@ -371,12 +381,14 @@ class Home extends Component {
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
+          console.log('LEFT: ', this.sliderRefs[scrollIndex].slickPrev())
           return event.preventDefault()
         case 38 /* up */:
           scrollIndex -= 1
           this.handleKeyPress()
           break
         case 39 /* right */:
+          console.log('RIGHT: ', this.sliderRefs[scrollIndex].slickNext())
           return event.preventDefault()
         case 40 /* down */:
           scrollIndex += 1
