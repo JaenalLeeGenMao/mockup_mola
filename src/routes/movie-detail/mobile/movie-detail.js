@@ -99,18 +99,6 @@ class MovieDetail extends Component {
     this.encryptPayload = window.btoa(JSON.stringify(payload))
   }
 
-  updatePlayerButton() {
-    const that = this
-    setTimeout(() => {
-      const streamSource = _get(that.player, 'src', '')
-      const bigPlayButton = document.querySelector('.vjs-big-play-button')
-
-      if (bigPlayButton && !streamSource) {
-        bigPlayButton.style.display = 'none'
-      }
-    }, 3000)
-  }
-
   updateMetaTag() {
     /* When audio starts playing... */
     if ('mediaSession' in navigator) {
@@ -183,9 +171,22 @@ class MovieDetail extends Component {
     this.player = player
   }
 
+  subtitles() {
+    const { movieDetail } = this.props
+    const subtitles = movieDetail.data.length > 0 ? movieDetail.data[0].subtitles : []
+
+    const myTheoPlayer = subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
+      kind: type,
+      src: url,
+      label: locale,
+      type: format,
+    }))
+
+    return myTheoPlayer
+  }
+
   componentDidMount() {
     this.updateEncryption()
-    this.updatePlayerButton()
   }
 
   render() {
@@ -213,7 +214,7 @@ class MovieDetail extends Component {
                 {streamSource ? (
                   <Theoplayer
                     className={customTheoplayer}
-                    // theoConfig={this.isTheoPlayer()}
+                    subtitles={this.subtitles()}
                     poster={poster}
                     autoPlay={false}
                     movieUrl={streamSource}

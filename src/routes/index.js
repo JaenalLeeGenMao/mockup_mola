@@ -92,16 +92,6 @@ const routes = {
       path: '/accounts/profile',
       load: () => import(/* webpackChunkName: 'profile' */ './profile'),
     },
-    // Movie-player
-    {
-      path: '/movie-player',
-      load: () => import(/* webpackChunkName: 'movie-player' */ './movie-player'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
     {
       path: '/accounts/forgotPassword',
       load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
