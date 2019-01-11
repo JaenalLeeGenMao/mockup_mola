@@ -65,16 +65,20 @@ export const videoPlayerContainer = css`
 
 export const videoSuggestionContainer = css`
   position: absolute;
-  bottom: 7.5%;
-  width: 100%;
+  bottom: 9.5%;
+  left: 5%;
+  width: 90%;
   height: 25vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0));
+  background: rgba(23, 23, 23, 0.9);
+  border-radius: 0.25rem;
+  // background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0));
 `
 
 export const videoSuggestionWrapper = css`
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 97.5%;
+  padding: 0 2.5rem 2.5rem 2.5rem;
   height: 20vh;
   color: #fff;
   white-space: nowrap;
@@ -85,7 +89,7 @@ export const videoSuggestionWrapper = css`
 export const videoSuggestionPlayer = css`
   display: inline-block;
   min-width: 30vh;
-  width: 20vw;
+  width: 20%;
   height: 100%;
   padding: 0.8rem;
 }
@@ -98,13 +102,15 @@ export const videoSuggestionPlayerDetail = css`
 
   div {
     width: 100%;
-    height: 85%;
+    height: 100%;
     left: 0;
   }
 `
 
 export const videoSuggestionTitle = css`
   position: absolute;
-  left: 2rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  left: 2.5rem;
   top: 1rem;
 `
