@@ -305,29 +305,6 @@ const getMovieLibrary = id => {
     })
 }
 
-const getMovieStream = ({ id }) => {
-  return get(`${MOVIE_STREAMING}/${id}`)
-    .then(response => {
-      const result = utils.normalizeVideoStream(response)
-      return {
-        meta: {
-          status: result.length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: [...result] || [],
-      }
-    })
-    .catch(error => {
-      return {
-        meta: {
-          status: 'error',
-          error: 'Something amazing is happening behind the scene, to kickstart your stream make sure to browse other movies',
-        },
-        data: [],
-      }
-    })
-}
-
 const getHotPlaylist = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
     ...endpoints.setting,
@@ -366,6 +343,5 @@ export default {
   getMovieDetail,
   getMovieLibrary,
   getMovieLibraryList,
-  getMovieStream,
   getHotPlaylist,
 }

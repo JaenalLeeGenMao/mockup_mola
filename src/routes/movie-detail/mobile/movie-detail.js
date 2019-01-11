@@ -29,6 +29,7 @@ import {
   videoSuggestionWrapper,
   videoSuggestionPlayer,
   videoSuggestionPlayerDetail,
+  videoSuggestionTitle,
 } from './style'
 import styles from '@global/style/css/grainBackground.css'
 
@@ -89,7 +90,7 @@ class MovieDetail extends Component {
     /* eslint-disable */
     const payload = {
       project_id: '2',
-      video_id: data.length > 0 ? data[0].id : '',
+      video_id: this.props.movieId,
       app_id: 'sent_ads',
       session_id: sessionId,
       client_ip: clientIp,
@@ -97,18 +98,6 @@ class MovieDetail extends Component {
     }
 
     this.encryptPayload = window.btoa(JSON.stringify(payload))
-  }
-
-  updatePlayerButton() {
-    const that = this
-    setTimeout(() => {
-      const streamSource = _get(that.player, 'src', '')
-      const bigPlayButton = document.querySelector('.vjs-big-play-button')
-
-      if (bigPlayButton && !streamSource) {
-        bigPlayButton.style.display = 'none'
-      }
-    }, 3000)
   }
 
   updateMetaTag() {
@@ -157,6 +146,7 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
+    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
     this.setState({ toggleSuggestion: true })
   }
 
@@ -183,9 +173,22 @@ class MovieDetail extends Component {
     this.player = player
   }
 
+  subtitles() {
+    const { movieDetail } = this.props
+    const subtitles = movieDetail.data.length > 0 ? movieDetail.data[0].subtitles : []
+
+    const myTheoPlayer = subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
+      kind: type,
+      src: url,
+      label: locale,
+      type: format,
+    }))
+
+    return myTheoPlayer
+  }
+
   componentDidMount() {
     this.updateEncryption()
-    this.updatePlayerButton()
   }
 
   render() {
@@ -213,7 +216,7 @@ class MovieDetail extends Component {
                 {streamSource ? (
                   <Theoplayer
                     className={customTheoplayer}
-                    // theoConfig={this.isTheoPlayer()}
+                    subtitles={this.subtitles()}
                     poster={poster}
                     autoPlay={false}
                     movieUrl={streamSource}
@@ -227,7 +230,16 @@ class MovieDetail extends Component {
                     isMobile
                   >
                     {toggleSuggestion && (
-                      <LazyLoad containerClassName={videoSuggestionContainer}>
+                      <LazyLoad
+                        containerClassName={videoSuggestionContainer}
+                        containerStyle={{
+                          display: toggleSuggestion ? 'inline-block' : 'none',
+                          width: this.isAds ? '84%' : '95%',
+                          left: this.isAds ? '8%' : '2.5%',
+                          bottom: this.isAds ? '25%' : '5rem',
+                        }}
+                      >
+                        <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2>
                         <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
                       </LazyLoad>
                     )}

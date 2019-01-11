@@ -190,20 +190,6 @@ class MovieDetail extends Component {
     }
   }
 
-  // isTheoPlayer() {
-  //   const { movieStream: { data: movieStream } } = this.props;
-  //   const subtitlesDt = movieStream.length > 0 ? movieStream[0].subtitles : '';
-
-  //   const myTheoPlayer = subtitlesDt.map(obj => ({
-  //     kind: obj.type,
-  //     srclang: obj.attributes.locale,
-  //     src: obj.attributes.url,
-  //     label: obj.attributes.label
-  //   }));
-
-  //   return myTheoPlayer;
-  // }
-
   handleOnVideoLoad = player => {
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
@@ -226,6 +212,20 @@ class MovieDetail extends Component {
     }
 
     this.player = player
+  }
+
+  subtitles() {
+    const { movieDetail } = this.props
+    const subtitles = movieDetail.data.length > 0 ? movieDetail.data[0].subtitles : []
+
+    const myTheoPlayer = subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
+      kind: type,
+      src: url,
+      label: locale,
+      type: format,
+    }))
+
+    return myTheoPlayer
   }
 
   componentDidMount() {
@@ -255,7 +255,7 @@ class MovieDetail extends Component {
                 {streamSource ? (
                   <Theoplayer
                     className={customTheoplayer}
-                    // theoConfig={this.isTheoPlayer()}
+                    subtitles={this.subtitles()}
                     poster={poster}
                     autoPlay={false}
                     movieUrl={streamSource}
@@ -270,10 +270,11 @@ class MovieDetail extends Component {
                       containerClassName={videoSuggestionContainer}
                       containerStyle={{
                         display: toggleSuggestion ? 'inline-block' : 'none',
-                        bottom: this.isAds ? '9.5%' : '',
+                        width: this.isAds ? '80%' : '90%',
+                        left: this.isAds ? '10%' : '5%',
                       }}
                     >
-                      <h2 className={videoSuggestionTitle}>Suggestions</h2>
+                      <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2>
                       <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
                     </LazyLoad>
                   </Theoplayer>
