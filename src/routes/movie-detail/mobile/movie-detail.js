@@ -193,8 +193,8 @@ class MovieDetail extends Component {
     const { meta: { status }, data } = movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    // const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
+    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
     const videoSettings = {
