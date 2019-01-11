@@ -38,18 +38,21 @@ export const videoPlayerContainer = css`
 
 export const videoSuggestionContainer = css`
   position: absolute;
-  bottom: 33.5%;
-  // bottom: 6rem;
+  left: 2.5%;
+  bottom: 5rem;
   height: 10rem;
-  width: 100vw;
-  background: transparent;
+  // width: 100vw;
+  width: 95%;
+  // background: transparent;
+  background: rgba(23, 23, 23, 0.9);
+  border-radius: 0.25rem;
 `
 
 export const videoSuggestionWrapper = css`
   position: absolute;
   bottom: 0;
   width: 95%;
-  height: 10rem;
+  height: 9rem;
   color: #fff;
   white-space: nowrap;
   overflow-x: auto;
@@ -58,7 +61,7 @@ export const videoSuggestionWrapper = css`
 
 export const videoSuggestionPlayer = css`
   display: inline-block;
-  min-width: 16rem;
+  min-width: 14.5rem;
   width: 20vw;
   height: 100%;
   padding: 1rem 0.8rem;
@@ -75,4 +78,12 @@ export const videoSuggestionPlayerDetail = css`
     width: 100%;
     height: 100%;
   }
+`
+
+export const videoSuggestionTitle = css`
+  position: absolute;
+  font-size: 1rem;
+  font-weight: 500;
+  left: 1rem;
+  top: 0.5rem;
 `
