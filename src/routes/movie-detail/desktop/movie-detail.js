@@ -270,10 +270,11 @@ class MovieDetail extends Component {
                       containerClassName={videoSuggestionContainer}
                       containerStyle={{
                         display: toggleSuggestion ? 'inline-block' : 'none',
-                        bottom: this.isAds ? '9.5%' : '',
+                        width: this.isAds ? '96%' : '96%',
+                        left: this.isAds ? '10%' : '5%',
                       }}
                     >
-                      <h2 className={videoSuggestionTitle}>Suggestions</h2>
+                      <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2>
                       <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
                     </LazyLoad>
                   </Theoplayer>

@@ -47,6 +47,10 @@ export const customTheoplayer = css`
       background-color: #0070b2 !important;
     }
 
+    &.video-container .vjs-control-bar {
+      z-index: 1;
+    }
+
     @media (max-width: 640px) {
       // &.video-container,
       // &.video-container.video-js.vjs-fluid {

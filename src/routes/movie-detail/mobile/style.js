@@ -33,12 +33,13 @@ export const movieDetailNotAvailableContainer = css`
 `
 
 export const videoPlayerContainer = css`
-  height: 16rem;
+  height: 18rem;
 `
 
 export const videoSuggestionContainer = css`
   position: absolute;
-  bottom: 5rem;
+  bottom: 33.5%;
+  // bottom: 6rem;
   height: 10rem;
   width: 100vw;
   background: transparent;
@@ -47,7 +48,7 @@ export const videoSuggestionContainer = css`
 export const videoSuggestionWrapper = css`
   position: absolute;
   bottom: 0;
-  width: 100vw;
+  width: 95%;
   height: 10rem;
   color: #fff;
   white-space: nowrap;
@@ -60,7 +61,7 @@ export const videoSuggestionPlayer = css`
   min-width: 16rem;
   width: 20vw;
   height: 100%;
-  padding: 0.8rem;
+  padding: 1rem 0.8rem;
 }
 `
 
@@ -72,8 +73,6 @@ export const videoSuggestionPlayerDetail = css`
   div {
     position: absolute;
     width: 100%;
-    height: 85%;
-    left: 0;
-    bottom: 1rem;
+    height: 100%;
   }
 `

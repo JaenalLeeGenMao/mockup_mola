@@ -31,7 +31,8 @@ import TourArrow from '../tourArrow'
 
 let ticking = false,
   activePlaylist,
-  scrollIndex = 0
+  scrollIndex = 0,
+  flag = false
 
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
@@ -68,6 +69,7 @@ class Home extends Component {
 
   componentDidMount() {
     if (activePlaylist) {
+      flag = false /* Set to false upon loading, so must execute only once */
       scrollIndex = 0
       this.props.onUpdatePlaylist(this.state.playlists.data[scrollIndex].id)
     }
@@ -172,6 +174,13 @@ class Home extends Component {
           }
         )
       }
+    }
+
+    /* Auto Focus on page loaded, to enable keypress eventListener */
+    var input = document.querySelector('.grid-slick')
+    if (input && !flag) {
+      input.click()
+      flag = true
     }
   }
 

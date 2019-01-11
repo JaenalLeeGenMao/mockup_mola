@@ -89,7 +89,7 @@ class MovieDetail extends Component {
     /* eslint-disable */
     const payload = {
       project_id: '2',
-      video_id: data.length > 0 ? data[0].id : '',
+      video_id: this.props.movieId,
       app_id: 'sent_ads',
       session_id: sessionId,
       client_ip: clientIp,
@@ -145,6 +145,7 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
+    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
     this.setState({ toggleSuggestion: true })
   }
 
@@ -228,7 +229,14 @@ class MovieDetail extends Component {
                     isMobile
                   >
                     {toggleSuggestion && (
-                      <LazyLoad containerClassName={videoSuggestionContainer}>
+                      <LazyLoad
+                        containerClassName={videoSuggestionContainer}
+                        containerStyle={{
+                          display: toggleSuggestion ? 'inline-block' : 'none',
+                          width: this.isAds ? '80%' : '96%',
+                          left: this.isAds ? '10%' : '5%',
+                        }}
+                      >
                         <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
                       </LazyLoad>
                     )}
