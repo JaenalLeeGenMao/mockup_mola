@@ -908,10 +908,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@supersoccer/gandalf@^1.0.17":
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.17.tgz#b0ce4736af47419c85ff3e7cefe33c800bd3f2c8"
-  integrity sha512-jhKeJvvCQGY+RKYwMD8U3SHqRTtzipN6UovIDyzy8T9Y0OUk60su6Be4Z3gVg6H9MK47dTxkl90lH7ynrZ7PQw==
+"@supersoccer/gandalf@^1.0.18":
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.18.tgz#dda9da59fed1a7f10eec1846a6405137f610cc67"
+  integrity sha512-yXU6LtnxBm9kRK0WBqTYf8XUPAnbElgGsgOq0CYUbxDU24pKVRHQdCqPjqmXy8ukUAdIgfvX4A1fgfYAxYZzdw==
   dependencies:
     axios "^0.18.0"
     babel-loader "^8.0.4"
