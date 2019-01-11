@@ -270,7 +270,7 @@ class MovieDetail extends Component {
                       containerClassName={videoSuggestionContainer}
                       containerStyle={{
                         display: toggleSuggestion ? 'inline-block' : 'none',
-                        width: this.isAds ? '96%' : '96%',
+                        width: this.isAds ? '80%' : '90%',
                         left: this.isAds ? '10%' : '5%',
                       }}
                     >

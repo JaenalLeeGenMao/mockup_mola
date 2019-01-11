@@ -29,6 +29,7 @@ import {
   videoSuggestionWrapper,
   videoSuggestionPlayer,
   videoSuggestionPlayerDetail,
+  videoSuggestionTitle,
 } from './style'
 import styles from '@global/style/css/grainBackground.css'
 
@@ -233,10 +234,12 @@ class MovieDetail extends Component {
                         containerClassName={videoSuggestionContainer}
                         containerStyle={{
                           display: toggleSuggestion ? 'inline-block' : 'none',
-                          width: this.isAds ? '80%' : '96%',
-                          left: this.isAds ? '10%' : '5%',
+                          width: this.isAds ? '84%' : '95%',
+                          left: this.isAds ? '8%' : '2.5%',
+                          bottom: this.isAds ? '25%' : '5rem',
                         }}
                       >
+                        <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2>
                         <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
                       </LazyLoad>
                     )}
