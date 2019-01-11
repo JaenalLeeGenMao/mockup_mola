@@ -211,6 +211,17 @@ const normalizeVideoDetail = response => {
   if (data && data.length > 0) {
     return data.map(result => {
       const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, isDark, year, duration } } = result
+      const filteredSubtitles = subtitles.map(subtitle => {
+        const { id, type, attributes: { locale, url, format } } = subtitle
+        /* More info please visit https://support.theoplayer.com/hc/en-us/articles/214041829-TextTrack-API */
+        return {
+          id,
+          format /* srt, emsg, eventstream, ttml, webvtt */,
+          locale,
+          type /* subtitles, captions, descriptions, chapters, metadata */,
+          url,
+        }
+      })
       return {
         id,
         title,
@@ -219,7 +230,7 @@ const normalizeVideoDetail = response => {
         description,
         source,
         streamSourceUrl,
-        subtitles,
+        subtitles: filteredSubtitles,
         people,
         isDark,
         year,
@@ -282,21 +293,6 @@ const normalizeMovieLibraryList = response => {
   }
 }
 
-const normalizeVideoStream = response => {
-  const { data } = response.data
-  if (data && data.length > 0) {
-    return data.map(result => {
-      const { id, attributes: { streamSourceUrl, subtitles } } = result
-      return {
-        id,
-        streamSourceUrl,
-        subtitles,
-      }
-    })
-  }
-  return []
-}
-
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
@@ -307,5 +303,4 @@ export default {
   normalizeVideoDetail,
   normalizeMovieLibrary,
   normalizeMovieLibraryList,
-  normalizeVideoStream,
 }

@@ -33,6 +33,7 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
+import { get } from 'axios'
 // import Auth from '@api/auth';
 
 process.on('unhandledRejection', (reason, p) => {
@@ -112,6 +113,15 @@ app.get('/signout', (req, res) => {
 app.get('*', async (req, res, next) => {
   try {
     // global.clearInterval(inboxInterval);
+
+    // const url = '/accounts/_/authorize'
+    // get(url, {
+    //   'app_key': 'wIHGzJhset',
+    //   'app_secret': 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+    //   'code': '',
+    //   'state': '',
+    //   'redirect_uri': config.endpoints.domain
+    // })
 
     const css = new Set()
 
