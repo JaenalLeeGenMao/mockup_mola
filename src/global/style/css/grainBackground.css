@@ -7,9 +7,9 @@
   width: 180%;
   z-index: 1;
   content: '';
+  position: fixed;
 
-  /* position: fixed; */
-  position: absolute;
+  /* position: absolute; */
 }
 
 @-webkit-keyframes grainAnimation {
