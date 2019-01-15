@@ -18,6 +18,7 @@ import Auth from '@api/auth'
 import config from '@source/config'
 
 import Header from '@components/Header'
+import Footer from '@components/Footer'
 import Form from '@components/FormInput'
 import LazyLoad from '@components/common/Lazyload'
 
@@ -176,7 +177,9 @@ class Register extends React.Component {
               </div>
             </LazyLoad>
           </div>
-          <div className={s.rightWrapper} />
+        </div>
+        <div className={s.login__footer_container}>
+          <Footer />
         </div>
       </Fragment>
     )

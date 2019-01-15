@@ -18,6 +18,7 @@ import Auth from '@api/auth'
 import config from '@source/config'
 
 import Header from '@components/Header'
+import Footer from '@components/Footer'
 import Form from '@components/FormInput'
 import LazyLoad from '@components/common/Lazyload'
 
@@ -27,6 +28,7 @@ import line from '@global/style/icons/line.png'
 
 import { setUserVariable } from '@actions/user'
 import s from './Register.css'
+import { getLocale } from '../locale'
 
 class Register extends React.Component {
   constructor(props) {
@@ -174,6 +176,9 @@ class Register extends React.Component {
               </div>
             </LazyLoad>
           </div>
+        </div>
+        <div className={s.login__footer_container}>
+          <Footer />
         </div>
       </Fragment>
     )

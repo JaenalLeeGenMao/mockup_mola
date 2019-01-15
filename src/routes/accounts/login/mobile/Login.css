@@ -190,3 +190,10 @@ html {
   color: red !important;
   margin-top: 1.2rem;
 }
+
+.login__footer_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5%;
+}

@@ -18,6 +18,7 @@ import { setUserVariable } from '@actions/user'
 import Auth from '@api/auth'
 
 import Header from '@components/Header'
+import Footer from '@components/Footer'
 import Form from '@components/FormInput'
 import LazyLoad from '@components/common/Lazyload'
 
@@ -136,6 +137,9 @@ class Login extends React.Component {
               </div>
             </LazyLoad>
           </div>
+        </div>
+        <div className={s.login__footer_container}>
+          <Footer />
         </div>
       </Fragment>
     )

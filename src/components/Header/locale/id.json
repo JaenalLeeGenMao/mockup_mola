@@ -3,9 +3,5 @@
   "login": "Masuk",
   "profile": "Profile",
   "history": "Riwayat Video",
-  "inbox": "Pesan",
-  "system_info": "Sistem Info",
-  "privacy": "Privasi",
-  "terms": "Syarat",
-  "condition": "Ketentuan"
+  "inbox": "Pesan"
 }
