@@ -12,10 +12,7 @@ import { getLocale } from '../locale'
 import styles from './right-menu.css'
 
 const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
-  const { uid = 'a', sid = '', firstName = '', lastName = '', photo = '' } = user
-  // const isLogin = uid || sid
-  // print('HELLO, GREAT TUESDAY!', firstName)
-  // console.log(user)
+  const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
   return (
     <LazyLoad containerClassName={styles.popup__menu_container}>
       <div className={styles.popup__menu_header}>
@@ -27,9 +24,7 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
           <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
             <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
           </Link>
-          <h2 className={styles.popup__menu_username}>
-            {firstName ? 'jancok' : 'Emma'} {lastName ? 'jancok' : 'Watson'}
-          </h2>
+          <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
           <Link to="/accounts/inbox" className={styles.popup__menu_inbox}>
             {locale['inbox']}
           </Link>
@@ -89,7 +84,7 @@ class RightMenu extends Component {
   }
 
   handleToggle = () => {
-    const { user: { uid, sid } } = this.props
+    const { user: { uid = '', sid = '' } } = this.props
     const isLogin = uid || sid
     if (isLogin) {
       const { toggle } = this.state
