@@ -107,7 +107,10 @@ const routes = {
   ],
 
   async action({ next, store }) {
-    track(store)
+    /* Timeout runs the method in parallel upon changing routes */
+    setTimeout(async () => {
+      track(store)
+    })
 
     // Execute each child route until one of them return the result
     const route = await next()
