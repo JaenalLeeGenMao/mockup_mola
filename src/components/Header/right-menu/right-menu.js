@@ -13,24 +13,25 @@ import styles from './right-menu.css'
 
 const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
+  const isLogin = uid || sid
   return (
     <LazyLoad containerClassName={styles.popup__menu_container}>
       <div className={styles.popup__menu_header}>
         <span className={styles.popup__menu_close} onClick={onClick} />
       </div>
       <div className={styles.popup__menu_content}>
-        {/* {isLogin && ( */}
-        <>
-          <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
-            <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
-          </Link>
-          <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
-          <Link to="/accounts/inbox" className={styles.popup__menu_inbox}>
-            {locale['inbox']}
-          </Link>
-          <Link to="/accounts/history">{locale['history']}</Link>
-        </>
-        {/* )} */}
+        {isLogin && (
+          <>
+            <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+              <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
+            </Link>
+            <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
+            <Link to="/accounts/inbox" className={styles.popup__menu_inbox}>
+              {locale['inbox']}
+            </Link>
+            <Link to="/accounts/history">{locale['history']}</Link>
+          </>
+        )}
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
           {locale['sign_out']}
         </Link>
