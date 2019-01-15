@@ -175,8 +175,6 @@ class MovieDetail extends Component {
     window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
 
-    this.updateMetaTag()
-
     this.setState({ toggleSuggestion: false })
   }
 
@@ -230,6 +228,7 @@ class MovieDetail extends Component {
 
   componentDidMount() {
     this.updateEncryption()
+    this.updateMetaTag()
   }
 
   render() {
@@ -238,6 +237,8 @@ class MovieDetail extends Component {
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
+    // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
     const videoSettings = {
@@ -259,6 +260,7 @@ class MovieDetail extends Component {
                     poster={poster}
                     autoPlay={false}
                     movieUrl={streamSource}
+                    // certificateUrl="test"
                     handleOnVideoLoad={this.handleOnVideoLoad}
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}
@@ -279,9 +281,7 @@ class MovieDetail extends Component {
                     </LazyLoad>
                   </Theoplayer>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>
-                    <div className={styles.root}>Video Not Available</div>
-                  </div>
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                 )}
               </div>
             </div>

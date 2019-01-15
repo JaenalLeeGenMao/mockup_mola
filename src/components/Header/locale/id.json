@@ -2,10 +2,6 @@
   "sign_out": "Keluar",
   "login": "Masuk",
   "profile": "Profile",
-  "history": "Riwayat",
-  "inbox": "Pesan",
-  "system_info": "Sistem Info",
-  "privacy": "Privasi",
-  "terms": "Syarat",
-  "condition": "Ketentuan"
+  "history": "Riwayat Video",
+  "inbox": "Pesan"
 }

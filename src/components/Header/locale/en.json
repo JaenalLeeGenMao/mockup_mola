@@ -2,10 +2,6 @@
   "sign_out": "Sign Out",
   "login": "Login",
   "profile": "Profile",
-  "history": "History",
-  "inbox": "Inbox",
-  "system_info": "System Info",
-  "privacy": "Privacy",
-  "terms": "Terms",
-  "condition": "Condition"
+  "history": "Video History",
+  "inbox": "Inbox"
 }

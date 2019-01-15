@@ -908,10 +908,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@supersoccer/gandalf@^1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.18.tgz#dda9da59fed1a7f10eec1846a6405137f610cc67"
-  integrity sha512-yXU6LtnxBm9kRK0WBqTYf8XUPAnbElgGsgOq0CYUbxDU24pKVRHQdCqPjqmXy8ukUAdIgfvX4A1fgfYAxYZzdw==
+"@supersoccer/gandalf@^1.0.22":
+  version "1.0.22"
+  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.22.tgz#07ba865eb4d2c83a6323e398248fba0900484b29"
+  integrity sha512-L1jhl8qAHOI3QTaMOBot0IQsm+faDpohJ1zssfcxylraCIsq9D8tM69VMVRGOPnFJCJej6Rx6lEx8tXIkQMD3Q==
   dependencies:
     axios "^0.18.0"
     babel-loader "^8.0.4"
@@ -4468,6 +4468,11 @@ eventemitter3@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
   integrity sha1-teEHm1n7XhuidxwKmTvgYKWMmbo=
+
+eventemitter3@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
+  integrity sha512-ivIvhpq/Y0uSjcHDcOIccjmYjGLcP09MFGE7ysAwkAvkXfpZlC985pH2/ui64DKazbTW/4kN3yqozUxlXzI6cA==
 
 events@^1.0.0:
   version "1.1.1"
@@ -10389,12 +10394,12 @@ react-redux-toastr@7.4.0:
     eventemitter3 "^2.0.3"
 
 react-redux-toastr@^7.4.0:
-  version "7.4.5"
-  resolved "https://registry.yarnpkg.com/react-redux-toastr/-/react-redux-toastr-7.4.5.tgz#f7ab04aefaa6fbaeac868eff11190c1c1fa6f492"
-  integrity sha512-8OT0YARxJNOYYnN3gSCO86q/SQxR+v16AdrTwVAK0fWI5rbsQPyM2dqf9xnVcjt/9CwdoW9j9sTkVr0By8KpLg==
+  version "7.4.6"
+  resolved "https://registry.yarnpkg.com/react-redux-toastr/-/react-redux-toastr-7.4.6.tgz#52d39db21ccc15b45ee28420dd4a316acfa3dc1c"
+  integrity sha512-KHRmqWXiRqgxVMHFd/wyKw7wjZJbYVP48w9qkloq4jmzbrEbIt1x773QZX0xWZxfqrq8evAn4+gEdiRc86S8xA==
   dependencies:
     classnames "^2.2.3"
-    eventemitter3 "^2.0.3"
+    eventemitter3 "^3.1.0"
 
 react-redux@5.0.6:
   version "5.0.6"
