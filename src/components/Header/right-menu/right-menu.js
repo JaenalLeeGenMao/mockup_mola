@@ -5,6 +5,7 @@ import $ from 'jquery'
 import Auth from '@api/auth'
 
 import LazyLoad from '@components/common/Lazyload'
+import Footer from '@components/Footer'
 import Link from '@components/Link'
 
 import { getLocale } from '../locale'
@@ -35,12 +36,7 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
           {locale['sign_out']}
         </Link>
-        <div className={styles.popup__menu_footer}>
-          <Link to="/system-info">{locale['system_info']}</Link>
-          <Link to="/terms">{locale['terms']}</Link>
-          <Link to="/privacy">{locale['privacy']}</Link>
-          <Link to="/condition">{locale['condition']}</Link>
-        </div>
+        <Footer />
       </div>
     </LazyLoad>
   )

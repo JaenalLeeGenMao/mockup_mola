@@ -176,3 +176,10 @@
   color: red !important;
   margin-top: 12px;
 }
+
+.login__footer_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5%;
+}

@@ -231,10 +231,6 @@
   background: rgba(44, 86, 255, 0.7);
 }
 
-.popup__menu_footer {
-  padding: 2rem;
-}
-
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .right__menu {
