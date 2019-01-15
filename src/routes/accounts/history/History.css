@@ -1,0 +1,64 @@
+@import '../../../global/style/css/grainBackground.css';
+
+.headerNone {
+  display: none;
+}
+
+.headerDisplay {
+  display: block;
+}
+
+.root {
+  padding: 120px 0 0 245px;
+  height: calc(100vh - 120px);
+  overflow-y: hidden;
+}
+
+.root__mobile {
+  padding: 100px 0 0 0;
+  height: calc(100vh - 100px);
+  overflow-y: hidden;
+}
+
+.wrapperBg {
+  background-color: #11110f;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.containerOuter {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.containerInner {
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 20px;
+  margin: 0 auto;
+  height: calc(100vh - 76px);
+  z-index: 102;
+  position: relative;
+}
+
+@media screen and (max-width: 1280px) {
+  .root {
+    padding: 150px 0 0 225px;
+    height: calc(100vh - 150px);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .root {
+    padding: 180px 0 0 150px;
+    height: calc(100vh - 180px);
+  }
+
+  .containerOuter {
+    width: auto;
+  }
+}

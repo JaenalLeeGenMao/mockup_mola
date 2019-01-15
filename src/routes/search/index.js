@@ -1,5 +1,5 @@
 import React from 'react'
-import MolaLayout from '../../components/Molalayout'
+import MolaLayout from '@components/Molalayout'
 import SearchDesktop from './Search'
 
 const title = 'Search Page'

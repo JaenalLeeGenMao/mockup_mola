@@ -1,0 +1,143 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+@import '../../../../components/variables.css';
+@import '../../login/desktop/Login.css';
+
+.flip {
+  position: absolute;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 3rem;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0.4rem;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+
+  /* transform: rotateY(0deg); */
+  z-index: 2;
+}
+
+.container p {
+  font-size: 1.2rem;
+  letter-spacing: 0.117rem;
+  color: #6f6f6f;
+}
+
+.containerBack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 3rem;
+  min-width: 39rem;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0.4rem;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+
+  /* transform: rotateY(-180deg); */
+  z-index: 1;
+}
+
+.containerBack p {
+  font-size: 1.2rem;
+  letter-spacing: 0.117rem;
+  color: #6f6f6f;
+}
+
+.labelHeader {
+  color: #fff !important;
+  font-size: 1.6rem !important;
+  font-weight: 500;
+  letter-spacing: 0.191rem !important;
+}
+
+.flip__container .container {
+  backface-visibility: hidden;
+  opacity: 0;
+
+  /* transform: rotateY(180deg); */
+  z-index: 900;
+}
+
+.flip__container .containerBack {
+  backface-visibility: hidden;
+  opacity: 1;
+
+  /* transform: rotateY(0deg); */
+  z-index: 1000;
+}
+
+.label__resend {
+  font-size: 1.4rem;
+  letter-spacing: 0.136rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(44, 86, 255, 1);
+}
+
+.label__resend:hover {
+  cursor: pointer;
+}
+
+.verify__otp_input {
+  width: 75%;
+}
+
+.verify__otp_input input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.verify__button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem 1.6rem;
+  height: 5rem;
+  width: 25%;
+  background: #2c56ff;
+  border: 0.1rem solid #2c56ff;
+  border-radius: 0.4rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  letter-spacing: 0.191rem;
+  opacity: 100%;
+  font-weight: 500;
+}
+
+.form__otp {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.form__otp input {
+  margin: 0;
+}
