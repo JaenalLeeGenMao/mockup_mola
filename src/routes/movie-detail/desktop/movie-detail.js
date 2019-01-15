@@ -260,6 +260,7 @@ class MovieDetail extends Component {
                     poster={poster}
                     autoPlay={false}
                     movieUrl={streamSource}
+                    // certificateUrl="test"
                     handleOnVideoLoad={this.handleOnVideoLoad}
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}

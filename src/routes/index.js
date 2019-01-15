@@ -32,32 +32,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
     {
-      path: '/contact',
-      load: () => import(/* webpackChunkName: 'contact' */ './contact'),
-    },
-    {
-      path: '/accounts/inbox',
-      load: () => import(/* webpackChunkName: 'inbox' */ './inbox'),
-    },
-    {
-      path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'login' */ './login'),
-    },
-    {
-      path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register'),
-    },
-    {
-      path: '/about',
-      load: () => import(/* webpackChunkName: 'about' */ './about'),
-    },
-    {
       path: '/privacy',
       load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    {
-      path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
     },
     // Movie details
     {
@@ -79,34 +55,45 @@ const routes = {
         },
       ],
     },
-    // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
-    {
-      path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './history'),
-    },
     {
       path: '/search',
       load: () => import(/* webpackChunkName: 'search' */ './search'),
     },
     {
+      path: '/accounts/history',
+      load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
+    },
+    {
+      path: '/accounts/inbox',
+      load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
+    },
+    {
+      path: '/accounts/login',
+      load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
+    },
+    {
+      path: '/accounts/register',
+      load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
+    },
+    {
       path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './profile'),
+      load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
     },
     {
       path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
+      load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
     },
     {
       path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
+      load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
     },
     {
       path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './security'),
+      load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
     },
     {
       path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './setting'),
+      load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
     },
     {
       path: '/system-info',

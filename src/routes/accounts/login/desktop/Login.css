@@ -1,0 +1,178 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+@import '../../../../components/variables.css';
+
+.wrapper {
+  background-image: url('../../../../global/style/icons/BG-bottomRight.png'), url('../../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
+  background-position: right bottom, left bottom, left top;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: 50%, 50%, cover;
+  height: 100vh;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.root {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 54rem;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 3rem;
+  max-width: 45rem;
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 0.4rem;
+  z-index: 1;
+}
+
+.container > p {
+  font-size: 1.2rem;
+  letter-spacing: 0.117rem;
+  color: #6f6f6f;
+  margin: 5px 0;
+}
+
+.lead {
+  font-size: 1.6rem !important;
+  font-weight: 500 !important;
+  color: #fff !important;
+}
+
+.formGroup {
+  margin-top: 1.5rem;
+}
+
+.forgotPassword {
+  position: relative;
+  z-index: 1;
+  font-size: 1.4rem !important;
+  font-weight: 500;
+  color: #fff !important;
+  float: right;
+  letter-spacing: 0.136rem;
+  line-height: 1.9rem;
+  margin: 1rem 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.label {
+  display: block;
+  font-weight: 700;
+}
+
+.button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem 1.6rem;
+  height: 5rem;
+  width: 100%;
+  background: #2c56ff;
+  border: 0.1rem solid #373277;
+  border-radius: 0.4rem;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  letter-spacing: 0.191rem;
+  opacity: 100%;
+  font-weight: 500;
+}
+
+.button:hover {
+  background: #2242c4;
+}
+
+.button:focus {
+  border-color: #0074c2;
+  box-shadow: 0 0 8px rgba(0, 116, 194, 0.6);
+}
+
+.icon {
+  display: inline-block;
+  margin: -0.2rem 1.2rem -0.2rem 0;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+.lineThrough {
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.2rem !important;
+  font-weight: 500;
+  letter-spacing: 0.116rem;
+}
+
+.flexButton {
+  display: flex;
+  justify-content: space-between;
+  width: 39rem;
+  position: relative;
+  z-index: 1;
+}
+
+.flexButton > button {
+  width: 48%;
+  height: 5rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background: rgba(36, 37, 40, 0.8);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
+  cursor: pointer;
+  text-align: center;
+}
+
+.labelSignup {
+  margin-top: 30px;
+  color: #fff !important;
+  font-size: 1.4rem !important;
+  letter-spacing: 0.136rem;
+  font-weight: 500;
+  opacity: 100%;
+}
+
+.labelSignup > a {
+  text-decoration: none;
+  color: #2c56ff;
+}
+
+.buttonImg {
+  width: 3rem !important;
+}
+
+.errorLogin {
+  border-bottom: 1px solid red !important;
+}
+
+.errorMsg {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  font-size: 1.2rem !important;
+  color: red !important;
+  margin-top: 12px;
+}
