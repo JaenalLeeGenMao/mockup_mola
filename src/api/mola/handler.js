@@ -19,10 +19,11 @@ const getHomePlaylist = () => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
       return {
         meta: {
           status: 'error',
-          error: 'Mola loves watchin playlist from home, but Mola is no where to be found',
+          error: errorMessage,
         },
         data: [],
       }
@@ -44,10 +45,11 @@ const getHomeVideo = ({ id }) => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Video')
       return {
         meta: {
           status,
-          error: "Mola loves video but sadly it's not available, cheer up!",
+          error: errorMessage,
         },
         data: [],
       }
@@ -68,10 +70,11 @@ const getAllHistory = ({ userId }) => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola History')
       return {
         meta: {
           status: 'error',
-          text: 'Mola could not reach through the history, because Mola is positive and stays in the present',
+          text: errorMessage,
         },
         data: [],
       }
@@ -94,10 +97,11 @@ const getSearchResult = ({ q }) => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Search Result')
       return {
         meta: {
           status: 'error',
-          error: "We've searched every corner of our empire, looks like the your search is history",
+          error: errorMessage,
         },
         data: [],
       }
@@ -119,10 +123,11 @@ const getSearchGenre = () => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Search Genre')
       return {
         meta: {
           status: 'error',
-          error: 'Searching genre is probably missing, off we go to hunt',
+          error: errorMessage,
         },
         data: [],
       }
@@ -146,10 +151,11 @@ const getRecentSearch = (sessionId, sid) => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Recent Search')
       return {
         meta: {
           status: 'error',
-          error: "Looks like you have not searched recently, what've you been up to?",
+          error: errorMessage,
         },
         data: [],
       }
@@ -173,11 +179,12 @@ const postRecentSearch = (sessionId, sid, keyword) => {
         },
       }
     })
-    .catch(err => {
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Update Recent Search')
       return {
         meta: {
           status: 'error',
-          error: "Aha! Couldn't add recent search, seems like we detected some spooky search result ",
+          error: errorMessage,
         },
       }
     })
@@ -196,11 +203,12 @@ const deleteRecentSearchAll = (sessionId, sid) => {
         },
       }
     })
-    .catch(err => {
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Removing All Recent Search')
       return {
         meta: {
           status: 'error',
-          error: 'Sure deleting all your recent search, we will miss you',
+          error: errorMessage,
         },
       }
     })
@@ -219,11 +227,12 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
         },
       }
     })
-    .catch(err => {
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Removing Recent Search')
       return {
         meta: {
           status: 'error',
-          error: 'Recent search is refusing to be removed, since it loves you',
+          error: errorMessage,
         },
       }
     })
@@ -244,10 +253,11 @@ const getMovieDetail = ({ id }) => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Movie Detail')
       return {
         meta: {
           status: 'error',
-          error: 'Movie details are missing, contact officer Mola immediately',
+          error: errorMessage,
         },
         data: [],
       }
@@ -270,10 +280,11 @@ const getMovieLibraryList = () => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola List of Movie Library')
       return {
         meta: {
           status: 'error',
-          error: 'Apparently Mola is having difficulty to list down movie library',
+          error: errorMessage,
         },
         data: [],
       }
@@ -295,10 +306,11 @@ const getMovieLibrary = id => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Movie Library')
       return {
         meta: {
           status: 'error',
-          error: "We've searched thoroughly in our Movie Library, your sure you're not entering your password?",
+          error: errorMessage,
         },
         data: [],
       }
@@ -320,10 +332,11 @@ const getHotPlaylist = () => {
       }
     })
     .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Hot Playlists')
       return {
         meta: {
           status: 'error',
-          error: 'Mola is feeling so hot right now,\n Someone bring some hot movies!',
+          error: errorMessage,
         },
         data: [],
       }
