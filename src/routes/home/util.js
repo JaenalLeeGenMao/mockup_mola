@@ -66,11 +66,16 @@ export const swipeGestureListener = () => {
 }
 
 export const getErrorCode = str => {
-  if (str.includes('500') || str.includes('501') || str.includes('502') || str.includes('503') || str.includes('504')) {
-    return 502
-  } else if (str.includes('400') || str.includes('401') || str.includes('402') || str.includes('403') || str.includes('404')) {
-    return 400
-  } else {
-    return 1
+  let serverErrorCode = ['Network', '500', '501', '502', '503']
+  let clientErrorCode = ['400', '401', '402', '403', '404']
+
+  for (var i in serverErrorCode) {
+    if (str.includes(serverErrorCode[i])) {
+      return 502
+    }
+    if (str.includes(clientErrorCode[i])) {
+      return 400
+    }
   }
+  return 1
 }
