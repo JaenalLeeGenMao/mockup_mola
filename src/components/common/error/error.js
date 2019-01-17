@@ -18,15 +18,15 @@ const Error = ({ className = '', title = '', message = '', isDark = 0 /** isDark
   let imageUri
   switch (status) {
     case 400:
-      title = 'Page not found'
+      title = 'This is not the web page you are looking for'
       imageUri = notFound
       break
     case 502:
-      title = 'Bad gateway'
+      title = 'Server on Maintenance'
       imageUri = internalServerError
       break
     default:
-      title = 'Oops, sorry :('
+      title = 'Oops, Sorry :('
       imageUri = commonError
       break
   }
