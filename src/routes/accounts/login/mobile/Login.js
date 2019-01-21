@@ -86,7 +86,7 @@ class Login extends React.Component {
     const isDark = true
     return (
       <Fragment>
-        <Header isDark={isDark} libraryOff rightMenuOff isMobile {...this.props} />
+        <Header isDark={isDark} stickyOff libraryOff rightMenuOff isMobile {...this.props} />
         <div className={s.wrapper}>
           <div className={s.root}>
             <LazyLoad>
@@ -137,9 +137,9 @@ class Login extends React.Component {
               </div>
             </LazyLoad>
           </div>
-        </div>
-        <div className={s.login__footer_container}>
-          <Footer />
+          <div className={s.login__footer_container}>
+            <Footer />
+          </div>
         </div>
       </Fragment>
     )

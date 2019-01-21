@@ -236,9 +236,9 @@ class MovieDetail extends Component {
     const { meta: { status }, data } = movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    // const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
-    // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
+    const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/DASH/Live/channel(2a10e294-db16-0d35-f732-f2d040e882d0)/manifest.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
     const videoSettings = {
@@ -260,7 +260,7 @@ class MovieDetail extends Component {
                     poster={poster}
                     autoPlay={false}
                     movieUrl={streamSource}
-                    // certificateUrl="test"
+                    certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
                     handleOnVideoLoad={this.handleOnVideoLoad}
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}

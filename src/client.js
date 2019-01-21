@@ -78,6 +78,7 @@ async function onLocationChange(location, action) {
   try {
     context.pathname = location.pathname
     context.query = queryString.parse(location.search)
+    console.log('di client')
 
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string
