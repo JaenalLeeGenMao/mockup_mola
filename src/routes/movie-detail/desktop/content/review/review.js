@@ -4,6 +4,8 @@ import ReviewArrow from '@routes/movie-detail/arrow'
 import { reviewSliderContainer, reviewSliderWrapper, reviewSliderDetail, reviewSliderProfile, reviewSliderQuotes } from './style'
 
 const Review = ({ data }) => {
+  const { author, text, description, quotes: unfilteredQuotes } = data
+
   const SETTINGS = {
     draggable: true,
     arrows: true,
@@ -24,6 +26,18 @@ const Review = ({ data }) => {
   ]
   const sliderRefs = []
 
+  const quotes = unfilteredQuotes.map(({ attributes }) => {
+    const { author, imageUrl, role, text } = attributes
+    return {
+      author,
+      imageUrl,
+      role,
+      text,
+    }
+  })
+
+  console.log(quotes)
+
   return (
     <div className={reviewSliderContainer}>
       <Slider
@@ -34,14 +48,14 @@ const Review = ({ data }) => {
         prevArrow={<ReviewArrow direction="prev" isDark={false} id={'arrow_prev'} sliderRefs={sliderRefs} />}
         nextArrow={<ReviewArrow direction="next" isDark={false} id={'arrow_next'} sliderRefs={sliderRefs} />}
       >
-        {images.map((url, index) => {
+        {quotes.map(({ author, text, imageUrl }, index) => {
           return (
             <div key={index} className={reviewSliderWrapper}>
               <div className={reviewSliderDetail}>
-                <img className={reviewSliderProfile} alt="mola profile" src={url} />
+                <img className={reviewSliderProfile} alt="mola profile" src={imageUrl || 'https://cdn01.sent.tv/qaud0dwQwSQsDwdpPvTi_sent_757.png'} />
                 <div className={reviewSliderQuotes}>
-                  <h1>Zlatan Ibrahimovic, Footballer</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus at ultrices mi tempus.</p>
+                  <h1>{author}</h1>
+                  <p>{text}</p>
                 </div>
               </div>
             </div>

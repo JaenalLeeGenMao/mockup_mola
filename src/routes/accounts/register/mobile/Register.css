@@ -8,7 +8,7 @@
  */
 
 @import '../../../../components/variables.css';
-@import '../../login/mobile/Login.css';
+@import './Login.css';
 
 html {
   font-size: 62.5% !important;
