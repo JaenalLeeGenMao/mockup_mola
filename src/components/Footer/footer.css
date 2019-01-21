@@ -12,5 +12,14 @@
 
 .footer__container a:hover {
   color: #e8e8e8;
-  font-size: 1.425rem;
+}
+
+@media screen and (max-width: 864px) {
+  .footer__container {
+    padding: 0;
+  }
+
+  .footer__container a {
+    font-size: 1rem;
+  }
 }
