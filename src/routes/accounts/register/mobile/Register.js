@@ -176,9 +176,9 @@ class Register extends React.Component {
               </div>
             </LazyLoad>
           </div>
-        </div>
-        <div className={s.login__footer_container}>
-          <Footer />
+          <div className={s.register__footer_container}>
+            <Footer />
+          </div>
         </div>
       </Fragment>
     )

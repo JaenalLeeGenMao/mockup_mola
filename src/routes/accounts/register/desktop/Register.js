@@ -113,7 +113,7 @@ class Register extends React.Component {
     const isDark = true
     return (
       <Fragment>
-        <Header isDark={isDark} libraryOff rightMenuOff {...this.props} />
+        <Header isDark={isDark} stickyOff libraryOff rightMenuOff {...this.props} />
         <div className={s.wrapper}>
           <div className={s.root}>
             <LazyLoad>
@@ -177,9 +177,9 @@ class Register extends React.Component {
               </div>
             </LazyLoad>
           </div>
-        </div>
-        <div className={s.login__footer_container}>
-          <Footer />
+          <div className={s.register__footer_container}>
+            <Footer />
+          </div>
         </div>
       </Fragment>
     )

@@ -141,3 +141,10 @@
 .form__otp input {
   margin: 0;
 }
+
+.register__footer_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

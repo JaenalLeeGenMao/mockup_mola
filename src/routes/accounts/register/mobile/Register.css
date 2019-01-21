@@ -145,3 +145,10 @@ html {
 .form__otp__input ::placeholder {
   font-size: 1.5rem !important;
 }
+
+.register__footer_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
