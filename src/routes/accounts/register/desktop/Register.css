@@ -8,7 +8,7 @@
  */
 
 @import '../../../../components/variables.css';
-@import '../../login/desktop/Login.css';
+@import './Login.css';
 
 .flip {
   position: absolute;
