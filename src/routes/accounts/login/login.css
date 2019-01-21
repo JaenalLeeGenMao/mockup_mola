@@ -130,6 +130,10 @@
 }
 
 @media screen and (max-width: 640px) {
+  .login__header_wrapper > div {
+    padding: 5%;
+  }
+
   .login__content_form {
     margin: 0 5%;
     width: auto;
