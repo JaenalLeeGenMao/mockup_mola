@@ -8,8 +8,11 @@
  */
 
 import React from 'react'
-import LoginMobile from './mobile/Login'
-import LoginDesktop from './desktop/Login'
+// import LoginMobile from './mobile/Login'
+// import LoginDesktop from './desktop/Login'
+
+import Login from './login'
+
 import Molalayout from '@components/Molalayout'
 
 const title = 'Login'
@@ -20,13 +23,9 @@ function action({ isMobile }) {
     title,
     description,
     chunks: ['login'],
-    component: isMobile ? (
+    component: (
       <Molalayout>
-        <LoginMobile />
-      </Molalayout>
-    ) : (
-      <Molalayout>
-        <LoginDesktop />
+        <Login isMobile={isMobile} />
       </Molalayout>
     ),
   }
