@@ -199,6 +199,7 @@ class MovieDetail extends Component {
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+    // const poster = apiFetched ? dataFetched.images.cover.details.mobile.portrait : ''
 
     const videoSettings = {
       ...defaultVideoSettings,

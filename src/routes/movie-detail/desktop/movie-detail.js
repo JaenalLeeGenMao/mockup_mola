@@ -240,6 +240,7 @@ class MovieDetail extends Component {
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/DASH/Live/channel(2a10e294-db16-0d35-f732-f2d040e882d0)/manifest.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+    // const poster = apiFetched ? dataFetched.images.cover.details.desktop.landscape : ''
 
     const videoSettings = {
       ...defaultVideoSettings,
