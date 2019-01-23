@@ -16,6 +16,23 @@ import {
 
 const Overview = ({ data }) => {
   const { title, description } = data
+  const filterPeople = type =>
+    data.people.filter(item => {
+      return item.attributes.peopleTypeName === type
+    })
+
+  const casts = filterPeople('cast').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
+  })
+
+  const directors = filterPeople('director').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
+  })
+
+  const writers = filterPeople('writer').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
+  })
+
   return (
     <LazyLoad containerClassName={contentOverviewContainer}>
       <div className={contentOverviewSectionLeft}>
@@ -33,10 +50,26 @@ const Overview = ({ data }) => {
       </div>
       <div className={contentOverviewSectionRight}>
         <div>
-          <h1 className={sectionRightTitle}>cast</h1>
-          <p className={sectionRightText}>Kurt Cobain, Dave Grohl, Krist Novoselic, Pat smear, Chad Channing</p>
-          <h2 className={sectionRightTitle}>director</h2>
-          <p className={sectionRightText}>AJ Schnack</p>
+          {casts.length > 0 && (
+            <>
+              <h1 className={sectionRightTitle}>cast</h1>
+              <p className={sectionRightText}>{casts}</p>
+            </>
+          )}
+
+          {directors.length > 0 && (
+            <>
+              <h2 className={sectionRightTitle}>director</h2>
+              <p className={sectionRightText}>{directors}</p>
+            </>
+          )}
+
+          {writers.length > 0 && (
+            <>
+              <h2 className={sectionRightTitle}>writer</h2>
+              <p className={sectionRightText}>{writers}</p>
+            </>
+          )}
         </div>
       </div>
     </LazyLoad>
