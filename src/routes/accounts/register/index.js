@@ -9,8 +9,8 @@
 
 import React from 'react'
 import Molalayout from '@components/Molalayout'
-import RegisterDesktop from './desktop/Register'
-import RegisterMobile from './mobile/Register'
+
+import Register from './register'
 
 const title = 'Register Page'
 const description = 'New User Registration'
@@ -20,13 +20,9 @@ function action({ isMobile }) {
     chunks: ['register'],
     title,
     description,
-    component: isMobile ? (
+    component: (
       <Molalayout>
-        <RegisterMobile />
-      </Molalayout>
-    ) : (
-      <Molalayout>
-        <RegisterDesktop />
+        <Register isMobile={isMobile} />
       </Molalayout>
     ),
   }
