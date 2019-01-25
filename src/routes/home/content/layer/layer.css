@@ -100,7 +100,7 @@
 
   .layer__grid_desc_header {
     height: 3rem;
-    margin: 1.125% 20%;
+    margin: 1.125% 3rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -114,14 +114,15 @@
   }
 
   .layer__grid_desc_footer {
-    height: 10rem;
+    height: 6rem;
     font-size: 0.9rem;
     line-height: 1rem;
     opacity: 1;
-    margin: 2.5% 10%;
+    margin: 1rem 3rem 2.5%;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 1.25rem;
+
+    /* background: rgba(255, 255, 255, 0.08); */
+    padding: 0;
     border-radius: 0.3rem;
   }
 
@@ -141,7 +142,6 @@
 
 @media screen and (max-width: 370px) {
   .layer__grid_desc_header {
-    height: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
