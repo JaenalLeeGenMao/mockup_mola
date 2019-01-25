@@ -54,7 +54,7 @@
   max-height: 100vh;
   max-width: 100vw;
   z-index: 0;
-  top: -4.4rem;
+  top: 0;
   transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
   transform: scale(1.05);
   overflow: hidden;
@@ -182,5 +182,9 @@
     transform: none;
     width: 100vw;
     position: fixed;
+  }
+
+  .content__grid_background_images {
+    top: -4.4rem;
   }
 }
