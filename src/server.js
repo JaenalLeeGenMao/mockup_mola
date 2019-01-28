@@ -33,7 +33,7 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
-import { get } from 'axios'
+import { get, post } from 'axios'
 // import Auth from '@api/auth';
 
 process.on('unhandledRejection', (reason, p) => {
@@ -66,7 +66,7 @@ app.use(csurf({ cookie: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const domain = config.endpoints.domain
+const { domain, auth } = config.endpoints
 let count = 0
 // var inboxInterval;
 // set a cookie
@@ -114,13 +114,30 @@ app.get('*', async (req, res, next) => {
   try {
     // global.clearInterval(inboxInterval);
 
-    // const url = '/accounts/_/authorize'
-    // get(url, {
-    //   'app_key': 'wIHGzJhset',
-    //   'app_secret': 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-    //   'code': '',
-    //   'state': '',
-    //   'redirect_uri': config.endpoints.domain
+    let payload = {
+      app_key: 'wIHGzJhset',
+      app_secret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+      response_type: 'token',
+      scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+      redirect_uri: `${domain}/accounts/login`,
+    }
+
+    // const atUrl = `${auth}/oauth2/v1/authorize` /* get */
+
+    // const access_token = get(atUrl, payload, {
+    //   headers: {
+    //     Cookie: `SID=${req.cookies.SID}`,
+    //   },
+    // })
+
+    // const gtUrl = `${auth}/v1/guest/token`
+    // const guest_token = get(gtUrl, {
+    //   params: {
+    //     app_key: payload.app_key,
+    //   },
+    //   headers: {
+    //     'x-csrf-token': req.csrfToken()
+    //   },
     // })
 
     const css = new Set()
