@@ -98,11 +98,11 @@ async function onLocationChange(location, action) {
       }
     })
 
-    await Auth.requestAccessToken({ ...payload }).then(response => {
-      if (response.data !== undefined) {
-        context.store.dispatch(setRuntimeVariable({ name: 'at', value: response.data }))
-      }
-    })
+    // await Auth.requestAccessToken({ ...payload }).then(response => {
+    //   if (response.data !== undefined) {
+    //     context.store.dispatch(setRuntimeVariable({ name: 'at', value: response.data }))
+    //   }
+    // })
 
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string
