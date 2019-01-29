@@ -114,39 +114,6 @@ app.get('*', async (req, res, next) => {
   try {
     // global.clearInterval(inboxInterval);
 
-    // let payload = {
-    //   app_key: 'wIHGzJhset',
-    //   app_secret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-    //   response_type: 'token',
-    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-    //   redirect_uri: `${domain}/accounts/login`,
-    // }
-
-    // const atUrl = `${auth}/oauth2/v1/authorize` /* get */
-
-    // const access_token = get(atUrl, payload, {
-    //   headers: {
-    //     Cookie: `SID=${req.cookies.SID}`,
-    //   },
-    // })
-
-    // const gtUrl = `${auth}/v1/guest/token`
-    // const guest_token = get(gtUrl, {
-    //   params: {
-    //     app_key: payload.app_key,
-    //   },
-    // })
-
-    // const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
-    // const guest_token = get(gtUrl, {
-    //   headers: {
-    //     Origin: 'https://stag.mola.tv',
-    //     Referer: 'https://stag.mola.tv',
-    //   },
-    // })
-
-    // guest_token.then(response => console.log('CLIENT', response.data))
-
     const css = new Set()
 
     // Enables critical path CSS rendering
@@ -190,22 +157,6 @@ app.get('*', async (req, res, next) => {
     const store = configureStore(initialState)
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }))
-
-    // const payload = {
-    //   appKey: 'wIHGzJhset',
-    //   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-    //   responseType: 'token',
-    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-    //   redirectUri: `${domain}/accounts`,
-    // }
-
-    // Auth.requestGuestToken({ appKey: payload.app_key }).then(response => {
-    //   if (response.data !== undefined) {
-    //     context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
-    //   } else {
-    //     context.store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
-    //   }
-    // })
 
     // inboxInterval = setInterval(() => {
     //   console.log(`server inbox interval ${count}`);
