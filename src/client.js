@@ -61,13 +61,6 @@ const payload = {
   redirect_uri: `${domain}/accounts/login`,
 }
 
-Auth.requestGuestToken({ appKey: payload.app_key }).then(response => {
-  console.log(response)
-  if (response.data !== undefined) {
-    context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
-  }
-})
-
 // inboxInterval = setInterval(() => {
 //   console.log(`client inbox interval ${count}`);
 //   count++;
@@ -94,9 +87,16 @@ async function onLocationChange(location, action) {
   currentLocation = location
 
   const isInitialRender = !action
+
   try {
     context.pathname = location.pathname
     context.query = queryString.parse(location.search)
+
+    Auth.requestGuestToken({ appKey: payload.app_key }).then(response => {
+      if (response.data !== undefined) {
+        context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
+      }
+    })
 
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string

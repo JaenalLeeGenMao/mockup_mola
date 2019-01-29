@@ -272,7 +272,6 @@ const requestGuestToken = ({ appKey = 'wIHGzJhset' }) => {
     },
   })
     .then(response => {
-      console.log(response)
       const { access_token, expires_in, token_type } = response.data.data
       return {
         meta: {
