@@ -99,6 +99,14 @@ const routes = {
       path: '/system-info',
       load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
     },
+    {
+      path: '/terms',
+      load: () => import(/* webpackChunkName: 'terms' */ './terms'),
+    },
+    {
+      path: '/conditions',
+      load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

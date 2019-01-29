@@ -16,7 +16,7 @@ const Footer = () => {
       <Link to="/system-info">{locale['system_info']}</Link>
       <Link to="/terms">{locale['terms']}</Link>
       <Link to="/privacy">{locale['privacy']}</Link>
-      <Link to="/condition">{locale['condition']}</Link>
+      <Link to="/conditions">{locale['condition']}</Link>
     </LazyLoad>
   )
 }
