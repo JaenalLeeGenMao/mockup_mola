@@ -95,7 +95,7 @@ async function onLocationChange(location, action) {
     const guestInfo = await Auth.requestGuestToken({ ...payload })
 
     if (guestInfo.data !== undefined) {
-      context.store.dispatch(setRuntimeVariable({ name: 'at', value: response.data }))
+      context.store.dispatch(setRuntimeVariable({ name: 'gt', value: guestInfo.data.token }))
     } else {
       context.store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
     }
