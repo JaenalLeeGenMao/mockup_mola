@@ -272,7 +272,8 @@ const requestGuestToken = ({ appKey = 'wIHGzJhset' }) => {
     },
   })
     .then(response => {
-      const { access_token, expires_in, token_type } = response.data
+      console.log(response)
+      const { access_token, expires_in, token_type } = response.data.data
       return {
         meta: {
           status: 'success',
