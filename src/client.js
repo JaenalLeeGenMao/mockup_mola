@@ -54,11 +54,11 @@ const context = {
 
 const { domain } = config.endpoints
 const payload = {
-  app_key: 'wIHGzJhset',
-  app_secret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-  response_type: 'token',
+  appKey: 'wIHGzJhset',
+  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  responseType: 'token',
   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-  redirect_uri: `${domain}/accounts/login`,
+  redirectUri: `${domain}/accounts/login`,
 }
 
 // inboxInterval = setInterval(() => {
