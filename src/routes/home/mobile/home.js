@@ -68,6 +68,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    console.log('CLIENT Mobile', this.props.runtime)
     if (activePlaylist) {
       flag = false /* Set to false upon loading, so must execute only once */
       scrollIndex = 0
