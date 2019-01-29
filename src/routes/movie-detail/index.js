@@ -12,7 +12,9 @@ const description = 'Movie Details Casters Writers Directors and Sponsors'
 async function action({ isMobile, pathname }) {
   const pathnameArr = pathname.split('/')
   const movieId = pathnameArr[2]
-  const { data: [{ title, images: { cover: { thumbnail } } }] } = await Mola.getMovieDetail({ id: movieId })
+  const movieDetail = await Mola.getMovieDetail({ id: movieId })
+  const title = movieDetail.data[0].title
+  const thumbnail = movieDetail.data[0].images.cover.background.mobile.portrait
 
   return {
     chunks: ['movie-detail'],
@@ -21,11 +23,11 @@ async function action({ isMobile, pathname }) {
     description,
     component: isMobile ? (
       <MolaLayout>
-        <MovieDetailMobile pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} />
+        <MovieDetailMobile pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} movieData={movieDetail} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <MovieDetailDesktop pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} />
+        <MovieDetailDesktop pathLoc={pathnameArr[1]} movieId={pathnameArr[2]} movieData={movieDetail} />
       </MolaLayout>
     ),
   }
