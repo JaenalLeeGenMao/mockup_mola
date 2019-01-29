@@ -92,9 +92,9 @@ async function onLocationChange(location, action) {
     context.pathname = location.pathname
     context.query = queryString.parse(location.search)
 
-    await Auth.requestGuestToken({ appKey: payload.app_key }).then(response => {
+    Auth.requestGuestToken({ appKey: payload.app_key }).then(async response => {
       if (response.data !== undefined) {
-        context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
+        await context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
       }
     })
 
