@@ -170,7 +170,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log('CLIENT', this.props.runtime)
+    console.log('CLIENT Desktop', this.props.runtime)
     // const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
     // const guest_token = get(gtUrl, {
     //   headers: {

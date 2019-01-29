@@ -92,17 +92,13 @@ async function onLocationChange(location, action) {
     context.pathname = location.pathname
     context.query = queryString.parse(location.search)
 
-    Auth.requestGuestToken({ appKey: payload.app_key }).then(async response => {
-      if (response.data !== undefined) {
-        await context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
-      }
-    })
+    const guestInfo = await Auth.requestGuestToken({ ...payload })
 
-    // await Auth.requestAccessToken({ ...payload }).then(response => {
-    //   if (response.data !== undefined) {
-    //     context.store.dispatch(setRuntimeVariable({ name: 'at', value: response.data }))
-    //   }
-    // })
+    if (guestInfo.data !== undefined) {
+      context.store.dispatch(setRuntimeVariable({ name: 'at', value: response.data }))
+    } else {
+      context.store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
+    }
 
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string
