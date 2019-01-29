@@ -34,7 +34,7 @@ import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
 import { get, post } from 'axios'
-// import Auth from '@api/auth';
+// import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -66,7 +66,7 @@ app.use(csurf({ cookie: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const { domain, auth } = config.endpoints
+const { domain } = config.endpoints
 let count = 0
 // var inboxInterval;
 // set a cookie
@@ -114,13 +114,13 @@ app.get('*', async (req, res, next) => {
   try {
     // global.clearInterval(inboxInterval);
 
-    let payload = {
-      app_key: 'wIHGzJhset',
-      app_secret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-      response_type: 'token',
-      scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-      redirect_uri: `${domain}/accounts/login`,
-    }
+    // let payload = {
+    //   app_key: 'wIHGzJhset',
+    //   app_secret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+    //   response_type: 'token',
+    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+    //   redirect_uri: `${domain}/accounts/login`,
+    // }
 
     // const atUrl = `${auth}/oauth2/v1/authorize` /* get */
 
@@ -135,10 +135,17 @@ app.get('*', async (req, res, next) => {
     //   params: {
     //     app_key: payload.app_key,
     //   },
+    // })
+
+    // const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
+    // const guest_token = get(gtUrl, {
     //   headers: {
-    //     'x-csrf-token': req.csrfToken()
+    //     Origin: 'https://stag.mola.tv',
+    //     Referer: 'https://stag.mola.tv',
     //   },
     // })
+
+    // guest_token.then(response => console.log('CLIENT', response.data))
 
     const css = new Set()
 
@@ -177,6 +184,8 @@ app.get('*', async (req, res, next) => {
         // unread: count
       },
     }
+
+    // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
 
     const store = configureStore(initialState)
 

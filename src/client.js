@@ -20,7 +20,10 @@ import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
 import * as serviceWorker from './service-worker'
-// import { setRuntimeVariable } from './actions/runtime';
+
+import config from './config'
+import Auth from '@api/auth'
+import { setRuntimeVariable } from './actions/runtime'
 
 // let inboxInterval;
 // let count = window.App.inbox.unread;
@@ -48,6 +51,22 @@ const context = {
   storeSubscription: null,
   isMobile: window.App.isMobile,
 }
+
+const { domain } = config.endpoints
+const payload = {
+  app_key: 'wIHGzJhset',
+  app_secret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  response_type: 'token',
+  scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+  redirect_uri: `${domain}/accounts/login`,
+}
+
+Auth.requestGuestToken({ appKey: payload.app_key }).then(response => {
+  console.log(response)
+  if (response.data !== undefined) {
+    context.store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
+  }
+})
 
 // inboxInterval = setInterval(() => {
 //   console.log(`client inbox interval ${count}`);
@@ -78,7 +97,6 @@ async function onLocationChange(location, action) {
   try {
     context.pathname = location.pathname
     context.query = queryString.parse(location.search)
-    console.log('di client')
 
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string

@@ -170,15 +170,16 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
-    const guest_token = get(gtUrl, {
-      headers: {
-        Origin: 'https://stag.mola.tv',
-        Referer: 'https://stag.mola.tv',
-      },
-    })
+    console.log('CLIENT', this.props.runtime)
+    // const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
+    // const guest_token = get(gtUrl, {
+    //   headers: {
+    //     Origin: 'https://stag.mola.tv',
+    //     Referer: 'https://stag.mola.tv',
+    //   },
+    // })
 
-    guest_token.then(response => console.log('CLIENT', response.data))
+    // guest_token.then(response => console.log('CLIENT', response.data))
     if (activePlaylist) {
       flag = false /* Set to false upon loading, so must execute only once */
       scrollIndex = 0
