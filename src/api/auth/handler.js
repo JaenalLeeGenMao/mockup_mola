@@ -266,7 +266,7 @@ import { AUTH_BASE_ENDPOINT } from './endpoints'
 // }
 
 const requestGuestToken = ({ appKey = 'wIHGzJhset' }) => {
-  return get(`${AUTH_BASE_ENDPOINT}`, {
+  return get(`${AUTH_BASE_ENDPOINT}/v1/guest/token`, {
     params: {
       app_key: appKey,
     },
