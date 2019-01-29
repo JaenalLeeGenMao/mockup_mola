@@ -66,20 +66,15 @@ class MovieDetail extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
-      getMovieDetail,
-      movieDetail,
+      movieData,
       movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
     } = nextProps
-    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-      return { ...prevState, movieDetail, toggleSuggestion: false }
+
+    if (movieData && movieData.meta.status === 'success' && nextProps.movieData.data[0].id != movieId) {
+      return { ...prevState, movieDetail: movieData, toggleSuggestion: false }
     }
-    return { ...prevState, movieDetail }
+
+    return { ...prevState, movieDetail: movieData }
   }
 
   /* eslint-disable */
@@ -188,6 +183,7 @@ class MovieDetail extends Component {
   componentDidMount() {
     this.updateEncryption()
     this.updateMetaTag()
+    this.props.onHandleHotPlaylist()
   }
 
   render() {
@@ -268,7 +264,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
 })
 
