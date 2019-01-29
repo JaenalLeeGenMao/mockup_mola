@@ -40,6 +40,7 @@ class Privacy extends Component {
             mola.tv
           </a>
           <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_twlv']}</p>
+          {/* komen */}
         </div>
       </div>
     )
