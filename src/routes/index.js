@@ -31,74 +31,74 @@ const routes = {
       path: '',
       load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
-    {
-      path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    // Movie details
-    {
-      path: '/movie-detail',
-      load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    // Movie Library
-    {
-      path: '/movie-library',
-      load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    {
-      path: '/search',
-      load: () => import(/* webpackChunkName: 'search' */ './search'),
-    },
-    {
-      path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
-    },
-    {
-      path: '/accounts/inbox',
-      load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
-    },
-    {
-      path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
-    },
-    {
-      path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
-    },
-    {
-      path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
-    },
-    {
-      path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
-    },
-    {
-      path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
-    },
-    {
-      path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
-    },
-    {
-      path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
-    },
-    {
-      path: '/system-info',
-      load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
-    },
+    // {
+    //   path: '/privacy',
+    //   load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+    // },
+    // // Movie details
+    // {
+    //   path: '/movie-detail',
+    //   load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // // Movie Library
+    // {
+    //   path: '/movie-library',
+    //   load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/search',
+    //   load: () => import(/* webpackChunkName: 'search' */ './search'),
+    // },
+    // {
+    //   path: '/accounts/history',
+    //   load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
+    // },
+    // {
+    //   path: '/accounts/inbox',
+    //   load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
+    // },
+    // {
+    //   path: '/accounts/login',
+    //   load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
+    // },
+    // {
+    //   path: '/accounts/register',
+    //   load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
+    // },
+    // {
+    //   path: '/accounts/profile',
+    //   load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
+    // },
+    // {
+    //   path: '/accounts/forgotPassword',
+    //   load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
+    // },
+    // {
+    //   path: '/accounts/resetPassword',
+    //   load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
+    // },
+    // {
+    //   path: '/accounts/security',
+    //   load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
+    // },
+    // {
+    //   path: '/accounts/setting',
+    //   load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
+    // },
+    // {
+    //   path: '/system-info',
+    //   load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
+    // },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

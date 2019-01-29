@@ -1,5 +1,5 @@
-// import { post, patch, get } from 'axios'
-// import { AUTH_BASE_ENDPOINT } from './endpoints'
+import { post, patch, get } from 'axios'
+import { AUTH_BASE_ENDPOINT } from './endpoints'
 
 // const createNewUser = ({ email = '', password = '', csrf = '' }) => {
 //   const body = { email, password }
@@ -265,6 +265,36 @@
 //     })
 // }
 
+const requestGuestToken = ({ appKey = 'wIHGzJhset' }) => {
+  return get(`${AUTH_BASE_ENDPOINT}`, {
+    params: {
+      app_key: appKey,
+    },
+  })
+    .then(response => {
+      const { access_token, expires_in, token_type } = response.data
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: {
+          token: access_token,
+          expire: expires_in,
+          type: token_type,
+        },
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: error.response,
+        },
+        data: undefined,
+      }
+    })
+}
+
 import { getApi } from '@supersoccer/gandalf'
 const Auth = getApi('auth/handler')
 
@@ -280,4 +310,5 @@ export default {
   updateNewPassword: Auth.updateNewPassword,
   fetchProfile: Auth.fetchProfile,
   updateProfile: Auth.updateProfile,
+  requestGuestToken,
 }
