@@ -300,7 +300,7 @@ const requestAccessToken = ({
   appSecret = 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   responseType = 'token',
   scope = 'https://internal.supersoccer.tv/users/users.profile.read',
-  redirectUri = '/accounts/login',
+  redirectUri = 'accounts/login',
 }) => {
   return get(`${AUTH_BASE_ENDPOINT}/oauth2/v1/authorize`, {
     params: {
