@@ -33,8 +33,8 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
-import { get } from 'axios'
-// import Auth from '@api/auth';
+// import { get, post } from 'axios'
+// import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -66,7 +66,7 @@ app.use(csurf({ cookie: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const domain = config.endpoints.domain
+const { domain } = config.endpoints
 let count = 0
 // var inboxInterval;
 // set a cookie
@@ -114,15 +114,6 @@ app.get('*', async (req, res, next) => {
   try {
     // global.clearInterval(inboxInterval);
 
-    // const url = '/accounts/_/authorize'
-    // get(url, {
-    //   'app_key': 'wIHGzJhset',
-    //   'app_secret': 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-    //   'code': '',
-    //   'state': '',
-    //   'redirect_uri': config.endpoints.domain
-    // })
-
     const css = new Set()
 
     // Enables critical path CSS rendering
@@ -160,6 +151,8 @@ app.get('*', async (req, res, next) => {
         // unread: count
       },
     }
+
+    // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
 
     const store = configureStore(initialState)
 
