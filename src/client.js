@@ -58,7 +58,7 @@ const payload = {
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   responseType: 'token',
   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-  redirectUri: `${domain}/accounts/login`,
+  redirectUri: `${domain}/accounts`,
 }
 
 // inboxInterval = setInterval(() => {
