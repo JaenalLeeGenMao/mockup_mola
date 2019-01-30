@@ -21,9 +21,9 @@ import { updateMeta } from './DOMUtils'
 import router from './router'
 import * as serviceWorker from './service-worker'
 
-import config from './config'
+import { setRuntimeVariable } from '@actions/runtime'
+import config from '@source/config'
 import Auth from '@api/auth'
-import { setRuntimeVariable } from './actions/runtime'
 
 // let inboxInterval;
 // let count = window.App.inbox.unread;
@@ -52,15 +52,6 @@ const context = {
   isMobile: window.App.isMobile,
 }
 
-const { domain } = config.endpoints
-const payload = {
-  appKey: 'wIHGzJhset',
-  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-  responseType: 'token',
-  scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-  redirectUri: `${domain}/accounts`,
-}
-
 // inboxInterval = setInterval(() => {
 //   console.log(`client inbox interval ${count}`);
 //   count++;
@@ -87,18 +78,9 @@ async function onLocationChange(location, action) {
   currentLocation = location
 
   const isInitialRender = !action
-
   try {
     context.pathname = location.pathname
     context.query = queryString.parse(location.search)
-
-    const guestInfo = await Auth.requestGuestToken({ ...payload })
-
-    if (guestInfo.data !== undefined) {
-      context.store.dispatch(setRuntimeVariable({ name: 'gt', value: guestInfo.data.token }))
-    } else {
-      context.store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
-    }
 
     // Traverses the list of routes in the order they are defined until
     // it finds the first route that matches provided URL path string
@@ -116,7 +98,7 @@ async function onLocationChange(location, action) {
     }
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render
-    appInstance = renderReactApp(<App context={context}>{route.component}</App>, container, () => {
+    appInstance = renderReactApp(<App context={context}>{route.component}</App>, container, async () => {
       if (isInitialRender) {
         // Switch off the native scroll restoration behavior and handle it manually
         // https://developers.google.com/web/updates/2015/09/history-api-scroll-restoration
@@ -178,6 +160,23 @@ async function onLocationChange(location, action) {
       console.error('RSK will reload your page after error')
       window.location.reload()
     }
+  }
+
+  const { domain } = config.endpoints
+  const payload = {
+    appKey: 'wIHGzJhset',
+    appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+    responseType: 'token',
+    scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+    redirectUri: `${domain}/accounts`,
+  }
+
+  const guestInfo = await Auth.requestGuestToken({ ...payload })
+
+  if (guestInfo.data !== undefined) {
+    context.store.dispatch(setRuntimeVariable({ name: 'gt', value: guestInfo.data.token }))
+  } else {
+    context.store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
   }
 }
 // Handle client-side navigation by using HTML5 History API

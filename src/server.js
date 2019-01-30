@@ -34,7 +34,7 @@ import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
 // import { get, post } from 'axios'
-// import Auth from '@api/auth'
+import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -157,6 +157,22 @@ app.get('*', async (req, res, next) => {
     const store = configureStore(initialState)
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }))
+
+    // const payload = {
+    //   appKey: 'wIHGzJhset',
+    //   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+    //   responseType: 'token',
+    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+    //   redirectUri: `${domain}/accounts`,
+    // }
+
+    // const guestInfo = await Auth.requestGuestToken({ ...payload })
+
+    // if (guestInfo.data !== undefined) {
+    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
+    // } else {
+    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
+    // }
 
     // inboxInterval = setInterval(() => {
     //   console.log(`server inbox interval ${count}`);
