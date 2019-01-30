@@ -106,7 +106,8 @@ class Home extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists }, runtime } = nextProps
+    console.log(runtime)
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
     } else if (prevState.videos.length <= 0) {
@@ -170,7 +171,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log('CLIENT Desktop', this.props.runtime)
     // const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
     // const guest_token = get(gtUrl, {
     //   headers: {
@@ -323,8 +323,8 @@ class Home extends Component {
     })
 
     if (!ticking) {
-      this.handleMouseClick()
-      this.handleMouseScroll()
+      // this.handleMouseClick()
+      // this.handleMouseScroll()
       this.handleKeyboardEvent()
 
       ticking = true
@@ -333,23 +333,23 @@ class Home extends Component {
 
   handleMouseClick = () => {
     /** handle mouse click */
-    ;(this.prevmouseDownY = 0), (this.currentMouseDownY = 0)
+    const that = this
+    ;(this.prevMouseDownY = 0), (this.currentMouseDownY = 0)
     document.onmousedown = event => {
       ticking = false
-      this.prevMouseDownY = event.y
+      that.prevMouseDownY = event.y
     }
 
     document.onmouseup = event => {
       ticking = false
+      that.currentMouseDownY = event.y
 
-      this.currentMouseDownY = event.y
-
-      if (this.prevMouseDownY < this.currentMouseDownY) {
+      if (that.prevMouseDownY < that.currentMouseDownY) {
         scrollIndex -= 1
-        this.handleKeyPress(scrollIndex)
-      } else if (this.prevMouseDownY > this.currentMouseDownY) {
+        that.handleKeyPress(scrollIndex)
+      } else if (that.prevMouseDownY > that.currentMouseDownY) {
         scrollIndex += 1
-        this.handleKeyPress(scrollIndex)
+        that.handleKeyPress(scrollIndex)
       }
     }
   }
@@ -374,7 +374,7 @@ class Home extends Component {
           that.handleKeyPress()
           return
         }
-      }, 250)
+      }, 500)
     )
   }
 
@@ -447,7 +447,7 @@ class Home extends Component {
     playlists.data.map((playlist, index) => {
       if (id === playlist.id) {
         scroller.scrollTo(id, {
-          duration: 250,
+          duration: 500,
           delay: 0,
           smooth: 'easeInOutQuart',
         })
@@ -470,7 +470,7 @@ class Home extends Component {
       { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
         ...SETTINGS,
-        draggable: false,
+        // draggable: false,
         className: `${styles.home__slick_slider_fade} home-slider`,
         onInit: () => {
           this.handleColorChange()
