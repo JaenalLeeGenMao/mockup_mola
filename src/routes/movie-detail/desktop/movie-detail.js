@@ -4,8 +4,10 @@ import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
+import { updateCustomMeta } from '@source/DOMUtils'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
@@ -83,15 +85,20 @@ class MovieDetail extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
-      movieData,
+      getMovieDetail,
+      movieDetail,
       movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
     } = nextProps
-
-    if (movieData && movieData.meta.status === 'success' && nextProps.movieData.data[0].id != movieId) {
-      return { ...prevState, movieDetail: movieData, toggleSuggestion: false }
+    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
+      getMovieDetail(movieId)
+      onHandleHotPlaylist()
+    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
+      getMovieDetail(movieId)
+      onHandleHotPlaylist()
+      return { ...prevState, movieDetail, toggleSuggestion: false }
     }
-
-    return { ...prevState, movieDetail: movieData }
+    return { ...prevState, movieDetail }
   }
 
   /* eslint-disable */
@@ -113,10 +120,17 @@ class MovieDetail extends Component {
   }
 
   updateMetaTag() {
+    const { movieDetail } = this.props
+    if (movieDetail.data.length > 0) {
+      const { title, description, images } = movieDetail.data[0]
+      updateCustomMeta('og:title', title)
+      updateCustomMeta('og:image', images.cover.background.desktop.landscape)
+      updateCustomMeta('og:description', description)
+      updateCustomMeta('og:url', window.location.href)
+    }
     /* When audio starts playing... */
     if ('mediaSession' in navigator) {
-      const { movieDetail } = this.props,
-        currentMovie = movieDetail.data.length > 0 ? movieDetail.data[0] : { title: 'Mola TV' }
+      const currentMovie = movieDetail.data.length > 0 ? movieDetail.data[0] : { title: 'Mola TV' }
       navigator.mediaSession.metadata = new MediaMetadata({
         title: currentMovie.title,
         artist: 'Mola TV',
@@ -223,8 +237,17 @@ class MovieDetail extends Component {
 
   componentDidMount() {
     this.updateEncryption()
+  }
+
+  componentDidUpdate() {
     this.updateMetaTag()
-    this.props.onHandleHotPlaylist()
+  }
+
+  componentWillUnmount() {
+    updateCustomMeta('og:title', 'Mola TV')
+    updateCustomMeta('og:image', logoLandscapeBlue)
+    updateCustomMeta('og:description', 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.')
+    updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
   }
 
   render() {
@@ -301,6 +324,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
+  getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
 })
 
