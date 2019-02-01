@@ -1,5 +1,5 @@
-// import { post, patch, get } from 'axios'
-// import { AUTH_BASE_ENDPOINT } from './endpoints'
+import { post, patch, get } from 'axios'
+import { AUTH_BASE_ENDPOINT } from './endpoints'
 
 // const createNewUser = ({ email = '', password = '', csrf = '' }) => {
 //   const body = { email, password }
@@ -265,6 +265,77 @@
 //     })
 // }
 
+const requestGuestToken = ({ appKey = 'wIHGzJhset' }) => {
+  return get(`${AUTH_BASE_ENDPOINT}/v1/guest/token`, {
+    params: {
+      app_key: appKey,
+    },
+  })
+    .then(response => {
+      const { access_token, expires_in, token_type } = response.data.data
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: {
+          token: access_token,
+          expire: expires_in,
+          type: token_type,
+        },
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: error.response,
+        },
+        data: undefined,
+      }
+    })
+}
+
+const requestAccessToken = ({
+  appKey = 'wIHGzJhset',
+  appSecret = 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  responseType = 'token',
+  scope = 'https://internal.supersoccer.tv/users/users.profile.read',
+  redirectUri = 'accounts/login',
+}) => {
+  return get(`${AUTH_BASE_ENDPOINT}/oauth2/v1/authorize`, {
+    params: {
+      app_key: appKey,
+      app_secret: appSecret,
+      response_type: responseType,
+      redirect_uri: redirectUri,
+      scope,
+    },
+  })
+    .then(response => {
+      console.log('requestAccessToken', response)
+      const { access_token, expires_in, token_type } = response.data.data
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: {
+          token: access_token,
+          expire: expires_in,
+          type: token_type,
+        },
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: error.response,
+        },
+        data: undefined,
+      }
+    })
+}
+
 import { getApi } from '@supersoccer/gandalf'
 const Auth = getApi('auth/handler')
 
@@ -280,4 +351,6 @@ export default {
   updateNewPassword: Auth.updateNewPassword,
   fetchProfile: Auth.fetchProfile,
   updateProfile: Auth.updateProfile,
+  requestGuestToken,
+  requestAccessToken,
 }

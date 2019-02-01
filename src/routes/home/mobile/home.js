@@ -48,8 +48,8 @@ class Home extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps
-
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists }, runtime } = nextProps
+    // console.log(runtime)
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
     } else if (prevState.videos.length <= 0) {

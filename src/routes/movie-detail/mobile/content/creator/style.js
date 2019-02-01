@@ -14,4 +14,13 @@ export const creatorContainer = css`
   p {
     color: #fff;
   }
+
+  span:after {
+    content: ',';
+    margin-right: 0.5rem;
+  }
+
+  span:last-of-type:after {
+    content: '';
+  }
 `

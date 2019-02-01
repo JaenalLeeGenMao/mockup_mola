@@ -40,6 +40,15 @@ export const contentOverviewSectionRight = css`
     height: 100%;
     margin: auto;
   }
+
+  span:after {
+    content: ',';
+    margin-right: 0.5rem;
+  }
+
+  span:last-of-type:after {
+    content: '';
+  }
 `
 
 export const sectionLeftTitle = css`

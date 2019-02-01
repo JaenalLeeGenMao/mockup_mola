@@ -9,20 +9,22 @@
 
 import React from 'react'
 import Layout from '@components/Molalayout'
-import Page from '../../components/Page'
-import privacy from './privacy.md'
+import Privacy from './privacy'
+
+// import Page from '../../components/Page'
+// import privacy from './privacy.md'
 
 const title = 'Privacy Page'
 const description = 'Privacy Policy'
 
-function action() {
+function action(isMobile) {
   return {
     chunks: ['privacy'],
     title,
     description,
     component: (
       <Layout>
-        <Page {...privacy} />
+        <Privacy isMobile={isMobile} />
       </Layout>
     ),
   }
