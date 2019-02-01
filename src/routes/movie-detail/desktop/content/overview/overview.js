@@ -50,26 +50,29 @@ const Overview = ({ data }) => {
       </div>
       <div className={contentOverviewSectionRight}>
         <div>
-          {casts.length > 0 && (
-            <>
-              <h1 className={sectionRightTitle}>cast</h1>
-              <p className={sectionRightText}>{casts}</p>
-            </>
-          )}
+          {typeof casts !== 'undefined' &&
+            casts.length > 0 && (
+              <>
+                <h1 className={sectionRightTitle}>cast</h1>
+                <p className={sectionRightText}>{casts}</p>
+              </>
+            )}
 
-          {directors.length > 0 && (
-            <>
-              <h2 className={sectionRightTitle}>director</h2>
-              <p className={sectionRightText}>{directors}</p>
-            </>
-          )}
+          {typeof directors !== 'undefined' &&
+            directors.length > 0 && (
+              <>
+                <h2 className={sectionRightTitle}>director</h2>
+                <p className={sectionRightText}>{directors}</p>
+              </>
+            )}
 
-          {writers.length > 0 && (
-            <>
-              <h2 className={sectionRightTitle}>writer</h2>
-              <p className={sectionRightText}>{writers}</p>
-            </>
-          )}
+          {typeof writers !== 'undefined' &&
+            writers.length > 0 && (
+              <>
+                <h2 className={sectionRightTitle}>writer</h2>
+                <p className={sectionRightText}>{writers}</p>
+              </>
+            )}
         </div>
       </div>
     </LazyLoad>
