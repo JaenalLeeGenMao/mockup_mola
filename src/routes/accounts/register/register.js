@@ -77,20 +77,18 @@ class Register extends Component {
     const { email, token } = this.state,
       { runtime: { csrf } } = this.props
 
-    if (token.trim() === '') {
-      this.setState({
-        error: 'Invalid Token',
-      })
-      return false
-    }
-
     const result = await Auth.verifyUserToken({
       token,
       email,
       csrf,
     })
+
     if (result.meta.status === 'success') {
       window.location.href = `${config.endpoints.domain}/accounts/login`
+    } else {
+      this.setState({
+        error: 'Invalid Token',
+      })
     }
   }
 
