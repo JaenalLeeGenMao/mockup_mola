@@ -5,6 +5,7 @@ import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Auth from '@api/auth'
+import config from '@source/config'
 
 import facebook from '@global/style/icons/facebook.png'
 import google from '@global/style/icons/google.png'
