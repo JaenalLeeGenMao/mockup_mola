@@ -195,6 +195,9 @@ class MovieDetail extends Component {
 
   componentDidMount() {
     this.updateEncryption()
+  }
+
+  componentDidUpdate() {
     this.updateMetaTag()
   }
 
