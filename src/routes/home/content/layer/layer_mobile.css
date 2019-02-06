@@ -74,10 +74,10 @@
 .layer__grid_desc_footer {
   visibility: hidden;
   opacity: 0;
-  height: 0;
-  overflow: hidden;
 
-  /* height: 10rem; */
+  /* height: 0; */
+  overflow: hidden;
+  height: 10rem;
   padding: 2.5% 5% 2.5% 5%;
   border-radius: 0.3rem;
   font-family: 'Lato', sans-serif;
