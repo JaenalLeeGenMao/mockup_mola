@@ -7,6 +7,7 @@ import Link from '@components/Link'
 import { getLocale } from '@routes/home/locale'
 
 import ContentLayer from './layer'
+import ContentLayerMobile from './layer/layer_mobile'
 
 import styles from './content.css'
 
@@ -14,6 +15,8 @@ class Content extends Component {
   state = {
     show: false,
     locale: getLocale(),
+    showDescription: true,
+    intervalSwitch: null,
   }
 
   handleClick = e => {
@@ -33,6 +36,30 @@ class Content extends Component {
     if (coverBackgroundImage != 'https://cdn01.sent.tv/qaud0dwQwSQsDwdpPvTi_sent_757.png') {
       this.setState({ show: show ? true : false })
     }
+  }
+
+  contentSwitcher = () => {
+    const { showDescription } = this.state
+    console.log('=======contentSwitcher', showDescription)
+
+    if (showDescription === true) {
+      this.setState({
+        showDescription: false,
+      })
+    } else if (showDescription === false) {
+      this.setState({
+        showDescription: true,
+      })
+    }
+  }
+
+  componentDidMount() {
+    const intervalSwitch = setInterval(this.contentSwitcher, 4000)
+    this.setState({ intervalSwitch: intervalSwitch })
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalSwitch)
   }
 
   render() {
@@ -80,7 +107,7 @@ class Content extends Component {
             )}
           </div>
           <div className={styles.content__grid_desc}>
-            <ContentLayer {...this.props} />
+            {isMobile ? <ContentLayerMobile {...this.props} showDescription={this.state.showDescription} /> : <ContentLayer {...this.props} />}
             <LazyLoad>
               <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
                 {isMobile ? (
