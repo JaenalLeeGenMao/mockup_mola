@@ -12,10 +12,10 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
     coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape,
-    filteredDesc = type === 'playlists' ? description : shortDescription
+    { text: quote, author } = quotes.attributes
 
   const descWrapperStyle = {
-    transform: `translateY(calc(${getCurrentScreenHeight()}px - 85vh))`,
+    transform: `translateY(calc(${getCurrentScreenHeight()}px - 95vh))`,
   }
 
   setMultilineEllipsis(styles.layer__grid_desc_header)
@@ -23,30 +23,47 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
 
   return (
     <LazyLoad containerClassName={`${styles.layer__grid_desc_wrapper} ${styles[type === 'playlists' ? 'playlist' : '']}`} containerStyle={isMobile ? descWrapperStyle : null}>
-      <div
-        className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
-        style={{
-          background: !isMobile ? `url(${coverBackgroundImage}) repeat center` : 'transparent',
-          boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
-          backgroundSize: 'cover',
-          opacity: !isMobile ? 1 : 0.1,
-        }}
-      />
-      <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
-        <div className={styles.layer__grid_desc_header}>
-          {!isMobile && <h1>OVERVIEW</h1>}
-          <p className="filtered_description">{filteredDesc}</p>
-        </div>
-        {type !== 'playlists' && (
-          <Fragment>
-            <div className={styles.layer__grid_desc_breakpoint} style={{ borderBottom: `1px solid ${fontColor}` }} />
-            <div className={styles.layer__grid_desc_footer}>
-              <i className={styles.layer__grid_desc_footer_quote}>{`"${quotes.attributes.text}"`}</i>
+      {!isMobile ? (
+        <>
+          <div
+            className={`${styles.layer__grid_desc_background} ${styles[isMobile ? 'mobile' : 'desktop']} ${styles[type === 'playlists' ? 'playlist' : '']}`}
+            style={
+              {
+                // background: `url(${coverBackgroundImage}) repeat center`,
+                // boxShadow: `inset 0 0 0 20000px ${!isMobile ? fontBackgroundColor : '#fff'}`,
+                // backgroundSize: 'cover',
+                // opacity: 0.1,
+              }
+            }
+          />
+          <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
+            <div className={styles.layer__grid_desc_header}>
+              <i className="filtered_description">{`“${quote}”`}</i>
             </div>
-            <strong className={styles.layer__grid_desc_author}>— {quotes.attributes.author}</strong>
-          </Fragment>
-        )}
-      </div>
+            <i className={styles.layer__grid_desc_author}>{author}</i>
+            <p className={styles.layer__grid_desc_breakpoint}>—</p>
+            {type !== 'playlists' && (
+              <Fragment>
+                <div className={`${styles.layer__grid_desc_footer} ${styles[!isDark ? 'background_white' : 'background_black']}`}>
+                  <p className="filtered_description">{description}</p>
+                </div>
+              </Fragment>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={styles.layer__grid_desc_header}>
+            <i className="filtered_description">{`“${quote}”`}</i>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <i className={styles.layer__grid_desc_author}>— {author}</i>
+          </div>
+          <div className={styles.layer__grid_desc_footer}>
+            <p className={styles.layer__grid_desc_footer_desc}>{description}</p>
+          </div>
+        </>
+      )}
     </LazyLoad>
   )
 }

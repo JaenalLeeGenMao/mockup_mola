@@ -2,6 +2,7 @@
   position: fixed;
   width: 5%;
   z-index: 3;
+  transition: 500ms ease-out;
 }
 
 .menu_content {
@@ -16,24 +17,35 @@
   font-size: 1.4rem;
   height: 0.8rem;
   width: 0.8rem;
-  margin: 0.8rem;
+  margin: 1.8rem;
   border-radius: 50%;
   text-decoration: none;
-  transition: 250ms ease-out;
   opacity: 0.4;
   display: block;
+  color: inherit;
 }
 
 .menu_content a:hover {
   opacity: 1;
 }
 
-.menu_content a.isActive {
+.menu_content a .menu_text {
+  transform: translate(1.5rem, -0.4rem);
+  letter-spacing: 0.15rem;
+  opacity: 0;
+}
+
+.menu_content a.isActive,
+.menu_content a.isActive .menu_text {
+  opacity: 1;
+  font-weight: bold;
+}
+
+.menu_content a:hover .menu_text {
   opacity: 1;
 }
 
 .isActive {
-  transition: opacity 300ms ease-out;
   opacity: 1;
   z-index: 200;
 }

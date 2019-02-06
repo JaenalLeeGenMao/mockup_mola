@@ -17,6 +17,8 @@ import bodyParser from 'body-parser'
 // import request from 'request';
 import React from 'react'
 import ReactDOM from 'react-dom/server'
+import { renderStylesToString } from 'emotion-server'
+import { IntlProvider } from 'react-intl'
 import { isTablet } from 'react-device-detect'
 import PrettyError from 'pretty-error'
 import App from './components/App'
@@ -31,7 +33,8 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
-// import Auth from '@api/auth';
+// import { get, post } from 'axios'
+import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -63,7 +66,7 @@ app.use(csurf({ cookie: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const domain = config.endpoints.domain
+const { domain } = config.endpoints
 let count = 0
 // var inboxInterval;
 // set a cookie
@@ -120,10 +123,19 @@ app.get('*', async (req, res, next) => {
       styles.forEach(style => css.add(style._getCss()))
     }
 
+    // Get IP
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null)
+    if (ip !== null) {
+      if (ip.length >= 15) {
+        ip = ip.replace(/^.*:/, '')
+      }
+    }
+
     const initialState = {
       user: req.user || {
         uid: req.cookies.UID === 'undefined' ? '' : req.cookies.UID,
         sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
+        sessionId: req.cookies.__sessId === 'undefined' ? '' : req.cookies.__sessId,
         firstName: '',
         lastName: '',
         email: '',
@@ -131,7 +143,8 @@ app.get('*', async (req, res, next) => {
         refreshToken: '',
         expire: '',
         type: '',
-        lang: 'en',
+        lang: 'id',
+        clientIp: ip,
       },
       runtime: {
         csrf: req.csrfToken(),
@@ -139,9 +152,27 @@ app.get('*', async (req, res, next) => {
       },
     }
 
+    // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
+
     const store = configureStore(initialState)
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }))
+
+    // const payload = {
+    //   appKey: 'wIHGzJhset',
+    //   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+    //   responseType: 'token',
+    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+    //   redirectUri: `${domain}/accounts`,
+    // }
+
+    // const guestInfo = await Auth.requestGuestToken({ ...payload })
+
+    // if (guestInfo.data !== undefined) {
+    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
+    // } else {
+    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
+    // }
 
     // inboxInterval = setInterval(() => {
     //   console.log(`server inbox interval ${count}`);
@@ -176,7 +207,13 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route }
 
-    data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>)
+    data.children = renderStylesToString(
+      ReactDOM.renderToString(
+        <IntlProvider locale={'id'}>
+          <App context={context}>{route.component}</App>
+        </IntlProvider>
+      )
+    )
     data.styles = [{ id: 'css', cssText: [...css].join('') }]
 
     const scripts = new Set()

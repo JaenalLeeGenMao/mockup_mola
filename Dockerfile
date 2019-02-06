@@ -1,43 +1,21 @@
-# FROM node:8-alpine
-
-# WORKDIR /var/www/mola-web
-
-# # copy all package*.json files into current WORKDIR
-# COPY package*.json ./
-
-# # installing dependencies
-# RUN yarn
-
-# # copy all files and folders into container
-# COPY . .
-
-# # Run the container under "node" user by default
-# USER node
-
-# EXPOSE 3000
-# CMD ["yarn", "dev"]
-
-
-# Before RUNNING Dockerfile, Please make sure to run `yarn build-{env} --release`
-FROM node:8-alpine
-
-WORKDIR /var/www/mola-web
-#RUN apk add --update alpine-sdk
-#RUN apk add libpng-dev
+FROM node:8-alpine as builder
+# Install additional dependencies
 RUN apk --no-cache update && apk --no-cache add g++ make bash zlib-dev libpng-dev && rm -fr /var/cache/apk/*
-
-ARG REACT_APP_ENV
-
+# Set Workdir
+WORKDIR /mola-web
+# Copy minimal required files
 COPY .npmrc .
-COPY package*.json .
-
+COPY package.json .
+COPY yarn.lock .
 # Install Node.js dependencies
-RUN yarn install --no-progress
-
+RUN yarn install --no-progress --production=false
+# Consume required ENVs
+ARG REACT_APP_ENV
+ARG NODE_ENV
+# Build!
 COPY . .
-RUN REACT_APP_ENV=${REACT_APP_ENV} NODE_ENV=${REACT_APP_ENV} yarn build --release
-
+RUN node_modules/.bin/babel-node tools/run build -- --release --docker
 # Run the container under "node" user by default
 USER node
-
-CMD [ "node", "./build/server.js" ]
+# Start App!
+CMD [ "node", "/mola-web/build/server.js" ]

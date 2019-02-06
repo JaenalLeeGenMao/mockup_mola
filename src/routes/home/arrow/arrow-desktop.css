@@ -19,7 +19,7 @@
 ‹›〈〉❬❭❮❯❰❱
 */
 .home__arrow_next::before,
-[dir=rtl] .home__arrow_prev::before {
+[dir='rtl'] .home__arrow_prev::before {
   content: '❯';
 }
 
@@ -81,13 +81,15 @@
 }
 
 .home__arrow_next.white:hover,
-.home__arrow_prev.white:hover{
+.home__arrow_prev.white:hover {
   color: #000;
   background-color: #fff;
+  box-shadow: inset 0 0 6px 0;
 }
 
 .home__arrow_next.dark:hover,
-.home__arrow_prev.dark:hover{
+.home__arrow_prev.dark:hover {
   color: #fff;
   background-color: #000;
+  box-shadow: inset 0 0 6px 0;
 }

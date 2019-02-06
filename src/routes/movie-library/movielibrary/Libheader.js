@@ -1,50 +1,50 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import Header from '@components/Header';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import Header from '@components/Header'
 // import Header from '../../../components/Header';
-import s from './Libheader.css';
-import Link from '../../../components/Link';
-import LazyLoad from '@components/common/Lazyload';
+import s from './Libheader.css'
+import Link from '../../../components/Link'
+import LazyLoad from '@components/common/Lazyload'
 
 class Libheader extends Component {
   state = {
     isMenuToggled: false,
-    genre: { data: [] }
-  };
+    genre: { data: [] },
+  }
 
   static propTypes = {
-    cardTitle: PropTypes.string.isRequired
-  };
+    cardTitle: PropTypes.string.isRequired,
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.headerContainerRef = React.createRef();
+    this.headerContainerRef = React.createRef()
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const genre = nextProps.search.genre;
+    const genre = nextProps.search.genre
 
-    return { ...prevState, genre };
+    return { ...prevState, genre }
   }
 
   handleMenuToggleClick = () => {
-    const genreData = this.props.search.genre.data;
+    const genreData = this.props.search.genre.data
 
     if (genreData.length > 0) {
       this.setState(prevState => ({
-        isMenuToggled: !prevState.isMenuToggled
-      }));
+        isMenuToggled: !prevState.isMenuToggled,
+      }))
     }
-  };
+  }
 
   renderMenu() {
-    const { isMobile = false } = this.props;
-    const genreData = this.props.search.genre.data;
-    const headerHeight = this.headerContainerRef.current.clientHeight;
-    const styleDesktop = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 18px))` };
-    const styleMobile = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 24px))` };
+    const { isMobile = false } = this.props
+    const genreData = this.props.search.genre.data
+    const headerHeight = this.headerContainerRef.current.clientHeight
+    const styleDesktop = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 18px))` }
+    const styleMobile = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 24px))` }
 
     return (
       <div className={s.header__menu} style={isMobile ? styleMobile : styleDesktop}>
@@ -58,15 +58,15 @@ class Libheader extends Component {
                   </Link>
                 </LazyLoad>
               </li>
-            );
+            )
           })}
         </ul>
       </div>
-    );
+    )
   }
 
   render() {
-    const { cardTitle } = this.props;
+    const { cardTitle } = this.props
     return (
       <div className={s.header} ref={this.headerContainerRef}>
         <Header
@@ -85,8 +85,8 @@ class Libheader extends Component {
 
         {this.state.isMenuToggled ? this.renderMenu() : null}
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(s)(Libheader);
+export default withStyles(s)(Libheader)

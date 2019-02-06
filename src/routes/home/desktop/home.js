@@ -1,35 +1,37 @@
 import React, { Fragment, Component } from 'react'
 import Slider from 'react-slick'
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 import $ from 'jquery'
+import { get } from 'axios'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _get from 'lodash/get'
 
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
-
-import { SETTINGS } from '../const'
 import homeActions from '@actions/home'
 
 import { getErrorCode } from '@routes/home/util'
 
 import Header from '@components/Header'
+import HomeError from '@components/common/error'
 
 import HomeArrow from '../arrow'
 import HomeDesktopContent from '../content'
 import HomeDesktopMenu from '../menu'
 import HomePlaceholder from './placeholder'
-import HomeError from '@components/common/error'
 
+import { SETTINGS } from '../const'
 import styles from './home.css'
-import Joyride from 'react-joyride'
-import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
-import _get from 'lodash/get'
 import TourArrow from '../tourArrow'
+import { tourSteps } from './const'
 
 let ticking = false,
   activePlaylist,
-  scrollIndex = 0
+  scrollIndex = 0,
+  flag = false
 
 const trackedPlaylistIds = [] /** tracked playlist/videos id both similar */
 
@@ -86,7 +88,10 @@ let customTourStyle = {
     position: 'absolute',
     transform: 'scale(.99, .95) translateY(1%)',
   },
-  tooltip: {},
+  tooltip: {
+    width: '30rem',
+    borderRadius: '.4rem',
+  },
 }
 
 class Home extends Component {
@@ -97,59 +102,12 @@ class Home extends Component {
     playlistSuccess: false,
     startGuide: false,
     stepIndex: 0,
-    steps: [
-      {
-        target: '.tourCategory',
-        title: 'Movie Category',
-        content: `
-        To navigate around different movie categories, you can simply click the navigation 
-        button or press ↑ up and ↓ down on your awesome keyboard`,
-        placement: 'right',
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      {
-        target: '.tourSlide',
-        title: 'Highlighted Movies',
-        content: `
-        You can browse through our top movies in each category with gentle click on the arrow buttons 
-        or using keyboards and toggle → right and ← left`,
-        placement: 'top',
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      {
-        target: '.tourLibrary',
-        title: 'Movie Library',
-        content: 'You can click this icon to view all movie list per category',
-        placement: 'bottom',
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      {
-        target: '.tourMovieDiscover',
-        title: 'Discover Our Movie',
-        content: 'Click this button to discover our awesome list of movies',
-        placement: 'top',
-        spotlightPadding: 0,
-        disableBeacon: true,
-        disableOverlayClicks: true,
-      },
-      {
-        target: '.tourMovieDetail',
-        title: 'View Movie Detail',
-        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
-        placement: 'top',
-        spotlightPadding: 0,
-        disableBeacon: true,
-        disableOverlayClicks: true,
-        locale: { last: 'Finish' },
-      },
-    ],
+    steps: tourSteps[this.props.user.lang],
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists }, runtime } = nextProps
+    // console.log(runtime)
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
     } else if (prevState.videos.length <= 0) {
@@ -213,16 +171,31 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    // const gtUrl = 'https://stag.mola.tv/accounts/_/v1/guest/token?app_key=wIHGzJhset'
+    // const guest_token = get(gtUrl, {
+    //   headers: {
+    //     Origin: 'https://stag.mola.tv',
+    //     Referer: 'https://stag.mola.tv',
+    //   },
+    // })
+
+    // guest_token.then(response => console.log('CLIENT', response.data))
+    if (activePlaylist) {
+      flag = false /* Set to false upon loading, so must execute only once */
+      scrollIndex = 0
+      this.props.onUpdatePlaylist(this.state.playlists.data[scrollIndex].id)
+    }
+
     Events.scrollEvent.register('begin', this.handleScroll)
     Events.scrollEvent.register('end', this.handleColorChange)
 
     if (window.innerHeight > 1801) {
       const tvStyle = Object.assign({}, customTourStyle)
-      tvStyle.tooltip.width = '900px'
-      tvStyle.tooltip.height = '400px'
+      // tvStyle.tooltip.width = '30rem'
+      // tvStyle.tooltip.height = '18rem'
       tvStyle.tooltip.padding = '1.6rem'
       tvStyle.tooltipContent.padding = '0'
-      tvStyle.tooltipContent.minHeight = '140px'
+      tvStyle.tooltipContent.minHeight = '1.4rem'
     }
 
     const { playlists, videos } = this.props.home
@@ -269,15 +242,14 @@ class Home extends Component {
     Events.scrollEvent.remove('begin')
     Events.scrollEvent.remove('end')
 
-    document.removeEventListener('mouseup', () => {}, false)
-    document.removeEventListener('mousedown', () => {}, false)
-    document.removeEventListener('keyup', () => {}, false)
-    document.removeEventListener('wheel', () => {}, false)
-    document.removeEventListener('DOMMouseScroll', () => {}, false)
+    // document.removeEventListener('mouseup', () => {}, false)
+    // document.removeEventListener('mousedown', () => {}, false)
+    // document.removeEventListener('keyup', () => {}, false)
 
-    for (let i = 0; i < 100; i += 1) {
-      window.clearInterval(i)
-    }
+    const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel'
+
+    /** handle mouse scroll */
+    document.removeEventListener(mouseWheelEvent, this.mouseScrollCallback, true)
   }
 
   componentDidUpdate() {
@@ -310,6 +282,13 @@ class Home extends Component {
         )
       }
     }
+
+    /* Auto Focus on page loaded, to enable keypress eventListener */
+    var input = document.querySelector('.grid-slick')
+    if (input && !flag) {
+      input.click()
+      flag = true
+    }
   }
 
   handleColorChange = () => {
@@ -321,6 +300,9 @@ class Home extends Component {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
+        if (activeSlick) {
+          that.currentMovieId = activeSlick.getAttribute('movieid')
+        }
         that.setState({ isDark })
       }
     }, 100)
@@ -330,7 +312,7 @@ class Home extends Component {
     const { playlists, videos } = this.props.home
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       scrollIndex = 0
-      return true
+      // return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
@@ -341,8 +323,8 @@ class Home extends Component {
     })
 
     if (!ticking) {
-      this.handleMouseClick()
-      this.handleMouseScroll()
+      // this.handleMouseClick()
+      // this.handleMouseScroll()
       this.handleKeyboardEvent()
 
       ticking = true
@@ -351,51 +333,56 @@ class Home extends Component {
 
   handleMouseClick = () => {
     /** handle mouse click */
-    ;(this.prevmouseDownY = 0), (this.currentMouseDownY = 0)
+    const that = this
+    ;(this.prevMouseDownY = 0), (this.currentMouseDownY = 0)
     document.onmousedown = event => {
       ticking = false
-      this.prevMouseDownY = event.y
+      that.prevMouseDownY = event.y
     }
 
     document.onmouseup = event => {
       ticking = false
+      that.currentMouseDownY = event.y
 
-      this.currentMouseDownY = event.y
-
-      if (this.prevMouseDownY < this.currentMouseDownY) {
+      if (that.prevMouseDownY < that.currentMouseDownY) {
         scrollIndex -= 1
-        this.handleKeyPress(scrollIndex)
-      } else if (this.prevMouseDownY > this.currentMouseDownY) {
+        that.handleKeyPress(scrollIndex)
+      } else if (that.prevMouseDownY > that.currentMouseDownY) {
         scrollIndex += 1
-        this.handleKeyPress(scrollIndex)
+        that.handleKeyPress(scrollIndex)
       }
     }
   }
 
+  mouseScrollCallback = event => {
+    ticking = false
+    const that = this
+
+    clearTimeout($.data(that, 'scrollCheck'))
+    $.data(
+      that,
+      'scrollCheck',
+      setTimeout(function() {
+        /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
+        var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
+        if (delta < 0) {
+          scrollIndex += 1
+          that.handleKeyPress()
+          return
+        } else if (delta > 0) {
+          scrollIndex -= 1
+          that.handleKeyPress()
+          return
+        }
+      }, 500)
+    )
+  }
+
   handleMouseScroll = () => {
     const mouseWheelEvent = /Firefox/i.test(navigator.userAgent) ? 'DOMMouseScroll' : 'wheel'
-    /** handle mouse scroll */
-    document.addEventListener(mouseWheelEvent, event => {
-      ticking = false
-      const that = this
 
-      clearTimeout($.data(this, 'scrollCheck'))
-      $.data(
-        this,
-        'scrollCheck',
-        setTimeout(function() {
-          /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
-          var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
-          if (delta < 0) {
-            scrollIndex += 1
-            that.handleKeyPress()
-          } else if (delta > 0) {
-            scrollIndex -= 1
-            that.handleKeyPress()
-          }
-        }, 250)
-      )
-    })
+    /** handle mouse scroll */
+    document.addEventListener(mouseWheelEvent, this.mouseScrollCallback, true)
   }
 
   handleKeyboardEvent = () => {
@@ -405,16 +392,24 @@ class Home extends Component {
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
+          console.log('LEFT: ', this.sliderRefs[scrollIndex].slickPrev())
           return event.preventDefault()
         case 38 /* up */:
           scrollIndex -= 1
           this.handleKeyPress()
           break
         case 39 /* right */:
+          console.log('RIGHT: ', this.sliderRefs[scrollIndex].slickNext())
           return event.preventDefault()
         case 40 /* down */:
           scrollIndex += 1
           this.handleKeyPress()
+          break
+        case 13 /* enter */:
+          window.location.href = `/movie-detail/${this.currentMovieId}`
+          break
+        case 32 /* space */:
+          window.location.href = `/movie-detail/${this.currentMovieId}`
           break
         default:
           event.preventDefault()
@@ -452,7 +447,7 @@ class Home extends Component {
     playlists.data.map((playlist, index) => {
       if (id === playlist.id) {
         scroller.scrollTo(id, {
-          duration: 250,
+          duration: 500,
           delay: 0,
           smooth: 'easeInOutQuart',
         })
@@ -475,7 +470,7 @@ class Home extends Component {
       { isDark, startGuide, steps, playlistSuccess, stepIndex } = this.state,
       settings = {
         ...SETTINGS,
-        draggable: false,
+        // draggable: false,
         className: `${styles.home__slick_slider_fade} home-slider`,
         onInit: () => {
           this.handleColorChange()

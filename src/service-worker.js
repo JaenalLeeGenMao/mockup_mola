@@ -30,7 +30,7 @@ export function register(config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = '/service-worker.js'
+      const swUrl = 'service-worker.js'
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -46,12 +46,16 @@ export function register(config) {
         registerValidSW(swUrl, config)
       }
     })
+
+    window.addEventListener('fetch', function(event) {
+      // it can be empty if you just want to get rid of that error
+    })
   }
 }
 
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
-    .register(swUrl)
+    .register(swUrl, { scope: '.' })
     .then(registration => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing

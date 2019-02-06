@@ -11,6 +11,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
 import config from '../config'
+import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+
+import yoastSEOPlugin from './yoastSEOPlugin.json'
 
 class Html extends React.Component {
   static propTypes = {
@@ -35,18 +38,38 @@ class Html extends React.Component {
   static isMobile = true
 
   render() {
-    const { title, description, styles, scripts, app, children } = this.props
+    const { title, description, url, styles, scripts, app, children, image } = this.props
+
     return (
       <html className="no-js" lang="en">
         <head>
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-          <title>{title}</title>
-          <meta name="description" content={description} />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="#0f4a73" />
+          <meta name="mobile-web-app-capable" content="yes" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="keywords" content={`Mola, MolaTV, MolaSport, TV, Sport, Premiere League, ${description}`} />
+          <meta name="description" content={`Mola TV Online Movies & Mola Sport Showcase 380 Matches Every Seasons Under MolaSports Brand. ${description}`} />
+          <title>{`Mola TV - ${title}`}</title>
+          <meta name="msapplication-TileImage" content={logoLandscapeBlue} />
+          <meta name="robots" content="index, follow" />
+          <meta name="googlebot" content="index,follow" />
+          <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
+          <meta property="og:site_name" content="molatv" />
+          <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} />
+          <meta property="og:description" content={description} />
+          <meta property="og:image" content={logoLandscapeBlue} />
+          <meta property="og:url" content={'https://mola.tv/' || url} />
+          <meta property="og:type" content="website" />
+          <meta name="referrer" content="origin" />
+          <meta name="referrer" content="origin-when-cross-origin" />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
+          <link rel="icon" type="image/png/ico" href="/mola.png" />
+          <link rel="canonical" href="https://www.mola.tv" />
           {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
         </head>
         <body>

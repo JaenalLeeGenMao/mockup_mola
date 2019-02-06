@@ -1,6 +1,6 @@
 stages:
-#   - test
-#   - build
+  #   - test
+  #   - build
   - push_docker
 
 .job_template: &push_docker
@@ -10,17 +10,8 @@ stages:
   script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
-    - ./.gitlab-ci/auth_gcloud.sh
-    - ./.gitlab-ci/push_docker.sh
-    # - ./.gitlab-ci/deploy.sh
-
-variables:
-  REPOSITORY_HOST: asia.gcr.io
-  IMAGE_NAME: $CI_PROJECT_NAME
-  APP_NAME: $CI_PROJECT_NAME
-  BASE_URL: github.com/supersoccer
-  NAMESPACE: frontend
-  FOLDER_NAME: applications
+    - ./.gitlab/auth_gcloud.sh
+    - ./.gitlab/push_docker.sh
 
 push_docker_staging:
   stage: push_docker
@@ -30,7 +21,6 @@ push_docker_staging:
     GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_STAG
     NODE_ENV: staging
     REACT_APP_ENV: staging
-    DEPLOYMENT_REPO: core-staging-cluster-01
   only:
     - develop
 

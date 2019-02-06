@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #0e1d3d 0%, #000 100%);
+}
+
+.wrap {
+  display: flex;
+}
+
+.colItem {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.sidebarMenu {
+  width: 20%;
+}
+
+.inboxList {
+  background: #000;
+  width: 35%;
+}
+
+.menuWrapper {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.menuWrapper li {
+  position: relative;
+  padding-left: 25%;
+}
+
+.menuWrapper li a {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  font-weight: 300;
+  letter-spacing: 1.5rem;
+  text-decoration: none;
+}
+
+.menuWrapper li::before {
+  position: absolute;
+  content: '';
+  height: 0.2rem;
+  background: #fff;
+  width: 20%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.inboxDetail {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+}

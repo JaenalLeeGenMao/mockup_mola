@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import Slider from 'react-slick'
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _get from 'lodash/get'
 
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
-
-import { SETTINGS } from '../const'
 import homeActions from '@actions/home'
 
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
@@ -16,22 +17,22 @@ import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
+import HomeError from '@components/common/error'
+import HomePlaceholder from './placeholder'
 import HomeArrow from '../arrow'
 import HomeMobileContent from '../content'
 import HomeMobileMenu from '../menu'
-import HomePlaceholder from './placeholder'
-import HomeError from '@components/common/error'
 
 import styles from './home.css'
 import customArrowStyles from '../arrow/arrow-mobile.css'
-import Joyride from 'react-joyride'
-import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
+import { SETTINGS } from '../const'
+import { tourSteps } from './const'
 import TourArrow from '../tourArrow'
-import _get from 'lodash/get'
 
 let ticking = false,
   activePlaylist,
-  scrollIndex = 0
+  scrollIndex = 0,
+  flag = false
 
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
@@ -43,63 +44,12 @@ class Home extends Component {
     videos: [],
     startGuide: false,
     stepIndex: 0,
-    steps: [
-      {
-        target: '.tourCategory',
-        title: 'Movie Category',
-        content: (
-          <div>
-            To navigate around different movie categories, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} /> up and down on your awesome keyboard
-          </div>
-        ),
-        placement: 'right',
-        disableBeacon: true,
-        styles: {
-          tooltip: {
-            maxWidth: '100%',
-          },
-        },
-      },
-      {
-        target: '.tourSlide',
-        title: 'Highlighted Movies',
-        content: (
-          <div>
-            {' '}
-            You can browse through our top movies in each category with gentle click on the arrow buttons or using keyboards and swipe <span className={styles.swipeNextIcon} /> right and left
-          </div>
-        ),
-        placement: 'top',
-        disableBeacon: true,
-      },
-      {
-        target: '.tourLibrary',
-        title: 'Movie Library',
-        content: 'You can click this icon to view all movie list per category',
-        placement: 'bottom',
-        disableBeacon: true,
-      },
-      {
-        target: '.tourMovieDiscover',
-        title: 'Discover Our Movie',
-        content: 'Click this button to discover our awesome list of movies',
-        placement: 'top',
-        disableBeacon: true,
-      },
-      {
-        target: '.tourMovieDetail',
-        title: 'View Movie Detail',
-        content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
-        placement: 'top',
-        disableBeacon: true,
-        locale: { last: 'Finish' },
-      },
-    ],
+    steps: tourSteps[this.props.user.lang],
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists } } = nextProps
-
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists }, runtime } = nextProps
+    // console.log(runtime)
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
     } else if (prevState.videos.length <= 0) {
@@ -118,20 +68,20 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    /** swipe EventListener start */
-    window.onload = swipeGestureListener()
-    const handleSwipeEvent = e => {
-      // console.log(e.type,e)
-      this.handleSwipe(e)
+    if (activePlaylist) {
+      flag = false /* Set to false upon loading, so must execute only once */
+      scrollIndex = 0
+      this.props.onUpdatePlaylist(this.state.playlists.data[scrollIndex].id)
     }
+    /** swipe EventListener start */
+    window.addEventListener('load', swipeGestureListener)
 
-    document.body.addEventListener('swl', handleSwipeEvent, false)
-    document.body.addEventListener('swr', handleSwipeEvent, false)
-    document.body.addEventListener('swu', handleSwipeEvent, false)
-    document.body.addEventListener('swd', handleSwipeEvent, false)
+    document.body.addEventListener('swl', this.handleSwipe, true)
+    document.body.addEventListener('swr', this.handleSwipe, true)
+    document.body.addEventListener('swu', this.handleSwipe, true)
+    document.body.addEventListener('swd', this.handleSwipe, true)
     /** swipe EventListener ends */
 
-    // window.addEventListener('scroll', this.handleScroll);
     Events.scrollEvent.register('begin', this.handleScroll)
     Events.scrollEvent.register('end', this.handleColorChange)
 
@@ -177,13 +127,15 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('scroll', this.handleScroll);
     Events.scrollEvent.remove('begin')
     Events.scrollEvent.remove('end')
 
-    for (let i = 0; i < 100; i += 1) {
-      window.clearInterval(i)
-    }
+    window.removeEventListener('unload', swipeGestureListener)
+
+    document.body.removeEventListener('swl', this.handleSwipe, true)
+    document.body.removeEventListener('swr', this.handleSwipe, true)
+    document.body.removeEventListener('swu', this.handleSwipe, true)
+    document.body.removeEventListener('swd', this.handleSwipe, true)
 
     document.body.removeEventListener('touchmove', this.preventDefault)
   }
@@ -223,6 +175,13 @@ class Home extends Component {
         )
       }
     }
+
+    /* Auto Focus on page loaded, to enable keypress eventListener */
+    var input = document.querySelector('.grid-slick')
+    if (input && !flag) {
+      input.click()
+      flag = true
+    }
   }
 
   preventDefault = e => {
@@ -257,7 +216,7 @@ class Home extends Component {
     const { playlists, videos } = this.props.home
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
       scrollIndex = 0
-      return true
+      // return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
@@ -300,7 +259,8 @@ class Home extends Component {
     const { playlists, videos } = this.props.home
 
     if (playlists.meta.status === 'error' || videos.meta.status === 'error') {
-      return true
+      scrollIndex = 0
+      // return true
     }
     playlists.data.map((playlist, index) => {
       if (playlist.isActive) {
@@ -533,14 +493,14 @@ class Home extends Component {
         <div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
-          {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
+          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
+          {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
           {playlistSuccess && (
             <div>
               <HomeMobileMenu isDark={false} playlists={playlists.data} onClick={this.handleScrollToIndex} isMobile />
               <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                 <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color: '#fff' }}>
-                  <span className={`${styles['header__library_logo_white']} tourLibrary`} alt="library" />
+                  <span className={`${styles['header__library_logo_white']} tourLibrary`} alt="mola library" />
                 </Link>
               </LazyLoad>
             </div>

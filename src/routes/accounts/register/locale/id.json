@@ -1,0 +1,14 @@
+{
+  "register_title": "Registrasi Mola",
+  "enter_otp": "Masukan OTP disini",
+  "resend_otp": "Ulang kirim OTP",
+  "verify_account": "Verifikasi akun email anda",
+  "verify_account_subtitle": "Silakan periksa email Anda untuk aktifasi akun Anda.",
+  "verify": "Verifikasi",
+  "next": "Selanjutnya",
+  "now": "sekarang",
+  "or": "Atau",
+  "confirm": "Konfirmasi",
+  "sign_up": "DAFTAR",
+  "error_input": "Periksa kembali input anda"
+}

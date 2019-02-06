@@ -1,0 +1,9 @@
+{
+  "forget_password_title": "Forget Password",
+  "forget_password_subtitle": "Please enter your email below",
+  "enter_otp": "Enter OTP here",
+  "verify_account": "Verify Account",
+  "verify_account_label": "Please check your email, \n and input OTP.",
+  "verify": "Verify",
+  "next": "Next"
+}

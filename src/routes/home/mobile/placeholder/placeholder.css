@@ -28,7 +28,7 @@
 
 .placeholder__title div:nth-child(1) {
   display: inline-block;
-  width: 95%;
+  width: 85%;
 }
 
 .placeholder__title div:nth-child(2) {
@@ -142,7 +142,15 @@
 }
 
 @keyframes pulse {
-  0% { background-color: rgba(165, 165, 165, 0.1); }
-  50% { background-color: rgba(165, 165, 165, 0.3); }
-  100% { background-color: rgba(165, 165, 165, 0.1); }
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
 }

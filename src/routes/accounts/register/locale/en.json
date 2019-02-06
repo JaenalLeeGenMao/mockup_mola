@@ -1,0 +1,14 @@
+{
+  "register_title": "Register Mola",
+  "enter_otp": "Enter OTP here",
+  "resend_otp": "Resend OTP",
+  "verify_account": "Verify your email account",
+  "verify_account_subtitle": "Please check your email to verify your account.",
+  "verify": "Verify",
+  "next": "Next",
+  "now": "now",
+  "or": "Or",
+  "confirm": "Confirm",
+  "sign_up": "SIGN UP",
+  "error_input": "Please double check your input fields"
+}

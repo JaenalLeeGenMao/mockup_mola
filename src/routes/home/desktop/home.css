@@ -18,7 +18,10 @@
 
   /* max-height: 100vh; */
   width: auto;
-  transition: 100ms ease-out;
+}
+
+a:hover {
+  transition: 100ms ease;
 }
 
 html,
@@ -59,12 +62,7 @@ body {
 }
 
 .home__slick_slider_fade {
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(0, 0, 0, 0.8) 10%,
-      rgba(0, 0, 0, 1) 90%
-    );
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 1) 90%);
 }
 
 /* Tour Guide Style */

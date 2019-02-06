@@ -18,15 +18,15 @@ const Error = ({ className = '', title = '', message = '', isDark = 0 /** isDark
   let imageUri
   switch (status) {
     case 400:
-      title = 'Page not found'
+      title = 'This is not the web page you are looking for'
       imageUri = notFound
       break
     case 502:
-      title = 'Bad gateway'
+      title = 'Server on Maintenance'
       imageUri = internalServerError
       break
     default:
-      title = 'Oops, sorry :('
+      title = 'Oops, Sorry :('
       imageUri = commonError
       break
   }
@@ -37,7 +37,7 @@ const Error = ({ className = '', title = '', message = '', isDark = 0 /** isDark
           <Link to="/" className={styles.error__wrapper}>
             <img alt="mola" className={styles.error__mola_title} src={molaLogo} />
             <div style={{ color: isDark ? 'black' : 'white' }}>
-              <img alt={message} className={styles.error__mola_background} src={imageUri} />
+              <img alt="mola error background" className={styles.error__mola_background} src={imageUri} />
               <h2 className={styles.error__title}>{title}</h2>
               <p className={styles.error__description}>{message}</p>
             </div>

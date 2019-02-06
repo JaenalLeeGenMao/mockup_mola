@@ -1,63 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300&subset=latin-ext');
+
 .layer__grid_desc_wrapper {
   position: relative;
   z-index: 2;
-  height: 50%;
-  margin: 5% 5% 3% 5%;
+  height: 70%;
   border-radius: 3px;
   overflow: hidden;
 }
 
 .layer__grid_desc_wrapper.playlist {
   height: 30%;
-}
-
-.layer__grid_desc_background {
-  position: absolute;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 2px;
-}
-
-.layer__grid_desc_background.mobile {
-  width: 100vw;
-  height: 85vh;
-  top: -175%;
-  left: -5%;
-}
-
-.layer__grid_desc_background.desktop {
-  width: 95vw;
-  height: 95vh;
-  top: -200%;
-  left: -38%;
-}
-
-.layer__grid_desc_background.mobile.playlist {
-  width: 100vw;
-  height: 85vh;
-  top: -347%;
-  left: -3%;
-}
-
-.layer__grid_desc_background.desktop.playlist {
-  width: 100vw;
-  height: 100vh;
-  top: -350%;
-  left: -43.5%;
-}
-
-.layer__grid_desc_background::after {
-  content: '';
-  background: inherit;
-  position: absolute;
-  left: 0;
-  right: 2.5%;
-  top: 0;
-  bottom: 0;
-  filter: blur(10px);
 }
 
 .layer__grid_desc_content {
@@ -79,76 +31,117 @@
 .layer__grid_desc_content strong,
 .layer__grid_desc_content span {
   font-size: 1.2rem;
-  letter-spacing: 1.07px;
-  line-height: 1.8rem;
+  line-height: 2.248rem;
 }
 
-/* .layer__grid_desc_content i{
-  font-size: 14px;
-  letter-spacing: 1.24px;
-  line-height: 16px;
-} */
 .layer__grid_desc_header {
-  height: 40%;
+  height: 5rem;
   opacity: 1;
-  padding: 2.5% 5%;
+  margin: 2.5% 5% 0% 5%;
   overflow: hidden;
 }
 
-.layer__grid_desc_breakpoint {
-  opacity: 1;
-  margin: 1% 5%;
-  height: 0;
+.layer__grid_desc_header i {
+  opacity: 0.652;
+  font-size: 1.4rem;
 }
 
 .layer__grid_desc_footer {
-  height: 30%;
-  opacity: 1;
-  margin: 0 5%;
   overflow: hidden;
+  height: 10rem;
+  opacity: 1;
+  padding: 2.5% 5% 2.5% 5%;
+  border-radius: 0.3rem;
+  font-family: 'Lato', sans-serif;
 }
 
-.layer__grid_desc_footer_quote {
+.background_white {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.background_black {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.layer__grid_desc_footer p {
+  font-size: 1.6rem;
+}
+
+.layer__grid_desc_footer_desc {
   display: block;
-  padding: 2.5% 0;
+  opacity: 0.82;
 }
 
 .layer__grid_desc_author {
   margin: 0 5%;
+  opacity: 0.456;
+  font-size: 0.87rem;
+  line-height: 1rem !important;
+}
+
+.layer__grid_desc_breakpoint {
+  margin: 1.32rem 5%;
+  font-size: 1.65rem !important;
+  opacity: 0.9;
 }
 
 /* mobile Styles */
 @media screen and (max-width: 640px) {
   .layer__grid_desc_wrapper {
-    margin: 20% 5% 0;
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+
+    /* margin: 20% 0% 0; */
     height: auto;
+    border-radius: 3px;
+    overflow: hidden;
   }
 
   .layer__grid_desc_header {
-    height: 5rem;
-
-    /* padding: 5%; */
+    height: 3rem;
+    margin: 1.125% 3rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    text-align: center;
+  }
+
+  .layer__grid_desc_header i {
+    opacity: 0.652;
+    font-size: 0.87rem;
+    line-height: 1.35rem;
   }
 
   .layer__grid_desc_footer {
-    height: 5rem;
+    height: 6rem;
+    font-size: 0.9rem;
+    line-height: 1rem;
+    opacity: 1;
+    margin: 1rem 3rem 2.5%;
+    overflow: hidden;
+
+    /* background: rgba(255, 255, 255, 0.08); */
+    padding: 0;
+    border-radius: 0.3rem;
+  }
+
+  .layer__grid_desc_footer p {
+    font-size: 1rem;
+    line-height: 1.35rem;
+    font-weight: 600;
   }
 
   .layer__grid_desc_header p,
-  .layer__grid_desc_footer i,
   .layer__grid_desc_content strong {
     font-size: 0.9rem;
-    line-height: 1.5rem;
+    line-height: 1rem;
     text-align: center;
   }
 }
 
 @media screen and (max-width: 370px) {
   .layer__grid_desc_header {
-    height: 3.5rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -156,21 +149,9 @@
 }
 
 /* !Mac Styles */
-@media screen and (max-width: 2160px) {
-  .layer__grid_desc_background.desktop {
-    width: 105vw;
-    height: 105vh;
-    top: -222.5%;
-    left: -53.8%;
-  }
-}
+
+/* @media screen and (max-width: 2160px) {} */
 
 /* Big TV Styles */
-@media screen and (min-height: 1801px) {
-  .layer__grid_desc_background.desktop {
-    width: 105vw;
-    height: 105vh;
-    top: -222.5%;
-    left: -53.8%;
-  }
-}
+
+/* @media screen and (min-height: 1801px) {} */

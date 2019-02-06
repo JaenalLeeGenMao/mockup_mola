@@ -1,132 +1,140 @@
-import React, { Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import $ from 'jquery';
+import React, { Component } from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import $ from 'jquery'
 
-import Auth from '@api/auth';
+import Auth from '@api/auth'
 
-import LazyLoad from '@components/common/Lazyload';
-import Link from '@components/Link';
+import LazyLoad from '@components/common/Lazyload'
+import Footer from '@components/Footer'
+import Link from '@components/Link'
 
-import styles from './right-menu.css';
+import { getLocale } from '../locale'
+
+import styles from './right-menu.css'
+
+const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
+  const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
+  const isLogin = uid || sid
+  return (
+    <LazyLoad containerClassName={styles.popup__menu_container}>
+      <div className={styles.popup__menu_header}>
+        <span className={styles.popup__menu_close} onClick={onClick} />
+      </div>
+      <div className={styles.popup__menu_content}>
+        {isLogin && (
+          <>
+            <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+              <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
+            </Link>
+            <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
+            <Link to="/accounts/inbox" className={styles.popup__menu_inbox}>
+              {locale['inbox']}
+            </Link>
+            <Link to="/accounts/history">{locale['history']}</Link>
+          </>
+        )}
+        <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
+          {locale['sign_out']}
+        </Link>
+        <Footer />
+      </div>
+    </LazyLoad>
+  )
+}
 
 class RightMenu extends Component {
   state = {
-    link: ''
-  };
+    link: '',
+    toggle: false /* Toggle profile */,
+    locale: getLocale(),
+  }
 
   componentDidMount() {
-    this.setState({ link: window.location.href });
+    this.setState({ link: window.location.href })
   }
 
   handleSignOut = e => {
-    e.preventDefault();
-    const { user: { uid }, runtime: { csrf } } = this.props;
+    e.preventDefault()
+    const { user: { uid }, runtime: { csrf } } = this.props
     Auth.requestLogout({ uid, csrf }).then(response => {
       if (response.meta.status === 'success') {
-        window.location.href = '/signout';
+        window.location.href = '/signout'
       }
-    });
-  };
+    })
+  }
 
   handleCopyToClipboard = e => {
-    e.preventDefault();
-    var copyText = document.getElementById('myInput');
-    copyText.select();
-    copyText.disabled = true;
-    document.execCommand('copy');
+    e.preventDefault()
+    var copyText = document.getElementById('myInput')
+    copyText.select()
+    copyText.disabled = true
+    document.execCommand('copy')
 
-    var tooltip = document.getElementById('myTooltip');
-    tooltip.innerHTML = 'Copied';
-  };
+    var tooltip = document.getElementById('myTooltip')
+    tooltip.innerHTML = 'Copied'
+  }
 
-  outFunc = e => {
-    e.preventDefault();
-    var tooltip = document.getElementById('myTooltip');
-    tooltip.innerHTML = 'Copy to clipboard';
-  };
+  handleMouseOut = e => {
+    e.preventDefault()
+    var tooltip = document.getElementById('myTooltip')
+    tooltip.innerHTML = 'Copy to clipboard'
+  }
+
+  handleToggle = () => {
+    const { user: { uid = '', sid = '' } } = this.props
+    const isLogin = uid || sid
+    if (isLogin) {
+      const { toggle } = this.state
+      this.setState({ toggle: !toggle })
+    } else {
+      window.location.href = '/accounts/login'
+    }
+  }
 
   render() {
-    const { color, searchOff, profileOff, shareButtonOn, user: { uid = '', sid = '', firstName = '' } } = this.props,
-      userID = uid || sid;
+    const { toggle } = this.state
+    const { color, searchOff, profileOff, shareButtonOn } = this.props
+
     return (
-      <div className={styles.right__menu}>
-        {!searchOff && (
-          <span className={styles.right__menu_wrapper}>
-            <LazyLoad className={styles.right__menu_icon_wrapper}>
-              <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} to="/search" />
-            </LazyLoad>
-          </span>
-        )}
-        {!profileOff && (
-          <span className={styles.right__menu_wrapper}>
-            {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
-            <LazyLoad className={styles.right__menu_icon_wrapper}>
-              <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
-            </LazyLoad>
-            <div className={styles.right__menu_dropdown_wrapper}>
-              <div className={styles.right__menu_dropdown} style={{ color, backgroundColor: color === 'black' ? '#fff' : '#000' }}>
-                {userID ? (
-                  <Link style={{ color }} to="/signout" onClick={this.handleSignOut}>
-                    {firstName ? `${firstName},` : ''} Sign out
-                  </Link>
-                ) : (
-                  <Link style={{ color }} to="/accounts/login">
-                    Login
-                  </Link>
-                )}
-                {userID && (
-                  <Link style={{ color }} to="/accounts/profile">
-                    Account
-                  </Link>
-                )}
-                {/* {userID && (
-                <Link style={{ color }} to="/accounts/history">
-                  History
-                </Link>
-              )}
-              {userID && (
-                <Link style={{ color }} to="/accounts/inbox">
-                  Inbox
-                </Link>
-              )} */}
-                <Link style={{ color }} to="/system-info">
-                  System Info
-                </Link>
-                <div className={styles.right__menu_dropdown_footer}>
-                  <Link style={{ color }} to="/">
-                    Privacy
-                  </Link>
-                  &bull;
-                  <Link style={{ color }} to="/">
-                    Terms
-                  </Link>
-                  &bull;
-                  <Link style={{ color }} to="/">
-                    Help
-                  </Link>
+      <>
+        <div className={styles.right__menu}>
+          {!searchOff && (
+            <span className={styles.right__menu_wrapper}>
+              <LazyLoad className={styles.right__menu_icon_wrapper}>
+                <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} to="/search" />
+              </LazyLoad>
+            </span>
+          )}
+          {!profileOff && (
+            <span className={styles.right__menu_wrapper}>
+              {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
+              <LazyLoad className={styles.right__menu_icon_wrapper} onClick={this.handleToggle}>
+                <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
+              </LazyLoad>
+            </span>
+          )}
+          {shareButtonOn && (
+            <span className={styles.right__menu_wrapper}>
+              <LazyLoad className={styles.right__menu_icon_wrapper}>
+                <input type="text" value={this.state.link} id="myInput" style={{ position: 'fixed', transform: 'translate(-100%, -500%)' }} />
+                <div className={styles.right__menu_tooltip}>
+                  <button onClick={this.handleCopyToClipboard} onMouseOut={this.handleMouseOut} to="">
+                    <link className={color === 'black' ? styles.right__menu_share_black : styles.right__menu_share_white} />
+                    <span className={styles.right__menu_tooltip_text} id="myTooltip">
+                      Copy to clipboard
+                    </span>
+                  </button>
                 </div>
-              </div>
-            </div>
-          </span>
-        )}
-        {shareButtonOn && (
-          <span className={styles.right__menu_wrapper}>
-            <LazyLoad className={styles.right__menu_icon_wrapper}>
-              <input type="text" value={this.state.link} id="myInput" style={{ position: 'fixed', transform: 'translate(-100%, -500%)' }} />
-              <div className={styles.right__menu_tooltip}>
-                <button onClick={this.handleCopyToClipboard} onMouseOut={this.outFunc} to="">
-                  <link className={color === 'black' ? styles.right__menu_share_black : styles.right__menu_share_white} />
-                  <span className={styles.right__menu_tooltip_text} id="myTooltip">
-                    Copy to clipboard
-                  </span>
-                </button>
-              </div>
-            </LazyLoad>
-          </span>
-        )}
-      </div>
-    );
+              </LazyLoad>
+            </span>
+          )}
+        </div>
+        {toggle && <PopupMenu onClick={this.handleToggle} user={this.props.user} locale={this.state.locale} onSignOut={this.handleSignOut} />}
+      </>
+    )
   }
 }
 
-export default withStyles(styles)(RightMenu);
+withStyles(styles)(PopupMenu)
+
+export default withStyles(styles)(RightMenu)

@@ -32,28 +32,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
     {
-      path: '/contact',
-      load: () => import(/* webpackChunkName: 'contact' */ './contact'),
-    },
-    {
-      path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'login' */ './login'),
-    },
-    {
-      path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register'),
-    },
-    {
-      path: '/about',
-      load: () => import(/* webpackChunkName: 'about' */ './about'),
-    },
-    {
       path: '/privacy',
       load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    {
-      path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
     },
     // Movie details
     {
@@ -75,48 +55,57 @@ const routes = {
         },
       ],
     },
-    // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
-    {
-      path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './history'),
-    },
     {
       path: '/search',
       load: () => import(/* webpackChunkName: 'search' */ './search'),
     },
     {
-      path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './profile'),
+      path: '/accounts/history',
+      load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
     },
-    // Movie-player
     {
-      path: '/movie-player',
-      load: () => import(/* webpackChunkName: 'movie-player' */ './movie-player'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
+      path: '/accounts/inbox',
+      load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
+    },
+    {
+      path: '/accounts/login',
+      load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
+    },
+    {
+      path: '/accounts/register',
+      load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
+    },
+    {
+      path: '/accounts/profile',
+      load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
     },
     {
       path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './forgotPassword'),
+      load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
     },
     {
       path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './resetPassword'),
+      load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
     },
     {
       path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './security'),
+      load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
     },
     {
       path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './setting'),
+      load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
     },
     {
       path: '/system-info',
       load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
+    },
+    {
+      path: '/terms',
+      load: () => import(/* webpackChunkName: 'terms' */ './terms'),
+    },
+    {
+      path: '/conditions',
+      load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
@@ -126,7 +115,10 @@ const routes = {
   ],
 
   async action({ next, store }) {
-    track(store)
+    /* Timeout runs the method in parallel upon changing routes */
+    setTimeout(async () => {
+      track(store)
+    })
 
     // Execute each child route until one of them return the result
     const route = await next()
@@ -199,13 +191,13 @@ const track = async store => {
       table: 'event_pages',
     }
 
-    // if (isChannel || pathname === '/') {
-    //   payload.data.channel = urlParams.v || 'sstv';
-    //   payload.table = 'event_videos';
-    // } else if (isVideo) {
-    //   payload.data.video_id = urlParams.v;
-    //   payload.table = 'event_videos';
-    // }
+    const paths = pathname.split('/')
+    const lastPathIndex = paths.length - 1
+
+    if (pathname.includes('movie-detail')) {
+      payload.data.video_id = paths[lastPathIndex]
+      payload.table = 'event_videos'
+    }
 
     // if (firstRender) {
     //   firstRender = false;
