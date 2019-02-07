@@ -7,7 +7,7 @@ import { setMultilineEllipsis } from './util'
 
 import styles from './layer.css'
 
-const ContentLayer = ({ isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {} }) => {
+const ContentLayer = ({ title, isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {} }) => {
   const version = isMobile ? 'mobile' : 'desktop',
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
@@ -16,6 +16,14 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
 
   const descWrapperStyle = {
     transform: `translateY(calc(${getCurrentScreenHeight()}px - 95vh))`,
+  }
+
+  const formatTitle = title => {
+    return title.length > 30 ? title.substring(0, 30) + '...' : title
+  }
+
+  const formatQuote = quote => {
+    return quote.length > 150 ? quote.substring(0, 150) + '...' : title
   }
 
   setMultilineEllipsis(styles.layer__grid_desc_header)
@@ -36,19 +44,23 @@ const ContentLayer = ({ isDark, type, background, description, shortDescription 
               }
             }
           />
+          <h2 className={styles.layer__grid_title}>{formatTitle(title)}</h2>
+
           <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
-            <div className={styles.layer__grid_desc_header}>
-              <i className="filtered_description">{`“${quote}”`}</i>
-            </div>
-            <i className={styles.layer__grid_desc_author}>{author}</i>
-            <p className={styles.layer__grid_desc_breakpoint}>—</p>
             {type !== 'playlists' && (
               <Fragment>
-                <div className={`${styles.layer__grid_desc_footer} ${styles[!isDark ? 'background_white' : 'background_black']}`}>
+                <div className={`${styles.layer__grid_desc_footer}`}>
                   <p className="filtered_description">{description}</p>
                 </div>
               </Fragment>
             )}
+
+            <div className={styles.layer__grid_desc_header}>
+              <i className="filtered_description">{`“${formatQuote(quote)}”`}</i>
+              <i className={styles.layer__grid_desc_author}>
+                <br />- {author}
+              </i>
+            </div>
           </div>
         </>
       ) : (
