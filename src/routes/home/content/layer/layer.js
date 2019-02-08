@@ -19,11 +19,11 @@ const ContentLayer = ({ title, isDark, type, background, description, shortDescr
   }
 
   const formatTitle = title => {
-    return title.length > 30 ? title.substring(0, 30) + '...' : title
+    return title.length > 45 ? title.substring(0, 45) + '...' : title
   }
 
   const formatQuote = quote => {
-    return quote.length > 150 ? quote.substring(0, 150) + '...' : title
+    return quote.length > 200 ? quote.substring(0, 200) + '...' : quote
   }
 
   setMultilineEllipsis(styles.layer__grid_desc_header)

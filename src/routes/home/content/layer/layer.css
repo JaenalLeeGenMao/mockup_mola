@@ -3,7 +3,7 @@
 .layer__grid_desc_wrapper {
   position: relative;
   z-index: 2;
-  height: 70%;
+  height: auto;
   border-radius: 3px;
   overflow: hidden;
   font-family: 'Open Sans', sans-serif;
