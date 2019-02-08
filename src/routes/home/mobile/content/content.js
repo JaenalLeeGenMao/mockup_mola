@@ -36,10 +36,9 @@ class Content extends Component {
         {...settings}
       >
         {this.props.videos.map(video => {
-          const { id, title, description, quotes, isDark, background } = video,
-            { author, text } = quotes.attributes
+          const { id, isDark, background } = video
           return (
-            <div key={id} id={id} title={title} description={description} quote={`${text} - ${author}`} className="grid-slick" isdark={isDark}>
+            <div key={id} className="grid-slick" isdark={isDark}>
               <img src={background.mobile.portrait} />
             </div>
           )
