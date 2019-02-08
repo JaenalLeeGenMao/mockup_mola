@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Lato:300&subset=latin-ext');
 
 .layer__grid_desc_wrapper {
   position: relative;
@@ -6,14 +6,6 @@
   height: 70%;
   border-radius: 3px;
   overflow: hidden;
-  font-family: 'Open Sans', sans-serif;
-}
-
-.layer__grid_title {
-  font-size: 5.6rem;
-  line-height: 7rem;
-  margin-bottom: 2rem;
-  text-transform: uppercase;
 }
 
 .layer__grid_desc_wrapper.playlist {
@@ -24,7 +16,6 @@
   position: relative;
   z-index: 2;
   height: 100%;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .layer__grid_desc_content h1 {
@@ -43,9 +34,35 @@
   line-height: 2.248rem;
 }
 
-.layer__grid_desc_header {
-  height: 10rem;
+.layer_grid_desc_header_wrap {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+}
+
+.show {
+  visibility: visible !important;
   opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 0.8s;
+}
+
+@keyframes fadeInOpacity {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.layer__grid_desc_header {
+  height: 5rem;
+  opacity: 1;
+  margin: 2.5% 5% 0% 5%;
   overflow: hidden;
 }
 
@@ -55,14 +72,27 @@
 }
 
 .layer__grid_desc_footer {
+  visibility: hidden;
+  opacity: 0;
+
+  /* height: 0; */
   overflow: hidden;
-  height: 16rem;
-  font-family: 'Open Sans', sans-serif;
+  height: 10rem;
+  padding: 2.5% 5% 2.5% 5%;
+  border-radius: 0.3rem;
+  font-family: 'Lato', sans-serif;
+}
+
+.background_white {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.background_black {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .layer__grid_desc_footer p {
-  font-size: 2.4rem;
-  line-height: 3.6rem;
+  font-size: 1.6rem;
 }
 
 .layer__grid_desc_footer_desc {
@@ -71,6 +101,7 @@
 }
 
 .layer__grid_desc_author {
+  margin: 0 5%;
   opacity: 0.456;
   font-size: 0.87rem;
   line-height: 1rem !important;
@@ -111,7 +142,7 @@
   }
 
   .layer__grid_desc_footer {
-    height: 8rem;
+    height: 6rem;
     font-size: 0.9rem;
     line-height: 1rem;
     opacity: 1;

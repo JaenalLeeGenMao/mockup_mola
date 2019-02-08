@@ -5,9 +5,9 @@ import LazyLoad from '@components/common/Lazyload'
 
 import { setMultilineEllipsis } from './util'
 
-import styles from './layer.css'
+import styles from './layer_mobile.css'
 
-const ContentLayer = ({ title, isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {} }) => {
+const ContentLayer = ({ isDark, type, background, description, shortDescription = '', quotes, isMobile, getCurrentScreenHeight = () => {}, showDescription }) => {
   const version = isMobile ? 'mobile' : 'desktop',
     fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
     fontBackgroundColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
@@ -16,14 +16,6 @@ const ContentLayer = ({ title, isDark, type, background, description, shortDescr
 
   const descWrapperStyle = {
     transform: `translateY(calc(${getCurrentScreenHeight()}px - 95vh))`,
-  }
-
-  const formatTitle = title => {
-    return title.length > 30 ? title.substring(0, 30) + '...' : title
-  }
-
-  const formatQuote = quote => {
-    return quote.length > 150 ? quote.substring(0, 150) + '...' : title
   }
 
   setMultilineEllipsis(styles.layer__grid_desc_header)
@@ -44,34 +36,33 @@ const ContentLayer = ({ title, isDark, type, background, description, shortDescr
               }
             }
           />
-          <h2 className={styles.layer__grid_title}>{formatTitle(title)}</h2>
-
           <div className={styles.layer__grid_desc_content} style={{ textAlign: isMobile ? 'center' : 'left' }}>
+            <div className={styles.layer__grid_desc_header}>
+              <i className="filtered_description">{`“${quote}”`}</i>
+            </div>
+            <i className={styles.layer__grid_desc_author}>{author}</i>
+            <p className={styles.layer__grid_desc_breakpoint}>—</p>
             {type !== 'playlists' && (
               <Fragment>
-                <div className={`${styles.layer__grid_desc_footer}`}>
+                <div className={`${styles.layer__grid_desc_footer} ${styles[!isDark ? 'background_white' : 'background_black']}`}>
                   <p className="filtered_description">{description}</p>
                 </div>
               </Fragment>
             )}
-
-            <div className={styles.layer__grid_desc_header}>
-              <i className="filtered_description">{`“${formatQuote(quote)}”`}</i>
-              <i className={styles.layer__grid_desc_author}>
-                <br />- {author}
-              </i>
-            </div>
           </div>
         </>
       ) : (
         <>
-          <div className={styles.layer__grid_desc_header}>
-            <i className="filtered_description">{`“${quote}”`}</i>
+          <div className={[styles.layer_grid_desc_header_wrap, showDescription === false ? styles.show : ''].join(' ')}>
+            <div className={styles.layer__grid_desc_header}>
+              <i className="filtered_description">{`“${quote}”`}</i>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <i className={styles.layer__grid_desc_author}>— {author}</i>
+            </div>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <i className={styles.layer__grid_desc_author}>— {author}</i>
-          </div>
-          <div className={styles.layer__grid_desc_footer}>
+
+          <div className={[styles.layer__grid_desc_footer, showDescription === true ? styles.show : ''].join(' ')}>
             <p className={styles.layer__grid_desc_footer_desc}>{description}</p>
           </div>
         </>
