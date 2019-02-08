@@ -42,7 +42,7 @@ export const reviewSliderContainer = css`
   .slick-track {
     top: 0;
     left: 0;
-    transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   .slick-slide {
