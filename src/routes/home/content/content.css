@@ -85,10 +85,18 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
+.content__grid_see_more_desktop.black:hover {
+  box-shadow: 0 0 1rem 0 black;
+}
+
 .content__grid_see_more_desktop.white {
   border: 0.12rem solid rgba(255, 255, 255, 0.6);
   background: rgba(255, 255, 255, 0.3);
   color: #fff;
+}
+
+.content__grid_see_more_desktop.white:hover {
+  box-shadow: 0 0 1rem 0 white;
 }
 
 .content__grid_see_more_mobile {
