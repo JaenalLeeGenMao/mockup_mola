@@ -32,6 +32,11 @@
 .content__grid_desc {
   position: relative;
   grid-area: desc;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  /* margin-bottom: 10rem; */
 }
 
 .content__grid_empty {
@@ -152,7 +157,7 @@
     grid-template-areas:
       'nav title empty'
       'nav desc  empty';
-    grid-template-rows: 1fr 2fr;
+    grid-template-rows: 0 5fr 1fr;
     grid-template-columns: 2fr 5fr 7fr;
   }
 

@@ -130,7 +130,7 @@ class Home extends Component {
     setTimeout(function() {
       that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
-        { videos } = that.state
+        { videos, sliderRefs } = that.state
       let isDark = 1
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
@@ -139,6 +139,7 @@ class Home extends Component {
         that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
       }
       if (index || index === 0) {
+        sliderRefs[index].slickGoTo(0)
         that.setState({
           scrollIndex: index,
           swipeIndex,
@@ -273,7 +274,7 @@ class Home extends Component {
                     </Link>
                   </LazyLoad>
                 )}
-                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '11px' }}>
+                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
                   {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={isDark} type="horizontal" />}
                 </div>
                 <Slider {...settings}>
