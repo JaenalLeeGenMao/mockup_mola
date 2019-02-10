@@ -18,11 +18,14 @@ export const SETTINGS_VERTICAL = {
   arrows: false,
   dots: false,
   vertical: true,
+  verticalSwiping: true,
   infinite: true,
   slidesToShow: 1,
   slidesToScroll: 1,
   fade: true,
-  verticalSwiping: true,
+  autoplay: true,
+  autoplaySpeed: 4000,
+  speed: 2000,
 }
 
 export const SETTINGS = {

@@ -1,0 +1,60 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.menu__dots {
+  width: 0.4rem;
+  background: white;
+  height: 0.4rem;
+  margin: 0.4rem 0;
+  border-radius: 0.3rem;
+  transition: all 0.5s;
+  opacity: 0.7;
+}
+
+.menu__dots:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.menu__dots.black {
+  background: black;
+  color: black;
+}
+
+.menu__dots.white {
+  background: white;
+  color: white;
+}
+
+.menu__top_active {
+  height: 1.8rem;
+  margin-bottom: 0;
+  opacity: 1;
+  transform: translateY(5%);
+}
+
+.menu__bot_active {
+  height: 1.8rem;
+  margin-top: 0;
+  opacity: 1;
+  transform: translateY(-5%);
+}
+
+.menu__text {
+  opacity: 0;
+  padding: 0 2rem;
+  font-weight: 300;
+  font-size: 1.2rem;
+  font-style: italic;
+  position: absolute;
+}
+
+.menu__text.active {
+  padding: 0.5rem 2rem;
+  opacity: 1;
+}
