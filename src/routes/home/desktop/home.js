@@ -44,6 +44,8 @@ class Home extends Component {
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
     videos: [],
+    startGuide: false,
+    stepIndex: 0,
     steps: tourSteps[this.props.user.lang],
     sliderRefs: [],
   }
@@ -66,6 +68,51 @@ class Home extends Component {
       })
     }
     return { ...prevState, playlists, videos }
+  }
+
+  handleTourCallback = data => {
+    const { type, action, index } = data
+    const { videos } = this.props.home
+
+    if (type === EVENTS.TOUR_END) {
+      for (var i = 0; i < videos.data.length; i++) {
+        if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+          document.getElementsByClassName('tourSlideWrapper')[0].remove()
+        }
+      }
+
+      localStorage.setItem('tour-home', true)
+
+      // document.cookie = '__trh=1; path=/;';
+      return true
+    }
+
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1,
+      })
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState(
+        {
+          stepIndex: index - 1,
+        },
+        () => {
+          if (index === 4) {
+            this.sliderRefs[0].slickPrev()
+          }
+        }
+      )
+    } else {
+      if (action === ACTIONS.NEXT && index === 4) {
+        if (videos.data[0].data.length > 1) {
+          this.sliderRefs[0].slickNext()
+        } else {
+          this.setState({
+            stepIndex: index + 1,
+          })
+        }
+      }
+    }
   }
 
   componentDidMount() {
@@ -92,6 +139,54 @@ class Home extends Component {
       this.nextTouch = event.screenX
 
       this.handleSwipeDirection(this.activeSlider, this.prevTouch, this.nextTouch)
+    }
+
+    if (window.innerHeight > 1801) {
+      const tvStyle = Object.assign({}, customTourStyle)
+      // tvStyle.tooltip.width = '30rem'
+      // tvStyle.tooltip.height = '18rem'
+      tvStyle.tooltip.padding = '1.6rem'
+      tvStyle.tooltipContent.padding = '0'
+      tvStyle.tooltipContent.minHeight = '1.4rem'
+    }
+
+    const { playlists, videos } = this.props.home
+
+    if (playlists.meta.status !== 'loading') {
+      if (playlists.meta.status === 'success') {
+        if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
+          this.setState(
+            {
+              playlistSuccess: true,
+            },
+            () => {
+              // let isTourDone = _get(document, 'cookie', '')
+              //   .trim()
+              //   .split(';')
+              //   .filter(function(item) {
+              //     return item.indexOf('__trh=') >= 0;
+              //   });
+
+              let isTourDone = localStorage.getItem('tour-home')
+
+              if (isTourDone) {
+                for (var i = 0; i < videos.data.length; i++) {
+                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                    document.getElementsByClassName('tourSlideWrapper')[0].remove()
+                  }
+                }
+              } else {
+                this.setState({
+                  startGuide: true,
+                })
+                for (var i = 1; i < videos.data.length; i++) {
+                  document.getElementsByClassName('tourSlideWrapper')[1].remove()
+                }
+              }
+            }
+          )
+        }
+      }
     }
   }
 
@@ -296,6 +391,18 @@ class Home extends Component {
 
     return (
       <Fragment>
+        <Joyride
+          disableOverlayClose={true}
+          stepIndex={stepIndex}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
+
         <div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
