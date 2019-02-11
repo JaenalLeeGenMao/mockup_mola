@@ -31,8 +31,12 @@ import { filterString } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
-let activePlaylist
+// let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
+let ticking = false,
+  activePlaylist,
+  scrollIndex = 0,
+  flag = false
 
 class Home extends Component {
   state = {
@@ -47,6 +51,7 @@ class Home extends Component {
     startGuide: false,
     stepIndex: 0,
     steps: tourSteps[this.props.user.lang],
+    playlistSuccess: false,
     sliderRefs: [],
   }
 
@@ -168,11 +173,11 @@ class Home extends Component {
               //   });
 
               let isTourDone = localStorage.getItem('tour-home')
-
+              console.log('isTourDone====', isTourDone)
               if (isTourDone) {
                 for (var i = 0; i < videos.data.length; i++) {
                   if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    document.getElementsByClassName('tourSlideWrapper')[0].remove()
+                    // document.getElementsByClassName('tourSlideWrapper')[0].remove()
                   }
                 }
               } else {
@@ -180,13 +185,55 @@ class Home extends Component {
                   startGuide: true,
                 })
                 for (var i = 1; i < videos.data.length; i++) {
-                  document.getElementsByClassName('tourSlideWrapper')[1].remove()
+                  // document.getElementsByClassName('tourSlideWrapper')[1].remove()
                 }
               }
             }
           )
         }
       }
+    }
+  }
+
+  componentDidUpdate() {
+    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
+    //update loading state
+    if (playlistStatus === 'success') {
+      if (videoStatus === 'success' && !this.state.playlistSuccess) {
+        this.setState({
+          playlistSuccess: true,
+        })
+        this.setState(
+          {
+            playlistSuccess: true,
+          },
+          () => {
+            let isTourDone = localStorage.getItem('tour-home')
+            console.log('isTourDone====', isTourDone)
+            if (isTourDone) {
+              for (var i = 0; i < videos.data.length; i++) {
+                // if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
+                // document.getElementsByClassName('tourSlideWrapper')[0].remove()
+                // }
+              }
+            } else {
+              this.setState({
+                startGuide: true,
+              })
+              // for (var i = 1; i < videos.data.length; i++) {
+              // document.getElementsByClassName('tourSlideWrapper')[1].remove()
+              // }
+            }
+          }
+        )
+      }
+    }
+
+    /* Auto Focus on page loaded, to enable keypress eventListener */
+    var input = document.querySelector('.grid-slick')
+    if (input && !flag) {
+      input.click()
+      flag = true
     }
   }
 
@@ -426,7 +473,7 @@ class Home extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     <p className={styles.quote}>{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white}`}>
+                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       {locale['view_movie']}
                     </Link>
                   </LazyLoad>
@@ -434,7 +481,7 @@ class Home extends Component {
                 <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
                   {activeSlideDots &&
                     activeSlideDots.length > 1 && (
-                      <div>
+                      <div className="tourSlide">
                         <div className={`${styles.home__custom_arrow} ${0 ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
                           {'‹'}
                         </div>
