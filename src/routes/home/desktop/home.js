@@ -37,6 +37,57 @@ let ticking = false,
   activePlaylist,
   scrollIndex = 0,
   flag = false
+const customTourStyle = {
+  buttonNext: {
+    backgroundColor: '#2C56FF',
+    fontSize: '1.06rem',
+    lineHeight: '1',
+    padding: '8px 15px',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    borderRadius: '30px',
+    fontWeight: '600',
+  },
+  buttonBack: {
+    color: '#000000',
+    fontSize: '1.06rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    fontWeight: '600',
+  },
+  buttonClose: {
+    display: 'none',
+  },
+  buttonSkip: {
+    color: '#000000',
+    fontWeight: '600',
+    fontSize: '1.06rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    padding: '0',
+  },
+  tooltipContent: {
+    fontSize: '1.06rem',
+    padding: '0 0 20px',
+    textAlign: 'left',
+    color: '#858585',
+    lineHeight: '1.3',
+    letterSpacing: '0.5px',
+  },
+  tooltipTitle: {
+    fontSize: '1.15rem',
+    textAlign: 'left',
+    margin: '0px 0px 8px',
+    letterSpacing: '0.59px',
+    textTransform: 'uppercase',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  spotlight: {
+    borderRadius: '4rem',
+  },
+}
 
 class Home extends Component {
   state = {
@@ -80,14 +131,7 @@ class Home extends Component {
     const { videos } = this.props.home
 
     if (type === EVENTS.TOUR_END) {
-      for (var i = 0; i < videos.data.length; i++) {
-        if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-          document.getElementsByClassName('tourSlideWrapper')[0].remove()
-        }
-      }
-
       localStorage.setItem('tour-home', true)
-
       // document.cookie = '__trh=1; path=/;';
       return true
     }
@@ -121,6 +165,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    const { playlists, videos } = this.props.home
+
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
       activePlaylist = this.state.playlists.data[0]
@@ -150,46 +196,15 @@ class Home extends Component {
       const tvStyle = Object.assign({}, customTourStyle)
       // tvStyle.tooltip.width = '30rem'
       // tvStyle.tooltip.height = '18rem'
-      tvStyle.tooltip.padding = '1.6rem'
+      // tvStyle.tooltip.padding = '1.6rem'
       tvStyle.tooltipContent.padding = '0'
       tvStyle.tooltipContent.minHeight = '1.4rem'
     }
 
-    const { playlists, videos } = this.props.home
-
     if (playlists.meta.status !== 'loading') {
       if (playlists.meta.status === 'success') {
         if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
-          this.setState(
-            {
-              playlistSuccess: true,
-            },
-            () => {
-              // let isTourDone = _get(document, 'cookie', '')
-              //   .trim()
-              //   .split(';')
-              //   .filter(function(item) {
-              //     return item.indexOf('__trh=') >= 0;
-              //   });
-
-              let isTourDone = localStorage.getItem('tour-home')
-              console.log('isTourDone====', isTourDone)
-              if (isTourDone) {
-                for (var i = 0; i < videos.data.length; i++) {
-                  if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                    // document.getElementsByClassName('tourSlideWrapper')[0].remove()
-                  }
-                }
-              } else {
-                this.setState({
-                  startGuide: true,
-                })
-                for (var i = 1; i < videos.data.length; i++) {
-                  // document.getElementsByClassName('tourSlideWrapper')[1].remove()
-                }
-              }
-            }
-          )
+          this.initTour()
         }
       }
     }
@@ -200,32 +215,7 @@ class Home extends Component {
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.playlistSuccess) {
-        this.setState({
-          playlistSuccess: true,
-        })
-        this.setState(
-          {
-            playlistSuccess: true,
-          },
-          () => {
-            let isTourDone = localStorage.getItem('tour-home')
-            console.log('isTourDone====', isTourDone)
-            if (isTourDone) {
-              for (var i = 0; i < videos.data.length; i++) {
-                // if (document.getElementsByClassName('tourSlideWrapper').length > 0) {
-                // document.getElementsByClassName('tourSlideWrapper')[0].remove()
-                // }
-              }
-            } else {
-              this.setState({
-                startGuide: true,
-              })
-              // for (var i = 1; i < videos.data.length; i++) {
-              // document.getElementsByClassName('tourSlideWrapper')[1].remove()
-              // }
-            }
-          }
-        )
+        this.initTour()
       }
     }
 
@@ -235,6 +225,23 @@ class Home extends Component {
       input.click()
       flag = true
     }
+  }
+
+  initTour = () => {
+    this.setState(
+      {
+        playlistSuccess: true,
+      },
+      () => {
+        let isTourDone = localStorage.getItem('tour-home')
+
+        if (!isTourDone) {
+          this.setState({
+            startGuide: true,
+          })
+        }
+      }
+    )
   }
 
   componentWillUnmount() {
@@ -376,58 +383,6 @@ class Home extends Component {
       },
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError)
-
-    const customTourStyle = {
-      buttonNext: {
-        backgroundColor: '#2C56FF',
-        fontSize: '1.06rem',
-        lineHeight: '1',
-        padding: '8px 15px',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        borderRadius: '30px',
-        fontWeight: '600',
-      },
-      buttonBack: {
-        color: '#000000',
-        fontSize: '1.06rem',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        fontWeight: '600',
-      },
-      buttonClose: {
-        display: 'none',
-      },
-      buttonSkip: {
-        color: '#000000',
-        fontWeight: '600',
-        fontSize: '1.06rem',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        padding: '0',
-      },
-      tooltipContent: {
-        fontSize: '1.06rem',
-        padding: '0 0 20px',
-        textAlign: 'left',
-        color: '#858585',
-        lineHeight: '1.3',
-        letterSpacing: '0.5px',
-      },
-      tooltipTitle: {
-        fontSize: '1.15rem',
-        textAlign: 'left',
-        margin: '0px 0px 8px',
-        letterSpacing: '0.59px',
-        textTransform: 'uppercase',
-      },
-      overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      },
-      spotlight: {
-        borderRadius: '4rem',
-      },
-    }
 
     let filteredDesc = ''
     let filteredQuote = ''
