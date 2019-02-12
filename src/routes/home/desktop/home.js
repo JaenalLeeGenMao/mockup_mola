@@ -87,6 +87,10 @@ const customTourStyle = {
   spotlight: {
     borderRadius: '4rem',
   },
+  tooltip: {
+    width: '30rem',
+    borderRadius: '.4rem',
+  },
 }
 
 class Home extends Component {
@@ -196,7 +200,7 @@ class Home extends Component {
       const tvStyle = Object.assign({}, customTourStyle)
       // tvStyle.tooltip.width = '30rem'
       // tvStyle.tooltip.height = '18rem'
-      // tvStyle.tooltip.padding = '1.6rem'
+      tvStyle.tooltip.padding = '1.6rem'
       tvStyle.tooltipContent.padding = '0'
       tvStyle.tooltipContent.minHeight = '1.4rem'
     }
