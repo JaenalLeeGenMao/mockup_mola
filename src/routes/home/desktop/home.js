@@ -31,8 +31,63 @@ import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
-let activePlaylist
+// let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
+let ticking = false,
+  activePlaylist,
+  scrollIndex = 0,
+  flag = false
+const customTourStyle = {
+  buttonNext: {
+    backgroundColor: '#2C56FF',
+    fontSize: '1.06rem',
+    lineHeight: '1',
+    padding: '8px 15px',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    borderRadius: '30px',
+    fontWeight: '600',
+  },
+  buttonBack: {
+    color: '#000000',
+    fontSize: '1.06rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    fontWeight: '600',
+  },
+  buttonClose: {
+    display: 'none',
+  },
+  buttonSkip: {
+    color: '#000000',
+    fontWeight: '600',
+    fontSize: '1.06rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    padding: '0',
+  },
+  tooltipContent: {
+    fontSize: '1.06rem',
+    padding: '0 0 20px',
+    textAlign: 'left',
+    color: '#858585',
+    lineHeight: '1.3',
+    letterSpacing: '0.5px',
+  },
+  tooltipTitle: {
+    fontSize: '1.15rem',
+    textAlign: 'left',
+    margin: '0px 0px 8px',
+    letterSpacing: '0.59px',
+    textTransform: 'uppercase',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  spotlight: {
+    borderRadius: '4rem',
+  },
+}
 
 class Home extends Component {
   state = {
@@ -44,7 +99,10 @@ class Home extends Component {
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
     videos: [],
+    startGuide: false,
+    stepIndex: 0,
     steps: tourSteps[this.props.user.lang],
+    playlistSuccess: false,
     sliderRefs: [],
   }
 
@@ -68,7 +126,47 @@ class Home extends Component {
     return { ...prevState, playlists, videos }
   }
 
+  handleTourCallback = data => {
+    const { type, action, index } = data
+    const { videos } = this.props.home
+
+    if (type === EVENTS.TOUR_END) {
+      localStorage.setItem('tour-home', true)
+      // document.cookie = '__trh=1; path=/;';
+      return true
+    }
+
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1,
+      })
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState(
+        {
+          stepIndex: index - 1,
+        },
+        () => {
+          if (index === 4) {
+            this.sliderRefs[0].slickPrev()
+          }
+        }
+      )
+    } else {
+      if (action === ACTIONS.NEXT && index === 4) {
+        if (videos.data[0].data.length > 1) {
+          this.sliderRefs[0].slickNext()
+        } else {
+          this.setState({
+            stepIndex: index + 1,
+          })
+        }
+      }
+    }
+  }
+
   componentDidMount() {
+    const { playlists, videos } = this.props.home
+
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
       activePlaylist = this.state.playlists.data[0]
@@ -93,6 +191,57 @@ class Home extends Component {
 
       this.handleSwipeDirection(this.activeSlider, this.prevTouch, this.nextTouch)
     }
+
+    if (window.innerHeight > 1801) {
+      const tvStyle = Object.assign({}, customTourStyle)
+      // tvStyle.tooltip.width = '30rem'
+      // tvStyle.tooltip.height = '18rem'
+      // tvStyle.tooltip.padding = '1.6rem'
+      tvStyle.tooltipContent.padding = '0'
+      tvStyle.tooltipContent.minHeight = '1.4rem'
+    }
+
+    if (playlists.meta.status !== 'loading') {
+      if (playlists.meta.status === 'success') {
+        if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
+          this.initTour()
+        }
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
+    //update loading state
+    if (playlistStatus === 'success') {
+      if (videoStatus === 'success' && !this.state.playlistSuccess) {
+        this.initTour()
+      }
+    }
+
+    /* Auto Focus on page loaded, to enable keypress eventListener */
+    var input = document.querySelector('.grid-slick')
+    if (input && !flag) {
+      input.click()
+      flag = true
+    }
+  }
+
+  initTour = () => {
+    this.setState(
+      {
+        playlistSuccess: true,
+      },
+      () => {
+        let isTourDone = localStorage.getItem('tour-home')
+
+        if (!isTourDone) {
+          this.setState({
+            startGuide: true,
+          })
+        }
+      }
+    )
   }
 
   componentWillUnmount() {
@@ -235,58 +384,6 @@ class Home extends Component {
       playlistErrorCode = getErrorCode(playlistError),
       videoErrorCode = getErrorCode(videoError)
 
-    const customTourStyle = {
-      buttonNext: {
-        backgroundColor: '#2C56FF',
-        fontSize: '1.06rem',
-        lineHeight: '1',
-        padding: '8px 15px',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        borderRadius: '30px',
-        fontWeight: '600',
-      },
-      buttonBack: {
-        color: '#000000',
-        fontSize: '1.06rem',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        fontWeight: '600',
-      },
-      buttonClose: {
-        display: 'none',
-      },
-      buttonSkip: {
-        color: '#000000',
-        fontWeight: '600',
-        fontSize: '1.06rem',
-        textTransform: 'uppercase',
-        letterSpacing: '1.67px',
-        padding: '0',
-      },
-      tooltipContent: {
-        fontSize: '1.06rem',
-        padding: '0 0 20px',
-        textAlign: 'left',
-        color: '#858585',
-        lineHeight: '1.3',
-        letterSpacing: '0.5px',
-      },
-      tooltipTitle: {
-        fontSize: '1.15rem',
-        textAlign: 'left',
-        margin: '0px 0px 8px',
-        letterSpacing: '0.59px',
-        textTransform: 'uppercase',
-      },
-      overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      },
-      spotlight: {
-        borderRadius: '4rem',
-      },
-    }
-
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
@@ -296,6 +393,18 @@ class Home extends Component {
 
     return (
       <Fragment>
+        <Joyride
+          disableOverlayClose={true}
+          stepIndex={stepIndex}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
+
         <div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
@@ -319,7 +428,7 @@ class Home extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     <p className={styles.quote}>{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white}`}>
+                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       {locale['view_movie']}
                     </Link>
                   </LazyLoad>
@@ -327,8 +436,8 @@ class Home extends Component {
                 <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
                   {activeSlideDots &&
                     activeSlideDots.length > 1 && (
-                      <div>
-                        <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
+                      <div className="tourSlide">
+                        <div className={`${styles.home__custom_arrow} ${0 ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
                           {'‹'}
                         </div>
                         <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 1000, 0)}>

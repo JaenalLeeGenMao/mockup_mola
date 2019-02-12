@@ -9,7 +9,7 @@ import verticalStyles from './menu-vertical.css'
 const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', onClick }) => {
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles
   return (
-    <LazyLoad containerClassName={styles.menu}>
+    <LazyLoad containerClassName={[styles.menu, 'tourCategory'].join(' ')}>
       {playlists.map(({ id, title }, index) => (
         <div
           key={id}
