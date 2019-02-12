@@ -27,7 +27,7 @@ import HomeMobileMenu from './menu'
 
 import styles from './home.css'
 import contentStyles from './content/content.css'
-import { filterString } from './util'
+import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
