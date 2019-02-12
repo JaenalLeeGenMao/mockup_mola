@@ -27,7 +27,7 @@ import HomeMobileMenu from './menu'
 
 import styles from './home.css'
 import contentStyles from './content/content.css'
-import { filterString } from './util'
+import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
@@ -440,7 +440,7 @@ class Home extends Component {
                         <div className={`${styles.home__custom_arrow} ${0 ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
                           {'‹'}
                         </div>
-                        <div className={`${styles.home__custom_arrow} ${0 ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 1000, 0)}>
+                        <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 1000, 0)}>
                           {'›'}
                         </div>
                       </div>
