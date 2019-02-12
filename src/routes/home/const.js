@@ -23,7 +23,7 @@ export const SETTINGS_VERTICAL = {
   slidesToShow: 1,
   slidesToScroll: 1,
   fade: true,
-  autoplay: true,
+  autoplay: false,
   autoplaySpeed: 4000,
   speed: 2000,
 }
