@@ -285,7 +285,7 @@ class Home extends Component {
                 </div>
                 <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                   <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
-                    <span className={`${styles[isDark ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
+                    <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
                   </Link>
                   <p className={`${styles.header__library_text} ${isDark ? styles.black : styles.white}`}>Terbaik dari film {activePlaylist.title}</p>
                 </LazyLoad>
