@@ -437,7 +437,7 @@ class Home extends Component {
                   {activeSlideDots &&
                     activeSlideDots.length > 1 && (
                       <div className="tourSlide">
-                        <div className={`${styles.home__custom_arrow} ${0 ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
+                        <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
                           {'‹'}
                         </div>
                         <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 1000, 0)}>
