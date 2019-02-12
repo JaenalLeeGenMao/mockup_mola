@@ -26,7 +26,7 @@ import HomeMobileMenu from './menu'
 
 import styles from './home.css'
 import contentStyles from './content/content.css'
-import { filterString } from './util'
+import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
@@ -72,47 +72,74 @@ class Home extends Component {
       activePlaylist = this.state.playlists.data[0]
       this.props.onUpdatePlaylist(activePlaylist.id)
     }
+    setMultilineEllipsis('filteredText')
 
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
     })
 
-    this.prevTouch = 0
-    this.nextTouch = 0
+    this.prevTouchX = 0
+    this.nextTouchX = 0
+    this.prevTouchY = 0
+    this.nextTouchY = 0
 
     document.ontouchstart = event => {
-      this.prevTouch = event.changedTouches[0].screenX
+      this.prevTouchX = event.changedTouches[0].screenX
+      this.prevTouchY = event.changedTouches[0].screenY
     }
 
     document.ontouchend = event => {
-      this.nextTouch = event.changedTouches[0].screenX
+      this.nextTouchX = event.changedTouches[0].screenX
+      this.nextTouchY = event.changedTouches[0].screenY
 
-      this.handleSwipeDirection(this.activeSlider, this.prevTouch, this.nextTouch)
+      const distance = Math.abs(this.prevTouchY - this.nextTouchY)
+      if (distance <= 20) {
+        /* if distance less than 20 scroll horizontally */
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
+      } else {
+        /* else distance greater than 20 scroll vertically */
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
+      }
     }
   }
 
-  handleSwipeDirection(slider, prevX, nextX) {
+  handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
       { sliderRefs } = this.state
 
-    if (slider) {
-      if (slider.innerSlider === null) {
-        return false
-      }
-      if (distance <= 20) {
-        // do nothing
-      } else if (prevX > nextX) {
-        slider.slickNext()
-      } else {
-        slider.slickPrev()
+    if (mode === 'vertical') {
+      if (this.rootSlider) {
+        if (this.rootSlider.innerSlider === null) {
+          return false
+        }
+        if (distance <= 20) {
+          // do nothing
+        } else if (prevX > nextX) {
+          this.rootSlider.slickNext()
+        } else {
+          this.rootSlider.slickPrev()
+        }
       }
     } else {
-      if (distance <= 20) {
-        // do nothing
-      } else if (prevX > nextX) {
-        sliderRefs[0].slickNext()
+      if (slider) {
+        if (slider.innerSlider === null) {
+          return false
+        }
+        if (distance <= 20) {
+          // do nothing
+        } else if (prevX > nextX) {
+          slider.slickNext()
+        } else {
+          slider.slickPrev()
+        }
       } else {
-        sliderRefs[0].slickPrev()
+        if (distance <= 20) {
+          // do nothing
+        } else if (prevX > nextX) {
+          sliderRefs[0].slickNext()
+        } else {
+          sliderRefs[0].slickPrev()
+        }
       }
     }
   }
@@ -238,8 +265,8 @@ class Home extends Component {
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
-      filteredDesc = filterString(activeSlide.description)
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text)}” - ${activeSlide.quotes.attributes.author}`
+      filteredDesc = activeSlide.description
+      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
     }
 
     return (
@@ -253,8 +280,9 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
+                <div className={styles.home__gradient} />
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} />
+                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} />
                 </div>
                 <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                   <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
@@ -263,22 +291,27 @@ class Home extends Component {
                   <p className={`${styles.header__library_text} ${isDark ? styles.black : styles.white}`}>Terbaik dari film {activePlaylist.title}</p>
                 </LazyLoad>
                 {activeSlide && (
-                  <LazyLoad containerClassName={`${styles.header__detail_container} ${isDark ? styles.black : styles.white}`}>
+                  <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                     <h1>{activeSlide.title}</h1>
-                    <p>{filteredDesc}</p>
-                    <p>{filteredQuote}</p>
-                    <p>{filteredDesc}</p>
-                    <p>{filteredQuote}</p>
-                    <p>{filteredDesc}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${isDark ? styles.black : styles.white}`}>
-                      <span className={`${styles.icon__view_movie} ${isDark ? styles.white : styles.black}`} />
+                    <p className="filteredText">{filteredDesc}</p>
+                    <p className="filteredText">{filteredQuote}</p>
+                    <p className="filteredText">{filteredDesc}</p>
+                    <p className="filteredText">{filteredQuote}</p>
+                    <p className="filteredText">{filteredDesc}</p>
+                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white}`}>
+                      <span className={`${styles.icon__view_movie} ${0 ? styles.white : styles.black}`} />
                     </Link>
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
-                  {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={isDark} type="horizontal" />}
+                  {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" />}
                 </div>
-                <Slider {...settings}>
+                <Slider
+                  {...settings}
+                  ref={node => {
+                    this.rootSlider = node
+                  }}
+                >
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
                     return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
