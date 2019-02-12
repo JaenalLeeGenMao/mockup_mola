@@ -55,14 +55,14 @@ body {
 }
 
 .header__detail_container > h1.small {
-  font-size: 4.6rem;
+  font-size: 4.8rem;
   line-height: 5rem;
   margin-bottom: 2rem;
   text-transform: uppercase;
 }
 
 .header__detail_container > h1.big {
-  font-size: 7.6rem;
+  font-size: 7rem;
   line-height: 7rem;
   margin-bottom: 2rem;
   text-transform: uppercase;
@@ -71,11 +71,10 @@ body {
 .header__detail_container > p {
   max-width: 40vw;
   margin-bottom: 2rem;
-  min-height: 8rem;
-
-  /* opacity: 0; */
+  height: 8rem;
   font-weight: 400;
   font-size: 1.825rem;
+  overflow: hidden;
 
   /* position: absolute; */
 
@@ -86,6 +85,7 @@ body {
 
 .header__detail_container > p.quote {
   /* animation-delay: 4s; */
+  height: auto;
   min-height: 3rem;
   font-size: 1.2rem;
   font-weight: 300;
@@ -250,6 +250,16 @@ body {
     height: 18px;
     margin: 2px 3px 0;
     text-align: left;
+  }
+}
+
+@media screen and (min-width: 641px) and (max-width: 1080px) {
+  .header__detail_container > h1.small {
+    font-size: 3.8rem;
+  }
+
+  .header__detail_container > h1.big {
+    font-size: 5.6rem;
   }
 }
 
