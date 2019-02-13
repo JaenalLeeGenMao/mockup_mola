@@ -188,6 +188,7 @@ class Home extends Component {
     this.prevTouchY = 0
     this.nextTouchY = 0
 
+    /* mousedown/mouseup to handle desktop scrolling event */
     document.onmousedown = event => {
       this.prevTouchX = event.screenX
       this.prevTouchY = event.screenY
@@ -199,7 +200,6 @@ class Home extends Component {
 
       const distance = Math.abs(this.prevTouchY - this.nextTouchY)
       if (distance <= 20) {
-        console.log(this.prevTouchX, this.nextTouchX)
         /* if distance less than 20 scroll horizontally */
         this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
       } else {
@@ -208,14 +208,13 @@ class Home extends Component {
       }
     }
 
+    /* touchstart/touchdown to handle tablet/iPad scrolling event */
     document.ontouchstart = event => {
-      console.log(event)
       this.prevTouchX = event.changedTouches[0].screenX
       this.prevTouchY = event.changedTouches[0].screenY
     }
 
     document.ontouchend = event => {
-      console.log(event)
       this.nextTouchX = event.changedTouches[0].screenX
       this.nextTouchY = event.changedTouches[0].screenY
 
