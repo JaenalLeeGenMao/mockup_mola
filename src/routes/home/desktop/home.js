@@ -183,17 +183,50 @@ class Home extends Component {
       passive: false,
     })
 
-    this.prevTouch = 0
-    this.nextTouch = 0
+    this.prevTouchX = 0
+    this.nextTouchX = 0
+    this.prevTouchY = 0
+    this.nextTouchY = 0
 
     document.onmousedown = event => {
-      this.prevTouch = event.screenX
+      this.prevTouchX = event.screenX
+      this.prevTouchY = event.screenY
     }
 
     document.onmouseup = event => {
-      this.nextTouch = event.screenX
+      this.nextTouchX = event.screenX
+      this.nextTouchY = event.screenY
 
-      this.handleSwipeDirection(this.activeSlider, this.prevTouch, this.nextTouch)
+      const distance = Math.abs(this.prevTouchY - this.nextTouchY)
+      if (distance <= 20) {
+        console.log(this.prevTouchX, this.nextTouchX)
+        /* if distance less than 20 scroll horizontally */
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
+      } else {
+        /* else distance greater than 20 scroll vertically */
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
+      }
+    }
+
+    document.ontouchstart = event => {
+      console.log(event)
+      this.prevTouchX = event.changedTouches[0].screenX
+      this.prevTouchY = event.changedTouches[0].screenY
+    }
+
+    document.ontouchend = event => {
+      console.log(event)
+      this.nextTouchX = event.changedTouches[0].screenX
+      this.nextTouchY = event.changedTouches[0].screenY
+
+      const distance = Math.abs(this.prevTouchY - this.nextTouchY)
+      if (distance <= 20) {
+        /* if distance less than 20 scroll horizontally */
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
+      } else {
+        /* else distance greater than 20 scroll vertically */
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
+      }
     }
 
     if (window.innerHeight > 1801) {
@@ -294,27 +327,43 @@ class Home extends Component {
     )
   }
 
-  handleSwipeDirection(slider, prevX, nextX) {
+  handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
       { sliderRefs } = this.state
-    if (slider) {
-      if (slider.innerSlider === null) {
-        return false
-      }
-      if (distance <= 100) {
-        // do nothing
-      } else if (prevX > nextX) {
-        slider.slickNext()
-      } else {
-        slider.slickPrev()
+
+    if (mode === 'vertical') {
+      if (this.rootSlider) {
+        if (this.rootSlider.innerSlider === null) {
+          return false
+        }
+        if (distance <= 20) {
+          // do nothing
+        } else if (prevX > nextX) {
+          this.rootSlider.slickNext()
+        } else {
+          this.rootSlider.slickPrev()
+        }
       }
     } else {
-      if (distance <= 100) {
-        // do nothing
-      } else if (prevX > nextX) {
-        sliderRefs[0].slickNext()
+      if (slider) {
+        if (slider.innerSlider === null) {
+          return false
+        }
+        if (distance <= 20) {
+          // do nothing
+        } else if (prevX > nextX) {
+          slider.slickNext()
+        } else {
+          slider.slickPrev()
+        }
       } else {
-        sliderRefs[0].slickPrev()
+        if (distance <= 20) {
+          // do nothing
+        } else if (prevX > nextX) {
+          sliderRefs[0].slickNext()
+        } else {
+          sliderRefs[0].slickPrev()
+        }
       }
     }
   }
