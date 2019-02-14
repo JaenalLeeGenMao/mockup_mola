@@ -32,14 +32,14 @@
 }
 
 .menu__top_active {
-  height: 1.8rem;
+  height: 2.25rem;
   margin-bottom: 0;
   opacity: 1;
   transform: translateY(5%);
 }
 
 .menu__bot_active {
-  height: 1.8rem;
+  height: 2.25rem;
   margin-top: 0;
   opacity: 1;
   transform: translateY(-5%);

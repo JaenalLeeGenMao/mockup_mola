@@ -1,4 +1,4 @@
-.conditions_singlepage {
+.conditions_content_singlepage {
   background: linear-gradient(#0e1d3d, #000);
 }
 
@@ -44,8 +44,22 @@
   font-size: 15px;
 }
 
-@media only screen and (max-width: 600px) {
+.conditions__header_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+@media only screen and (max-width: 640px) {
   .conditions_contentbody {
     padding: 0 3rem;
+  }
+
+  .conditions__header_wrapper > div {
+    padding: 5%;
+  }
+
+  .conditions_contentheadlinecls {
+    padding-top: 45px;
+    padding-bottom: 15px;
   }
 }

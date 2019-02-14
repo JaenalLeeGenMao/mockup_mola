@@ -1,0 +1,146 @@
+.subscribedetail_singlepage {
+  background: linear-gradient(#0e1d3d, #000);
+}
+
+.subscribedetail_contentheadlinecls {
+  font-size: 30px;
+  color: white !important;
+  text-align: center;
+  padding-top: 19px;
+  padding-bottom: 19px;
+}
+
+.subscribedetail_paketcls {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 22px;
+  color: white !important;
+  line-height: 1.6;
+  max-height: 40% !important;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.subscribedetail_access_titlecls {
+  font-size: 23px;
+  color: white !important;
+  line-height: 1.6;
+  padding-left: 10px;
+  border-radius: 5px;
+  padding-right: 10px;
+}
+
+.subscribedetail_accesstitle {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  font-size: 17px;
+}
+
+.subscribedetailkualitastitle {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  font-size: 17px;
+}
+
+.subscribedetail_price {
+  background-color: lavender;
+  color: black;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-radius: 23px;
+  max-width: 29%;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.subscribedetail_accessdescriptioncls {
+  padding-top: 4px;
+  padding-bottom: 10px;
+  font-size: 17px;
+  color: white !important;
+  line-height: 1.6;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+html,
+body {
+  background: linear-gradient(#0e1d3d, #000) !important;
+}
+
+.subscribedetail_btn_back {
+  float: left !important;
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 86.375px;
+  height: 28px;
+  background-color: #2b51ff;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-size: 14px;
+}
+
+.subscribedetail_btn_beli {
+  float: right !important;
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 86.375px;
+  height: 28px;
+  background-color: #f33657;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-size: 14px;
+}
+
+.subscribedetail_paketlabel {
+  color: white;
+  font-size: 16px;
+  padding-left: 19px;
+}
+
+.subscribedetail_whitebox_packagename {
+  font-size: 17px;
+}
+
+.subscribedetail_whitebox_price {
+  font-size: 14px;
+}
+
+.subscribedetail_bundleall {
+  padding-left: 7%;
+  padding-right: 7%;
+}
+
+.btn_margn_beli {
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  .subscribedetail_singlepage {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .subscribedetail_price {
+    max-width: 100%;
+  }
+}
+
+@media only screen and (min-width: 3840px) {
+  .subscribedetail_singlepage {
+    padding-left: 20%;
+    padding-right: 46%;
+  }
+}

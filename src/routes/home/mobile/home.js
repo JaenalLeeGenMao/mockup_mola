@@ -42,8 +42,12 @@ class Home extends Component {
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
     videos: [],
+    //add
+    startGuide: false,
+    stepIndex: 0,
     steps: tourSteps[this.props.user.lang],
     sliderRefs: [],
+    playlistSuccess: false,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -64,6 +68,57 @@ class Home extends Component {
       })
     }
     return { ...prevState, playlists, videos }
+  }
+  //added
+
+  handleTourCallback = data => {
+    const { type, action, index } = data
+    const { videos } = this.props.home
+
+    if (type === EVENTS.TOUR_END) {
+      localStorage.setItem('tour-home', true)
+      // document.cookie = '__trh=1; path=/;';
+      return true
+    }
+
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1,
+      })
+      // alert('next')
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState(
+        {
+          stepIndex: index - 1,
+        },
+        () => {
+          if (index === 4) {
+            this.sliderRefs[0].slickPrev()
+          }
+        }
+      )
+      // alert('prev')
+    } else {
+      if (action === ACTIONS.NEXT && index === 4) {
+        if (videos.data[0].data.length > 1) {
+          this.sliderRefs[0].slickNext()
+        } else {
+          this.setState({
+            stepIndex: index + 1,
+          })
+        }
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    const { playlists, videos } = this.props.home
+
+    if (playlists.meta.status === 'success') {
+      if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
+        this.initTour()
+      }
+    }
   }
 
   componentDidMount() {
@@ -142,6 +197,23 @@ class Home extends Component {
         }
       }
     }
+  }
+
+  initTour = () => {
+    this.setState(
+      {
+        playlistSuccess: true,
+      },
+      () => {
+        let isTourDone = localStorage.getItem('tour-home')
+
+        if (!isTourDone) {
+          this.setState({
+            startGuide: true,
+          })
+        }
+      }
+    )
   }
 
   componentWillUnmount() {
@@ -270,6 +342,18 @@ class Home extends Component {
 
     return (
       <Fragment>
+        <Joyride
+          disableOverlayClose={true} //
+          stepIndex={stepIndex} //
+          continuous // ?
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle} //uk
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
+
         <div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
@@ -281,7 +365,7 @@ class Home extends Component {
               <>
                 <div className={styles.home__gradient} />
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} />
+                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} className="tourCategory" />
                 </div>
                 <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                   <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
@@ -297,13 +381,13 @@ class Home extends Component {
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white}`}>
+                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       <span className={`${styles.icon__view_movie} ${0 ? styles.white : styles.black}`} />
                     </Link>
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
-                  {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" />}
+                  {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
                 <Slider
                   {...settings}

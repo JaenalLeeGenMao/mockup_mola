@@ -107,6 +107,19 @@ const routes = {
       path: '/conditions',
       load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },
+    {
+      path: '/subscribe',
+      load: () => import(/* webpackChunkName: 'subscribe' */ './subscribe'),
+    },
+    {
+      path: '/subscribe-detail',
+      load: () => import(/* webpackChunkName: 'subscribe-detail' */ './subscribe-detail'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

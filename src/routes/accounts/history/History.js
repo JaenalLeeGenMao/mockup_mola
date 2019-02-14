@@ -77,6 +77,13 @@ class History extends React.Component {
         isActive: true,
         title: 'History',
       },
+      //added by ayu
+      {
+        id: 3,
+        isActive: false,
+        title: 'Subscription Packages',
+        href: '/subscriptionpackages',
+      },
     ]
     return (
       <Fragment>

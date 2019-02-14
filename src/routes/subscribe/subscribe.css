@@ -1,0 +1,100 @@
+.subscribe_singlepage {
+  background: linear-gradient(#0e1d3d, #000);
+  padding-left: 30%;
+  padding-right: 30%;
+}
+
+.subscribe_contentheadlinecls {
+  font-size: 30px;
+  color: white !important;
+  text-align: center;
+  padding-top: 19px;
+  padding-bottom: 19px;
+}
+
+.subscribe_paketcls {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 15px;
+  background-color: white !important;
+  color: black !important;
+  line-height: 1.6;
+  max-height: 40% !important;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.subscribe_access_titlecls {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 15px;
+  color: black !important;
+  line-height: 1.6;
+  background-color: lightgrey;
+  padding-left: 10px;
+  border-radius: 5px;
+  padding-right: 10px;
+}
+
+.subscribe_accesstitle {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.subscribekualitastitle {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.subscribe_price {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 4px;
+  padding-bottom: 21px;
+}
+
+.subscribe_accessdescriptioncls {
+  padding-top: 4px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  color: black !important;
+  line-height: 1.6;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+html,
+body {
+  background: linear-gradient(#0e1d3d, #000) !important;
+}
+
+.subscribe_btn_lihatpaket {
+  float: right !important;
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 119.375px;
+  height: 33px;
+  background-color: #2b51ff;
+  border: none;
+  border-radius: 3px;
+  color: white;
+}
+
+@media only screen and (max-width: 600px) {
+  .subscribe_singlepage {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+}
+
+@media only screen and (min-width: 3840px) {
+  .subscribe_singlepage {
+    padding-left: 20%;
+    padding-right: 46%;
+  }
+}
