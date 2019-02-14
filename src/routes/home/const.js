@@ -25,7 +25,7 @@ export const SETTINGS_VERTICAL = {
   fade: true,
   autoplay: false,
   autoplaySpeed: 4000,
-  speed: 2000,
+  speed: 1400,
 }
 
 export const SETTINGS = {

@@ -6,10 +6,10 @@ import LazyLoad from '@components/common/Lazyload'
 import horizontalStyles from './menu-horizontal.css'
 import verticalStyles from './menu-vertical.css'
 
-const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical' }) => {
+const HomeMenu = ({ className = '', playlists, activeIndex = 0, isDark = 0, type = 'vertical' }) => {
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles
   return (
-    <LazyLoad containerClassName={styles.menu}>
+    <LazyLoad containerClassName={[styles.menu, className].join(' ')}>
       {playlists.map(({ id }, index) => (
         <div
           key={id}

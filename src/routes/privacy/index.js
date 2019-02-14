@@ -17,7 +17,7 @@ import Privacy from './privacy'
 const title = 'Privacy Page'
 const description = 'Privacy Policy'
 
-function action(isMobile) {
+function action({ isMobile }) {
   return {
     chunks: ['privacy'],
     title,
