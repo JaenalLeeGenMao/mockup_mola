@@ -423,6 +423,12 @@ class Home extends Component {
           activeSlideDots: videos.data[index].data,
         })
       }
+
+      /* Auto Focus on page loaded, to enable keypress eventListener */
+      var input = document.querySelector('.grid-slick')
+      if (input && !flag) {
+        input.click()
+      }
     }, 300)
   }
 
