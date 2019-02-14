@@ -18,6 +18,7 @@ import Link from '@components/Link'
 
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
 import { videoSettings as defaultVideoSettings } from '../const'
+import { generateDeviceId } from '../util'
 
 import { handleTracker } from './tracker'
 
@@ -37,10 +38,12 @@ import {
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
-// const { getComponent } = require('../../../../../gandalf')
-const { getComponent } = require('@supersoccer/gandalf')
+const { getComponent } = require('../../../../../gandalf')
+// const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 const VideoThumbnail = getComponent('video-thumbnail')
+
+var isTabActive
 
 const Controller = ({ isActive = 'overview', onClick }) => {
   return (
@@ -236,6 +239,7 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
+    localStorage.setItem('deviceId', localStorage.getItem('deviceId') ? localStorage.getItem('deviceId') : generateDeviceId())
     this.updateEncryption()
   }
 

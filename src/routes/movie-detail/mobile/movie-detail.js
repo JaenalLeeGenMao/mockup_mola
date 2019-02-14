@@ -19,6 +19,7 @@ import Link from '@components/Link'
 
 import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
 import { videoSettings as defaultVideoSettings } from '../const'
+import { generateDeviceId } from '../util'
 
 import { handleTracker } from './tracker'
 
@@ -194,6 +195,7 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
+    localStorage.setItem('deviceId', localStorage.getItem('deviceId') ? localStorage.getItem('deviceId') : generateDeviceId())
     this.updateEncryption()
   }
 
