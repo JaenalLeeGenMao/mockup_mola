@@ -291,8 +291,8 @@ class MovieDetail extends Component {
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}
                     handleVideoTimeUpdate={this.handleVideoTimeUpdate}
-                    deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
-                    isDRM={true}
+                    // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
+                    // isDRM={true}
                     {...videoSettings}
                     showChildren
                   >
