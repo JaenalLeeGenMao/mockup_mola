@@ -18,7 +18,6 @@ import Link from '@components/Link'
 
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
 import { videoSettings as defaultVideoSettings } from '../const'
-import { generateDeviceId } from '../util'
 
 import { handleTracker } from './tracker'
 
@@ -239,7 +238,6 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
-    localStorage.setItem('deviceId', localStorage.getItem('deviceId') ? localStorage.getItem('deviceId') : generateDeviceId())
     this.updateEncryption()
   }
 
@@ -259,7 +257,11 @@ class MovieDetail extends Component {
     const { meta: { status }, data } = movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    // const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    const streamSource = isSafari
+      ? 'https://cdn-supersoccer-k-01.akamaized.net/Content/HLS/Live/channel(74fa5c1e-bde9-6718-e3ab-11227d90da31)/index.m3u8?hdnts=st=1550491010~exp=1553083010~acl=/*~hmac=c58bb1dfe4f2068f4b004a447af035aa3b50f562e6ebe94f026f7958144d6a6d'
+      : 'https://cdn-supersoccer-k-01.akamaized.net/Content/DASH/Live/channel(74fa5c1e-bde9-6718-e3ab-11227d90da31)/manifest.mpd?hdnts=st=1550491010~exp=1553083010~acl=/*~hmac=c58bb1dfe4f2068f4b004a447af035aa3b50f562e6ebe94f026f7958144d6a6d'
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/DASH/Live/channel(2a10e294-db16-0d35-f732-f2d040e882d0)/manifest.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
@@ -289,6 +291,8 @@ class MovieDetail extends Component {
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}
                     handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                    // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
+                    // isDRM={true}
                     {...videoSettings}
                     showChildren
                   >
