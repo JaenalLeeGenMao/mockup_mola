@@ -180,6 +180,25 @@ body {
   color: white;
 }
 
+.home__a2hs_container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 2.5rem;
+  display: none;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: dodgerblue;
+  background: white;
+  z-index: 3;
+}
+
+.home__logo {
+  width: 6rem;
+  height: 2.28rem;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .swipeUpIcon {
