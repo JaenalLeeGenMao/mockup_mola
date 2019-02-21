@@ -33,6 +33,7 @@ import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
 let activePlaylist
+let deferredPrompt
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
@@ -164,14 +165,31 @@ class Home extends Component {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       // e.preventDefault()
       // Stash the event so it can be triggered later.
-      this.deferredPrompt = e
+      deferredPrompt = e
 
       const a2hsInstalled = localStorage.getItem('a2hs')
-      console.log(a2hsInstalled)
-      // if (!a2hsInstalled) {
-      // Update UI notify the user they can add to home screen
-      this.btnAdd.style.display = 'flex'
-      // }
+      if (!a2hsInstalled) {
+        // Update UI notify the user they can add to home screen
+        this.a2hsContainer.style.display = 'flex'
+      }
+    })
+
+    this.btnAdd.addEventListener('click', e => {
+      // hide our user interface that shows our A2HS button
+      this.a2hsContainer.style.display = 'none'
+      // Show the prompt
+      deferredPrompt.prompt()
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice.then(choiceResult => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt')
+          localStorage.setItem('a2hs', true)
+        } else {
+          console.log('User dismissed the A2HS prompt')
+          localStorage.setItem('a2hs', false)
+        }
+        deferredPrompt = null
+      })
     })
 
     window.addEventListener('appinstalled', evt => {
@@ -379,7 +397,7 @@ class Home extends Component {
         <div>
           <div
             ref={node => {
-              this.btnAdd = node
+              this.a2hsContainer = node
             }}
             className={styles.home__a2hs_container}
           >
@@ -387,23 +405,8 @@ class Home extends Component {
               <img alt="molatv" src={logoLandscapeBlue} />
             </div>
             <div
-              onClick={() => {
-                // hide our user interface that shows our A2HS button
-                this.btnAdd.style.display = 'none'
-                console.log('HELLLOOOO', this.deferredPrompt)
-                // Show the prompt
-                this.deferredPrompt.prompt()
-                // Wait for the user to respond to the prompt
-                this.deferredPrompt.userChoice.then(choiceResult => {
-                  if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the A2HS prompt')
-                    localStorage.setItem('a2hs', true)
-                  } else {
-                    console.log('User dismissed the A2HS prompt')
-                    localStorage.setItem('a2hs', false)
-                  }
-                  this.deferredPrompt = null
-                })
+              ref={node => {
+                this.btnAdd = node
               }}
             >
               ADD TO HOME SCREEN
@@ -411,7 +414,7 @@ class Home extends Component {
             <div
               onClick={() => {
                 // hide our user interface that shows our A2HS button
-                this.btnAdd.style.display = 'none'
+                this.a2hsContainer.style.display = 'none'
                 localStorage.setItem('a2hs', false)
               }}
             >
