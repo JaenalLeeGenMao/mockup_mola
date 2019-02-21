@@ -177,6 +177,7 @@ class Home extends Component {
       this.props.onUpdatePlaylist(activePlaylist.id)
     }
 
+    this.handleKeyboardEvent()
     this.handleMouseScroll()
 
     document.body.addEventListener('touchmove', this.preventDefault, {
@@ -326,6 +327,39 @@ class Home extends Component {
     )
   }
 
+  handleKeyboardEvent = () => {
+    /** handle keyboard pressed */
+    document.onkeyup = event => {
+      ticking = false
+
+      const { activeSlide } = this.state
+
+      switch (event.which || event.keyCode) {
+        case 37 /* left */:
+          console.log('LEFT: ', this.handleSwipeDirection(this.activeSlider, 0, 1000))
+          return event.preventDefault()
+        case 38 /* up */:
+          this.handleScrollToIndex(this.state.scrollIndex - 1)
+          break
+        case 39 /* right */:
+          console.log('RIGHT: ', this.handleSwipeDirection(this.activeSlider, 1000, 0))
+          return event.preventDefault()
+        case 40 /* down */:
+          this.handleScrollToIndex(this.state.scrollIndex + 1)
+          break
+        case 13 /* enter */:
+          window.location.href = `/movie-detail/${activeSlide.id}`
+          break
+        case 32 /* space */:
+          window.location.href = `/movie-detail/${activeSlide.id}`
+          break
+        default:
+          event.preventDefault()
+          break
+      }
+    }
+  }
+
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
       { sliderRefs } = this.state
@@ -388,6 +422,12 @@ class Home extends Component {
           activeSlide: videos.data[index].data[swipeIndex],
           activeSlideDots: videos.data[index].data,
         })
+      }
+
+      /* Auto Focus on page loaded, to enable keypress eventListener */
+      var input = document.querySelector('.grid-slick')
+      if (input && !flag) {
+        input.click()
       }
     }, 300)
   }

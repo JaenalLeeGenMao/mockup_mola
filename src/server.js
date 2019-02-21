@@ -33,7 +33,9 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
-// import { get, post } from 'axios'
+import { get, post } from 'axios'
+import crypto from 'crypto.js'
+
 import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
@@ -70,24 +72,49 @@ const { domain } = config.endpoints
 let count = 0
 // var inboxInterval;
 // set a cookie
+
+const getVUID = async deviceId => {
+  const addDeviceURL = `https://stag.supersoccer.tv/api/v1/videos/drm/addDevice?deviceId=${deviceId}`
+  return await get(addDeviceURL)
+}
+
 app.use(function(req, res, next) {
   // check if client sent cookie
   var cookie = req.cookies
-  if (`${cookie.UID}` === 'undefined' || cookie.UID === undefined) {
-    if (req.query.uid) {
-      res.cookie('UID', req.query.uid, {
-        path: '/',
-        maxAge: 7 * 24 * 3600 * 1000,
-        httpOnly: true,
-      })
-    }
-  }
   if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
     res.cookie('SID', req.cookies.SID, {
       path: '/',
       maxAge: 7 * 24 * 3600 * 1000,
       httpOnly: true,
     })
+  }
+  if (`${cookie.UID}` === 'undefined' || cookie.UID === undefined) {
+    const uid = req.query.uid
+    if (uid) {
+      res.cookie('UID', uid, {
+        path: '/',
+        maxAge: 7 * 24 * 3600 * 1000,
+        httpOnly: true,
+      })
+      // const vuid = getVUID(uid)
+      // res.cookie('VUID', vuid, {
+      //   path: '/',
+      //   httpOnly: true,
+      // })
+    }
+  }
+  if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
+    const deviceId = crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
+    // const vuid = getVUID(deviceId)
+    res.cookie('__deviceId', deviceId, {
+      path: '/',
+      maxAge: 30 * 24 * 3600 * 1000,
+      httpOnly: true,
+    })
+    // res.cookie('VUID', vuid, {
+    //   path: '/',
+    //   httpOnly: true,
+    // })
   }
   next() // <-- important!
 })
@@ -135,6 +162,8 @@ app.get('*', async (req, res, next) => {
       user: req.user || {
         uid: req.cookies.UID === 'undefined' ? '' : req.cookies.UID,
         sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
+        vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
+        deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         sessionId: req.cookies.__sessId === 'undefined' ? '' : req.cookies.__sessId,
         firstName: '',
         lastName: '',
