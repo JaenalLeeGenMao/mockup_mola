@@ -156,6 +156,16 @@ class Home extends Component {
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
       }
     }
+    //addtohomescreenprompt
+    window.addEventListener('beforeinstallprompt', function(e) {
+      console.log('beforeinstallprompt Event fired')
+      if (e.prompt) {
+        e.preventDefault()
+        // Stash the event so it can be triggered later.
+        window.deferredPrompt = e
+        return false
+      }
+    })
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
