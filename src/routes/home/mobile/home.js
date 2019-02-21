@@ -390,6 +390,7 @@ class Home extends Component {
               onClick={() => {
                 // hide our user interface that shows our A2HS button
                 this.btnAdd.style.display = 'none'
+                console.log('HELLLOOOO', this.deferredPrompt)
                 // Show the prompt
                 this.deferredPrompt.prompt()
                 // Wait for the user to respond to the prompt
@@ -411,10 +412,7 @@ class Home extends Component {
               onClick={() => {
                 // hide our user interface that shows our A2HS button
                 this.btnAdd.style.display = 'none'
-                // Wait for the user to respond to the prompt
-                this.deferredPrompt.userChoice.then(choiceResult => {
-                  this.deferredPrompt = null
-                })
+                localStorage.setItem('a2hs', false)
               }}
             >
               ✖
