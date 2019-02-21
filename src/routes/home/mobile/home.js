@@ -162,33 +162,16 @@ class Home extends Component {
     // Prompt user to AddToHomeScreen
     window.addEventListener('beforeinstallprompt', e => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault()
+      // e.preventDefault()
       // Stash the event so it can be triggered later.
       this.deferredPrompt = e
 
       const a2hsInstalled = localStorage.getItem('a2hs')
-      if (!a2hsInstalled) {
-        // Update UI notify the user they can add to home screen
-        this.btnAdd.style.display = 'flex'
-      }
-    })
-
-    this.btnAdd.addEventListener('click', e => {
-      // hide our user interface that shows our A2HS button
-      this.btnAdd.style.display = 'none'
-      // Show the prompt
-      this.deferredPrompt.prompt()
-      // Wait for the user to respond to the prompt
-      this.deferredPrompt.userChoice.then(choiceResult => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-          localStorage.setItem('a2hs', true)
-        } else {
-          console.log('User dismissed the A2HS prompt')
-          localStorage.setItem('a2hs', false)
-        }
-        this.deferredPrompt = null
-      })
+      console.log(a2hsInstalled)
+      // if (!a2hsInstalled) {
+      // Update UI notify the user they can add to home screen
+      this.btnAdd.style.display = 'flex'
+      // }
     })
 
     window.addEventListener('appinstalled', evt => {
@@ -403,8 +386,39 @@ class Home extends Component {
             <div className={styles.home__logo}>
               <img alt="molatv" src={logoLandscapeBlue} />
             </div>
-            <div>ADD TO HOME SCREEN</div>
-            <div>✖</div>
+            <div
+              onClick={() => {
+                // hide our user interface that shows our A2HS button
+                this.btnAdd.style.display = 'none'
+                // Show the prompt
+                this.deferredPrompt.prompt()
+                // Wait for the user to respond to the prompt
+                this.deferredPrompt.userChoice.then(choiceResult => {
+                  if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt')
+                    localStorage.setItem('a2hs', true)
+                  } else {
+                    console.log('User dismissed the A2HS prompt')
+                    localStorage.setItem('a2hs', false)
+                  }
+                  this.deferredPrompt = null
+                })
+              }}
+            >
+              ADD TO HOME SCREEN
+            </div>
+            <div
+              onClick={() => {
+                // hide our user interface that shows our A2HS button
+                this.btnAdd.style.display = 'none'
+                // Wait for the user to respond to the prompt
+                this.deferredPrompt.userChoice.then(choiceResult => {
+                  this.deferredPrompt = null
+                })
+              }}
+            >
+              ✖
+            </div>
           </div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
