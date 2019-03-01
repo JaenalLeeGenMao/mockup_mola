@@ -4,6 +4,18 @@ dotenv.config()
 
 const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
 
+const oauth = {
+  appKey: 'wIHGzJhset',
+  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read' /* DARI CODINGAN LAMA */,
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/videos/videos.read' /* DARI CODINGAN LAMA */,
+  ].join(' '),
+}
+
 const options = {
   development: {
     port: 3000,
@@ -63,4 +75,5 @@ module.exports = {
   ...config,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
   port: process.env.PORT || 3000,
+  oauth,
 }
