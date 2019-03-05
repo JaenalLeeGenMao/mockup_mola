@@ -85,23 +85,23 @@ class MovieDetail extends Component {
     isControllerActive: 'overview',
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getMovieDetail,
-      movieDetail,
-      movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
-    } = nextProps
-    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-      return { ...prevState, movieDetail, toggleSuggestion: false }
-    }
-    return { ...prevState, movieDetail }
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   const {
+  //     getMovieDetail,
+  //     movieDetail,
+  //     movieId, //passed as props from index.js,
+  //     onHandleHotPlaylist,
+  //   } = nextProps
+  //   if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
+  //     getMovieDetail(movieId)
+  //     onHandleHotPlaylist()
+  //   } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
+  //     getMovieDetail(movieId)
+  //     onHandleHotPlaylist()
+  //     return { ...prevState, movieDetail, toggleSuggestion: false }
+  //   }
+  //   return { ...prevState, movieDetail }
+  // }
 
   /* eslint-disable */
   updateEncryption() {
@@ -238,10 +238,34 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
+    const {
+      getMovieDetail,
+      movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
+    } = this.props
+
+    getMovieDetail(movieId)
+    onHandleHotPlaylist()
+
     this.updateEncryption()
   }
 
   componentDidUpdate() {
+    const {
+      getMovieDetail,
+      movieDetail,
+      movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
+    } = this.props
+
+    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+      getMovieDetail(movieId)
+      onHandleHotPlaylist()
+      this.setState({
+        toggleSuggestion: false,
+      })
+    }
+
     this.updateMetaTag()
   }
 
@@ -253,8 +277,8 @@ class MovieDetail extends Component {
   }
 
   render() {
-    const { isControllerActive, movieDetail, toggleSuggestion } = this.state
-    const { meta: { status }, data } = movieDetail
+    const { isControllerActive, toggleSuggestion } = this.state
+    const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)

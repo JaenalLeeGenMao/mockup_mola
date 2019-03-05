@@ -141,8 +141,10 @@
 }
 
 :global(.slick-slide) img {
-  transform: scale(1.05);
-  transition: all 2s ease;
+  transform: scale(1) translate(0);
+
+  /* animation: cssAnimation 2s 1 ease-in-out; */
+  transition: all 500ms ease;
 }
 
 :global(.slick-slider) :global(.slick-list),
@@ -153,13 +155,22 @@
 
 :global(.slick-initialized) :global(.slick-slide) {
   display: block;
+
+  /* animation: cssAnimation 2s linear; */
 }
 
 :global(.slick-active) img {
-  transform: scale(1) translateY(0%);
-  transition: all 2s ease;
+  transform: scale(1) translate(0);
+
+  /* animation: cssAnimation 2s 1 linear; */
+  transition: all 500ms ease;
 }
 
-* {
-  outline: 0;
-}
+/* @keyframes cssAnimation {
+  from {
+    transform: scale(0.25) translate(400px);
+  }
+  to {
+    transform: scale(1) translate(0px);
+  }
+} */

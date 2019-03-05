@@ -207,7 +207,7 @@ class Home extends Component {
         if (this.rootSlider.innerSlider === null) {
           return false
         }
-        if (distance <= 20) {
+        if (distance <= 100) {
           // do nothing
         } else if (prevX > nextX) {
           this.rootSlider.slickNext()
@@ -272,6 +272,7 @@ class Home extends Component {
         { videos, sliderRefs } = that.state
       let isDark = 1
       if (activeSlick) {
+        console.log(activeSlick)
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {

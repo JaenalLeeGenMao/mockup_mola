@@ -152,8 +152,19 @@
 
 :global(.slick-active) img {
   transform: scale(1) translateY(0%);
+
+  /* animation: cssAnimation 2s 1 ease-in-out; */
 }
 
 * {
   outline: 0;
 }
+
+/* @keyframes cssAnimation {
+  from {
+    transform: scale(0.25) translate(400px);
+  }
+  to {
+    transform: scale(1) translate(0px);
+  }
+} */

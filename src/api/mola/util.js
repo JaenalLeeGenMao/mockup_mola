@@ -210,7 +210,7 @@ const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, isDark, year, duration } } = result
+      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration } } = result
       const filteredSubtitles = subtitles.map(subtitle => {
         const { id, type, attributes: { locale, url, format } } = subtitle
         /* More info please visit https://support.theoplayer.com/hc/en-us/articles/214041829-TextTrack-API */
@@ -232,6 +232,7 @@ const normalizeVideoDetail = response => {
         streamSourceUrl,
         subtitles: filteredSubtitles,
         people,
+        genre,
         isDark,
         year,
         duration,
