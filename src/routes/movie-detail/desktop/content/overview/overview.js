@@ -15,7 +15,7 @@ import {
 } from './style'
 
 const Overview = ({ data }) => {
-  const { title, description } = data
+  const { title, description, year, genre, duration } = data
   const filterPeople = type =>
     data.people.filter(item => {
       return item.attributes.peopleTypeName === type
@@ -38,8 +38,8 @@ const Overview = ({ data }) => {
       <div className={contentOverviewSectionLeft}>
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
-          <p className={sectionLeftText}>Documenter, Drama</p>
-          <p className={sectionLeftDuration}>{'1967  13+  2h13m'}</p>
+          <p className={sectionLeftText}>{genre}</p>
+          <p className={sectionLeftDuration}>{`${year}  13+  ${Math.floor(duration / 3600)}h${Math.floor((duration % 3600) / 60)}m`}</p>
         </div>
       </div>
       <div className={contentOverviewSectionMiddle}>

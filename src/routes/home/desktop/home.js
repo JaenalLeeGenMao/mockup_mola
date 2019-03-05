@@ -521,7 +521,8 @@ class Home extends Component {
                     <p>{filteredDesc}</p>
                     <p className={styles.quote}>{filteredQuote}</p>
                     <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      {locale['view_movie']}
+                      <span className={styles.play_icon} />
+                      <p>{locale['view_movie']}</p>
                     </Link>
                   </LazyLoad>
                 )}

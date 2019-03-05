@@ -18,7 +18,7 @@ export const SETTINGS_VERTICAL = {
   arrows: false,
   dots: false,
   vertical: true,
-  verticalSwiping: false,
+  verticalSwiping: true,
   infinite: true,
   // slidesToShow: 1,
   // slidesToScroll: 1,

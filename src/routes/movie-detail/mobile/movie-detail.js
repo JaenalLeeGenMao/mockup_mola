@@ -62,25 +62,6 @@ let ticker = [0] /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
-    movieDetail: [],
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getMovieDetail,
-      movieDetail,
-      movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
-    } = nextProps
-    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-      return { ...prevState, movieDetail, toggleSuggestion: false }
-    }
-    return { ...prevState, movieDetail }
   }
 
   /* eslint-disable */
@@ -194,10 +175,34 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
+    const {
+      getMovieDetail,
+      movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
+    } = this.props
+
+    getMovieDetail(movieId)
+    onHandleHotPlaylist()
+
     this.updateEncryption()
   }
 
   componentDidUpdate() {
+    const {
+      getMovieDetail,
+      movieDetail,
+      movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
+    } = this.props
+
+    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+      getMovieDetail(movieId)
+      onHandleHotPlaylist()
+      this.setState({
+        toggleSuggestion: false,
+      })
+    }
+
     this.updateMetaTag()
   }
 
@@ -209,15 +214,14 @@ class MovieDetail extends Component {
   }
 
   render() {
-    const { movieDetail, toggleSuggestion } = this.state
-    const { meta: { status }, data } = movieDetail
+    const { toggleSuggestion } = this.state
+    const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
-    // const poster = apiFetched ? dataFetched.images.cover.details.mobile.portrait : ''
 
     const videoSettings = {
       ...defaultVideoSettings,
@@ -227,6 +231,7 @@ class MovieDetail extends Component {
 
     return (
       <>
+        {' '}
         {dataFetched && (
           <>
             <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn shareButtonOn {...this.props} />
