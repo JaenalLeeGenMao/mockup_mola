@@ -12,6 +12,8 @@ import _get from 'lodash/get'
 
 import homeActions from '@actions/home'
 
+import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
 
 import Header from '@components/Header'
@@ -31,6 +33,7 @@ import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 
 let activePlaylist
+let deferredPrompt
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
@@ -156,6 +159,43 @@ class Home extends Component {
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
       }
     }
+
+    // Prompt user to AddToHomeScreen
+    window.addEventListener('beforeinstallprompt', e => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      // e.preventDefault()
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e
+
+      const a2hsInstalled = localStorage.getItem('a2hs')
+      if (!a2hsInstalled) {
+        // Update UI notify the user they can add to home screen
+        this.a2hsContainer.style.display = 'flex'
+      }
+    })
+
+    this.btnAdd.addEventListener('click', e => {
+      // hide our user interface that shows our A2HS button
+      this.a2hsContainer.style.display = 'none'
+      // Show the prompt
+      deferredPrompt.prompt()
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice.then(choiceResult => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt')
+          localStorage.setItem('a2hs', true)
+        } else {
+          console.log('User dismissed the A2HS prompt')
+          localStorage.setItem('a2hs', false)
+        }
+        deferredPrompt = null
+      })
+    })
+
+    window.addEventListener('appinstalled', evt => {
+      app.logEvent('a2hs', 'installed')
+      localStorage.setItem('a2hs', true)
+    })
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
@@ -167,7 +207,7 @@ class Home extends Component {
         if (this.rootSlider.innerSlider === null) {
           return false
         }
-        if (distance <= 20) {
+        if (distance <= 100) {
           // do nothing
         } else if (prevX > nextX) {
           this.rootSlider.slickNext()
@@ -355,6 +395,32 @@ class Home extends Component {
         />
 
         <div>
+          <div
+            ref={node => {
+              this.a2hsContainer = node
+            }}
+            className={styles.home__a2hs_container}
+          >
+            <div className={styles.home__logo}>
+              <img alt="molatv" src={logoLandscapeBlue} />
+            </div>
+            <div
+              ref={node => {
+                this.btnAdd = node
+              }}
+            >
+              ADD TO HOME SCREEN
+            </div>
+            <div
+              onClick={() => {
+                // hide our user interface that shows our A2HS button
+                this.a2hsContainer.style.display = 'none'
+                localStorage.setItem('a2hs', false)
+              }}
+            >
+              ✖
+            </div>
+          </div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
@@ -371,7 +437,7 @@ class Home extends Component {
                   <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
                     <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
                   </Link>
-                  <p className={`${styles.header__library_text} ${isDark ? styles.black : styles.white}`}>Terbaik dari film {activePlaylist.title}</p>
+                  <p className={`${styles.header__library_text} ${0 ? styles.black : styles.white}`}>film {activePlaylist.title} lain</p>
                 </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
@@ -380,7 +446,6 @@ class Home extends Component {
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
-                    <p className="filteredText">{filteredDesc}</p>
                     <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       <span className={`${styles.icon__view_movie} ${0 ? styles.white : styles.black}`} />
                     </Link>

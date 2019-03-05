@@ -59,8 +59,8 @@ class Html extends React.Component {
           <meta property="og:site_name" content="molatv" />
           <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} />
           <meta property="og:description" content={description} />
-          <meta property="og:image" content={logoLandscapeBlue} />
-          <meta property="og:url" content={'https://mola.tv/' || url} />
+          <meta property="og:image" content={image} />
+          <meta property="og:url" content={url} />
           <meta property="og:type" content="website" />
           <meta name="referrer" content="origin" />
           <meta name="referrer" content="origin-when-cross-origin" />

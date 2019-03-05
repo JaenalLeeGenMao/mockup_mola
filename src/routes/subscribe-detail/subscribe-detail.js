@@ -376,9 +376,9 @@ class SubscribeDetail extends Component {
               </div>
             }
             <div>
-              <a href="subscribe">
-                <button className={styles.subscribedetail_btn_back}>Kembali</button>
-              </a>
+              {/* <a href={"subscribe/"}> */}
+              <button className={styles.subscribedetail_btn_back}>Kembali</button>
+              {/* </a> */}
             </div>
             <br />
           </div>

@@ -12,7 +12,7 @@ export const tourSteps = {
           biasa
         </div>
       ),
-      placement: 'right',
+      // placement: 'right',
       disableBeacon: true,
       styles: {
         tooltip: {
@@ -64,7 +64,7 @@ export const tourSteps = {
           To navigate around different movie categories, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} /> up and down on your awesome keyboard
         </div>
       ),
-      placement: 'right',
+      // placement: 'right',
       disableBeacon: true,
       styles: {
         tooltip: {

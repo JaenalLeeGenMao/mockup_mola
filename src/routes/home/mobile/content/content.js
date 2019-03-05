@@ -17,10 +17,10 @@ class Content extends Component {
     const settings = {
       dots: false,
       arrows: false,
-      infinite: false,
+      infinite: true,
       speed: 500,
       slidesToShow: 1,
-      draggable: false,
+      draggable: true,
       fade: false,
       beforeChange: (currentIndex, nextIndex) => {
         updateColorChange(index, nextIndex)
