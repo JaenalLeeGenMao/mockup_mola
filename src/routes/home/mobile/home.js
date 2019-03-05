@@ -272,7 +272,6 @@ class Home extends Component {
         { videos, sliderRefs } = that.state
       let isDark = 1
       if (activeSlick) {
-        console.log(activeSlick)
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
@@ -438,7 +437,7 @@ class Home extends Component {
                   <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
                     <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
                   </Link>
-                  <p className={`${styles.header__library_text} ${isDark ? styles.black : styles.white}`}>Terbaik dari film {activePlaylist.title}</p>
+                  <p className={`${styles.header__library_text} ${0 ? styles.black : styles.white}`}>film {activePlaylist.title} lain</p>
                 </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
@@ -447,7 +446,6 @@ class Home extends Component {
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
-                    <p className="filteredText">{filteredDesc}</p>
                     <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       <span className={`${styles.icon__view_movie} ${0 ? styles.white : styles.black}`} />
                     </Link>

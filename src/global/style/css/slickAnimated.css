@@ -142,8 +142,6 @@
 
 :global(.slick-slide) img {
   transform: scale(1) translate(0);
-
-  /* animation: cssAnimation 2s 1 ease-in-out; */
   transition: all 500ms ease;
 }
 
@@ -155,22 +153,21 @@
 
 :global(.slick-initialized) :global(.slick-slide) {
   display: block;
-
-  /* animation: cssAnimation 2s linear; */
 }
 
 :global(.slick-active) img {
   transform: scale(1) translate(0);
-
-  /* animation: cssAnimation 2s 1 linear; */
   transition: all 500ms ease;
 }
 
-/* @keyframes cssAnimation {
+@keyframes cssAnimation {
   from {
+    display: none;
     transform: scale(0.25) translate(400px);
   }
+
   to {
-    transform: scale(1) translate(0px);
+    display: inline-block;
+    transform: scale(1) translate(0);
   }
-} */
+}
