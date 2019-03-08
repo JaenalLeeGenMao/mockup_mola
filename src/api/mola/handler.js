@@ -1,5 +1,5 @@
 import { get, post, delete as axiosDelete } from 'axios'
-import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints'
+import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, SUBSCRIPTION_ENDPOINT } from './endpoints'
 import utils from './util'
 
 import { endpoints } from '@source/config'
@@ -343,6 +343,37 @@ const getHotPlaylist = () => {
     })
 }
 
+const getAllSubscriptions = token => {
+  return get('/api/v2/subscriptions/subscriptions', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      app_id: 2,
+    },
+    ...endpoints.setting,
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: response.data.data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
@@ -357,4 +388,5 @@ export default {
   getMovieLibrary,
   getMovieLibraryList,
   getHotPlaylist,
+  getAllSubscriptions,
 }

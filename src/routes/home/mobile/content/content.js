@@ -20,7 +20,8 @@ class Content extends Component {
       infinite: true,
       speed: 500,
       slidesToShow: 1,
-      draggable: true,
+      swipe: false,
+      draggable: false,
       fade: false,
       beforeChange: (currentIndex, nextIndex) => {
         updateColorChange(index, nextIndex)

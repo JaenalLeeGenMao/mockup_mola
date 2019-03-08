@@ -2,6 +2,7 @@
   background: linear-gradient(#0e1d3d, #000);
   padding-left: 30%;
   padding-right: 30%;
+  min-height: 100vh;
 }
 
 .subscribe_contentheadlinecls {
@@ -83,6 +84,11 @@ body {
   border: none;
   border-radius: 3px;
   color: white;
+}
+
+.subscribe_btn_lihatpaket:hover {
+  cursor: pointer;
+  background-color: #1a37ad;
 }
 
 @media only screen and (max-width: 600px) {

@@ -7,6 +7,7 @@ import * as movieDetail from './movie-detail'
 import * as movieLibrary from './movie-library'
 import * as movieStream from './movie-stream'
 import * as notFound from './not-found'
+import * as subscribe from './subscribe'
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE'
 export default {
@@ -19,4 +20,5 @@ export default {
   ...movieLibrary,
   ...movieStream,
   ...notFound,
+  ...subscribe,
 }

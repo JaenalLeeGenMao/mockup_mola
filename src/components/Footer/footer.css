@@ -1,11 +1,13 @@
 .footer__container {
+  position: fixed;
   padding: 2rem;
   text-align: center;
+  bottom: 0;
 }
 
 .footer__container a {
   display: inline-block;
-  color: #acacac;
+  color: #707070;
   margin: 1.2rem;
   font-size: 1.425rem;
 }
