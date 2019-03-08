@@ -34,8 +34,8 @@ body {
   z-index: 1;
   color: white;
   bottom: 0;
-  width: 80%;
-  margin: 0 10% 40%;
+  width: 75%;
+  margin: 0 12.5% 40%;
 }
 
 .header__detail_container.black {
@@ -44,6 +44,20 @@ body {
 
 .header__detail_container.white {
   color: white;
+}
+
+.header__detail_container h1 {
+  width: 60%;
+}
+
+.header__detail_container > h1.small {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.header__detail_container > h1.big {
+  font-size: 24px;
+  text-transform: uppercase;
 }
 
 .header__detail_container > p {
@@ -155,7 +169,7 @@ body {
 }
 
 .home__gradient {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   height: 55%;
