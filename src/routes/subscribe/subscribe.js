@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+
+import subscribeActions from '@actions/subscribe'
+
+import LazyLoad from '@components/common/Lazyload'
 
 import styles from './subscribe.css'
 import { getLocale } from './locale'
@@ -17,17 +23,17 @@ class Subscribe extends Component {
             title: 'SSTV',
             description: 'Serie A, MUTV, FA Cup, Copa Libertadores, Replay, Video on Demand',
             permission: 2,
-            type: 2,
+            // type: 2,
             price: 50000,
-            uom: 'm',
+            // uom: 'm',
             currency: 'idr',
-            order: 10,
-            default: true,
+            // order: 10,
+            // default: true,
             icon: 'https://url/to/icon',
             enabled: true,
             baseColor: '#f1c40f',
             textColor: '#ffffff',
-            terms: 'bla bla',
+            // terms: 'bla bla',
           },
         },
         {
@@ -345,12 +351,19 @@ class Subscribe extends Component {
   clickMe(rowdata) {
     console.log(rowdata)
   }
+
+  componentDidMount() {
+    const { user, getAllSubscriptions } = this.props
+    getAllSubscriptions(user.token)
+  }
+
   render() {
+    const { data } = this.props.subscribe
     return (
       <div className={styles.subscribe_singlepage}>
         <div className={styles.subscribe_contentheadlinecls}>Subscribe</div>
-        {this.state.data.map((rowdata, i) => (
-          <div key={i} className={styles.subscribe_paketcls}>
+        {data.map((rowdata, i) => (
+          <LazyLoad key={i} containerClassName={styles.subscribe_paketcls}>
             <div className={styles.subscribe_access_titlecls}>{rowdata.attributes.title}</div>
             {<div className={styles.subscribe_accesstitle}>Akses : </div>}
             {<div className={styles.subscribe_accessdescriptioncls}>{rowdata.attributes.description}</div>}
@@ -365,11 +378,21 @@ class Subscribe extends Component {
                 </a>
               </div>
             }
-          </div>
+          </LazyLoad>
         ))}
       </div>
     )
   }
 }
 
-export default withStyles(styles)(Subscribe)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  getAllSubscriptions: token => dispatch(subscribeActions.getAllSubscriptions(token)),
+})
+
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Subscribe)

@@ -147,7 +147,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.95);
   color: #525252;
   font-size: 1rem;
 }
@@ -176,13 +176,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #acacac;
+  color: #707070;
 }
 
 .popup__menu_content a {
-  color: #acacac;
+  color: #707070;
   margin: 1.2rem;
   font-size: 1.425rem;
+}
+
+.popup__menu_content a:hover {
+  color: white;
+  font-weight: 300;
 }
 
 .popup__menu_image_wrapper {
@@ -206,29 +211,25 @@
   letter-spacing: 0.0425rem;
   font-weight: 400;
   font-size: 1.888rem !important;
-  padding: 0 1rem 2.4rem;
-}
-
-.popup__menu_inbox {
-  color: white !important;
-  letter-spacing: 0.0425rem;
-  font-weight: 400;
-  padding: 0 !important;
-  font-size: 1.558rem !important;
+  text-transform: capitalize;
 }
 
 .popup__menu_signout {
-  background: rgba(44, 86, 255, 1);
-  border-radius: 0.3rem;
-  color: white !important;
+  color: rgba(44, 86, 255, 1) !important;
   font-size: 1.425rem !important;
   text-transform: uppercase;
   letter-spacing: 0.215rem !important;
-  padding: 1.425rem 4rem !important;
 }
 
 .popup__menu_signout:hover {
-  background: rgba(44, 86, 255, 0.7);
+  color: rgba(44, 86, 255, 0.7) !important;
+}
+
+.popup__menu_profile_container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 /* mobile Styles */
@@ -282,13 +283,13 @@
     font-size: 0.825rem;
   }
 
-  .popup__menu_username {
-    font-size: 1.388rem !important;
-    padding: 0 1rem 1.6rem;
+  .popup__menu_content a:hover {
+    font-size: 1.058rem !important;
+    color: #fff;
   }
 
-  .popup__menu_inbox {
-    font-size: 1.058rem !important;
+  .popup__menu_username {
+    font-size: 1.388rem !important;
   }
 
   .popup__menu_signout {

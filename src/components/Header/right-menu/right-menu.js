@@ -23,14 +23,17 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
       <div className={styles.popup__menu_content}>
         {isLogin && (
           <>
-            <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
-              <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
-            </Link>
-            <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
-            <Link to="/accounts/inbox" className={styles.popup__menu_inbox}>
-              {locale['inbox']}
-            </Link>
-            <Link to="/accounts/history">{locale['history']}</Link>
+            <div className={styles.popup__menu_profile_container}>
+              <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+                <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
+              </Link>
+              <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
+            </div>
+            <Link to="/accounts/profile">{locale['profile']}</Link>
+            <Link to="/accounts/inbox">{locale['inbox']}</Link>
+            <Link to="/accounts/history">{locale['video_history']}</Link>
+            <Link to="/accounts/profile?tab=subscription">{locale['paket_MOLA']}</Link>
+            <Link to="/accounts/profile?tab=transaction">{locale['transaction_history']}</Link>
           </>
         )}
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>

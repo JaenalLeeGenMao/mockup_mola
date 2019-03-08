@@ -151,9 +151,9 @@ class Home extends Component {
       this.nextTouchY = event.changedTouches[0].screenY
 
       const distance = Math.abs(this.prevTouchY - this.nextTouchY)
-      if (distance <= 20) {
+      if (distance <= window.innerHeight * 0.3) {
         /* if distance less than 20 scroll horizontally */
-        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
+        // this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX, 'horizontal')
       } else {
         /* else distance greater than 20 scroll vertically */
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
@@ -200,14 +200,15 @@ class Home extends Component {
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs } = this.state
+      { sliderRefs, scrollIndex } = this.state
 
     if (mode === 'vertical') {
+      console.log('harus ga disini')
       if (this.rootSlider) {
         if (this.rootSlider.innerSlider === null) {
           return false
         }
-        if (distance <= 100) {
+        if (distance <= window.innerHeight * 0.25) {
           // do nothing
         } else if (prevX > nextX) {
           this.rootSlider.slickNext()
@@ -220,15 +221,15 @@ class Home extends Component {
         if (slider.innerSlider === null) {
           return false
         }
-        if (distance <= 20) {
+        if (distance <= window.innerWidth * 0.2) {
           // do nothing
         } else if (prevX > nextX) {
-          slider.slickNext()
+          sliderRefs[scrollIndex].slickNext()
         } else {
-          slider.slickPrev()
+          sliderRefs[scrollIndex].slickPrev()
         }
       } else {
-        if (distance <= 20) {
+        if (distance <= window.innerWidth * 0.2) {
           // do nothing
         } else if (prevX > nextX) {
           sliderRefs[0].slickNext()
@@ -266,6 +267,7 @@ class Home extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
+    this.activeSlider = this.state.sliderRefs[index]
     setTimeout(function() {
       that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
@@ -313,7 +315,6 @@ class Home extends Component {
           this.handleColorChange()
         },
         beforeChange: (currentIndex, nextIndex) => {
-          this.activeSlider = sliderRefs[nextIndex]
           activePlaylist = playlists.data[nextIndex]
           this.handleColorChange(nextIndex)
         },
@@ -429,7 +430,7 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={styles.home__gradient} />
+                {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
                   <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} className="tourCategory" />
                 </div>
@@ -441,7 +442,7 @@ class Home extends Component {
                 </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <h1>{activeSlide.title}</h1>
+                    <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>

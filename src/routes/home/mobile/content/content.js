@@ -20,6 +20,8 @@ class Content extends Component {
       infinite: true,
       speed: 500,
       slidesToShow: 1,
+      // touchMove: false,
+      swipe: true,
       draggable: true,
       fade: false,
       beforeChange: (currentIndex, nextIndex) => {
@@ -40,6 +42,7 @@ class Content extends Component {
           return (
             <div key={id} className="grid-slick" isdark={isDark}>
               <img src={background.mobile.portrait} />
+              <div className={styles.content__gradient} />
             </div>
           )
         })}

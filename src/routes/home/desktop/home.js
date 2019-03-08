@@ -462,6 +462,7 @@ class Home extends Component {
       { locale, isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
         ...SETTINGS_VERTICAL,
+        fade: true,
         className: styles.home__slick_slider_fade,
         onInit: node => {
           this.activeSlider = sliderRefs[0]
