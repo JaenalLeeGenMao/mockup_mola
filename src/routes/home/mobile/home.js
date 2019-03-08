@@ -151,7 +151,7 @@ class Home extends Component {
       this.nextTouchY = event.changedTouches[0].screenY
 
       const distance = Math.abs(this.prevTouchY - this.nextTouchY)
-      if (distance <= 20) {
+      if (distance <= window.innerHeight * 0.3) {
         /* if distance less than 20 scroll horizontally */
         this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
       } else {
@@ -207,7 +207,7 @@ class Home extends Component {
         if (this.rootSlider.innerSlider === null) {
           return false
         }
-        if (distance <= 100) {
+        if (distance <= window.innerHeight * 0.25) {
           // do nothing
         } else if (prevX > nextX) {
           this.rootSlider.slickNext()
@@ -220,7 +220,7 @@ class Home extends Component {
         if (slider.innerSlider === null) {
           return false
         }
-        if (distance <= 20) {
+        if (distance <= window.innerWidth * 0.25) {
           // do nothing
         } else if (prevX > nextX) {
           slider.slickNext()
@@ -228,7 +228,7 @@ class Home extends Component {
           slider.slickPrev()
         }
       } else {
-        if (distance <= 20) {
+        if (distance <= window.innerWidth * 0.25) {
           // do nothing
         } else if (prevX > nextX) {
           sliderRefs[0].slickNext()

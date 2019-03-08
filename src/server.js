@@ -13,6 +13,8 @@ import csurf from 'csurf'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken'
+import proxy from 'express-http-proxy'
+import url from 'url'
 // import { graphql } from 'graphql';
 import fetch from 'node-fetch'
 import querystring from 'query-string'
@@ -60,6 +62,13 @@ const app = express()
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
 app.set('trust proxy', config.trustProxy)
+// console.log(`${config.endpoints.domain}/api`)
+// app.use(
+//   '/api',
+//   proxy(`${config.endpoints.domain}/api`, {
+//     forwardPath: (req, res) => '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path),
+//   })
+// )
 
 //
 // Register Node.js middleware

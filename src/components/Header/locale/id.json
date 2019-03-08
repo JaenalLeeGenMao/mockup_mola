@@ -1,7 +1,9 @@
 {
   "sign_out": "Keluar",
   "login": "Masuk",
-  "profile": "Profile",
-  "history": "Riwayat Video",
+  "profile": "Profil",
+  "video_history": "Riwayat Video",
+  "paket_MOLA": "Paket berlangganan MOLA",
+  "transaction_history": "Riwayat transaksi",
   "inbox": "Pesan"
 }
