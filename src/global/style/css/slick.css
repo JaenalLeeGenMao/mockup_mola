@@ -143,7 +143,7 @@
 :global(.slick-slider) :global(.slick-list),
 :global(.slick-slider) :global(.slick-track) {
   transform: translate3d(0, 0, 0);
-  max-height: 100vh;
+  max-height: 100.25vh;
 }
 
 :global(.slick-initialized) :global(.slick-slide) {

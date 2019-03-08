@@ -18,14 +18,16 @@ export const SETTINGS_VERTICAL = {
   arrows: false,
   dots: false,
   vertical: true,
-  verticalSwiping: true,
+  verticalSwiping: false,
+  touchThreshold: 5,
   infinite: true,
+  touchMove: false,
   // slidesToShow: 1,
   // slidesToScroll: 1,
-  fade: true,
+  fade: false,
   autoplay: false,
   autoplaySpeed: 4000,
-  speed: 1400,
+  speed: 500,
 }
 
 export const SETTINGS = {
@@ -35,6 +37,6 @@ export const SETTINGS = {
   fade: true,
   infinite: true,
   speed: 500,
-  touchThreshold: 100,
+  touchThreshold: 5,
   cssEase: 'cubic-bezier(0.075, 0.82, 0.165, 1)',
 }

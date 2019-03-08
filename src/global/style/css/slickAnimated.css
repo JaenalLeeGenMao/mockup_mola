@@ -148,7 +148,7 @@
 :global(.slick-slider) :global(.slick-list),
 :global(.slick-slider) :global(.slick-track) {
   transform: translate3d(0, 0, 0);
-  max-height: 100vh;
+  max-height: 100.5vh;
 }
 
 :global(.slick-initialized) :global(.slick-slide) {
@@ -158,16 +158,4 @@
 :global(.slick-active) img {
   transform: scale(1) translate(0);
   transition: all 500ms ease;
-}
-
-@keyframes cssAnimation {
-  from {
-    display: none;
-    transform: scale(0.25) translate(400px);
-  }
-
-  to {
-    display: inline-block;
-    transform: scale(1) translate(0);
-  }
 }

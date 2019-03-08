@@ -18,6 +18,7 @@ class Content extends Component {
       dots: false,
       arrows: false,
       infinite: true,
+      touchMove: false,
       speed: 500,
       slidesToShow: 1,
       swipe: false,
