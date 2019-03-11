@@ -29,12 +29,12 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
-              <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+              <Link to="/accounts/profile?tab=security" className={styles.popup__menu_image_wrapper}>
                 {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
               </Link>
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
-            <Link to="/accounts/profile" onClick={onClick}>
+            <Link to="/accounts/profile?tab=security" onClick={onClick}>
               {locale['profile']}
             </Link>
             {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
