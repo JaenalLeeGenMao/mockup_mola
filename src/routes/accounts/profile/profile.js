@@ -23,7 +23,8 @@ class Profile extends Component {
       tab = this.state.whitelistedTabs.includes(query.tab)
 
     if (!tab) {
-      history.push('/accounts/profile')
+      // history.push('/accounts/profile')
+      history.push('/accounts/profile?tab=security')
     }
 
     this.setState({
@@ -62,18 +63,18 @@ class Profile extends Component {
             <LazyLoad containerClassName={styles.active}>{this.getCurrentActionTitle()}</LazyLoad>
           ) : (
             <Fragment>
-              <div onClick={() => this.handleTabClick()} className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}>
+              {/* <div onClick={() => this.handleTabClick()} className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}>
                 Profil
-              </div>
+              </div> */}
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
-              <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
+              {/* <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
                 Status
               </div>
               <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
                 Setelan
-              </div>
+              </div> */}
             </Fragment>
           )}
         </div>
@@ -90,9 +91,9 @@ class Profile extends Component {
       <div className={styles.profile__contents_container}>
         <div className={styles.profile__contents_wrapper}>
           {tab === 'security' && <ContentSecurity onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
-          {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
-          {tab === 'setting' && <div>setting</div>}
-          {!this.state.whitelistedTabs.includes(tab) && <div>profile</div>}
+          {/* {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />} */}
+          {/* {tab === 'setting' && <div>setting</div>} */}
+          {/* {!this.state.whitelistedTabs.includes(tab) && <div>profile</div>} */}
         </div>
       </div>
     )

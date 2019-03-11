@@ -216,6 +216,7 @@ const requestCode = async (req, res) => {
       'https://internal.supersoccer.tv/users/users.profile.read',
       'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
       'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+      'https://api.supersoccer.tv/orders/orders.create',
       'https://api.supersoccer.tv/videos/videos.read',
       'paymentmethods:read.internal',
       'discussions:comments.read',

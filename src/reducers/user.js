@@ -19,7 +19,7 @@ const fakeData = {
   birthdate: '2018-09-29',
   gender: 'm',
   phoneNumber: '0853-1501-5663',
-  photo: 'https://cdn2.hercampus.com/styles/hcxo_tile_standard/s3/emma-watson-for-covetour-inside-emma-watson-s-closet-march-2017_1.jpg?timestamp=1493154613',
+  photo: '',
   location: 'Indonesia',
   setting: {
     videoQuality: 1,
