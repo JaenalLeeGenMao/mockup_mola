@@ -6,13 +6,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300;300i,400,600i,700');
 
 :root {
   /*
    * Typography
    * ======================================================================== */
 
-  --font-family-base: 'Futura', 'HelveticaNeue-Light', sans-serif;
+  --font-family-base: 'Open Sans', sans-serif;
 
   /*
    * Layout
@@ -24,8 +25,8 @@
    * Media queries breakpoints
    * ======================================================================== */
 
-  --screen-xs-min: 480px;  /* Extra small screen / phone */
-  --screen-sm-min: 768px;  /* Small screen / tablet */
-  --screen-md-min: 992px;  /* Medium screen / desktop */
+  --screen-xs-min: 480px; /* Extra small screen / phone */
+  --screen-sm-min: 768px; /* Small screen / tablet */
+  --screen-md-min: 992px; /* Medium screen / desktop */
   --screen-lg-min: 1280px; /* Large screen / wide desktop */
 }
