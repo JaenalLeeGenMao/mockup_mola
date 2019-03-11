@@ -9,6 +9,7 @@ import history from '@source/history'
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import ContentSecurity from './content/security'
+import ContentSubscription from './content/subscription'
 
 import styles from './profile.css'
 
@@ -39,6 +40,8 @@ class Profile extends Component {
         return 'Ubah sandi'
       case 'setting':
         return 'Ubah pengaturan'
+      case 'subscription':
+        return 'Aktifasi Premium'
       default:
         return 'Ubah profil'
     }
@@ -86,8 +89,8 @@ class Profile extends Component {
     return (
       <div className={styles.profile__contents_container}>
         <div className={styles.profile__contents_wrapper}>
-          {tab === 'security' && <ContentSecurity onClick={() => this.setState({ switch: !this.state.switch })} />}
-          {tab === 'subscription' && <div>subscription</div>}
+          {tab === 'security' && <ContentSecurity onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
+          {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
           {tab === 'setting' && <div>setting</div>}
           {!this.state.whitelistedTabs.includes(tab) && <div>profile</div>}
         </div>

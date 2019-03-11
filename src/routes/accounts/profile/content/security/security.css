@@ -21,7 +21,7 @@
 .security_form_wrapper label {
   color: #6f6f6f;
   font-weight: lighter;
-  font-size: 1.32rem;
+  font-size: 1.42rem;
 }
 
 .security_form_wrapper input {
@@ -38,10 +38,10 @@
   color: white;
   background: #2c56ff;
   border: none;
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
   padding: 1.12rem 2.8rem;
   margin-right: 2.5rem;
-  font-size: 1.2rem;
+  font-size: 1.42rem;
 }
 
 .security_button_active:hover {
@@ -57,7 +57,7 @@
   border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
   margin-right: 2.5rem;
-  font-size: 1.2rem;
+  font-size: 1.42rem;
 }
 
 .security_button:hover {

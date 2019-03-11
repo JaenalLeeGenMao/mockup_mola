@@ -325,7 +325,8 @@ app.get('/accounts/signin', async (req, res) => {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
-  return res.redirect(domain || 'https://stag.mola.tv')
+  // return res.redirect(domain || 'https://stag.mola.tv')
+  return res.redirect('http://localhost:3000')
 })
 
 app.get('/accounts', async (req, res) => {
