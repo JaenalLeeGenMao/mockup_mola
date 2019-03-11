@@ -15,18 +15,18 @@ import MolaLayout from '@components/Molalayout'
 const title = 'Homepage'
 const description = 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
 
-async function action({ isMobile }) {
+async function action({ isMobile, store }) {
   return {
     title,
     description,
     chunks: ['home'],
     component: isMobile ? (
       <MolaLayout>
-        <HomeMobile />
+        <HomeMobile {...store} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <HomeDesktop />
+        <HomeDesktop {...store} />
       </MolaLayout>
     ),
   }
