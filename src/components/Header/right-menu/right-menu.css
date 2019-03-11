@@ -193,7 +193,7 @@
 .popup__menu_image_wrapper {
   width: 8.5rem;
   height: 8.5rem;
-  border-radius: 8rem;
+  border-radius: 50%;
   box-shadow: 0 0 5rem 0.185rem rgba(255, 255, 255, 0.4);
   background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.48));
   padding: 0;
@@ -203,7 +203,7 @@
 .popup__menu_image {
   width: 8.5rem;
   height: 8.5rem;
-  border-radius: 8rem;
+  border-radius: 50%;
 }
 
 .popup__menu_username {
@@ -294,6 +294,18 @@
 
   .popup__menu_signout {
     font-size: 0.825rem !important;
+  }
+
+  .popup__menu_image_wrapper {
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 50%;
+  }
+
+  .popup__menu_image {
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 50%;
   }
 }
 
