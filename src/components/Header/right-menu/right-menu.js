@@ -34,11 +34,13 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
               </Link>
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
-            <Link to="/accounts/profile">{locale['profile']}</Link>
-            {/* <Link to="/accounts/inbox">{locale['inbox']}</Link> */}
-            {/* <Link to="/accounts/history">{locale['video_history']}</Link> */}
-            {/* <Link to="/accounts/profile?tab=subscription">{locale['paket_MOLA']}</Link> */}
-            {/* <Link to="/accounts/profile?tab=transaction">{locale['transaction_history']}</Link> */}
+            <Link to="/accounts/profile" onClick={onClick}>
+              {locale['profile']}
+            </Link>
+            {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
+            {/* <Link to="/accounts/history" onClick={onClick}>{locale['video_history']}</Link> */}
+            {/* <Link to="/accounts/profile?tab=subscription" onClick={onClick}>{locale['paket_MOLA']}</Link> */}
+            {/* <Link to="/accounts/profile?tab=transaction" onClick={onClick}>{locale['transaction_history']}</Link> */}
           </>
         )}
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
