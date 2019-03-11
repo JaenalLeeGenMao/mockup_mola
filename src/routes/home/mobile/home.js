@@ -437,6 +437,7 @@ class Home extends Component {
                 <LazyLoad containerClassName={styles.header__library_link_wrapper}>
                   <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
                     <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
+                    <p style={{ color: '#fff', fontSize: '8px', textAlign: 'center', textTransform: 'capitalize', lineHeight: '14px' }}>View All</p>
                   </Link>
                   <p className={`${styles.header__library_text} ${0 ? styles.black : styles.white}`}>film {activePlaylist.title} lain</p>
                 </LazyLoad>
@@ -448,11 +449,11 @@ class Home extends Component {
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
                     <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      <span className={`${styles.icon__view_movie} ${0 ? styles.white : styles.black}`} />
+                      <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                     </Link>
                   </LazyLoad>
                 )}
-                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
+                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '14px' }}>
                   {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
                 <Slider
