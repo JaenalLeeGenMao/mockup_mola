@@ -162,6 +162,13 @@ async function onLocationChange(location, action) {
     }
   }
 
+  if (context.store.getState().user.sid) {
+    const tokenExpired = context.store.getState().user.tokenExpired * 1000
+    if (tokenExpired < Date.now()) {
+      window.location.href = '/accounts'
+    }
+  }
+
   // const { domain } = config.endpoints
   // const payload = {
   //   appKey: 'wIHGzJhset',
