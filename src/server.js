@@ -146,6 +146,7 @@ const requestGuestToken = async res => {
           'https://api.supersoccer.tv/orders/orders.create',
           'https://api.supersoccer.tv/videos/videos.read',
           'paymentmethods:read.internal',
+          'api.payment.dopay',
         ].join(' '),
       },
     })
@@ -231,6 +232,7 @@ const requestCode = async (req, res) => {
       'https://api.supersoccer.tv/orders/orders.create',
       'https://api.supersoccer.tv/videos/videos.read',
       'paymentmethods:read.internal',
+      'api.payment.dopay',
       // 'discussions:comments.read',
       // 'discussions:comments.create',
       // 'discussions:comments.update',
@@ -238,8 +240,9 @@ const requestCode = async (req, res) => {
     ].join(' '),
     state: randomState,
   })
+
   const oAuthAuthorizationEndpoint = `${auth}/oauth2/v1/authorize?${qs}`
-  // console.log("oAuthAuthorizationEndpoint", oAuthAuthorizationEndpoint)
+
   return oAuthAuthorizationEndpoint
 }
 

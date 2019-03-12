@@ -22,22 +22,24 @@ class Subscription extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { user, getAllSubscriptions } = this.props
-    console.log(user)
+
     getAllSubscriptions(user.token)
-    console.log(await Mola.createOrder(user))
   }
 
   handleClick = async e => {
-    const { user, getAllSubscriptions } = this.props
+    const { user } = this.props
 
     this.setState({
       isToggled: !this.state.isToggled,
     })
 
-    console.log(user)
-    console.log(await Mola.createOrder(user))
+    const order = await Mola.createOrder(user)
+    const payment = await Mola.createMidtransPayment({ ...user, orderId: order.id })
+    console.log('USER', user)
+    console.log('ORDER', order)
+    console.log('PAYMENT', payment)
 
     this.props.onClick()
   }
