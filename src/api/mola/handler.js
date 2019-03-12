@@ -390,7 +390,7 @@ const getAllSubscriptions = token => {
 const createOrder = ({ token, uid }) => {
   const data = JSON.stringify({
     order_type_id: 1,
-    subscription_id: 26, // hanya hardcode midtrans 17
+    subscription_id: 26, // hanya hardcode midtrans 26
     quantity: 1,
     uom: 'm',
     package_expiry: '',
@@ -399,7 +399,7 @@ const createOrder = ({ token, uid }) => {
     order_amount: 100000,
     total_price: 100000,
     source: 'GSyOzu2WPaAijqbX3Tv6HCQr',
-    payment_method_id: 17, // payment_method_id midtrans di hardcode 17 dari DataBase
+    payment_method_id: 270, // payment_method_id midtrans di hardcode 270 dari DataBase
   })
 
   return post(`${ORDER_ENDPOINT}`, data, {
@@ -437,7 +437,7 @@ const createOrder = ({ token, uid }) => {
 
 const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, token, orderId }) => {
   const data = JSON.stringify({
-    paymentMethodId: 17, // payment_method_id midtrans di hardcode 17 dari DataBase
+    paymentMethodId: 270, // payment_method_id midtrans di hardcode 17 dari DataBase
     Id: orderId,
     title: 'Mola - Paket No Ads',
     phone: phoneNumber,
