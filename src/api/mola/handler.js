@@ -1,5 +1,16 @@
-import { get, post, delete as axiosDelete } from 'axios'
-import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, SUBSCRIPTION_ENDPOINT } from './endpoints'
+import { get, post as axiosPost, delete as axiosDelete } from 'axios'
+import qs from 'query-string'
+import {
+  VIDEOS_ENDPOINT,
+  HOME_PLAYLIST_ENDPOINT,
+  HISTORY_ENDPOINT,
+  SEARCH_ENDPOINT,
+  SEARCH_GENRE_ENDPOINT,
+  RECENT_SEARCH_ENDPOINT,
+  MOVIE_DETAIL_ENDPOINT,
+  SUBSCRIPTION_ENDPOINT,
+  ORDER_ENDPOINT,
+} from './endpoints'
 import utils from './util'
 
 import { endpoints } from '@source/config'
@@ -344,7 +355,8 @@ const getHotPlaylist = () => {
 }
 
 const getAllSubscriptions = token => {
-  return get('/api/v2/subscriptions/subscriptions', {
+  console.log(token, SUBSCRIPTION_ENDPOINT)
+  return get(`${SUBSCRIPTION_ENDPOINT}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -354,6 +366,63 @@ const getAllSubscriptions = token => {
     ...endpoints.setting,
   })
     .then(response => {
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: response.data.data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const createOrder = ({ token, uid }) => {
+  const data = JSON.stringify({
+    order_type_id: 1,
+    subscription_id: 26,
+    quantity: 1,
+    uom: 'm',
+    package_expiry: '',
+    status: 0,
+    user_id: uid,
+    order_amount: 100000,
+    total_price: 100000,
+    source: 'GSyOzu2WPaAijqbX3Tv6HCQr',
+    payment_method_id: 17,
+  })
+  console.log('uid')
+  console.log(uid)
+  console.log('token')
+  console.log(token)
+  // console.log('payload')
+  // console.log(`${ORDER_ENDPOINT}?${qs.stringify(payload)}`)
+
+  // return post(`${ORDER_ENDPOINT}`, {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  //   body: payload,
+  //   ...endpoints.setting,
+  // })
+
+  return axiosPost(`${ORDER_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then(response => {
+      console.log('test ada', response)
       return {
         meta: {
           status: 'success',
@@ -389,4 +458,5 @@ export default {
   getMovieLibraryList,
   getHotPlaylist,
   getAllSubscriptions,
+  createOrder,
 }

@@ -136,6 +136,18 @@ const requestGuestToken = async res => {
         Origin: domain,
         Referer: domain,
       },
+      json: {
+        app_key: appKey,
+        app_secret: appSecret,
+        scope: [
+          'https://internal.supersoccer.tv/users/users.profile.read',
+          'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+          'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+          'https://api.supersoccer.tv/orders/orders.create',
+          'https://api.supersoccer.tv/videos/videos.read',
+          'paymentmethods:read.internal',
+        ].join(' '),
+      },
     })
 
     const content = await rawResponse.json()
@@ -389,7 +401,7 @@ app.get('*', async (req, res, next) => {
       if (decodedAccessToken || decodedIdToken) {
         if (decodedAccessToken && decodedIdToken) {
           if (decodedAccessToken.sub !== decodedIdToken.sub || idTokenLifespan < 0 || accessTokenLifespan < 0) {
-            res.cookie('_at', '', { expires: new Date(0) })
+            // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
             // const rawResponse = await fetch(
@@ -418,9 +430,9 @@ app.get('*', async (req, res, next) => {
               })
             }
           }
-        } else if (decodedAccessToken) {
+        } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          // return res.redirect(req.originalUrl);
+          return res.redirect('/accounts')
         }
       }
     } else {
