@@ -435,7 +435,7 @@ const createOrder = ({ token, uid }) => {
     })
 }
 
-const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, token, orderId }) => {
+const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, token, orderId }) => {
   const data = JSON.stringify({
     paymentMethodId: 17, // payment_method_id midtrans di hardcode 17 dari DataBase
     Id: orderId,
