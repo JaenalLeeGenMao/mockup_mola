@@ -151,9 +151,9 @@ class Home extends Component {
       this.nextTouchY = event.changedTouches[0].screenY
 
       const distance = Math.abs(this.prevTouchY - this.nextTouchY)
-      if (distance <= window.innerHeight * 0.3) {
+      if (distance <= window.innerHeight * 0.2) {
         /* if distance less than 20 scroll horizontally */
-        // this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX, 'horizontal')
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
       } else {
         /* else distance greater than 20 scroll vertically */
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
@@ -296,6 +296,7 @@ class Home extends Component {
     if (sliderRefs.length < trackedPlaylistIds.length) {
       sliderRefs.push(refs)
     }
+    sliderRefs.sort((a, b) => a.props.id - b.props.id)
   }
 
   render() {
@@ -458,6 +459,7 @@ class Home extends Component {
                 </div>
                 <Slider
                   {...settings}
+                  id="rootSlider"
                   ref={node => {
                     this.rootSlider = node
                   }}

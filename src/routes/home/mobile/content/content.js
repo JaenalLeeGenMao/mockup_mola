@@ -31,6 +31,7 @@ class Content extends Component {
 
     return (
       <Slider
+        id={index}
         className={styles.content__container}
         ref={node => {
           this.wrapperSlider = node
