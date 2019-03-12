@@ -69,10 +69,10 @@ class Profile extends Component {
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
-              {/* <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
+              <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
                 Status
               </div>
-              <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
+              {/* <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
                 Setelan
               </div> */}
             </Fragment>
@@ -91,7 +91,7 @@ class Profile extends Component {
       <div className={styles.profile__contents_container}>
         <div className={styles.profile__contents_wrapper}>
           {tab === 'security' && <ContentSecurity onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
-          {/* {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />} */}
+          {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
           {/* {tab === 'setting' && <div>setting</div>} */}
           {/* {!this.state.whitelistedTabs.includes(tab) && <div>profile</div>} */}
         </div>

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import { updatePassword } from '@actions/resetPassword'
+import subscribeActions from '@actions/subscribe'
+import Mola from '@api/mola'
 
 import '@global/style/css/reactReduxToastr.css'
 
@@ -17,81 +19,45 @@ class Subscription extends React.Component {
     super(props)
     this.state = {
       isToggled: false,
-      currentPassword: '',
-      newPassword: '',
-      confirmNewPassword: '',
     }
-
-    this.onChangeInput = this.onChangeInput.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit = e => {
-    const update = this.props.handleUpdatePassword(this.state)
-    update.then(response => {
-      if (response) {
-        this.setState({
-          currentPassword: '',
-          newPassword: '',
-          confirmNewPassword: '',
-        })
-
-        this.props.onClick()
-      }
-    })
+  async componentDidMount() {
+    const { user, getAllSubscriptions } = this.props
+    console.log(user)
+    getAllSubscriptions(user.token)
+    console.log(await Mola.createOrder(user))
   }
 
-  handleClick = e => {
+  handleClick = async e => {
+    const { user, getAllSubscriptions } = this.props
+
     this.setState({
       isToggled: !this.state.isToggled,
     })
 
-    this.props.onClick()
-  }
+    console.log(user)
+    console.log(await Mola.createOrder(user))
 
-  onChangeInput = e => {
-    const target = e.target
-    const { id, value } = target
-    this.setState({
-      [id]: value,
-    })
+    this.props.onClick()
   }
 
   render() {
     const { isMobile, onClick } = this.props
-    const { isToggled, currentPassword, newPassword, confirmNewPassword } = this.state
+    const { isToggled } = this.state
+    const orderID = 26
 
     return (
       <div>
         <div className={s.subscription__container}>
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
-            {/* <div className={s.subscription_form_wrapper}>
-              <label htmlFor="currentPassword">Sandi sekarang</label>
-              <input type="password" id="currentPassword" onChange={this.onChangeInput} value={currentPassword} />
-            </div>
-            <div className={s.subscription_form_wrapper}>
-              <label htmlFor="newPassword">Ubah sandi</label>
-              <input type="password" id="newPassword" onChange={this.onChangeInput} value={newPassword} />
-            </div>
-            <div className={s.subscription_form_wrapper}>
-              <label htmlFor="confirmNewPassword">Konfirmasi sandi</label>
-              <input type="password" id="confirmNewPassword" onChange={this.onChangeInput} value={confirmNewPassword} />
-            </div>
-            <div style={{ textAlign: 'left', padding: '2rem 0' }}>
-              <button className={s.subscription_button_active} onClick={this.handleSubmit}>
-                Simpan
-              </button>
-              <button className={s.subscription_button} onClick={this.handleClick}>
-                Batal
-              </button>
-            </div> */}
             <div className={s.subscription__wrapper_active}>
               <div className={s.subscription__section_left_active}>
                 <h1>PREMIUM</h1>
                 <div className={s.icon_cinema} />
               </div>
               <div className={s.subscription__section_right_active}>
-                <h1>IDR 139,000/year</h1>
+                <h1>IDR 139,000/tahun</h1>
                 <p>Menonton semua streaming film tanpa harus terganggu dengan iklan.</p>
               </div>
               <div className={s.icon_tick} />
@@ -110,7 +76,7 @@ class Subscription extends React.Component {
                 <div className={s.icon_cinema_active} />
               </div>
               <div className={s.subscription__section_right}>
-                <h1>IDR 139,000/year</h1>
+                <h1>IDR 139,000/tahun</h1>
                 <p>Menonton semua streaming film tanpa harus terganggu dengan iklan.</p>
               </div>
               {!isMobile && <div className={s.icon_tick} style={{ opacity: 0 }} />}
@@ -144,12 +110,14 @@ class Subscription extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    toaster: state.toastr.toastrs,
+    ...state,
+    // toaster: state.toastr.toastrs,
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
+    getAllSubscriptions: token => dispatch(subscribeActions.getAllSubscriptions(token)),
   }
 }
 
