@@ -1,4 +1,4 @@
-import { get, post as axiosPost, delete as axiosDelete } from 'axios'
+import { get, post, delete as axiosDelete } from 'axios'
 import qs from 'query-string'
 import {
   VIDEOS_ENDPOINT,
@@ -10,6 +10,7 @@ import {
   MOVIE_DETAIL_ENDPOINT,
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
+  PAYMENT_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 
@@ -389,7 +390,7 @@ const getAllSubscriptions = token => {
 const createOrder = ({ token, uid }) => {
   const data = JSON.stringify({
     order_type_id: 1,
-    subscription_id: 26,
+    subscription_id: 26, // hanya hardcode midtrans 17
     quantity: 1,
     uom: 'm',
     package_expiry: '',
@@ -398,41 +399,76 @@ const createOrder = ({ token, uid }) => {
     order_amount: 100000,
     total_price: 100000,
     source: 'GSyOzu2WPaAijqbX3Tv6HCQr',
-    payment_method_id: 17,
+    payment_method_id: 17, // payment_method_id midtrans di hardcode 17 dari DataBase
   })
-  console.log('uid')
-  console.log(uid)
-  console.log('token')
-  console.log(token)
-  // console.log('payload')
-  // console.log(`${ORDER_ENDPOINT}?${qs.stringify(payload)}`)
 
-  // return post(`${ORDER_ENDPOINT}`, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  //   body: payload,
-  //   ...endpoints.setting,
-  // })
-
-  return axiosPost(`${ORDER_ENDPOINT}`, data, {
+  return post(`${ORDER_ENDPOINT}`, data, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true,
+    ...endpoints.setting,
   })
     .then(response => {
-      console.log('test ada', response)
+      const { data } = response.data
       return {
         meta: {
           status: 'success',
           error: '',
         },
-        data: response.data.data,
+        data: {
+          id: data[0].id,
+          ...data[0].attributes,
+        },
       }
     })
     .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      const errorMessage = error.toString().replace('Error:', 'Mola Order')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, token, orderId }) => {
+  const data = JSON.stringify({
+    paymentMethodId: 17, // payment_method_id midtrans di hardcode 17 dari DataBase
+    Id: orderId,
+    title: 'Mola - Paket No Ads',
+    phone: phoneNumber,
+    email: email,
+    name: `${firstName} ${lastName}`,
+    userId: uid,
+    productSku: '1',
+    productName: 'Mola - Paket No Ads',
+  })
+
+  return post(`${PAYMENT_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      console.log(response)
+      const { data } = response.data
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Midtrans Payment')
       return {
         meta: {
           status: 'error',
@@ -459,4 +495,5 @@ export default {
   getHotPlaylist,
   getAllSubscriptions,
   createOrder,
+  createMidtransPayment,
 }
