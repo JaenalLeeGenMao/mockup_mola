@@ -15,6 +15,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0.6rem;
 }
 
 .security_form_wrapper label {
@@ -30,14 +31,13 @@
   color: #fff;
   width: 50%;
   padding: 0.38rem 4.5%;
-  margin: 0.6rem 0;
 }
 
 .security_button_active {
   color: white;
   background: #2c56ff;
-  border: none;
-  border-radius: 0.5rem;
+  border: 0.1rem solid #2c56ff;
+  border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
   margin-right: 2.5rem;
   font-size: 1.42rem;
@@ -45,6 +45,7 @@
 
 .security_button_active:hover {
   background: #2242c4;
+  border: 0.1rem solid #2242c4;
   cursor: pointer;
 }
 
@@ -92,6 +93,7 @@
   .security_button,
   .security_button_active {
     font-size: 0.8rem;
+    border-radius: 4px;
     margin-right: 1.125rem;
     padding: 0.72rem 2rem;
   }

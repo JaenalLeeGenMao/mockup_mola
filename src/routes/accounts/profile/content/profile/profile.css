@@ -1,0 +1,164 @@
+@import '../../../../../global/style/css/reactReduxToastr.css';
+
+.profile__container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.sideLeft {
+  width: 27%;
+}
+
+.profile_form_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem;
+}
+
+.profile_form_wrapper label {
+  color: #6f6f6f;
+  font-weight: lighter;
+  font-size: 1.42rem;
+  margin: 1rem 0;
+}
+
+.profile_form_wrapper p {
+  color: #fff;
+  font-weight: lighter;
+  font-size: 1.2rem;
+}
+
+.profile_form_wrapper > div {
+  max-width: 23vw;
+  font-size: 1.42rem;
+  width: 100%;
+}
+
+.profile_form_wrapper input {
+  background: #343434;
+  border-radius: 0.4rem;
+  border: none;
+  color: #fff;
+  width: 50%;
+  padding: 1.425rem 4.5%;
+  margin: 0.6rem 0;
+  font-size: 1.2rem;
+}
+
+.profile_button_wrapper {
+  text-align: left;
+  padding: 2rem 0;
+}
+
+.profile_button_active {
+  color: white;
+  background: #2c56ff;
+  border: 0.1rem solid #2c56ff;
+  border-radius: 0.2rem;
+  padding: 1.12rem 4.8rem;
+  margin: 1.125rem 0.6rem;
+  font-size: 1.42rem;
+}
+
+.profile_button_active:hover {
+  background: #2242c4;
+  border: 0.1rem solid #2242c4;
+  cursor: pointer;
+}
+
+.profile_button {
+  color: #a7a7a7;
+  background: transparent;
+  box-shadow: 0 0 0 0.1rem #a7a7a7;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 1.12rem 4.8rem;
+  margin: 1.125rem 0.6rem;
+  font-size: 1.42rem;
+}
+
+.profile_button:hover {
+  background: #1d1d1d;
+  cursor: pointer;
+}
+
+.custom_dots {
+  background: white;
+  padding: 0.28rem;
+  margin: 0 0.28rem;
+  border-radius: 50%;
+}
+
+.sideCenter {
+  width: 100%;
+  height: 100%;
+}
+
+.profile_form_wrapper :global(svg) {
+  padding-left: 1rem;
+  height: 2rem !important;
+  width: 2rem !important;
+}
+
+@media only screen and (max-width: 1024px) {
+  .profile_form_wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.25rem;
+  }
+
+  .profile_form_wrapper p {
+    font-size: 1.08rem;
+    margin: 0.6rem 0;
+  }
+
+  .profile_form_wrapper label {
+    color: #6f6f6f;
+    font-weight: lighter;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+  }
+
+  .profile_form_wrapper input {
+    border-radius: 4px;
+    width: 75vw;
+    padding: 20px 15px;
+    margin: 6px 0;
+  }
+
+  .profile_form_wrapper > div {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .profile_button_wrapper {
+    text-align: center;
+  }
+
+  .sideCenter {
+    width: 100%;
+    padding: 0 30px;
+    padding-bottom: 140px;
+  }
+
+  .profile_button,
+  .profile_button_active {
+    border-radius: 4px;
+    font-size: 0.8rem;
+    width: 100%;
+    margin: 1.125rem 0;
+  }
+
+  .profile_button {
+    color: #a7a7a7;
+    box-shadow: 0 0 0 1px #a7a7a7;
+  }
+
+  .custom_dots {
+    padding: 2px;
+    margin: 0 2px;
+  }
+}

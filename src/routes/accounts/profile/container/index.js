@@ -16,8 +16,8 @@ class Profile extends React.Component {
     this.state = {
       username: '',
       email: '',
-      birthdate: '2018-10-10',
-      gender: 'm',
+      birthdate: '',
+      gender: 'lain',
       phoneNumber: '',
       photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTG0j1MmEng29JZuTbH7KqM55WOrUD7XfxtzOseyZeuFWJPv7',
       location: '',

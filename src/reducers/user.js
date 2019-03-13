@@ -17,7 +17,7 @@ const fakeData = {
   username: 'Trisno Nino',
   email: 'ninotrisno34@gmail.com',
   birthdate: '2018-09-29',
-  gender: 'm',
+  gender: 'lain',
   phoneNumber: '0853-1501-5663',
   photo: '',
   location: 'Indonesia',
