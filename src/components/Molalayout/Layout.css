@@ -39,6 +39,21 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+input::-webkit-inner-spin-button,
+input::-webkit-clear-button {
+  display: none;
+}
+
+input::-webkit-calendar-picker-indicator {
+  width: 1rem;
+  height: 1rem;
+}
+
+input::-webkit-calendar-picker-indicator:hover {
+  background: rgba(0, 0, 0, 0);
+  opacity: 1;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {

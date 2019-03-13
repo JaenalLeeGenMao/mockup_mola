@@ -75,7 +75,15 @@ app.set('trust proxy', config.trustProxy)
 // -----------------------------------------------------------------------------
 app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(cookieParser())
-app.use(csurf({ cookie: true }))
+app.use(
+  csurf({
+    cookie: {
+      path: '/accounts',
+      httpOnly: true,
+      secure: !__DEV__,
+    },
+  })
+)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 

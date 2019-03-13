@@ -36,7 +36,7 @@ class Subscription extends React.Component {
     })
 
     const order = await Mola.createOrder(user)
-    const payment = await Mola.createMidtransPayment({ ...user, orderId: order.id })
+    const payment = await Mola.createMidtransPayment({ ...user, orderId: order.data.id })
     console.log('USER', user)
     console.log('ORDER', order)
     console.log('PAYMENT', payment)
@@ -45,7 +45,8 @@ class Subscription extends React.Component {
   }
 
   render() {
-    const { isMobile, onClick } = this.props
+    const { isMobile, onClick, user } = this.props
+    const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
     const { isToggled } = this.state
     const orderID = 26
 
@@ -87,15 +88,17 @@ class Subscription extends React.Component {
               <h1>Data Pengguna</h1>
               <div>
                 <p>Name Pengguna</p>
-                <p>Admin Mola</p>
+                <p>
+                  {firstName} {lastName}
+                </p>
               </div>
               <div>
                 <p>Email</p>
-                <p>admin@mola.tv</p>
+                <p>{email}</p>
               </div>
               <div>
                 <p>Nomor Telephone</p>
-                <p>+21 012 3456 789</p>
+                <p>{phoneNumber}</p>
               </div>
             </div>
             <div className={s.subscription_button_wrapper}>
@@ -112,8 +115,7 @@ class Subscription extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    ...state,
-    // toaster: state.toastr.toastrs,
+    user: state.user,
   }
 }
 const mapDispatchToProps = dispatch => {

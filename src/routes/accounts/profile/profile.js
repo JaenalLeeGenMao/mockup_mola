@@ -8,6 +8,7 @@ import history from '@source/history'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
+import ContentProfile from './content/profile'
 import ContentSecurity from './content/security'
 import ContentSubscription from './content/subscription'
 
@@ -23,8 +24,8 @@ class Profile extends Component {
       tab = this.state.whitelistedTabs.includes(query.tab)
 
     if (!tab) {
-      // history.push('/accounts/profile')
-      history.push('/accounts/profile?tab=security')
+      history.push('/accounts/profile')
+      // history.push('/accounts/profile?tab=security')
     }
 
     this.setState({
@@ -63,9 +64,9 @@ class Profile extends Component {
             <LazyLoad containerClassName={styles.active}>{this.getCurrentActionTitle()}</LazyLoad>
           ) : (
             <Fragment>
-              {/* <div onClick={() => this.handleTabClick()} className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}>
+              <div onClick={() => this.handleTabClick()} className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}>
                 Profil
-              </div> */}
+              </div>
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
@@ -93,7 +94,7 @@ class Profile extends Component {
           {tab === 'security' && <ContentSecurity onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
           {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
           {/* {tab === 'setting' && <div>setting</div>} */}
-          {/* {!this.state.whitelistedTabs.includes(tab) && <div>profile</div>} */}
+          {!this.state.whitelistedTabs.includes(tab) && <ContentProfile onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
         </div>
       </div>
     )
