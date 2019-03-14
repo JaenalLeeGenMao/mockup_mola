@@ -16,6 +16,12 @@ const oauth = {
   ].join(' '),
 }
 
+const uploader = {
+  clientId: 'ef4723e0-b3b4-4ed9-a45f-fb1cd5a8f024',
+  clientSecret: '289cf0055454348a172d1520c8c70eb9',
+  ptoken: '3e0d9625b0ecc7a547ec853c76834d85',
+}
+
 const options = {
   development: {
     port: 3000,
@@ -25,6 +31,7 @@ const options = {
       api: 'http://mola.lukitomo.com/api/v2',
       auth: 'http://jaenal.mola.tv/accounts/_',
       domain: 'http://jaenal.mola.tv',
+      uploader: 'https://up.stag.supersoccer.tv',
       ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
@@ -40,6 +47,7 @@ const options = {
       api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
+      uploader: 'https://up.stag.supersoccer.tv',
       ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
@@ -55,6 +63,7 @@ const options = {
       api: 'https://mola.tv/api/v2',
       auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
+      uploader: 'https://up.supersoccer.tv',
       ads: 'https://api-beta.sent.tv',
       setting: {
         timeout: 10000,
@@ -76,4 +85,5 @@ module.exports = {
   trustProxy: process.env.TRUST_PROXY || 'loopback',
   port: process.env.PORT || 3000,
   oauth,
+  uploader,
 }

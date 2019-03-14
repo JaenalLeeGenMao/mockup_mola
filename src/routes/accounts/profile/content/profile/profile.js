@@ -5,6 +5,7 @@ import Select from 'react-select'
 
 import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
+import Uploader from '@api/uploader'
 
 import LazyLoad from '@components/common/Lazyload'
 
@@ -180,8 +181,11 @@ class Profile extends React.Component {
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         console.log('onload', theFile)
+        var formData = new FormData() // Currently empty
+        formData.append('file', theFile)
         return function(e) {
-          console.log(reader)
+          console.log(e)
+          console.log(Uploader.uploadImage(formData))
           that.setState({
             photo: reader.result,
           })
