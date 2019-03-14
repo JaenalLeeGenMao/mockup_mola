@@ -31,7 +31,7 @@ const options = {
       api: 'http://mola.lukitomo.com/api/v2',
       auth: 'http://jaenal.mola.tv/accounts/_',
       domain: 'http://jaenal.mola.tv',
-      uploader: 'https://up.stag.supersoccer.tv',
+      uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
@@ -47,7 +47,7 @@ const options = {
       api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
-      uploader: 'https://up.stag.supersoccer.tv',
+      uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
@@ -63,7 +63,7 @@ const options = {
       api: 'https://mola.tv/api/v2',
       auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
-      uploader: 'https://up.supersoccer.tv',
+      uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
       setting: {
         timeout: 10000,
