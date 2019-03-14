@@ -59,7 +59,9 @@ const FormContent = ({ id, label, value, type = 'password', disabled, onChange, 
       {type === 'select' ? (
         <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
       ) : (
-        <input type={type} id={id} onChange={onChange} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
+        <div className={`${s.profile_form_input_wrapper} ${disabled ? s.disabled : ''}`}>
+          <input type={type} id={id} onChange={onChange} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
+        </div>
       )}
     </div>
   )
@@ -86,25 +88,24 @@ class Profile extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit = e => {
-    const { name = '', email = '', birthdate = '', photo = '', gender = '', location = '', phoneNumber = '' } = this.state
+  handleSubmit = async e => {
+    const { name = '', email = '', birthdate = '', photo = '', gender = '', location = '', phoneNumber = '', uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
     const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
-    const update = Auth.updateProfile(payload)
+    if (uploadStatus && uploadStatus.success) {
+      // success upload button nyalain
+      const image = await Uploader.getImageCDN(uploadStatus.path, uploadStatus.token)
+
+      if (image.data.done && image.data.success) {
+        payload.photo = image.data.url
+      }
+    }
+
+    const update = await Auth.updateProfile(payload)
     update.then(response => {
       if (response.meta.status === 'success') {
-        // this.setState({
-        //   name,
-        //   email,
-        //   phoneNumber,
-        //   photo,
-        //   birthdate,
-        //   gender,
-        //   location,
-        // })
-
         this.setState({
           isToggled: !this.state.isToggled,
         })
@@ -185,10 +186,11 @@ class Profile extends React.Component {
           console.log(e)
           const postFiles = Uploader.uploadImage(theFile)
           postFiles.then(response => {
-            console.log(response)
+            const { path, success, token } = response.data
             if (response.meta.status === 'success') {
               that.setState({
                 photo: reader.result,
+                uploadStatus: { path, success, token },
               })
             }
           })
