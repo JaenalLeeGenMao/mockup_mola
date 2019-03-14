@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 import Select from 'react-select'
 
-import '@global/style/css/reactReduxToastr.css'
-
 import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
 
@@ -22,7 +20,7 @@ const FormPlaceholder = ({ id, label, value }) => (
   </div>
 )
 
-const FormContent = ({ id, label, value, type = 'password', onChange, options }) => {
+const FormContent = ({ id, label, value, type = 'password', disabled, onChange, options }) => {
   const colourStyles = {
     control: (base, state) => ({
       ...base,
@@ -60,7 +58,7 @@ const FormContent = ({ id, label, value, type = 'password', onChange, options })
       {type === 'select' ? (
         <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
       ) : (
-        <input type={type} id={id} onChange={onChange} value={value} />
+        <input type={type} id={id} onChange={onChange} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
       )}
     </div>
   )
@@ -70,13 +68,14 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
 
-    const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = props.user
+    const { uid, firstName, lastName, email, phoneNumber, photo, birthdate, gender, location, subscriptions } = props.user
 
     this.state = {
       isToggled: false,
       name: `${firstName} ${lastName}`,
       email: email || '',
       phoneNumber: phoneNumber || '',
+      photo: photo || '',
       birthdate: birthdate || '',
       gender: gender || '',
       location: location || '',
@@ -87,26 +86,29 @@ class Profile extends React.Component {
   }
 
   handleSubmit = e => {
-    const { name = '', birthdate = '', gender = '', location = '', token = '', phoneNumber = '' } = this.state
+    const { name = '', email = '', birthdate = '', photo = '', gender = '', location = '', phoneNumber = '' } = this.state
     const { csrf } = this.props.runtime
+    const { token } = this.props.user
     const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
     const update = Auth.updateProfile(payload)
-    console.log('payload', payload)
     update.then(response => {
-      if (response) {
-        console.log('result', response)
+      if (response.meta.status === 'success') {
         // this.setState({
         //   name,
+        //   email,
+        //   phoneNumber,
+        //   photo,
         //   birthdate,
         //   gender,
         //   location,
-        //   token,
-        //   phone: phoneNumber,
         // })
 
-        toastr.success('Notification', 'Update profile success!')
+        this.setState({
+          isToggled: !this.state.isToggled,
+        })
         this.props.onClick()
+        toastr.success('Notification', 'Update profile success!')
       } else {
         toastr.warning('Notification', 'Update profile failed!')
       }
@@ -144,18 +146,82 @@ class Profile extends React.Component {
     }
   }
 
+  updateProgress = evt => {
+    console.log('updateProgress', evt)
+    // const progress = document.querySelector('#percentage')
+    // progress.textContent = '0%'
+    // console.log(progress)
+    // evt is an ProgressEvent.
+    if (evt.lengthComputable) {
+      var percentLoaded = Math.round(evt.loaded / evt.total * 100)
+      // Increase the progress bar length.
+      if (percentLoaded < 100) {
+        // progress.style.width = percentLoaded + '%';
+        // progress.textContent = percentLoaded + '%'
+      }
+    }
+  }
+
+  handleFileSelect = evt => {
+    var files = evt.target.files // FileList object
+    const that = this
+
+    // Loop through the FileList and render image files as thumbnails.
+    // eslint-disable-next-line no-cond-assign
+    for (var i = 0, f; (f = files[i]); i++) {
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue
+      }
+
+      var reader = new FileReader()
+      reader.onprogress = this.updateProgress
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        console.log('onload', theFile)
+        return function(e) {
+          console.log(reader)
+          that.setState({
+            photo: reader.result,
+          })
+          // Render thumbnail.
+          // var span = document.createElement('span')
+          // span.innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('')
+          // document.getElementById('list').insertBefore(span, null)
+        }
+      })(f)
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f)
+    }
+  }
+
+  handleProfileClick = e => {
+    setTimeout(function() {
+      document.querySelector('#file').click()
+    }, 250)
+  }
+
   render() {
     const { isMobile, onClick, user } = this.props
     const { uid, subscriptions } = user
-    const { isToggled, name, email, phoneNumber, birthdate, gender, location } = this.state
+    const { isToggled, name, email, phoneNumber, photo, birthdate, gender, location } = this.state
 
     return (
       <div>
         <div className={s.profile__container}>
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
+            <div style={{ position: 'relative' }}>
+              <div onClick={this.handleProfileClick} className={s.profile_image_wrapper}>
+                {!photo && <p>Edit</p>}
+                {photo && <img alt="" src={photo} />}
+              </div>
+              <input id="file" className={s.profile_image_input} type="file" accept="image/*" onChange={this.handleFileSelect} />
+            </div>
             <FormContent type="text" id="name" label="Ubah nama" value={name} onChange={this.onChangeInput} />
-            <FormContent type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} />
-            <FormContent type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} />
+            <FormContent type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} disabled />
+            <FormContent type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} disabled />
             <FormContent type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} />
             <FormContent type="select" id="gender" label="Ubah jenis kelamin" value={{ label: this.getGenderText(gender), value: gender }} onChange={this.onChangeSelect} options={genderOptions} />
             <FormContent type="select" id="location" label="Ubah lokasi" value={{ label: location, value: location }} onChange={this.onChangeSelect} options={countryOptions} />
@@ -169,6 +235,9 @@ class Profile extends React.Component {
             </div>
           </LazyLoad>
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: isToggled ? 'none' : 'block' }}>
+            <div style={{ position: 'relative' }}>
+              <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
+            </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
             <FormPlaceholder id="changeName" label="Nama Pengguna" value={name} />
             <FormPlaceholder id="changeEmail" label="Email" value={email} />
