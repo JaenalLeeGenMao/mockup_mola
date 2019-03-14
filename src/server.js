@@ -91,7 +91,7 @@ const { endpoints: { domain, auth }, oauth: { appKey, appSecret } } = config
 // let count = 0
 // var inboxInterval;
 // set a cookie
-const OAUTH_USER_INFO_URL = `${auth}/v1/userinfo`
+const OAUTH_USER_INFO_URL = `${auth}/v1/profile`
 const OAUTH_LOGOUT_URL = `${auth}/oauth2/v1/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
 const getVUID = async deviceId => {
@@ -166,18 +166,18 @@ const requestGuestToken = async res => {
   }
 }
 
-const getUserInfo = async accessToken => {
+const getUserInfo = async sid => {
   try {
     const rawResponse = await fetch(OAUTH_USER_INFO_URL, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Cookie: `SID=${sid}`,
         'Content-Type': 'application/json',
       },
     })
 
     const content = await rawResponse.json()
-    return content
+    return content.data
   } catch {
     return null
   }
@@ -488,7 +488,7 @@ app.get('*', async (req, res, next) => {
 
     let userInfo, userSubs
     if (req.cookies._at) {
-      userInfo = await getUserInfo(req.cookies._at)
+      userInfo = await getUserInfo(req.cookies.SID)
       userSubs = await getUserSubscription(uid, req.cookies._at)
     }
 
@@ -500,6 +500,9 @@ app.get('*', async (req, res, next) => {
         lastName: userInfo ? userInfo.last_name : '',
         email: userInfo ? userInfo.email : '',
         phoneNumber: userInfo ? userInfo.phone_number : '',
+        birthdate: userInfo ? userInfo.birthdate : '',
+        gender: userInfo ? userInfo.gender : '',
+        location: userInfo ? userInfo.location : '',
         subscriptions: userSubs || '',
         token: accessToken,
         refreshToken: '',
