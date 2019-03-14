@@ -181,14 +181,16 @@ class Profile extends React.Component {
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         // console.log('onload', theFile)
-        var formData = new FormData() // Currently empty
-        formData.append('file', theFile)
         return function(e) {
           console.log(e)
-          console.log('theFile', Uploader.uploadImage(theFile))
-          console.log('formData', Uploader.uploadImage(formData))
-          that.setState({
-            photo: reader.result,
+          const postFiles = Uploader.uploadImage(theFile)
+          postFiles.then(response => {
+            console.log(response)
+            if (response.meta.status === 'success') {
+              that.setState({
+                photo: reader.result,
+              })
+            }
           })
           // Render thumbnail.
           // var span = document.createElement('span')
