@@ -1,4 +1,4 @@
-export const genderOptions = [{ value: 'pria', label: 'Pria' }, { value: 'wanita', label: 'Wanita' }, { value: 'lain', label: 'Lain' }]
+export const genderOptions = [{ value: 'm', label: 'Pria' }, { value: 'f', label: 'Wanita' }, { value: 'o', label: 'Lain' }]
 
 export const countryOptions = [
   { value: 'Afghanistan', label: 'Afghanistan' },

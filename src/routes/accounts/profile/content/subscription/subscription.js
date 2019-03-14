@@ -41,6 +41,10 @@ class Subscription extends React.Component {
     console.log('ORDER', order)
     console.log('PAYMENT', payment)
 
+    if (payment) {
+      window.location.href = payment
+    }
+
     this.props.onClick()
   }
 
