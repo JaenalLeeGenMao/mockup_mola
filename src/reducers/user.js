@@ -1,11 +1,14 @@
 import types from '../constants'
 
-const emptyData = {
+const initialState = {
   uid: '',
   sid: '',
   firstName: '',
   lastName: '',
   email: '',
+  birthdate: '',
+  gender: '',
+  location: '',
   token: '',
   refreshToken: '',
   expire: '',
@@ -13,23 +16,23 @@ const emptyData = {
   isLoading: false,
 }
 
-const fakeData = {
-  username: 'Trisno Nino',
-  email: 'ninotrisno34@gmail.com',
-  birthdate: '2018-09-29',
-  gender: 'm',
-  phoneNumber: '0853-1501-5663',
-  photo: '',
-  location: 'Indonesia',
-  setting: {
-    videoQuality: 1,
-    location: 1,
-    autoPlay: [1],
-    signOn: [1, 2],
-  },
-}
+// const fakeData = {
+//   username: 'Trisno Nino',
+//   email: 'ninotrisno34@gmail.com',
+//   birthdate: '2018-09-29',
+//   gender: 'm',
+//   phoneNumber: '0853-1501-5663',
+//   photo: '',
+//   location: 'Indonesia',
+//   setting: {
+//     videoQuality: 1,
+//     location: 1,
+//     autoPlay: [1],
+//     signOn: [1, 2],
+//   },
+// }
 
-const initialState = Object.assign(emptyData, fakeData)
+// const initialState = Object.assign(emptyData, fakeData)
 export default function runtime(state = initialState, action) {
   switch (action.type) {
     case types.UPDATE_PROFILE_REQUEST:
