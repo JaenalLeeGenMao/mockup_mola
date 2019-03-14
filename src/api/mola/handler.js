@@ -438,7 +438,7 @@ const createOrder = ({ token, uid }) => {
 const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, token, orderId }) => {
   const data = JSON.stringify({
     paymentMethodId: 270, // payment_method_id midtrans di hardcode 17 dari DataBase
-    Id: orderId,
+    Id: `${orderId}`,
     title: 'Mola - Paket No Ads',
     phone: phoneNumber,
     email: email,
@@ -458,13 +458,13 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
   })
     .then(response => {
       console.log(response)
-      const { data } = response.data
+      const { paymentData } = response.data
       return {
         meta: {
           status: 'success',
           error: '',
         },
-        data,
+        data: paymentData.url,
       }
     })
     .catch(error => {
@@ -474,7 +474,7 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
           status: 'error',
           error: errorMessage,
         },
-        data: [],
+        data: '',
       }
     })
 }
