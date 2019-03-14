@@ -180,12 +180,13 @@ class Profile extends React.Component {
 
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
-        console.log('onload', theFile)
+        // console.log('onload', theFile)
         var formData = new FormData() // Currently empty
         formData.append('file', theFile)
         return function(e) {
           console.log(e)
-          console.log(Uploader.uploadImage(formData))
+          console.log('theFile', Uploader.uploadImage(theFile))
+          console.log('formData', Uploader.uploadImage(formData))
           that.setState({
             photo: reader.result,
           })

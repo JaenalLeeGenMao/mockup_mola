@@ -8,7 +8,11 @@ const uploadImage = file => {
   const body = { file, client_id: uploader.clientId, ptoken: uploader.ptoken }
   console.log(`${UPLOADER_ENDPOINT}/image/upload`)
   console.log(body)
-  return post(`${UPLOADER_ENDPOINT}/image/upload`, body)
+  return post(`${UPLOADER_ENDPOINT}/image/upload`, body, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  })
     .then(response => {
       return {
         meta: {
