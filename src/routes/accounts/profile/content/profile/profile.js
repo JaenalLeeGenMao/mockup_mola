@@ -93,16 +93,16 @@ class Profile extends React.Component {
 
     const update = Auth.updateProfile(payload)
     update.then(response => {
-      if (response) {
-        this.setState({
-          name,
-          email,
-          phoneNumber,
-          photo,
-          birthdate,
-          gender,
-          location,
-        })
+      if (response.meta.status === 'success') {
+        // this.setState({
+        //   name,
+        //   email,
+        //   phoneNumber,
+        //   photo,
+        //   birthdate,
+        //   gender,
+        //   location,
+        // })
 
         this.setState({
           isToggled: !this.state.isToggled,
@@ -214,6 +214,7 @@ class Profile extends React.Component {
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
             <div style={{ position: 'relative' }}>
               <div onClick={this.handleProfileClick} className={s.profile_image_wrapper}>
+                {!photo && <p>Edit</p>}
                 {photo && <img alt="" src={photo} />}
               </div>
               <input id="file" className={s.profile_image_input} type="file" accept="image/*" onChange={this.handleFileSelect} />
@@ -234,6 +235,9 @@ class Profile extends React.Component {
             </div>
           </LazyLoad>
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: isToggled ? 'none' : 'block' }}>
+            <div style={{ position: 'relative' }}>
+              <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
+            </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
             <FormPlaceholder id="changeName" label="Nama Pengguna" value={name} />
             <FormPlaceholder id="changeEmail" label="Email" value={email} />

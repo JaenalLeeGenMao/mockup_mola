@@ -55,6 +55,10 @@
 }
 
 .profile_image_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   background: grey;
   margin: 1rem;
   width: 6rem;
