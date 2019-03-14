@@ -60,7 +60,7 @@ const FormContent = ({ id, label, value, type = 'password', disabled, onChange, 
         <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
       ) : (
         <div className={`${s.profile_form_input_wrapper} ${disabled ? s.disabled : ''}`}>
-          <input type={type} id={id} onChange={onChange} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
+          <input type={type} id={id} onChange={onChange} onClick={e => e.target.focus()} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
         </div>
       )}
     </div>
