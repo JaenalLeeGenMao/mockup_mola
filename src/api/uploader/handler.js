@@ -20,7 +20,32 @@ const uploadImage = file => {
         meta: {
           status: 'success',
         },
-        data: response,
+        data: response.data,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
+const getImageCDN = (path, token) => {
+  const params = { client_id: uploader.clientId, path, token }
+  console.log(params)
+  return get(`${UPLOADER_ENDPOINT}/image/status`, {
+    params,
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response.data,
       }
     })
     .catch(error => {
@@ -36,4 +61,5 @@ const uploadImage = file => {
 
 export default {
   uploadImage,
+  getImageCDN,
 }
