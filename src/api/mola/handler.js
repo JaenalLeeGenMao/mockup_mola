@@ -459,12 +459,13 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
     .then(response => {
       console.log(response)
       const { paymentData } = response.data
+      const redirectUrl = `${endpoints.domain}/accounts/profile?tab=subscription`
       return {
         meta: {
           status: 'success',
           error: '',
         },
-        data: paymentData.url,
+        data: { ...paymentData, redirectUrl },
       }
     })
     .catch(error => {

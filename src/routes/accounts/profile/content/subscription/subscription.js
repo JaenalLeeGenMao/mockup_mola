@@ -1,4 +1,5 @@
 import React from 'react'
+import { toastr } from 'react-redux-toastr'
 import { connect } from 'react-redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
@@ -36,13 +37,21 @@ class Subscription extends React.Component {
     })
 
     const order = await Mola.createOrder(user)
+    if (order.meta.status === 'success') {
+      toastr.success('Notification', 'Generating new order, please keep this window open!')
+    } else {
+      toastr.error('Notification', 'Failure upon generating new order')
+    }
     const payment = await Mola.createMidtransPayment({ ...user, orderId: order.data.id })
     console.log('USER', user)
     console.log('ORDER', order)
     console.log('PAYMENT', payment)
 
-    if (payment) {
-      window.location.href = payment
+    if (payment.meta.status === 'success') {
+      toastr.success('Notification', 'Redirecting you to Mola payment via Midtrans ')
+      window.open(`${payment.data.url}?${payment.data.redirectUrl}`, '_blank')
+    } else {
+      toastr.error('Notification', 'Failed retrieving Mola payment')
     }
 
     this.props.onClick()
