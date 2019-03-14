@@ -6,9 +6,11 @@ import { uploader } from '@source/config'
 
 const uploadImage = file => {
   const body = { file, client_id: uploader.clientId, ptoken: uploader.ptoken }
-  console.log(`${UPLOADER_ENDPOINT}/image/upload`)
-  console.log(body)
-  return post(`${UPLOADER_ENDPOINT}/image/upload`, body, {
+  var formData = new FormData() // Currently empty
+  formData.append('file', file)
+  formData.append('client_id', uploader.clientId)
+  formData.append('ptoken', uploader.ptoken)
+  return post(`${UPLOADER_ENDPOINT}/image/upload`, formData, {
     headers: {
       'content-type': 'multipart/form-data',
     },
