@@ -22,16 +22,14 @@ class CardLibrary extends Component {
   }
 
   handleClick = e => {
-    const { id, imgUrl, title, onClick } = this.props
-    console.log(this.props)
+    const { id, onClick } = this.props
     onClick(id, e.target)
-    // console.log(`/movie-detail/${id}`, (e.target.style.transform = 'scale(1.15)'))
   }
 
   render() {
     const { id, thumbnail, title, description, quotes, active } = this.props
     return (
-      <div onClick={this.handleClick} className={s.card}>
+      <div className={s.card}>
         <div>
           {!this.state.show && (
             <h1
@@ -43,8 +41,8 @@ class CardLibrary extends Component {
               {title}
             </h1>
           )}
-
-          <Lazyload src={thumbnail || defaultImagePortrait} handleCallback={this.handleTitleShow} />
+          <span onClick={e => this.props.onClick(undefined, e.target)} className={`${s.cross_icon_black} ${s.card__detail} ${active ? s.close_right : s.close_left}`} />
+          <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} onClick={this.handleClick} />
           <div id={id} className={`${s.card__detail} ${active ? s.left : s.right}`}>
             <h1>{description}</h1>
             <p>
