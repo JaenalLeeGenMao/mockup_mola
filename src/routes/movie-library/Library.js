@@ -176,7 +176,7 @@ class MovieLibrary extends Component {
     } catch {
       console.log('apaan')
     }
-
+    console.log(id)
     if (id && e) {
       // prevent user interaction when image not loaded
       if (e.tagName === 'DIV') {
