@@ -41,7 +41,7 @@ class CardLibrary extends Component {
               {title}
             </h1>
           )}
-          <span onClick={e => this.props.onClick(undefined, e.target)} className={`${s.cross_icon_black} ${s.card__detail} ${active ? s.close_right : s.close_left}`} />
+          <span id={`close-${id}`} onClick={e => this.props.onClick(undefined, e.target)} className={`${s.cross_icon_black} ${s.card__detail} ${active ? s.close_right : s.close_left}`} />
           <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} onClick={this.handleClick} />
           <div id={id} className={`${s.card__detail} ${active ? s.left : s.right}`}>
             <h1>{description}</h1>

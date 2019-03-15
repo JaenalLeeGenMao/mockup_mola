@@ -168,15 +168,13 @@ class MovieLibrary extends Component {
 
   handleCardClick = (id, e) => {
     const overlay = document.getElementById('overlay')
-    let details
+    let details, spans
 
     try {
-      console.log(document.getElementById(id))
       details = document.getElementById(id) || ''
-    } catch {
-      console.log('apaan')
-    }
-    console.log(id)
+      spans = document.getElementById(`close-${id}`) || ''
+    } catch {}
+
     if (id && e) {
       // prevent user interaction when image not loaded
       if (e.tagName === 'DIV') {
@@ -193,30 +191,33 @@ class MovieLibrary extends Component {
         e.parentNode.parentNode.style.transform = 'scale(1.25)'
       }
 
-      overlay.style.display = 'block'
-      if (details) {
+      try {
         details.style.display = 'block'
-      }
+        spans.style.display = 'block'
+      } catch {}
+      overlay.style.display = 'block'
       this.cardRef = e
     } else if (this.cardRef) {
       overlay.style.display = 'none'
-      if (details) {
-        details.style.display = 'block'
-      }
+      this.state.movieLibrary.data.map(videos => {
+        try {
+          const detailEl = document.getElementById(videos.id) || ''
+          const spanEl = document.getElementById(`close-${videos.id}`) || ''
+          detailEl.style.display = 'none'
+          spanEl.style.display = 'none'
+
+          details.style.display = 'block'
+          spans.style.display = 'block'
+        } catch {
+          // something failed
+        }
+      })
+
       this.cardRef.parentNode.parentNode.style.transform = 'none'
       this.cardRef.parentNode.parentNode.style.position = ''
       this.cardRef.parentNode.parentNode.style.top = '0'
       this.cardRef.parentNode.parentNode.style.left = '0'
       this.cardRef.parentNode.parentNode.style.right = '0'
-
-      this.state.movieLibrary.data.map(videos => {
-        try {
-          details = document.getElementById(videos.id) || ''
-          details.style.display = 'none'
-        } catch {
-          // something failed
-        }
-      })
     } else {
       overlay.style.display = 'none'
     }
