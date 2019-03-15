@@ -302,6 +302,7 @@ app.get('/oauth/callback', async (req, res) => {
     await new Promise(resolve => {
       request.post(
         {
+          ...config.endpoints.setting,
           url: `${auth}/oauth2/v1/token`,
           headers: {
             Cookie: `SID=${sid}`,

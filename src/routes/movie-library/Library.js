@@ -174,7 +174,7 @@ class MovieLibrary extends Component {
       }
 
       if (window && window.innerWidth <= 640) {
-        e.parentNode.parentNode.style.transform = 'scale(.8)'
+        e.parentNode.parentNode.style.transform = 'scale(.75)'
         e.parentNode.parentNode.style.position = 'fixed'
         e.parentNode.parentNode.style.top = '44px'
         e.parentNode.parentNode.style.left = '0'

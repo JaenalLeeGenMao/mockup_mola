@@ -50,6 +50,10 @@ class CardLibrary extends Component {
             <p>
               {quotes.text} - {quotes.author}
             </p>
+            <Link to={`/movie-detail/${id}`} className={`${s.card__detail_button} ${0 ? s.black : s.white}`}>
+              <span className={s.play_icon} />
+              <p>Mulai Nonton</p>
+            </Link>
           </div>
         </div>
       </div>
