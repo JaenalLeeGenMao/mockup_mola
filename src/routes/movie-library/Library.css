@@ -2,11 +2,6 @@
   overflow: auto;
 }
 
-html,
-body {
-  background: white !important;
-}
-
 .main_container {
   width: 100%;
   margin: 0 auto;
