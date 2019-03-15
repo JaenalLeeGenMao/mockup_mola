@@ -15,8 +15,8 @@ import Libheader from './movielibrary/Libheader'
 import s from './Library.css'
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder'
 
-import defaultImagePortrait from './assets/default-img-mola_library-01.jpg'
-import defaultImageLandscape from './assets/default-img-mola_library-02.jpg'
+// import defaultImagePortrait from './assets/default-img-mola_library-01.jpg'
+// import defaultImageLandscape from './assets/default-img-mola_library-02.jpg'
 
 class MovieLibrary extends Component {
   state = {
@@ -26,6 +26,7 @@ class MovieLibrary extends Component {
     },
     genreId: '',
     isLoading: true,
+    active: true,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -57,6 +58,25 @@ class MovieLibrary extends Component {
     }
 
     return { ...prevState, movieLibrary, search, genreId: nextProps.genreId }
+  }
+
+  componentDidMount() {
+    document.ontouchend = event => {
+      const halfScreenWidth = window.innerWidth * 0.5
+
+      this.setState({
+        active: event.changedTouches[0].screenX > halfScreenWidth /* to left side */,
+      })
+    }
+
+    /* mousedown/mouseup to handle desktop scrolling event */
+    document.onmouseup = event => {
+      const halfScreenWidth = window.innerWidth * 0.5
+
+      this.setState({
+        active: event.x > halfScreenWidth /* to left side */,
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -111,16 +131,15 @@ class MovieLibrary extends Component {
   }
 
   renderContent = () => {
-    const { movieLibrary: { data: libraryDt } } = this.props
-    const { isLoading } = this.state
+    // const { movieLibrary: { data: libraryDt } } = this.props
+    const { isLoading, movieLibrary: { data: libraryDt } } = this.state
     const cardImageLib = libraryDt.length > 0 ? libraryDt : null
 
     return (
       !isLoading &&
       cardImageLib &&
-      cardImageLib.map((obj, index) => {
-        const placeholder = index % 2 === 0 ? defaultImagePortrait : defaultImageLandscape
-        return <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail || placeholder} id={obj.id} />
+      cardImageLib.map((videos, index) => {
+        return <CardLibrary {...videos} key={videos.id} index={index} active={this.state.active} onClick={this.handleCardClick} />
       })
     )
   }
@@ -146,6 +165,37 @@ class MovieLibrary extends Component {
     ) : null
   }
 
+  handleCardClick = (id, e) => {
+    const overlay = document.getElementById('overlay')
+    if (id && e) {
+      // prevent user interaction when image not loaded
+      if (e.tagName === 'DIV') {
+        return false
+      }
+
+      if (window && window.innerWidth <= 640) {
+        e.parentNode.parentNode.style.transform = 'scale(.75)'
+        e.parentNode.parentNode.style.position = 'fixed'
+        e.parentNode.parentNode.style.top = '44px'
+        e.parentNode.parentNode.style.left = '0'
+        e.parentNode.parentNode.style.right = '0'
+      } else {
+        e.parentNode.parentNode.style.transform = 'scale(1.25)'
+      }
+      overlay.style.display = 'block'
+      this.cardRef = e
+    } else if (this.cardRef) {
+      overlay.style.display = 'none'
+      this.cardRef.parentNode.parentNode.style.transform = 'none'
+      this.cardRef.parentNode.parentNode.style.position = ''
+      this.cardRef.parentNode.parentNode.style.top = '0'
+      this.cardRef.parentNode.parentNode.style.left = '0'
+      this.cardRef.parentNode.parentNode.style.right = '0'
+    } else {
+      overlay.style.display = 'none'
+    }
+  }
+
   render() {
     const { movieLibrary: { data: libraryDt } } = this.props
     const status = this.props.movieLibrary.meta.status
@@ -155,14 +205,15 @@ class MovieLibrary extends Component {
       <Fragment>
         <Layout>
           <div className={s.main_container}>
+            <div id="overlay" onClick={this.handleCardClick} className={s.overlay} />
             <Libheader cardTitle={title} {...this.props} />
-            <div className={s.card_wrapper}>
-              {this.renderLoading()}
-
-              {this.renderContent()}
+            <div className={s.card_container}>
+              <div className={s.card_wrapper}>
+                {this.renderLoading()}
+                {this.renderContent()}
+              </div>
             </div>
           </div>
-
           {this.renderNotFound(status)}
         </Layout>
       </Fragment>

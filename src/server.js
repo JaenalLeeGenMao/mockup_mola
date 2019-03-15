@@ -302,6 +302,7 @@ app.get('/oauth/callback', async (req, res) => {
     await new Promise(resolve => {
       request.post(
         {
+          ...config.endpoints.setting,
           url: `${auth}/oauth2/v1/token`,
           headers: {
             Cookie: `SID=${sid}`,
@@ -346,6 +347,7 @@ app.get('/accounts/signin', async (req, res) => {
   })
 
   if (!req.cookies._at) {
+    res.clearCookie('SID')
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
@@ -354,6 +356,7 @@ app.get('/accounts/signin', async (req, res) => {
 
 app.get('/accounts', async (req, res) => {
   if (!req.cookies._at) {
+    res.clearCookie('SID')
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
