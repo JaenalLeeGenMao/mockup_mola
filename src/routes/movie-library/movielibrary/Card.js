@@ -5,6 +5,8 @@ import s from './Card.css'
 import Link from '@components/Link'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 
+import defaultImagePortrait from '../assets/default-img-mola_library-01.jpg'
+
 class CardLibrary extends Component {
   state = {
     show: false,
@@ -19,11 +21,18 @@ class CardLibrary extends Component {
     this.setState({ show: show ? true : false })
   }
 
+  handleClick = e => {
+    const { id, imgUrl, title, onClick } = this.props
+    console.log(this.props)
+    onClick(id, e.target)
+    // console.log(`/movie-detail/${id}`, (e.target.style.transform = 'scale(1.15)'))
+  }
+
   render() {
-    const { id, imgUrl, title } = this.props
+    const { id, thumbnail, title, description, quotes, active } = this.props
     return (
-      <div className={s.card}>
-        <Link to={`/movie-detail/${id}`}>
+      <div onClick={this.handleClick} className={s.card}>
+        <div>
           {!this.state.show && (
             <h1
               ref={node => {
@@ -35,8 +44,14 @@ class CardLibrary extends Component {
             </h1>
           )}
 
-          <Lazyload src={imgUrl} handleCallback={this.handleTitleShow} />
-        </Link>
+          <Lazyload src={thumbnail || defaultImagePortrait} handleCallback={this.handleTitleShow} />
+          <div id={id} className={`${s.card__detail} ${active ? s.left : s.right}`}>
+            <h1>{description}</h1>
+            <p>
+              {quotes.text} - {quotes.author}
+            </p>
+          </div>
+        </div>
       </div>
     )
   }
