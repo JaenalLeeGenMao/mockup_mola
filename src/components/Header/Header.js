@@ -115,6 +115,7 @@ class Header extends Component {
             <LazyLoad>
               <Link to="/">
                 <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <button src={isMobile} className={styles.header__back_arrow} style={{ color }} />
               </Link>
             </LazyLoad>
           )}

@@ -48,7 +48,8 @@
 }
 
 .header__menu ul li a:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
+  font-weight: 700;
 }
 
 @media screen and (min-width: 299px) and (max-width: 640px) {
@@ -59,7 +60,14 @@
   }
 
   .header__menu {
-    padding-top: 1rem;
+    padding-top: 13rem;
+  }
+
+  .header__menu ul {
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    display: flex;
   }
 
   .header__menu ul li {
@@ -70,5 +78,9 @@
     text-transform: uppercase;
     font-weight: 300;
     margin-bottom: 2rem;
+  }
+
+  .header__menu ul li a {
+    font-size: 16px;
   }
 }

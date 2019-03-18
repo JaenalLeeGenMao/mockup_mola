@@ -78,6 +78,9 @@
 
   /* color: white !important; */
   border: 0;
+
+  /* display none in desktop */
+  display: none;
 }
 
 .header__back_arrow::before {
@@ -110,6 +113,7 @@
   position: relative;
   cursor: pointer;
   color: white;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .header__action_button:focus {
@@ -200,13 +204,28 @@
     top: 0.5rem;
     width: 10rem;
     height: auto;
+    display: none;
   }
 
   .header__action_button {
-    font-size: 0.8rem;
+    /* font-size: 0.8rem; */
+    font-size: 17px;
+    font-family: 'Open Sans', sans-serif;
   }
 
   .header__back_arrow::before {
     font-size: 1.5rem;
+  }
+
+  .header__copy_library {
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    top: 0;
+  }
+
+  .header__back_arrow {
+    display: block;
   }
 }

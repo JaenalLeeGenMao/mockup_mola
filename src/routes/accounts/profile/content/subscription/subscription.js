@@ -49,7 +49,7 @@ class Subscription extends React.Component {
 
     if (payment.meta.status === 'success') {
       toastr.success('Notification', 'Redirecting you to Mola payment via Midtrans ')
-      window.open(`${payment.data.url}?${payment.data.redirectUrl}`, '_blank')
+      window.open(`${payment.data.url}?redirect_uri=${window.encodeURIComponent(payment.data.redirectUrl)}`, '_blank')
     } else {
       toastr.error('Notification', 'Failed retrieving Mola payment')
     }

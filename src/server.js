@@ -302,6 +302,7 @@ app.get('/oauth/callback', async (req, res) => {
     await new Promise(resolve => {
       request.post(
         {
+          ...config.endpoints.setting,
           url: `${auth}/oauth2/v1/token`,
           headers: {
             Cookie: `SID=${sid}`,
@@ -350,7 +351,6 @@ app.get('/accounts/signin', async (req, res) => {
     return res.redirect(callbackCode)
   }
   return res.redirect(domain || 'https://stag.mola.tv')
-  // return res.redirect('http://localhost:3000')
 })
 
 app.get('/accounts', async (req, res) => {
@@ -372,6 +372,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
+  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history']
   try {
     // global.clearInterval(inboxInterval);
 
@@ -444,7 +445,7 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          return res.redirect('/accounts')
+          return res.redirect('/accounts/signin')
         }
       }
     } else {
@@ -462,6 +463,11 @@ app.get('*', async (req, res, next) => {
             // secure: !__DEV__,
           })
         }
+      }
+
+      /* Must login before accessing these features */
+      if (!__DEV__ && whitelisted.includes(req.url)) {
+        return res.redirect('/accounts/login')
       }
 
       const decodedGuestToken = guestToken && jwt.decode(guestToken)

@@ -2,11 +2,6 @@
   overflow: auto;
 }
 
-/* html,
-body {
-  background: black !important;
-} */
-
 .main_container {
   width: 100%;
   margin: 0 auto;
@@ -25,7 +20,7 @@ body {
 }
 
 .card_wrapper {
-  padding: 6rem 0;
+  padding: 3%;
   width: 95%;
   overflow: hidden;
   display: flex;

@@ -13,6 +13,7 @@ import Error from '../search/error/Error'
 
 import Libheader from './movielibrary/Libheader'
 import s from './Library.css'
+import cardStyles from './movielibrary/Card.css'
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder'
 
 // import defaultImagePortrait from './assets/default-img-mola_library-01.jpg'
@@ -167,6 +168,13 @@ class MovieLibrary extends Component {
 
   handleCardClick = (id, e) => {
     const overlay = document.getElementById('overlay')
+    let details, spans
+
+    try {
+      details = document.getElementById(id) || ''
+      spans = document.getElementById(`close-${id}`) || ''
+    } catch {}
+
     if (id && e) {
       // prevent user interaction when image not loaded
       if (e.tagName === 'DIV') {
@@ -174,18 +182,37 @@ class MovieLibrary extends Component {
       }
 
       if (window && window.innerWidth <= 640) {
-        e.parentNode.parentNode.style.transform = 'scale(.8)'
+        e.parentNode.parentNode.style.transform = 'scale(.65)'
         e.parentNode.parentNode.style.position = 'fixed'
-        e.parentNode.parentNode.style.top = '44px'
+        e.parentNode.parentNode.style.top = '0'
         e.parentNode.parentNode.style.left = '0'
         e.parentNode.parentNode.style.right = '0'
       } else {
         e.parentNode.parentNode.style.transform = 'scale(1.25)'
       }
+
+      try {
+        details.style.display = 'block'
+        spans.style.display = 'block'
+      } catch {}
       overlay.style.display = 'block'
       this.cardRef = e
     } else if (this.cardRef) {
       overlay.style.display = 'none'
+      this.state.movieLibrary.data.map(videos => {
+        try {
+          const detailEl = document.getElementById(videos.id) || ''
+          const spanEl = document.getElementById(`close-${videos.id}`) || ''
+          detailEl.style.display = 'none'
+          spanEl.style.display = 'none'
+
+          details.style.display = 'block'
+          spans.style.display = 'block'
+        } catch {
+          // something failed
+        }
+      })
+
       this.cardRef.parentNode.parentNode.style.transform = 'none'
       this.cardRef.parentNode.parentNode.style.position = ''
       this.cardRef.parentNode.parentNode.style.top = '0'
@@ -205,7 +232,7 @@ class MovieLibrary extends Component {
       <Fragment>
         <Layout>
           <div className={s.main_container}>
-            <div id="overlay" onClick={this.handleCardClick} className={s.overlay} />
+            <div id="overlay" onClick={e => this.handleCardClick(undefined, e)} className={s.overlay} />
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_container}>
               <div className={s.card_wrapper}>
@@ -233,4 +260,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieLibrary: genreId => dispatch(movieLibraryActions.getMovieLibrary(genreId)),
 })
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(MovieLibrary)
+export default compose(withStyles(s, cardStyles), connect(mapStateToProps, mapDispatchToProps))(MovieLibrary)

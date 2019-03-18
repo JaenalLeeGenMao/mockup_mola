@@ -257,6 +257,7 @@ const normalizeMovieLibrary = response => {
         const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '')
         const description = _get(attributes, 'description', '')
         const quotes = _get(attributes, 'quotes[0].attributes', '')
+        const isDark = _get(attributes, 'isDark', '0')
 
         return {
           genreTitle,
@@ -265,6 +266,7 @@ const normalizeMovieLibrary = response => {
           thumbnail,
           description,
           quotes,
+          isDark,
         }
       })
     )
