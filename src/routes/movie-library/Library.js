@@ -182,9 +182,9 @@ class MovieLibrary extends Component {
       }
 
       if (window && window.innerWidth <= 640) {
-        e.parentNode.parentNode.style.transform = 'scale(.75)'
+        e.parentNode.parentNode.style.transform = 'scale(.65)'
         e.parentNode.parentNode.style.position = 'fixed'
-        e.parentNode.parentNode.style.top = '24px'
+        e.parentNode.parentNode.style.top = '0'
         e.parentNode.parentNode.style.left = '0'
         e.parentNode.parentNode.style.right = '0'
       } else {
