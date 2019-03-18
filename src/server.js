@@ -347,7 +347,6 @@ app.get('/accounts/signin', async (req, res) => {
   })
 
   if (!req.cookies._at) {
-    res.clearCookie('SID')
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
@@ -355,8 +354,8 @@ app.get('/accounts/signin', async (req, res) => {
 })
 
 app.get('/accounts', async (req, res) => {
+  res.clearCookie('SID')
   if (!req.cookies._at) {
-    res.clearCookie('SID')
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
