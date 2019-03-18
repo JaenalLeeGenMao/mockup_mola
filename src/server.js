@@ -354,7 +354,6 @@ app.get('/accounts/signin', async (req, res) => {
 })
 
 app.get('/accounts', async (req, res) => {
-  res.clearCookie('SID')
   if (!req.cookies._at) {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
@@ -446,7 +445,7 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          return res.redirect('/accounts')
+          return res.redirect('/accounts/signin')
         }
       }
     } else {
