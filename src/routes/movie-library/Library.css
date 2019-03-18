@@ -2,10 +2,10 @@
   overflow: auto;
 }
 
-html,
+/* html,
 body {
-  background: white !important;
-}
+  background: black !important;
+} */
 
 .main_container {
   width: 100%;

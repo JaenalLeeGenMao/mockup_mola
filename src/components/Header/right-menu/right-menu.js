@@ -11,6 +11,7 @@ import Link from '@components/Link'
 import { getLocale } from '../locale'
 
 import styles from './right-menu.css'
+import { IoIosArrowDown } from 'react-icons/io'
 
 const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
@@ -103,11 +104,24 @@ class RightMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, searchOff, profileOff, shareButtonOn } = this.props
+    const { color, searchOff, profileOff, shareButtonOn, dropdownMenu, handleMenuToggleClick, isMenuToggled = false } = this.props
+    const iconToggleStyle = {
+      transform: 'rotate(180deg) translateY(0%)',
+      top: '-3px',
+    }
 
     return (
       <>
         <div className={styles.right__menu}>
+          {/* {!dropdownMenu && (
+            <span className={styles.right__menu_wrapper}>
+              <LazyLoad className={styles.right__menu_icon_wrapper}>
+                <button className={styles.dropdown_list} onClick={handleMenuToggleClick}>
+                  Movie <IoIosArrowDown className={styles.right__menu_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                </button>
+              </LazyLoad>
+            </span>
+          )} */}
           {!searchOff && (
             <span className={styles.right__menu_wrapper}>
               <LazyLoad className={styles.right__menu_icon_wrapper}>
