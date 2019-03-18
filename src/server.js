@@ -351,7 +351,7 @@ app.get('/accounts/signin', async (req, res) => {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
-   return res.redirect(domain || 'https://stag.mola.tv')
+  return res.redirect(domain || 'https://stag.mola.tv')
 })
 
 app.get('/accounts', async (req, res) => {
@@ -374,6 +374,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
+  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history']
   try {
     // global.clearInterval(inboxInterval);
 
@@ -464,6 +465,11 @@ app.get('*', async (req, res, next) => {
             // secure: !__DEV__,
           })
         }
+      }
+
+      /* Must login before accessing these features */
+      if (!__DEV__ && whitelisted.includes(req.url)) {
+        return res.redirect('/accounts/login')
       }
 
       const decodedGuestToken = guestToken && jwt.decode(guestToken)
