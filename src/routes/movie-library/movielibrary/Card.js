@@ -6,6 +6,7 @@ import Link from '@components/Link'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 
 import defaultImagePortrait from '../assets/default-img-mola_library-01.jpg'
+import { setMultilineEllipsis } from './util'
 
 class CardLibrary extends Component {
   state = {
@@ -15,6 +16,10 @@ class CardLibrary extends Component {
   static propTypes = {
     imgUrl: PropTypes.string.isRequired,
     cardLink: PropTypes.string.isRequired,
+  }
+
+  componentDidMount() {
+    setMultilineEllipsis(s.card_quote)
   }
 
   handleTitleShow = (show = false) => {
@@ -27,7 +32,7 @@ class CardLibrary extends Component {
   }
 
   render() {
-    const { id, thumbnail, title, description, quotes, active } = this.props
+    const { id, thumbnail, title, description, quotes, isDark = 0, active } = this.props
     return (
       <div className={s.card}>
         <div>
@@ -41,13 +46,19 @@ class CardLibrary extends Component {
               {title}
             </h1>
           )}
-          <span id={`close-${id}`} onClick={e => this.props.onClick(undefined, e.target)} className={`${s.cross_icon_black} ${s.card__detail} ${active ? s.close_right : s.close_left}`} />
+          <span
+            id={`close-${id}`}
+            onClick={e => this.props.onClick(undefined, e.target)}
+            className={`${isDark ? s.cross_icon_black : s.cross_icon_white} ${s.card__detail} ${active ? s.close_right : s.close_left}`}
+          />
           <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} onClick={this.handleClick} />
+          {/* <Link to={`/movie-detail/${id}`}>
+            <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} />
+          </Link> */}
           <div id={id} className={`${s.card__detail} ${active ? s.left : s.right}`}>
             <h1>{description}</h1>
-            <p>
-              {quotes.text} - {quotes.author}
-            </p>
+            <p className={s.card_quote}>{quotes.text}</p>
+            <p>- {quotes.author}</p>
             <Link to={`/movie-detail/${id}`} className={`${s.card__detail_button} ${0 ? s.black : s.white}`}>
               <span className={s.play_icon} />
               <p>Mulai Nonton</p>
