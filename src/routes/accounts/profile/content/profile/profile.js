@@ -256,7 +256,7 @@ class Profile extends React.Component {
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={birthdate} />
             <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={gender} />
             <FormPlaceholder id="changeLocation" label="Lokasi" value={location} />
-            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.data.length > 0 ? 'Aktif' : 'Belum Aktif'} />
+            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleClick}>
                 Ubah
