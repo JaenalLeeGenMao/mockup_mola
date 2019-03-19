@@ -16,7 +16,7 @@ class Layout extends Component {
     return (
       <Fragment>
         {this.props.children}
-        <ReduxToastr timeOut={4000} newestOnTop={false} preventDuplicates position="top-right" transitionIn="fadeIn" transitionOut="fadeOut" progressBar closeOnToastrClick />
+        <ReduxToastr timeOut={8000} newestOnTop={false} preventDuplicates position="top-right" transitionIn="fadeIn" transitionOut="fadeOut" progressBar closeOnToastrClick />
       </Fragment>
     )
   }
