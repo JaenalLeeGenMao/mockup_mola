@@ -6,6 +6,7 @@ import Header from '@components/Header'
 import s from './Libheader.css'
 import Link from '../../../components/Link'
 import LazyLoad from '@components/common/Lazyload'
+import history from '../../../history'
 
 class Libheader extends Component {
   state = {
@@ -48,6 +49,19 @@ class Libheader extends Component {
 
     return (
       <div className={s.header__menu} style={isMobile ? styleMobile : styleDesktop}>
+        <div className={s.position_close_button}>
+          <span
+            className={s.popup__menu_close_button}
+            onClick={() => {
+              this.setState({ isMenuToggled: false })
+            }}
+          />
+        </div>
+        <div className={s.wrapper_title_genres}>
+          <div className={s.title_genres}>
+            <span>All Genres</span>
+          </div>
+        </div>
         <ul>
           {genreData.map(item => {
             return (
@@ -70,7 +84,7 @@ class Libheader extends Component {
     return (
       <div className={s.header} ref={this.headerContainerRef}>
         <Header
-          isDark
+          isDark={0}
           logoOff
           libraryOff
           backButtonOn

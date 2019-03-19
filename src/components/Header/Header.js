@@ -64,8 +64,8 @@ class Header extends Component {
     const { genre: { data: genreDt } } = this.state
     const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId))
     const iconToggleStyle = {
-      transform: 'rotate(180deg) translateY(0%)',
-      top: '-3px',
+      transform: 'rotate(0deg) translateY(0%)',
+      top: '4px',
     }
     const color = isDark ? 'black' : 'white'
 
@@ -74,15 +74,16 @@ class Header extends Component {
         <div className={styles.header__copy_library}>
           <LazyLoad>
             <div className={styles.header__logo_wrap}>
-              <Link to="/">
+              {/* <Link to="/">
                 <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-              </Link>
+              </Link> */}
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
                   {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
                 </button>
               )}
             </div>
+            <div />
           </LazyLoad>
         </div>
       )
