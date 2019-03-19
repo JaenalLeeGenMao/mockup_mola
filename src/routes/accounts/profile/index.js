@@ -1,5 +1,4 @@
 import React from 'react'
-import Container from './container'
 import Profile from './profile'
 
 import MolaLayout from '@components/Molalayout'
