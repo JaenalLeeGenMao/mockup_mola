@@ -12,7 +12,7 @@
 
 .profile__tabs_container {
   position: absolute;
-  top: 12.5vh;
+  top: 15vh;
   width: 100%;
   text-align: center;
   color: #a7a7a7;
@@ -23,7 +23,7 @@
 
 .profile__contents_container {
   position: absolute;
-  top: 22.5vh;
+  top: 25vh;
   width: 100%;
   text-align: center;
   color: #a7a7a7;

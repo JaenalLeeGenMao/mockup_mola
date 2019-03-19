@@ -63,10 +63,6 @@ class Header extends Component {
 
     const { genre: { data: genreDt } } = this.state
     const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId))
-    const iconToggleStyle = {
-      transform: 'rotate(0deg) translateY(0%)',
-      top: '4px',
-    }
     const color = isDark ? 'black' : 'white'
 
     return (
@@ -79,7 +75,7 @@ class Header extends Component {
               </Link> */}
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-                  {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                  {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
                 </button>
               )}
             </div>
@@ -110,7 +106,7 @@ class Header extends Component {
 
     return (
       <div className={typeHeader}>
-        <div className={styles.header__logo_wrapper} style={{ left: backButtonOn ? '0' : '2.5%' }}>
+        <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
           {!logoOff && (
             <LazyLoad>
               <Link to="/">

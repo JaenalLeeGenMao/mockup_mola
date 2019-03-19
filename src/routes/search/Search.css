@@ -16,11 +16,6 @@
   box-sizing: border-box;
 }
 
-.headerInner {
-  padding-top: 2rem;
-  position: relative;
-}
-
 .container {
   margin: 0 auto;
   width: 70%;
@@ -255,10 +250,6 @@
 
   .headerContainer .right__menu span {
     margin-right: 10px;
-  }
-
-  .headerInner {
-    padding-top: 1rem;
   }
 }
 

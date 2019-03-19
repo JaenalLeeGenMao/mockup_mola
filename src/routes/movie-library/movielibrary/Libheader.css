@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  height: 12rem;
+  height: 6rem;
   display: flex;
   align-items: baseline;
 }
@@ -13,14 +13,8 @@
   padding-right: 4px;
   padding-bottom: 4px;
   position: fixed;
-  top: -15rem;
+  top: 0;
   padding-top: 14rem;
-
-  /* position: absolute; */
-
-  /* bottom: 0; */
-
-  /* padding: 2rem 0 0 0; */
 }
 
 .header__menu ul {
@@ -70,7 +64,7 @@
   }
 
   .header__menu {
-    padding-top: 13rem;
+    padding-top: 75px;
     z-index: 100;
   }
 

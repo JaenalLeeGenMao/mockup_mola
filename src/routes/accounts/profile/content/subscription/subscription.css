@@ -3,6 +3,7 @@
 
 .subscription__container {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }
@@ -68,6 +69,11 @@
   padding-left: 2rem;
   border-left: 0.1rem solid #444;
   vertical-align: middle;
+}
+
+.subscription__section_right span,
+.subscription__section_right_active span {
+  text-transform: uppercase;
 }
 
 .subscription__section_right h1 {

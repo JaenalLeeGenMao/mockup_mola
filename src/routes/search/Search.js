@@ -335,9 +335,7 @@ class Search extends React.Component {
     return (
       <Fragment>
         <div className={s.headerContainer}>
-          <div className={s.headerInner}>
-            <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn searchOff {...this.props} />
-          </div>
+          <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn searchOff {...this.props} />
         </div>
         <div className={s.root}>
           <div className={s.containerBg} />

@@ -61,14 +61,17 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 // console.log(`${config.endpoints.domain}/api`)
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api`, {
-//     forwardPath: (req, res) => '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path),
-//   })
-// )
+
+app.use(
+  '/api',
+  proxy(`${config.endpoints.domain}/api/`, {
+    proxyReqPathResolver: (req, res) => {
+      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+    },
+  })
+)
 
 //
 // Register Node.js middleware
@@ -362,9 +365,8 @@ app.get('/accounts', async (req, res) => {
 })
 
 app.get('/signout', (req, res) => {
-  res.clearCookie('UID')
+  res.clearCookie('_at')
   res.clearCookie('SID')
-  // res.clearCookie('_exp');
   return res.redirect(domain || 'http://jaenal.mola.tv')
 })
 
@@ -445,7 +447,9 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          return res.redirect('/accounts/signin')
+          res.clearCookie('_at')
+          res.clearCookie('SID')
+          return res.redirect('/accounts/login')
         }
       }
     } else {
@@ -510,7 +514,7 @@ app.get('*', async (req, res, next) => {
         birthdate: userInfo ? userInfo.birthdate : '',
         gender: userInfo ? userInfo.gender : '',
         location: userInfo ? userInfo.location : '',
-        subscriptions: userSubs || '',
+        subscriptions: userSubs.data || [],
         token: accessToken,
         refreshToken: '',
         tokenExpired: expToken,
@@ -532,22 +536,6 @@ app.get('*', async (req, res, next) => {
     const store = configureStore(initialState)
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }))
-
-    // const payload = {
-    //   appKey: 'wIHGzJhset',
-    //   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-    //   responseType: 'token',
-    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-    //   redirectUri: `${domain}/accounts`,
-    // }
-
-    // const guestInfo = await Auth.requestGuestToken({ ...payload })
-
-    // if (guestInfo.data !== undefined) {
-    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
-    // } else {
-    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
-    // }
 
     // inboxInterval = setInterval(() => {
     //   console.log(`server inbox interval ${count}`);
