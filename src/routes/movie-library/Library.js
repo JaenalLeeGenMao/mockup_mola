@@ -140,7 +140,7 @@ class MovieLibrary extends Component {
       !isLoading &&
       cardImageLib &&
       cardImageLib.map((videos, index) => {
-        return <CardLibrary {...videos} key={videos.id} index={index} active={this.state.active} onClick={this.handleCardClick} />
+        return <CardLibrary {...videos} key={videos.id} index={index} active={this.state.active} />
       })
     )
   }
@@ -166,63 +166,6 @@ class MovieLibrary extends Component {
     ) : null
   }
 
-  handleCardClick = (id, e) => {
-    const overlay = document.getElementById('overlay')
-    let details, spans
-
-    try {
-      details = document.getElementById(id) || ''
-      spans = document.getElementById(`close-${id}`) || ''
-    } catch {}
-
-    if (id && e) {
-      // prevent user interaction when image not loaded
-      if (e.tagName === 'DIV') {
-        return false
-      }
-
-      if (window && window.innerWidth <= 640) {
-        e.parentNode.parentNode.style.transform = 'scale(.65)'
-        e.parentNode.parentNode.style.position = 'fixed'
-        e.parentNode.parentNode.style.top = '0'
-        e.parentNode.parentNode.style.left = '0'
-        e.parentNode.parentNode.style.right = '0'
-      } else {
-        e.parentNode.parentNode.style.transform = 'scale(1.25)'
-      }
-
-      try {
-        details.style.display = 'block'
-        spans.style.display = 'block'
-      } catch {}
-      overlay.style.display = 'block'
-      this.cardRef = e
-    } else if (this.cardRef) {
-      overlay.style.display = 'none'
-      this.state.movieLibrary.data.map(videos => {
-        try {
-          const detailEl = document.getElementById(videos.id) || ''
-          const spanEl = document.getElementById(`close-${videos.id}`) || ''
-          detailEl.style.display = 'none'
-          spanEl.style.display = 'none'
-
-          details.style.display = 'block'
-          spans.style.display = 'block'
-        } catch {
-          // something failed
-        }
-      })
-
-      this.cardRef.parentNode.parentNode.style.transform = 'none'
-      this.cardRef.parentNode.parentNode.style.position = ''
-      this.cardRef.parentNode.parentNode.style.top = '0'
-      this.cardRef.parentNode.parentNode.style.left = '0'
-      this.cardRef.parentNode.parentNode.style.right = '0'
-    } else {
-      overlay.style.display = 'none'
-    }
-  }
-
   render() {
     const { movieLibrary: { data: libraryDt } } = this.props
     const status = this.props.movieLibrary.meta.status
@@ -232,7 +175,6 @@ class MovieLibrary extends Component {
       <Fragment>
         <Layout>
           <div className={s.main_container}>
-            <div id="overlay" onClick={e => this.handleCardClick(undefined, e)} className={s.overlay} />
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_container}>
               <div className={s.card_wrapper}>

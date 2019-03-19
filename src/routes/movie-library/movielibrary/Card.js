@@ -51,19 +51,9 @@ class CardLibrary extends Component {
             onClick={e => this.props.onClick(undefined, e.target)}
             className={`${isDark ? s.cross_icon_black : s.cross_icon_white} ${s.card__detail} ${active ? s.close_right : s.close_left}`}
           />
-          <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} onClick={this.handleClick} />
-          {/* <Link to={`/movie-detail/${id}`}>
+          <Link to={`/movie-detail/${id}`}>
             <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} />
-          </Link> */}
-          <div id={id} className={`${s.card__detail} ${active ? s.left : s.right}`}>
-            <h1>{description}</h1>
-            <p className={s.card_quote}>{quotes.text}</p>
-            <p>- {quotes.author}</p>
-            <Link to={`/movie-detail/${id}`} className={`${s.card__detail_button} ${0 ? s.black : s.white}`}>
-              <span className={s.play_icon} />
-              <p>Mulai Nonton</p>
-            </Link>
-          </div>
+          </Link>
         </div>
       </div>
     )

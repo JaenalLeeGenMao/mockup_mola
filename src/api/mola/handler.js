@@ -356,7 +356,6 @@ const getHotPlaylist = () => {
 }
 
 const getAllSubscriptions = token => {
-  console.log(token, SUBSCRIPTION_ENDPOINT)
   return get(`${SUBSCRIPTION_ENDPOINT}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -387,19 +386,19 @@ const getAllSubscriptions = token => {
     })
 }
 
-const createOrder = ({ token, uid }) => {
+const createOrder = ({ token, uid, subscriptionId = 26, price = 10000 }) => {
   const data = JSON.stringify({
     order_type_id: 1,
-    subscription_id: 26, // hanya hardcode midtrans 26
-    quantity: 1,
-    uom: 'm',
+    subscription_id: subscriptionId /* hanya hardcode midtrans 26 */,
+    quantity: 1 /* subscription per tahun */,
+    uom: 'm' /* sementara monthly */,
     package_expiry: '',
     status: 0,
     user_id: uid,
-    order_amount: 100000,
-    total_price: 100000,
-    source: 'GSyOzu2WPaAijqbX3Tv6HCQr',
-    payment_method_id: 270, // payment_method_id midtrans di hardcode 270 dari DataBase
+    order_amount: 1 * price,
+    total_price: 1 * price,
+    source: 'GSyOzu2WPaAijqbX3Tv6HCQr' /* hardcode dulu nanti baru di pikirin lagi */,
+    payment_method_id: 270 /* payment_method_id midtrans di hardcode 270 dari DataBase */,
   })
 
   return post(`${ORDER_ENDPOINT}`, data, {

@@ -14,12 +14,14 @@ import { genderOptions, countryOptions } from './const'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './profile.css'
 
-const FormPlaceholder = ({ id, label, value }) => (
-  <div className={s.profile_form_wrapper}>
-    <label htmlFor={id}>{label}</label>
-    <p style={{ display: 'flex' }}>{value}</p>
-  </div>
-)
+const FormPlaceholder = ({ id, label, value }) => {
+  return (
+    <div className={s.profile_form_wrapper}>
+      <label htmlFor={id}>{label}</label>
+      <p style={{ display: 'flex' }}>{value}</p>
+    </div>
+  )
+}
 
 const FormContent = ({ id, label, value, type = 'password', disabled, onChange, options }) => {
   const colourStyles = {
@@ -254,7 +256,7 @@ class Profile extends React.Component {
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={birthdate} />
             <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={gender} />
             <FormPlaceholder id="changeLocation" label="Lokasi" value={location} />
-            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions || 'Belum Aktif'} />
+            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.data.length > 0 ? 'Aktif' : 'Belum Aktif'} />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleClick}>
                 Ubah

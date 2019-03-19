@@ -2,7 +2,7 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
+const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'development'
 
 const oauth = {
   appKey: 'wIHGzJhset',
@@ -27,10 +27,10 @@ const options = {
     port: 3000,
     endpoints: {
       clientUrl: '',
-      serverUrl: 'http://jaenal.mola.tv',
-      api: 'http://mola.lukitomo.com/api/v2',
-      auth: 'http://jaenal.mola.tv/accounts/_',
-      domain: 'http://jaenal.mola.tv',
+      serverUrl: 'https://stag.mola.tv',
+      api: '/api/v2',
+      auth: 'https://stag.mola.tv/accounts/_',
+      domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
       setting: {

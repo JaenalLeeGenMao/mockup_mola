@@ -43,12 +43,9 @@ class Libheader extends Component {
   renderMenu() {
     const { isMobile = false } = this.props
     const genreData = this.props.search.genre.data
-    const headerHeight = this.headerContainerRef.current.clientHeight
-    const styleDesktop = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 18px))` }
-    const styleMobile = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 24px))` }
 
     return (
-      <div className={s.header__menu} style={isMobile ? styleMobile : styleDesktop}>
+      <div className={s.header__menu}>
         <div className={s.position_close_button}>
           <span
             className={s.popup__menu_close_button}
@@ -82,7 +79,7 @@ class Libheader extends Component {
   render() {
     const { cardTitle } = this.props
     return (
-      <div className={s.header} ref={this.headerContainerRef}>
+      <div className={s.header}>
         <Header
           isDark={0}
           logoOff
