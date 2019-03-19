@@ -78,9 +78,6 @@
 
   /* color: white !important; */
   border: 0;
-
-  /* display none in desktop */
-  display: none;
 }
 
 .header__back_arrow::before {
@@ -204,13 +201,23 @@
     top: 0.5rem;
     width: 10rem;
     height: auto;
-    display: none;
+  }
+
+  .header__action_dropdown {
+    top: 65%;
+    right: -1.25rem;
   }
 
   .header__action_button {
     /* font-size: 0.8rem; */
-    font-size: 17px;
+    font-size: 14px;
     font-family: 'Open Sans', sans-serif;
+    text-transform: capitalize;
+    letter-spacing: 0.2rem;
+  }
+
+  .header__back_arrow {
+    z-index: 100;
   }
 
   .header__back_arrow::before {
@@ -223,9 +230,5 @@
     margin: auto;
     position: absolute;
     top: 0;
-  }
-
-  .header__back_arrow {
-    display: block;
   }
 }

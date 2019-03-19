@@ -104,7 +104,7 @@ class RightMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, searchOff, profileOff, shareButtonOn, dropdownMenu, handleMenuToggleClick, isMenuToggled = false } = this.props
+    const { color, searchOff, profileOff, shareButtonOn, dropdownMenu, closeMenuOn, handleMenuToggleClick, isMenuToggled = false } = this.props
     const iconToggleStyle = {
       transform: 'rotate(180deg) translateY(0%)',
       top: '-3px',

@@ -64,8 +64,8 @@ class Header extends Component {
     const { genre: { data: genreDt } } = this.state
     const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId))
     const iconToggleStyle = {
-      transform: 'rotate(180deg) translateY(0%)',
-      top: '-3px',
+      transform: 'rotate(0deg) translateY(0%)',
+      top: '4px',
     }
     const color = isDark ? 'black' : 'white'
 
@@ -115,7 +115,6 @@ class Header extends Component {
             <LazyLoad>
               <Link to="/">
                 <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-                <button src={isMobile} className={styles.header__back_arrow} style={{ color }} />
               </Link>
             </LazyLoad>
           )}
