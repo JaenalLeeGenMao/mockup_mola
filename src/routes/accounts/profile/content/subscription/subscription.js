@@ -16,6 +16,8 @@ import LazyLoad from '@components/common/Lazyload'
 
 import s from './subscription.css'
 
+const getFormattedPrice = number => number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+
 class Subscription extends Component {
   constructor(props) {
     super(props)
@@ -83,7 +85,7 @@ class Subscription extends Component {
                           </div>
                           <div className={s.subscription__section_right_active}>
                             <h1>
-                              <span>{sub.attributes.currency}</span> {sub.attributes.price}/{sub.attributes.priceUnit === 'm' ? 'bulan' : 'tahun'}
+                              <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub.attributes.priceUnit === 'm' ? 'bulan' : 'tahun'}
                             </h1>
                             <p>
                               {sub.attributes.title} - {sub.attributes.description}
@@ -119,7 +121,7 @@ class Subscription extends Component {
                   </div>
                   <div className={s.subscription__section_right}>
                     <h1>
-                      <span>{sub.attributes.currency}</span> {sub.attributes.price}/{sub.attributes.priceUnit === 'm' ? 'bulan' : 'tahun'}
+                      <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub.attributes.priceUnit === 'm' ? 'bulan' : 'tahun'}
                     </h1>
                     <p>
                       {sub.attributes.title} - {sub.attributes.description}
