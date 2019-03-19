@@ -61,17 +61,17 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-// app.set('trust proxy', config.trustProxy)
+app.set('trust proxy', config.trustProxy)
 // console.log(`${config.endpoints.domain}/api`)
 
-app.use(
-  '/api',
-  proxy(`${config.endpoints.domain}/api/`, {
-    proxyReqPathResolver: (req, res) => {
-      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-    },
-  })
-)
+// app.use(
+//   '/api',
+//   proxy(`${config.endpoints.domain}/api/`, {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//     },
+//   })
+// )
 
 //
 // Register Node.js middleware
@@ -514,7 +514,7 @@ app.get('*', async (req, res, next) => {
         birthdate: userInfo ? userInfo.birthdate : '',
         gender: userInfo ? userInfo.gender : '',
         location: userInfo ? userInfo.location : '',
-        subscriptions: userSubs.data || [],
+        subscriptions: userSubs ? userSubs.data : [],
         token: accessToken,
         refreshToken: '',
         tokenExpired: expToken,

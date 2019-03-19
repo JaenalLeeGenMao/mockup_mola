@@ -2,7 +2,7 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'development'
+const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
 
 const oauth = {
   appKey: 'wIHGzJhset',
