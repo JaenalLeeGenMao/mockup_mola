@@ -215,7 +215,7 @@ class MovieDetail extends Component {
 
   render() {
     const { toggleSuggestion } = this.state
-    const { meta: { status }, data } = this.props.movieDetail
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
@@ -278,7 +278,7 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {!dataFetched && status === 'error' && <MovieDetailError message={movieDetail.meta.error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

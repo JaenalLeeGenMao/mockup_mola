@@ -278,7 +278,7 @@ class MovieDetail extends Component {
 
   render() {
     const { isControllerActive, toggleSuggestion } = this.state
-    const { meta: { status }, data } = this.props.movieDetail
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
@@ -343,7 +343,7 @@ class MovieDetail extends Component {
             <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
           </div>
         )}
-        {!dataFetched && status === 'error' && <MovieDetailError message={movieDetail.meta.error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }
