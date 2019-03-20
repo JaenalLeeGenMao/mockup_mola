@@ -106,17 +106,12 @@ class Profile extends React.Component {
     }
 
     const update = await Auth.updateProfile(payload)
-    update.then(response => {
-      if (response.meta.status === 'success') {
-        this.setState({
-          isToggled: !this.state.isToggled,
-        })
-        this.props.onClick()
-        toastr.success('Notification', 'Update profile success!')
-      } else {
-        toastr.warning('Notification', 'Update profile failed!')
-      }
-    })
+    if (update.meta.status === 'success') {
+      this.handleClick()
+      toastr.success('Notification', 'Update profile success!')
+    } else {
+      toastr.warning('Notification', 'Update profile failed!')
+    }
   }
 
   handleClick = e => {
