@@ -62,7 +62,10 @@ const app = express()
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
 app.set('trust proxy', config.trustProxy)
-// console.log(`${config.endpoints.domain}/api`)
+app.get('/ping', (req, res) => {
+  res.status(200)
+  res.send('PONG')
+})
 
 // app.use(
 //   '/api',
