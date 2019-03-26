@@ -235,10 +235,12 @@ const requestCode = async (req, res) => {
     httpOnly: true,
   })
 
+  const deepLinkToApp = req.query.redirect_uri
+
   const qs = querystring.stringify({
     app_key: appKey,
     response_type: 'code',
-    redirect_uri: `${domain}/oauth/callback`,
+    redirect_uri: deepLinkToApp || `${domain}/oauth/callback`,
     scope: [
       'https://internal.supersoccer.tv/users/users.profile.read',
       'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
