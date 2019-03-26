@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import qs from 'query-string'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
@@ -45,7 +46,9 @@ class Login extends Component {
       csrf,
     })
     if (result.meta.status === 'success') {
-      window.location.href = `/accounts/signin?uid=${result.data.uid}`
+      const queryParamStr = window.location.search.replace(/\?/g, ''),
+        queryParamObj = qs.parse(queryParamStr)
+      window.location.href = `/accounts/signin?redirect_uri=${queryParamObj.redirectUri || ''}`
     } else {
       this.setState({
         email: '',
