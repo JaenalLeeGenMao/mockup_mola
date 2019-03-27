@@ -61,7 +61,7 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
@@ -72,6 +72,15 @@ app.get('/ping', (req, res) => {
 //   proxy(`${config.endpoints.domain}/api/`, {
 //     proxyReqPathResolver: (req, res) => {
 //       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//     },
+//   })
+// )
+
+// app.use(
+//   '/accounts/_',
+//   proxy(`${config.endpoints.domain}/accounts/_/`, {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/accounts/_' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
 //     },
 //   })
 // )
@@ -93,7 +102,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const { endpoints: { domain, auth }, oauth: { appKey, appSecret } } = config
+const { endpoints: { domain, auth }, oauth: { appKey, appSecret }, oauthApp } = config
 // let count = 0
 // var inboxInterval;
 // set a cookie
@@ -237,26 +246,44 @@ const requestCode = async (req, res) => {
 
   const deepLinkToApp = req.query.redirect_uri
 
-  const qs = querystring.stringify({
-    app_key: appKey,
-    response_type: 'code',
-    redirect_uri: deepLinkToApp || `${domain}/oauth/callback`,
-    scope: [
-      'https://internal.supersoccer.tv/users/users.profile.read',
-      'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-      'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-      'https://api.supersoccer.tv/orders/orders.create',
-      'https://api.supersoccer.tv/videos/videos.read',
-      'https://api.supersoccer.tv/orders/orders.read',
-      'paymentmethods:read.internal',
-      'payments:payment.dopay',
-      // 'discussions:comments.read',
-      // 'discussions:comments.create',
-      // 'discussions:comments.update',
-      // 'discussions:comments.delete',
-    ].join(' '),
-    state: randomState,
-  })
+  let qs
+  /* ini link ke app */
+  if (deepLinkToApp) {
+    qs = querystring.stringify({
+      app_key: oauthApp.appKey,
+      response_type: 'code',
+      redirect_uri: deepLinkToApp,
+      scope: [
+        'https://internal.supersoccer.tv/users/users.profile.read',
+        'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+        'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+        'https://api.supersoccer.tv/orders/orders.create',
+        'https://api.supersoccer.tv/videos/videos.read',
+        'https://api.supersoccer.tv/orders/orders.read',
+        'paymentmethods:read.internal',
+        'payments:payment.dopay',
+      ].join(' '),
+      state: randomState,
+    })
+  } else {
+    /* ini link ke web */
+    qs = querystring.stringify({
+      app_key: appKey,
+      response_type: 'code',
+      redirect_uri: `${domain}/oauth/callback`,
+      scope: [
+        'https://internal.supersoccer.tv/users/users.profile.read',
+        'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+        'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+        'https://api.supersoccer.tv/orders/orders.create',
+        'https://api.supersoccer.tv/videos/videos.read',
+        'https://api.supersoccer.tv/orders/orders.read',
+        'paymentmethods:read.internal',
+        'payments:payment.dopay',
+      ].join(' '),
+      state: randomState,
+    })
+  }
 
   const oAuthAuthorizationEndpoint = `${auth}/oauth2/v1/authorize?${qs}`
 

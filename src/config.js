@@ -9,10 +9,26 @@ const oauth = {
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   scope: [
     'https://internal.supersoccer.tv/users/users.profile.read',
-    'https://internal.supersoccer.tv/subscriptions/users.read' /* DARI CODINGAN LAMA */,
     'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
     'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/videos/videos.read' /* DARI CODINGAN LAMA */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
+  ].join(' '),
+}
+
+const oauthApp = {
+  appKey: 'LDZJgphCc7',
+  appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
   ].join(' '),
 }
 
@@ -29,7 +45,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
       api: '/api/v2',
-      auth: 'https://stag.mola.tv/accounts/_',
+      auth: '/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
@@ -85,5 +101,6 @@ module.exports = {
   trustProxy: process.env.TRUST_PROXY || 'loopback',
   port: process.env.PORT || 3000,
   oauth,
+  oauthApp,
   uploader,
 }
