@@ -112,6 +112,14 @@ const routes = {
       load: () => import(/* webpackChunkName: 'subscribe' */ './subscribe'),
     },
     {
+      path: '/history-transactions',
+      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+    },
+    {
+      path: '/history-transactions-detail',
+      load: () => import(/* webpackChunkName: 'history-transactions-detail' */ './history-transactions-detail'),
+    },
+    {
       path: '/subscribe-detail',
       load: () => import(/* webpackChunkName: 'subscribe-detail' */ './subscribe-detail'),
       children: [

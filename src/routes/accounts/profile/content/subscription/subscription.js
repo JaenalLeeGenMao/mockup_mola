@@ -95,8 +95,8 @@ class Subscription extends Component {
                         </div>
                         <div className={s.subscription_expiry}>Paketmu akan berakhir secara otomatis pada {formattedExpiry}.</div>
                         <div className={s.subscription_button_wrapper}>
-                          <button className={s.subscription_button_active} onClick={() => console.log(`${new Date(expiry - today).getDate() - 1} days left`)}>
-                            {new Date(expiry - today).getDate() - 1} days left
+                          <button className={s.subscription_button_active} onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}>
+                            {new Date(expiry - today).getDate()} days left
                           </button>
                         </div>
                       </LazyLoad>

@@ -1,0 +1,57 @@
+.historyTransactions_Pagetitle {
+  color: white;
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.historyTransaction_borderline {
+  border-bottom: 0.1rem solid #2b2b2b;
+}
+
+.historyTransactions_columngrid {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px;
+
+  /* grid-gap: 10px; */
+  color: white;
+  justify-content: center;
+}
+
+.historyTransactions_columngrid div {
+  text-align: center;
+  padding: 8px 0;
+  color: #a7a7a7;
+  font-size: 13px;
+}
+
+.historyTransaction_valuelistitem {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px;
+
+  /* grid-gap: 10px; */
+  color: white;
+  justify-content: center;
+}
+
+.historyTransaction_valuelistitem div {
+  text-align: center;
+  padding: 8px 0;
+  color: #fff;
+  font-size: 15px;
+}
+
+.historyTransaction_viewlinkdetail {
+  color: #2c66ff;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.showdatatest {
+  color: white;
+}
+
+/* mobile grid template columns 100px */

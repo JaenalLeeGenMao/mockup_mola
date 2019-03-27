@@ -477,6 +477,34 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
       }
     })
 }
+const getOrderHistoryTransactions = ({ uid, token }) => {
+  console.log('token', token)
+  return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
+    headers: token && { Authorization: `Bearer ${token}` },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { data } = response.data
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola History Transactions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
 
 export default {
   getHomePlaylist,
@@ -495,4 +523,5 @@ export default {
   getAllSubscriptions,
   createOrder,
   createMidtransPayment,
+  getOrderHistoryTransactions,
 }

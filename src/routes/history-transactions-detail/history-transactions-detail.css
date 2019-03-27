@@ -1,0 +1,36 @@
+.historyTransactions_Pagetitle {
+  color: white;
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.historyTransaction_borderline {
+  border-bottom: 0.1rem solid #2b2b2b;
+}
+
+.historyTransactions_columngrid {
+  display: grid;
+  grid-template-columns: 200px 200px;
+  grid-gap: 10px 100px;
+  color: white;
+  justify-content: center;
+}
+
+.historyTransactions_columngrid div {
+  padding: 8px 0;
+  color: #a7a7a7;
+  font-size: 13px;
+  text-align: left;
+}
+
+.historyTransactions_columngrid span {
+  padding: 8px 0;
+  color: white;
+  font-size: 13px;
+  text-align: right;
+}
+
+/* mobile grid template columns 100px */

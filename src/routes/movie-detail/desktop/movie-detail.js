@@ -291,10 +291,31 @@ class MovieDetail extends Component {
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
     // const poster = apiFetched ? dataFetched.images.cover.details.desktop.landscape : ''
 
-    const videoSettings = {
-      ...defaultVideoSettings,
-      adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-      adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+    //Get Time Right Now
+    const todayDate = new Date().getTime()
+
+    //Get ExpireAt
+    const setSubscribe = this.props.user.subscriptions
+    const setSubscribeExp = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.expireAt)
+    const setSubscribeExpVal = new Date(setSubscribeExp).getTime()
+
+    //Validation Ads Show
+    const resultCompareDate = setSubscribeExpVal - todayDate
+
+    //Get Status Subscribe Type from User
+    const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
+
+    let videoSettings = {}
+    if (resultCompareDate > 0) {
+      videoSettings = {
+        ...defaultVideoSettings,
+      }
+    } else {
+      videoSettings = {
+        ...defaultVideoSettings,
+        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
+        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+      }
     }
 
     return (
