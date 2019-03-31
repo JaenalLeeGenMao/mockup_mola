@@ -482,7 +482,7 @@ app.get('*', async (req, res, next) => {
           // res.cookie('_at', '', { expires: new Date(0) });
           res.clearCookie('_at')
           res.clearCookie('SID')
-          // return res.redirect('/accounts/login')
+          return res.redirect('/accounts/login')
         }
       }
     } else {
@@ -503,9 +503,9 @@ app.get('*', async (req, res, next) => {
       }
 
       /* Must login before accessing these features */
-      if (!__DEV__ && whitelisted.includes(req.url)) {
-        return res.redirect('/accounts/login')
-      }
+      // if (!__DEV__ && whitelisted.includes(req.url)) {
+      //   return res.redirect('/accounts/login')
+      // }
 
       const decodedGuestToken = guestToken && jwt.decode(guestToken)
 
