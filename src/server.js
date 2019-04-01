@@ -243,47 +243,23 @@ const requestCode = async (req, res) => {
     maxAge: 86400 * 1000,
     httpOnly: true,
   })
-
-  const deepLinkToApp = req.query.redirect_uri
-
-  let qs
-  /* ini link ke app */
-  if (deepLinkToApp) {
-    qs = querystring.stringify({
-      app_key: oauthApp.appKey,
-      response_type: 'code',
-      redirect_uri: deepLinkToApp,
-      scope: [
-        'https://internal.supersoccer.tv/users/users.profile.read',
-        'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-        'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-        'https://api.supersoccer.tv/orders/orders.create',
-        'https://api.supersoccer.tv/videos/videos.read',
-        'https://api.supersoccer.tv/orders/orders.read',
-        'paymentmethods:read.internal',
-        'payments:payment.dopay',
-      ].join(' '),
-      state: randomState,
-    })
-  } else {
-    /* ini link ke web */
-    qs = querystring.stringify({
-      app_key: appKey,
-      response_type: 'code',
-      redirect_uri: `${domain}/oauth/callback`,
-      scope: [
-        'https://internal.supersoccer.tv/users/users.profile.read',
-        'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-        'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-        'https://api.supersoccer.tv/orders/orders.create',
-        'https://api.supersoccer.tv/videos/videos.read',
-        'https://api.supersoccer.tv/orders/orders.read',
-        'paymentmethods:read.internal',
-        'payments:payment.dopay',
-      ].join(' '),
-      state: randomState,
-    })
-  }
+  /* ini link ke web */
+  const qs = querystring.stringify({
+    app_key: appKey,
+    response_type: 'code',
+    redirect_uri: `${domain}/oauth/callback`,
+    scope: [
+      'https://internal.supersoccer.tv/users/users.profile.read',
+      'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+      'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+      'https://api.supersoccer.tv/orders/orders.create',
+      'https://api.supersoccer.tv/videos/videos.read',
+      'https://api.supersoccer.tv/orders/orders.read',
+      'paymentmethods:read.internal',
+      'payments:payment.dopay',
+    ].join(' '),
+    state: randomState,
+  })
 
   const oAuthAuthorizationEndpoint = `${auth}/oauth2/v1/authorize?${qs}`
 
@@ -482,7 +458,7 @@ app.get('*', async (req, res, next) => {
           // res.cookie('_at', '', { expires: new Date(0) });
           res.clearCookie('_at')
           res.clearCookie('SID')
-          // return res.redirect('/accounts/login')
+          return res.redirect('/accounts/login')
         }
       }
     } else {
@@ -503,9 +479,9 @@ app.get('*', async (req, res, next) => {
       }
 
       /* Must login before accessing these features */
-      // if (!__DEV__ && whitelisted.includes(req.url)) {
-      //   return res.redirect('/accounts/login')
-      // }
+      if (!__DEV__ && whitelisted.includes(req.url)) {
+        return res.redirect('/accounts/login')
+      }
 
       const decodedGuestToken = guestToken && jwt.decode(guestToken)
 

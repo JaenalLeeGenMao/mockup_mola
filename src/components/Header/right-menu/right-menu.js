@@ -66,12 +66,12 @@ class RightMenu extends Component {
 
   handleSignOut = e => {
     e.preventDefault()
-    const { user: { uid }, runtime: { csrf } } = this.props
-    Auth.requestLogout({ uid, csrf }).then(response => {
-      if (response.meta.status === 'success') {
-        window.location.href = '/signout'
-      }
-    })
+    // const { user: { uid }, runtime: { csrf } } = this.props
+    // Auth.requestLogout({ uid, csrf }).then(response => {
+    //   if (response.meta.status === 'success') {
+    //   }
+    // })
+    window.location.href = '/signout'
   }
 
   handleCopyToClipboard = e => {
