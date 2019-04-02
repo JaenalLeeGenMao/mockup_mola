@@ -478,7 +478,7 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
     })
 }
 const getOrderHistoryTransactions = ({ uid, token }) => {
-  console.log('token', token)
+  // console.log('token', token)
   return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
     headers: token && { Authorization: `Bearer ${token}` },
     withCredentials: true,

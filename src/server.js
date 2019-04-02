@@ -383,7 +383,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
-  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history']
+  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
   try {
     // global.clearInterval(inboxInterval);
 
