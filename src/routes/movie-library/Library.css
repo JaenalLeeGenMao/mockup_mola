@@ -2,104 +2,48 @@
   overflow: auto;
 }
 
-html,
-body {
-  background: white !important;
-}
-
 .main_container {
-  background: white;
   width: 100%;
   margin: 0 auto;
   max-width: 100%;
-  padding: 0 10px;
+
+  /* padding: 0 10px; */
   box-sizing: border-box;
 }
 
+.card_container {
+  display: flex;
+  width: 100vw;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .card_wrapper {
-  margin-top: 6rem;
-  width: 100%;
+  padding: 3%;
+  width: 95%;
   overflow: hidden;
-  -webkit-column-count: 4;
-  -webkit-column-gap: 0;
-  -moz-column-count: 4;
-  -moz-column-gap: 0;
-  column-count: 4;
-  column-gap: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .errorImage {
   width: 30rem !important;
 }
 
-@media screen and (max-width: 1280px) {
-  .card_wrapper {
-    width: 100%;
-    overflow: hidden;
-    -webkit-column-count: 3;
-    -webkit-column-gap: 0;
-    -moz-column-count: 3;
-    -moz-column-gap: 0;
-    column-count: 3;
-    column-gap: 20px;
-  }
-}
-
-@media screen and (max-width: 1190px) {
-  /* .main_container {
-    width: 1024px;
-    margin: 0 auto;
-    max-width: 100%;
-  } */
-  .card_wrapper {
-    width: 100%;
-    overflow: hidden;
-    -webkit-column-count: 3;
-    -webkit-column-gap: 0;
-    -moz-column-count: 3;
-    -moz-column-gap: 0;
-    column-count: 3;
-    column-gap: 20px;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  /* .main_container {
-    width: 768px;
-    margin: 0 auto;
-    max-width: 100%;
-  } */
-  .card_wrapper {
-    width: 100%;
-    overflow: hidden;
-    -webkit-column-count: 2;
-    -webkit-column-gap: 0;
-    -moz-column-count: 2;
-    -moz-column-gap: 0;
-    column-count: 2;
-    column-gap: 20px;
-  }
-}
-
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .card_wrapper {
-    margin-top: 2rem;
+    padding: 2rem 0;
   }
 }
-
-/* @media screen and (max-width: 768px) {
-  .main_container {
-    width: 640px;
-    margin: 0 auto;
-    max-width: 100%;
-    padding: 0 10px;
-  }
-}
-@media screen and (max-width: 640px) {
-  .main_container {
-    width: 480px;
-    margin: 0 auto;
-    max-width: 100%;
-    padding: 0 10px;
-  }
-} */

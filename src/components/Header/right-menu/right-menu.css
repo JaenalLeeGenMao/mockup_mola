@@ -232,12 +232,34 @@
   align-items: center;
 }
 
+.right__menu_dropdown {
+  width: 1.2rem;
+  height: 1.2rem;
+  position: absolute;
+  right: -1rem;
+  top: 50%;
+  transform: translateY(-60%);
+}
+
+.dropdown_list {
+  font-size: 1rem;
+  background: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+  margin-top: 1rem;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .right__menu {
     justify-content: flex-end;
     align-items: center;
     right: 0;
+    width: 5rem;
   }
 
   .right__menu .right__menu_search_black {

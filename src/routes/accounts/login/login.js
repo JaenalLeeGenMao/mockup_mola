@@ -45,7 +45,7 @@ class Login extends Component {
       csrf,
     })
     if (result.meta.status === 'success') {
-      window.location.href = `/accounts/signin?uid=${result.data.uid}`
+      window.location.href = '/accounts/signin'
     } else {
       this.setState({
         email: '',

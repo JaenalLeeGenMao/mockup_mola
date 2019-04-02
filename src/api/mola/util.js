@@ -255,12 +255,18 @@ const normalizeMovieLibrary = response => {
       videos.map(({ id, attributes }) => {
         const { title } = attributes
         const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '')
+        const description = _get(attributes, 'description', '')
+        const quotes = _get(attributes, 'quotes[0].attributes', '')
+        const isDark = _get(attributes, 'isDark', '0')
 
         return {
           genreTitle,
           id,
           title,
           thumbnail,
+          description,
+          quotes,
+          isDark,
         }
       })
     )

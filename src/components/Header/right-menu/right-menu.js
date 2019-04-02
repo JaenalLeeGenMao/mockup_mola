@@ -11,6 +11,7 @@ import Link from '@components/Link'
 import { getLocale } from '../locale'
 
 import styles from './right-menu.css'
+import { IoIosArrowDown } from 'react-icons/io'
 
 const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
@@ -29,12 +30,12 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
-              <Link to="/accounts/profile?tab=security" className={styles.popup__menu_image_wrapper}>
+              <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
                 {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
               </Link>
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
-            <Link to="/accounts/profile?tab=security" onClick={onClick}>
+            <Link to="/accounts/profile" onClick={onClick}>
               {locale['profile']}
             </Link>
             {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
@@ -65,12 +66,12 @@ class RightMenu extends Component {
 
   handleSignOut = e => {
     e.preventDefault()
-    const { user: { uid }, runtime: { csrf } } = this.props
-    Auth.requestLogout({ uid, csrf }).then(response => {
-      if (response.meta.status === 'success') {
-        window.location.href = '/signout'
-      }
-    })
+    // const { user: { uid }, runtime: { csrf } } = this.props
+    // Auth.requestLogout({ uid, csrf }).then(response => {
+    //   if (response.meta.status === 'success') {
+    //   }
+    // })
+    window.location.href = '/signout'
   }
 
   handleCopyToClipboard = e => {
@@ -103,11 +104,24 @@ class RightMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, searchOff, profileOff, shareButtonOn } = this.props
+    const { color, searchOff, profileOff, shareButtonOn, dropdownMenu, closeMenuOn, handleMenuToggleClick, isMenuToggled = false } = this.props
+    const iconToggleStyle = {
+      transform: 'rotate(180deg) translateY(0%)',
+      top: '-3px',
+    }
 
     return (
       <>
         <div className={styles.right__menu}>
+          {/* {!dropdownMenu && (
+            <span className={styles.right__menu_wrapper}>
+              <LazyLoad className={styles.right__menu_icon_wrapper}>
+                <button className={styles.dropdown_list} onClick={handleMenuToggleClick}>
+                  Movie <IoIosArrowDown className={styles.right__menu_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                </button>
+              </LazyLoad>
+            </span>
+          )} */}
           {!searchOff && (
             <span className={styles.right__menu_wrapper}>
               <LazyLoad className={styles.right__menu_icon_wrapper}>

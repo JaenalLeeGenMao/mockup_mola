@@ -47,11 +47,12 @@ body {
 }
 
 .header__detail_container h1 {
-  width: 60%;
+  width: 100%;
+  font-weight: 400;
 }
 
 .header__detail_container > h1.small {
-  font-size: 16px;
+  font-size: 26px;
   text-transform: uppercase;
 }
 

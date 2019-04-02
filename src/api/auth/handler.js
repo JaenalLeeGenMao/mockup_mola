@@ -240,31 +240,31 @@ import config from '@source/config'
 //     })
 // }
 
-// const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', location = '', token = '', phone = '' }) => {
-//   const body = { name, birthdate, gender, location, token, phone }
-//   return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
-//     headers: {
-//       'x-csrf-token': csrf,
-//     },
-//   })
-//     .then(response => {
-//       return {
-//         meta: {
-//           status: 'success',
-//         },
-//         data: response,
-//       }
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error,
-//         },
-//         data: {},
-//       }
-//     })
-// }
+const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', location = '', token = '', phone = '' }) => {
+  const body = { name, birthdate, gender, location, token, phone }
+  return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
+    headers: {
+      'x-csrf-token': csrf,
+    },
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
 
 // const { oauth: { appKey, appSecret }, endpoints: { domain } } = config
 
@@ -342,7 +342,8 @@ export default {
   verifyPassword: Auth.verifyPassword /* Verify password after login */,
   updateNewPassword: Auth.updateNewPassword,
   fetchProfile: Auth.fetchProfile,
-  updateProfile: Auth.updateProfile,
+  updateProfile,
+  // updateProfile: Auth.updateProfile,
   // requestGuestToken,
   // requestCode,
 }

@@ -64,6 +64,7 @@ export const handleTracker = async (data, props) => {
       video_id: videoId,
       current_duration: currentDuration,
       total_duration: totalDuration,
+      // 2 ini check current n total
       // currentSubscriptionId: adjustedSubs,
       hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
       interval_beats: heartbeat ? 60 : 0,

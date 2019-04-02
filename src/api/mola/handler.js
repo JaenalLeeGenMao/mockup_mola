@@ -1,5 +1,17 @@
 import { get, post, delete as axiosDelete } from 'axios'
-import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, SUBSCRIPTION_ENDPOINT } from './endpoints'
+import qs from 'query-string'
+import {
+  VIDEOS_ENDPOINT,
+  HOME_PLAYLIST_ENDPOINT,
+  HISTORY_ENDPOINT,
+  SEARCH_ENDPOINT,
+  SEARCH_GENRE_ENDPOINT,
+  RECENT_SEARCH_ENDPOINT,
+  MOVIE_DETAIL_ENDPOINT,
+  SUBSCRIPTION_ENDPOINT,
+  ORDER_ENDPOINT,
+  PAYMENT_ENDPOINT,
+} from './endpoints'
 import utils from './util'
 
 import { endpoints } from '@source/config'
@@ -344,7 +356,7 @@ const getHotPlaylist = () => {
 }
 
 const getAllSubscriptions = token => {
-  return get('/api/v2/subscriptions/subscriptions', {
+  return get(`${SUBSCRIPTION_ENDPOINT}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -374,6 +386,126 @@ const getAllSubscriptions = token => {
     })
 }
 
+const createOrder = ({ token, uid, subscriptionId = 26, price = 10000 }) => {
+  const data = JSON.stringify({
+    order_type_id: 1,
+    subscription_id: subscriptionId /* hanya hardcode midtrans 26 */,
+    quantity: 1 /* subscription per tahun */,
+    uom: 'm' /* sementara monthly */,
+    package_expiry: '',
+    status: 0,
+    user_id: uid,
+    order_amount: 1 * price,
+    total_price: 1 * price,
+    source: 'GSyOzu2WPaAijqbX3Tv6HCQr' /* hardcode dulu nanti baru di pikirin lagi */,
+    payment_method_id: 270 /* payment_method_id midtrans di hardcode 270 dari DataBase */,
+  })
+
+  return post(`${ORDER_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { data } = response.data
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: {
+          id: data[0].id,
+          ...data[0].attributes,
+        },
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Order')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, token, orderId }) => {
+  const data = JSON.stringify({
+    paymentMethodId: 270, // payment_method_id midtrans di hardcode 17 dari DataBase
+    Id: `${orderId}`,
+    title: 'Mola - Paket No Ads',
+    phone: phoneNumber,
+    email: email,
+    name: `${firstName} ${lastName}`,
+    userId: uid,
+    productSku: '1',
+    productName: 'Mola - Paket No Ads',
+  })
+
+  return post(`${PAYMENT_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { paymentData } = response.data
+      const redirectUrl = `${endpoints.domain}/accounts/profile`
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: { ...paymentData, redirectUrl },
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Midtrans Payment')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: '',
+      }
+    })
+}
+const getOrderHistoryTransactions = ({ uid, token }) => {
+  // console.log('token', token)
+  return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
+    headers: token && { Authorization: `Bearer ${token}` },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { data } = response.data
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola History Transactions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getHomeVideo,
@@ -389,4 +521,7 @@ export default {
   getMovieLibraryList,
   getHotPlaylist,
   getAllSubscriptions,
+  createOrder,
+  createMidtransPayment,
+  getOrderHistoryTransactions,
 }

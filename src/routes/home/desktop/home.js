@@ -362,7 +362,7 @@ class Home extends Component {
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs } = this.state
+      { sliderRefs, scrollIndex } = this.state
 
     if (mode === 'vertical') {
       if (this.rootSlider) {
@@ -385,9 +385,9 @@ class Home extends Component {
         if (distance <= 20) {
           // do nothing
         } else if (prevX > nextX) {
-          slider.slickNext()
+          sliderRefs[scrollIndex].slickNext()
         } else {
-          slider.slickPrev()
+          sliderRefs[scrollIndex].slickPrev()
         }
       } else {
         if (distance <= 20) {
@@ -438,6 +438,8 @@ class Home extends Component {
     if (sliderRefs.length < trackedPlaylistIds.length) {
       sliderRefs.push(refs)
     }
+    sliderRefs.sort((a, b) => a.props.id - b.props.id)
+    console.log(sliderRefs)
   }
 
   /* Vertical scroll handler */
@@ -462,7 +464,6 @@ class Home extends Component {
       { locale, isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
         ...SETTINGS_VERTICAL,
-        fade: true,
         className: styles.home__slick_slider_fade,
         onInit: node => {
           this.activeSlider = sliderRefs[0]

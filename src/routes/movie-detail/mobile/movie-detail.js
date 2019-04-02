@@ -19,6 +19,7 @@ import Link from '@components/Link'
 
 import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
 import { videoSettings as defaultVideoSettings } from '../const'
+import moment from 'moment'
 
 import { handleTracker } from './tracker'
 
@@ -215,7 +216,7 @@ class MovieDetail extends Component {
 
   render() {
     const { toggleSuggestion } = this.state
-    const { meta: { status }, data } = this.props.movieDetail
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
@@ -223,10 +224,32 @@ class MovieDetail extends Component {
     // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
 
-    const videoSettings = {
-      ...defaultVideoSettings,
-      adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-      adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+    //Get Time Right Now
+    const todayDate = new Date().getTime()
+
+    //Get ExpireAt
+    const setSubscribe = this.props.user.subscriptions
+    const setSubscribeExp = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.expireAt)
+    const setSubscribeExpVal = new Date(setSubscribeExp).getTime()
+
+    //Validation Ads Show
+    const resultCompareDate = setSubscribeExpVal - todayDate
+
+    //Get Status Subscribe Type from User
+    const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
+    console.log(this.props.user)
+
+    let videoSettings = {}
+    if (resultCompareDate > 0) {
+      videoSettings = {
+        ...defaultVideoSettings,
+      }
+    } else {
+      videoSettings = {
+        ...defaultVideoSettings,
+        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
+        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+      }
     }
 
     return (
@@ -278,7 +301,7 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {!dataFetched && status === 'error' && <MovieDetailError message={movieDetail.meta.error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

@@ -61,12 +61,27 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
-// console.log(`${config.endpoints.domain}/api`)
+// app.set('trust proxy', config.trustProxy)
+app.get('/ping', (req, res) => {
+  res.status(200)
+  res.send('PONG')
+})
+
 // app.use(
 //   '/api',
-//   proxy(`${config.endpoints.domain}/api`, {
-//     forwardPath: (req, res) => '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path),
+//   proxy(`${config.endpoints.domain}/api/`, {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//     },
+//   })
+// )
+
+// app.use(
+//   '/accounts/_',
+//   proxy(`${config.endpoints.domain}/accounts/_/`, {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/accounts/_' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//     },
 //   })
 // )
 
@@ -75,15 +90,23 @@ app.set('trust proxy', config.trustProxy)
 // -----------------------------------------------------------------------------
 app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(cookieParser())
-app.use(csurf({ cookie: true }))
+app.use(
+  csurf({
+    cookie: {
+      path: '/accounts',
+      httpOnly: true,
+      secure: !__DEV__,
+    },
+  })
+)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const { endpoints: { domain, auth }, oauth: { appKey, appSecret } } = config
+const { endpoints: { domain, auth }, oauth: { appKey, appSecret }, oauthApp } = config
 // let count = 0
 // var inboxInterval;
 // set a cookie
-const OAUTH_USER_INFO_URL = `${auth}/v1/userinfo`
+const OAUTH_USER_INFO_URL = `${auth}/v1/profile`
 const OAUTH_LOGOUT_URL = `${auth}/oauth2/v1/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
 const getVUID = async deviceId => {
@@ -136,6 +159,19 @@ const requestGuestToken = async res => {
         Origin: domain,
         Referer: domain,
       },
+      json: {
+        app_key: appKey,
+        app_secret: appSecret,
+        scope: [
+          'https://internal.supersoccer.tv/users/users.profile.read',
+          'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+          'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+          'https://api.supersoccer.tv/orders/orders.create',
+          'https://api.supersoccer.tv/videos/videos.read',
+          'paymentmethods:read.internal',
+          'payments:payment.dopay',
+        ].join(' '),
+      },
     })
 
     const content = await rawResponse.json()
@@ -145,18 +181,18 @@ const requestGuestToken = async res => {
   }
 }
 
-const getUserInfo = async accessToken => {
+const getUserInfo = async sid => {
   try {
     const rawResponse = await fetch(OAUTH_USER_INFO_URL, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Cookie: `SID=${sid}`,
         'Content-Type': 'application/json',
       },
     })
 
     const content = await rawResponse.json()
-    return content
+    return content.data
   } catch {
     return null
   }
@@ -207,7 +243,7 @@ const requestCode = async (req, res) => {
     maxAge: 86400 * 1000,
     httpOnly: true,
   })
-
+  /* ini link ke web */
   const qs = querystring.stringify({
     app_key: appKey,
     response_type: 'code',
@@ -218,16 +254,15 @@ const requestCode = async (req, res) => {
       'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
       'https://api.supersoccer.tv/orders/orders.create',
       'https://api.supersoccer.tv/videos/videos.read',
+      'https://api.supersoccer.tv/orders/orders.read',
       'paymentmethods:read.internal',
-      // 'discussions:comments.read',
-      // 'discussions:comments.create',
-      // 'discussions:comments.update',
-      // 'discussions:comments.delete',
+      'payments:payment.dopay',
     ].join(' '),
     state: randomState,
   })
+
   const oAuthAuthorizationEndpoint = `${auth}/oauth2/v1/authorize?${qs}`
-  // console.log("oAuthAuthorizationEndpoint", oAuthAuthorizationEndpoint)
+
   return oAuthAuthorizationEndpoint
 }
 
@@ -279,6 +314,7 @@ app.get('/oauth/callback', async (req, res) => {
     await new Promise(resolve => {
       request.post(
         {
+          ...config.endpoints.setting,
           url: `${auth}/oauth2/v1/token`,
           headers: {
             Cookie: `SID=${sid}`,
@@ -326,7 +362,7 @@ app.get('/accounts/signin', async (req, res) => {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
-   return res.redirect(domain || 'https://stag.mola.tv')
+  return res.redirect(domain || 'https://stag.mola.tv')
 })
 
 app.get('/accounts', async (req, res) => {
@@ -338,9 +374,8 @@ app.get('/accounts', async (req, res) => {
 })
 
 app.get('/signout', (req, res) => {
-  res.clearCookie('UID')
+  res.clearCookie('_at')
   res.clearCookie('SID')
-  // res.clearCookie('_exp');
   return res.redirect(domain || 'http://jaenal.mola.tv')
 })
 
@@ -348,6 +383,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
+  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
   try {
     // global.clearInterval(inboxInterval);
 
@@ -389,7 +425,7 @@ app.get('*', async (req, res, next) => {
       if (decodedAccessToken || decodedIdToken) {
         if (decodedAccessToken && decodedIdToken) {
           if (decodedAccessToken.sub !== decodedIdToken.sub || idTokenLifespan < 0 || accessTokenLifespan < 0) {
-            res.cookie('_at', '', { expires: new Date(0) })
+            // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
             // const rawResponse = await fetch(
@@ -418,9 +454,11 @@ app.get('*', async (req, res, next) => {
               })
             }
           }
-        } else if (decodedAccessToken) {
+        } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          // return res.redirect(req.originalUrl);
+          res.clearCookie('_at')
+          res.clearCookie('SID')
+          return res.redirect('/accounts/login')
         }
       }
     } else {
@@ -438,6 +476,11 @@ app.get('*', async (req, res, next) => {
             // secure: !__DEV__,
           })
         }
+      }
+
+      /* Must login before accessing these features */
+      if (!__DEV__ && whitelisted.includes(req.url)) {
+        return res.redirect('/accounts/login')
       }
 
       const decodedGuestToken = guestToken && jwt.decode(guestToken)
@@ -465,7 +508,7 @@ app.get('*', async (req, res, next) => {
 
     let userInfo, userSubs
     if (req.cookies._at) {
-      userInfo = await getUserInfo(req.cookies._at)
+      userInfo = await getUserInfo(req.cookies.SID)
       userSubs = await getUserSubscription(uid, req.cookies._at)
     }
 
@@ -477,7 +520,10 @@ app.get('*', async (req, res, next) => {
         lastName: userInfo ? userInfo.last_name : '',
         email: userInfo ? userInfo.email : '',
         phoneNumber: userInfo ? userInfo.phone_number : '',
-        subscriptions: userSubs || '',
+        birthdate: userInfo ? userInfo.birthdate : '',
+        gender: userInfo ? userInfo.gender : '',
+        location: userInfo ? userInfo.location : '',
+        subscriptions: userSubs ? userSubs.data : [],
         token: accessToken,
         refreshToken: '',
         tokenExpired: expToken,
@@ -499,22 +545,6 @@ app.get('*', async (req, res, next) => {
     const store = configureStore(initialState)
 
     store.dispatch(setRuntimeVariable({ name: 'start', value: Date.now() }))
-
-    // const payload = {
-    //   appKey: 'wIHGzJhset',
-    //   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-    //   responseType: 'token',
-    //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
-    //   redirectUri: `${domain}/accounts`,
-    // }
-
-    // const guestInfo = await Auth.requestGuestToken({ ...payload })
-
-    // if (guestInfo.data !== undefined) {
-    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: response.data.token }))
-    // } else {
-    //   store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
-    // }
 
     // inboxInterval = setInterval(() => {
     //   console.log(`server inbox interval ${count}`);
