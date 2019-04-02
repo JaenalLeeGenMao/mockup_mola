@@ -116,8 +116,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
-      path: '/history-transactions-detail',
-      load: () => import(/* webpackChunkName: 'history-transactions-detail' */ './history-transactions-detail'),
+      path: '/history-transactions/:id',
+      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
       path: '/subscribe-detail',
