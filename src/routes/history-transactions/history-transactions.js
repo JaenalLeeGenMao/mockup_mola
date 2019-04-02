@@ -66,31 +66,33 @@ class HistoryTransactions extends Component {
                     <div>Status</div>
                     <div />
                   </div>
-                  {data.map((rowData, i) => (
-                    <LazyLoad key={i} containerClassName={styles.historyTransaction_valuelistitem}>
-                      {rowData.id !== null ? (
-                        <div className={styles.wrapperData}>
-                          <div>{moment(rowData.attributes.paidAt).format('L')}</div>
-                          <div>{rowData.id}</div>
-                          <div>IDR {rowData.attributes.totalPrice}</div>
-                          <div>
-                            {rowData.attributes.status === 0
-                              ? 'Belum Dibayar'
-                              : rowData.attributes.status === 1 ? 'Menunggu Verifikasi' : rowData.attributes.status === 2 ? 'Sudah Dibayar' : rowData.attributes.status === 3 ? 'Batal' : null}
+                  {data.length > 0 ? (
+                    data.map((rowData, i) => (
+                      <LazyLoad key={i} containerClassName={styles.historyTransaction_valuelistitem}>
+                        {rowData.id !== null && (
+                          <div className={styles.wrapperData}>
+                            <div>{moment(rowData.attributes.paidAt).format('L')}</div>
+                            <div>{rowData.id}</div>
+                            <div>IDR {rowData.attributes.totalPrice}</div>
+                            <div>
+                              {rowData.attributes.status === 0
+                                ? 'Belum Dibayar'
+                                : rowData.attributes.status === 1 ? 'Menunggu Verifikasi' : rowData.attributes.status === 2 ? 'Sudah Dibayar' : rowData.attributes.status === 3 ? 'Batal' : null}
+                            </div>
+                            <div>
+                              <span>
+                                <a href={`history-transactions/${rowData.id}`} className={styles.historyTransaction_dec}>
+                                  <button className={styles.historyTransaction_viewlinkdetail}>Lihat</button>
+                                </a>
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <span>
-                              <a href={`history-transactions/${rowData.id}`} className={styles.historyTransaction_dec}>
-                                <button className={styles.historyTransaction_viewlinkdetail}>Lihat</button>
-                              </a>
-                            </span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className={styles.historyTransaction_NoTranSac}>Tidak Ada Transaksi</div>
-                      )}
-                    </LazyLoad>
-                  ))}
+                        )}
+                      </LazyLoad>
+                    ))
+                  ) : (
+                    <div className={styles.historyTransaction_NoTranSac}>Tidak Ada Transaksi</div>
+                  )}
                 </div>
               </div>
               <div>
