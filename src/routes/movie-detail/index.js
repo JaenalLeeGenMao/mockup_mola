@@ -7,7 +7,7 @@ import MovieDetailMobile from './mobile'
 
 import Mola from '@api/mola'
 
-async function action({ isMobile, pathname }) {
+async function action({ isMobile, pathname, query }) {
   const pathnameArr = pathname.split('/'),
     id = pathnameArr[2]
 
@@ -26,11 +26,11 @@ async function action({ isMobile, pathname }) {
     url,
     component: isMobile ? (
       <MolaLayout>
-        <MovieDetailMobile pathLoc={pathnameArr[1]} movieId={id} />
+        <MovieDetailMobile pathLoc={pathnameArr[1]} movieId={id} urlParams={query} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <MovieDetailDesktop pathLoc={pathnameArr[1]} movieId={id} />
+        <MovieDetailDesktop pathLoc={pathnameArr[1]} movieId={id} urlParams={query} />
       </MolaLayout>
     ),
   }

@@ -59,7 +59,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [0] /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -237,7 +237,7 @@ class MovieDetail extends Component {
 
     //Get Status Subscribe Type from User
     const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-    console.log(this.props.user)
+    // console.log(this.props.user)
 
     let videoSettings = {}
     if (resultCompareDate > 0) {
