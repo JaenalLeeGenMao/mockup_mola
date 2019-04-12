@@ -25,7 +25,7 @@ const RelatedVideos = ({ style = {}, containerClassName = '', className = '', de
   return (
     <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
-        const imageSource = background.desktop.landscape || require('@global/style/icons/unavailable-image.png')
+        const imageSource = background.desktop.landscape || require('@global/style/icons/unavailable-image.png') // ?
         return (
           <Link to={`/movie-detail/${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={detailClassName}>
