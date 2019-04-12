@@ -254,7 +254,7 @@ const normalizeMovieLibrary = response => {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
         const { title } = attributes
-        const thumbnail = _get(attributes, 'images.cover.library.desktop.portrait', '')
+        const thumbnail = _get(attributes, 'images.cover.library.portrait', '')
         const description = _get(attributes, 'description', '')
         const quotes = _get(attributes, 'quotes[0].attributes', '')
         const isDark = _get(attributes, 'isDark', '0')
@@ -288,7 +288,7 @@ const normalizeMovieLibraryList = response => {
         type,
         genreTitle,
         videoDesc,
-        thumbnail: videoImg.cover.library.desktop.portrait,
+        thumbnail: videoImg.cover.library.portrait,
       }
     })
   }
