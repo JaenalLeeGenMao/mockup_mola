@@ -19,7 +19,7 @@ class Privacy extends Component {
 
     return (
       <div className={styles.privacy_header}>
-        <HeaderPrivacy stickyOff rightMenuOff libraryOff {...this.props} />
+        <HeaderPrivacy stickyOff rightMenuOff libraryOff menuDropDownHeader {...this.props} />
         <div className={styles.privacy_singlepage}>
           <div className={styles.privacy_contentheadlinecls}>{locale['privacy_contentheadline']}</div>
           <div className={styles.privacy_contentbody}>

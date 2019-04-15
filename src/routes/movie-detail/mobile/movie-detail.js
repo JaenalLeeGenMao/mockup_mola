@@ -46,7 +46,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   return (
     <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
-        const imageSource = background.desktop.landscape || require('@global/style/icons/unavailable-image.png')
+        const imageSource = background.landscape || require('@global/style/icons/unavailable-image.png')
         return (
           <Link to={`/movie-detail/${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
@@ -59,7 +59,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [0] /* important for analytics tracker */
+let ticker = [] /*default 0 */ /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -88,7 +88,7 @@ class MovieDetail extends Component {
     if (movieDetail.data.length > 0) {
       const { title, description, images } = movieDetail.data[0]
       updateCustomMeta('og:title', title)
-      updateCustomMeta('og:image', images.cover.background.desktop.landscape)
+      updateCustomMeta('og:image', images.cover.background.landscape)
       updateCustomMeta('og:description', description)
       updateCustomMeta('og:url', window.location.href)
     }
@@ -222,7 +222,7 @@ class MovieDetail extends Component {
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
-    const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+    const poster = apiFetched ? dataFetched.images.cover.background.landscape : ''
 
     //Get Time Right Now
     const todayDate = new Date().getTime()
@@ -237,7 +237,7 @@ class MovieDetail extends Component {
 
     //Get Status Subscribe Type from User
     const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-    console.log(this.props.user)
+    // console.log(this.props.user)
 
     let videoSettings = {}
     if (resultCompareDate > 0) {
@@ -257,7 +257,7 @@ class MovieDetail extends Component {
         {' '}
         {dataFetched && (
           <>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn menuDropDownHeader shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
                 {streamSource ? (

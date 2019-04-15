@@ -49,7 +49,7 @@ class HistoryTransactions extends Component {
     return (
       <Fragment>
         <div className={styles.headerContainer}>
-          <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn {...this.props} />
+          <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn menuDropDownHeader {...this.props} />
         </div>
         <div className={styles.root}>
           <div className={styles.historyTransactions_container}>
