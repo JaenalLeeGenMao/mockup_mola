@@ -128,14 +128,14 @@ const routes = {
         },
       ],
     },
-    {
-      path: '/sport',
-      load: () => import(/* webpackChunkName: 'sport' */ './sport'),
-    },
-    {
-      path: '/switch-channels',
-      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
-    },
+    // {
+    //   path: '/sport',
+    //   load: () => import(/* webpackChunkName: 'sport' */ './sport'),
+    // },
+    // {
+    //   path: '/switch-channels',
+    //   load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    // },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
