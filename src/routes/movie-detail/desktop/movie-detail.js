@@ -7,6 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
+import Tracker from '@source/lib/tracker'
 import { updateCustomMeta } from '@source/DOMUtils'
 
 import * as movieDetailActions from '@actions/movie-detail'
