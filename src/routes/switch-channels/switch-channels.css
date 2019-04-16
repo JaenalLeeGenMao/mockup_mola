@@ -35,6 +35,15 @@ body {
   width: 14rem;
 }
 
+/* .swicth_channels_image:hover img {
+  border: 1px solid #b6e2ff;
+} */
+
+/* .switch_channels__movies_img:hover {
+  box-shadow:  0 0rem 1.6rem 0 #ccc;
+  cursor:  pointer;
+} */
+
 .switch_channels__sports_img {
   width: 14rem;
 }
@@ -81,4 +90,51 @@ body {
 
 .swicth_channels__grid_item_series > div {
   margin-bottom: 1rem;
+}
+
+.switch_channels_label {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 299px) and (max-width: 640px) {
+  .swicth_channels__grid_item_movie {
+    grid-area: 2/1;
+    padding-bottom: 5px;
+  }
+
+  .swicth_channels__grid_item_sport {
+    grid-area: 2/2;
+    padding-bottom: 5px;
+  }
+
+  .swicth_channels__grid_item_entertainments {
+    grid-area: 3/1;
+    padding-bottom: 5px;
+  }
+
+  .swicth_channels__grid_item_series {
+    grid-area: 3/2;
+    padding-bottom: 5px;
+  }
+
+  .swicth_channels__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .switch_channels__movies_img {
+    width: 10rem;
+  }
+
+  .switch_channels__sports_img {
+    width: 10rem;
+  }
+
+  .switch_channels__entertainments_img {
+    width: 10rem;
+  }
+
+  .switch_channels__series_img {
+    width: 10rem;
+  }
 }
