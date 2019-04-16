@@ -89,6 +89,7 @@
   font-size: 1.4rem;
   font-weight: 500;
   margin: 8px 0 8px 0;
+  cursor: pointer;
 }
 
 .lnupcoming_grid_label {

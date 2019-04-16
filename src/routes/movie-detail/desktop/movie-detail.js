@@ -108,14 +108,22 @@ class MovieDetail extends Component {
     const { clientIp, uid, sessionId } = this.props.user
     const { data } = this.props.movieDetail
 
+    const uuidADS = () => {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (Math.random() * 16) | 0,
+          v = c == 'x' ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+      })
+    }
+
     /* eslint-disable */
     const payload = {
       project_id: '2',
       video_id: this.props.movieId,
       app_id: 'sent_ads',
-      session_id: sessionId,
+      session_id: Tracker.sessionId(),
       client_ip: clientIp,
-      user_id: uid,
+      uuid: uuidADS(),
     }
 
     this.encryptPayload = window.btoa(JSON.stringify(payload))

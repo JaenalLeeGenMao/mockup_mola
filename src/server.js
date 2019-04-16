@@ -516,6 +516,7 @@ app.get('*', async (req, res, next) => {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
         sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
+        sessionId: req.cookies.__sessId || '',
         firstName: userInfo ? userInfo.first_name : '',
         lastName: userInfo ? userInfo.last_name : '',
         email: userInfo ? userInfo.email : '',

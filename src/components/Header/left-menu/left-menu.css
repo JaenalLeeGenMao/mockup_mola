@@ -19,10 +19,9 @@
   flex-direction: row;
   text-decoration: none;
   position: absolute;
-  left: 15rem;
+  left: 18rem;
   justify-content: flex-end;
   font-weight: 500;
-  top: 36%;
 }
 
 .left__menu_icon_wrapper {
@@ -38,6 +37,7 @@
   width: 25%;
   height: 20px;
   display: inline-block;
+  cursor: pointer;
 }
 
 .left_menu_guide {
@@ -48,6 +48,7 @@
   width: 25%;
   height: 20px;
   display: inline-block;
+  cursor: pointer;
 }
 
 .left_menu__action_dropdown {
@@ -126,6 +127,10 @@
 @media screen and (min-width: 2000px) {
   .left_menu_outer {
     height: 5rem;
-    width: 25rem;
+    width: 27rem;
+  }
+
+  .left__menu {
+    left: 16rem;
   }
 }

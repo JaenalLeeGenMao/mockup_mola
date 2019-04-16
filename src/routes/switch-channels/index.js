@@ -2,8 +2,8 @@ import React from 'react'
 import MolaLayout from '@components/Molalayout'
 import SwitchChannelsDesktop from './switch-channels'
 
-const title = 'Search Page'
-const description = 'Search your favourite movies via Mola'
+const title = 'Switch Channels Page'
+const description = 'Choose your favourite movies channels via Mola'
 
 function action({ query }) {
   return {

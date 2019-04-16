@@ -13,7 +13,7 @@ import _get from 'lodash/get'
 import homeActions from '@actions/home'
 
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
-import { getLocale } from '@routes/home/locale'
+import { getLocale } from '@routes/sport/locale'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -521,13 +521,11 @@ class Sport extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {/* <p className={styles.quote}>{filteredQuote}</p> */}
-                    <div className={styles.sport__grid}>
-                      <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                        <span className={styles.play_icon} />
-                        <p>{locale['view_movie']}</p>
-                      </Link>
-                      <div className={styles.sport__live_label}>{locale['info_movie']}</div>
-                    </div>
+                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                      <span className={styles.play_icon} />
+                      <p>{locale['view_movie']}</p>
+                    </Link>
+                    {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper} style={{ bottom: '20px' }}>
