@@ -35,28 +35,28 @@ class SwitchChannels extends React.Component {
           <div className={s.swicth_channels__container}>
             <div className={s.swicth_channels__grid}>
               <div className={s.swicth_channels__grid_item_movie}>
-                <div>
+                <div className={s.swicth_channels_image}>
                   <img alt="movieImg" src={movieImg} className={s.switch_channels__movies_img} />
                 </div>
-                <span>Movies</span>
+                <span className={s.switch_channels_label}>Movies</span>
               </div>
               <div className={s.swicth_channels__grid_item_sport}>
-                <div>
+                <div className={s.swicth_channels_image}>
                   <img alt="sportsImg" src={sportsImg} className={s.switch_channels__sports_img} />
                 </div>
-                <span>Sports</span>
+                <span className={s.switch_channels_label}>Sports</span>
               </div>
               <div className={s.swicth_channels__grid_item_entertainments}>
-                <div>
+                <div className={s.swicth_channels_image}>
                   <img alt="entertainmentsImg" src={entertainmentsImg} className={s.switch_channels__entertainments_img} />
                 </div>
-                <span>Entertainments</span>
+                <span className={s.switch_channels_label}>Entertainments</span>
               </div>
               <div className={s.swicth_channels__grid_item_series}>
-                <div>
+                <div className={s.swicth_channels_image}>
                   <img alt="seriesImg" src={seriesImg} className={s.switch_channels__series_img} />
                 </div>
-                <span>Series</span>
+                <span className={s.switch_channels_label}>Series</span>
               </div>
             </div>
           </div>

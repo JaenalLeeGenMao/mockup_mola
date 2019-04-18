@@ -128,14 +128,18 @@ const routes = {
         },
       ],
     },
-    // {
-    //   path: '/sport',
-    //   load: () => import(/* webpackChunkName: 'sport' */ './sport'),
-    // },
-    // {
-    //   path: '/switch-channels',
-    //   load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
-    // },
+    {
+      path: '/sport',
+      load: () => import(/* webpackChunkName: 'sport' */ './sport'),
+    },
+    {
+      path: '/switch-channels',
+      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    },
+    {
+      path: '/matches',
+      load: () => import(/* webpackChunkName: 'matches' */ './matches'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',
