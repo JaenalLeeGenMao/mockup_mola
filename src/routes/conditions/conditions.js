@@ -19,7 +19,7 @@ class Conditions extends Component {
     const { locale } = this.state
     return (
       <div className={styles.conditions_header}>
-        <HeaderCondition stickyOff rightMenuOff libraryOff menuDropDownHeader {...this.props} />
+        <HeaderCondition stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
         <div className={styles.conditions_content_singlepage}>
           <div className={styles.conditions_contentheadlinecls}>{locale['conditions_contentheadline']}</div>
           <div className={styles.conditions_contentbody}>

@@ -26,12 +26,12 @@ class LeftMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, menuDropDownHeader, isMenuToggled = false } = this.props
+    const { color, leftMenuOff, isMenuToggled = false } = this.props
 
     return (
       <>
         <div className={styles.left__menu}>
-          {!menuDropDownHeader && (
+          {!leftMenuOff && (
             <span className={styles.left__menu_wrapper}>
               <LazyLoad className={styles.left__menu_icon_wrapper}>
                 <div className={styles.left_menu_outer}>

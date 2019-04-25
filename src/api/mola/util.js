@@ -2,6 +2,55 @@ import _get from 'lodash/get'
 import _sample from 'lodash/sample'
 
 const normalizeHomePlaylist = response => {
+  // console.log('response util normilize home playlist', response)
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(({ attributes: { playlists } }) =>
+      playlists
+        .map(playlist => {
+          const {
+            id,
+            type,
+            attributes: {
+              title,
+              description,
+              shortDescription,
+              sortOrder,
+              iconUrl,
+              isDark,
+              images: {
+                cover: {
+                  // title: coverTitle,
+                  background,
+                  details,
+                  backgroundColor: coverBGColor,
+                },
+              },
+            },
+          } = playlist
+          return {
+            id,
+            title,
+            sortOrder,
+            description,
+            shortDescription: shortDescription || '',
+            iconUrl: iconUrl || '',
+            // coverTitle: coverTitle,
+            background,
+            backgroundColor: coverBGColor || '#000622',
+            details,
+            isDark: isDark || 0,
+            isActive: false,
+            type,
+          }
+        })
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+    )
+  }
+  return []
+}
+const normalizeSportCategoryList = response => {
+  // console.log('response util normilize sport playlist', response)
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(({ attributes: { playlists } }) =>
@@ -50,11 +99,13 @@ const normalizeHomePlaylist = response => {
 }
 
 const normalizeHomeVideo = response => {
+  // console.log('normalize dari home video 1', response)
   const { data } = response.data
   if (data && data.length > 0) {
     const result = data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
+          // console.log('normalize dari home video 2', video)
           const {
               id,
               type,
@@ -102,6 +153,72 @@ const normalizeHomeVideo = response => {
         })
         .sort((a, b) => a.displayOrder - b.displayOrder)
     )
+    return result
+  }
+  return []
+}
+
+const normalizeSportVideo = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    const result = data.map(({ attributes: { videos } }) => {
+      // console.log('MASUK ?????')
+      if (videos && videos.length > 0) {
+        videos
+          .map(video => {
+            console.log('normalize dari sport video 2', video)
+            const {
+                id,
+                type,
+                attributes: {
+                  title,
+                  description,
+                  shortDescription,
+                  displayOrder,
+                  isDark,
+                  images: {
+                    cover: {
+                      // title: coverTitle,
+                      details,
+                      background,
+                      backgroundColor: coverBGColor,
+                    },
+                  },
+                  quotes: quoteLists,
+                },
+              } = video,
+              dummyQuote = {
+                attributes: {
+                  author: 'Comming Soon',
+                  imageUrl: '',
+                  role: 'Media',
+                  text: title,
+                },
+                id: 1,
+                type: 'quotes',
+              }
+            return {
+              id,
+              title,
+              displayOrder,
+              description,
+              shortDescription: shortDescription || '',
+              // coverTitle: coverTitle,
+              background,
+              backgroundColor: coverBGColor || '#000622',
+              details,
+              isDark: isDark || 0,
+              quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
+              type,
+            }
+          })
+          .sort((a, b) => a.displayOrder - b.displayOrder)
+      } else {
+        return []
+      }
+    })
+
+    // console.log('result', result)
     return result
   }
   return []
@@ -310,4 +427,6 @@ export default {
   normalizeVideoDetail,
   normalizeMovieLibrary,
   normalizeMovieLibraryList,
+  normalizeSportCategoryList,
+  normalizeSportVideo,
 }
