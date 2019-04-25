@@ -174,7 +174,7 @@ class Sport extends Component {
 
   componentDidMount() {
     const { playlists, videos } = this.props.sport
-    //console.log('checking data did', this.props.sport) //same 0
+    // console.log('checking data did', this.props.sport) //same 0
 
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
@@ -254,7 +254,8 @@ class Sport extends Component {
 
   componentDidUpdate() {
     const { playlists: { meta: { status: playlistStatus } }, videos: { meta: { status: videoStatus } } } = this.props.sport
-    // console.log('checking data did update', this.props.sport)
+    console.log('checking data did update', this.props.sport)
+
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.sportCategoryListSuccess) {

@@ -99,13 +99,13 @@ const normalizeSportCategoryList = response => {
 }
 
 const normalizeHomeVideo = response => {
-  // console.log('normalize dari home video 1', response)
+  console.log('normalize dari home video 1', response)
   const { data } = response.data
   if (data && data.length > 0) {
     const result = data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
-          // console.log('normalize dari home video 2', video)
+          console.log('normalize dari home video 2', video)
           const {
               id,
               type,
@@ -117,7 +117,7 @@ const normalizeHomeVideo = response => {
                 isDark,
                 images: {
                   cover: {
-                    // title: coverTitle,
+                    // title: coverTitle,p
                     details,
                     background,
                     backgroundColor: coverBGColor,
@@ -159,66 +159,60 @@ const normalizeHomeVideo = response => {
 }
 
 const normalizeSportVideo = response => {
+  console.log('normalize dari home video 1', response)
   const { data } = response.data
   if (data && data.length > 0) {
-    const result = data.map(({ attributes: { videos } }) => {
-      // console.log('MASUK ?????')
-      if (videos && videos.length > 0) {
-        videos
-          .map(video => {
-            console.log('normalize dari sport video 2', video)
-            const {
-                id,
-                type,
-                attributes: {
-                  title,
-                  description,
-                  shortDescription,
-                  displayOrder,
-                  isDark,
-                  images: {
-                    cover: {
-                      // title: coverTitle,
-                      details,
-                      background,
-                      backgroundColor: coverBGColor,
-                    },
-                  },
-                  quotes: quoteLists,
-                },
-              } = video,
-              dummyQuote = {
-                attributes: {
-                  author: 'Comming Soon',
-                  imageUrl: '',
-                  role: 'Media',
-                  text: title,
-                },
-                id: 1,
-                type: 'quotes',
-              }
-            return {
+    const result = data.map(({ attributes: { videos } }) =>
+      videos
+        .map(video => {
+          console.log('normalize dari home video 2', video)
+          const {
               id,
-              title,
-              displayOrder,
-              description,
-              shortDescription: shortDescription || '',
-              // coverTitle: coverTitle,
-              background,
-              backgroundColor: coverBGColor || '#000622',
-              details,
-              isDark: isDark || 0,
-              quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
               type,
+              attributes: {
+                title,
+                description,
+                shortDescription,
+                displayOrder,
+                isDark,
+                images: {
+                  cover: {
+                    // title: coverTitle,p
+                    details,
+                    background,
+                    backgroundColor: coverBGColor,
+                  },
+                },
+                quotes: quoteLists,
+              },
+            } = video,
+            dummyQuote = {
+              attributes: {
+                author: 'Comming Soon',
+                imageUrl: '',
+                role: 'Media',
+                text: title,
+              },
+              id: 1,
+              type: 'quotes',
             }
-          })
-          .sort((a, b) => a.displayOrder - b.displayOrder)
-      } else {
-        return []
-      }
-    })
-
-    // console.log('result', result)
+          return {
+            id,
+            title,
+            displayOrder,
+            description,
+            shortDescription: shortDescription || '',
+            // coverTitle: coverTitle,
+            background,
+            backgroundColor: coverBGColor || '#000622',
+            details,
+            isDark: isDark || 0,
+            quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
+            type,
+          }
+        })
+        .sort((a, b) => a.displayOrder - b.displayOrder)
+    )
     return result
   }
   return []

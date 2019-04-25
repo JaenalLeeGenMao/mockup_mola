@@ -39,7 +39,7 @@ const getHomePlaylist = () => dispatch => {
 const getHomeVideo = playlist => dispatch => {
   // console.log('get home video 1', playlist)
   return Mola.getHomeVideo({ id: playlist.id }).then(result => {
-    // console.log('result video 2', result)
+    console.log('result video 2', result)
     result = {
       meta: {
         status: result.meta.status,
