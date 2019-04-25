@@ -79,7 +79,7 @@ const getHomeVideo = ({ id }) => {
     .then(response => {
       // console.log('handler response get home', response)
       const result = utils.normalizeHomeVideo(response)
-      // console.log('handler result get home', result)
+      console.log('handler result get home', result)
       return {
         meta: {
           status: 'success',
@@ -101,14 +101,14 @@ const getHomeVideo = ({ id }) => {
 }
 
 const getSportVideo = ({ id }) => {
-  // console.log('id', id)
+  console.log('id', id)
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler response get sport', response) //video no exist w?
+      console.log('handler response get sport 2222', response) //here video exist?
       const result = utils.normalizeSportVideo(response)
-      // console.log('handler response get result', result)
+      // console.log('handler response get result 3333', result) //data null
       return {
         meta: {
           status: 'success',

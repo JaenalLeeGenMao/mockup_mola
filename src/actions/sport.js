@@ -29,9 +29,9 @@ const getSportCategoryList = () => dispatch => {
   })
 }
 const getSportVideo = playlist => dispatch => {
-  // console.log('checking get sport video 1', playlist)
+  // console.log('checking get sport video zzzzz', playlist)
   return Mola.getSportVideo({ id: playlist.id }).then(result => {
-    // console.log('checking get sport video 22222', result)
+    // console.log('checking get sport video oooo', result)
     result = {
       meta: {
         status: result.meta.status,
