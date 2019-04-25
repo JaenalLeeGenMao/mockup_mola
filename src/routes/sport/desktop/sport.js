@@ -10,9 +10,9 @@ import $ from 'jquery'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 
-import homeActions from '@actions/home'
+import sportActions from '@actions/sport'
 
-import { swipeGestureListener, getErrorCode } from '@routes/home/util'
+import { swipeGestureListener, getErrorCode } from '@routes/sport/util'
 import { getLocale } from '@routes/sport/locale'
 
 import Header from '@components/Header'
@@ -108,20 +108,22 @@ class Sport extends Component {
     startGuide: false,
     stepIndex: 0,
     steps: tourSteps[this.props.user.lang],
-    playlistSuccess: false,
+    sportCategoryListSuccess: false,
     sliderRefs: [],
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
-
+    const { onUpdatePlaylist, onHandleVideo, onHandlePlaylist, sport: { playlists, videos }, runtime } = nextProps
+    // console.log('AAAAAAAA ini sport', nextProps)
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
     } else {
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+          // console.log('playlists', playlist)
           trackedPlaylistIds.push(playlist.id)
           onHandleVideo(playlist)
+          // console.log('checking playlist', playlist) // background exist
         }
         if (!activePlaylist && index === 0) {
           activePlaylist = playlists.data[0]
@@ -134,7 +136,7 @@ class Sport extends Component {
 
   handleTourCallback = data => {
     const { type, action, index } = data
-    const { videos } = this.props.home
+    const { videos } = this.props.sport
 
     if (type === EVENTS.TOUR_END) {
       localStorage.setItem('tour-sport', true)
@@ -171,7 +173,8 @@ class Sport extends Component {
   }
 
   componentDidMount() {
-    const { playlists, videos } = this.props.home
+    const { playlists, videos } = this.props.sport
+    //console.log('checking data did', this.props.sport) //same 0
 
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
@@ -242,7 +245,7 @@ class Sport extends Component {
 
     if (playlists.meta.status !== 'loading') {
       if (playlists.meta.status === 'success') {
-        if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
+        if (videos.meta.status === 'success' && !this.state.sportCategoryListSuccess) {
           this.initTour()
         }
       }
@@ -250,10 +253,11 @@ class Sport extends Component {
   }
 
   componentDidUpdate() {
-    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
+    const { playlists: { meta: { status: playlistStatus } }, videos: { meta: { status: videoStatus } } } = this.props.sport
+    // console.log('checking data did update', this.props.sport)
     //update loading state
     if (playlistStatus === 'success') {
-      if (videoStatus === 'success' && !this.state.playlistSuccess) {
+      if (videoStatus === 'success' && !this.state.sportCategoryListSuccess) {
         this.initTour()
       }
     }
@@ -269,7 +273,7 @@ class Sport extends Component {
   initTour = () => {
     this.setState(
       {
-        playlistSuccess: true,
+        sportCategoryListSuccess: true,
       },
       () => {
         let isTourDone = localStorage.getItem('tour-sport')
@@ -456,14 +460,15 @@ class Sport extends Component {
   }
 
   render() {
+    // console.log('under render', this.props.sport) //data exist
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
-      } = this.props.home,
-      { locale, isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
+      } = this.props.sport,
+      { locale, isDark, startGuide, steps, sportCategoryListSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
         ...SETTINGS_VERTICAL,
         className: styles.sport__slick_slider_fade,
@@ -539,10 +544,13 @@ class Sport extends Component {
                     this.rootSlider = node
                   }}
                 >
-                  {videos.data.map((video, index) => {
-                    const { id, sortOrder } = video.meta
-                    return <SportMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
-                  })}
+                  {videos &&
+                    videos.data.length > 0 &&
+                    videos.data.map((video, index) => {
+                      const { id, sortOrder } = video.meta
+                      // console.log('checking slider exist?? ', video)
+                      return <SportMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                    })}
                 </Slider>
               </>
             )}
@@ -553,15 +561,16 @@ class Sport extends Component {
 }
 
 const mapStateToProps = state => {
+  // console.log('checking result sport state', state)
   return {
     ...state,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
-  onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
-  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
+  onHandlePlaylist: () => dispatch(sportActions.getSportCategoryList()),
+  onHandleVideo: playlist => dispatch(sportActions.getSportVideo(playlist)),
+  onUpdatePlaylist: id => dispatch(sportActions.updateActivePlaylist(id)),
 })
 
 export default compose(withStyles(styles, contentStyles), connect(mapStateToProps, mapDispatchToProps))(Sport)

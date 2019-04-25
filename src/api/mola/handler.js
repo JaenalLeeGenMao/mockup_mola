@@ -21,7 +21,9 @@ const getHomePlaylist = () => {
     ...endpoints.setting,
   })
     .then(response => {
+      // console.log('handler home response', response)
       const result = utils.normalizeHomePlaylist(response)
+      // console.log('handler home result', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -41,13 +43,72 @@ const getHomePlaylist = () => {
       }
     })
 }
+const getSportCategoryList = () => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('handler response get playlist ', response)
+      const result = utils.normalizeSportCategoryList(response)
+      // console.log('handler sport playlist masuk', result)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sport')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
 
 const getHomeVideo = ({ id }) => {
+  // console.log('ID', id)
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
+      // console.log('handler response get home', response)
       const result = utils.normalizeHomeVideo(response)
+      // console.log('handler result get home', result)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Video')
+      return {
+        meta: {
+          status,
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getSportVideo = ({ id }) => {
+  // console.log('id', id)
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('handler response get sport', response) //video no exist w?
+      const result = utils.normalizeSportVideo(response)
+      // console.log('handler response get result', result)
       return {
         meta: {
           status: 'success',
@@ -524,4 +585,6 @@ export default {
   createOrder,
   createMidtransPayment,
   getOrderHistoryTransactions,
+  getSportCategoryList,
+  getSportVideo,
 }

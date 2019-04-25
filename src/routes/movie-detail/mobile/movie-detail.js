@@ -266,7 +266,7 @@ class MovieDetail extends Component {
         {' '}
         {dataFetched && (
           <>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn menuDropDownHeader shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
                 {streamSource ? (

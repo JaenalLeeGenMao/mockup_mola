@@ -128,7 +128,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <Header libraryOff className={styles.placeholder__header} menuDropDownHeader isDark={0} {...this.props} />
+        <Header libraryOff className={styles.placeholder__header} leftMenuOff isDark={0} {...this.props} />
         {this.renderTabs()}
         {this.renderContents()}
       </div>

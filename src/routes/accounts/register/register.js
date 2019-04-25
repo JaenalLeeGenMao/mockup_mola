@@ -113,7 +113,7 @@ class Register extends Component {
     return (
       <div className={styles.register__container}>
         <div className={styles.register__header_wrapper}>
-          <Header isDark={false} stickyOff libraryOff rightMenuOff menuDropDownHeader {...this.props} />
+          <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} />
         </div>
         <div className={styles.register__content_wrapper}>
           <div id="main_form" className={styles.register__content_form}>

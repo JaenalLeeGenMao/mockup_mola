@@ -94,7 +94,7 @@ class Header extends Component {
       logoOff = false,
       libraryOff = false,
       rightMenuOff = false,
-      menuDropDownHeader = false,
+      leftMenuOff = false,
       searchOff = false,
       isMobile = false,
       stickyOff = false,
@@ -132,7 +132,7 @@ class Header extends Component {
           </LazyLoad>
         )}
         {this.renderHeaderLibrary()}
-        {!menuDropDownHeader && <LeftMenu color={color} menuDropDownHeader={menuDropDownHeader} {...this.props} />} {/*tambahan left menu nampung sport(design baru)*/}
+        {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} {/*tambahan left menu nampung sport(design baru)*/}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
       </div>
     )
