@@ -113,7 +113,6 @@ class Home extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
-    // console.log('AAAAAAAA ini HOME', nextProps)
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
@@ -441,7 +440,6 @@ class Home extends Component {
       sliderRefs.push(refs)
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
-    console.log(sliderRefs)
   }
 
   /* Vertical scroll handler */

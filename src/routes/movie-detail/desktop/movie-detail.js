@@ -122,12 +122,12 @@ class MovieDetail extends Component {
       project_id: '2',
       video_id: this.props.movieId,
       app_id: 'sent_ads',
-      session_id: Tracker.sessionId(),
+      session_id: sessionId,
       client_ip: clientIp,
       uuid: this.uuidADS(),
     }
 
-    return window.btoa(JSON.stringify(payload))
+    this.encryptPayload = window.btoa(JSON.stringify(payload))
   }
 
   updateMetaTag() {
@@ -322,8 +322,8 @@ class MovieDetail extends Component {
     } else {
       videoSettings = {
         ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.updateEncryption()}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.updateEncryption()}`,
+        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
+        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
       }
     }
 

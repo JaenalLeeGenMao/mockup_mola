@@ -49,7 +49,7 @@ export const handleTracker = async (data, props) => {
       // }`,
       host: `${clientWindow.location.host}`,
       path: `${clientWindow.location.host}${location.pathname}${location.search}`,
-      session_id: Tracker.sessionId(window), // Try get+set session_id
+      session_id: Tracker.sessionId(), // Try get+set session_id
       // pageContent: document.title || null,
       ip: clientIp || null,
       platform: 'mobile',

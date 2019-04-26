@@ -203,7 +203,6 @@ class Home extends Component {
       { sliderRefs, scrollIndex } = this.state
 
     if (mode === 'vertical') {
-      console.log('harus ga disini')
       if (this.rootSlider) {
         if (this.rootSlider.innerSlider === null) {
           return false
