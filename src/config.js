@@ -2,7 +2,7 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
+const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'development'
 
 const oauth = {
   appKey: 'wIHGzJhset',
@@ -13,6 +13,7 @@ const oauth = {
     'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
     'https://api.supersoccer.tv/orders/orders.create',
     'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
     'paymentmethods:read.internal',
     'payments:payment.dopay',
   ].join(' '),
@@ -27,6 +28,7 @@ const oauthApp = {
     'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
     'https://api.supersoccer.tv/orders/orders.create',
     'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
     'paymentmethods:read.internal',
     'payments:payment.dopay',
   ].join(' '),

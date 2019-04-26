@@ -15,7 +15,7 @@ async function action({ isMobile, pathname }) {
     isFetched = details.data.length > 0,
     title = isFetched ? details.data[0].title : 'Movie Detail',
     description = isFetched ? details.data[0].description : 'Movie Details Casters Writers Directors and Sponsors',
-    image = isFetched ? details.data[0].images.cover.background.desktop.landscape : '',
+    image = isFetched ? details.data[0].images.cover.background.landscape : '',
     url = pathname
 
   return {

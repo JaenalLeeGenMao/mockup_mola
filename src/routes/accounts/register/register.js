@@ -54,43 +54,35 @@ class Register extends Component {
       csrf,
     })
 
-    if (result.meta.status === 'success') {
-      const mainForm = document.getElementById('main_form')
-      const secondaryForm = document.getElementById('secondary_form')
-      mainForm.style.display = 'none'
-      secondaryForm.style.display = 'block'
+    // if (result.meta.status === 'success') {
+    const mainForm = document.getElementById('main_form')
+    const secondaryForm = document.getElementById('secondary_form')
+    mainForm.style.display = 'none'
+    secondaryForm.style.display = 'block'
 
-      this.setState({
-        error: '',
-      })
-    } else {
-      this.setState({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        error: result.meta.error.error_description,
-      })
-    }
+    this.setState({
+      error: '',
+    })
+    // }
   }
 
   handleVerificationToken = async () => {
     const { email, token } = this.state,
       { runtime: { csrf } } = this.props
 
-    const result = await Auth.verifyUserToken({
-      token,
-      email,
-      csrf,
-    })
+    // const result = await Auth.verifyUserToken({
+    //   token,
+    //   email,
+    //   csrf,
+    // })
 
-    if (result.meta.status === 'success') {
-      window.location.href = `${config.endpoints.domain}/accounts/login`
-    } else {
-      this.setState({
-        error: 'Invalid Token',
-      })
-    }
+    // if (result.meta.status === 'success') {
+    window.location.href = `${config.endpoints.domain}/accounts/login`
+    // } else {
+    //   this.setState({
+    //     error: 'Invalid Token',
+    //   })
+    // }
   }
 
   handleResendToken = async () => {

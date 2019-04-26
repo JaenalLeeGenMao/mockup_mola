@@ -42,7 +42,7 @@ class Content extends Component {
           const { id, isDark, background } = video
           return (
             <div key={id} className="grid-slick" isdark={isDark}>
-              <img src={background.desktop.landscape} />
+              <img src={background.landscape} />
             </div>
           )
         })}

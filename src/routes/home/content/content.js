@@ -30,8 +30,7 @@ class Content extends Component {
 
   handleTitleShow = (show = false) => {
     const { isMobile, background } = this.props,
-      version = isMobile ? 'mobile' : 'desktop',
-      coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape
+      coverBackgroundImage = isMobile ? background.portrait : background.landscape
     /* TEMPORARILY HARDCODE FIX */
     if (coverBackgroundImage != 'https://cdn01.sent.tv/qaud0dwQwSQsDwdpPvTi_sent_757.png') {
       this.setState({ show: show ? true : false })
@@ -78,8 +77,7 @@ class Content extends Component {
         getCurrentScreenHeight = window.innerHeight,
       } = this.props,
       fontColor = isMobile ? '#fff' : isDark ? '#000' : '#fff',
-      version = isMobile ? 'mobile' : 'desktop',
-      coverBackgroundImage = isMobile ? background[version].portrait : background[version].landscape
+      coverBackgroundImage = isMobile ? background.portrait : background.landscape
 
     const moreStyles = {
       bottom: 0,
