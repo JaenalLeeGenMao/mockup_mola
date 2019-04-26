@@ -60,7 +60,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /*default 0 */ /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
