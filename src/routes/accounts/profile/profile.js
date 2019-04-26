@@ -95,9 +95,9 @@ class Profile extends Component {
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
-              <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
+              {/* <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
                 Status
-              </div>
+              </div> */}
               {/* <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
                 Setelan
               </div> */}
@@ -128,7 +128,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <Header libraryOff className={styles.placeholder__header} isDark={0} {...this.props} />
+        <Header libraryOff className={styles.placeholder__header} leftMenuOff isDark={0} {...this.props} />
         {this.renderTabs()}
         {this.renderContents()}
       </div>

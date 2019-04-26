@@ -21,6 +21,7 @@ const getHomePlaylist = () => dispatch => {
     },
   })
   return Mola.getHomePlaylist().then(result => {
+    // console.log('get home playlist ', result)
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_HOME_PLAYLIST_ERROR,
@@ -36,7 +37,9 @@ const getHomePlaylist = () => dispatch => {
 }
 
 const getHomeVideo = playlist => dispatch => {
+  // console.log('get home video 1', playlist)
   return Mola.getHomeVideo({ id: playlist.id }).then(result => {
+    console.log('result video 2', result)
     result = {
       meta: {
         status: result.meta.status,
@@ -46,6 +49,7 @@ const getHomeVideo = playlist => dispatch => {
       // data: [playlist].concat(result.data)
       data: result.data,
     }
+    // console.log('get home video 3', result)
     dispatch({
       type: types.GET_HOME_VIDEO,
       payload: result,

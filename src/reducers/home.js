@@ -25,8 +25,10 @@ export default function home(state = initialState, action) {
     case types.GET_HOME_PLAYLIST_ERROR:
       return { ...state, playlists: { ...action.payload } }
     case types.GET_HOME_VIDEO:
+      // console.log('home state', state)
       let result = [...state.videos.data],
         status
+      // console.log('reducer home checking result', result)
 
       const index = findIndexByKeyValue(result, 'id', action.payload.meta.id),
         filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0

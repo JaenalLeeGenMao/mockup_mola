@@ -49,13 +49,17 @@ export const handleTracker = async (data, props) => {
       // }`,
       host: `${clientWindow.location.host}`,
       path: `${clientWindow.location.host}${location.pathname}${location.search}`,
-      session_id: sessionId, // Try get+set session_id
+      session_id: Tracker.sessionId(window), // Try get+set session_id
       // pageContent: document.title || null,
       ip: clientIp || null,
       platform: 'mobile',
       os,
       device,
       app: browser,
+      app_version: browserVersion,
+      utm_source: urlParams.utm_source || undefined,
+      utm_medium: urlParams.utm_medium || undefined,
+      utm_campaign: urlParams.utm_campaign || undefined,
       video_type: source || null,
       action,
       client: 'mola-web',

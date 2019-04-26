@@ -116,8 +116,8 @@ const routes = {
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
-      path: '/history-transactions-detail',
-      load: () => import(/* webpackChunkName: 'history-transactions-detail' */ './history-transactions-detail'),
+      path: '/history-transactions/:id',
+      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
       path: '/subscribe-detail',
@@ -127,6 +127,18 @@ const routes = {
           path: '/:id',
         },
       ],
+    },
+    {
+      path: '/sport',
+      load: () => import(/* webpackChunkName: 'sport' */ './sport'),
+    },
+    {
+      path: '/switch-channels',
+      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    },
+    {
+      path: '/matches',
+      load: () => import(/* webpackChunkName: 'matches' */ './matches'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {

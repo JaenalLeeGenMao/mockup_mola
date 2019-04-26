@@ -17,7 +17,7 @@ class Terms extends Component {
     const { locale } = this.state
     return (
       <div className={styles.terms_header}>
-        <HeaderTerms stickyOff rightMenuOff libraryOff {...this.props} />
+        <HeaderTerms stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
         <div className={styles.terms_singlepage}>
           <div className={styles.terms_contentheadlinecls}>{locale['terms_contentheadline']}</div>
           <div className={styles.terms_contentbody}>

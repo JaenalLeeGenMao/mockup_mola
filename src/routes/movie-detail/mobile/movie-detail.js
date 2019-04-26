@@ -7,6 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
+import Tracker from '@source/lib/tracker'
 import { updateCustomMeta } from '@source/DOMUtils'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -59,10 +60,18 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [0] /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
+  }
+
+  uuidADS = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
   }
 
   /* eslint-disable */
@@ -75,12 +84,12 @@ class MovieDetail extends Component {
       project_id: '2',
       video_id: this.props.movieId,
       app_id: 'sent_ads',
-      session_id: sessionId,
+      session_id: Tracker.sessionId(),
       client_ip: clientIp,
-      user_id: uid,
+      uuid: this.uuidADS(),
     }
 
-    this.encryptPayload = window.btoa(JSON.stringify(payload))
+    return window.btoa(JSON.stringify(payload))
   }
 
   updateMetaTag() {
@@ -237,7 +246,7 @@ class MovieDetail extends Component {
 
     //Get Status Subscribe Type from User
     const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-    console.log(this.props.user)
+    // console.log(this.props.user)
 
     let videoSettings = {}
     if (resultCompareDate > 0) {
@@ -247,8 +256,8 @@ class MovieDetail extends Component {
     } else {
       videoSettings = {
         ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.updateEncryption()}`,
+        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.updateEncryption()}`,
       }
     }
 
@@ -257,7 +266,7 @@ class MovieDetail extends Component {
         {' '}
         {dataFetched && (
           <>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
                 {streamSource ? (

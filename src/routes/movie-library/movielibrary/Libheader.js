@@ -88,6 +88,7 @@ class Libheader extends Component {
           title={cardTitle}
           isLibrary
           isLibraryCopy
+          leftMenuOff
           stickyOff
           {...this.props}
           handleMenuToggleClick={this.handleMenuToggleClick}

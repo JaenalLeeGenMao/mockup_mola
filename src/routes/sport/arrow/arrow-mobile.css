@@ -1,0 +1,91 @@
+/* stylelint-disable */
+
+.sport__arrow {
+  font-family: slick;
+  position: fixed;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  z-index: 99;
+  outline: none;
+  visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus {
+  outline: none !important;
+}
+
+/* available chevrons
+‹›〈〉❬❭❮❯❰❱
+*/
+.sport__arrow_next::before,
+[dir='rtl'] .sport__arrow_prev::before {
+  content: '❯';
+}
+
+.sport__arrow_prev::before {
+  content: '❮';
+}
+
+.sport__arrow_next::before,
+.sport__arrow_prev::before {
+  font-size: 0.85rem;
+  line-height: 1.1;
+  opacity: 0.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.sport__arrow_next,
+.sport__arrow_prev {
+  display: block;
+
+  /* position: absolute; */
+  color: transparent;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 7%;
+  outline: 0;
+  font-size: 0;
+  line-height: 0;
+  background: 0 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  z-index: 99;
+  transition: all 150ms ease;
+}
+
+.sport__arrow_next:hover,
+.sport__arrow_prev:hover,
+.sport__arrow_next:focus,
+.sport__arrow_prev:focus {
+  background: #fff;
+}
+
+.sport__arrow_next {
+  right: 0;
+  border-width: 0.12rem;
+  border-radius: 50%;
+  border-style: solid;
+}
+
+.sport__arrow_prev {
+  right: 11.5%;
+  border-width: 0.12rem;
+  border-radius: 50%;
+  border-style: solid;
+}
+
+.sport__arrow_next.white,
+.sport__arrow_prev.white {
+  color: #fff;
+  border-color: #fff;
+}
+
+.sport__arrow_next.white:hover,
+.sport__arrow_prev.white:hover {
+  color: #000;
+  background-color: #fff;
+}

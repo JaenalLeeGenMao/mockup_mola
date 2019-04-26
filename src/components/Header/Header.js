@@ -22,6 +22,7 @@ import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import Link from '../Link'
 
 import RightMenu from './right-menu'
+import LeftMenu from './left-menu'
 import styles from './Header.css'
 
 class Header extends Component {
@@ -93,6 +94,7 @@ class Header extends Component {
       logoOff = false,
       libraryOff = false,
       rightMenuOff = false,
+      leftMenuOff = false,
       searchOff = false,
       isMobile = false,
       stickyOff = false,
@@ -129,9 +131,8 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         )}
-
         {this.renderHeaderLibrary()}
-
+        {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} {/*tambahan left menu nampung sport(design baru)*/}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
       </div>
     )

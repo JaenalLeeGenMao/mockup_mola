@@ -64,7 +64,7 @@ class Login extends Component {
     return (
       <div className={styles.login__container}>
         <div className={styles.login__header_wrapper}>
-          <Header isDark={false} stickyOff libraryOff rightMenuOff {...this.props} />
+          <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} />
         </div>
         <div className={styles.login__content_wrapper}>
           <div className={styles.login__content_form}>
