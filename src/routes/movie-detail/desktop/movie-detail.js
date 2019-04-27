@@ -122,12 +122,12 @@ class MovieDetail extends Component {
       project_id: '2',
       video_id: this.props.movieId,
       app_id: 'sent_ads',
-      session_id: Tracker.sessionId(),
+      session_id: sessionId,
       client_ip: clientIp,
       uuid: this.uuidADS(),
     }
 
-    return window.btoa(JSON.stringify(payload))
+    this.encryptPayload = window.btoa(JSON.stringify(payload))
   }
 
   updateMetaTag() {
@@ -298,7 +298,7 @@ class MovieDetail extends Component {
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/DASH/Live/channel(2a10e294-db16-0d35-f732-f2d040e882d0)/manifest.mpd'
     const poster = apiFetched ? dataFetched.images.cover.background.landscape : ''
-    // const poster = apiFetched ? dataFetched.images.cover.details.desktop.landscape : ''
+    // const poster = apiFetched ? dataFetched.images.cover.details.landscape : ''
 
     //Get Time Right Now
     const todayDate = new Date().getTime()
@@ -322,8 +322,8 @@ class MovieDetail extends Component {
     } else {
       videoSettings = {
         ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.updateEncryption()}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.updateEncryption()}`,
+        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
+        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
       }
     }
 

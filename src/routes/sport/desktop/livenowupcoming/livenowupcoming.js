@@ -19,7 +19,7 @@ const liveNowUpComing = () => {
             <span className={styles.sport_youtube_img} />
             <div className={styles.sport__schedule_item}>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>Manchester United</h6>
               </div>
               <div className={styles.sport__infolive_upcoming}>
@@ -29,7 +29,7 @@ const liveNowUpComing = () => {
                 <h6 className={styles.sport__subjectcontent}>English Premier League</h6>
               </div>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>Leicester City</h6>
               </div>
             </div>
@@ -37,7 +37,7 @@ const liveNowUpComing = () => {
           <div className={styles.sport__livenupcoming_schedule}>
             <div className={styles.sport__schedule_item}>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>Paris Saint German</h6>
               </div>
               <div className={styles.sport__infolive_upcoming}>
@@ -46,7 +46,7 @@ const liveNowUpComing = () => {
                 <h6 className={styles.sport__subjectcontent}>Ligue 1 France</h6>
               </div>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>RC Strasbourg Alsace</h6>
               </div>
             </div>
@@ -54,7 +54,7 @@ const liveNowUpComing = () => {
           <div className={styles.sport__livenupcoming_schedule}>
             <div className={styles.sport__schedule_item}>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>Juventus</h6>
               </div>
               <div className={styles.sport__infolive_upcoming}>
@@ -63,7 +63,7 @@ const liveNowUpComing = () => {
                 <h6 className={styles.sport__subjectcontent}>Serie A Italia</h6>
               </div>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>RC Strasbourg Alsace</h6>
               </div>
             </div>
@@ -71,7 +71,7 @@ const liveNowUpComing = () => {
           <div className={styles.sport__livenupcoming_schedule}>
             <div className={styles.sport__schedule_item}>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>Tottenham Hotspurs</h6>
               </div>
               <div className={styles.sport__infolive_upcoming}>
@@ -79,7 +79,7 @@ const liveNowUpComing = () => {
                 <h6 className={styles.sport__subjectcontent}>English Premier League</h6>
               </div>
               <div className={styles.sport__team_logo}>
-                <img alt="defaulimagelogoteam" src={defaultTeamLogo} className={styles.sport__defaultlogoteam} />
+                <span className={styles.sport__defaultlogoteam} />
                 <h6 className={styles.sport_team_name}>Watford F.C</h6>
               </div>
             </div>

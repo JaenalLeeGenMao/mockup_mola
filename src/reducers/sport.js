@@ -16,22 +16,27 @@ const initialState = {
   },
 }
 
-export default function home(state = initialState, action) {
+export default function sport(state = initialState, action) {
   switch (action.type) {
-    case types.GET_HOME_PLAYLIST_LOADING:
+    case types.GET_SPORT_PLAYLIST_LOADING:
       return { ...state, playlists: { ...action.payload } }
-    case types.GET_HOME_PLAYLIST_SUCCESS:
+    case types.GET_SPORT_PLAYLIST_SUCCESS:
       return { ...state, playlists: { ...action.payload } }
-    case types.GET_HOME_PLAYLIST_ERROR:
-      return { ...state, playlists: { ...action.payload } }
-    case types.GET_HOME_VIDEO:
-      // console.log('home state', state)
+    case types.GET_SPORT_PLAYLIST_ERROR:
+      return {
+        ...state,
+        playlists: { ...action.payload },
+      }
+    case types.GET_SPORT_VIDEO:
+      // console.log('KE SINI??', state)
       let result = [...state.videos.data],
         status
-      // console.log('reducer home checking result', result)
+      // console.log('reducer sport checking result', result)
 
       const index = findIndexByKeyValue(result, 'id', action.payload.meta.id),
         filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
+
+      // console.log('checking index', index)
 
       if (filteredStatus) {
         status = 'error'

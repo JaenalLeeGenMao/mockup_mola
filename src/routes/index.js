@@ -208,8 +208,8 @@ const track = async store => {
         referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
         host: `${window.location.host}`,
         path: `${window.location.host}${location.pathname}${location.search}`,
-        session_id: tracker.sessionId(window), // Try get+set session_id
-        // page_content: document.title || null,
+        session_id: tracker.sessionId(), // Try get+set session_id
+        page_content: document.title || null,
         ip: _get(store.getState(), 'runtime.clientIp', null),
         platform,
         os,

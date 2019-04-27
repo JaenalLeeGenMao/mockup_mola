@@ -19,7 +19,7 @@ class SystemInfo extends Component {
       parserInfo = parser(navigator.userAgent)
     return (
       <div>
-        <Header stickyOff rightMenuOff libraryOff menuDropDownHeader {...this.props} />
+        <Header stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
         {info !== null && (
           <div className={SystemInfoWrapper}>
             <div className={SystemInfoContainer}>

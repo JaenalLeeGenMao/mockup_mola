@@ -36,8 +36,6 @@ const Review = ({ data }) => {
     }
   })
 
-  console.log(quotes)
-
   return (
     <div className={reviewSliderContainer}>
       <Slider

@@ -40,7 +40,6 @@ class Content extends Component {
 
   contentSwitcher = () => {
     const { showDescription } = this.state
-    console.log('=======contentSwitcher', showDescription)
 
     if (showDescription === true) {
       this.setState({

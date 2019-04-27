@@ -10,6 +10,7 @@ import movieStream from './movie-stream'
 import notFound from './not-found'
 import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
+import sport from './sport'
 
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
@@ -27,4 +28,5 @@ export default combineReducers({
   movieStream,
   notFound,
   subscribe,
+  sport,
 })

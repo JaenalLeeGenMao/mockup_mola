@@ -440,7 +440,6 @@ class Home extends Component {
       sliderRefs.push(refs)
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
-    console.log(sliderRefs)
   }
 
   /* Vertical scroll handler */
@@ -501,7 +500,7 @@ class Home extends Component {
         />
 
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff menuDropDownHeader className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff leftMenuOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}

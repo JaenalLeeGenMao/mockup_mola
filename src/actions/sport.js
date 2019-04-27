@@ -2,16 +2,9 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-// import { getAction } from '../../../gandalf';
-// const { home: { getHomePlaylist } } = getAction();
-
-// export default {
-//   getHomePlaylist
-// };
-
-const getHomePlaylist = () => dispatch => {
+const getSportCategoryList = () => dispatch => {
   dispatch({
-    type: types.GET_HOME_PLAYLIST_LOADING,
+    type: types.GET_SPORT_PLAYLIST_LOADING,
     payload: {
       meta: {
         status: 'loading',
@@ -20,23 +13,25 @@ const getHomePlaylist = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getHomePlaylist().then(result => {
+  return Mola.getSportCategoryList().then(result => {
+    // console.log('checking get sport cate', result)
     if (result.meta.status === 'error') {
       dispatch({
-        type: types.GET_HOME_PLAYLIST_ERROR,
+        type: types.GET_SPORT_PLAYLIST_ERROR,
         payload: result,
       })
     } else {
       dispatch({
-        type: types.GET_HOME_PLAYLIST_SUCCESS,
+        type: types.GET_SPORT_PLAYLIST_SUCCESS,
         payload: result,
       })
     }
   })
 }
-
-const getHomeVideo = playlist => dispatch => {
-  return Mola.getHomeVideo({ id: playlist.id }).then(result => {
+const getSportVideo = playlist => dispatch => {
+  // console.log('checking get sport video zzzzz', playlist)
+  return Mola.getSportVideo({ id: playlist.id }).then(result => {
+    // console.log('checking get sport video oooo', result)
     result = {
       meta: {
         status: result.meta.status,
@@ -44,9 +39,13 @@ const getHomeVideo = playlist => dispatch => {
         sortOrder: playlist.sortOrder,
       },
       data: result.data,
+      background: {
+        landscape: playlist.background.landscape,
+      },
     }
+    // console.log('get sport video 3', result)
     dispatch({
-      type: types.GET_HOME_VIDEO,
+      type: types.GET_SPORT_VIDEO,
       payload: result,
     })
   })
@@ -54,7 +53,7 @@ const getHomeVideo = playlist => dispatch => {
 
 const updateActivePlaylist = id => (dispatch, getState) => {
   const store = getState(),
-    { home: { playlists: { meta, data: playlistsData } } } = store,
+    { sport: { playlists: { meta, data: playlistsData } } } = store,
     data = playlistsData.map(playlist => {
       if (playlist.id === id) {
         return { ...playlist, isActive: true }
@@ -71,7 +70,7 @@ const updateActivePlaylist = id => (dispatch, getState) => {
 }
 
 export default {
-  getHomePlaylist,
-  getHomeVideo,
+  getSportCategoryList,
+  getSportVideo,
   updateActivePlaylist,
 }
