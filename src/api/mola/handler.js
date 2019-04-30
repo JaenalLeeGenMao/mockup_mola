@@ -77,9 +77,7 @@ const getHomeVideo = ({ id }) => {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler response get home', response)
       const result = utils.normalizeHomeVideo(response)
-      console.log('handler result get home', result)
       return {
         meta: {
           status: 'success',
