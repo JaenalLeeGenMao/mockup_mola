@@ -254,7 +254,6 @@ class Sport extends Component {
 
   componentDidUpdate() {
     const { playlists: { meta: { status: playlistStatus } }, videos: { meta: { status: videoStatus } } } = this.props.sport
-    console.log('checking data did update', this.props.sport)
 
     //update loading state
     if (playlistStatus === 'success') {

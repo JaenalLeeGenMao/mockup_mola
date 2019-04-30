@@ -8,10 +8,6 @@ import $ from 'jquery'
 import styles from './content.css'
 
 class Content extends Component {
-  componentDidMount() {
-    this.props.updateSlider(this.wrapperSlider)
-  }
-
   render() {
     const { updateColorChange, index } = this.props
     const settings = {
@@ -34,7 +30,7 @@ class Content extends Component {
         id={index}
         className={styles.content__container}
         ref={node => {
-          this.wrapperSlider = node
+          if (!!node) this.props.updateSlider(node)
         }}
         {...settings}
       >
