@@ -111,6 +111,8 @@ class Home extends Component {
     sliderRefs: [],
   }
 
+  sliderFourIndex = 0
+
   static getDerivedStateFromProps(nextProps, prevState) {
     const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
 
@@ -181,6 +183,8 @@ class Home extends Component {
     this.handleKeyboardEvent()
     this.handleMouseScroll()
 
+    // console.log('check prev next', this.state)
+
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
     })
@@ -250,6 +254,9 @@ class Home extends Component {
 
   componentDidUpdate() {
     const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
+    //notes data sliderrefs exist
+    // console.log('checking', this.state.scrollIndex)
+
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.playlistSuccess) {
@@ -386,9 +393,10 @@ class Home extends Component {
         if (distance <= 20) {
           // do nothing
         } else if (prevX > nextX) {
-          sliderRefs[scrollIndex].slickNext()
+          slider.slickNext()
+          // console.log('AAAAAAA')
         } else {
-          sliderRefs[scrollIndex].slickPrev()
+          slider.slickPrev()
         }
       } else {
         if (distance <= 20) {
@@ -408,7 +416,10 @@ class Home extends Component {
       that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
+      // console.log('handlechangecolor', activeSlick)
+      //this work for change the slider
       let isDark = 1
+
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
@@ -417,6 +428,7 @@ class Home extends Component {
       }
       if (index || index === 0) {
         sliderRefs[index].slickGoTo(0)
+        // console.log('WOOOORKSSS')
         that.setState({
           scrollIndex: index,
           swipeIndex,
@@ -438,6 +450,8 @@ class Home extends Component {
     const { sliderRefs } = this.state
     if (sliderRefs.length < trackedPlaylistIds.length) {
       sliderRefs.push(refs)
+      // console.log('VALIDATION RUN')
+      //WORKS UPDATE SLIDER
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
   }
@@ -454,6 +468,7 @@ class Home extends Component {
   }
 
   render() {
+    // console.log('check sliderRefs Next Prev', this.state)
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
         playlists,
@@ -549,7 +564,23 @@ class Home extends Component {
                 >
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
-                    return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                    return (
+                      <HomeMobileContent
+                        key={id}
+                        videos={video.data}
+                        index={index}
+                        updateSlider={ref => {
+                          const { sliderRefs } = this.state
+
+                          if (index < 4 && !sliderRefs[index]) sliderRefs[index] = ref
+                          else if (index == 4 && this.sliderFourIndex == 1) sliderRefs[index] = ref
+                          else sliderRefs.sort((a, b) => a.props.id - b.props.id)
+
+                          if (index == 4) this.sliderFourIndex++
+                        }}
+                        updateColorChange={this.handleColorChange}
+                      />
+                    )
                   })}
                 </Slider>
               </>

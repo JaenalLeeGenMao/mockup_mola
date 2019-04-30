@@ -99,13 +99,11 @@ const normalizeSportCategoryList = response => {
 }
 
 const normalizeHomeVideo = response => {
-  console.log('normalize dari home video 1', response)
   const { data } = response.data
   if (data && data.length > 0) {
     const result = data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
-          console.log('normalize dari home video 2', video)
           const {
               id,
               type,
@@ -159,13 +157,11 @@ const normalizeHomeVideo = response => {
 }
 
 const normalizeSportVideo = response => {
-  console.log('normalize dari home video 1', response)
   const { data } = response.data
   if (data && data.length > 0) {
     const result = data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
-          console.log('normalize dari home video 2', video)
           const {
               id,
               type,
