@@ -70,25 +70,19 @@ class Register extends Component {
     const { email, token } = this.state,
       { runtime: { csrf } } = this.props
 
-    console.log({
-      token,
-      email,
-      csrf,
-    })
     const result = await Auth.verifyUserToken({
       token,
       email,
       csrf,
     })
-    console.log('RESULT: ', result)
 
-    // if (result.meta.status === 'success') {
-    // window.location.href = `${config.endpoints.domain}/accounts/login`
-    // } else {
-    //   this.setState({
-    //     error: 'Invalid Token',
-    //   })
-    // }
+    if (result.meta.status === 'success') {
+      window.location.href = `${config.endpoints.domain}/accounts/login`
+    } else {
+      this.setState({
+        error: 'Invalid Token',
+      })
+    }
   }
 
   handleResendToken = async () => {
