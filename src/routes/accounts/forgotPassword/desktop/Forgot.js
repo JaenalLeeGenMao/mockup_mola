@@ -69,6 +69,13 @@ class Forgot extends React.Component {
     }
   }
 
+  // handleEnter = e => {
+  //   if (e.keyCode === 13) {
+  //     this.handleForgotPassword()
+  //     console.log('Button Enter Was Clicked')
+  //   }
+  // }
+
   handleVerificationToken = async () => {
     const { email, token } = this.state,
       { runtime: { csrf } } = this.props

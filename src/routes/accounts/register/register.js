@@ -70,14 +70,20 @@ class Register extends Component {
     const { email, token } = this.state,
       { runtime: { csrf } } = this.props
 
-    // const result = await Auth.verifyUserToken({
-    //   token,
-    //   email,
-    //   csrf,
-    // })
+    console.log({
+      token,
+      email,
+      csrf,
+    })
+    const result = await Auth.verifyUserToken({
+      token,
+      email,
+      csrf,
+    })
+    console.log('RESULT: ', result)
 
     // if (result.meta.status === 'success') {
-    window.location.href = `${config.endpoints.domain}/accounts/login`
+    // window.location.href = `${config.endpoints.domain}/accounts/login`
     // } else {
     //   this.setState({
     //     error: 'Invalid Token',
@@ -94,6 +100,11 @@ class Register extends Component {
       csrf,
     })
     console.info(`Please check your email Token's on ${email}`)
+  }
+  handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.handleRegister()
+    }
   }
 
   handleRegisterSocMed = provider => {
@@ -121,6 +132,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder="Username"
               type="text"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="email"
@@ -132,6 +144,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder="Email"
               type="text"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="password"
@@ -143,6 +156,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder="Password"
               type="password"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="confirmPassword"
@@ -154,6 +168,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder={`${locale['confirm']} Password`}
               type="password"
+              onKeyUp={this.handleKeyUp}
             />
             <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
               {locale['sign_up']}
@@ -186,7 +201,7 @@ class Register extends Component {
                 isError={error !== ''}
                 errorClassName={styles.register__content_input_error}
                 placeholder={`${locale['enter_otp']} Password`}
-                type="password"
+                type="text"
               />
               <button type="submit" className={styles.register__content_submit} onClick={this.handleVerificationToken}>
                 {locale['verify']}
