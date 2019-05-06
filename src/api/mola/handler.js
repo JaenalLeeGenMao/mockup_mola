@@ -99,12 +99,12 @@ const getHomeVideo = ({ id }) => {
 }
 
 const getSportVideo = ({ id }) => {
-  console.log('id', id)
+  // console.log('id', id)
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
-      console.log('handler response get sport 2222', response) //here video exist?
+      // console.log('handler response get sport 2222', response) //here video exist?
       const result = utils.normalizeSportVideo(response)
       // console.log('handler response get result 3333', result) //data null
       return {
