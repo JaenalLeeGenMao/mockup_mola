@@ -4,6 +4,10 @@
   -moz-column-break-inside: avoid;
 }
 
+.card:hover {
+  transform: scaleY(1.1);
+}
+
 .card img {
   /* width: 100%; */
   width: 100%;
