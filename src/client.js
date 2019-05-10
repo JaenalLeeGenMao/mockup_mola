@@ -19,7 +19,7 @@ import configureStore from './store/configureStore'
 import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
-import * as serviceWorker from './service-worker'
+// import * as serviceWorker from './service-worker'
 
 // import { setRuntimeVariable } from '@actions/runtime'
 // import config from '@source/config'
@@ -203,6 +203,6 @@ if (module.hot) {
   })
 }
 
-if ('serviceWorker' in navigator) {
-  serviceWorker.register()
-}
+// if ('serviceWorker' in navigator) {
+//   serviceWorker.register()
+// }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-
+import { Helmet } from 'react-helmet'
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
@@ -20,7 +20,6 @@ import Link from '@components/Link'
 
 import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
 import { videoSettings as defaultVideoSettings } from '../const'
-import moment from 'moment'
 
 import { handleTracker } from './tracker'
 
@@ -60,7 +59,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /*default 0 */ /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -266,6 +265,9 @@ class MovieDetail extends Component {
         {' '}
         {dataFetched && (
           <>
+            <Helmet>
+              <title>{dataFetched.title}</title>
+            </Helmet>
             <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>

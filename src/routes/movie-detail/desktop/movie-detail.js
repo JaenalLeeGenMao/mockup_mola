@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-
+import { Helmet } from 'react-helmet'
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
@@ -158,7 +158,7 @@ class MovieDetail extends Component {
     }
   }
 
-  handleOnTimePerMinute = ({ action }) => {
+  handleOnTimePerMinute = ({ action, heartbeat }) => {
     const { clientIp, uid, sessionId } = this.props.user
     const currentDuration = this.player ? this.player.currentTime : ''
     const totalDuration = this.player ? this.player.duration : ''
@@ -167,7 +167,7 @@ class MovieDetail extends Component {
       clientIp,
       sessionId,
       userId: uid,
-      heartbeat: true,
+      heartbeat,
       window: window,
       currentDuration,
       totalDuration,
@@ -203,7 +203,7 @@ class MovieDetail extends Component {
     if (time % 60 === 0) {
       if (!ticker.includes(time)) {
         ticker.push(time)
-        this.handleOnTimePerMinute({ action: 'timeupdate' })
+        this.handleOnTimePerMinute({ action: 'timeupdate', heartbeat: time !== 0 })
       }
     }
   }
@@ -331,6 +331,9 @@ class MovieDetail extends Component {
       <>
         {dataFetched && (
           <div className={movieDetailContainer}>
+            <Helmet>
+              <title>{dataFetched.title}</title>
+            </Helmet>
             <div style={{ width: '100vw', background: '#000' }}>
               <div className={videoPlayerContainer}>
                 {streamSource ? (
