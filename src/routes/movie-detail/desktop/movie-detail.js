@@ -165,12 +165,16 @@ class MovieDetail extends Component {
       action,
       clientIp,
       sessionId,
-      userId: uid,
       heartbeat: heartbeat ? 60 : 0,
       window: window,
       currentDuration,
       totalDuration,
     }
+
+    if (uid) {
+      payload.userId = uid
+    }
+
     window.__theo_start = window.__theo_start || Date.now()
     window.__theo_ps = Date.now()
 
