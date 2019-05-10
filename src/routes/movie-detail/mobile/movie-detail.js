@@ -59,7 +59,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /*default 0 */ /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -130,8 +130,8 @@ class MovieDetail extends Component {
       userId: uid,
       heartbeat: heartbeat ? 60 : 0,
       window: window,
-      currentDuration,
-      totalDuration,
+      // currentDuration,
+      // totalDuration,
     }
     window.__theo_start = window.__theo_start || Date.now()
     window.__theo_ps = Date.now()
