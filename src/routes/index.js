@@ -222,7 +222,7 @@ const track = async store => {
     }
 
     if (user.uid) {
-      payload.user_id = user.uid
+      payload.data.user_id = user.uid
     }
 
     // if (firstRender) {
