@@ -29,6 +29,7 @@ export const handleTracker = async (data, props) => {
   */
 
   /* Try get platform and browser */
+  const platform = _get(UA.getDevice(), 'type', null)
   const osName = _get(UA.getOS(), 'name', null)
   const osVersion = _get(UA.getOS(), 'version', null)
   const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
@@ -49,7 +50,7 @@ export const handleTracker = async (data, props) => {
       session_id: Tracker.sessionId(), // Try get+set session_id
       // pageContent: document.title || null,
       ip: clientIp || null,
-      platform: 'desktop',
+      platform,
       os,
       device,
       app: browser,

@@ -101,28 +101,12 @@ app.use(
 )
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
-const { endpoints: { domain, auth }, oauth: { appKey, appSecret }, oauthApp } = config
+const { endpoints: { domain, authInternal: auth, apiInternal }, oauth: { appKey, appSecret, endpoint: oauthEndpoint }, oauthApp } = config
 // let count = 0
 // var inboxInterval;
 // set a cookie
 const OAUTH_USER_INFO_URL = `${auth}/v1/profile`
-const OAUTH_LOGOUT_URL = `${auth}/oauth2/v1/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
-
-const getVUID = async deviceId => {
-  try {
-    const addDeviceURL = `https://stag.supersoccer.tv/api/v1/videos/drm/addDevice?deviceId=${deviceId}`
-    const rawResponse = await fetch(addDeviceURL, {
-      method: 'GET',
-    })
-
-    const content = await rawResponse.json()
-
-    return content.data[0].attributes.vuid
-  } catch {
-    return null
-  }
-}
+const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
 const extendToken = async token => {
   try {
@@ -142,7 +126,8 @@ const extendToken = async token => {
     const content = await rawResponse.json()
 
     return content
-  } catch {
+  } catch (err) {
+    console.error('error extend token:', err)
     return null
   }
 }
@@ -176,7 +161,8 @@ const requestGuestToken = async res => {
 
     const content = await rawResponse.json()
     return content
-  } catch {
+  } catch (err) {
+    console.error('error guest token:', err)
     return null
   }
 }
@@ -193,14 +179,15 @@ const getUserInfo = async sid => {
 
     const content = await rawResponse.json()
     return content.data
-  } catch {
+  } catch (err) {
+    console.error('error get user info:', err)
     return null
   }
 }
 
 const getUserSubscription = async (userId, accessToken) => {
   try {
-    const rawResponse = await fetch(`${domain}/api/v2/subscriptions/users/${userId}`, {
+    const rawResponse = await fetch(`${apiInternal}/subscriptions/users/${userId}?app_id=molatv`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -208,9 +195,9 @@ const getUserSubscription = async (userId, accessToken) => {
     })
 
     const content = await rawResponse.json()
-
     return content
-  } catch {
+  } catch (err) {
+    console.error('error user subscription:', err)
     return null
   }
 }
@@ -261,7 +248,7 @@ const requestCode = async (req, res) => {
     state: randomState,
   })
 
-  const oAuthAuthorizationEndpoint = `${auth}/oauth2/v1/authorize?${qs}`
+  const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
 
   return oAuthAuthorizationEndpoint
 }
@@ -276,35 +263,19 @@ app.use('*', async (req, res, next) => {
       maxAge: 7 * 24 * 3600 * 1000,
       httpOnly: true,
     })
-    const uid = jwt.decode(cookie.SID).uid
-    const vuid = await getVUID(uid)
-    if (vuid) {
-      res.cookie('VUID', vuid, {
-        path: '/',
-        httpOnly: true,
-      })
-    }
   }
   if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
     const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
-    const vuid = await getVUID(deviceId)
     res.cookie('__deviceId', deviceId, {
       path: '/',
       maxAge: 30 * 24 * 3600 * 1000,
       httpOnly: true,
     })
-    if (vuid) {
-      res.cookie('VUID', vuid, {
-        path: '/',
-        httpOnly: true,
-      })
-    }
   }
   next() // <-- important!
 })
 
 app.get('/oauth/callback', async (req, res) => {
-  // console.log(`AAAAAAA ${oauthEndpoint}/token`);
   const code = req.query.code
   const state = req.query.state
   const storedState = req.cookies.wstate
@@ -315,7 +286,7 @@ app.get('/oauth/callback', async (req, res) => {
       request.post(
         {
           ...config.endpoints.setting,
-          url: `${auth}/oauth2/v1/token`,
+          url: `${oauthEndpoint}/token`,
           headers: {
             Cookie: `SID=${sid}`,
           },
@@ -328,18 +299,16 @@ app.get('/oauth/callback', async (req, res) => {
           },
         },
         (error, response, body) => {
-          // console.log('BODY'.body)
           if (error || response.statusCode !== 200) {
-            // console.error(error, response.statusCode, body);
-          } else {
-            res.cookie('_at', body.access_token, {
-              maxAge: body.expires_in * 1000,
-              httpOnly: true,
-              // secure: !__DEV__,
-            })
-
-            resolve()
+            console.error(error, response.statusCode, body)
+            return reject({ error, statusCode: response.statusCode, body })
           }
+          res.cookie('_at', body.access_token, {
+            maxAge: body.expires_in * 1000,
+            httpOnly: true,
+            // secure: !__DEV__,
+          })
+          return resolve()
         }
       )
     })
@@ -536,7 +505,7 @@ app.get('*', async (req, res, next) => {
         gt: guestToken,
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
-        vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
+        // vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
         deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
       },
     }
@@ -579,6 +548,47 @@ app.get('*', async (req, res, next) => {
     }
 
     const data = { ...route }
+
+    const pathSplit = req.path.split('/')
+    const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
+    /*** SEO - start  ***/
+    if (firstPath === 'movie-detail') {
+      const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+      // if (videoId) {
+      //   const response = await Axios.get(
+      //     `${config.endpoints.apiVideos}/${videoId}`,
+      //     {
+      //       timeout: 5000,
+      //       maxRedirects: 1,
+      //       headers: {
+      //         'x-url': config.endpoints.xurl
+      //       }
+      //     }
+      //   )
+      //     .then(({ data }) => {
+      //       return data.data;
+      //     })
+      //     .catch(err => {
+      //       console.log('Error SEO videos', err);
+      //       return null;
+      //     });
+      //   // console.log("SEO CONTENT", response)
+      //   data.title = response
+      //     ? response[0].attributes.title
+      //     : metadata['/watch'].title;
+      //   data.description = response
+      //     ? response[0].attributes.description
+      //     : metadata['/watch'].description;
+      //   data.image = response
+      //     ? response[0].attributes.images.thumbnails.cover
+      //     : '';
+      //   data.type = 'video.other';
+      //   data.twitter_card_type = 'summary_large_image';
+      //   data.appLinkUrl = 'watch?v=' + videoId;
+      // }
+    }
+
+    /*** SEO - end  ***/
 
     data.children = renderStylesToString(
       ReactDOM.renderToString(
