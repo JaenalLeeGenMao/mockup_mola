@@ -36,7 +36,7 @@ const uploadImage = file => {
 
 const getImageCDN = (path, token) => {
   const params = { client_id: uploader.clientId, path, token }
-  // console.log(params)
+  console.log(params)
   return get(`${UPLOADER_ENDPOINT}/image/status`, {
     params,
   })

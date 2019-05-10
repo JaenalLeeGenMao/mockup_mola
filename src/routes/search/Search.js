@@ -103,13 +103,13 @@ class Search extends React.Component {
       console.log(event.keyCode)
       switch (event.which || event.keyCode) {
         case 13 /* enter */:
-          this.inputSearch.current.focus()
+          this.inputSearch.focus()
           break
         case 27 /* esc */:
           history.goBack()
           break
         case 32 /* space */:
-          this.inputSearch.current.focus()
+          this.inputSearch.focus()
           break
         default:
           event.preventDefault()
