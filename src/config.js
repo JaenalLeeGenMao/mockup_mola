@@ -21,6 +21,14 @@ const oauth = {
   ].join(' '),
 }
 
+const serverApi = {
+  VIDEO_API_URL: process.env.videoApiUrl || 'https://stag.mola.tv/api/v2/videos',
+  AUTH_API_URL: process.env.authApiUrl || 'https://stag.mola.tv/accounts',
+  SUBSCRIPTION_API_URL: process.env.subscriptionApiUrl || 'https://stag.mola.tv/api/v2/subscriptions',
+  appId: 'molatv',
+  xAppId: 2,
+}
+
 const oauthApp = {
   appKey: 'LDZJgphCc7',
   appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
@@ -65,9 +73,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
       api: '/api/v2',
-      apiInternal: 'http://10.220.0.148/api/v2',
-      auth: 'https://stag.mola.tv/accounts/_',
-      authInternal: 'https://stag.mola.tv/accounts/_',
+      auth: 'https://stag.mola.tv/accounts',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
@@ -83,9 +89,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://mola.tv',
       api: 'https://mola.tv/api/v2',
-      apiInternal: 'https://mola.tv/api/v2',
-      auth: 'https://mola.tv/accounts/_',
-      authInternal: 'https://mola.tv/accounts/_',
+      auth: 'https://mola.tv/accounts',
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
@@ -106,6 +110,7 @@ const config = baseConfig.default[env]
 module.exports = {
   // Node.js app
   ...config,
+  serverApi,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
   port: process.env.PORT || 3000,
   oauth,

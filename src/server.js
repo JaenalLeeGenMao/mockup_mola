@@ -37,10 +37,8 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
-import { get, post } from 'axios'
+import Axios from 'axios'
 import Crypto from 'crypto.js'
-
-import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -113,20 +111,22 @@ app.use(
 )
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-const { endpoints: { domain, authInternal: auth, apiInternal }, oauth: { appKey, appSecret, endpoint: oauthEndpoint }, oauthApp } = config
+const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain }, oauth: { appKey, appSecret, endpoint: oauthEndpoint } } = config
+
 // let count = 0
 // var inboxInterval;
 // set a cookie
-const OAUTH_USER_INFO_URL = `${auth}/v1/profile`
+const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/_/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
 const extendToken = async token => {
   try {
-    const rawResponse = await fetch(`${auth}/v1/token/extend`, {
+    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/token/extend`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'x-app-id': xAppId,
       },
       body: JSON.stringify({
         app_key: appKey,
@@ -136,23 +136,24 @@ const extendToken = async token => {
       }),
     })
     const content = await rawResponse.json()
-
+    console.log('contenttt', content)
     return content
   } catch (err) {
     console.error('error extend token:', err)
-    return null
+    return { error: err }
   }
 }
 
 const requestGuestToken = async res => {
-  console.log(`${auth}/v1/guest/token?app_key=${appKey}`)
-  console.log(domain)
+  // console.log(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`)
+  // console.log(domain)
   try {
-    const rawResponse = await fetch(`${auth}/v1/guest/token?app_key=${appKey}`, {
+    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'x-app-id': xAppId,
         Origin: domain,
         Referer: domain,
       },
@@ -193,13 +194,13 @@ const getUserInfo = async sid => {
     return content.data
   } catch (err) {
     console.error('error get user info:', err)
-    return null
+    return { error: err }
   }
 }
 
 const getUserSubscription = async (userId, accessToken) => {
   try {
-    const rawResponse = await fetch(`${apiInternal}/subscriptions/users/${userId}?app_id=molatv`, {
+    const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -210,7 +211,7 @@ const getUserSubscription = async (userId, accessToken) => {
     return content
   } catch (err) {
     console.error('error user subscription:', err)
-    return null
+    return { error: err }
   }
 }
 
@@ -385,7 +386,9 @@ app.get('*', async (req, res, next) => {
       }
     }
 
-    var guestToken = ''
+    var guestToken = '',
+      errorToken = '',
+      errorGtoken = ''
     const accessToken = req.cookies._at
     const idToken = req.cookies.SID
     if (idToken) {
@@ -401,7 +404,6 @@ app.get('*', async (req, res, next) => {
       if (decodedIdToken && decodedIdToken.exp) {
         idTokenLifespan = decodedIdToken.exp - Date.now() / 1000
       }
-
       // // if lifespan of token is less than 12 hours then get new access token
       if (decodedAccessToken || decodedIdToken) {
         if (decodedAccessToken && decodedIdToken) {
@@ -409,24 +411,11 @@ app.get('*', async (req, res, next) => {
             // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
-            // const rawResponse = await fetch(
-            //   `${config.endpoints.auth}/v1/token/extend`,
-            //   {
-            //     method: 'POST',
-            //     headers: {
-            //       Accept: 'application/json',
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //       app_key: appKey,
-            //       app_secret: appSecret,
-            //       access_token: accessToken,
-            //       expires_in: 3 * 86400
-            //     })
-            //   }
-            // );
-            // const content = await rawResponse.json();
             const content = await extendToken(accessToken)
+            if (content.error) {
+              errorToken = content.error
+              content = null
+            }
             if (content && content.access_token) {
               res.cookie('_at', content.access_token, {
                 maxAge: content.expires_in * 1000,
@@ -448,7 +437,10 @@ app.get('*', async (req, res, next) => {
         guestToken = req.cookies._gt
       } else {
         const content = await requestGuestToken(res)
-        console.log('content', content)
+        if (content.error) {
+          errorGtoken = content.error
+          content = null
+        }
         if (content && content.data) {
           guestToken = content.data.access_token
           res.cookie('_gt', content.data.access_token, {
@@ -473,6 +465,10 @@ app.get('*', async (req, res, next) => {
 
       if (guestTokenLifespan < 12 * 3600) {
         const content = await extendToken(guestToken)
+        if (content.error) {
+          errorToken = content.error
+          content = null
+        }
         if (content && content.access_token) {
           res.cookie('_gt', content.access_token, {
             maxAge: content.expires_in * 1000,
@@ -487,10 +483,19 @@ app.get('*', async (req, res, next) => {
     const expToken = req.cookies._at ? jwt.decode(req.cookies._at).exp : ''
     const expGToken = guestToken ? jwt.decode(guestToken).exp : ''
 
-    let userInfo, userSubs
+    let userInfo, userSubs, userSubsError, userInfoError
     if (req.cookies._at) {
       userInfo = await getUserInfo(req.cookies.SID)
       userSubs = await getUserSubscription(uid, req.cookies._at)
+      if (userSubs.error) {
+        userSubsError = userSubs.error
+        userSubs = null
+      }
+
+      if (userInfo.error) {
+        userInfoError = userInfo.error
+        userInfo = null
+      }
     }
 
     const initialState = {
@@ -519,6 +524,12 @@ app.get('*', async (req, res, next) => {
         csrf: req.csrfToken(),
         // vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
         deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
+        debugError: {
+          subs: userSubsError,
+          userInfo: userInfoError,
+          token: errorToken,
+          gtoken: errorGtoken,
+        },
       },
     }
 
@@ -566,38 +577,28 @@ app.get('*', async (req, res, next) => {
     /*** SEO - start  ***/
     if (firstPath === 'movie-detail') {
       const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
-      // if (videoId) {
-      //   const response = await Axios.get(
-      //     `${config.endpoints.apiVideos}/${videoId}`,
-      //     {
-      //       timeout: 5000,
-      //       maxRedirects: 1,
-      //       headers: {
-      //         'x-url': config.endpoints.xurl
-      //       }
-      //     }
-      //   )
-      //     .then(({ data }) => {
-      //       return data.data;
-      //     })
-      //     .catch(err => {
-      //       console.log('Error SEO videos', err);
-      //       return null;
-      //     });
-      //   // console.log("SEO CONTENT", response)
-      //   data.title = response
-      //     ? response[0].attributes.title
-      //     : metadata['/watch'].title;
-      //   data.description = response
-      //     ? response[0].attributes.description
-      //     : metadata['/watch'].description;
-      //   data.image = response
-      //     ? response[0].attributes.images.thumbnails.cover
-      //     : '';
-      //   data.type = 'video.other';
-      //   data.twitter_card_type = 'summary_large_image';
-      //   data.appLinkUrl = 'watch?v=' + videoId;
-      // }
+      if (videoId) {
+        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id${appId}`, {
+          timeout: 5000,
+          maxRedirects: 1,
+          // headers: {
+          //   'x-url': config.endpoints.xurl
+          // }
+        })
+          .then(({ data }) => {
+            return data.data
+          })
+          .catch(err => {
+            console.log('Error SEO movies', err)
+            return null
+          })
+        data.title = response ? response[0].attributes.title : ''
+        data.description = response ? response[0].attributes.description : ''
+        data.image = response ? response[0].attributes.images.thumbnails.cover : ''
+        data.type = 'video.other'
+        data.twitter_card_type = 'summary_large_image'
+        data.appLinkUrl = 'movie-detail/' + videoId
+      }
     }
 
     /*** SEO - end  ***/

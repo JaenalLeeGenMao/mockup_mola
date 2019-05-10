@@ -34,8 +34,7 @@ export const handleTracker = async (data, props) => {
   const osVersion = _get(UA.getOS(), 'version', null)
   const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
   const vendor = _get(UA.getDevice(), 'vendor', null)
-  const mobile = _get(UA.getDevice(), 'mobile', null)
-  const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null
+  const device = vendor !== null ? `${vendor}` : null
 
   const browserName = _get(UA.getBrowser(), 'name', null)
   const browserVersion = _get(UA.getBrowser(), 'version', null)
@@ -68,7 +67,7 @@ export const handleTracker = async (data, props) => {
       total_duration: totalDuration,
       // currentSubscriptionId: adjustedSubs,
       hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
-      interval_beats: heartbeat ? 60 : 0,
+      interval_beats: `${heartbeat}`,
     },
     table: 'event_video_plays',
   }

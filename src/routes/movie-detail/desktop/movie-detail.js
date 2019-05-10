@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet'
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
 import { endpoints } from '@source/config'
-import Tracker from '@source/lib/tracker'
 import { updateCustomMeta } from '@source/DOMUtils'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -20,7 +19,7 @@ import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
 import { videoSettings as defaultVideoSettings } from '../const'
 
-import { handleTracker } from './tracker'
+import { handleTracker } from '../tracker'
 
 import {
   playButton,
@@ -167,7 +166,7 @@ class MovieDetail extends Component {
       clientIp,
       sessionId,
       userId: uid,
-      heartbeat,
+      heartbeat: heartbeat ? 60 : 0,
       window: window,
       currentDuration,
       totalDuration,
@@ -192,15 +191,15 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPlay = (payload = true, player) => {
-    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-
+    // window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+    // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+    this.isPlay = true
     this.setState({ toggleSuggestion: false })
   }
 
   handleVideoTimeUpdate = (payload = 0, player) => {
     const time = Math.round(payload)
-    if (time % 60 === 0) {
+    if (time % 60 === 0 && this.isPlay && !player.ads.playing) {
       if (!ticker.includes(time)) {
         ticker.push(time)
         this.handleOnTimePerMinute({ action: 'timeupdate', heartbeat: time !== 0 })
