@@ -101,6 +101,7 @@ class Header extends Component {
       profileOff = false,
       backButtonOn = false,
       shareButtonOn = false,
+      isMovie = false,
     } = this.props
 
     const color = isDark ? 'black' : 'white'

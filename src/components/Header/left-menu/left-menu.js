@@ -26,7 +26,7 @@ class LeftMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, leftMenuOff, isMenuToggled = false } = this.props
+    const { color, leftMenuOff, isMenuToggled = false, isMovie } = this.props
 
     return (
       <>
@@ -37,7 +37,7 @@ class LeftMenu extends Component {
                 <div className={styles.left_menu_outer}>
                   <div className={styles.left_menu_item_inner}>
                     <button className={styles.left_menu_button}>
-                      <a href="/switch-channels">Sport</a>
+                      <a href="/switch-channels">{isMovie ? 'Movie' : 'Sport'}</a>
                       <IoIosArrowDown className={color === 'black' ? styles.left_menu__action_dropdown : styles.left_menu__action_dropdown} size={32} />
                     </button>
                   </div>

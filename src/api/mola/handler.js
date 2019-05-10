@@ -11,6 +11,7 @@ import {
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
+  CAMPAIGN_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 
@@ -43,6 +44,34 @@ const getHomePlaylist = () => {
       }
     })
 }
+
+const getFeatureBanner = () => {
+  return get(`${CAMPAIGN_ENDPOINT}/web-featured?include=banners`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeFeatureBanner(response)
+      console.log('respnse', result)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 const getSportCategoryList = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
     ...endpoints.setting,
@@ -567,6 +596,7 @@ const getOrderHistoryTransactions = ({ uid, token }) => {
 
 export default {
   getHomePlaylist,
+  getFeatureBanner,
   getHomeVideo,
   getAllHistory,
   getSearchResult,

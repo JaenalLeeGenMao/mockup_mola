@@ -59,7 +59,7 @@ export default function sport(state = initialState, action) {
           data: result,
         },
       }
-    case types.UPDATE_ACTIVE_PLAYLIST:
+    case types.UPDATE_ACTIVE_SPORT_PLAYLIST:
       return { ...state, playlists: { ...action.payload } }
     default:
       return {
