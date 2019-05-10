@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _get from 'lodash/get'
 
-const production = process.env.NODE_ENV === 'production'
+const production = process.env.REACT_APP_ENV === 'production'
 const cookieName = production ? '_pst' : '_pst_staging'
 
 const TOKEN_ENDPOINT = production ? 'https://mola.tv/api/v2/videos/_/pubsub' : 'https://stag.mola.tv/api/v2/videos/_/pubsub'
