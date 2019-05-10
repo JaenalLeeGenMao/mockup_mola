@@ -138,8 +138,8 @@ body {
 }
 
 .home__detail_button.white {
-  background: #FFFFFF;
-  color: #2B2B2B;
+  background: #fff;
+  color: #2b2b2b;
 }
 
 .home__detail_button.white:hover {

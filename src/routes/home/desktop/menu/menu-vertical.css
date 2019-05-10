@@ -32,12 +32,14 @@
 
 .menu__dots.menu__top_active {
   /* height: 2.25rem; */
+
   /* margin-bottom: 0; */
   opacity: 1;
   width: 2rem;
   height: 2rem;
   background-color: transparent;
-  border: 3px solid #2C56FF;
+  border: 3px solid #2c56ff;
+
   /* transform: translateY(5%); */
 }
 
