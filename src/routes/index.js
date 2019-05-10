@@ -191,9 +191,7 @@ const track = async store => {
     const osVersion = _get(UA.getOS(), 'version', null)
     const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
     const vendor = _get(UA.getDevice(), 'vendor', null)
-    const mobile = _get(UA.getDevice(), 'mobile', null)
-    const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null
-
+    const device = vendor !== null ? `${vendor}` : null
     const browserName = _get(UA.getBrowser(), 'name', null)
     const browserVersion = _get(UA.getBrowser(), 'version', null)
     const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
@@ -216,20 +214,15 @@ const track = async store => {
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
         current_subscription_id: adjustedSubs,
         hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
+        utm_source: urlParams.utm_source || undefined,
+        utm_medium: urlParams.utm_medium || undefined,
+        utm_campaign: urlParams.utm_campaign || undefined,
       },
       table: 'event_pages',
     }
 
     if (user.uid) {
       payload.user_id = user.uid
-    }
-
-    const paths = pathname.split('/')
-    const lastPathIndex = paths.length - 1
-
-    if (pathname.includes('movie-detail')) {
-      payload.data.video_id = paths[lastPathIndex]
-      payload.table = 'event_videos'
     }
 
     // if (firstRender) {
@@ -244,6 +237,16 @@ const track = async store => {
     // get the token
     const token = await tracker.getOrCreateToken()
     // Post to ds-feeder if there's token && not in search page
+    if (token && !inSearchPage) tracker.sendPubSub(payload, token)
+
+    const paths = pathname.split('/')
+    const lastPathIndex = paths.length - 1
+
+    if (pathname.includes('movie-detail')) {
+      payload.data.video_id = paths[lastPathIndex]
+      payload.table = 'event_videos'
+    }
+
     if (token && !inSearchPage) tracker.sendPubSub(payload, token)
 
     // HOTFIX need to find a way to get refferer in react

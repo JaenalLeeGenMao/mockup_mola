@@ -38,7 +38,7 @@ class Html extends React.Component {
   static isMobile = true
 
   render() {
-    const { title, description, url, styles, scripts, app, children, image } = this.props
+    const { title, description, url, styles, scripts, app, children, image, twitter_card_type = 'summary', appLinkUrl = '', type = 'website' } = this.props
 
     return (
       <html className="no-js" lang="en">
@@ -57,11 +57,17 @@ class Html extends React.Component {
           <meta name="googlebot" content="index,follow" />
           <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
           <meta property="og:site_name" content="molatv" />
-          <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} />
-          <meta property="og:description" content={description} />
-          <meta property="og:image" content={image} />
-          <meta property="og:url" content={url} />
-          <meta property="og:type" content="website" />
+          <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} data-react-helmet="true" />
+          <meta property="og:description" content={description} data-react-helmet="true" />
+          <meta property="og:image" content={image} data-react-helmet="true" />
+          <meta property="og:url" content={url} data-react-helmet="true" />
+          <meta property="og:type" content={type} data-react-helmet="true" />
+
+          <meta property="twitter:title" content={title} data-react-helmet="true" />
+          <meta name="twitter:description" content={description} data-react-helmet="true" />
+          <meta name="twitter:image:src" content={image} data-react-helmet="true" />
+          <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" />
+
           <meta name="referrer" content="origin" />
           <meta name="referrer" content="origin-when-cross-origin" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
