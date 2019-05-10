@@ -582,7 +582,7 @@ app.get('*', async (req, res, next) => {
           })
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
-        data.image = response ? response[0].attributes.images.thumbnails.cover : ''
+        data.image = response ? response[0].attributes.images.cover.background.landscape : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
         data.appLinkUrl = 'movie-detail/' + videoId
