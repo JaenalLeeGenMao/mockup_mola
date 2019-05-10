@@ -19,7 +19,7 @@ import configureStore from './store/configureStore'
 import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
-import * as serviceWorker from './service-worker'
+// import * as serviceWorker from './service-worker'
 
 // import { setRuntimeVariable } from '@actions/runtime'
 // import config from '@source/config'
@@ -162,6 +162,8 @@ async function onLocationChange(location, action) {
     }
   }
 
+  window.debugError = context.store.getState().runtime.debugError
+
   // if (context.store.getState().user.sid) {
   //   const tokenExpired = context.store.getState().user.tokenExpired * 1000
   //   if (tokenExpired < Date.now()) {
@@ -203,6 +205,6 @@ if (module.hot) {
   })
 }
 
-if ('serviceWorker' in navigator) {
-  serviceWorker.register()
-}
+// if ('serviceWorker' in navigator) {
+//   serviceWorker.register()
+// }
