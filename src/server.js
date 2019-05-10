@@ -37,8 +37,10 @@ import configureStore from './store/configureStore'
 import { setRuntimeVariable } from './actions/runtime'
 // import { setUserVariable } from './actions/user';
 import config from './config'
-import Axios from 'axios'
+import { get, post } from 'axios'
 import Crypto from 'crypto.js'
+
+import Auth from '@api/auth'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -59,20 +61,20 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
 })
 
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
+app.use(
+  '/api',
+  proxy(`${config.endpoints.domain}/api/`, {
+    proxyReqPathResolver: (req, res) => {
+      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+    },
+  })
+)
 
 // app.use(
 //   '/accounts/_',
@@ -99,22 +101,36 @@ app.use(
 )
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain }, oauth: { appKey, appSecret, endpoint: oauthEndpoint } } = config
 
+const { endpoints: { domain, auth }, oauth: { appKey, appSecret }, oauthApp } = config
 // let count = 0
 // var inboxInterval;
 // set a cookie
-const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/_/v1/profile`
-const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+const OAUTH_USER_INFO_URL = `${auth}/v1/profile`
+const OAUTH_LOGOUT_URL = `${auth}/oauth2/v1/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+
+const getVUID = async deviceId => {
+  try {
+    const addDeviceURL = `https://stag.supersoccer.tv/api/v1/videos/drm/addDevice?deviceId=${deviceId}`
+    const rawResponse = await fetch(addDeviceURL, {
+      method: 'GET',
+    })
+
+    const content = await rawResponse.json()
+
+    return content.data[0].attributes.vuid
+  } catch {
+    return null
+  }
+}
 
 const extendToken = async token => {
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/token/extend`, {
+    const rawResponse = await fetch(`${auth}/v1/token/extend`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'x-app-id': xAppId,
       },
       body: JSON.stringify({
         app_key: appKey,
@@ -124,24 +140,22 @@ const extendToken = async token => {
       }),
     })
     const content = await rawResponse.json()
-    console.log('contenttt', content)
+
     return content
-  } catch (err) {
-    console.error('error extend token:', err)
-    return { error: err }
+  } catch {
+    return null
   }
 }
 
 const requestGuestToken = async res => {
-  // console.log(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`)
-  // console.log(domain)
+  console.log(`${auth}/v1/guest/token?app_key=${appKey}`)
+  console.log(domain)
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`, {
+    const rawResponse = await fetch(`${auth}/v1/guest/token?app_key=${appKey}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'x-app-id': xAppId,
         Origin: domain,
         Referer: domain,
       },
@@ -162,8 +176,7 @@ const requestGuestToken = async res => {
 
     const content = await rawResponse.json()
     return content
-  } catch (err) {
-    console.error('error guest token:', err)
+  } catch {
     return null
   }
 }
@@ -180,15 +193,14 @@ const getUserInfo = async sid => {
 
     const content = await rawResponse.json()
     return content.data
-  } catch (err) {
-    console.error('error get user info:', err)
-    return { error: err }
+  } catch {
+    return null
   }
 }
 
 const getUserSubscription = async (userId, accessToken) => {
   try {
-    const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
+    const rawResponse = await fetch(`${domain}/api/v2/subscriptions/users/${userId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -196,10 +208,10 @@ const getUserSubscription = async (userId, accessToken) => {
     })
 
     const content = await rawResponse.json()
+
     return content
-  } catch (err) {
-    console.error('error user subscription:', err)
-    return { error: err }
+  } catch {
+    return null
   }
 }
 
@@ -249,7 +261,7 @@ const requestCode = async (req, res) => {
     state: randomState,
   })
 
-  const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
+  const oAuthAuthorizationEndpoint = `${auth}/oauth2/v1/authorize?${qs}`
 
   return oAuthAuthorizationEndpoint
 }
@@ -264,19 +276,35 @@ app.use('*', async (req, res, next) => {
       maxAge: 7 * 24 * 3600 * 1000,
       httpOnly: true,
     })
+    const uid = jwt.decode(cookie.SID).uid
+    const vuid = await getVUID(uid)
+    if (vuid) {
+      res.cookie('VUID', vuid, {
+        path: '/',
+        httpOnly: true,
+      })
+    }
   }
   if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
     const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
+    const vuid = await getVUID(deviceId)
     res.cookie('__deviceId', deviceId, {
       path: '/',
       maxAge: 30 * 24 * 3600 * 1000,
       httpOnly: true,
     })
+    if (vuid) {
+      res.cookie('VUID', vuid, {
+        path: '/',
+        httpOnly: true,
+      })
+    }
   }
   next() // <-- important!
 })
 
 app.get('/oauth/callback', async (req, res) => {
+  // console.log(`AAAAAAA ${oauthEndpoint}/token`);
   const code = req.query.code
   const state = req.query.state
   const storedState = req.cookies.wstate
@@ -287,7 +315,7 @@ app.get('/oauth/callback', async (req, res) => {
       request.post(
         {
           ...config.endpoints.setting,
-          url: `${oauthEndpoint}/token`,
+          url: `${auth}/oauth2/v1/token`,
           headers: {
             Cookie: `SID=${sid}`,
           },
@@ -300,16 +328,18 @@ app.get('/oauth/callback', async (req, res) => {
           },
         },
         (error, response, body) => {
+          // console.log('BODY'.body)
           if (error || response.statusCode !== 200) {
-            console.error(error, response.statusCode, body)
-            return reject({ error, statusCode: response.statusCode, body })
+            // console.error(error, response.statusCode, body);
+          } else {
+            res.cookie('_at', body.access_token, {
+              maxAge: body.expires_in * 1000,
+              httpOnly: true,
+              // secure: !__DEV__,
+            })
+
+            resolve()
           }
-          res.cookie('_at', body.access_token, {
-            maxAge: body.expires_in * 1000,
-            httpOnly: true,
-            // secure: !__DEV__,
-          })
-          return resolve()
         }
       )
     })
@@ -374,9 +404,7 @@ app.get('*', async (req, res, next) => {
       }
     }
 
-    var guestToken = '',
-      errorToken = '',
-      errorGtoken = ''
+    var guestToken = ''
     const accessToken = req.cookies._at
     const idToken = req.cookies.SID
     if (idToken) {
@@ -392,6 +420,7 @@ app.get('*', async (req, res, next) => {
       if (decodedIdToken && decodedIdToken.exp) {
         idTokenLifespan = decodedIdToken.exp - Date.now() / 1000
       }
+
       // // if lifespan of token is less than 12 hours then get new access token
       if (decodedAccessToken || decodedIdToken) {
         if (decodedAccessToken && decodedIdToken) {
@@ -399,11 +428,24 @@ app.get('*', async (req, res, next) => {
             // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
+            // const rawResponse = await fetch(
+            //   `${config.endpoints.auth}/v1/token/extend`,
+            //   {
+            //     method: 'POST',
+            //     headers: {
+            //       Accept: 'application/json',
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //       app_key: appKey,
+            //       app_secret: appSecret,
+            //       access_token: accessToken,
+            //       expires_in: 3 * 86400
+            //     })
+            //   }
+            // );
+            // const content = await rawResponse.json();
             const content = await extendToken(accessToken)
-            if (content.error) {
-              errorToken = content.error
-              content = null
-            }
             if (content && content.access_token) {
               res.cookie('_at', content.access_token, {
                 maxAge: content.expires_in * 1000,
@@ -425,10 +467,7 @@ app.get('*', async (req, res, next) => {
         guestToken = req.cookies._gt
       } else {
         const content = await requestGuestToken(res)
-        if (content.error) {
-          errorGtoken = content.error
-          content = null
-        }
+        console.log('content', content)
         if (content && content.data) {
           guestToken = content.data.access_token
           res.cookie('_gt', content.data.access_token, {
@@ -453,10 +492,6 @@ app.get('*', async (req, res, next) => {
 
       if (guestTokenLifespan < 12 * 3600) {
         const content = await extendToken(guestToken)
-        if (content.error) {
-          errorToken = content.error
-          content = null
-        }
         if (content && content.access_token) {
           res.cookie('_gt', content.access_token, {
             maxAge: content.expires_in * 1000,
@@ -471,19 +506,10 @@ app.get('*', async (req, res, next) => {
     const expToken = req.cookies._at ? jwt.decode(req.cookies._at).exp : ''
     const expGToken = guestToken ? jwt.decode(guestToken).exp : ''
 
-    let userInfo, userSubs, userSubsError, userInfoError
+    let userInfo, userSubs
     if (req.cookies._at) {
       userInfo = await getUserInfo(req.cookies.SID)
       userSubs = await getUserSubscription(uid, req.cookies._at)
-      if (userSubs.error) {
-        userSubsError = userSubs.error
-        userSubs = null
-      }
-
-      if (userInfo.error) {
-        userInfoError = userInfo.error
-        userInfo = null
-      }
     }
 
     const initialState = {
@@ -510,14 +536,8 @@ app.get('*', async (req, res, next) => {
         gt: guestToken,
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
-        // vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
+        vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
         deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
-        debugError: {
-          subs: userSubsError,
-          userInfo: userInfoError,
-          token: errorToken,
-          gtoken: errorGtoken,
-        },
       },
     }
 
@@ -559,37 +579,6 @@ app.get('*', async (req, res, next) => {
     }
 
     const data = { ...route }
-
-    const pathSplit = req.path.split('/')
-    const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
-    /*** SEO - start  ***/
-    if (firstPath === 'movie-detail') {
-      const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
-      if (videoId) {
-        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id${appId}`, {
-          timeout: 5000,
-          maxRedirects: 1,
-          // headers: {
-          //   'x-url': config.endpoints.xurl
-          // }
-        })
-          .then(({ data }) => {
-            return data.data
-          })
-          .catch(err => {
-            console.log('Error SEO movies', err)
-            return null
-          })
-        data.title = response ? response[0].attributes.title : ''
-        data.description = response ? response[0].attributes.description : ''
-        data.image = response ? response[0].attributes.images.cover.background.landscape : ''
-        data.type = 'video.other'
-        data.twitter_card_type = 'summary_large_image'
-        data.appLinkUrl = 'movie-detail/' + videoId
-      }
-    }
-
-    /*** SEO - end  ***/
 
     data.children = renderStylesToString(
       ReactDOM.renderToString(

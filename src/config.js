@@ -6,7 +6,6 @@ const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production'
 // const env = 'development'
 
 const oauth = {
-  endpoint: env === 'staging' ? 'https://stag.supersoccer.tv/accounts/_/oauth2/v1' : 'https://supersoccer.tv/accounts/_/oauth2/v1',
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   scope: [
@@ -19,14 +18,6 @@ const oauth = {
     'paymentmethods:read.internal',
     'payments:payment.dopay',
   ].join(' '),
-}
-
-const serverApi = {
-  VIDEO_API_URL: process.env.videoApiUrl || 'https://stag.mola.tv/api/v2/videos',
-  AUTH_API_URL: process.env.authApiUrl || 'https://stag.mola.tv/accounts',
-  SUBSCRIPTION_API_URL: process.env.subscriptionApiUrl || 'https://stag.mola.tv/api/v2/subscriptions',
-  appId: 'molatv',
-  xAppId: 2,
 }
 
 const oauthApp = {
@@ -56,7 +47,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: 'https://stag.mola.tv/api/v2',
+      api: '/api/v2',
       auth: '/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
@@ -73,7 +64,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
       api: 'https://stag.mola.tv/api/v2',
-      auth: 'https://stag.mola.tv/accounts',
+      auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
@@ -89,7 +80,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://mola.tv',
       api: 'https://mola.tv/api/v2',
-      auth: 'https://mola.tv/accounts',
+      auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
@@ -110,7 +101,6 @@ const config = baseConfig.default[env]
 module.exports = {
   // Node.js app
   ...config,
-  serverApi,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
   port: process.env.PORT || 3000,
   oauth,
