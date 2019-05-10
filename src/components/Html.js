@@ -49,9 +49,9 @@ class Html extends React.Component {
           <meta name="apple-mobile-web-app-status-bar-style" content="#0f4a73" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="keywords" content={`Mola, MolaTV, MolaSport, TV, Sport, Premiere League, ${description}`} />
-          <meta name="description" content={`Mola TV Online Movies & Mola Sport Showcase 380 Matches Every Seasons Under MolaSports Brand. ${description}`} />
-          <title>{`Mola TV - ${title}`}</title>
+          <meta name="keywords" data-react-helmet="true" content={`Mola, MolaTV, MolaSport, TV, Sport, Premiere League, ${description}`} />
+          <meta name="description" data-react-helmet="true" content={`Mola TV Online Movies & Mola Sport Showcase 380 Matches Every Seasons Under MolaSports Brand. ${description}`} />
+          <title data-react-helmet="true">{`Mola TV - ${title}`}</title>
           <meta name="msapplication-TileImage" content={logoLandscapeBlue} />
           <meta name="robots" content="index, follow" />
           <meta name="googlebot" content="index,follow" />
@@ -75,7 +75,7 @@ class Html extends React.Component {
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />
-          <link rel="canonical" href="https://www.mola.tv" />
+          {type != 'video.other' && <link rel="canonical" href="https://www.mola.tv" />}
           {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
         </head>
         <body>
