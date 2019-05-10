@@ -51,7 +51,6 @@ const getFeatureBanner = () => {
   })
     .then(response => {
       const result = utils.normalizeFeatureBanner(response)
-      console.log('respnse', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',

@@ -61,7 +61,7 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-// app.set('trust proxy', config.trustProxy)
+app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')

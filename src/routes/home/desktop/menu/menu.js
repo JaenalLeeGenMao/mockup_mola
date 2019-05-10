@@ -18,7 +18,6 @@ const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', o
               index === activeIndex + 1 ? styles.menu__bot_active : ''
             }`}
             onClick={e => {
-              console.log('index', index, 'active', activeIndex)
               if (type === 'horizontal') {
                 const node = e.target
                 if (index === activeIndex) {

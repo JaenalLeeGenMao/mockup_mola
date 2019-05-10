@@ -100,7 +100,6 @@ class Search extends React.Component {
   componentDidMount() {
     /** handle keyboard pressed */
     document.onkeyup = event => {
-      console.log(event.keyCode)
       switch (event.which || event.keyCode) {
         case 13 /* enter */:
           this.inputSearch.focus()

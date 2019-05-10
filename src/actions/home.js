@@ -78,7 +78,6 @@ const getHomeVideo = playlist => dispatch => {
 }
 
 const updateActivePlaylist = id => (dispatch, getState) => {
-  console.log('MSUK UPDATE')
   const store = getState(),
     { home: { playlists: { meta, data: playlistsData } } } = store,
     data = playlistsData.map(playlist => {

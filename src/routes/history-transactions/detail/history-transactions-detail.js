@@ -47,7 +47,7 @@ class HistoryTransactionsDetail extends Component {
   componentDidUpdate() {
     // console(this.state.data.data)
     // console.log(this.state.response.data.data.data.attributes.paymentMethod)
-    console.log(this.state.data)
+    // console.log(this.state.data)
   }
 
   render() {

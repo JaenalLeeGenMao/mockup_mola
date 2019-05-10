@@ -131,7 +131,7 @@ class Profile extends React.Component {
 
   onChangeSelect = selectedOption => {
     this.setState({ [selectedOption.id]: selectedOption.value })
-    console.log('Option selected:', selectedOption)
+    // console.log('Option selected:', selectedOption)
   }
 
   getGenderText = gender => {
@@ -146,7 +146,7 @@ class Profile extends React.Component {
   }
 
   updateProgress = evt => {
-    console.log('updateProgress', evt)
+    // console.log('updateProgress', evt)
     // const progress = document.querySelector('#percentage')
     // progress.textContent = '0%'
     // console.log(progress)
@@ -180,7 +180,7 @@ class Profile extends React.Component {
       reader.onload = (function(theFile) {
         // console.log('onload', theFile)
         return function(e) {
-          console.log(e)
+          // console.log(e)
           const postFiles = Uploader.uploadImage(theFile)
           postFiles.then(response => {
             const { path, success, token } = response.data
