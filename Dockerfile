@@ -12,6 +12,7 @@ RUN yarn install --no-progress --production=false
 # Consume required ENVs
 ARG REACT_APP_ENV
 ARG NODE_ENV
+ARG CDN_PATH
 # Build!
 COPY . .
 RUN node_modules/.bin/babel-node tools/run build -- --release --docker
