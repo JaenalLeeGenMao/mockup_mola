@@ -4,7 +4,7 @@ import _get from 'lodash/get'
 const production = process.env.NODE_ENV === 'production'
 const cookieName = production ? '_pst' : '_pst_staging'
 
-const TOKEN_ENDPOINT = production ? 'https://stag.mola.tv/api/v2/videos/_/pubsub' : 'https://mola.tv/api/v2/videos/_/pubsub'
+const TOKEN_ENDPOINT = production ? 'https://mola.tv/api/v2/videos/_/pubsub' : 'https://stag.mola.tv/api/v2/videos/_/pubsub'
 
 const PUBSUB_ENDPOINT = production
   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
