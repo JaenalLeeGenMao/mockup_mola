@@ -167,8 +167,8 @@ class MovieDetail extends Component {
       sessionId,
       heartbeat: heartbeat ? 60 : 0,
       window: window,
-      currentDuration,
-      totalDuration,
+      // currentDuration,
+      // totalDuration,
     }
 
     if (uid) {
