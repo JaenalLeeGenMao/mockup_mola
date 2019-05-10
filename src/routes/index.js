@@ -169,15 +169,12 @@ const track = async store => {
     // Parse Current URL
     const { search, pathname } = window.location
     const urlParams = queryString.parse(search)
-
     // Get & Parse UA
     const UA = new UaParser()
     UA.setUA(navigator.userAgent)
 
     // Try get user_id & subs
-    const users = _get(store.getState(), 'data.users', {})
-
-    let userId
+    const user = store.getState().user
 
     let adjustedSubs = []
     // if (userId !== null || userId !== undefined) {
@@ -210,18 +207,21 @@ const track = async store => {
         path: `${window.location.host}${location.pathname}${location.search}`,
         session_id: tracker.sessionId(), // Try get+set session_id
         page_content: document.title || null,
-        ip: _get(store.getState(), 'runtime.clientIp', null),
+        ip: user.clientIp,
         platform,
         os,
         device,
         app: browser,
         client: 'mola-web',
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
-        user_id: userId,
         current_subscription_id: adjustedSubs,
         hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
       },
       table: 'event_pages',
+    }
+
+    if (user.uid) {
+      payload.user_id = user.uid
     }
 
     const paths = pathname.split('/')

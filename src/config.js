@@ -6,6 +6,7 @@ const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production'
 // const env = 'development'
 
 const oauth = {
+  endpoint: env === 'staging' ? 'https://stag.supersoccer.tv/accounts/_/oauth2/v1' : 'https://supersoccer.tv/accounts/_/oauth2/v1',
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   scope: [
@@ -47,7 +48,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: '/api/v2',
+      api: 'https://stag.mola.tv/api/v2',
       auth: '/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
@@ -64,7 +65,9 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
       api: '/api/v2',
+      apiInternal: 'http://10.220.0.148/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
+      authInternal: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
@@ -80,7 +83,9 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://mola.tv',
       api: 'https://mola.tv/api/v2',
+      apiInternal: 'https://mola.tv/api/v2',
       auth: 'https://mola.tv/accounts/_',
+      authInternal: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
