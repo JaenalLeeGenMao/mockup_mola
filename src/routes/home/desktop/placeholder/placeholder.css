@@ -14,42 +14,58 @@
   margin: 0 auto;
 }
 
+.placeholder__title {
+  position: fixed;
+  top: 0;
+  width: 50vw;
+  margin: 10% 40% 15% 12.5%;
+  display: inline-block;
+}
+
+.placeholder__title .placeholder__line {
+  display: block;
+  width: 30%;
+  height: 2rem;
+}
+
 .placeholder__detail {
   position: fixed;
-  bottom: 0;
+  top: 40%;
   width: 50vw;
-  margin: 10% 40% 15% 10%;
+  margin-left: 12.5%;
   display: inline-block;
 }
 
 .placeholder__detail div:nth-child(1) {
-  display: inline-block;
-  width: 28%;
+  display: block;
+  width: 60%;
   height: 4.6rem;
 }
 
 .placeholder__detail div:nth-child(2) {
-  display: inline-block;
+  display: block;
   width: 32%;
-  height: 4.6rem;
+  height: 2rem;
+  margin-top: 5rem;
 }
 
 .placeholder__detail div:nth-child(3) {
-  display: inline-block;
-  width: 11%;
-  height: 4.6rem;
+  display: block;
+  width: 60%;
+  height: 73.6px;
+  height: 2rem;
 }
 
 .placeholder__detail div:nth-child(4) {
-  display: inline-block;
-  width: 28%;
-  height: 4.6rem;
+  display: block;
+  width: 45%;
+  height: 2rem;
 }
 
 .placeholder__detail div:nth-child(5) {
-  display: inline-block;
-  width: 8%;
-  height: 4.6rem;
+  display: block;
+  width: 25%;
+  height: 2rem;
 }
 
 .placeholder__detail div:nth-child(6) {
@@ -122,22 +138,14 @@
 .placeholder__footer {
   position: fixed;
   width: 100%;
-  padding: 2.5%;
+  padding: 4.5% 12.5%;
 }
 
-.placeholder__footer > div:nth-child(1) {
-  display: inline-block;
-  text-align: left;
-  width: 5vh;
-  height: 5vh;
-}
-
-.placeholder__footer > div:nth-child(2) {
+.placeholder__footer > div {
   display: inline-block;
   text-align: right;
   width: 10%;
-  height: 1rem;
-  border-radius: 5rem;
+  height: 1.5rem;
   transform: translateY(-1rem);
 }
 
@@ -163,7 +171,7 @@
 
 .placeholder__line {
   height: 1.2rem;
-  margin: 0.5rem;
+  margin: 1rem 0;
   animation: pulse 2s infinite ease-in-out;
 }
 
@@ -177,8 +185,8 @@
 }
 
 .placeholder__dot {
-  height: 0.7rem;
-  width: 0.7rem;
+  height: 1rem;
+  width: 1rem;
   margin: 0.5rem 5rem;
   border-radius: 5rem;
   animation: pulse 2s infinite ease-in-out;

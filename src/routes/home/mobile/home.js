@@ -378,7 +378,7 @@ class Home extends Component {
     let filteredQuote = ''
     if (activeSlide) {
       filteredDesc = activeSlide.description
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
     }
 
     return (
@@ -434,13 +434,6 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} className="tourCategory" />
                 </div>
-                <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                  <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
-                    <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
-                    <p style={{ color: '#fff', fontSize: '8px', textAlign: 'center', textTransform: 'capitalize', lineHeight: '14px' }}>View All</p>
-                  </Link>
-                  <p className={`${styles.header__library_text} ${0 ? styles.black : styles.white}`}>film {activePlaylist.title} lain</p>
-                </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                     <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
@@ -448,7 +441,10 @@ class Home extends Component {
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                    <Link
+                      to={`${activeSlide.link ? activeSlide.link : '/movie-detail/' + activeSlide.id}`}
+                      className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}
+                    >
                       <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                     </Link>
                   </LazyLoad>

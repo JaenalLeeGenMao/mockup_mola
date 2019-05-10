@@ -407,6 +407,32 @@ const normalizeMovieLibraryList = response => {
   }
 }
 
+const normalizeFeatureBanner = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    const result = data.map(({ attributes: { banners } }) =>
+      banners.map(banner => {
+        const { id, type, attributes: { name, description, imageUrl, buttonText, link } } = banner
+
+        return {
+          id,
+          type,
+          title: name,
+          description,
+          background: {
+            landscape: imageUrl,
+            portrait: imageUrl,
+          },
+          buttonText,
+          link,
+        }
+      })
+    )
+    return result
+  }
+  return []
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
@@ -419,4 +445,5 @@ export default {
   normalizeMovieLibraryList,
   normalizeSportCategoryList,
   normalizeSportVideo,
+  normalizeFeatureBanner,
 }
