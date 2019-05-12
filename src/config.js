@@ -29,6 +29,8 @@ const serverApi = {
   xAppId: 2,
 }
 
+console.log('process.env', process.env)
+
 const oauthApp = {
   appKey: 'LDZJgphCc7',
   appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
