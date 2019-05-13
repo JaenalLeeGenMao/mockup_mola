@@ -327,6 +327,7 @@ class MovieDetail extends Component {
         ...defaultVideoSettings,
         adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
         adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
+        // skipVideoAdsOffset: 1
       }
     }
 

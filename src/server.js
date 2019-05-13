@@ -405,7 +405,7 @@ app.get('*', async (req, res, next) => {
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
             let content = await extendToken(accessToken)
-            if (content.error) {
+            if (content && content.error) {
               errorToken = content.error
               content = null
             }
@@ -430,7 +430,7 @@ app.get('*', async (req, res, next) => {
         guestToken = req.cookies._gt
       } else {
         let content = await requestGuestToken(res)
-        if (content.error) {
+        if (content && content.error) {
           errorGtoken = content.error
           content = null
         }
@@ -458,7 +458,7 @@ app.get('*', async (req, res, next) => {
 
       if (guestTokenLifespan < 12 * 3600) {
         let content = await extendToken(guestToken)
-        if (content.error) {
+        if (content && content.error) {
           errorToken = content.error
           content = null
         }
