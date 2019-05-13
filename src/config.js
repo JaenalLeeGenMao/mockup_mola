@@ -22,9 +22,9 @@ const oauth = {
 }
 
 const serverApi = {
-  VIDEO_API_URL: process.env.videoApiUrl || 'https://stag.mola.tv/api/v2/videos',
-  AUTH_API_URL: process.env.authApiUrl || 'https://stag.mola.tv/accounts',
-  SUBSCRIPTION_API_URL: process.env.subscriptionApiUrl || 'https://stag.mola.tv/api/v2/subscriptions',
+  VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://10.0.3.10', //'https://stag.mola.tv/api/v2/videos',
+  AUTH_API_URL: env === 'staging' ? 'http://accounts-api.global' : 'http://10.0.6.5', //'https://stag.mola.tv/accounts',
+  SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://10.0.3.26', //'https://stag.mola.tv/api/v2/subscriptions',
   appId: 'molatv',
   xAppId: 2,
 }
