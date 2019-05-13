@@ -37,12 +37,15 @@ class LeftMenu extends Component {
                 <div className={styles.left_menu_outer}>
                   <div className={styles.left_menu_item_inner}>
                     <button className={styles.left_menu_button}>
-                      <a href="/switch-channels">{isMovie ? 'Movie' : 'Sport'}</a>
-                      <IoIosArrowDown className={color === 'black' ? styles.left_menu__action_dropdown : styles.left_menu__action_dropdown} size={32} />
+                      {/*comment sementara <a href="/switch-channels">{isMovie ? 'Movie' : 'Sport'}</a> */}
+                      <a href="/">Movie</a>
+                      {/* <IoIosArrowDown className={color === 'black' ? styles.left_menu__action_dropdown : styles.left_menu__action_dropdown} size={32} /> */}
                     </button>
                   </div>
-                  <div className={styles.left_menu_lib}>Library</div>
-                  <div className={styles.left_menu_guide}>Guide</div>
+                  <a href="/movie-library" className={styles.left_menu_lib}>
+                    Library
+                  </a>
+                  {/*comment sementara <div className={styles.left_menu_guide}>Guide</div> */}
                 </div>
                 {/* <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} /> */}
               </LazyLoad>

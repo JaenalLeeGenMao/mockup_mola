@@ -45,8 +45,8 @@ const getHomePlaylist = () => {
     })
 }
 
-const getFeatureBanner = () => {
-  return get(`${CAMPAIGN_ENDPOINT}/web-featured?include=banners`, {
+const getFeatureBanner = (isMobile = false) => {
+  return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
     ...endpoints.setting,
   })
     .then(response => {

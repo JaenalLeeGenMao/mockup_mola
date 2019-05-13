@@ -13,10 +13,12 @@ const HomeMenu = ({ className = '', playlists, activeIndex = 0, isDark = 0, type
       {playlists.map(({ id }, index) => (
         <div
           key={id}
-          className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${index === activeIndex ? styles.menu__top_active : ''} ${index === activeIndex + 1 ? styles.menu__bot_active : ''}`}
+          className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${index === activeIndex ? styles.menu__top_active : ''} ${
+            type == 'horizontal' && index === activeIndex + 1 ? styles.menu__bot_active : ''
+          }`}
         />
       ))}
-      <div className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${activeIndex + 1 === playlists.length ? styles.menu__bot_active : ''}`} />
+      {type == 'horizontal' && <div className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${activeIndex + 1 === playlists.length ? styles.menu__bot_active : ''}`} />}
     </LazyLoad>
   )
 }
