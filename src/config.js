@@ -6,7 +6,7 @@ const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production'
 // const env = 'development'
 
 const oauth = {
-  endpoint: env === 'staging' ? 'https://stag.supersoccer.tv/accounts/_/oauth2/v1' : 'https://supersoccer.tv/accounts/_/oauth2/v1',
+  endpoint: env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   scope: [
