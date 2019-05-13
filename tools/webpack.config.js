@@ -67,7 +67,7 @@ const minimizeCssOptions = {
 // Common configuration chunk to be used for both
 // client-side (client.js) and server-side (server.js) bundles
 // -----------------------------------------------------------------------------
-
+const CDN_PATH = process.env.CDN_PATH || ''
 const config = {
   context: ROOT_DIR,
 
@@ -78,7 +78,7 @@ const config = {
 
   output: {
     path: resolvePath(BUILD_DIR, 'public/assets'),
-    publicPath: '/assets/',
+    publicPath: `${CDN_PATH}/assets/`,
     pathinfo: isVerbose,
     filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
     chunkFilename: isDebug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
@@ -499,6 +499,7 @@ const serverConfig = {
       'process.env': {
         BROWSER: false,
         REACT_APP_ENV: JSON.stringify(process.env.REACT_APP_ENV),
+        CDN_PATH: JSON.stringify(process.env.CDN_PATH),
       },
       __DEV__: isDebug,
     }),
