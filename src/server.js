@@ -480,12 +480,12 @@ app.get('*', async (req, res, next) => {
     if (req.cookies._at) {
       userInfo = await getUserInfo(req.cookies.SID)
       userSubs = await getUserSubscription(uid, req.cookies._at)
-      if (userSubs.error) {
+      if (userSubs && userSubs.error) {
         userSubsError = userSubs.error
         userSubs = null
       }
 
-      if (userInfo.error) {
+      if (userInfo && userInfo.error) {
         userInfoError = userInfo.error
         userInfo = null
       }
