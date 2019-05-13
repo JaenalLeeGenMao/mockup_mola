@@ -6,7 +6,7 @@ const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production'
 // const env = 'development'
 
 const oauth = {
-  endpoint: env === 'staging' ? 'https://stag.supersoccer.tv/accounts/_/oauth2/v1' : 'https://supersoccer.tv/accounts/_/oauth2/v1',
+  endpoint: env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   scope: [
@@ -22,9 +22,9 @@ const oauth = {
 }
 
 const serverApi = {
-  VIDEO_API_URL: process.env.videoApiUrl || 'https://stag.mola.tv/api/v2/videos',
-  AUTH_API_URL: process.env.authApiUrl || 'https://stag.mola.tv/accounts',
-  SUBSCRIPTION_API_URL: process.env.subscriptionApiUrl || 'https://stag.mola.tv/api/v2/subscriptions',
+  VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://10.0.3.10', //'https://stag.mola.tv/api/v2/videos',
+  AUTH_API_URL: env === 'staging' ? 'http://accounts-api.global' : 'http://10.0.6.5', //'https://stag.mola.tv/accounts',
+  SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://10.0.3.26', //'https://stag.mola.tv/api/v2/subscriptions',
   appId: 'molatv',
   xAppId: 2,
 }
@@ -73,7 +73,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
       api: 'https://stag.mola.tv/api/v2',
-      auth: 'https://stag.mola.tv/accounts',
+      auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
@@ -89,7 +89,7 @@ const options = {
       clientUrl: '',
       serverUrl: 'https://mola.tv',
       api: 'https://mola.tv/api/v2',
-      auth: 'https://mola.tv/accounts',
+      auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',

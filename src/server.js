@@ -104,13 +104,14 @@ const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, x
 // let count = 0
 // var inboxInterval;
 // set a cookie
-const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/_/v1/profile`
+const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
 const extendToken = async token => {
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/token/extend`, {
+    const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {
       method: 'POST',
+      timeout: 5000,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -133,11 +134,12 @@ const extendToken = async token => {
 }
 
 const requestGuestToken = async res => {
-  // console.log(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`)
+  // console.log(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`)
   // console.log(domain)
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`, {
+    const rawResponse = await fetch(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`, {
       method: 'GET',
+      timeout: 5000,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -172,6 +174,7 @@ const getUserInfo = async sid => {
   try {
     const rawResponse = await fetch(OAUTH_USER_INFO_URL, {
       method: 'GET',
+      timeout: 5000,
       headers: {
         Cookie: `SID=${sid}`,
         'Content-Type': 'application/json',
@@ -190,6 +193,7 @@ const getUserSubscription = async (userId, accessToken) => {
   try {
     const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
       method: 'GET',
+      timeout: 5000,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -288,6 +292,7 @@ app.get('/oauth/callback', async (req, res) => {
         {
           ...config.endpoints.setting,
           url: `${oauthEndpoint}/token`,
+          timeout: 5000,
           headers: {
             Cookie: `SID=${sid}`,
           },
@@ -399,8 +404,8 @@ app.get('*', async (req, res, next) => {
             // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
-            const content = await extendToken(accessToken)
-            if (content.error) {
+            let content = await extendToken(accessToken)
+            if (content && content.error) {
               errorToken = content.error
               content = null
             }
@@ -424,8 +429,8 @@ app.get('*', async (req, res, next) => {
       if (req.cookies._gt) {
         guestToken = req.cookies._gt
       } else {
-        const content = await requestGuestToken(res)
-        if (content.error) {
+        let content = await requestGuestToken(res)
+        if (content && content.error) {
           errorGtoken = content.error
           content = null
         }
@@ -452,8 +457,8 @@ app.get('*', async (req, res, next) => {
       }
 
       if (guestTokenLifespan < 12 * 3600) {
-        const content = await extendToken(guestToken)
-        if (content.error) {
+        let content = await extendToken(guestToken)
+        if (content && content.error) {
           errorToken = content.error
           content = null
         }
@@ -475,12 +480,12 @@ app.get('*', async (req, res, next) => {
     if (req.cookies._at) {
       userInfo = await getUserInfo(req.cookies.SID)
       userSubs = await getUserSubscription(uid, req.cookies._at)
-      if (userSubs.error) {
+      if (userSubs && userSubs.error) {
         userSubsError = userSubs.error
         userSubs = null
       }
 
-      if (userInfo.error) {
+      if (userInfo && userInfo.error) {
         userInfoError = userInfo.error
         userInfo = null
       }
