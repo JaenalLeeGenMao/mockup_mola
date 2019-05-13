@@ -24,6 +24,11 @@
   font-weight: 500;
 }
 
+.left__menu a:hover {
+  color: white;
+  font-weight: bold;
+}
+
 .left__menu_icon_wrapper {
   width: 2.8rem;
   height: 2.8rem;
@@ -76,9 +81,17 @@
 
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
+  .left__menu {
+    left: 81px;
+  }
+
+  .left_menu_item_inner {
+    width: 18%;
+  }
+
   .left_menu_lib {
-    color: #808080;
-    font-size: 1rem;
+    color: #b5b5b5;
+    font-size: 12px;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     width: 25%;
@@ -87,8 +100,8 @@
   }
 
   .left_menu_guide {
-    color: #808080;
-    font-size: 1rem;
+    color: #b5b5b5;
+    font-size: 12px;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     width: 25%;
@@ -107,7 +120,7 @@
   }
 
   .left_menu_button {
-    font-size: 1rem;
+    font-size: 12px;
     background: none;
     font-weight: none;
     text-transform: uppercase;

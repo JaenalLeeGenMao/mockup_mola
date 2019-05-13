@@ -427,14 +427,12 @@ class Home extends Component {
       }
       if (index || index === 0) {
         sliderRefs[index].slickGoTo(0)
-        if (index != that.state.scrollIndex) {
-          that.setState({
-            scrollIndex: index,
-            swipeIndex,
-            activeSlide: videos.data[index].data[swipeIndex],
-            activeSlideDots: videos.data[index].data,
-          })
-        }
+        that.setState({
+          scrollIndex: index,
+          swipeIndex,
+          activeSlide: videos.data[index].data[swipeIndex],
+          activeSlideDots: videos.data[index].data,
+        })
       }
 
       /* Auto Focus on page loaded, to enable keypress eventListener */
@@ -511,7 +509,7 @@ class Home extends Component {
     }
     return (
       <Fragment>
-        <Joyride
+        {/* <Joyride
           disableOverlayClose={true}
           stepIndex={stepIndex}
           continuous
@@ -521,7 +519,7 @@ class Home extends Component {
           styles={customTourStyle}
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        />
+        /> */}
 
         <div>
           {playlistStatus !== 'error' && <Header libraryOff isMovie className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
