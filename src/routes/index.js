@@ -169,15 +169,12 @@ const track = async store => {
     // Parse Current URL
     const { search, pathname } = window.location
     const urlParams = queryString.parse(search)
-
     // Get & Parse UA
     const UA = new UaParser()
     UA.setUA(navigator.userAgent)
 
     // Try get user_id & subs
-    const users = _get(store.getState(), 'data.users', {})
-
-    let userId
+    const user = store.getState().user
 
     let adjustedSubs = []
     // if (userId !== null || userId !== undefined) {
@@ -194,9 +191,7 @@ const track = async store => {
     const osVersion = _get(UA.getOS(), 'version', null)
     const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
     const vendor = _get(UA.getDevice(), 'vendor', null)
-    const mobile = _get(UA.getDevice(), 'mobile', null)
-    const device = vendor !== null && mobile !== null ? `${vendor} ${mobile}` : null
-
+    const device = vendor !== null ? `${vendor}` : null
     const browserName = _get(UA.getBrowser(), 'name', null)
     const browserVersion = _get(UA.getBrowser(), 'version', null)
     const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
@@ -210,26 +205,24 @@ const track = async store => {
         path: `${window.location.host}${location.pathname}${location.search}`,
         session_id: tracker.sessionId(), // Try get+set session_id
         page_content: document.title || null,
-        ip: _get(store.getState(), 'runtime.clientIp', null),
+        ip: user.clientIp,
         platform,
         os,
         device,
         app: browser,
         client: 'mola-web',
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
-        user_id: userId,
         current_subscription_id: adjustedSubs,
         hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
+        utm_source: urlParams.utm_source || undefined,
+        utm_medium: urlParams.utm_medium || undefined,
+        utm_campaign: urlParams.utm_campaign || undefined,
       },
       table: 'event_pages',
     }
 
-    const paths = pathname.split('/')
-    const lastPathIndex = paths.length - 1
-
-    if (pathname.includes('movie-detail')) {
-      payload.data.video_id = paths[lastPathIndex]
-      payload.table = 'event_videos'
+    if (user.uid) {
+      payload.data.user_id = user.uid
     }
 
     // if (firstRender) {
@@ -244,6 +237,16 @@ const track = async store => {
     // get the token
     const token = await tracker.getOrCreateToken()
     // Post to ds-feeder if there's token && not in search page
+    if (token && !inSearchPage) tracker.sendPubSub(payload, token)
+
+    const paths = pathname.split('/')
+    const lastPathIndex = paths.length - 1
+
+    if (pathname.includes('movie-detail')) {
+      payload.data.video_id = paths[lastPathIndex]
+      payload.table = 'event_videos'
+    }
+
     if (token && !inSearchPage) tracker.sendPubSub(payload, token)
 
     // HOTFIX need to find a way to get refferer in react
