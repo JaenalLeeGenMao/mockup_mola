@@ -116,12 +116,12 @@ const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, x
 // let count = 0
 // var inboxInterval;
 // set a cookie
-const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/_/v1/profile`
+const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
 const extendToken = async token => {
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/token/extend`, {
+    const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -145,10 +145,10 @@ const extendToken = async token => {
 }
 
 const requestGuestToken = async res => {
-  // console.log(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`)
+  // console.log(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`)
   // console.log(domain)
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/_/v1/guest/token?app_key=${appKey}`, {
+    const rawResponse = await fetch(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -411,7 +411,7 @@ app.get('*', async (req, res, next) => {
             // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
-            const content = await extendToken(accessToken)
+            let content = await extendToken(accessToken)
             if (content.error) {
               errorToken = content.error
               content = null
@@ -436,7 +436,7 @@ app.get('*', async (req, res, next) => {
       if (req.cookies._gt) {
         guestToken = req.cookies._gt
       } else {
-        const content = await requestGuestToken(res)
+        let content = await requestGuestToken(res)
         if (content.error) {
           errorGtoken = content.error
           content = null
@@ -464,7 +464,7 @@ app.get('*', async (req, res, next) => {
       }
 
       if (guestTokenLifespan < 12 * 3600) {
-        const content = await extendToken(guestToken)
+        let content = await extendToken(guestToken)
         if (content.error) {
           errorToken = content.error
           content = null
