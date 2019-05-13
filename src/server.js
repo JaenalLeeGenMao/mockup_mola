@@ -59,7 +59,7 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
@@ -123,6 +123,7 @@ const extendToken = async token => {
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {
       method: 'POST',
+      timeout: 5000,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -150,6 +151,7 @@ const requestGuestToken = async res => {
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`, {
       method: 'GET',
+      timeout: 5000,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -184,6 +186,7 @@ const getUserInfo = async sid => {
   try {
     const rawResponse = await fetch(OAUTH_USER_INFO_URL, {
       method: 'GET',
+      timeout: 5000,
       headers: {
         Cookie: `SID=${sid}`,
         'Content-Type': 'application/json',
@@ -202,6 +205,7 @@ const getUserSubscription = async (userId, accessToken) => {
   try {
     const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
       method: 'GET',
+      timeout: 5000,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -300,6 +304,7 @@ app.get('/oauth/callback', async (req, res) => {
         {
           ...config.endpoints.setting,
           url: `${oauthEndpoint}/token`,
+          timeout: 5000,
           headers: {
             Cookie: `SID=${sid}`,
           },
