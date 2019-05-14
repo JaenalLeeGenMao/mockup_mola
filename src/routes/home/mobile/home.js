@@ -418,9 +418,7 @@ class Home extends Component {
                 this.a2hsContainer.style.display = 'none'
                 localStorage.setItem('a2hs', false)
               }}
-            >
-              ` ✖
-            </div>
+            />
           </div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
