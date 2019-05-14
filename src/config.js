@@ -23,7 +23,7 @@ const oauth = {
 
 const serverApi = {
   VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://10.0.3.10', //'https://stag.mola.tv/api/v2/videos',
-  AUTH_API_URL: env === 'staging' ? 'http://accounts-api.global' : 'http://10.0.6.5', //'https://stag.mola.tv/accounts',
+  AUTH_API_URL: env === 'staging' ? /*'http://accounts-api.global'*/ 'https://stag.mola.tv/accounts' : 'http://10.0.6.5', //'https://stag.mola.tv/accounts',
   SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://10.0.3.26', //'https://stag.mola.tv/api/v2/subscriptions',
   appId: 'molatv',
   xAppId: 2,
@@ -72,7 +72,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: '/api/v2',
+      api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',

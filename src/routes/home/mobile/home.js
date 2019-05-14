@@ -422,7 +422,7 @@ class Home extends Component {
               ✖
             </div>
           </div>
-          {playlistStatus !== 'error' && <Header libraryOff leftMenuOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -432,19 +432,24 @@ class Home extends Component {
               <>
                 {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} className="tourCategory" />
+                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                     <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
-                    <Link
-                      to={`${activeSlide.link ? activeSlide.link : '/movie-detail/' + activeSlide.id}`}
-                      className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}
-                    >
-                      <span className={`${styles.icon__view_movie} ${isDark ? styles.black : styles.white}`} />
-                    </Link>
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                        </Link>
+                      )}
+                    {activeSlide.buttonText && (
+                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </Link>
+                    )}
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper}>
