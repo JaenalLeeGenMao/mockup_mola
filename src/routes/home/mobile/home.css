@@ -35,7 +35,7 @@ body {
   color: white;
   bottom: 0;
   width: calc(100% - 40px);
-  margin: 0 20px 14%;
+  margin: 0 20px 35%;
 }
 
 .header__detail_container.black {
@@ -49,6 +49,23 @@ body {
 .header__detail_container h1 {
   width: 100%;
   font-weight: 400;
+}
+
+.header__playlist_title {
+  margin: 15px 0 0 20px;
+  font-style: italic;
+  font-size: 12px;
+  position: relative;
+}
+
+.header__playlist_title:before {
+  content: '';
+  position: absolute;
+  background-color: white;
+  width: 14px;
+  height: 1px;
+  top: 50%;
+  left: -20px;
 }
 
 .header__detail_container > p.quote {
@@ -69,29 +86,25 @@ body {
 
 .header__detail_container > p {
   max-width: 80vw;
-  opacity: 1;
+  opacity: 0;
   height: 5rem;
   font-weight: 400;
   font-size: 14px;
-  margin-bottom: 10px;
-
-  /* position: absolute; */
+  position: absolute;
   overflow: hidden;
-
-  /* -webkit-backface-visibility: hidden; */
-
-  /* animation: fadeAnimation 40s linear infinite 0s; */
-}
-
-.header__detail_container > p:nth-child(2) {
-  animation-delay: 10s;
+  -webkit-backface-visibility: hidden;
+  animation: fadeAnimation 40s linear infinite 0s;
 }
 
 .header__detail_container > p:nth-child(3) {
-  animation-delay: 20s;
+  animation-delay: 10s;
 }
 
 .header__detail_container > p:nth-child(4) {
+  animation-delay: 20s;
+}
+
+.header__detail_container > p:nth-child(5) {
   animation-delay: 30s;
 }
 

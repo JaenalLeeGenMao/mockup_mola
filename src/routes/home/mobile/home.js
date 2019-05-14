@@ -419,7 +419,7 @@ class Home extends Component {
                 localStorage.setItem('a2hs', false)
               }}
             >
-              ✖
+              ` ✖
             </div>
           </div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
@@ -436,9 +436,12 @@ class Home extends Component {
                 </div>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
+                    <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                     <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p className="filteredText">{filteredDesc}</p>
-                    <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
+                    <p className="filteredText">{filteredQuote}</p>
+                    <p className="filteredText">{filteredDesc}</p>
+                    <p className="filteredText">{filteredQuote}</p>
                     {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
                         <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
