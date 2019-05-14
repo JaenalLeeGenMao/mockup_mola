@@ -542,12 +542,17 @@ class Home extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
-                    <Link
-                      to={`${activeSlide.link ? activeSlide.link : '/movie-detail/' + activeSlide.id}`}
-                      className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}
-                    >
-                      <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
-                    </Link>
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={`/movie-detail/ ${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
+                        </Link>
+                      )}
+                    {activeSlide.buttonText && (
+                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </Link>
+                    )}
                   </LazyLoad>
                 )}
                 <div className={`${styles.header__movie_slider} tourSlide`}>
