@@ -111,7 +111,7 @@ const normalizeHomeVideo = response => {
                 title,
                 description,
                 visibility,
-                short_description,
+                shortDescription,
                 displayOrder,
                 isDark,
                 images: {
@@ -141,7 +141,7 @@ const normalizeHomeVideo = response => {
             displayOrder,
             description,
             visibility,
-            short_description: short_description || description,
+            shortDescription: shortDescription || description,
             // coverTitle: coverTitle,
             background,
             backgroundColor: coverBGColor || '#000622',
