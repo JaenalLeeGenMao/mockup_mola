@@ -544,7 +544,7 @@ class Home extends Component {
                     {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
                     {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
-                        <Link to={`/movie-detail/ ${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                           <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
                         </Link>
                       )}
