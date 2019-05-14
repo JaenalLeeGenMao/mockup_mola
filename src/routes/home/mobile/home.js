@@ -377,7 +377,7 @@ class Home extends Component {
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
-      filteredDesc = activeSlide.description
+      filteredDesc = activeSlide.shortDescription
       filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
     }
 

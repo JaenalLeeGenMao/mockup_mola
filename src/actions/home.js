@@ -43,7 +43,9 @@ const getHomeVideo = playlist => dispatch => {
         id: playlist.id,
         sortOrder: playlist.sortOrder,
       },
-      data: result.data,
+      data: result.data.filter(dt => {
+        return dt.visibility === 1
+      }),
     }
     dispatch({
       type: types.GET_HOME_VIDEO,

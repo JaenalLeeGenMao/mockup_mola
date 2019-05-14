@@ -110,6 +110,7 @@ const normalizeHomeVideo = response => {
               attributes: {
                 title,
                 description,
+                visibility,
                 shortDescription,
                 displayOrder,
                 isDark,
@@ -139,7 +140,8 @@ const normalizeHomeVideo = response => {
             title,
             displayOrder,
             description,
-            shortDescription: shortDescription || '',
+            visibility,
+            shortDescription: shortDescription || description,
             // coverTitle: coverTitle,
             background,
             backgroundColor: coverBGColor || '#000622',
@@ -360,7 +362,7 @@ const normalizeMovieLibrary = response => {
   if (data && data.length > 0) {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
-        const { title } = attributes
+        const { title, visibility } = attributes
         const thumbnail = _get(attributes, 'images.cover.library.portrait', '')
         const description = _get(attributes, 'description', '')
         const quotes = _get(attributes, 'quotes[0].attributes', '')
@@ -370,6 +372,7 @@ const normalizeMovieLibrary = response => {
           genreTitle,
           id,
           title,
+          visibility,
           thumbnail,
           description,
           quotes,
@@ -389,9 +392,10 @@ const normalizeMovieLibrary = response => {
 const normalizeMovieLibraryList = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    return data.map(({ id, type, attributes: { title: genreTitle, description: videoDesc, images: videoImg } }) => {
+    return data.map(({ id, type, attributes: { title: genreTitle, visibility, description: videoDesc, images: videoImg } }) => {
       return {
         id,
+        visibility,
         type,
         genreTitle,
         videoDesc,
