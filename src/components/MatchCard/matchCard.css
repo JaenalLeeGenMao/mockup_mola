@@ -1,11 +1,15 @@
-.match__container {
+.matchCard__container {
   color: white;
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(4, 1.1fr 0 0 0);
 }
 
 .sport__livenupcoming_schedule {
   color: #fff;
   background-color: #000;
-  height: 9rem;
+  height: 10rem;
   width: 24rem;
   opacity: 0.72;
   border-radius: 8px;
@@ -36,7 +40,6 @@
 }
 
 .sport__defaultlogoteam {
-  margin-top: 1.5rem;
   width: 3.5rem;
   height: 3.5rem;
   display: inline-block;
@@ -47,7 +50,7 @@
 
 .sport__infolive_upcoming {
   text-align: center;
-  padding: 8px 0 8px 0;
+  padding: 0 8px 0 8px;
   line-height: 1.4rem;
 }
 

@@ -11,6 +11,7 @@ import notFound from './not-found'
 import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
 import sport from './sport'
+import matches from './matches'
 
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
@@ -29,4 +30,5 @@ export default combineReducers({
   notFound,
   subscribe,
   sport,
+  matches,
 })

@@ -76,9 +76,8 @@ const getSportCategoryList = () => {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler response get playlist ', response)
-      const result = utils.normalizeSportCategoryList(response)
-      // console.log('handler sport playlist masuk', result)
+      const result = utils.normalizeHomePlaylist(response)
+      // console.log('handler Sport or matches 1', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -89,6 +88,65 @@ const getSportCategoryList = () => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Sport')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+const getMatchesList = () => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/live-soc`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('response handler matcheslist', response)
+      const result = utils.normalizeMatchesList(response)
+      // console.log('after normalize', result)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sports')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getMatchDetail = id => {
+  return post(
+    `${VIDEOS_ENDPOINT}/`,
+    {
+      videos: id,
+    },
+    {
+      ...endpoints.setting,
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeMatchDetail(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
       return {
         meta: {
           status: 'error',
@@ -133,7 +191,7 @@ const getSportVideo = ({ id }) => {
   })
     .then(response => {
       // console.log('handler response get sport 2222', response) //here video exist?
-      const result = utils.normalizeSportVideo(response)
+      const result = utils.normalizeHomeVideo(response)
       // console.log('handler response get result 3333', result) //data null
       return {
         meta: {
@@ -614,4 +672,6 @@ export default {
   getOrderHistoryTransactions,
   getSportCategoryList,
   getSportVideo,
+  getMatchesList,
+  getMatchDetail,
 }

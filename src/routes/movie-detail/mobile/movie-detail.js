@@ -59,7 +59,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /* important for analytics tracker */ /*default 0 */
+let ticker = [] /*default 0 */ /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -94,9 +94,9 @@ class MovieDetail extends Component {
   updateMetaTag() {
     const { movieDetail } = this.props
     if (movieDetail.data.length > 0) {
-      const { title, description, images } = movieDetail.data[0]
+      const { title, description, background } = movieDetail.data[0]
       updateCustomMeta('og:title', title)
-      updateCustomMeta('og:image', images.cover.background.landscape)
+      updateCustomMeta('og:image', background.landscape)
       updateCustomMeta('og:description', description)
       updateCustomMeta('og:url', window.location.href)
     }
@@ -230,7 +230,7 @@ class MovieDetail extends Component {
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
-    const poster = apiFetched ? dataFetched.images.cover.background.landscape : ''
+    const poster = apiFetched ? dataFetched.background.landscape : ''
 
     //Get Time Right Now
     const todayDate = new Date().getTime()
