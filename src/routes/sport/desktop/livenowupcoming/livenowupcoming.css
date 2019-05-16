@@ -19,9 +19,13 @@
 .sport__livenupcoming_grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 4rem;
+  grid-gap: 2rem;
 
   /* margin: 0px 100px 0px 100px; */
+}
+
+.sport_match_container {
+  width: 27rem;
 }
 
 .sport__livenupcoming_schedule {
@@ -36,7 +40,8 @@
 .sport__schedule_item {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 15px;
+  margin: 1.5rem;
+  padding-top: 1.7rem;
 }
 
 .sport__defaultlogoteam {
@@ -120,7 +125,7 @@
   float: right;
   margin-right: -6px;
   margin-left: -38px;
-  margin-top: -31px;
+  margin-top: -15px;
   opacity: 1;
   display: inline-block;
   background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNjgiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA2OCA3MCI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6I2MwMDt9LmJ7ZmlsbDojZmZmO30uY3tmaWx0ZXI6dXJsKCNhKTt9PC9zdHlsZT48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIiB3aWR0aD0iNjgiIGhlaWdodD0iNzAiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGZlT2Zmc2V0IGR5PSI2IiBpbnB1dD0iU291cmNlQWxwaGEiLz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI2IiByZXN1bHQ9ImIiLz48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwLjI1MSIvPjxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluMj0iYiIvPjxmZUNvbXBvc2l0ZSBpbj0iU291cmNlR3JhcGhpYyIvPjwvZmlsdGVyPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjM2IC05NjcpIj48ZyBjbGFzcz0iYyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgMjM2LCA5NjcpIj48cmVjdCBjbGFzcz0iYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjM0IiByeD0iNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTggMTIpIi8+PC9nPjxwYXRoIGNsYXNzPSJiIiBkPSJNMCwwVjE0TDEyLDYuOTY2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjY1IDk4OSkiLz48L2c+PC9zdmc+);

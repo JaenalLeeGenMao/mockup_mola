@@ -449,7 +449,7 @@ class Sport extends Component {
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                     </Link>
                   </LazyLoad>
