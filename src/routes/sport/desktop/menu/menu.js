@@ -13,7 +13,6 @@ const SportMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', 
     <LazyLoad containerClassName={[styles.menu, 'tourCategory'].join(' ')}>
       {playlists.map(({ id }, index) => (
         <>
-          const
           <div
             key={id}
             className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${index === activeIndex ? styles.menu__top_active : ''} ${

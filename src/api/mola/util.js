@@ -8,7 +8,7 @@ const normalizeHomePlaylist = response => {
     return data.map(({ attributes: { playlists } }) =>
       playlists
         .map(playlist => {
-          const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images } } = playlist
+          const { id, type, attributes: { title, description, shortDescription, sortOrder, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
@@ -357,21 +357,24 @@ const normalizeRecentSearch = response => {
 const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
+    console.log('data', data)
     return data.map(result => {
       const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration } } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
-      const filteredSubtitles = subtitles.map(subtitle => {
-        const { id, type, attributes: { locale, url, format } } = subtitle
+      const filteredSubtitles =
+        subtitles &&
+        subtitles.map(subtitle => {
+          const { id, type, attributes: { locale, url, format } } = subtitle
 
-        /* More info please visit https://support.theoplayer.com/hc/en-us/articles/214041829-TextTrack-API */
-        return {
-          id,
-          format /* srt, emsg, eventstream, ttml, webvtt */,
-          locale,
-          type /* subtitles, captions, descriptions, chapters, metadata */,
-          url,
-        }
-      })
+          /* More info please visit https://support.theoplayer.com/hc/en-us/articles/214041829-TextTrack-API */
+          return {
+            id,
+            format /* srt, emsg, eventstream, ttml, webvtt */,
+            locale,
+            type /* subtitles, captions, descriptions, chapters, metadata */,
+            url,
+          }
+        })
       return {
         id,
         title,
@@ -404,7 +407,7 @@ const normalizeMovieLibrary = response => {
     return data.map(({ attributes: { videos, title: genreTitle } }) =>
       videos.map(({ id, attributes }) => {
         const { title, visibility } = attributes
-        const thumbnail = _get(attributes, 'images.cover.library.portrait', '')
+        const thumbnail = _get(attributes, 'images.cover.portrait', '')
         const description = _get(attributes, 'description', '')
         const quotes = _get(attributes, 'quotes[0].attributes', '')
         const isDark = _get(attributes, 'isDark', '0')

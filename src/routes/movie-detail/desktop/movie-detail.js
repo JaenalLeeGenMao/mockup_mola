@@ -237,14 +237,16 @@ class MovieDetail extends Component {
 
   subtitles() {
     const { movieDetail } = this.props
-    const subtitles = movieDetail.data.length > 0 ? movieDetail.data[0].subtitles : []
+    const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
-    const myTheoPlayer = subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
-      kind: type,
-      src: url,
-      label: locale,
-      type: format,
-    }))
+    const myTheoPlayer =
+      subtitles &&
+      subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
+        kind: type,
+        src: url,
+        label: locale,
+        type: format,
+      }))
 
     return myTheoPlayer
   }
