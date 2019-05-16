@@ -27,6 +27,9 @@ const getHomePlaylist = () => dispatch => {
         payload: result,
       })
     } else {
+      result.data = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
       dispatch({
         type: types.GET_HOME_PLAYLIST_SUCCESS,
         payload: result,

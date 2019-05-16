@@ -1,7 +1,7 @@
-import Mola from '../api/mola';
-import types from '../constants';
-import searchDb from '../database/searchDb';
-import Dexie from 'dexie';
+import Mola from '../api/mola'
+import types from '../constants'
+import searchDb from '../database/searchDb'
+import Dexie from 'dexie'
 
 // import { getAction } from '../../../gandalf';
 // const { search: { getSearchResult } } = getAction();
@@ -16,18 +16,18 @@ const getSearchResult = searchText => dispatch => {
     payload: {
       meta: {
         status: 'loading',
-        error: ''
+        error: '',
       },
-      data: []
-    }
-  });
-  var isExist = false;
+      data: [],
+    },
+  })
+  var isExist = false
   var cacheResult = {
     meta: {
-      status: 'success'
+      status: 'success',
     },
-    data: []
-  };
+    data: [],
+  }
   Dexie.exists('mola-search-cache-database').then(function(exists) {
     if (exists) {
       searchDb
@@ -37,9 +37,9 @@ const getSearchResult = searchText => dispatch => {
             .where('keyword')
             .equalsIgnoreCase(searchText)
             .each(function(res) {
-              isExist = true; //if exist
+              isExist = true //if exist
               if (res.movieId) {
-                const movieIdArr = res.movieId.split(',');
+                const movieIdArr = res.movieId.split(',')
                 movieIdArr.map(id => {
                   searchDb.moviesResult
                     .where('movieId')
@@ -50,13 +50,13 @@ const getSearchResult = searchText => dispatch => {
                         type: res.type,
                         title: res.title,
                         year: res.year,
-                        coverUrl: res.coverUrl
-                      });
-                    });
-                });
+                        coverUrl: res.coverUrl,
+                      })
+                    })
+                })
               }
               if (res.castId) {
-                const castIdArr = res.castId.split(',');
+                const castIdArr = res.castId.split(',')
                 castIdArr.map(id => {
                   searchDb.castsResult
                     .where('castId')
@@ -66,12 +66,12 @@ const getSearchResult = searchText => dispatch => {
                         id: res.castId,
                         type: res.type,
                         name: res.name,
-                        imageUrl: res.imageUrl
-                      });
-                    });
-                });
+                        imageUrl: res.imageUrl,
+                      })
+                    })
+                })
               }
-            });
+            })
         })
         .then(() => {
           if (!isExist) {
@@ -80,25 +80,25 @@ const getSearchResult = searchText => dispatch => {
               if (result.meta.status === 'error') {
                 dispatch({
                   type: types.GET_SEARCH_ERROR,
-                  payload: result
-                });
+                  payload: result,
+                })
               } else {
                 dispatch({
                   type: types.GET_SEARCH_SUCCESS,
-                  payload: result
-                });
+                  payload: result,
+                })
 
-                var curDate = new Date();
+                var curDate = new Date()
 
-                var createdDate = curDate.getFullYear() + '-' + ('0' + (curDate.getMonth() + 1)).slice(-2) + '-' + ('0' + curDate.getDate()).slice(-2) + ' 00:00:00';
+                var createdDate = curDate.getFullYear() + '-' + ('0' + (curDate.getMonth() + 1)).slice(-2) + '-' + ('0' + curDate.getDate()).slice(-2) + ' 00:00:00'
 
-                var movieIdAdded = [];
-                var castIdAdded = [];
+                var movieIdAdded = []
+                var castIdAdded = []
                 searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, async () => {
                   //loop result from api to store to cache db
                   for (const dt of result.data) {
-                    var isMovieIdExist = false;
-                    var isCastIdExist = false;
+                    var isMovieIdExist = false
+                    var isCastIdExist = false
 
                     //check type to store to related table
                     if (dt.type == 'videos') {
@@ -107,7 +107,7 @@ const getSearchResult = searchText => dispatch => {
                         .where('movieId')
                         .equals(dt.id)
                         .count(function(cnt) {
-                          isMovieIdExist = cnt > 0;
+                          isMovieIdExist = cnt > 0
                         })
                         .then(() => {
                           if (!isMovieIdExist) {
@@ -118,18 +118,18 @@ const getSearchResult = searchText => dispatch => {
                               title: dt.title,
                               year: dt.year,
                               coverUrl: dt.coverUrl,
-                              createdDate: createdDate
-                            });
+                              createdDate: createdDate,
+                            })
                           }
-                        });
-                      movieIdAdded.push(dt.id);
+                        })
+                      movieIdAdded.push(dt.id)
                     } else {
                       //check if castId already exist in cache db so prevent duplication
                       await searchDb.castsResult
                         .where('castId')
                         .equals(dt.id)
                         .count(function(cnt) {
-                          isCastIdExist = cnt > 0;
+                          isCastIdExist = cnt > 0
                         })
                         .then(() => {
                           if (!isCastIdExist) {
@@ -139,11 +139,11 @@ const getSearchResult = searchText => dispatch => {
                               castId: dt.id,
                               name: dt.name,
                               imageUrl: dt.imageUrl,
-                              createdDate: createdDate
-                            });
+                              createdDate: createdDate,
+                            })
                           }
-                        });
-                      castIdAdded.push(dt.id);
+                        })
+                      castIdAdded.push(dt.id)
                     }
                   }
 
@@ -151,42 +151,42 @@ const getSearchResult = searchText => dispatch => {
                     keyword: searchText,
                     movieId: movieIdAdded.join(','),
                     castId: castIdAdded.join(','),
-                    createdDate: createdDate
-                  });
-                });
+                    createdDate: createdDate,
+                  })
+                })
               }
-            });
+            })
           } else {
             if (cacheResult.data.length > 0) {
               dispatch({
                 type: types.GET_SEARCH_SUCCESS,
-                payload: cacheResult
-              });
+                payload: cacheResult,
+              })
             } else {
               dispatch({
                 type: types.GET_SEARCH_NO_RESULT,
-                payload: cacheResult
-              });
+                payload: cacheResult,
+              })
             }
           }
-        });
+        })
     } else {
       return Mola.getSearchResult({ q: searchText }).then(result => {
         if (result.meta.status === 'error') {
           dispatch({
             type: types.GET_SEARCH_ERROR,
-            payload: result
-          });
+            payload: result,
+          })
         } else {
           dispatch({
             type: types.GET_SEARCH_SUCCESS,
-            payload: result
-          });
+            payload: result,
+          })
         }
-      });
+      })
     }
-  });
-};
+  })
+}
 
 const getSearchGenre = () => dispatch => {
   dispatch({
@@ -194,26 +194,29 @@ const getSearchGenre = () => dispatch => {
     payload: {
       meta: {
         status: 'loading',
-        error: ''
+        error: '',
       },
-      data: []
-    }
-  });
+      data: [],
+    },
+  })
 
   return Mola.getSearchGenre().then(result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_SEARCH_GENRE_ERROR,
-        payload: result
-      });
+        payload: result,
+      })
     } else {
+      result.data = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
       dispatch({
         type: types.GET_SEARCH_GENRE_SUCCESS,
-        payload: result
-      });
+        payload: result,
+      })
     }
-  });
-};
+  })
+}
 
 const getRecentSearch = (sessionId, sid) => dispatch => {
   dispatch({
@@ -221,28 +224,28 @@ const getRecentSearch = (sessionId, sid) => dispatch => {
     payload: {
       meta: {
         status: 'loading',
-        error: ''
+        error: '',
       },
-      data: []
-    }
-  });
+      data: [],
+    },
+  })
   return Mola.getRecentSearch(sessionId, sid).then(result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_RECENT_SEARCH_ERROR,
-        payload: result
-      });
+        payload: result,
+      })
     } else {
       dispatch({
         type: types.GET_RECENT_SEARCH_SUCCESS,
-        payload: result
-      });
+        payload: result,
+      })
     }
-  });
-};
+  })
+}
 
 export default {
   getSearchResult,
   getSearchGenre,
-  getRecentSearch
-};
+  getRecentSearch,
+}
