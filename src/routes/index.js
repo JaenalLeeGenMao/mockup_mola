@@ -140,6 +140,10 @@ const routes = {
       path: '/matches',
       load: () => import(/* webpackChunkName: 'matches' */ './matches'),
     },
+    {
+      path: '/watch',
+      load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

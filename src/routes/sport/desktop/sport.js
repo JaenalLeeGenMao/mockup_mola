@@ -445,7 +445,6 @@ class Sport extends Component {
       sliderRefs.push(refs)
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
-    // console.log(sliderRefs)
   }
 
   /* Vertical scroll handler */
@@ -507,7 +506,7 @@ class Sport extends Component {
         /> */}
 
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}

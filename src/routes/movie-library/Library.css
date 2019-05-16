@@ -29,6 +29,10 @@
   flex-wrap: wrap;
 }
 
+.card_wrapper_loading {
+  justify-content: center;
+}
+
 .overlay {
   display: none;
   position: fixed;
@@ -45,5 +49,9 @@
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .card_wrapper {
     padding: 2rem 0;
+  }
+
+  .errorImage {
+    width: 55% !important;
   }
 }

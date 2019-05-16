@@ -27,10 +27,12 @@ const getHomePlaylist = () => dispatch => {
         payload: result,
       })
     } else {
-      const featurePlaylist = { id: 'web-featured', title: 'Featured', sortOrder: 0 }
+      const featurePlaylist = { id: 'web-featured', title: 'Featured', sortOrder: 0, visibility: 1 }
       const dataFeature = [featurePlaylist, ...result.data]
       const resultFeature = {
-        data: dataFeature,
+        data: dataFeature.filter(dt => {
+          return dt.visibility === 1
+        }),
         meta: {
           ...result.meta,
         },

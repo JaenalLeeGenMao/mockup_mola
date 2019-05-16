@@ -23,7 +23,7 @@ class CardLibrary extends Component {
   }
 
   handleTitleShow = (show = false) => {
-    this.setState({ show: show ? true : false })
+    this.setState({ show: show === 'success' ? true : false })
   }
 
   handleClick = e => {
@@ -34,28 +34,28 @@ class CardLibrary extends Component {
   render() {
     const { id, thumbnail, title, description, quotes, isDark = 0, active } = this.props
     return (
-      <div className={s.card}>
-        <div>
-          {!this.state.show && (
-            <h1
-              ref={node => {
-                this.titleRef = node
-              }}
-              className={s.card__title}
-            >
-              {title}
-            </h1>
-          )}
-          <span
-            id={`close-${id}`}
-            onClick={e => this.props.onClick(undefined, e.target)}
-            className={`${isDark ? s.cross_icon_black : s.cross_icon_white} ${s.card__detail} ${active ? s.close_right : s.close_left}`}
-          />
-          <Link to={`/movie-detail/${id}`}>
-            <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} />
-          </Link>
-        </div>
-      </div>
+      <Link to={`/movie-detail/${id}`} className={s.card}>
+        {/* <div> */}
+        {!this.state.show && (
+          <h1
+            ref={node => {
+              this.titleRef = node
+            }}
+            className={s.card__title}
+          >
+            {title}
+          </h1>
+        )}
+        <span
+          id={`close-${id}`}
+          onClick={e => this.props.onClick(undefined, e.target)}
+          className={`${isDark ? s.cross_icon_black : s.cross_icon_white} ${s.card__detail} ${active ? s.close_right : s.close_left}`}
+        />
+        {/* <Link to={`/movie-detail/${id}`}> */}
+        <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} />
+        {/* </Link> */}
+        {/* </div> */}
+      </Link>
     )
   }
 }
