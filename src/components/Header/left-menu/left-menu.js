@@ -26,8 +26,7 @@ class LeftMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, leftMenuOff, isMenuToggled = false, isMovie } = this.props
-
+    const { color, leftMenuOff, isMenuToggled = false, isMovie, activePlaylist, activeMenu = 'movie' } = this.props
     return (
       <>
         <div className={styles.left__menu}>
@@ -35,16 +34,18 @@ class LeftMenu extends Component {
             <span className={styles.left__menu_wrapper}>
               <LazyLoad className={styles.left__menu_icon_wrapper}>
                 <div className={styles.left_menu_outer}>
-                  <div className={styles.left_menu_item_inner}>
-                    <button className={styles.left_menu_button}>
-                      {/*comment sementara <a href="/switch-channels">{isMovie ? 'Movie' : 'Sport'}</a> */}
-                      <a href="/">Movie</a>
-                      {/* <IoIosArrowDown className={color === 'black' ? styles.left_menu__action_dropdown : styles.left_menu__action_dropdown} size={32} /> */}
-                    </button>
-                  </div>
-                  <a href="/movie-library" className={styles.left_menu_lib}>
+                  <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to="/">
+                    Movie
+                  </Link>
+                  <Link className={activeMenu === 'sport' ? styles.left_menu__active : ''} to="/sport">
+                    Sport
+                  </Link>
+                  <Link
+                    className={`${styles.left_menu_lib} ${activeMenu === 'library' ? styles.left_menu__active : ''}`}
+                    to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}
+                  >
                     Library
-                  </a>
+                  </Link>
                   {/*comment sementara <div className={styles.left_menu_guide}>Guide</div> */}
                 </div>
                 {/* <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} /> */}

@@ -53,6 +53,7 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom;
+  cursor: pointer;
 }
 
 .right__menu .right__menu_profile_white {
@@ -63,6 +64,7 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom;
+  cursor: pointer;
 }
 
 .right__menu .right__menu_share_black {
@@ -264,6 +266,7 @@
     justify-content: flex-end;
     align-items: center;
     right: 0;
+    top: 2px;
     width: 5rem;
   }
 

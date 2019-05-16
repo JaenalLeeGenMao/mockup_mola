@@ -111,8 +111,12 @@
   margin: 2rem 0 2rem 0;
 }
 
+.sport_schedule_wrapper {
+  width: 100%;
+  margin: 0 10% 0 12.5%;
+}
+
 .sport_schedule_container {
-  margin: 0 14rem 0 14rem;
 }
 
 .livenowupcoming_penalty {

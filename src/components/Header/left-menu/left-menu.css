@@ -19,9 +19,31 @@
   flex-direction: row;
   text-decoration: none;
   position: absolute;
-  left: 18rem;
+  left: 12.5%;
   justify-content: flex-end;
   font-weight: 500;
+}
+
+.left__menu a {
+  color: #808080;
+  font-size: 19.2px;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  font-family: 'Open Sans', sans-serif;
+  width: 25%;
+  height: 20px;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 0;
+  border: none;
+  outline: 0;
+  position: relative;
+}
+
+.left__menu a.left_menu__active {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
 }
 
 .left__menu a:hover {
@@ -66,23 +88,17 @@
   color: white;
 }
 
-.left_menu_button {
-  font-size: 1.2rem;
-  background: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-top: 0;
-  border: none;
-  position: relative;
-  cursor: pointer;
-  color: white;
-  font-family: 'Open Sans', sans-serif;
-}
-
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .left__menu {
     left: 81px;
+    top: 30px;
+  }
+
+  .left__menu a {
+    font-size: 12px;
+    width: 15%;
+    color: #b5b5b5;
   }
 
   .left_menu_item_inner {

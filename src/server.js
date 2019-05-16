@@ -59,7 +59,7 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy) // kalo mau di naikin di uncomment
+app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
@@ -68,16 +68,6 @@ app.get('/ping', (req, res) => {
 // app.use(
 //   '/api',
 //   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
-// kalo mau di naikin dicomment
-
-// app.use(
-//   '/api',
-//   proxy('https://stag.mola.tv/api/', {
 //     proxyReqPathResolver: (req, res) => {
 //       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
 //     },
@@ -135,7 +125,6 @@ const extendToken = async token => {
       }),
     })
     const content = await rawResponse.json()
-    console.log('contenttt', content)
     return content
   } catch (err) {
     console.error('error extend token:', err)

@@ -358,15 +358,13 @@ const normalizeVideoDetail = response => {
       const filteredSubtitles =
         subtitles &&
         subtitles.map(subtitle => {
-          const { id, type, attributes: { locale, url, format } } = subtitle
-
           /* More info please visit https://support.theoplayer.com/hc/en-us/articles/214041829-TextTrack-API */
           return {
-            id,
-            format /* srt, emsg, eventstream, ttml, webvtt */,
-            locale,
-            type /* subtitles, captions, descriptions, chapters, metadata */,
-            url,
+            id: subtitle.id || '',
+            format: subtitle.format || '' /* srt, emsg, eventstream, ttml, webvtt */,
+            locale: subtitle.locale || '',
+            type: subtitle.type || '' /* subtitles, captions, descriptions, chapters, metadata */,
+            url: subtitle.url || '',
           }
         })
       return {

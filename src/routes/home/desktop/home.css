@@ -99,14 +99,14 @@ body {
   margin-bottom: 2rem;
   line-height: 1.5;
   font-weight: 400;
-  font-size: 1.825rem;
+  font-size: 2.1rem;
   overflow: hidden;
 }
 
 .header__detail_container > p.quote {
   height: auto;
   min-height: 3rem;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 300;
   font-style: italic;
   color: #cbcbcb;
@@ -118,7 +118,7 @@ body {
   font-weight: 600;
   margin: auto;
   text-align: center;
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   border-radius: 0.5rem;
 }
 
@@ -188,7 +188,7 @@ body {
   margin: 2%;
   z-index: 2;
   left: 10%;
-  bottom: 6rem;
+  bottom: 0;
 }
 
 .home__slider_container {

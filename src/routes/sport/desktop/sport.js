@@ -445,7 +445,6 @@ class Sport extends Component {
       sliderRefs.push(refs)
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
-    // console.log(sliderRefs)
   }
 
   /* Vertical scroll handler */
@@ -507,7 +506,7 @@ class Sport extends Component {
         /> */}
 
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -526,18 +525,16 @@ class Sport extends Component {
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
-                    {/* <p className={styles.quote}>{filteredQuote}</p> */}
-                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                    {/* <p className={styles.quote}>{filteredQuote}</p> ${activeSlide.id} */}
+                    <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       <span className={styles.play_icon} />
                       <p>{locale['view_movie']}</p>
                     </Link>
                     {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
-                <div className={styles.header__library_link_wrapper} style={{ bottom: '20px' }}>
-                  <div className="LiveNow">
-                    <LiveNowUpcomingSchedule />
-                  </div>
+                <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
+                  <LiveNowUpcomingSchedule />
                 </div>
                 <Slider
                   {...settings}
