@@ -1,3 +1,3 @@
-import SportPlaceholder from './placeholder'
+import HomePlaceholder from './placeholder'
 
-export default SportPlaceholder
+export default HomePlaceholder
