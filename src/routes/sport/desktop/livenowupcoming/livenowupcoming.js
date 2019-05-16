@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 
 import { swipeGestureListener, getErrorCode } from '@routes/sport/util'
+import Link from '@components/Link'
 
 import liveNowUpcomingActions from '@actions/sport'
 
@@ -64,32 +65,34 @@ class liveNowUpComing extends Component {
                 this.state.newestMatches.map(liveSoc => {
                   // console.log('aaaaaa', liveSoc)
                   return (
-                    <LazyLoad key={liveSoc.id} containerClassName={styles.sport__livenupcoming_schedule}>
-                      <div>
+                    <Link key={liveSoc.id} to={`/watch?v=${liveSoc ? `${liveSoc.id.replace('Sport-', '')}` : ''}`} className={styles.sport_match_container}>
+                      <LazyLoad containerClassName={styles.sport__livenupcoming_schedule}>
                         <div>
-                          <span className={styles.sport_youtube_img} />
-                          <div className={styles.sport__schedule_item}>
-                            <div className={styles.sport__team_logo}>
-                              <span className={styles.sport__defaultlogoteam}>{/*note: field hit image macth team 1 (not available) */}</span>
-                              <h6 className={styles.sport_team_name}>{liveSoc.title}</h6>
-                            </div>
-                            <div className={styles.sport__infolive_upcoming}>
-                              <h5 className={styles.sport__info_live_now}>Live Now {/*note: field hit kemana untuk live now */}</h5>
-                              <h2 className={styles.sport__scoring}>0 - 0 {/* note: hit scoring ke field mana? */}</h2>
-                              <h6 className={styles.livenowupcoming_penalty}>Pen. (3-4) {/*note: pen? */}</h6>
-                              {/* <h6 className={styles.sport__subjectcontent}>
+                          <div>
+                            <span className={styles.sport_youtube_img} />
+                            <div className={styles.sport__schedule_item}>
+                              <div className={styles.sport__team_logo}>
+                                <span className={styles.sport__defaultlogoteam}>{/*note: field hit image macth team 1 (not available) */}</span>
+                                <h6 className={styles.sport_team_name}>{liveSoc.title}</h6>
+                              </div>
+                              <div className={styles.sport__infolive_upcoming}>
+                                <h5 className={styles.sport__info_live_now}>Live Now {/*note: field hit kemana untuk live now */}</h5>
+                                <h2 className={styles.sport__scoring}>0 - 0 {/* note: hit scoring ke field mana? */}</h2>
+                                <h6 className={styles.livenowupcoming_penalty}>Pen. (3-4) {/*note: pen? */}</h6>
+                                {/* <h6 className={styles.sport__subjectcontent}>
                                 {liveSoc.description}
                                 {/*English Premier League
                               </h6> */}
-                            </div>
-                            <div className={styles.sport__team_logo}>
-                              <span className={styles.sport__defaultlogoteam}>{/* note: field hit image macth team 2 (not available) */}</span>
-                              <h6 className={styles.sport_team_name}>{liveSoc.title}</h6>
+                              </div>
+                              <div className={styles.sport__team_logo}>
+                                <span className={styles.sport__defaultlogoteam}>{/* note: field hit image macth team 2 (not available) */}</span>
+                                <h6 className={styles.sport_team_name}>{liveSoc.title}</h6>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </LazyLoad>
+                      </LazyLoad>
+                    </Link>
                   )
                 })
               ) : (

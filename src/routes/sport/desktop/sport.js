@@ -494,7 +494,7 @@ class Sport extends Component {
 
     return (
       <Fragment>
-        <Joyride
+        {/* <Joyride
           disableOverlayClose={true}
           stepIndex={stepIndex}
           continuous
@@ -504,7 +504,7 @@ class Sport extends Component {
           styles={customTourStyle}
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        />
+        /> */}
 
         <div>
           {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
@@ -527,7 +527,7 @@ class Sport extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {/* <p className={styles.quote}>{filteredQuote}</p> */}
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                       <span className={styles.play_icon} />
                       <p>{locale['view_movie']}</p>
                     </Link>
