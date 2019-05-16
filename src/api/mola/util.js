@@ -13,6 +13,7 @@ const normalizeHomePlaylist = response => {
             type,
             attributes: {
               title,
+              visibility,
               description,
               shortDescription,
               sortOrder,
@@ -31,6 +32,7 @@ const normalizeHomePlaylist = response => {
           return {
             id,
             title,
+            visibility,
             sortOrder,
             description,
             shortDescription: shortDescription || '',
@@ -290,11 +292,12 @@ const normalizeSearchGenre = response => {
   if (data && data.length > 0) {
     return data.map(({ attributes: { playlists } }) =>
       playlists.map(({ id, attributes }) => {
-        const { title, iconUrl } = attributes
+        const { title, iconUrl, visibility } = attributes
         return {
           id,
           title,
           iconUrl,
+          visibility,
         }
       })
     )
