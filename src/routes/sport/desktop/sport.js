@@ -519,10 +519,11 @@ class Sport extends Component {
                 <div className={styles.sport__sidebar}>
                   <SportMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
+                <LazyLoad containerClassName={styles.sport_header__playlist_title}>
+                  <div>{this.state.playlists.data[scrollIndex].title}</div>
+                </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <p className={styles.sport__borderline} />
-                    <h4 className={styles.sport__category_menu}>MOLA Sport 1</h4>
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {/* <p className={styles.quote}>{filteredQuote}</p> */}

@@ -259,20 +259,30 @@ body {
   margin-top: 1.5rem;
 }
 
-.sport__borderline {
-  border-bottom: 2px solid white;
-  width: 7%;
-}
-
 .Header-header__logo {
   width: 5rem;
 }
 
-.sport__category_menu {
-  color: white;
-  font-size: 1.3rem;
+.sport_header__playlist_title {
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #fff;
+  font-size: 1.5rem;
+  z-index: 1;
+  margin: 10% 47.5% 0 12.5%;
   font-weight: bold;
-  font-family: 'Open Sans', sans-serif;
+}
+
+.sport_header__playlist_title:before {
+  content: '';
+  border: 0;
+  background-color: #fff;
+  width: 72px;
+  width: 4.5rem;
+  height: 2px;
+  display: block;
+  margin-bottom: 1.5rem;
 }
 
 /* mobile Styles */

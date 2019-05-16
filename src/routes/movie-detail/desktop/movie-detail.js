@@ -132,9 +132,9 @@ class MovieDetail extends Component {
   updateMetaTag() {
     const { movieDetail } = this.props
     if (movieDetail.data.length > 0) {
-      const { title, description, images } = movieDetail.data[0]
+      const { title, description, background } = movieDetail.data[0]
       updateCustomMeta('og:title', title)
-      updateCustomMeta('og:image', images.cover.background.landscape)
+      updateCustomMeta('og:image', background.landscape)
       updateCustomMeta('og:description', description)
       updateCustomMeta('og:url', window.location.href)
     }
@@ -300,8 +300,8 @@ class MovieDetail extends Component {
     //   : 'https://cdn-supersoccer-k-01.akamaized.net/Content/DASH/Live/channel(74fa5c1e-bde9-6718-e3ab-11227d90da31)/manifest.mpd?hdnts=st=1550491010~exp=1553083010~acl=/*~hmac=c58bb1dfe4f2068f4b004a447af035aa3b50f562e6ebe94f026f7958144d6a6d'
     // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
     // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/DASH/Live/channel(2a10e294-db16-0d35-f732-f2d040e882d0)/manifest.mpd'
-    const poster = apiFetched ? dataFetched.images.cover.background.landscape : ''
-    // const poster = apiFetched ? dataFetched.images.cover.details.landscape : ''
+    const poster = apiFetched ? dataFetched.background.landscape : ''
+    // const poster = apiFetched ? dataFetched.details.landscape : ''
 
     //Get Time Right Now
     const todayDate = new Date().getTime()
