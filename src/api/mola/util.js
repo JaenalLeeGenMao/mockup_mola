@@ -70,35 +70,31 @@ const normalizeHomePlaylist = response => {
 const normalizeMatchesList = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    try {
-      return data.map(({ attributes: { videos } }) =>
-        videos
-          .map(video => {
-            const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images } } = video
-            const background = _get(images, 'cover', { portrait: null, landscape: null })
-            const coverBGColor = _get(images, 'cover.backgroundColor', '')
-            return {
-              id,
-              title,
-              sortOrder,
-              startTime,
-              endTime,
-              description,
-              shortDescription: shortDescription || '',
-              iconUrl: iconUrl || '',
-              // coverTitle: coverTitle,
-              background,
-              backgroundColor: coverBGColor || '#000622',
-              isDark: isDark || 0,
-              isActive: false,
-              type,
-            }
-          })
-          .sort((a, b) => a.sortOrder - b.sortOrder)
-      )
-    } catch (err) {
-      console.log('ERRR', err)
-    }
+    return data.map(({ attributes: { videos } }) =>
+      videos
+        .map(video => {
+          const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images } } = video
+          const background = _get(images, 'cover', { portrait: null, landscape: null })
+          const coverBGColor = _get(images, 'cover.backgroundColor', '')
+          return {
+            id,
+            title,
+            sortOrder,
+            startTime,
+            endTime,
+            description,
+            shortDescription: shortDescription || '',
+            iconUrl: iconUrl || '',
+            // coverTitle: coverTitle,
+            background,
+            backgroundColor: coverBGColor || '#000622',
+            isDark: isDark || 0,
+            isActive: false,
+            type,
+          }
+        })
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+    )
   }
   return []
 }
@@ -107,7 +103,6 @@ const normalizeMatchDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      console.log('checking data normalize', result)
       const {
         id,
         type,
@@ -357,7 +352,6 @@ const normalizeRecentSearch = response => {
 const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    console.log('data', data)
     return data.map(result => {
       const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration } } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })

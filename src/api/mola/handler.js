@@ -136,7 +136,6 @@ const getMatchDetail = id => {
     }
   )
     .then(response => {
-      console.log('MASUUUUUUKKK', response)
       const result = utils.normalizeMatchDetail(response)
       return {
         meta: {
@@ -401,7 +400,6 @@ const getMovieDetail = ({ id }) => {
     ...endpoints.setting,
   })
     .then(response => {
-      console.log('ASASASA', response)
       const result = utils.normalizeVideoDetail(response)
       return {
         meta: {

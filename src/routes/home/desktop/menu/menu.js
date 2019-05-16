@@ -21,10 +21,8 @@ const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', o
               if (type === 'horizontal') {
                 const node = e.target
                 if (index === activeIndex) {
-                  console.log('kondisi 1')
                   onClick(index)
                 } else if (index > activeIndex) {
-                  console.log('kondisi 1')
                   onClick(index - 1)
                 } else {
                   const siblingClass = node.getAttribute('class')
