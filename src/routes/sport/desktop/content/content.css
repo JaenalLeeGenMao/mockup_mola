@@ -48,4 +48,5 @@ body {
   /* width: auto; */
   height: 100vh;
   float: right;
+  pointer-events: none;
 }

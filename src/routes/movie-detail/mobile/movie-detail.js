@@ -59,7 +59,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /*default 0 */ /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -173,11 +173,11 @@ class MovieDetail extends Component {
     const { movieDetail } = this.props
     const subtitles = movieDetail.data.length > 0 ? movieDetail.data[0].subtitles : []
 
-    const myTheoPlayer = subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
-      kind: type,
-      src: url,
-      label: locale,
-      type: format,
+    const myTheoPlayer = subtitles.map(({ subtitleUrl, country }) => ({
+      kind: 'subtitles',
+      src: subtitleUrl,
+      label: country,
+      type: 'srt',
     }))
 
     return myTheoPlayer

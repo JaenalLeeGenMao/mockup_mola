@@ -241,11 +241,11 @@ class MovieDetail extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
-        kind: type,
-        src: url,
-        label: locale,
-        type: format,
+      subtitles.map(({ subtitleUrl, country }) => ({
+        kind: 'subtitles',
+        src: subtitleUrl,
+        label: country,
+        type: 'srt',
       }))
 
     return myTheoPlayer
