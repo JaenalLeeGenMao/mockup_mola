@@ -6,6 +6,7 @@ import Header from '@components/Header'
 import s from './Libheader.css'
 import Link from '../../../components/Link'
 import LazyLoad from '@components/common/Lazyload'
+import history from '../../../history'
 
 class Libheader extends Component {
   state = {
@@ -42,12 +43,22 @@ class Libheader extends Component {
   renderMenu() {
     const { isMobile = false } = this.props
     const genreData = this.props.search.genre.data
-    const headerHeight = this.headerContainerRef.current.clientHeight
-    const styleDesktop = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 18px))` }
-    const styleMobile = { bottom: 0, transform: `translateY(calc(${headerHeight}px + 24px))` }
 
     return (
-      <div className={s.header__menu} style={isMobile ? styleMobile : styleDesktop}>
+      <div className={s.header__menu}>
+        <div className={s.position_close_button}>
+          <span
+            className={s.popup__menu_close_button}
+            onClick={() => {
+              this.setState({ isMenuToggled: false })
+            }}
+          />
+        </div>
+        <div className={s.wrapper_title_genres}>
+          <div className={s.title_genres}>
+            <span>All Genres</span>
+          </div>
+        </div>
         <ul>
           {genreData.map(item => {
             return (
@@ -68,15 +79,16 @@ class Libheader extends Component {
   render() {
     const { cardTitle } = this.props
     return (
-      <div className={s.header} ref={this.headerContainerRef}>
+      <div className={s.header}>
         <Header
-          isDark
+          isDark={0}
           logoOff
           libraryOff
           backButtonOn
           title={cardTitle}
           isLibrary
           isLibraryCopy
+          leftMenuOff
           stickyOff
           {...this.props}
           handleMenuToggleClick={this.handleMenuToggleClick}

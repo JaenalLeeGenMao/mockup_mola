@@ -1,5 +1,6 @@
 import { post, patch, get } from 'axios'
 import { AUTH_BASE_ENDPOINT } from './endpoints'
+import config from '@source/config'
 
 // const createNewUser = ({ email = '', password = '', csrf = '' }) => {
 //   const body = { email, password }
@@ -239,102 +240,93 @@ import { AUTH_BASE_ENDPOINT } from './endpoints'
 //     })
 // }
 
-// const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', location = '', token = '', phone = '' }) => {
-//   const body = { name, birthdate, gender, location, token, phone }
-//   return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
-//     headers: {
-//       'x-csrf-token': csrf,
+const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', location = '', token = '', phone = '' }) => {
+  const body = { name, birthdate, gender, location, token, phone }
+  return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
+    headers: {
+      'x-csrf-token': csrf,
+    },
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
+// const { oauth: { appKey, appSecret }, endpoints: { domain } } = config
+
+// const requestGuestToken = () => {
+//   return get(`${AUTH_BASE_ENDPOINT}/v1/guest/token`, {
+//     params: {
+//       app_key: appKey,
 //     },
 //   })
 //     .then(response => {
+//       const { access_token, expires_in, token_type } = response.data.data
 //       return {
 //         meta: {
 //           status: 'success',
 //         },
-//         data: response,
+//         data: {
+//           token: access_token,
+//           expire: expires_in,
+//           type: token_type,
+//         },
 //       }
 //     })
 //     .catch(error => {
 //       return {
 //         meta: {
 //           status: 'error',
-//           error,
+//           error: error.response,
 //         },
-//         data: {},
+//         data: undefined,
 //       }
 //     })
 // }
 
-const requestGuestToken = ({ appKey = 'wIHGzJhset' }) => {
-  return get(`${AUTH_BASE_ENDPOINT}/v1/guest/token`, {
-    params: {
-      app_key: appKey,
-    },
-  })
-    .then(response => {
-      const { access_token, expires_in, token_type } = response.data.data
-      return {
-        meta: {
-          status: 'success',
-        },
-        data: {
-          token: access_token,
-          expire: expires_in,
-          type: token_type,
-        },
-      }
-    })
-    .catch(error => {
-      return {
-        meta: {
-          status: 'error',
-          error: error.response,
-        },
-        data: undefined,
-      }
-    })
-}
-
-const requestAccessToken = ({
-  appKey = 'wIHGzJhset',
-  appSecret = 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-  responseType = 'token',
-  scope = 'https://internal.supersoccer.tv/users/users.profile.read',
-  redirectUri = 'accounts/login',
-}) => {
-  return get(`${AUTH_BASE_ENDPOINT}/oauth2/v1/authorize`, {
-    params: {
-      app_key: appKey,
-      app_secret: appSecret,
-      response_type: responseType,
-      redirect_uri: redirectUri,
-      scope,
-    },
-  })
-    .then(response => {
-      console.log('requestAccessToken', response)
-      const { access_token, expires_in, token_type } = response.data.data
-      return {
-        meta: {
-          status: 'success',
-        },
-        data: {
-          token: access_token,
-          expire: expires_in,
-          type: token_type,
-        },
-      }
-    })
-    .catch(error => {
-      return {
-        meta: {
-          status: 'error',
-          error: error.response,
-        },
-        data: undefined,
-      }
-    })
-}
+// const requestCode = () => {
+//   const state = Math.random()
+//     .toString()
+//     .substr(2)
+//   const json = {
+//     app_key: appKey,
+//     response_type: 'code',
+//     redirect_uri: `${domain}/oauth/callback`,
+//     scope: [
+//       'https://internal.supersoccer.tv/users/users.profile.read',
+//       'https://internal.supersoccer.tv/subscriptions/users.read' /* DARI CODINGAN LAMA */,
+//       'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+//       'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+//       'https://api.supersoccer.tv/videos/videos.read' /* DARI CODINGAN LAMA */,
+//       'paymentmethods:read.internal',
+//     ].join(' '),
+//     state,
+//   }
+//   return get(`${AUTH_BASE_ENDPOINT}/oauth2/v1/authorize`, {
+//     params: json,
+//   })
+//     .then(response => {
+//       console.log(response)
+//       return response.data
+//     })
+//     .catch(error => {
+//       return null
+//     })
+// }
 
 import { getApi } from '@supersoccer/gandalf'
 const Auth = getApi('auth/handler')
@@ -350,7 +342,8 @@ export default {
   verifyPassword: Auth.verifyPassword /* Verify password after login */,
   updateNewPassword: Auth.updateNewPassword,
   fetchProfile: Auth.fetchProfile,
-  updateProfile: Auth.updateProfile,
-  requestGuestToken,
-  requestAccessToken,
+  updateProfile,
+  // updateProfile: Auth.updateProfile,
+  // requestGuestToken,
+  // requestCode,
 }

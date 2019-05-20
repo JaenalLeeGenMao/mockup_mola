@@ -17,6 +17,7 @@ const Footer = () => {
       <Link to="/terms">{locale['terms']}</Link>
       <Link to="/privacy">{locale['privacy']}</Link>
       <Link to="/conditions">{locale['condition']}</Link>
+      {/* <Link to="/subscribe">{locale['subscribe']}</Link> */}
     </LazyLoad>
   )
 }

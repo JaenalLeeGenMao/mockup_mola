@@ -100,16 +100,15 @@ class Search extends React.Component {
   componentDidMount() {
     /** handle keyboard pressed */
     document.onkeyup = event => {
-      console.log(event.keyCode)
       switch (event.which || event.keyCode) {
         case 13 /* enter */:
-          this.inputSearch.focus()
+          this.inputSearch.current.focus()
           break
         case 27 /* esc */:
           history.goBack()
           break
         case 32 /* space */:
-          this.inputSearch.focus()
+          this.inputSearch.current.focus()
           break
         default:
           event.preventDefault()
@@ -335,9 +334,7 @@ class Search extends React.Component {
     return (
       <Fragment>
         <div className={s.headerContainer}>
-          <div className={s.headerInner}>
-            <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn searchOff {...this.props} />
-          </div>
+          <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn leftMenuOff searchOff {...this.props} />
         </div>
         <div className={s.root}>
           <div className={s.containerBg} />

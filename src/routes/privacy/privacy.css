@@ -48,4 +48,9 @@
   .privacy_contentbody {
     padding: 0 3rem;
   }
+
+  .privacy_contentheadlinecls {
+    padding-top: 45px;
+    padding-bottom: 15px;
+  }
 }

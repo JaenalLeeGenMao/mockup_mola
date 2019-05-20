@@ -54,24 +54,16 @@ class Register extends Component {
       csrf,
     })
 
-    if (result.meta.status === 'success') {
-      const mainForm = document.getElementById('main_form')
-      const secondaryForm = document.getElementById('secondary_form')
-      mainForm.style.display = 'none'
-      secondaryForm.style.display = 'block'
+    // if (result.meta.status === 'success') {
+    const mainForm = document.getElementById('main_form')
+    const secondaryForm = document.getElementById('secondary_form')
+    mainForm.style.display = 'none'
+    secondaryForm.style.display = 'block'
 
-      this.setState({
-        error: '',
-      })
-    } else {
-      this.setState({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        error: result.meta.error.error_description,
-      })
-    }
+    this.setState({
+      error: '',
+    })
+    // }
   }
 
   handleVerificationToken = async () => {
@@ -103,6 +95,11 @@ class Register extends Component {
     })
     console.info(`Please check your email Token's on ${email}`)
   }
+  handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.handleRegister()
+    }
+  }
 
   handleRegisterSocMed = provider => {
     window.location.href = `/accounts/_/v1/login/${provider}`
@@ -113,7 +110,7 @@ class Register extends Component {
     return (
       <div className={styles.register__container}>
         <div className={styles.register__header_wrapper}>
-          <Header isDark={false} stickyOff libraryOff rightMenuOff {...this.props} />
+          <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} />
         </div>
         <div className={styles.register__content_wrapper}>
           <div id="main_form" className={styles.register__content_form}>
@@ -129,6 +126,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder="Username"
               type="text"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="email"
@@ -140,6 +138,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder="Email"
               type="text"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="password"
@@ -151,6 +150,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder="Password"
               type="password"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="confirmPassword"
@@ -162,6 +162,7 @@ class Register extends Component {
               errorClassName={styles.register__content_input_error}
               placeholder={`${locale['confirm']} Password`}
               type="password"
+              onKeyUp={this.handleKeyUp}
             />
             <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
               {locale['sign_up']}
@@ -194,7 +195,7 @@ class Register extends Component {
                 isError={error !== ''}
                 errorClassName={styles.register__content_input_error}
                 placeholder={`${locale['enter_otp']} Password`}
-                type="password"
+                type="text"
               />
               <button type="submit" className={styles.register__content_submit} onClick={this.handleVerificationToken}>
                 {locale['verify']}

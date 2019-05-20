@@ -43,4 +43,9 @@
   .terms_contentbody {
     padding: 0 3rem;
   }
+
+  .terms_contentheadlinecls {
+    padding-top: 45px;
+    padding-bottom: 15px;
+  }
 }

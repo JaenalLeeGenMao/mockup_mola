@@ -1,0 +1,66 @@
+html,
+body {
+  background: linear-gradient(to bottom, #636363 0%, #000 100%);
+}
+
+:root {
+  overflow: hidden;
+  max-height: 100vh;
+}
+
+.matchlist_container {
+  padding: 8px;
+}
+
+.matchlist_wrappergrid {
+  display: grid;
+  grid-template-columns: 0.18fr 1.5fr 0.18fr;
+  grid-template-rows: repeat(3, 0.2fr 0 1.3fr);
+  color: white;
+
+  /* justify-content: left; */
+}
+
+.matchlist_wrappercontent_center {
+  grid-area: 3/2;
+}
+
+.matchlist_Pagetitle {
+  color: white;
+  font-size: 17.5px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-align: left;
+
+  /* grid-template-columns:  1fr 1fr 1fr 1fr;
+  grid-template-rows:  repeat(4, 1fr 1fr 1fr 1fr);
+  display:  grid; */
+}
+
+.matchlist_valuelistitem {
+  color: white;
+  justify-content: left;
+}
+
+.matchlist_valuelistitem div {
+  text-align: left;
+  padding: 8px 0;
+  color: #fff;
+  font-size: 15px;
+}
+
+.wrapperData {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.matchcards__filtertitle {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.matchcard__positiontitle {
+  float: right;
+}
+
+/* ga */

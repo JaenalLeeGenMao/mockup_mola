@@ -18,7 +18,9 @@ import s from './Forgot.css'
 import Auth from '@api/auth'
 import config from '@source/config'
 
-import Form from '@components/FormInput'
+// import Form from '@components/FormInput'
+const { getComponent } = require('@supersoccer/gandalf')
+const TextInput = getComponent('text-input')
 import LazyLoad from '@components/common/Lazyload'
 
 import { setUserVariable } from '@actions/user'
@@ -69,6 +71,12 @@ class Forgot extends React.Component {
     }
   }
 
+  handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.handleForgotPassword()
+    }
+  }
+
   handleVerificationToken = async () => {
     const { email, token } = this.state,
       { runtime: { csrf } } = this.props
@@ -100,9 +108,9 @@ class Forgot extends React.Component {
                   <p>{locale['forget_password_subtitle']}:</p>
                   <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                   <div>
-                    <Form id="email" type="text" name="email" onChange={this.onChangeInput} value={email} autoFocus>
+                    <TextInput id="email" type="text" name="email" placeholder="Email" onChange={this.onChangeInput} onKeyUp={this.handleKeyUp} value={email} autoFocus>
                       Email
-                    </Form>
+                    </TextInput>
                     <div className={s.formGroup}>
                       <button className={s.button} onClick={this.handleForgotPassword}>
                         {locale['next']}
@@ -115,9 +123,9 @@ class Forgot extends React.Component {
                   <p>{locale['verify_account_label']}</p>
                   <div className={`${s.formGroup} ${s.form__otp}`} style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
                     <div className={s.verify__otp_input}>
-                      <Form id="token" type="text" name="token" onChange={this.onChangeInput} value={token}>
+                      <TextInput id="token" type="text" name="token" onChange={this.onChangeInput} value={token}>
                         {locale['enter_otp']}
-                      </Form>
+                      </TextInput>
                     </div>
                     <button className={s.verify__button} onClick={this.handleVerificationToken}>
                       {locale['verify']}

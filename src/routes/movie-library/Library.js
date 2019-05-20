@@ -13,114 +13,123 @@ import Error from '../search/error/Error'
 
 import Libheader from './movielibrary/Libheader'
 import s from './Library.css'
+import cardStyles from './movielibrary/Card.css'
 import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/LoadingPlaceholder'
 
-import defaultImagePortrait from './assets/default-img-mola_library-01.jpg'
-import defaultImageLandscape from './assets/default-img-mola_library-02.jpg'
+// import defaultImagePortrait from './assets/default-img-mola_library-01.jpg'
+// import defaultImageLandscape from './assets/default-img-mola_library-02.jpg'
 
 class MovieLibrary extends Component {
   state = {
-    movieLibrary: [],
-    search: {
-      genre: [],
-    },
     genreId: '',
-    isLoading: true,
+    active: true,
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getMovieLibrary,
-      getMovieLibraryList,
-      getSearchGenre,
-      search,
-      movieLibrary,
-      genreId, //passed as props from index.js
-    } = nextProps
+  componentDidMount() {
+    const { getMovieLibrary, getSearchGenre, genreId } = this.props
 
-    if (typeof genreId !== 'undefined' && genreId !== '') {
-      if (genreId !== prevState.genreId) {
-        getMovieLibrary(genreId)
-      }
+    getSearchGenre()
+    if (genreId) {
+      getMovieLibrary(genreId)
     }
 
-    if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
-      if (typeof genreId !== 'undefined' && genreId !== '') {
-        getMovieLibrary(genreId)
-      } else {
-        getMovieLibraryList()
-      }
+    document.ontouchend = event => {
+      const halfScreenWidth = window.innerWidth * 0.5
+
+      this.setState({
+        active: event.changedTouches[0].screenX > halfScreenWidth /* to left side */,
+      })
     }
 
-    if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {
-      getSearchGenre()
-    }
+    /* mousedown/mouseup to handle desktop scrolling event */
+    document.onmouseup = event => {
+      const halfScreenWidth = window.innerWidth * 0.5
 
-    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId }
+      this.setState({
+        active: event.x > halfScreenWidth /* to left side */,
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { movieLibrary } = this.props
+    const { getMovieLibrary, genreId, movieLibrary: { meta: { status: libraryStatus } }, search: { genre: { meta: { status: genreStatus }, data: genreData } } } = this.props
 
-    //update loading state
-    if (prevProps.movieLibrary.meta.status !== movieLibrary.meta.status && movieLibrary.meta.status !== 'loading') {
-      this.setState({
-        isLoading: false,
+    //if no genre ('movie-library/') then pick the first genre and show list of relevant movie
+    if (!genreId && prevProps.search.genre.meta.status != genreStatus && genreStatus === 'success') {
+      const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
+      if (firstGenre) {
+        getMovieLibrary(firstGenre)
+      }
+    } else if (genreId !== prevProps.genreId) {
+      //if change genre from genre list
+      getMovieLibrary(genreId)
+    }
+
+    //if has genre but error / wrong genre ('movie-library/xxx')
+    //then check if genre exist in genre list
+    //if exist in genre list but error means error api
+    //but if not exist in genre list then pick the active genre and show list of relevant movie
+    if (genreId && prevProps.movieLibrary.meta.status != libraryStatus && libraryStatus === 'error' && genreStatus === 'success') {
+      const genreExists = genreData.filter(dt => {
+        return dt.id === genreId
       })
+      if (genreExists.length === 0) {
+        const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
+        if (firstGenre) {
+          getMovieLibrary(firstGenre)
+        }
+      }
     }
   }
 
   renderLoading = () => {
     const { isMobile } = this.props
-    const isLoading = this.props.movieLibrary.meta.status === 'loading'
 
     const cardImageLoading = [
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '20rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '10.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '30rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '12rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '11.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '10.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '17.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '40rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
-      { id: '12', width: isMobile ? 'auto' : '26.6rem', height: '13.8rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
+      { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
     ]
 
-    return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, marginBottom: '15px' }} key={obj.id} />)
+    return cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, margin: '12px' }} key={obj.id} />)
   }
 
   renderContent = () => {
+    // const { movieLibrary: { data: libraryDt } } = this.props
     const { movieLibrary: { data: libraryDt } } = this.props
-    const { isLoading } = this.state
-    const cardImageLib = libraryDt.length > 0 ? libraryDt : null
+    const cardImageLib = libraryDt && libraryDt.length > 0 ? libraryDt : null
 
     return (
-      !isLoading &&
       cardImageLib &&
-      cardImageLib.map((obj, index) => {
-        const placeholder = index % 2 === 0 ? defaultImagePortrait : defaultImageLandscape
-        return <CardLibrary key={obj.id} title={obj.title} imgUrl={obj.thumbnail || placeholder} id={obj.id} />
+      cardImageLib.map((videos, index) => {
+        return <CardLibrary {...videos} key={videos.id} index={index} active={this.state.active} />
       })
     )
   }
@@ -131,24 +140,23 @@ class MovieLibrary extends Component {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
-      marginTop: '10rem',
+      marginTop: '10%',
     }
 
     return isLoading === 'error' ? (
       <Error
         errorTitle="Video not found"
-        errorText={`Video with genre ${this.props.genreId} does not exists`}
+        errorText={`Video with genre '${this.props.genreId}' does not exists`}
         wrapperStyle={wrapperStyle}
         imageClass={s.errorImage}
-        titleStyle={{ color: '#000' }}
-        detailStyle={{ color: '#000' }}
+        titleStyle={{ color: '#FFF' }}
+        detailStyle={{ color: '#FFF' }}
       />
     ) : null
   }
 
   render() {
-    const { movieLibrary: { data: libraryDt } } = this.props
-    const status = this.props.movieLibrary.meta.status
+    const { movieLibrary: { meta: { status }, data: libraryDt } } = this.props
     const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : ''
 
     return (
@@ -156,13 +164,13 @@ class MovieLibrary extends Component {
         <Layout>
           <div className={s.main_container}>
             <Libheader cardTitle={title} {...this.props} />
-            <div className={s.card_wrapper}>
-              {this.renderLoading()}
-
-              {this.renderContent()}
+            <div className={s.card_container}>
+              <div className={`${s.card_wrapper} ${status === 'loading' ? s.card_wrapper_loading : ''} `}>
+                {status == 'loading' && this.renderLoading()}
+                {status == 'success' && this.renderContent()}
+              </div>
             </div>
           </div>
-
           {this.renderNotFound(status)}
         </Layout>
       </Fragment>
@@ -182,4 +190,4 @@ const mapDispatchToProps = dispatch => ({
   getMovieLibrary: genreId => dispatch(movieLibraryActions.getMovieLibrary(genreId)),
 })
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(MovieLibrary)
+export default compose(withStyles(s, cardStyles), connect(mapStateToProps, mapDispatchToProps))(MovieLibrary)

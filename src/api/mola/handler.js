@@ -1,5 +1,18 @@
 import { get, post, delete as axiosDelete } from 'axios'
-import { VIDEOS_ENDPOINT, HOME_PLAYLIST_ENDPOINT, HISTORY_ENDPOINT, SEARCH_ENDPOINT, SEARCH_GENRE_ENDPOINT, RECENT_SEARCH_ENDPOINT, MOVIE_DETAIL_ENDPOINT, MOVIE_STREAMING } from './endpoints'
+import qs from 'query-string'
+import {
+  VIDEOS_ENDPOINT,
+  HOME_PLAYLIST_ENDPOINT,
+  HISTORY_ENDPOINT,
+  SEARCH_ENDPOINT,
+  SEARCH_GENRE_ENDPOINT,
+  RECENT_SEARCH_ENDPOINT,
+  MOVIE_DETAIL_ENDPOINT,
+  SUBSCRIPTION_ENDPOINT,
+  ORDER_ENDPOINT,
+  PAYMENT_ENDPOINT,
+  CAMPAIGN_ENDPOINT,
+} from './endpoints'
 import utils from './util'
 
 import { endpoints } from '@source/config'
@@ -9,7 +22,9 @@ const getHomePlaylist = () => {
     ...endpoints.setting,
   })
     .then(response => {
+      // console.log('handler home response', response)
       const result = utils.normalizeHomePlaylist(response)
+      // console.log('handler home result', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -30,12 +45,154 @@ const getHomePlaylist = () => {
     })
 }
 
+const getFeatureBanner = (isMobile = false) => {
+  return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeFeatureBanner(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getSportCategoryList = () => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeHomePlaylist(response)
+      // console.log('handler Sport or matches 1', result)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sport')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+const getMatchesList = () => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/live-soc`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('response handler matcheslist', response)
+      const result = utils.normalizeMatchesList(response)
+      // console.log('after normalize', result)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sports')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getMatchDetail = id => {
+  return post(
+    `${VIDEOS_ENDPOINT}/`,
+    {
+      videos: id,
+    },
+    {
+      ...endpoints.setting,
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeMatchDetail(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 const getHomeVideo = ({ id }) => {
+  // console.log('ID', id)
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
       const result = utils.normalizeHomeVideo(response)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Video')
+      return {
+        meta: {
+          status,
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getSportVideo = ({ id }) => {
+  // console.log('id', id)
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('handler response get sport 2222', response) //here video exist?
+      const result = utils.normalizeHomeVideo(response)
+      // console.log('handler response get result 3333', result) //data null
       return {
         meta: {
           status: 'success',
@@ -343,8 +500,160 @@ const getHotPlaylist = () => {
     })
 }
 
+const getAllSubscriptions = token => {
+  return get(`${SUBSCRIPTION_ENDPOINT}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      app_id: 2,
+    },
+    ...endpoints.setting,
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: response.data.data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const createOrder = ({ token, uid, subscriptionId = 26, price = 10000 }) => {
+  const data = JSON.stringify({
+    order_type_id: 1,
+    subscription_id: subscriptionId /* hanya hardcode midtrans 26 */,
+    quantity: 1 /* subscription per tahun */,
+    uom: 'm' /* sementara monthly */,
+    package_expiry: '',
+    status: 0,
+    user_id: uid,
+    order_amount: 1 * price,
+    total_price: 1 * price,
+    source: 'GSyOzu2WPaAijqbX3Tv6HCQr' /* hardcode dulu nanti baru di pikirin lagi */,
+    payment_method_id: 270 /* payment_method_id midtrans di hardcode 270 dari DataBase */,
+  })
+
+  return post(`${ORDER_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { data } = response.data
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: {
+          id: data[0].id,
+          ...data[0].attributes,
+        },
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Order')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, token, orderId }) => {
+  const data = JSON.stringify({
+    paymentMethodId: 270, // payment_method_id midtrans di hardcode 17 dari DataBase
+    Id: `${orderId}`,
+    title: 'Mola - Paket No Ads',
+    phone: phoneNumber,
+    email: email,
+    name: `${firstName} ${lastName}`,
+    userId: uid,
+    productSku: '1',
+    productName: 'Mola - Paket No Ads',
+  })
+
+  return post(`${PAYMENT_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { paymentData } = response.data
+      const redirectUrl = `${endpoints.domain}/accounts/profile`
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: { ...paymentData, redirectUrl },
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Midtrans Payment')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: '',
+      }
+    })
+}
+const getOrderHistoryTransactions = ({ uid, token }) => {
+  // console.log('token', token)
+  return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
+    headers: token && { Authorization: `Bearer ${token}` },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const { data } = response.data
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola History Transactions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
+  getFeatureBanner,
   getHomeVideo,
   getAllHistory,
   getSearchResult,
@@ -357,4 +666,12 @@ export default {
   getMovieLibrary,
   getMovieLibraryList,
   getHotPlaylist,
+  getAllSubscriptions,
+  createOrder,
+  createMidtransPayment,
+  getOrderHistoryTransactions,
+  getSportCategoryList,
+  getSportVideo,
+  getMatchesList,
+  getMatchDetail,
 }

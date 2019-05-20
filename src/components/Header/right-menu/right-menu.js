@@ -11,10 +11,16 @@ import Link from '@components/Link'
 import { getLocale } from '../locale'
 
 import styles from './right-menu.css'
+import { IoIosArrowDown } from 'react-icons/io'
 
 const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
   const isLogin = uid || sid
+
+  let name = `${firstName} ${lastName}`
+  if (firstName == null) {
+    name = ''
+  }
   return (
     <LazyLoad containerClassName={styles.popup__menu_container}>
       <div className={styles.popup__menu_header}>
@@ -23,14 +29,19 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
       <div className={styles.popup__menu_content}>
         {isLogin && (
           <>
-            <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
-              <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />
+            <div className={styles.popup__menu_profile_container}>
+              <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+                {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
+              </Link>
+              <h2 className={styles.popup__menu_username}>{name}</h2>
+            </div>
+            <Link to="/accounts/profile" onClick={onClick}>
+              {locale['profile']}
             </Link>
-            <h2 className={styles.popup__menu_username}>{`${firstName} ${lastName}`}</h2>
-            <Link to="/accounts/inbox" className={styles.popup__menu_inbox}>
-              {locale['inbox']}
-            </Link>
-            <Link to="/accounts/history">{locale['history']}</Link>
+            {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
+            {/* <Link to="/accounts/history" onClick={onClick}>{locale['video_history']}</Link> */}
+            {/* <Link to="/accounts/profile?tab=subscription" onClick={onClick}>{locale['paket_MOLA']}</Link> */}
+            {/* <Link to="/accounts/profile?tab=transaction" onClick={onClick}>{locale['transaction_history']}</Link> */}
           </>
         )}
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
@@ -55,12 +66,12 @@ class RightMenu extends Component {
 
   handleSignOut = e => {
     e.preventDefault()
-    const { user: { uid }, runtime: { csrf } } = this.props
-    Auth.requestLogout({ uid, csrf }).then(response => {
-      if (response.meta.status === 'success') {
-        window.location.href = '/signout'
-      }
-    })
+    // const { user: { uid }, runtime: { csrf } } = this.props
+    // Auth.requestLogout({ uid, csrf }).then(response => {
+    //   if (response.meta.status === 'success') {
+    //   }
+    // })
+    window.location.href = '/signout'
   }
 
   handleCopyToClipboard = e => {
@@ -93,11 +104,24 @@ class RightMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, searchOff, profileOff, shareButtonOn } = this.props
+    const { color, searchOff, profileOff, shareButtonOn, dropdownMenu, closeMenuOn, handleMenuToggleClick, isMenuToggled = false } = this.props
+    const iconToggleStyle = {
+      transform: 'rotate(180deg) translateY(0%)',
+      top: '-3px',
+    }
 
     return (
       <>
         <div className={styles.right__menu}>
+          {/* {!dropdownMenu && (
+            <span className={styles.right__menu_wrapper}>
+              <LazyLoad className={styles.right__menu_icon_wrapper}>
+                <button className={styles.dropdown_list} onClick={handleMenuToggleClick}>
+                  Movie <IoIosArrowDown className={styles.right__menu_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                </button>
+              </LazyLoad>
+            </span>
+          )} */}
           {!searchOff && (
             <span className={styles.right__menu_wrapper}>
               <LazyLoad className={styles.right__menu_icon_wrapper}>

@@ -13,7 +13,7 @@ const Review = ({ data }) => {
     fade: true,
     speed: 900,
     infinite: true,
-    // cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)',
+    // cssEase: 'cubic-bezier(0.075, 0.82, 0.165, 1)',
     touchThreshold: 100,
   }
   const images = [
@@ -35,8 +35,6 @@ const Review = ({ data }) => {
       text,
     }
   })
-
-  console.log(quotes)
 
   return (
     <div className={reviewSliderContainer}>

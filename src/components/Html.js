@@ -38,7 +38,7 @@ class Html extends React.Component {
   static isMobile = true
 
   render() {
-    const { title, description, url, styles, scripts, app, children, image } = this.props
+    const { title, description, url, styles, scripts, app, children, image, twitter_card_type = 'summary', appLinkUrl = '', type = 'website' } = this.props
 
     return (
       <html className="no-js" lang="en">
@@ -49,19 +49,25 @@ class Html extends React.Component {
           <meta name="apple-mobile-web-app-status-bar-style" content="#0f4a73" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="keywords" content={`Mola, MolaTV, MolaSport, TV, Sport, Premiere League, ${description}`} />
-          <meta name="description" content={`Mola TV Online Movies & Mola Sport Showcase 380 Matches Every Seasons Under MolaSports Brand. ${description}`} />
-          <title>{`Mola TV - ${title}`}</title>
+          <meta name="keywords" data-react-helmet="true" content={`Mola, MolaTV, MolaSport, TV, Sport, Premiere League, ${description}`} />
+          <meta name="description" data-react-helmet="true" content={`Mola TV Online Movies & Mola Sport Showcase 380 Matches Every Seasons Under MolaSports Brand. ${description}`} />
+          <title data-react-helmet="true">{`Mola TV - ${title}`}</title>
           <meta name="msapplication-TileImage" content={logoLandscapeBlue} />
           <meta name="robots" content="index, follow" />
           <meta name="googlebot" content="index,follow" />
           <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
           <meta property="og:site_name" content="molatv" />
-          <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} />
-          <meta property="og:description" content={description} />
-          <meta property="og:image" content={logoLandscapeBlue} />
-          <meta property="og:url" content={'https://mola.tv/' || url} />
-          <meta property="og:type" content="website" />
+          <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} data-react-helmet="true" />
+          <meta property="og:description" content={description} data-react-helmet="true" />
+          <meta property="og:image" content={image} data-react-helmet="true" />
+          <meta property="og:url" content={url} data-react-helmet="true" />
+          <meta property="og:type" content={type} data-react-helmet="true" />
+
+          <meta property="twitter:title" content={title} data-react-helmet="true" />
+          <meta name="twitter:description" content={description} data-react-helmet="true" />
+          <meta name="twitter:image:src" content={image} data-react-helmet="true" />
+          <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" />
+
           <meta name="referrer" content="origin" />
           <meta name="referrer" content="origin-when-cross-origin" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
@@ -69,7 +75,7 @@ class Html extends React.Component {
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />
-          <link rel="canonical" href="https://www.mola.tv" />
+          {type != 'video.other' && <link rel="canonical" href="https://www.mola.tv" />}
           {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
         </head>
         <body>

@@ -45,13 +45,19 @@ class Login extends Component {
       csrf,
     })
     if (result.meta.status === 'success') {
-      window.location.href = `/accounts/signin?uid=${result.data.uid}`
+      window.location.href = '/accounts/signin'
     } else {
       this.setState({
         email: '',
         password: '',
         error: result.meta.error.error_description,
       })
+    }
+  }
+
+  handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.handleLogin()
     }
   }
 
@@ -64,7 +70,7 @@ class Login extends Component {
     return (
       <div className={styles.login__container}>
         <div className={styles.login__header_wrapper}>
-          <Header isDark={false} stickyOff libraryOff rightMenuOff {...this.props} />
+          <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} />
         </div>
         <div className={styles.login__content_wrapper}>
           <div className={styles.login__content_form}>
@@ -80,6 +86,7 @@ class Login extends Component {
               errorClassName={styles.login__content_input_error}
               placeholder="Email"
               type="text"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="password"
@@ -91,6 +98,7 @@ class Login extends Component {
               errorClassName={styles.login__content_input_error}
               placeholder="Password"
               type="password"
+              onKeyUp={this.handleKeyUp}
             />
             <div className={styles.login__content_forget_password}>
               <Link to="/accounts/forgotPassword">{locale['forget_password']} ?</Link>
