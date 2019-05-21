@@ -173,9 +173,10 @@ export const controllerContainer = css`
     padding: 2rem 5rem;
     text-transform: uppercase;
     letter-spacing: 0.25rem;
-    color: #4a4a4a;
+    color: #a9a9a9;
     font-weight: 600;
     cursor: pointer;
+    font-size: 1.4rem;
   }
 
   div.active {
@@ -185,7 +186,7 @@ export const controllerContainer = css`
 
 export const videoPlayerContainer = css`
   @import '../../../../global/style/css/grainBackground.css';
-  height: 65.5vh;
+  height: 74vh;
   width: 100vw;
   margin: auto;
 `

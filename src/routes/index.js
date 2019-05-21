@@ -167,8 +167,21 @@ const routes = {
   },
 }
 
+function addListenerMulti(el, s, fn) {
+  s.split(' ').forEach(e => el.addEventListener(e, fn, false))
+}
+
 const track = async store => {
   if (process.env.BROWSER) {
+    var timer = null
+
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(function(t) {
+        // console.log("EVENT ALL")
+        tracker.sessionId()
+      }, 60000)
+    })
     const { location } = window
     // Parse Current URL
     const { search, pathname } = window.location
@@ -200,6 +213,10 @@ const track = async store => {
     const browserVersion = _get(UA.getBrowser(), 'version', null)
     const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
 
+    const geolocation = tracker.getLangLat() ? tracker.getLangLat() : ''
+    const latitude = geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    const longitude = geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+
     // Initialize Payload
     const payload = {
       data: {
@@ -208,6 +225,7 @@ const track = async store => {
         host: `${window.location.host}`,
         path: `${window.location.host}${location.pathname}${location.search}`,
         session_id: tracker.sessionId(), // Try get+set session_id
+        client_id: tracker.clientId(),
         page_content: document.title || null,
         ip: user.clientIp,
         platform,
@@ -221,6 +239,8 @@ const track = async store => {
         utm_source: urlParams.utm_source || undefined,
         utm_medium: urlParams.utm_medium || undefined,
         utm_campaign: urlParams.utm_campaign || undefined,
+        latitude,
+        longitude,
       },
       table: 'event_pages',
     }
@@ -249,9 +269,12 @@ const track = async store => {
     if (pathname.includes('movie-detail')) {
       payload.data.video_id = paths[lastPathIndex]
       payload.table = 'event_videos'
+      if (token && !inSearchPage) tracker.sendPubSub(payload, token)
+    } else if (pathname.includes('watch')) {
+      payload.data.video_id = urlParams.v
+      payload.table = 'event_videos'
+      if (token && !inSearchPage) tracker.sendPubSub(payload, token)
     }
-
-    if (token && !inSearchPage) tracker.sendPubSub(payload, token)
 
     // HOTFIX need to find a way to get refferer in react
     currentLocation = location

@@ -422,6 +422,7 @@ class Home extends Component {
           </div>
           {playlistStatus !== 'error' && (
             <Header
+              shadowMobile
               libraryOff
               className={styles.placeholder__header}
               isDark={0}

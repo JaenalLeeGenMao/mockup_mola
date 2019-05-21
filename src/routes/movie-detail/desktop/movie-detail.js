@@ -193,6 +193,8 @@ class MovieDetail extends Component {
     }
 
     this.player = player
+
+    player.addEventListener('error', e => {})
   }
 
   subtitles() {
@@ -298,6 +300,7 @@ class MovieDetail extends Component {
                     // isDRM={true}
                     {...videoSettings}
                     showChildren
+                    showBackBtn
                   >
                     <LazyLoad
                       containerClassName={videoSuggestionContainer}

@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  padding: 1.6rem 1.3rem;
+  padding: 0;
   overflow: hidden;
   box-sizing: border-box;
   color: #fff;
@@ -16,15 +16,15 @@
 }
 
 .inner_box {
-  padding: 0 1.6rem;
+  padding: 15px;
 }
 
 .inner_box p {
-  line-height: 1.4rem;
+  line-height: 1.5;
   margin: 0;
   padding: 0;
   height: 6rem;
-  text-align: justify;
+  text-align: left;
 }
 
 .inner_box p.show {

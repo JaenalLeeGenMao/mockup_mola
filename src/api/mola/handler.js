@@ -459,7 +459,7 @@ const getMovieLibrary = id => {
           status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result.length > 0 ? result : [],
       }
     })
     .catch(error => {

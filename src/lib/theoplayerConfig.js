@@ -4,7 +4,7 @@ import Tracker from '@source/lib/tracker'
 
 let ticker = []
 var videoData, userData
-const handleOnTimePerMinute = ({ action, heartbeat, player }) => {
+const handleOnTimePerMinute = ({ action, heartbeat, player, bitrate, video_quality, client_bandwidth }) => {
   const { clientIp, uid, referrer } = userData
   // const currentDuration = player ? player.currentTime : '';
   // const totalDuration = player ? player.duration : '';
@@ -14,6 +14,9 @@ const handleOnTimePerMinute = ({ action, heartbeat, player }) => {
     window: window,
     event: 'event_video_plays',
     referrer: referrer,
+    bitrate,
+    video_quality,
+    client_bandwidth,
     // currentDuration,
     // totalDuration
   }
@@ -26,8 +29,10 @@ const handleOnTimePerMinute = ({ action, heartbeat, player }) => {
 
 const handleTimeUpdate = (payload, player) => {
   const time = Math.round(payload)
-  console.log('time', time, player)
-  // console.log("time:", time, "ticker:", ticker, videoData.id)
+  let bitrate = '',
+    video_quality = '',
+    client_bandwidth = ''
+
   if (time % 60 === 0 && !player.ads.playing) {
     var calcTime = time
     /* NOTE:
@@ -42,11 +47,27 @@ const handleTimeUpdate = (payload, player) => {
     if (videoData.streamSourceUrl.toLowerCase().indexOf('live') > -1) {
       calcTime = Math.max(time - 60, 0)
     }
-    if (!ticker.includes(calcTime)) {
+
+    var vTracks = player.videoTracks,
+      currentTrack
+    for (var i = 0; i < vTracks.length; i++) {
+      currentTrack = vTracks.item(i)
+      if (currentTrack.enabled && currentTrack.activeQuality) {
+        // console.log("Resolution:", currentTrack.activeQuality.height)
+        // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
+        video_quality = `${currentTrack.activeQuality.height}`
+        bitrate = `${currentTrack.activeQuality.bandwidth}`
+        client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+        //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+      }
+    }
+
+    if (bitrate && !ticker.includes(calcTime)) {
       ticker.push(calcTime)
-      // console.log("====calctime:", calcTime, " ,ticker:", ticker)
+
+      Tracker.sessionId()
       const heartbeat = calcTime !== 0
-      handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player })
+      handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
     }
   }
 }

@@ -383,34 +383,39 @@ const normalizeVideoDetail = response => {
 
 const normalizeMovieLibrary = response => {
   const { data } = response.data
+  let result
   if (data && data.length > 0) {
-    return data.map(({ attributes: { videos, title: genreTitle } }) =>
-      videos.map(({ id, attributes }) => {
-        const { title, visibility } = attributes
-        const thumbnail = _get(attributes, 'images.cover.portrait', '')
-        const description = _get(attributes, 'description', '')
-        const quotes = _get(attributes, 'quotes[0].attributes', '')
-        const isDark = _get(attributes, 'isDark', '0')
+    result = data.map(({ attributes: { videos, title: genreTitle, visibility: vis } }) => {
+      if (vis === 1) {
+        return videos.map(({ id, attributes }) => {
+          const { title, visibility } = attributes
+          const thumbnail = _get(attributes, 'images.cover.portrait', '')
+          const description = _get(attributes, 'description', '')
+          const quotes = _get(attributes, 'quotes[0].attributes', '')
+          const isDark = _get(attributes, 'isDark', '0')
 
+          return {
+            genreTitle,
+            id,
+            title,
+            visibility,
+            thumbnail,
+            description,
+            quotes,
+            isDark,
+          }
+        })
+      } else {
         return {
-          genreTitle,
-          id,
-          title,
-          visibility,
-          thumbnail,
-          description,
-          quotes,
-          isDark,
+          meta: {
+            status: 'no_result',
+          },
+          data: [],
         }
-      })
-    )
+      }
+    })
   }
-  return {
-    meta: {
-      status: 'no_result',
-    },
-    data: [],
-  }
+  return result[0]
 }
 
 const normalizeMovieLibraryList = response => {

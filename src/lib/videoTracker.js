@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import Tracker from '@source/lib/tracker'
 
 export const handleTracker = async (data, props) => {
-  const { clientIp, userId, heartbeat, window: clientWindow, event, referrer } = data
+  const { clientIp, userId, heartbeat, window: clientWindow, event, referrer, video_quality, bitrate, client_bandwidth } = data
   const { id: videoId, source } = props
   /* Parse Current Url */
   const urlParams = queryString.parse(clientWindow.location.search)
@@ -36,6 +36,10 @@ export const handleTracker = async (data, props) => {
   const browserName = _get(UA.getBrowser(), 'name', null)
   const browserVersion = _get(UA.getBrowser(), 'version', null)
   const browser = browserName && browserVersion ? `${browserName} ${browserVersion}` : null
+
+  const geolocation = Tracker.getLangLat()
+  const latitude = geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+  const longitude = geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
   /* eslint-disable */
   const payload = {
     data: {
@@ -43,7 +47,8 @@ export const handleTracker = async (data, props) => {
       host: `${clientWindow.location.host}`,
       client: 'mola-web',
       app: browser,
-      session_id: Tracker.sessionId(window), // Try get+set session_id
+      session_id: Tracker.sessionId(), // Try get+set session_id
+      client_id: Tracker.clientId(),
       utm_source: urlParams.utm_source || undefined,
       utm_medium: urlParams.utm_medium || undefined,
       utm_campaign: urlParams.utm_campaign || undefined,
@@ -63,6 +68,11 @@ export const handleTracker = async (data, props) => {
       // total_duration: totalDuration,
       // currentSubscriptionId: adjustedSubs,
       hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
+      latitude,
+      longitude,
+      video_quality,
+      bitrate,
+      client_bandwidth,
     },
     table: event,
   }

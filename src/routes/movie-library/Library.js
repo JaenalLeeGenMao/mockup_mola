@@ -64,22 +64,6 @@ class MovieLibrary extends Component {
       //if change genre from genre list
       getMovieLibrary(genreId)
     }
-
-    //if has genre but error / wrong genre ('movie-library/xxx')
-    //then check if genre exist in genre list
-    //if exist in genre list but error means error api
-    //but if not exist in genre list then pick the active genre and show list of relevant movie
-    if (genreId && prevProps.movieLibrary.meta.status != libraryStatus && libraryStatus === 'error' && genreStatus === 'success') {
-      const genreExists = genreData.filter(dt => {
-        return dt.id === genreId
-      })
-      if (genreExists.length === 0) {
-        const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
-        if (firstGenre) {
-          getMovieLibrary(firstGenre)
-        }
-      }
-    }
   }
 
   renderLoading = () => {
@@ -143,7 +127,7 @@ class MovieLibrary extends Component {
       marginTop: '10%',
     }
 
-    return isLoading === 'error' ? (
+    return isLoading === 'error' || isLoading === 'no_result' ? (
       <Error
         errorTitle="Video not found"
         errorText={`Video with genre '${this.props.genreId}' does not exists`}
@@ -156,8 +140,8 @@ class MovieLibrary extends Component {
   }
 
   render() {
-    const { movieLibrary: { meta: { status }, data: libraryDt } } = this.props
-    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : ''
+    const { movieLibrary: { meta: { status }, data: libraryDt }, genreId } = this.props
+    const title = genreId //libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : ''
 
     return (
       <Fragment>
