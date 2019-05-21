@@ -8,7 +8,7 @@ const TOKEN_ENDPOINT = production ? 'https://mola.tv/api/v2/videos/_/pubsub' : '
 
 const PUBSUB_ENDPOINT = production
   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
-  : 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/df-event-videos:publish'
+  : 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/ds-feeder-guardian:publish'
 class Tracker {
   static sessionId = () => {
     let sessionId = _get(document, 'cookie', '')
