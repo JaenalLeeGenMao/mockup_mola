@@ -6,8 +6,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
-import { endpoints } from '@source/config'
 import { updateCustomMeta } from '@source/DOMUtils'
+import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
@@ -17,9 +17,7 @@ import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
-import { videoSettings as defaultVideoSettings } from '../const'
-
-import { handleTracker } from '../tracker'
+// import { videoSettings as defaultVideoSettings } from '../const'
 
 import {
   playButton,
@@ -157,34 +155,6 @@ class MovieDetail extends Component {
     }
   }
 
-  handleOnTimePerMinute = ({ action, heartbeat }) => {
-    const { clientIp, uid, sessionId } = this.props.user
-    const currentDuration = this.player ? this.player.currentTime : ''
-    const totalDuration = this.player ? this.player.duration : ''
-    const payload = {
-      action,
-      clientIp,
-      sessionId,
-      heartbeat: heartbeat ? 60 : 0,
-      window: window,
-      // currentDuration,
-      // totalDuration,
-    }
-
-    if (uid) {
-      payload.userId = uid
-    }
-
-    window.__theo_start = window.__theo_start || Date.now()
-    window.__theo_ps = Date.now()
-
-    // const minutesElapsed = Math.floor((window.__theo_ps - window.__theo_start) / (60 * 1000))
-    // if (minutesElapsed >= 1) {
-    handleTracker(payload, this.props.movieDetail.data[0])
-    window.__theo_start = window.__theo_ps
-    // }
-  }
-
   handleControllerClick = name => {
     this.setState({ isControllerActive: name })
   }
@@ -199,16 +169,6 @@ class MovieDetail extends Component {
     // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     this.isPlay = true
     this.setState({ toggleSuggestion: false })
-  }
-
-  handleVideoTimeUpdate = (payload = 0, player) => {
-    const time = Math.round(payload)
-    if (time % 60 === 0 && this.isPlay && !player.ads.playing) {
-      if (!ticker.includes(time)) {
-        ticker.push(time)
-        this.handleOnTimePerMinute({ action: 'timeupdate', heartbeat: time !== 0 })
-      }
-    }
   }
 
   handleOnVideoLoad = player => {
@@ -233,6 +193,8 @@ class MovieDetail extends Component {
     }
 
     this.player = player
+
+    player.addEventListener('error', e => {})
   }
 
   subtitles() {
@@ -241,11 +203,11 @@ class MovieDetail extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
-        kind: type,
-        src: url,
-        label: locale,
-        type: format,
+      subtitles.map(({ subtitleUrl, country }) => ({
+        kind: 'subtitles',
+        src: subtitleUrl,
+        label: country,
+        type: 'srt',
       }))
 
     return myTheoPlayer
@@ -305,32 +267,13 @@ class MovieDetail extends Component {
     const poster = apiFetched ? dataFetched.background.landscape : ''
     // const poster = apiFetched ? dataFetched.details.landscape : ''
 
-    //Get Time Right Now
-    const todayDate = new Date().getTime()
+    const { user } = this.props
 
-    //Get ExpireAt
-    const setSubscribe = this.props.user.subscriptions
-    const setSubscribeExp = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.expireAt)
-    const setSubscribeExpVal = new Date(setSubscribeExp).getTime()
+    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, '') : {}
 
-    //Validation Ads Show
-    const resultCompareDate = setSubscribeExpVal - todayDate
-
-    //Get Status Subscribe Type from User
-    const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-
-    let videoSettings = {}
-    if (resultCompareDate > 0) {
-      videoSettings = {
-        ...defaultVideoSettings,
-      }
-    } else {
-      videoSettings = {
-        ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
-        // skipVideoAdsOffset: 1
-      }
+    const videoSettings = {
+      ...defaultVidSetting,
+      // getUrlResponse: this.getUrlResponse
     }
 
     return (
@@ -348,16 +291,16 @@ class MovieDetail extends Component {
                     subtitles={this.subtitles()}
                     poster={poster}
                     autoPlay={false}
-                    movieUrl={streamSource}
                     // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
                     handleOnVideoLoad={this.handleOnVideoLoad}
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}
-                    handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                    // handleVideoTimeUpdate={this.handleVideoTimeUpdate}
                     // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
                     // isDRM={true}
                     {...videoSettings}
                     showChildren
+                    showBackBtn
                   >
                     <LazyLoad
                       containerClassName={videoSuggestionContainer}

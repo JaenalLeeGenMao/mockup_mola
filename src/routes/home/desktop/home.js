@@ -559,9 +559,9 @@ class Home extends Component {
                         </Link>
                       )}
                     {activeSlide.buttonText && (
-                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                         <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                      </Link>
+                      </a>
                     )}
                   </LazyLoad>
                 )}

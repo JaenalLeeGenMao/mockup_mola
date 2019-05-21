@@ -5,15 +5,9 @@ import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
 import notificationBarBackground from '@global/style/icons/notification-bar.png'
-import { endpoints } from '@source/config'
 import { updateCustomMeta } from '@source/DOMUtils'
-
+import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import * as movieDetailActions from '@actions/movie-detail'
-
-import { videoSettings as defaultVideoSettings } from './const'
-
-import { handleTracker } from './tracker'
-
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -199,33 +193,13 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
+    const { user } = this.props
 
-    //Get Time Right Now
-    const todayDate = new Date().getTime()
+    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, '') : {}
 
-    //Get ExpireAt
-    const setSubscribe = this.props.user.subscriptions
-    const setSubscribeExp = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.expireAt)
-    const setSubscribeExpVal = new Date(setSubscribeExp).getTime()
-
-    //Validation Ads Show
-    const resultCompareDate = setSubscribeExpVal - todayDate
-
-    //Get Status Subscribe Type from User
-    const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-
-    let videoSettings = {}
-    if (resultCompareDate > 0) {
-      videoSettings = {
-        ...defaultVideoSettings,
-      }
-    } else {
-      videoSettings = {
-        ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
-        // skipVideoAdsOffset: 1
-      }
+    const videoSettings = {
+      ...defaultVidSetting,
+      // getUrlResponse: this.getUrlResponse
     }
 
     return (
@@ -238,12 +212,10 @@ class MovieDetail extends Component {
             <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
-              movieUrl={streamSource}
               // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
               handleOnVideoLoad={this.handleOnVideoLoad}
               handleOnVideoPause={this.handleOnVideoPause}
               handleOnVideoPlay={this.handleOnVideoPlay}
-              handleVideoTimeUpdate={this.handleVideoTimeUpdate}
               // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
               // isDRM={true}
               {...videoSettings}

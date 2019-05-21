@@ -317,7 +317,6 @@ class Sport extends Component {
       setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
-
         if (delta < 0) {
           if (that.rootSlider) {
             that.rootSlider.slickNext()
@@ -410,7 +409,7 @@ class Sport extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
     setTimeout(function() {
-      that.props.onUpdatePlaylist(activePlaylist.id)
+      // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
       let isDark = 1
@@ -421,7 +420,6 @@ class Sport extends Component {
         that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
       }
       if (index || index === 0) {
-        sliderRefs[index].slickGoTo(0)
         that.setState({
           scrollIndex: index,
           swipeIndex,
@@ -546,8 +544,7 @@ class Sport extends Component {
                     videos.data.length > 0 &&
                     videos.data.map((video, index) => {
                       const { id, sortOrder } = video.meta
-                      // console.log('checking slider exist?? ', video)
-                      return <SportMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                      return <SportMobileContent key={id} videos={video.data} index={scrollIndex} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
                     })}
                 </Slider>
               </>
