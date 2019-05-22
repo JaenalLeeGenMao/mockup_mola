@@ -353,7 +353,7 @@ const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration } } = result
+      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType } } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
         id,
@@ -370,6 +370,9 @@ const normalizeVideoDetail = response => {
         year,
         duration,
         background,
+        startTime,
+        endTime,
+        contentType,
       }
     })
   }

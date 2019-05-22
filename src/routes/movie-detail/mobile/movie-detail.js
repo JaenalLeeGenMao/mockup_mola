@@ -55,7 +55,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /*default 0 */ /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -213,7 +213,7 @@ class MovieDetail extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
                 {streamSource ? (
