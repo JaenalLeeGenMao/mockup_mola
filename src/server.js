@@ -39,6 +39,7 @@ import { setRuntimeVariable } from './actions/runtime'
 import config from './config'
 import Axios from 'axios'
 import Crypto from 'crypto.js'
+import _get from 'lodash/get'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -65,14 +66,14 @@ app.get('/ping', (req, res) => {
   res.send('PONG')
 })
 
-app.use(
-  '/api',
-  proxy(`${config.endpoints.domain}/api/`, {
-    proxyReqPathResolver: (req, res) => {
-      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-    },
-  })
-)
+// app.use(
+//   '/api',
+//   proxy(`${config.endpoints.domain}/api/`, {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//     },
+//   })
+// )
 
 // app.use(
 //   '/accounts/_',
@@ -567,8 +568,16 @@ app.get('*', async (req, res, next) => {
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
-    if (firstPath === 'movie-detail') {
-      const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+    if (firstPath === 'movie-detail' || firstPath === 'watch') {
+      let videoId = '',
+        appLink = ''
+      if (firstPath === 'movie-detail') {
+        videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+        appLink = 'movie-detail/' + videoId
+      } else {
+        videoId = req.query.v
+        appLink = 'watch?v=' + videoId
+      }
       if (videoId) {
         const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id${appId}`, {
           timeout: 5000,
@@ -586,10 +595,11 @@ app.get('*', async (req, res, next) => {
           })
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
-        data.image = response ? response[0].attributes.images.cover.background.landscape : ''
+        const background = _get(response[0].attributes.images, 'cover', { landscape: '' })
+        data.image = response ? background.landscape : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
-        data.appLinkUrl = 'movie-detail/' + videoId
+        data.appLinkUrl = appLink
       }
     }
 

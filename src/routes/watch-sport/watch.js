@@ -10,6 +10,7 @@ import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import * as movieDetailActions from '@actions/movie-detail'
 import styles from '@global/style/css/grainBackground.css'
 
+import CountDown from '@components/CountDown'
 import { customTheoplayer } from './theoplayer-style'
 //const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
@@ -18,9 +19,8 @@ const Theoplayer = getComponent('theoplayer')
 let ticker = [] /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
-    toggleSuggestion: false,
     movieDetail: [],
-    isControllerActive: 'overview',
+    countDownStatus: true,
   }
 
   uuidADS = () => {
@@ -74,60 +74,6 @@ class MovieDetail extends Component {
           { src: notificationBarBackground, sizes: '512x512', type: 'image/png' },
         ],
       })
-    }
-  }
-
-  handleOnTimePerMinute = ({ action, heartbeat }) => {
-    const { clientIp, uid, sessionId } = this.props.user
-    const currentDuration = this.player ? this.player.currentTime : ''
-    const totalDuration = this.player ? this.player.duration : ''
-    const payload = {
-      action,
-      clientIp,
-      sessionId,
-      heartbeat: heartbeat ? 60 : 0,
-      window: window,
-      // currentDuration,
-      // totalDuration,
-    }
-
-    if (uid) {
-      payload.userId = uid
-    }
-
-    window.__theo_start = window.__theo_start || Date.now()
-    window.__theo_ps = Date.now()
-
-    // const minutesElapsed = Math.floor((window.__theo_ps - window.__theo_start) / (60 * 1000))
-    // if (minutesElapsed >= 1) {
-    handleTracker(payload, this.props.movieDetail.data[0])
-    window.__theo_start = window.__theo_ps
-    // }
-  }
-
-  handleControllerClick = name => {
-    this.setState({ isControllerActive: name })
-  }
-
-  handleOnVideoPause = (payload = false, player) => {
-    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
-    this.setState({ toggleSuggestion: true })
-  }
-
-  handleOnVideoPlay = (payload = true, player) => {
-    // window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    this.isPlay = true
-    this.setState({ toggleSuggestion: false })
-  }
-
-  handleVideoTimeUpdate = (payload = 0, player) => {
-    const time = Math.round(payload)
-    if (time % 60 === 0 && this.isPlay && !player.ads.playing) {
-      if (!ticker.includes(time)) {
-        ticker.push(time)
-        this.handleOnTimePerMinute({ action: 'timeupdate', heartbeat: time !== 0 })
-      }
     }
   }
 
@@ -186,21 +132,60 @@ class MovieDetail extends Component {
     this.updateMetaTag()
   }
 
+  hideCountDown = () => {
+    this.setState({
+      countDownStatus: false,
+    })
+  }
+
+  renderVideo = () => {
+    const { user, getMovieDetail, videoId } = this.props
+    const { meta: { status, error }, data } = this.props.movieDetail
+
+    if (status === 'success' && data.length > 0) {
+      const defaultVidSetting = defaultVideoSetting(user, data[0], '')
+
+      const videoSettings = {
+        ...defaultVidSetting,
+        // getUrlResponse: this.getUrlResponse
+      }
+
+      // console.log("aaaa", this.state.countDownStatus, dataFetched.contentType, dataFetched.startTime * 1000, Date.now())
+      // console.log("dataFetched.streamSourceUrl", dataFetched.streamSourceUrl)
+      if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
+        return <CountDown hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} />
+      } else if (data[0].streamSourceUrl) {
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
+            // isDRM={true}
+            showBackBtn
+            {...videoSettings}
+          />
+        )
+      }
+    }
+  }
+
   render() {
-    const { isControllerActive, toggleSuggestion } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    const { user } = this.props
+    // console.log("dataFetched", dataFetched)
+    // const { user, getMovieDetail, videoId } = this.props
 
-    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, '') : {}
+    // const defaultVidSetting = status === 'success' && defaultVideoSetting(user, dataFetched, '')
 
-    const videoSettings = {
-      ...defaultVidSetting,
-      // getUrlResponse: this.getUrlResponse
-    }
+    // const videoSettings = {
+    //   ...defaultVidSetting,
+    //   // getUrlResponse: this.getUrlResponse
+    // }
 
     return (
       <>
@@ -209,18 +194,17 @@ class MovieDetail extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            <Theoplayer
+            {this.renderVideo()}
+            {/* <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
               // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
               handleOnVideoLoad={this.handleOnVideoLoad}
-              handleOnVideoPause={this.handleOnVideoPause}
-              handleOnVideoPlay={this.handleOnVideoPlay}
               // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
               // isDRM={true}
               showBackBtn
               {...videoSettings}
-            />
+            /> */}
           </>
         )}
       </>
