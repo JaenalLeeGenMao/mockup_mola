@@ -5,9 +5,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { connect } from 'react-redux'
 
 import { UiNavigation, UiMobileNav, UiSelect, UiCheckbox, UiRadio, UiSwitch, UiFooterLink, UiButton } from '@components'
-import fbIcon from '@global/style/icons/facebook.png'
-import googleIcon from '@global/style/icons/google.png'
-import lineIcon from '@global/style/icons/line.png'
+
+import { facebook as fbIcon, google as googleIcon, line as lineIcon } from '@global/imageUrl'
 
 import { updateSetting } from '@actions/user'
 import s from './index.css'

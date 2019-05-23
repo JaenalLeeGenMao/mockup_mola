@@ -16,8 +16,8 @@ import LazyLoad from '@components/common/Lazyload'
 // const LazyLoad = getComponent('LazyLoad')
 
 import history from '../../history'
-import logoBlue from '@global/style/icons/mola-blue.svg'
-import logoMobile from '@global/style/icons/mola-logo-mobile.svg'
+
+import { logoBlue, logoMobile } from '@global/imageUrl'
 
 import Link from '../Link'
 
@@ -102,7 +102,6 @@ class Header extends Component {
       shareButtonOn = false,
       shadowMobile = false,
       shadowDesktop = false,
-      isMovie = false,
     } = this.props
 
     const color = isDark ? 'black' : 'white'
@@ -111,7 +110,7 @@ class Header extends Component {
     return (
       <div className={typeHeader}>
         {shadowMobile && <div className={styles.header__shadow_mobile} />}
-        {shadowDesktop && <div className={styles.header__shadow_desktop} />}
+        {!isMobile && <div className={styles.header__shadow_desktop} />}
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
           {!logoOff && (
             <LazyLoad>

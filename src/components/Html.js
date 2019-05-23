@@ -10,8 +10,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
-import config from '../config'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+
+import { logoLandscapeBlue } from '@global/imageUrl'
 
 import yoastSEOPlugin from './yoastSEOPlugin.json'
 

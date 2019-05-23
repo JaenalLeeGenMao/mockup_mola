@@ -4,8 +4,8 @@ import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
-import notificationBarBackground from '@global/style/icons/notification-bar.png'
+
+import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
 
@@ -16,7 +16,7 @@ import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
-
+import { unavailableImg } from '@global/imageUrl'
 import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
 
 import {
@@ -42,7 +42,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   return (
     <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
-        const imageSource = background.landscape || require('@global/style/icons/unavailable-image.png')
+        const imageSource = background.landscape || unavailableImg
         return (
           <Link to={`/movie-detail/${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
@@ -55,7 +55,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /* important for analytics tracker */ /*default 0 */
+let ticker = [] /*default 0 */ /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,

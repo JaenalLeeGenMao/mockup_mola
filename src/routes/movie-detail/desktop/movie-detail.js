@@ -4,8 +4,7 @@ import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
-import notificationBarBackground from '@global/style/icons/notification-bar.png'
+import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 
@@ -15,7 +14,6 @@ import notFoundActions from '@actions/not-found'
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
-
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
 // import { videoSettings as defaultVideoSettings } from '../const'
 
@@ -62,7 +60,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   return (
     <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
-        const imageSource = background.landscape || require('@global/style/icons/unavailable-image.png')
+        const imageSource = background.landscape || unavailableImg
         return (
           <Link to={`/movie-detail/${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>

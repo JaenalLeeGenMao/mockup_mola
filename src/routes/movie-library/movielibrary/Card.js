@@ -5,7 +5,7 @@ import s from './Card.css'
 import Link from '@components/Link'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 
-import defaultImagePortrait from '../assets/default-img-mola_library-01.jpg'
+// import defaultImagePortrait from '../assets/default-img-mola_library-01.jpg'
 import { setMultilineEllipsis } from './util'
 
 class CardLibrary extends Component {

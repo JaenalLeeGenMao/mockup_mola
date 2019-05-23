@@ -3,12 +3,8 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import Header from '@components/Header'
-import LazyLoad from '@components/common/Lazyload'
-import movieImg from './assets/sc_movies.png'
-import sportsImg from './assets/sc_sports.png'
-import entertainmentsImg from './assets/sc_entertainments.png'
-import seriesImg from './assets/sc_series.png'
+
+import { sportsImg, entertainmentsImg, seriesImg, movieImg } from '@global/imageUrl'
 
 import s from './switch-channels.css'
 let sessionId

@@ -7,10 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Auth from '@api/auth'
 import config from '@source/config'
 
-import facebook from '@global/style/icons/facebook.png'
-import google from '@global/style/icons/google.png'
-import line from '@global/style/icons/line.png'
-
+import { facebook, google, line } from '@global/imageUrl'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
 import Link from '@components/Link'

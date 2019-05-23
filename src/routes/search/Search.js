@@ -334,7 +334,7 @@ class Search extends React.Component {
     return (
       <Fragment>
         <div className={s.headerContainer}>
-          <Header libraryOff isMovie activeMenu="movie" isDark={isDark} searchOff {...this.props} />
+          <Header libraryOff activeMenu="movie" isDark={isDark} searchOff {...this.props} />
         </div>
         <div className={s.root}>
           <div className={s.containerBg} />
