@@ -6,11 +6,7 @@ import Link from '@components/Link'
 import Layout from '@components/Molalayout'
 import LazyLoad from '@components/common/Lazyload'
 
-import molaLogo from '@global/style/icons/error/mola-text.png'
-
-import notFound from '@global/style/icons/error/night-mode-404.png'
-import internalServerError from '@global/style/icons/error/internal-server-error-502.png'
-import commonError from '@global/style/icons/error/common-error.png'
+import { nightMode404 as notFound, internalServerError, commonError, molaText as molaLogo } from '@global/imageUrl'
 
 import styles from './error.css'
 

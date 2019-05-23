@@ -12,7 +12,7 @@ import _get from 'lodash/get'
 
 import homeActions from '@actions/home'
 
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+import { logoLandscapeBlue } from '@global/imageUrl'
 
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
 
