@@ -571,7 +571,7 @@ app.get('*', async (req, res, next) => {
     if (firstPath === 'movie-detail') {
       const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
       if (videoId) {
-        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id${appId}`, {
+        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id=${appId}`, {
           timeout: 5000,
           maxRedirects: 1,
           // headers: {
