@@ -15,7 +15,7 @@ body {
 .matchlist_wrappergrid {
   display: grid;
   grid-template-columns: 0.5fr 1.5fr 0.18fr;
-  grid-template-rows: repeat(3, 0.2fr 0 0);
+  grid-template-rows: repeat(3, 0.1fr 0.1fr 0.1fr);
   color: white;
 
   /* justify-content: left; */
