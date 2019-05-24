@@ -63,10 +63,10 @@ class Html extends React.Component {
           <meta property="og:url" content={url} data-react-helmet="true" />
           <meta property="og:type" content={type} data-react-helmet="true" />
 
-          <meta property="twitter:title" content={title} data-react-helmet="true" />
+          {/* <meta property="twitter:title" content={title} data-react-helmet="true" />
           <meta name="twitter:description" content={description} data-react-helmet="true" />
           <meta name="twitter:image:src" content={image} data-react-helmet="true" />
-          <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" />
+          <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" /> */}
 
           <meta name="referrer" content="origin" />
           <meta name="referrer" content="origin-when-cross-origin" />
