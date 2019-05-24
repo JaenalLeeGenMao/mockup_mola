@@ -11,8 +11,10 @@ const initialState = {
 export default function matches(state = initialState, action) {
   switch (action.type) {
     case types.GET_MATCHES_PLAYLIST_LOADING:
+      // console.log('matches reducers loading', action.payload)
       return { ...state, ...action.payload }
     case types.GET_MATCHES_PLAYLIST_SUCCESS:
+      // console.log('matches reducers success', action.payload)
       return { ...state, ...action.payload }
     case types.GET_MATCHES_PLAYLIST_ERROR:
       return {

@@ -73,7 +73,7 @@ const normalizeMatchesList = response => {
     return data.map(({ attributes: { videos } }) =>
       videos
         .map(video => {
-          const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images } } = video
+          const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images, league } } = video
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
@@ -83,6 +83,7 @@ const normalizeMatchesList = response => {
             startTime,
             endTime,
             description,
+            league,
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
             // coverTitle: coverTitle,
@@ -100,17 +101,38 @@ const normalizeMatchesList = response => {
 }
 
 const normalizeMatchDetail = response => {
+  // console.log('UTILS: FFFFFF', response)
   const { data } = response.data
   if (data && data.length > 0) {
-    return data.map(result => {
-      const {
-        id,
-        type,
-        attributes: {
+    try {
+      return data.map(result => {
+        // console.log('Utils: Data result normalize', result)
+        const {
+          id,
+          type,
+          attributes: {
+            title,
+            homeTeam,
+            awayTeam,
+            league,
+            description,
+            streamSourceUrl,
+            // permission,
+            // subtitles,
+            shortDescription,
+            displayOrder,
+            isDark,
+            startTime,
+            endTime,
+            images,
+          },
+        } = result
+        const coverBG = _get(images, 'cover', '')
+        const coverBGColor = _get(images, 'cover.backgroundColor', '')
+        return {
+          id,
+          type,
           title,
-          homeTeam,
-          awayTeam,
-          league,
           description,
           streamSourceUrl,
           // permission,
@@ -120,43 +142,24 @@ const normalizeMatchDetail = response => {
           isDark,
           startTime,
           endTime,
-          images,
-        },
-      } = result
-      const coverBG = _get(images, 'cover', '')
-      const coverBGColor = _get(images, 'cover.backgroundColor', '')
-      return {
-        id,
-        type,
-        title,
-        description,
-        streamSourceUrl,
-        // permission,
-        // subtitles,
-        shortDescription,
-        displayOrder,
-        isDark,
-        startTime,
-        endTime,
-        shortDescription: shortDescription || '',
-        background: coverBG,
-        backgroundColor: coverBGColor || '#000622',
-        isDark: isDark || 0,
-        thumbnails: {
-          preview,
-          cover,
-        },
-        league: league
-          ? {
-              id: league.id,
-              name: league.attributes.name,
-              iconUrl: league.attributes.iconUrl,
-            }
-          : null,
-        homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
-        awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
-      }
-    })
+          shortDescription: shortDescription || '',
+          background: coverBG,
+          backgroundColor: coverBGColor || '#000622',
+          isDark: isDark || 0,
+          league: league
+            ? {
+                id: league.id,
+                name: league.attributes.name,
+                iconUrl: league.attributes.iconUrl,
+              }
+            : null,
+          homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
+          awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
+        }
+      })
+    } catch (err) {
+      console.log('ERRR', err)
+    }
   }
   return []
 }
