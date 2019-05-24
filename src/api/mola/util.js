@@ -5,9 +5,9 @@ const normalizeHomePlaylist = response => {
   // console.log('response util normilize home playlist', response)
   const { data } = response.data
   if (data && data.length > 0) {
-    return data.map(({ attributes: { playlists } }) =>
-      playlists
-        .map(playlist => {
+    return data.map(
+      ({ attributes: { playlists } }) =>
+        playlists.map(playlist => {
           const { id, type, attributes: { title, description, shortDescription, sortOrder, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
@@ -29,7 +29,7 @@ const normalizeHomePlaylist = response => {
             type,
           }
         })
-        .sort((a, b) => a.sortOrder - b.sortOrder)
+      // .sort((a, b) => a.sortOrder - b.sortOrder)
     )
   }
   return []
@@ -168,9 +168,9 @@ const normalizeHomeVideo = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     try {
-      const result = data.map(({ attributes: { videos } }) =>
-        videos
-          .map(video => {
+      const result = data.map(
+        ({ attributes: { videos } }) =>
+          videos.map(video => {
             // console.log('checking utils', video)
             const { id, type, attributes: { title, description, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists } } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
@@ -200,7 +200,7 @@ const normalizeHomeVideo = response => {
               type,
             }
           })
-          .sort((a, b) => a.displayOrder - b.displayOrder)
+        // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       // console.log('resss', result)
       return result

@@ -64,7 +64,7 @@ class Login extends Component {
         window.location.href = '/accounts/signin'
       } else {
         this.setState({
-          error: `email: ${emailInputRef.value}, pwd: ${pwdInputRef.value}`, //result.meta.error.error_description,
+          error: result.meta.error.error_description,
         })
       }
     }

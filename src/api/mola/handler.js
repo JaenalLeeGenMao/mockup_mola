@@ -22,9 +22,7 @@ const getHomePlaylist = () => {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler home response', response)
       const result = utils.normalizeHomePlaylist(response)
-      // console.log('handler home result', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',

@@ -100,8 +100,6 @@ class Header extends Component {
       profileOff = false,
       backButtonOn = false,
       shareButtonOn = false,
-      shadowMobile = false,
-      shadowDesktop = false,
     } = this.props
 
     const color = isDark ? 'black' : 'white'
@@ -109,7 +107,7 @@ class Header extends Component {
 
     return (
       <div className={typeHeader}>
-        {shadowMobile && <div className={styles.header__shadow_mobile} />}
+        {isMobile && <div className={styles.header__shadow_mobile} />}
         {!isMobile && <div className={styles.header__shadow_desktop} />}
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
           {!logoOff && (

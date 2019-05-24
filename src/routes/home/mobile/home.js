@@ -31,6 +31,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
+import history from '@source/history'
 
 let activePlaylist
 let deferredPrompt
@@ -200,7 +201,7 @@ class Home extends Component {
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs, scrollIndex } = this.state
+      { sliderRefs, scrollIndex, swipeIndex } = this.state
 
     if (mode === 'vertical') {
       if (this.rootSlider) {
@@ -216,6 +217,7 @@ class Home extends Component {
         }
       }
     } else {
+      const { playlists: { data: playlistDt }, videos: { data: videoDt } } = this.props.home
       if (slider) {
         if (slider.innerSlider === null) {
           return false
@@ -223,7 +225,12 @@ class Home extends Component {
         if (distance <= window.innerWidth * 0.2) {
           // do nothing
         } else if (prevX > nextX) {
-          sliderRefs[scrollIndex].slickNext()
+          if (videoDt && videoDt[scrollIndex].data && swipeIndex + 1 == videoDt[scrollIndex].data.length) {
+            const playlistId = playlistDt[scrollIndex].id
+            history.push(`/movie-library/${scrollIndex > 0 ? playlistId.replace('f-', '') : ''}`)
+          } else {
+            sliderRefs[scrollIndex].slickNext()
+          }
         } else {
           sliderRefs[scrollIndex].slickPrev()
         }
