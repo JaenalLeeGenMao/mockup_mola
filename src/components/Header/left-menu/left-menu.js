@@ -48,7 +48,7 @@ class LeftMenu extends Component {
                       Library
                     </Link>
                   ) : (
-                    <Link className={`${styles.left_menu_lib} ${activeMenu === 'library' ? styles.left_menu__active : ''}`} to={'/matches'}>
+                    <Link className={`${styles.left_menu_lib} ${activeMenu === 'matches' ? styles.left_menu__active : ''}`} to={'/matches'}>
                       Matches
                     </Link>
                   )}

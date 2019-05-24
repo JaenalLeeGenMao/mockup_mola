@@ -44,7 +44,7 @@ class Matches extends React.Component {
         {matchesList.meta.status === 'success' && (
           <>
             <div className={s.headerContainer}>
-              <Header stickyOff searchOff isDark={isDark} activeMenu="sport" logoOff libraryOff {...this.props} />
+              <Header stickyOff searchOff isDark={isDark} activeMenu="matches" libraryOff {...this.props} />
             </div>
             <div className={s.root}>
               <div className={s.matchlist_container}>

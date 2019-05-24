@@ -107,7 +107,7 @@ class MatchCard extends React.Component {
       <LazyLoad containerClassName={styles.matchCard__container}>
         {playlists.map(({ id, awayTeam, homeTeam, league }, index) => (
           <>
-            <div key={id} className={styles.matchCard__schedule}>
+            <Link to={`/watch?v=${id}`} key={id} className={styles.matchCard__schedule}>
               <span className={styles.matchCard__icon} />
               <div className={styles.matchCard__schedule_item}>
                 <div className={styles.matchCard__team_logo}>
@@ -136,7 +136,7 @@ class MatchCard extends React.Component {
                 <img src={league.iconUrl} className={styles.matchCard__liga_type_img} />
                 <span className={styles.matchCard__liga_type_title}>{league.name}</span>
               </div>
-            </div>
+            </Link>
           </>
         ))}
       </LazyLoad>
