@@ -1,21 +1,22 @@
 .matchCard__container {
   color: white;
   display: grid;
-  grid-gap: 2rem;
+  grid-gap: 6rem;
+  column-gap: 1.5rem;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: repeat(4, 1.1fr 0 0 0);
+  grid-template-rows: repeat(4, 0.73fr);
 }
 
-.sport__livenupcoming_schedule {
+.matchCard__schedule {
   color: #fff;
   background-color: #000;
-  height: 10rem;
-  width: 24rem;
-  opacity: 0.72;
-  border-radius: 8px;
+  height: 13rem;
+  width: 30rem;
+  opacity: 0.8;
+  border-radius: 8px 8px 0 0;
 }
 
-.sport_youtube_img {
+.matchCard__icon {
   width: 4.5rem;
   height: 4.5rem;
   float: right;
@@ -29,45 +30,74 @@
   background-size: contain;
 }
 
-.sport__schedule_item {
+.matchCard__schedule_item {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin: 15px;
 }
 
-.sport__team_logo {
+.matchCard__team_logo {
   text-align: center;
 }
 
-.sport__defaultlogoteam {
-  width: 3.5rem;
-  height: 3.5rem;
+.matchCard__defaultlogoteam {
+  width: 7rem;
+  height: 7rem;
   display: inline-block;
-  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA2MCI+PHRpdGxlPmljX3RlYW1fbm9fbG9nbzwvdGl0bGU+PGcgaWQ9Ik9CSkVDVFMiPjxwYXRoIGQ9Ik0zMCwyLjI3VjU3LjczUzI1LjY3LDU1Ljk0LDE3LDQ5Yy03LjgxLTYuMjctNy4wOC03LjI1LTcuMDgtMTIuNzZWMTAuOTJhNi4zLDYuMywwLDAsMCw0LjU4LTMsOS41Niw5LjU2LDAsMCwwLDEuMTQtNS42OVoiIGZpbGw9IiM1ZTVlNWUiLz48cGF0aCBkPSJNMzAsMi4yN1Y1Ny43M1MzNC4zMyw1NS45NCw0Myw0OWM3LjgxLTYuMjcsNy4wOC03LjI1LDcuMDgtMTIuNzZWMTAuOTJhNi4zLDYuMywwLDAsMS00LjU4LTMsOS41Niw5LjU2LDAsMCwxLTEuMTQtNS42OVoiIGZpbGw9IiM0YzRjNGMiLz48cGF0aCBkPSJNMTcuNTksNC4xOGExMS4yOCwxMS4yOCwwLDAsMS0xLjQxLDQuNzMsNy45MSw3LjkxLDAsMCwxLTQuMzMsMy41MVYzNi4yNWMwLC40NywwLC45LDAsMS4zMS0uMDUsNC0uMDYsNC43OSw2LjM4LDkuOTVBNzUuMjYsNzUuMjYsMCwwLDAsMzAsNTUuNjFWNC4xOFoiIGZpbGw9IiNlMGUwZTAiLz48cGF0aCBkPSJNNDEuNzgsNDcuNTFjNi40NC01LjE2LDYuNDMtNiw2LjM4LTkuOTUsMC0uNDEsMC0uODQsMC0xLjMxVjEyLjQyYTcuOTEsNy45MSwwLDAsMS00LjMzLTMuNTEsMTEuMjgsMTEuMjgsMCwwLDEtMS40MS00LjczSDMwVjU1LjYxaDBBNzUuMjYsNzUuMjYsMCwwLDAsNDEuNzgsNDcuNTFaIiBmaWxsPSIjYWRhZGFkIi8+PHBhdGggZD0iTTE4LjYxLDUuMzNhMTIuNDYsMTIuNDYsMCwwLDEtMS40Myw0LjE1QTguODcsOC44NywwLDAsMSwxMywxMy4yVjM2LjI1YzAsLjQ3LDAsLjkxLDAsMS4zMi0uMDUsMy42Ny0uMDUsNC4yNCw2LDlBNzksNzksMCwwLDAsMzAsNTQuMzF2LTQ5WiIgZmlsbD0iIzVlNWU1ZSIvPjxwYXRoIGQ9Ik00MS4wNiw0Ni42MmM2LTQuODEsNi01LjM4LDUuOTUtOSwwLS40MSwwLS44NSwwLTEuMzJ2LTIzYTguODcsOC44NywwLDAsMS00LjE4LTMuNzIsMTIuNDYsMTIuNDYsMCwwLDEtMS40My00LjE1SDMwdjQ5aDBBNzksNzksMCwwLDAsNDEuMDYsNDYuNjJaIiBmaWxsPSIjNGM0YzRjIi8+PC9nPjwvc3ZnPg==);
+
+  /* background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA2MCI+PHRpdGxlPmljX3RlYW1fbm9fbG9nbzwvdGl0bGU+PGcgaWQ9Ik9CSkVDVFMiPjxwYXRoIGQ9Ik0zMCwyLjI3VjU3LjczUzI1LjY3LDU1Ljk0LDE3LDQ5Yy03LjgxLTYuMjctNy4wOC03LjI1LTcuMDgtMTIuNzZWMTAuOTJhNi4zLDYuMywwLDAsMCw0LjU4LTMsOS41Niw5LjU2LDAsMCwwLDEuMTQtNS42OVoiIGZpbGw9IiM1ZTVlNWUiLz48cGF0aCBkPSJNMzAsMi4yN1Y1Ny43M1MzNC4zMyw1NS45NCw0Myw0OWM3LjgxLTYuMjcsNy4wOC03LjI1LDcuMDgtMTIuNzZWMTAuOTJhNi4zLDYuMywwLDAsMS00LjU4LTMsOS41Niw5LjU2LDAsMCwxLTEuMTQtNS42OVoiIGZpbGw9IiM0YzRjNGMiLz48cGF0aCBkPSJNMTcuNTksNC4xOGExMS4yOCwxMS4yOCwwLDAsMS0xLjQxLDQuNzMsNy45MSw3LjkxLDAsMCwxLTQuMzMsMy41MVYzNi4yNWMwLC40NywwLC45LDAsMS4zMS0uMDUsNC0uMDYsNC43OSw2LjM4LDkuOTVBNzUuMjYsNzUuMjYsMCwwLDAsMzAsNTUuNjFWNC4xOFoiIGZpbGw9IiNlMGUwZTAiLz48cGF0aCBkPSJNNDEuNzgsNDcuNTFjNi40NC01LjE2LDYuNDMtNiw2LjM4LTkuOTUsMC0uNDEsMC0uODQsMC0xLjMxVjEyLjQyYTcuOTEsNy45MSwwLDAsMS00LjMzLTMuNTEsMTEuMjgsMTEuMjgsMCwwLDEtMS40MS00LjczSDMwVjU1LjYxaDBBNzUuMjYsNzUuMjYsMCwwLDAsNDEuNzgsNDcuNTFaIiBmaWxsPSIjYWRhZGFkIi8+PHBhdGggZD0iTTE4LjYxLDUuMzNhMTIuNDYsMTIuNDYsMCwwLDEtMS40Myw0LjE1QTguODcsOC44NywwLDAsMSwxMywxMy4yVjM2LjI1YzAsLjQ3LDAsLjkxLDAsMS4zMi0uMDUsMy42Ny0uMDUsNC4yNCw2LDlBNzksNzksMCwwLDAsMzAsNTQuMzF2LTQ5WiIgZmlsbD0iIzVlNWU1ZSIvPjxwYXRoIGQ9Ik00MS4wNiw0Ni42MmM2LTQuODEsNi01LjM4LDUuOTUtOSwwLS40MSwwLS44NSwwLTEuMzJ2LTIzYTguODcsOC44NywwLDAsMS00LjE4LTMuNzIsMTIuNDYsMTIuNDYsMCwwLDEtMS40My00LjE1SDMwdjQ5aDBBNzksNzksMCwwLDAsNDEuMDYsNDYuNjJaIiBmaWxsPSIjNGM0YzRjIi8+PC9nPjwvc3ZnPg==); */
   background-repeat: no-repeat;
   background-size: contain;
 }
 
-.sport__infolive_upcoming {
+.matchCard__middlecontent {
   text-align: center;
   padding: 0 8px 0 8px;
   line-height: 1.4rem;
 }
 
-.sport__info_live_now {
+.matchCard__info_live_now {
   color: #f00;
+  padding: 1rem 0 1rem 0;
+  font-size: 1.2rem;
 }
 
-.sport__scoring {
-  font-size: 19px;
+.matchCard__scoring {
+  font-size: 2.6rem;
+  font-weight: normal;
+  color: white;
+  opacity: 1;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.matchCard_team_name {
+  font-size: 1rem;
+}
+
+.matchCard__liga_type {
+  background-color: black;
+  text-align: center;
+  border-radius: 0 0 8px 8px;
+  margin-top: -6px;
+  opacity: 1;
+  height: 3.5rem;
+}
+
+.matchCards__pen {
+  font-size: 1rem;
+}
+
+.matchCard__liga_type_title {
+  font-size: 1rem;
   font-weight: normal;
 }
 
-.sport__subjectcontent {
-  font-size: 5px;
-  color: #a7a7a7;
+.matchCard__liga_type_img {
+  width: 5rem;
+  height: 2rem;
+  padding: 0 1rem 0 0;
 }
 
-.sport_team_name {
-  font-size: 1rem;
+.matchCard__matchInfo {
+  /* test */
 }

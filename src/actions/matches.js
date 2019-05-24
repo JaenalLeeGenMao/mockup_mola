@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getGetMatchesList = () => dispatch => {
+const getSportList = () => dispatch => {
   dispatch({
     type: types.GET_MATCHES_PLAYLIST_LOADING,
     payload: {
@@ -13,21 +13,37 @@ const getGetMatchesList = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getMatchesList().then(result => {
-    // console.log('Checking data action matches', result)
+  return Mola.getMatchesList().then(async result => {
+    // console.log('action matches', result)
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MATCHES_PLAYLIST_ERROR,
         payload: result,
       })
     } else {
-      return dispatch({
-        type: types.GET_MATCHES_PLAYLIST_SUCCESS,
-        payload: result,
+      let allMatchDetailId = []
+      result.data.map(matchDetail => {
+        allMatchDetailId.push(matchDetail.id)
       })
+      // console.log('see result', allMatchDetailId)
+      let matchDetailList = []
+      matchDetailList = await Mola.getMatchDetail(allMatchDetailId)
+      // console.log('see result 2', matchDetailList)
+
+      if (matchDetailList.meta.status === 'success') {
+        dispatch({
+          type: types.GET_MATCHES_PLAYLIST_SUCCESS,
+          payload: matchDetailList,
+        })
+      } else {
+        dispatch({
+          type: types.GET_MATCHES_PLAYLIST_ERROR,
+          payload: matchDetailList,
+        })
+      }
     }
   })
 }
 export default {
-  getGetMatchesList,
+  getSportList,
 }

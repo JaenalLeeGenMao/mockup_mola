@@ -174,7 +174,6 @@ class Sport extends Component {
 
   componentDidMount() {
     const { playlists, videos } = this.props.sport
-    // console.log('checking data did', this.props.sport) //same 0
 
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
@@ -488,6 +487,10 @@ class Sport extends Component {
       filteredDesc = filterString(activeSlide.description, 36)
       filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
+    const validationMatchCards = this.props.sport.playlists.data
+    // console.log('checking data', this.props.sport.playlists.data[0])
+    // console.log('result mola-soc', validationMatchCards.id)
+    // console.log('test data', playlists)
 
     return (
       <Fragment>
@@ -515,6 +518,7 @@ class Sport extends Component {
                 <div className={styles.sport__gradient} />
                 <div className={styles.sport__sidebar}>
                   <SportMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  {/* {console.log('uuuuuu', this.state.playlists.data)} */}
                 </div>
                 <LazyLoad containerClassName={styles.sport_header__playlist_title}>
                   <div>{this.state.playlists.data[scrollIndex].title}</div>
@@ -531,6 +535,11 @@ class Sport extends Component {
                     {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
+                {/* {validationMatchCards.id == 'mola-soc' ? (
+                  <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
+                    <LiveNowUpcomingSchedule />
+                  </div>
+                ) : null} */}
                 <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
                   <LiveNowUpcomingSchedule />
                 </div>
@@ -563,7 +572,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onHandlePlaylist: () => dispatch(sportActions.getSportCategoryList()),
+  onHandlePlaylist: () => dispatch(sportActions.getSportList()),
   onHandleVideo: playlist => dispatch(sportActions.getSportVideo(playlist)),
   onUpdatePlaylist: id => dispatch(sportActions.updateActivePlaylist(id)),
 })

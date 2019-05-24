@@ -22,22 +22,18 @@ class liveNowUpComing extends Component {
   }
 
   componentDidMount() {
-    const { playlists, videos } = this.props.sport
-    this.getShowMatchCards()
+    // const { onHandleMatchDetail } = this.props
     // onHandleMatchDetail()
+    this.getShowMatchCards()
   }
+
   getShowMatchCards = () => {
     const validateMatch = this.props.sport.playlists.data[0].playlists
-    // console.log('MASUK VALIDASI')
-    // console.log('get data', validateMatch.meta.status)
-    // console.log('get data', validateMatch)
     if (validateMatch.meta.status == 'success') {
       const matchTeamSortedDate = validateMatch.data.sort((a, b) => a.startTime - b.startTime)
-      // console.log('in', matchTeamSortedDate)
       const liveNowMatch = matchTeamSortedDate.filter(match => {
         return match.endTime * 1000 >= Date.now()
       })
-      // console.log('in 2', liveNowMatch)
       this.setState({
         newestMatches: liveNowMatch.slice(0, 4),
       })
@@ -46,9 +42,7 @@ class liveNowUpComing extends Component {
 
   render() {
     const { playlists, videos } = this.props.sport
-    // console.log('inside', this.state.newestMatches)
-    // console.log('test data', this.props.sport)
-    // console.log('check data', this.state.newestMatches.length)
+    // console.log('testing data liveupcoming', this.props.sport)
 
     return (
       <Fragment>
@@ -62,8 +56,6 @@ class liveNowUpComing extends Component {
           <div className={styles.sport__livenupcoming_grid}>
             {this.state.newestMatches.length > 0 ? (
               this.state.newestMatches.map(liveSoc => {
-                // console.log('aaaaaa', liveSoc)
-                // ${liveSoc ? `${liveSoc.id.replace('Sport-', '')}` : ''}
                 return (
                   <Link key={liveSoc.id} to={'/watch?v=vd56611105'} className={styles.sport_match_container}>
                     <LazyLoad containerClassName={styles.sport__livenupcoming_schedule}>
@@ -79,10 +71,6 @@ class liveNowUpComing extends Component {
                               <h5 className={styles.sport__info_live_now}>Live Now {/*note: field hit kemana untuk live now */}</h5>
                               <h2 className={styles.sport__scoring}>0 - 0 {/* note: hit scoring ke field mana? */}</h2>
                               <h6 className={styles.livenowupcoming_penalty}>Pen. (3-4) {/*note: pen? */}</h6>
-                              {/* <h6 className={styles.sport__subjectcontent}>
-                                {liveSoc.description}
-                                {/*English Premier League
-                              </h6> */}
                             </div>
                             <div className={styles.sport__team_logo}>
                               <span className={styles.sport__defaultlogoteam}>{/* note: field hit image macth team 2 (not available) */}</span>
@@ -106,17 +94,13 @@ class liveNowUpComing extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log('live now value', state)
   return {
     ...state,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  onHandlePlaylist: () => dispatch(liveNowUpcomingActions.getSportCategoryList()),
-  onHandleVideo: playlist => dispatch(liveNowUpcomingActions.getSportVideo(playlist)),
-  // onHandleMatchDetail: () => dispatch(liveNowUpcomingActions.getMatchDetail()),
-  onUpdatePlaylist: id => dispatch(liveNowUpcomingActions.updateActivePlaylist(id)),
+  // onHandleMatchDetail: () => dispatch(liveNowUpcomingActions.getSportList()),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(liveNowUpComing)

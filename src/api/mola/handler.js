@@ -71,7 +71,7 @@ const getFeatureBanner = (isMobile = false) => {
     })
 }
 
-const getSportCategoryList = () => {
+const getSportList = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
     ...endpoints.setting,
   })
@@ -104,7 +104,7 @@ const getMatchesList = () => {
     .then(response => {
       // console.log('response handler matcheslist', response)
       const result = utils.normalizeMatchesList(response)
-      // console.log('after normalize', result)
+      // console.log('after normalize matchlist', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -137,12 +137,13 @@ const getMatchDetail = id => {
   )
     .then(response => {
       const result = utils.normalizeMatchDetail(response)
+      // console.log('handler: after normalize match detail', result)
       return {
         meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result || null,
       }
     })
     .catch(error => {
@@ -670,7 +671,7 @@ export default {
   createOrder,
   createMidtransPayment,
   getOrderHistoryTransactions,
-  getSportCategoryList,
+  getSportList,
   getSportVideo,
   getMatchesList,
   getMatchDetail,

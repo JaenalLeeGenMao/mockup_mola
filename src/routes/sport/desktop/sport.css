@@ -39,9 +39,8 @@ body {
 
   /* background: linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0.001)); */
 
-  /* background: linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0)); */
-
-  /* z-index: 1; */
+  background: linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0));
+  z-index: 1;
 }
 
 .header__detail_container {
