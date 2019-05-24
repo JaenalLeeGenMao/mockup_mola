@@ -125,7 +125,7 @@ class RightMenu extends Component {
           {!searchOff && (
             <span className={styles.right__menu_wrapper}>
               <LazyLoad className={styles.right__menu_icon_wrapper}>
-                <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} to="/search" />
+                <Link className={styles.right__menu_search_white} to="/search" />
               </LazyLoad>
             </span>
           )}
@@ -133,7 +133,7 @@ class RightMenu extends Component {
             <span className={styles.right__menu_wrapper}>
               {/* <LazyLoad><FaUserCircle size='32' color={color} /></LazyLoad> */}
               <LazyLoad className={styles.right__menu_icon_wrapper} onClick={this.handleToggle}>
-                <div className={color === 'black' ? styles.right__menu_profile_black : styles.right__menu_profile_white} />
+                <div className={styles.right__menu_profile_white} />
               </LazyLoad>
             </span>
           )}
