@@ -1,43 +1,43 @@
-import React, { Component, Fragment } from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
+import React, { Component, Fragment } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
-import PropTypes from 'prop-types'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import Header from '@components/Header'
-import MatchCard from '@components/MatchCard'
-import LazyLoad from '@components/common/Lazyload'
+import PropTypes from 'prop-types';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import Header from '@components/Header';
+import MatchCard from '@components/MatchCard';
+import LazyLoad from '@components/common/Lazyload';
 
-import matchListActions from '@actions/matches'
+import matchListActions from '@actions/matches';
 
-import s from './matches.css'
-let sessionId
+import s from './matches.css';
+let sessionId;
 
 class Matches extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   state = {
     playlists: [],
     videos: [],
     data: [],
-  }
+  };
 
   static propTypes = {
     title: PropTypes.string.isRequired,
-  }
+  };
 
   componentDidMount() {
-    this.props.getMatches()
+    this.props.getMatches();
   }
 
-  onHandleLoadMore = () => {}
+  onHandleLoadMore = () => {};
 
   render() {
-    const matchesList = this.props.matches
+    const matchesList = this.props.matches;
     // console.log('call data 2', matchesList.data[0].awayTeam.name)
-    const isDark = false
+    const isDark = false;
     return (
       <>
         {/* {matchesList.meta === 'loading' && ()} */}
@@ -76,18 +76,18 @@ class Matches extends React.Component {
           </>
         )}
       </>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
     ...state,
-  }
+  };
 }
 
 const mapDispatchToProps = dispatch => ({
   getMatches: () => dispatch(matchListActions.getSportList()),
-})
+});
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)
+export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches);

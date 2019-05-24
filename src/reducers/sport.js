@@ -23,12 +23,7 @@ const initialState = {
 export default function sport(state = initialState, action) {
   switch (action.type) {
     case types.GET_SPORT_PLAYLIST_LOADING:
-<<<<<<< HEAD
-      // console.log('sport reducers loading', action.payload)
-      return { ...state, playlists: { ...action.payload } }
-=======
       return { ...state, playlists: { ...action.payload } };
->>>>>>> sport page mobile version
     case types.GET_SPORT_PLAYLIST_SUCCESS:
       return { ...state, playlists: { ...action.payload } };
     case types.GET_SPORT_PLAYLIST_ERROR:

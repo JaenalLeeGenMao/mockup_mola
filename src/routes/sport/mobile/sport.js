@@ -297,17 +297,17 @@ class Sport extends Component {
                 </div>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <Link to={'/watch?v=vd56611105'} className={`${styles.sport__button_livenow}`}>
+                    <Link to={'/watch?v=' + activeSlide.id} className={`${styles.sport__button_livenow}`}>
                       <span className={styles.play_icon} />
                       <p>{locale['view_movie']}</p>
                     </Link>
 
                     <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                     <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                    <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
+                    <p className="filteredText">{filteredDesc}</p>
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper}>
