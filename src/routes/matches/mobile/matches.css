@@ -73,7 +73,7 @@ body {
   animation: fadeAnimation 40s linear infinite 0s;
 }
 
-.sport__button_livenow p {
+.matches__button_livenow p {
   display: inline-block;
   margin: 0 -0.8rem;
   height: 3rem;
@@ -92,14 +92,14 @@ body {
   animation-delay: 30s;
 }
 
-.sport__detail_button {
+.matches__detail_button {
   padding: 25px;
   border-radius: 50%;
   position: absolute;
   top: -45px;
 }
 
-.sport__button_livenow {
+.matches__button_livenow {
   display: inline-block;
   padding: 8px;
   font-weight: bold;
@@ -123,12 +123,12 @@ body {
   background-size: 27px;
 }
 
-.sport__detail_button.black {
+.matches__detail_button.black {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
-.sport__detail_button.white {
+.matches__detail_button.white {
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
@@ -193,18 +193,18 @@ body {
   background-size: contain;
 }
 
-.sport__slider_container {
+.matches__slider_container {
   overflow: hidden;
   position: relative;
   margin: 0;
   padding: 0;
 }
 
-.sport__slick_slider_fade {
+.matches__slick_slider_fade {
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 1) 90%);
 }
 
-.sport__gradient {
+.matches__gradient {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -213,7 +213,7 @@ body {
   z-index: 1;
 }
 
-.sport__sidebar {
+.matches__sidebar {
   height: 100vh;
   width: 5%;
   position: fixed;
@@ -242,7 +242,7 @@ body {
   background-size: contain;
 }
 
-.sport__a2hs_container {
+.matches__a2hs_container {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -256,7 +256,7 @@ body {
   z-index: 3;
 }
 
-.sport__logo {
+.matches__logo {
   width: 6rem;
   height: 2.28rem;
 }

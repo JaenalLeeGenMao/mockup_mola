@@ -1,6 +1,10 @@
 import types from '../constants'
 import { findIndexByKeyValue } from './util'
 
+Array.prototype.insert = function(index, item) {
+  this.splice(index, 0, item)
+}
+
 const initialState = {
   playlists: {
     meta: {
@@ -19,7 +23,6 @@ const initialState = {
 export default function sport(state = initialState, action) {
   switch (action.type) {
     case types.GET_SPORT_PLAYLIST_LOADING:
-      // console.log('sport reducers loading', action.payload)
       return { ...state, playlists: { ...action.payload } }
     case types.GET_SPORT_PLAYLIST_SUCCESS:
       return { ...state, playlists: { ...action.payload } }
@@ -29,28 +32,35 @@ export default function sport(state = initialState, action) {
         playlists: { ...action.payload },
       }
     case types.GET_SPORT_VIDEO:
-      // console.log('KE SINI??', state)
-      let result = [...state.videos.data],
-        status
-      // console.log('reducer sport checking result', result)
+      let result = [...state.videos.data]
+      let status
+      const currentVideosLength = state.videos.data.length
+      const currentPLaylistLength = state.playlists.data.length
+      // const index = findIndexByKeyValue(result, 'id', action.payload.meta.id)
 
-      const index = findIndexByKeyValue(result, 'id', action.payload.meta.id),
-        filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
-
-      // console.log('checking index', index)
+      const filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
 
       if (filteredStatus) {
         status = 'error'
-      } else if (state.videos.data.length < state.playlists.data.length - 1) {
+      } else if (currentVideosLength < currentPLaylistLength - 1) {
         status = 'loading'
       } else {
         status = 'success'
       }
 
-      if (index === -1) {
-        result.push({ ...action.payload })
-        result = result.sort((a, b) => a.meta.sortOrder - b.meta.sortOrder)
-      }
+      const resultId = action.payload.meta.id
+      const playlistIndex = state.playlists.data
+        .map(function(e) {
+          return e.id
+        })
+        .indexOf(resultId)
+
+      result.splice(playlistIndex, 0, { ...action.payload })
+
+      // if (index === -1) {
+      //   result.push({ ...action.payload })
+      //   result = result.sort((a, b) => a.meta.sortOrder - b.meta.sortOrder)
+      // }
 
       return {
         ...state,

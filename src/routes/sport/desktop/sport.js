@@ -495,7 +495,7 @@ class Sport extends Component {
     return (
       <Fragment>
         {/* <Joyride
-          disableOverlayClose={true}
+          disableOverlayClose={true}o
           stepIndex={stepIndex}
           continuous
           showSkipButton

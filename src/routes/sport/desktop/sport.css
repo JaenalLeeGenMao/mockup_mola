@@ -225,6 +225,8 @@ body {
   flex-direction: column;
   justify-content: center;
   z-index: 1;
+  left: 20px;
+  top: -80px;
 }
 
 .play_icon {

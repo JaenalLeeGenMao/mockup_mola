@@ -6,7 +6,7 @@ import LazyLoad from '@components/common/Lazyload';
 import horizontalStyles from './menu-horizontal.css';
 import verticalStyles from './menu-vertical.css';
 
-const SportMenu = ({ className = '', playlists, activeIndex = 0, isDark = 0, type = 'vertical' }) => {
+const MatchesMenu = ({ className = '', playlists, activeIndex = 0, isDark = 0, type = 'vertical' }) => {
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles;
   return (
     <LazyLoad containerClassName={[styles.menu, className].join(' ')}>
@@ -23,4 +23,4 @@ const SportMenu = ({ className = '', playlists, activeIndex = 0, isDark = 0, typ
   );
 };
 
-export default withStyles(verticalStyles, horizontalStyles)(SportMenu);
+export default withStyles(verticalStyles, horizontalStyles)(MatchesMenu);

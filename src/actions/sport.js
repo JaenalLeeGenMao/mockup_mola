@@ -44,7 +44,6 @@ const getSportVideo = playlist => dispatch => {
       meta: {
         status: result.meta.status,
         id: playlist.id,
-        sortOrder: playlist.sortOrder,
       },
       data: result.data,
       background: {
