@@ -6,34 +6,10 @@ import moment from 'moment'
 import Link from '@components/Link'
 import LazyLoad from '@components/common/Lazyload'
 
+import { convertToLocalDateTime, timeDiff, isMatchLive } from '../util'
+
 import styles from './card.css'
 // import defaultImageMatches from '@global/assets-global/images/defaultImage.svg'
-
-// those function should be in utils files
-const convertToLocalDateTime = unix => {
-  const getLocalDate = moment.unix(unix).utc()
-  const date = new Date(getLocalDate)
-  return date
-}
-
-const isMatchLive = (startTime, endTime) => {
-  const start = moment(convertToLocalDateTime(moment().unix())).isBefore(convertToLocalDateTime(startTime), 'minutes')
-  const end = moment(convertToLocalDateTime(moment().unix())).isBefore(convertToLocalDateTime(endTime), 'minutes')
-  let isLive = false
-  if (!start && end) {
-    isLive = true
-  }
-
-  return isLive
-}
-
-const timeDiff = (current, dateCompare, type = 'days') => {
-  const currentLocalTime = convertToLocalDateTime(current)
-  const dateCompareLocalTime = convertToLocalDateTime(dateCompare)
-  const compare = moment(currentLocalTime).diff(dateCompareLocalTime, type)
-
-  return compare
-}
 
 class Card extends Component {
   componentDidMount() {
@@ -52,7 +28,10 @@ class Card extends Component {
 
     if (isToday) {
       const isMatchNowLive = isMatchLive(startUnix, endUnix)
-      const isMatchBeforeLive = isMatchLive(matchesList[index - 1].startTime, matchesList[index - 1].endTime)
+      let isMatchBeforeLive = false
+      if (matchesList.length > 1) {
+        isMatchBeforeLive = isMatchLive(matchesList[index - 1].startTime, matchesList[index - 1].endTime)
+      }
       if (isMatchNowLive) {
         text = 'LIVE'
       } else if (isMatchBeforeLive) {
@@ -69,7 +48,6 @@ class Card extends Component {
     const date = this.cardDateFormat(data.startTime, data.endTime)
     const matchLive = isMatchLive(data.startTime, data.endTime)
 
-    console.log(data)
     return (
       <div className={styles.card__container}>
         <div className={matchLive ? styles.card__date + ' ' + styles.card__live_now : styles.card__date}>
@@ -84,7 +62,7 @@ class Card extends Component {
             <img src={awayTeam.logo} />
             <span>{homeTeam.name}</span>
           </div>
-          <img className={styles.card__league_logo} src={league.iconUrl} />
+          {league ? <img className={styles.card__league_logo} src={league.iconUrl} /> : ''}
         </div>
       </div>
     )

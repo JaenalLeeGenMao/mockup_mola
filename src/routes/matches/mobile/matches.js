@@ -7,7 +7,10 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 import moment from 'moment'
 
+import MatchesPlaceholder from './placeholder'
+
 import MatchCard from './card'
+import { convertToLocalDateTime, timeDiff, isMatchPassed } from './util'
 // import MatchPlaceholder from './placeholder'
 
 import matchListActions from '@actions/matches'
@@ -19,31 +22,88 @@ import Link from '@components/Link'
 
 import styles from './matches.css'
 
-// those function should be in utils files
-const convertToLocalDateTime = unix => {
-  const getLocalDate = moment.unix(unix).utc()
-  const date = new Date(getLocalDate)
-  return date
-}
-
-const dateDiff = (current, dateCompare) => {
-  const currentLocalTime = convertToLocalDateTime(current)
-  const dateCompareLocalTime = convertToLocalDateTime(dateCompare)
-  const compare = moment(currentLocalTime).diff(dateCompareLocalTime, 'day')
-
-  return compare
-}
-
 class Matches extends Component {
   state = {
-    playlists: [],
-    videos: [],
-    data: [],
+    initialized: false,
+    matches: [],
+    filter: 1,
   }
 
   componentDidMount() {
     /* set the default active playlist onload */
     this.props.getMatches()
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!state.initialized && props.matches.data.length > 0 && state.matches.length === 0) {
+      return {
+        filter: 0,
+        initialized: true,
+      }
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.matches.data.length != this.props.matches.data.length && this.state.matches.length === 0) {
+      this.liveUpcomingFilter()
+    }
+  }
+
+  liveUpcomingFilter() {
+    const { data } = this.props.matches
+    const filteredMatch = []
+
+    data.forEach(el => {
+      if (el.homeTeam && el.awayTeam && !isMatchPassed(el.endTime)) {
+        filteredMatch.push(el)
+      }
+    })
+
+    this.setState({ matches: filteredMatch })
+  }
+
+  lastMatchesFilter() {
+    const { data } = this.props.matches
+    const filteredMatch = []
+
+    data.forEach(el => {
+      if (isMatchPassed(el.endTime)) {
+        filteredMatch.push(el)
+      }
+    })
+
+    this.setState({ matches: filteredMatch })
+  }
+
+  highlightFilter() {
+    const { data } = this.props.matches
+    const filteredMatch = []
+
+    data.forEach(el => {
+      if (!el.homeTeam || !el.awayTeam) {
+        filteredMatch.push(el)
+      }
+    })
+
+    this.setState({ matches: filteredMatch })
+  }
+
+  filterChange(filter) {
+    const value = filter.target.value
+    this.setState({ filter: value })
+
+    if (value == 0) {
+      this.liveUpcomingFilter()
+    }
+
+    if (value == 1) {
+      this.lastMatchesFilter()
+    }
+
+    if (value == 2) {
+      this.highlightFilter()
+    }
   }
 
   matchesDateFormat = unix => {
@@ -52,7 +112,7 @@ class Matches extends Component {
     const time = moment(localTime).format('ddd, D MMM YYYY')
     let text = time
 
-    const dateDifference = dateDiff(moment().unix(), unix)
+    const dateDifference = timeDiff(moment().unix(), unix, 'days')
     const isToday = dateDifference === 0
     const isTomorrow = dateDifference === -1
     if (isToday) {
@@ -75,7 +135,7 @@ class Matches extends Component {
   renderDate(data, index, matchesList) {
     let isDifferent = false
     if (index > 0) {
-      isDifferent = dateDiff(data.startTime, matchesList[index - 1].startTime) != 0
+      isDifferent = timeDiff(data.startTime, matchesList[index - 1].startTime, 'days') != 0
       if (isDifferent) {
         return (
           <div className={styles.matches__date}>
@@ -100,9 +160,9 @@ class Matches extends Component {
         {matchesList.map((data, index) => (
           <>
             {this.renderDate(data, index, matchesList)}
-            <div>
+            <Link to={'/watch?v=' + data.id}>
               <MatchCard data={data} index={index} matchesList={matchesList} />
-            </div>
+            </Link>
           </>
         ))}
       </LazyLoad>
@@ -112,7 +172,12 @@ class Matches extends Component {
   renderFilter() {
     return (
       <LazyLoad containerClassName={styles.matches__filter}>
-        <select>
+        <select
+          onChange={event => {
+            this.filterChange(event)
+          }}
+          value={this.state.filter}
+        >
           <option value="0">Live and Upcoming</option>
           <option value="1">Last Matches</option>
           <option value="2">Highlight</option>
@@ -125,11 +190,15 @@ class Matches extends Component {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     const { data, meta } = this.props.matches
 
-    const sortedByStartDate = data.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
+    const { matches } = this.state
+    let sortedByStartDate = matches
+    if (matches.length > 0) {
+      sortedByStartDate = matches.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
+    }
 
     return (
       <Fragment>
-        {/* {meta.status === 'loading' && <MatchesPlaceholder />} */}
+        {meta.status === 'loading' && <> {<MatchesPlaceholder />} </>}
         {meta.status != 'error' && <> {this.renderHeader()}</>}
         {meta.status === 'error' && <MatchesError status={meta.status} message={meta.error || 'Mola TV Matches is not loaded'} />}
         {meta.status === 'success' && (

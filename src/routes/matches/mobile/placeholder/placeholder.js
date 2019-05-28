@@ -19,11 +19,6 @@ const Placeholder = () => {
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__line} />
       </div>
-      <div className={styles.placeholder__footer}>
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-      </div>
     </div>
   )
 }

@@ -38,7 +38,7 @@ body {
 .matches__container {
   margin-left: 20px;
   margin-right: 20px;
-  padding-top: 100px;
+  padding-top: 110px;
   margin-bottom: 50px;
 }
 
@@ -52,7 +52,7 @@ body {
 .matches__filter {
   position: absolute;
   left: 15px;
-  top: 80px;
+  top: 85px;
 }
 
 .matches__filter select {
