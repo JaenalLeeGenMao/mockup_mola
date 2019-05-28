@@ -13,7 +13,7 @@ const getSportList = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getMatchesList().then(async result => {
+  return Mola.getMatchesList('live-soc').then(async result => {
     // console.log('action matches', result)
     if (result.meta.status === 'error') {
       dispatch({

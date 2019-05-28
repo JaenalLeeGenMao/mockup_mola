@@ -27,7 +27,8 @@ body {
 
 .matchlist_Pagetitle {
   color: white;
-  font-size: 17.5px;
+
+  /* font-size: 17.5px; */
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   text-align: left;
@@ -84,4 +85,11 @@ body {
   position: absolute;
 }
 
-/* ga */
+.matchesCardList__container {
+  color: white;
+  display: grid;
+  grid-gap: 4.5rem;
+  column-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(4, 0.73fr);
+}

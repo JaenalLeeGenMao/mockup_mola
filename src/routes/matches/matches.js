@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,6 @@ import LazyLoad from '@components/common/Lazyload';
 import matchListActions from '@actions/matches';
 
 import s from './matches.css';
-let sessionId;
 
 class Matches extends React.Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class Matches extends React.Component {
     this.props.getMatches();
   }
 
-  onHandleLoadMore = () => {};
+  onHandleLoadMore = () => { };
 
   render() {
     const matchesList = this.props.matches;
@@ -53,7 +52,12 @@ class Matches extends React.Component {
                   <div className={s.matchlist_wrappercontent_center}>
                     <div className={s.matchcard__positiontitle}>{/* <h5 className={s.matchcards__filtertitle}>Filter</h5> */}</div>
                     <div className={s.matchlist_Pagetitle}>
-                      <MatchCard playlists={matchesList.data} />
+                      <LazyLoad containerClassName={s.matchesCardList__container}>
+                        {matchesList.data.map((matchDt) => (
+                          <MatchCard key={matchDt.id} matchData={matchDt} />
+                        ))
+                        }
+                      </LazyLoad>
                       <div className={s.matches__loadmorecontent}>
                         <span className={s.matches__loadmore}>Load More</span>
                       </div>

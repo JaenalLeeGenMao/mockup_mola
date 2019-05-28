@@ -21,15 +21,18 @@ const getSportList = () => dispatch => {
       })
     } else {
       if (result.data) {
-        const liveSocPlaylists = await Mola.getMatchesList()
-        result.data[0].playlists = liveSocPlaylists
-
-        const allMatchDetail = []
-        for (const matchDetail of result.data[0].playlists.data) {
-          allMatchDetail.push(matchDetail.id)
+        for (const sportList of result.data) {
+          const matchesPlaylist = await Mola.getSportList(sportList.id)
+          if (matchesPlaylist.data.length > 0) {
+            const matchesVideoList = matchesPlaylist.data.length > 0 && await Mola.getMatchesList(matchesPlaylist.data[0].id)
+            const allMatchDetail = []
+            for (const matchDetail of matchesVideoList.data) {
+              allMatchDetail.push(matchDetail.id)
+            }
+            const matchDetailDt = await Mola.getMatchDetail(allMatchDetail)
+            sportList.playlists = matchDetailDt
+          }
         }
-        const matchDetailList = await Mola.getMatchDetail(allMatchDetail)
-        // console.log('test MatchDetailList', matchDetailList)
       }
       return dispatch({
         type: types.GET_SPORT_PLAYLIST_SUCCESS,
@@ -53,7 +56,7 @@ const getSportVideo = playlist => dispatch => {
     if (result.data.playlists) {
       for (const liveSoc of result.data.playlists) {
         if (liveSoc.id === 'live-soc') {
-          const liveSocPlaylists = getMatchesList()
+          const liveSocPlaylists = getMatchesList(liveSoc.id)
           liveSoc.playlists = liveSocPlaylists.playlists
           liveSoc.videos = liveSocPlaylists.videos
         }

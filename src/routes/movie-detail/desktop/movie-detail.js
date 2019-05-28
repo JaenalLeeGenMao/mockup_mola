@@ -7,15 +7,16 @@ import { Helmet } from 'react-helmet'
 import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import DRMConfig from '@source/lib/DRMConfig';
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
+import { getVUID, getVUID_retry } from '@actions/vuid';
 
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
-// import { videoSettings as defaultVideoSettings } from '../const'
 
 import {
   playButton,
@@ -33,8 +34,8 @@ import {
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
-//const { getComponent } = require('../../../../../gandalf')
-const { getComponent } = require('@supersoccer/gandalf')
+const { getComponent } = require('../../../../../gandalf')
+// const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 const VideoThumbnail = getComponent('video-thumbnail')
 
@@ -100,7 +101,7 @@ class MovieDetail extends Component {
   // }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -192,7 +193,18 @@ class MovieDetail extends Component {
 
     this.player = player
 
-    player.addEventListener('error', e => {})
+    player.addEventListener('contentprotectionerror', e => {
+      if (e.error.toLowerCase() == 'error during license server request') {
+        this.props.getVUID_retry();
+      } else {
+        console.log("ERROR content protection", e)
+        // this.handleVideoError(e);
+      }
+    });
+    player.addEventListener('error', e => {
+      console.log("error", e, "======", player.error.code)
+      // this.handleVideoError(e);
+    });
   }
 
   subtitles() {
@@ -216,12 +228,16 @@ class MovieDetail extends Component {
       getMovieDetail,
       movieId, //passed as props from index.js,
       onHandleHotPlaylist,
+      user,
+      getVUID
     } = this.props
 
     getMovieDetail(movieId)
     onHandleHotPlaylist()
 
     this.updateEncryption()
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
+    getVUID(deviceId);
   }
 
   componentDidUpdate() {
@@ -255,24 +271,35 @@ class MovieDetail extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    // const streamSource = isSafari
-    //   ? 'https://cdn-supersoccer-k-01.akamaized.net/Content/HLS/Live/channel(74fa5c1e-bde9-6718-e3ab-11227d90da31)/index.m3u8?hdnts=st=1550491010~exp=1553083010~acl=/*~hmac=c58bb1dfe4f2068f4b004a447af035aa3b50f562e6ebe94f026f7958144d6a6d'
-    //   : 'https://cdn-supersoccer-k-01.akamaized.net/Content/DASH/Live/channel(74fa5c1e-bde9-6718-e3ab-11227d90da31)/manifest.mpd?hdnts=st=1550491010~exp=1553083010~acl=/*~hmac=c58bb1dfe4f2068f4b004a447af035aa3b50f562e6ebe94f026f7958144d6a6d'
-    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
-    // const streamSource = 'https://cdn-mxs-01.akamaized.net/Content/DASH/Live/channel(2a10e294-db16-0d35-f732-f2d040e882d0)/manifest.mpd'
     const poster = apiFetched ? dataFetched.background.landscape : ''
-    // const poster = apiFetched ? dataFetched.details.landscape : ''
 
     const { user } = this.props
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
 
-    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, '') : {}
+    const defaultVidSetting = status === 'success' ?
+      defaultVideoSetting(
+        user,
+        dataFetched,
+        vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
       ...defaultVidSetting,
       // getUrlResponse: this.getUrlResponse
     }
+
+    let drmStreamUrl = '',
+      isDRM = false;
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari
+        ? dataFetched.drm.fairplay.streamUrl
+        : dataFetched.drm.widevine.streamUrl;
+    }
+    isDRM = drmStreamUrl ? true : false;
+
+    const loadPlayer =
+      status === 'success' &&
+      ((isDRM && vuidStatus === 'success') || !isDRM);
 
     return (
       <>
@@ -283,7 +310,7 @@ class MovieDetail extends Component {
             </Helmet>
             <div style={{ width: '100vw', background: '#000' }}>
               <div className={videoPlayerContainer}>
-                {streamSource ? (
+                {loadPlayer ? (
                   <Theoplayer
                     className={customTheoplayer}
                     subtitles={this.subtitles()}
@@ -313,8 +340,8 @@ class MovieDetail extends Component {
                     </LazyLoad>
                   </Theoplayer>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
@@ -338,6 +365,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  getVUID: deviceId => dispatch(getVUID(deviceId)),
+  getVUID_retry: () => dispatch(getVUID_retry())
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

@@ -1,5 +1,4 @@
-import { get, post, delete as axiosDelete } from 'axios'
-import qs from 'query-string'
+import axios, { get, post, delete as axiosDelete } from 'axios'
 import {
   VIDEOS_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT,
@@ -12,8 +11,10 @@ import {
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
   CAMPAIGN_ENDPOINT,
+  ADD_DEVICE_ENDPOINT
 } from './endpoints'
 import utils from './util'
+import axiosRetry from 'axios-retry';
 
 import { endpoints } from '@source/config'
 
@@ -69,8 +70,8 @@ const getFeatureBanner = (isMobile = false) => {
     })
 }
 
-const getSportList = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
+const getSportList = (id = 'mola-sport') => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -95,8 +96,8 @@ const getSportList = () => {
       }
     })
 }
-const getMatchesList = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/live-soc`, {
+const getMatchesList = (id) => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -650,6 +651,47 @@ const getOrderHistoryTransactions = ({ uid, token }) => {
     })
 }
 
+const getVUID = ({ deviceId, r }) => {
+  let urlParam = `deviceId=${deviceId}`;
+
+  if (r === 1) {
+    urlParam = 'r=1';
+  }
+
+  return axios.get(`${ADD_DEVICE_ENDPOINT}?${urlParam}&test=1`, {
+    timeout: 15000
+  })
+    .then(response => {
+      const vuid = response.data.data.attributes.vuid;
+      return {
+        meta: {
+          status: vuid ? 'success' : 'no_vuid',
+          error: ''
+        },
+        data: vuid || null
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `vuid/getVUID - ${error}`
+        },
+        data: null
+      };
+    });
+};
+
+axiosRetry(axios, {
+  retries: 3,
+  retryDelay: (retryCount) => {
+    return retryCount * 2000;
+  },
+  retryCondition: () => true
+});
+// axiosRetry(getVUID, { retries: 3 });
+
+
 export default {
   getHomePlaylist,
   getFeatureBanner,
@@ -673,4 +715,5 @@ export default {
   getSportVideo,
   getMatchesList,
   getMatchDetail,
+  getVUID
 }
