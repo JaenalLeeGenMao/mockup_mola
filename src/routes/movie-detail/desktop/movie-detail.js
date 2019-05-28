@@ -7,11 +7,11 @@ import { Helmet } from 'react-helmet'
 import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
-import DRMConfig from '@source/lib/DRMConfig';
+import DRMConfig from '@source/lib/DRMConfig'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
-import { getVUID, getVUID_retry } from '@actions/vuid';
+import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
@@ -34,8 +34,8 @@ import {
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
-const { getComponent } = require('../../../../../gandalf')
-// const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../gandalf')
+const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 const VideoThumbnail = getComponent('video-thumbnail')
 
@@ -101,7 +101,7 @@ class MovieDetail extends Component {
   // }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -195,16 +195,16 @@ class MovieDetail extends Component {
 
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
-        this.props.getVUID_retry();
+        this.props.getVUID_retry()
       } else {
-        console.log("ERROR content protection", e)
+        console.log('ERROR content protection', e)
         // this.handleVideoError(e);
       }
-    });
+    })
     player.addEventListener('error', e => {
-      console.log("error", e, "======", player.error.code)
+      console.log('error', e, '======', player.error.code)
       // this.handleVideoError(e);
-    });
+    })
   }
 
   subtitles() {
@@ -229,15 +229,15 @@ class MovieDetail extends Component {
       movieId, //passed as props from index.js,
       onHandleHotPlaylist,
       user,
-      getVUID
+      getVUID,
     } = this.props
 
     getMovieDetail(movieId)
     onHandleHotPlaylist()
 
     this.updateEncryption()
-    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
-    getVUID(deviceId);
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
+    getVUID(deviceId)
   }
 
   componentDidUpdate() {
@@ -274,13 +274,9 @@ class MovieDetail extends Component {
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
     const { user } = this.props
-    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-    const defaultVidSetting = status === 'success' ?
-      defaultVideoSetting(
-        user,
-        dataFetched,
-        vuidStatus === 'success' ? vuid : '') : {}
+    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
       ...defaultVidSetting,
@@ -288,18 +284,14 @@ class MovieDetail extends Component {
     }
 
     let drmStreamUrl = '',
-      isDRM = false;
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+      isDRM = false
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
-      drmStreamUrl = isSafari
-        ? dataFetched.drm.fairplay.streamUrl
-        : dataFetched.drm.widevine.streamUrl;
+      drmStreamUrl = isSafari ? dataFetched.drm.fairplay.streamUrl : dataFetched.drm.widevine.streamUrl
     }
-    isDRM = drmStreamUrl ? true : false;
+    isDRM = drmStreamUrl ? true : false
 
-    const loadPlayer =
-      status === 'success' &&
-      ((isDRM && vuidStatus === 'success') || !isDRM);
+    const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
     return (
       <>
@@ -340,8 +332,8 @@ class MovieDetail extends Component {
                     </LazyLoad>
                   </Theoplayer>
                 ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
               </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
@@ -366,7 +358,7 @@ const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
-  getVUID_retry: () => dispatch(getVUID_retry())
+  getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)
