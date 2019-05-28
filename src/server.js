@@ -269,14 +269,14 @@ app.use('*', async (req, res, next) => {
       httpOnly: true,
     })
   }
-  if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
-    const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
-    res.cookie('__deviceId', deviceId, {
-      path: '/',
-      maxAge: 30 * 24 * 3600 * 1000,
-      httpOnly: true,
-    })
-  }
+  // if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
+  //   const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
+  //   res.cookie('__deviceId', deviceId, {
+  //     path: '/',
+  //     maxAge: 30 * 24 * 3600 * 1000,
+  //     httpOnly: true,
+  //   })
+  // }
   next() // <-- important!
 })
 
@@ -516,7 +516,7 @@ app.get('*', async (req, res, next) => {
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
         // vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
-        deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
+        // deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         debugError: {
           subs: userSubsError,
           userInfo: userInfoError,
@@ -595,7 +595,7 @@ app.get('*', async (req, res, next) => {
           })
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
-        const background = _get(response[0].attributes.images, 'cover', { landscape: '' })
+        const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
         data.image = response ? background.landscape : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'

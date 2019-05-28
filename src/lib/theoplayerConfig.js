@@ -90,7 +90,7 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
@@ -149,7 +149,8 @@ export const defaultVideoSetting = (user, videoDt, vuid) => {
     payload.user_id = user.uid
   }
   const encryptPayload = window.btoa(JSON.stringify(payload))
-
+  // console.log("VUID", vuid)
+  // console.log("videodt drm", videoDt.drm)
   return {
     adsBannerOptions: setBannerOptions(),
     showBackBtn: false,

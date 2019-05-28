@@ -8,9 +8,11 @@ import { Helmet } from 'react-helmet'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
+import DRMConfig from '@source/lib/DRMConfig';
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
+import { getVUID, getVUID_retry } from '@actions/vuid';
 
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
@@ -62,7 +64,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -152,12 +154,17 @@ class MovieDetail extends Component {
       getMovieDetail,
       movieId, //passed as props from index.js,
       onHandleHotPlaylist,
+      user,
+      getVUID
     } = this.props
 
     getMovieDetail(movieId)
     onHandleHotPlaylist()
 
     this.updateEncryption()
+
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
+    getVUID(deviceId);
   }
 
   componentDidUpdate() {
@@ -191,19 +198,35 @@ class MovieDetail extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
-    // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
     const { user } = this.props
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
 
-    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, '') : {}
+    const defaultVidSetting = status === 'success' ?
+      defaultVideoSetting(
+        user,
+        dataFetched,
+        vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
       ...defaultVidSetting,
       // getUrlResponse: this.getUrlResponse
     }
+
+    let drmStreamUrl = '',
+      isDRM = false;
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari
+        ? dataFetched.drm.fairplay.streamUrl
+        : dataFetched.drm.widevine.streamUrl;
+    }
+    isDRM = drmStreamUrl ? true : false;
+
+    const loadPlayer =
+      status === 'success' &&
+      ((isDRM && vuidStatus === 'success') || !isDRM);
 
     return (
       <>
@@ -216,7 +239,7 @@ class MovieDetail extends Component {
             <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
-                {streamSource ? (
+                {loadPlayer ? (
                   <Theoplayer
                     className={customTheoplayer}
                     subtitles={this.subtitles()}
@@ -247,8 +270,8 @@ class MovieDetail extends Component {
                     )}
                   </Theoplayer>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
@@ -270,6 +293,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  getVUID: deviceId => dispatch(getVUID(deviceId)),
+  getVUID_retry: () => dispatch(getVUID_retry())
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

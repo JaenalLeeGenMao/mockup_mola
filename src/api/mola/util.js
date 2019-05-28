@@ -1,5 +1,4 @@
 import _get from 'lodash/get'
-import _sample from 'lodash/sample'
 
 const normalizeHomePlaylist = response => {
   // console.log('response util normilize home playlist', response)
@@ -7,7 +6,7 @@ const normalizeHomePlaylist = response => {
   if (data && data.length > 0) {
     return data.map(
       ({ attributes: { playlists } }) =>
-        playlists.map(playlist => {
+        playlists && playlists.map(playlist => {
           const { id, type, attributes: { title, description, shortDescription, sortOrder, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
@@ -104,35 +103,16 @@ const normalizeMatchDetail = response => {
   // console.log('UTILS: FFFFFF', response)
   const { data } = response.data
   if (data && data.length > 0) {
-    try {
-      return data.map(result => {
-        // console.log('Utils: Data result normalize', result)
-        const {
-          id,
-          type,
-          attributes: {
-            title,
-            homeTeam,
-            awayTeam,
-            league,
-            description,
-            streamSourceUrl,
-            // permission,
-            // subtitles,
-            shortDescription,
-            displayOrder,
-            isDark,
-            startTime,
-            endTime,
-            images,
-          },
-        } = result
-        const coverBG = _get(images, 'cover', '')
-        const coverBGColor = _get(images, 'cover.backgroundColor', '')
-        return {
-          id,
-          type,
+    return data.map(result => {
+      // console.log('Utils: Data result normalize', result)
+      const {
+        id,
+        type,
+        attributes: {
           title,
+          homeTeam,
+          awayTeam,
+          league,
           description,
           streamSourceUrl,
           // permission,
@@ -142,24 +122,39 @@ const normalizeMatchDetail = response => {
           isDark,
           startTime,
           endTime,
-          shortDescription: shortDescription || '',
-          background: coverBG,
-          backgroundColor: coverBGColor || '#000622',
-          isDark: isDark || 0,
-          league: league
-            ? {
-                id: league.id,
-                name: league.attributes.name,
-                iconUrl: league.attributes.iconUrl,
-              }
-            : null,
-          homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
-          awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
-        }
-      })
-    } catch (err) {
-      console.log('ERRR', err)
-    }
+          images,
+        },
+      } = result
+      const coverBG = _get(images, 'cover', '')
+      const coverBGColor = _get(images, 'cover.backgroundColor', '')
+      return {
+        id,
+        type,
+        title,
+        description,
+        streamSourceUrl,
+        // permission,
+        // subtitles,
+        shortDescription,
+        displayOrder,
+        isDark,
+        startTime,
+        endTime,
+        shortDescription: shortDescription || '',
+        background: coverBG,
+        backgroundColor: coverBGColor || '#000622',
+        isDark: isDark || 0,
+        league: league
+          ? {
+            id: league.id,
+            name: league.attributes.name,
+            iconUrl: league.attributes.iconUrl,
+          }
+          : null,
+        homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
+        awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
+      }
+    })
   }
   return []
 }
@@ -356,7 +351,7 @@ const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType } } = result
+      const { id, attributes: { title, images, quotes, drm, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType } } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
         id,
@@ -366,6 +361,7 @@ const normalizeVideoDetail = response => {
         description,
         source,
         streamSourceUrl,
+        drm,
         subtitles,
         people,
         genre,

@@ -72,7 +72,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: '/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
+      api: 'https://stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
@@ -111,6 +111,7 @@ const config = baseConfig.default[env];
 
 module.exports = {
   // Node.js app
+  env,
   ...config,
   serverApi,
   trustProxy: process.env.TRUST_PROXY || 'loopback',

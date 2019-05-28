@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
 import { notificationBarBackground } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import DRMConfig from '@source/lib/DRMConfig';
 import * as movieDetailActions from '@actions/movie-detail'
 import styles from '@global/style/css/grainBackground.css'
+import { getVUID, getVUID_retry } from '@actions/vuid';
 
 import CountDown from '@components/CountDown'
 import { customTheoplayer } from './theoplayer-style'
@@ -16,7 +17,6 @@ import { customTheoplayer } from './theoplayer-style'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
-let ticker = [] /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     movieDetail: [],
@@ -24,7 +24,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -120,12 +120,16 @@ class MovieDetail extends Component {
   componentDidMount() {
     const {
       getMovieDetail,
-      videoId, //passed as props from index.js,
-      onHandleHotPlaylist,
+      videoId,
+      getVUID,
+      user
     } = this.props
 
     getMovieDetail(videoId)
     this.updateEncryption()
+
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
+    getVUID(deviceId);
   }
 
   componentDidUpdate() {
@@ -143,7 +147,13 @@ class MovieDetail extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
 
     if (status === 'success' && data.length > 0) {
-      const defaultVidSetting = defaultVideoSetting(user, data[0], '')
+      const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
+
+      const defaultVidSetting = status === 'success' ?
+        defaultVideoSetting(
+          user,
+          data[0],
+          vuidStatus === 'success' ? vuid : '') : {}
 
       const videoSettings = {
         ...defaultVidSetting,
@@ -175,17 +185,20 @@ class MovieDetail extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    // console.log("dataFetched", dataFetched)
-    // const { user, getMovieDetail, videoId } = this.props
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
+    let drmStreamUrl = '',
+      isDRM = false;
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari
+        ? dataFetched.drm.fairplay.streamUrl
+        : dataFetched.drm.widevine.streamUrl;
+    }
+    isDRM = drmStreamUrl ? true : false;
 
-    // const defaultVidSetting = status === 'success' && defaultVideoSetting(user, dataFetched, '')
-
-    // const videoSettings = {
-    //   ...defaultVidSetting,
-    //   // getUrlResponse: this.getUrlResponse
-    // }
+    const loadPlayer =
+      status === 'success' &&
+      ((isDRM && vuidStatus === 'success') || !isDRM);
 
     return (
       <>
@@ -194,7 +207,7 @@ class MovieDetail extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {this.renderVideo()}
+            {loadPlayer && this.renderVideo()}
             {/* <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
@@ -220,6 +233,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
+  getVUID: deviceId => dispatch(getVUID(deviceId)),
+  getVUID_retry: () => dispatch(getVUID_retry())
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

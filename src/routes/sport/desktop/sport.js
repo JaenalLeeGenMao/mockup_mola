@@ -24,7 +24,7 @@ import SportPlaceholder from './placeholder'
 import SportArrow from '../arrow'
 import SportMobileContent from './content'
 import SportMobileMenu from './menu'
-import LiveNowUpcomingSchedule from './livenowupcoming'
+import MatchesList from './matchesList';
 
 import styles from './sport.css'
 import contentStyles from './content/content.css'
@@ -313,7 +313,7 @@ class Sport extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -407,7 +407,7 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -487,10 +487,7 @@ class Sport extends Component {
       filteredDesc = filterString(activeSlide.description, 36)
       filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
-    const validationMatchCards = this.props.sport.playlists.data
-    // console.log('checking data', this.props.sport.playlists.data[0])
-    // console.log('result mola-soc', validationMatchCards.id)
-    // console.log('test data', playlists)
+    const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists
 
     return (
       <Fragment>
@@ -541,7 +538,7 @@ class Sport extends Component {
                   </div>
                 ) : null} */}
                 <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
-                  <LiveNowUpcomingSchedule />
+                  {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} />}
                 </div>
                 <Slider
                   {...settings}

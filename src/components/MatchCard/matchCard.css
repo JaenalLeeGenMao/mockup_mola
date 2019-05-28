@@ -72,6 +72,8 @@
 
 .matchCard_team_name {
   font-size: 1rem;
+  padding-top: 0.5rem;
+  display: block;
 }
 
 .matchCard__liga_type {
