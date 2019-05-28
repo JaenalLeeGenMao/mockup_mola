@@ -9,7 +9,6 @@ import moment from 'moment'
 // import defaultImageMatches from '@global/assets-global/images/defaultImage.svg'
 
 class MatchCard extends React.Component {
-
   handleMatchesInfo = (startTime, endTime) => {
     let text = 'UPCOMING'
 
@@ -68,7 +67,7 @@ class MatchCard extends React.Component {
   }
 
   render() {
-    const { id, homeTeam, awayTeam, league, startTime, endTime } = this.props.matchData
+    const { id, homeTeam, awayTeam, league } = this.props.matchData
     // console.log('tezzzz', this.props)
     // console.log('aaaaaaa', startTime)
 
@@ -100,10 +99,10 @@ class MatchCard extends React.Component {
         </div>
         <div className={styles.matchCard__liga_type}>
           {league ? (
-            <div>
+            <>
               <img src={league.iconUrl} className={styles.matchCard__liga_type_img} />
               <span className={styles.matchCard__liga_type_title}>{league.name}</span>
-            </div>
+            </>
           ) : null}
         </div>
       </Link>
