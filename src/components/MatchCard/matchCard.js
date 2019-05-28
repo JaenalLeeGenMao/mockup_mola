@@ -27,9 +27,6 @@ class MatchCard extends React.Component {
       let matchTime = moment.unix(getstartTime).utcOffset(7)
       let matchEndTime = moment.unix(getendTime).utcOffset(7)
 
-      // console.log('aaaaazzzz', matchTime)
-      // console.log('aaaaazzzz', matchEndTime)
-
       if (moment(matchTime).isBefore(moment().subtract(2, 'hours'))) {
         className = styles.rewatch_replay
         text = 'REPLAY'
@@ -100,7 +97,6 @@ class MatchCard extends React.Component {
 
   render() {
     const { playlists, awayTeam, homeTeam, startTime } = this.props
-    // console.log('tezzzz', this.props)
     // console.log('aaaaaaa', startTime)
 
     return (
@@ -114,7 +110,7 @@ class MatchCard extends React.Component {
                   {/* {this.handleMatchesClub(homeTeam.logo)} */}
 
                   <img src={homeTeam.logo} className={styles.matchCard__defaultlogoteam} />
-                  <span className={styles.matchCard_team_name}>{homeTeam.name}</span>
+                  {homeTeam ? <span className={styles.matchCard_team_name}>{homeTeam.name}</span> : null}
                 </div>
                 <div className={styles.matchCard__middlecontent}>
                   <div className={styles.matchCard__info_live_now}>
@@ -129,12 +125,16 @@ class MatchCard extends React.Component {
                 <div className={styles.matchCard__team_logo}>
                   {/* {this.handleClubImage(awayTeam.logo)} */}
                   <img src={awayTeam.logo} className={styles.matchCard__defaultlogoteam} />
-                  <span className={styles.matchCard_team_name}>{awayTeam.name}</span>
+                  {awayTeam ? <span className={styles.matchCard_team_name}>{awayTeam.name}</span> : null}
                 </div>
               </div>
               <div className={styles.matchCard__liga_type}>
-                <img src={league.iconUrl} className={styles.matchCard__liga_type_img} />
-                <span className={styles.matchCard__liga_type_title}>{league.name}</span>
+                {league ? (
+                  <div>
+                    <img src={league.iconUrl} className={styles.matchCard__liga_type_img} />
+                    <span className={styles.matchCard__liga_type_title}>{league.name}</span>
+                  </div>
+                ) : null}
               </div>
             </Link>
           </>
