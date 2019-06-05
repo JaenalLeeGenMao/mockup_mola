@@ -448,8 +448,23 @@ class Home extends Component {
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                        </Link>
+                      )}
+                    {activeSlide.buttonText && (
+                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </a>
+                    )}
+                    <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
+                    <Link
+                      to={`${activeSlide.link ? activeSlide.link : '/movie-detail/' + activeSlide.id}`}
+                      className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}
+                    >
+                      <span className={`${styles.icon__view_movie} ${isDark ? styles.black : styles.white}`} />
                     </Link>
                   </LazyLoad>
                 )}

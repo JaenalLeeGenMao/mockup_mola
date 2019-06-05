@@ -17,7 +17,7 @@ import LazyLoad from '@components/common/Lazyload'
 
 import history from '../../history'
 import logoBlue from '@global/style/icons/mola-blue.svg'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+import logoMobile from '@global/assets-global/images/mola-logo-mobile.svg'
 
 import Link from '../Link'
 
@@ -108,6 +108,7 @@ class Header extends Component {
 
     return (
       <div className={typeHeader}>
+        {isMobile && <div className={styles.header__shadow} />}
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
           {!logoOff && (
             <LazyLoad>
