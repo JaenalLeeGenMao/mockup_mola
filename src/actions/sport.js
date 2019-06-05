@@ -61,7 +61,7 @@ const updateActivePlaylist = id => (dispatch, getState) => {
       return { ...playlist, isActive: false }
     })
   return dispatch({
-    type: types.UPDATE_ACTIVE_PLAYLIST,
+    type: types.UPDATE_ACTIVE_SPORT_PLAYLIST,
     payload: {
       meta: { ...meta },
       data: [...data],

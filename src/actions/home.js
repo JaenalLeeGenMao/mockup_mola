@@ -27,34 +27,54 @@ const getHomePlaylist = () => dispatch => {
         payload: result,
       })
     } else {
-      result.data = result.data.filter(dt => {
-        return dt.visibility === 1
-      })
+      const featurePlaylist = { id: 'web-featured', title: 'Featured', sortOrder: 0 }
+      const dataFeature = [featurePlaylist, ...result.data]
+      const resultFeature = {
+        data: dataFeature,
+        meta: {
+          ...result.meta,
+        },
+      }
       dispatch({
         type: types.GET_HOME_PLAYLIST_SUCCESS,
-        payload: result,
+        payload: resultFeature,
       })
     }
   })
 }
 
-const getHomeVideo = playlist => dispatch => {
-  return Mola.getHomeVideo({ id: playlist.id }).then(result => {
-    result = {
-      meta: {
-        status: result.meta.status,
-        id: playlist.id,
-        sortOrder: playlist.sortOrder,
-      },
-      data: result.data.filter(dt => {
-        return dt.visibility === 1
-      }),
-    }
-    dispatch({
-      type: types.GET_HOME_VIDEO,
-      payload: result,
+const getHomeVideo = (playlist, isMobile) => dispatch => {
+  if (playlist.id === 'web-featured') {
+    return Mola.getFeatureBanner(isMobile).then(result => {
+      result = {
+        meta: {
+          status: result.meta.status,
+          id: playlist.id,
+          sortOrder: 0,
+        },
+        data: result.data,
+      }
+      dispatch({
+        type: types.GET_HOME_VIDEO,
+        payload: result,
+      })
     })
-  })
+  } else {
+    return Mola.getHomeVideo({ id: playlist.id }).then(result => {
+      result = {
+        meta: {
+          status: result.meta.status,
+          id: playlist.id,
+          sortOrder: playlist.sortOrder,
+        },
+        data: result.data,
+      }
+      dispatch({
+        type: types.GET_HOME_VIDEO,
+        payload: result,
+      })
+    })
+  }
 }
 
 const updateActivePlaylist = id => (dispatch, getState) => {

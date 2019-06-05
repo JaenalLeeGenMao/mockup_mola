@@ -48,6 +48,12 @@ class Security extends React.Component {
     this.props.onClick()
   }
 
+  handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.handleSubmit()
+    }
+  }
+
   onChangeInput = e => {
     const target = e.target
     const { id, value } = target
@@ -66,15 +72,15 @@ class Security extends React.Component {
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
             <div className={s.security_form_wrapper}>
               <label htmlFor="currentPassword">Sandi sekarang</label>
-              <input type="password" id="currentPassword" onChange={this.onChangeInput} value={currentPassword} />
+              <input type="password" id="currentPassword" onChange={this.onChangeInput} value={currentPassword} onKeyUp={this.handleKeyUp} />
             </div>
             <div className={s.security_form_wrapper}>
               <label htmlFor="newPassword">Ubah sandi</label>
-              <input type="password" id="newPassword" onChange={this.onChangeInput} value={newPassword} />
+              <input type="password" id="newPassword" onChange={this.onChangeInput} value={newPassword} onKeyUp={this.handleKeyUp} />
             </div>
             <div className={s.security_form_wrapper}>
               <label htmlFor="confirmNewPassword">Konfirmasi sandi</label>
-              <input type="password" id="confirmNewPassword" onChange={this.onChangeInput} value={confirmNewPassword} />
+              <input type="password" id="confirmNewPassword" onChange={this.onChangeInput} value={confirmNewPassword} onKeyUp={this.handleKeyUp} />
             </div>
             <div style={{ textAlign: 'left', padding: '2rem 0' }}>
               <button className={s.security_button_active} onClick={this.handleSubmit}>

@@ -268,7 +268,7 @@ class Home extends Component {
     const that = this
     this.activeSlider = this.state.sliderRefs[index]
     setTimeout(function() {
-      that.props.onUpdatePlaylist(activePlaylist.id)
+      // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
       let isDark = 1
@@ -276,7 +276,7 @@ class Home extends Component {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
-        that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
+        that.setState({ isDark, activeSlide: videos.data[0].data[0] })
       }
       if (index || index === 0) {
         sliderRefs[index].slickGoTo(0)
@@ -377,13 +377,13 @@ class Home extends Component {
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
-      filteredDesc = activeSlide.shortDescription
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+      filteredDesc = activeSlide.description
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
     }
 
     return (
       <Fragment>
-        <Joyride
+        {/* <Joyride
           disableOverlayClose={true} //
           stepIndex={stepIndex} //
           continuous // ?
@@ -393,7 +393,7 @@ class Home extends Component {
           styles={customTourStyle} //uk
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        />
+        /> */}
 
         <div>
           <div
@@ -422,7 +422,7 @@ class Home extends Component {
               ✖
             </div>
           </div>
-          {playlistStatus !== 'error' && <Header libraryOff leftMenuOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -432,22 +432,13 @@ class Home extends Component {
               <>
                 {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} className="tourCategory" />
+                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
-                <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                  <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
-                    <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
-                    <p style={{ color: '#fff', fontSize: '8px', textAlign: 'center', textTransform: 'capitalize', lineHeight: '14px' }}>View All</p>
-                  </Link>
-                  <p className={`${styles.header__library_text} ${0 ? styles.black : styles.white}`}>film {activePlaylist.title} lain</p>
-                </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                     <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p className="filteredText">{filteredDesc}</p>
-                    <p className="filteredText">{filteredQuote}</p>
-                    <p className="filteredText">{filteredDesc}</p>
-                    <p className="filteredText">{filteredQuote}</p>
+                    <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
                     {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
                         <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
@@ -455,21 +446,14 @@ class Home extends Component {
                         </Link>
                       )}
                     {activeSlide.buttonText && (
-                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                         <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                      </a>
+                      </Link>
                     )}
-                    <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
-                    <Link
-                      to={`${activeSlide.link ? activeSlide.link : '/movie-detail/' + activeSlide.id}`}
-                      className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}
-                    >
-                      <span className={`${styles.icon__view_movie} ${isDark ? styles.black : styles.white}`} />
-                    </Link>
                   </LazyLoad>
                 )}
-                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '14px' }}>
-                  {activeSlideDots && activeSlideDots.length > 0 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
+                <div className={styles.header__library_link_wrapper}>
+                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
                 <Slider
                   {...settings}
@@ -499,7 +483,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
-  onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
+  onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist, true)),
   onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
 })
 

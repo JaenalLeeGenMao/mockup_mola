@@ -55,6 +55,12 @@ class Login extends Component {
     }
   }
 
+  handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.handleLogin()
+    }
+  }
+
   handleLoginSocMed = provider => {
     window.location.href = `/accounts/_/v1/login/${provider}`
   }
@@ -80,6 +86,7 @@ class Login extends Component {
               errorClassName={styles.login__content_input_error}
               placeholder="Email"
               type="text"
+              onKeyUp={this.handleKeyUp}
             />
             <TextInput
               id="password"
@@ -91,6 +98,7 @@ class Login extends Component {
               errorClassName={styles.login__content_input_error}
               placeholder="Password"
               type="password"
+              onKeyUp={this.handleKeyUp}
             />
             <div className={styles.login__content_forget_password}>
               <Link to="/accounts/forgotPassword">{locale['forget_password']} ?</Link>

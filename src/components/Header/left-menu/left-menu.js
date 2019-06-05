@@ -26,7 +26,7 @@ class LeftMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, leftMenuOff, isMenuToggled = false } = this.props
+    const { color, leftMenuOff, isMenuToggled = false, isMovie } = this.props
 
     return (
       <>

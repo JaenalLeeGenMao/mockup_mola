@@ -91,8 +91,8 @@
   }
 
   .left_menu_lib {
-    color: #808080;
-    font-size: 1rem;
+    color: #b5b5b5;
+    font-size: 12px;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     width: 25%;
@@ -101,8 +101,8 @@
   }
 
   .left_menu_guide {
-    color: #808080;
-    font-size: 1rem;
+    color: #b5b5b5;
+    font-size: 12px;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     width: 25%;
@@ -121,7 +121,7 @@
   }
 
   .left_menu_button {
-    font-size: 1rem;
+    font-size: 12px;
     background: none;
     font-weight: none;
     text-transform: uppercase;

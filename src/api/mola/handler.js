@@ -11,6 +11,7 @@ import {
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
+  CAMPAIGN_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 
@@ -43,6 +44,33 @@ const getHomePlaylist = () => {
       }
     })
 }
+
+const getFeatureBanner = (isMobile = false) => {
+  return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeFeatureBanner(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 const getSportCategoryList = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
     ...endpoints.setting,
@@ -99,12 +127,12 @@ const getHomeVideo = ({ id }) => {
 }
 
 const getSportVideo = ({ id }) => {
-  console.log('id', id)
+  // console.log('id', id)
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
-      console.log('handler response get sport 2222', response) //here video exist?
+      // console.log('handler response get sport 2222', response) //here video exist?
       const result = utils.normalizeSportVideo(response)
       // console.log('handler response get result 3333', result) //data null
       return {
@@ -567,6 +595,7 @@ const getOrderHistoryTransactions = ({ uid, token }) => {
 
 export default {
   getHomePlaylist,
+  getFeatureBanner,
   getHomeVideo,
   getAllHistory,
   getSearchResult,

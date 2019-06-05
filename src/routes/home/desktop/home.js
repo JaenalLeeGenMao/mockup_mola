@@ -22,15 +22,14 @@ import Link from '@components/Link'
 import HomeError from '@components/common/error'
 import HomePlaceholder from './placeholder'
 import HomeArrow from '../arrow'
-import HomeMobileContent from './content'
-import HomeMobileMenu from './menu'
+import HomeContent from './content'
+import HomeMenu from './menu'
 
 import styles from './home.css'
 import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
-import { reduce } from 'rxjs/operators'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -111,7 +110,7 @@ class Home extends Component {
     sliderRefs: [],
   }
 
-  sliderFourIndex = 0
+  sliderMovements = 0
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
@@ -177,13 +176,11 @@ class Home extends Component {
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
       activePlaylist = this.state.playlists.data[0]
-      this.props.onUpdatePlaylist(activePlaylist.id)
+      // this.props.onUpdatePlaylist(activePlaylist.id)
     }
 
     this.handleKeyboardEvent()
     this.handleMouseScroll()
-
-    // console.log('check prev next', this.state)
 
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
@@ -255,7 +252,6 @@ class Home extends Component {
   componentDidUpdate() {
     const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
     //notes data sliderrefs exist
-    // console.log('checking', this.state.scrollIndex)
 
     //update loading state
     if (playlistStatus === 'success') {
@@ -394,9 +390,14 @@ class Home extends Component {
           // do nothing
         } else if (prevX > nextX) {
           slider.slickNext()
-          // console.log('AAAAAAA')
+          this.setState({
+            swipeIndex: this.state.swipeIndex + 1,
+          })
         } else {
           slider.slickPrev()
+          this.setState({
+            swipeIndex: this.state.swipeIndex - 1,
+          })
         }
       } else {
         if (distance <= 20) {
@@ -413,22 +414,19 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
     setTimeout(function() {
-      that.props.onUpdatePlaylist(activePlaylist.id)
+      // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
-      // console.log('handlechangecolor', activeSlick)
-      //this work for change the slider
       let isDark = 1
 
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
-        that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
+        that.setState({ isDark, activeSlide: videos.data[0].data[0] })
       }
       if (index || index === 0) {
         sliderRefs[index].slickGoTo(0)
-        // console.log('WOOOORKSSS')
         that.setState({
           scrollIndex: index,
           swipeIndex,
@@ -450,8 +448,6 @@ class Home extends Component {
     const { sliderRefs } = this.state
     if (sliderRefs.length < trackedPlaylistIds.length) {
       sliderRefs.push(refs)
-      // console.log('VALIDATION RUN')
-      //WORKS UPDATE SLIDER
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
   }
@@ -467,8 +463,20 @@ class Home extends Component {
     }
   }
 
+  /* Horizontal scroll handler */
+  handleNextPrevSlide = (index = 0) => {
+    const { sliderRefs } = this.state
+    if (this.activeSlider) {
+      this.activeSlider.slickGoTo(index)
+    } else {
+      sliderRefs[0].slickGoTo(index)
+    }
+    this.setState({
+      swipeIndex: index,
+    })
+  }
+
   render() {
-    // console.log('check sliderRefs Next Prev', this.state)
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
         playlists,
@@ -496,13 +504,12 @@ class Home extends Component {
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
-      filteredDesc = filterString(activeSlide.shortDescription, 36)
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
+      filteredDesc = filterString(activeSlide.description, 36)
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
-
     return (
       <Fragment>
-        <Joyride
+        {/* <Joyride
           disableOverlayClose={true}
           stepIndex={stepIndex}
           continuous
@@ -512,10 +519,10 @@ class Home extends Component {
           styles={customTourStyle}
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        />
+        /> */}
 
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff leftMenuOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff isMovie className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -525,36 +532,31 @@ class Home extends Component {
               <>
                 <div className={styles.home__gradient} />
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
-                <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                  <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
-                    <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
-                  </Link>
+                <LazyLoad containerClassName={styles.header__playlist_title}>
+                  <div>{this.state.playlists.data[scrollIndex].title}</div>
                 </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
-                    <p className={styles.quote}>{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      <span className={styles.play_icon} />
-                      <p>{locale['view_movie']}</p>
-                    </Link>
+                    {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
+                        </Link>
+                      )}
+                    {activeSlide.buttonText && (
+                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </Link>
+                    )}
                   </LazyLoad>
                 )}
-                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '6px' }}>
-                  {activeSlideDots &&
-                    activeSlideDots.length > 1 && (
-                      <div className="tourSlide">
-                        <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 0, 1000)}>
-                          {'‹'}
-                        </div>
-                        <div className={`${styles.home__custom_arrow} ${isDark ? styles.black : styles.white}`} onClick={() => this.handleSwipeDirection(this.activeSlider, 1000, 0)}>
-                          {'›'}
-                        </div>
-                      </div>
-                    )}
+                <div className={`${styles.header__movie_slider} tourSlide`}>
+                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
                 </div>
                 <Slider
                   {...settings}
@@ -565,18 +567,17 @@ class Home extends Component {
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
                     return (
-                      <HomeMobileContent
+                      <HomeContent
                         key={id}
                         videos={video.data}
                         index={index}
                         updateSlider={ref => {
                           const { sliderRefs } = this.state
-
-                          if (index < 4 && !sliderRefs[index]) sliderRefs[index] = ref
-                          else if (index == 4 && this.sliderFourIndex == 1) sliderRefs[index] = ref
+                          if (index < playlists.data.length - 1 && !sliderRefs[index]) sliderRefs[index] = ref
+                          else if (index == playlists.data.length - 1 && this.sliderMovements == 1) sliderRefs[index] = ref
                           else sliderRefs.sort((a, b) => a.props.id - b.props.id)
 
-                          if (index == 4) this.sliderFourIndex++
+                          if (index == playlists.data.length - 1) this.sliderMovements++
                         }}
                         updateColorChange={this.handleColorChange}
                       />

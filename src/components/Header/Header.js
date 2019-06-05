@@ -101,6 +101,7 @@ class Header extends Component {
       profileOff = false,
       backButtonOn = false,
       shareButtonOn = false,
+      isMovie = false,
     } = this.props
 
     const color = isDark ? 'black' : 'white'
@@ -113,7 +114,7 @@ class Header extends Component {
           {!logoOff && (
             <LazyLoad>
               <Link to="/">
-                <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <img alt="molatv" src={isMobile ? logoMobile : logoBlue} className={styles.header__logo} />
               </Link>
             </LazyLoad>
           )}
