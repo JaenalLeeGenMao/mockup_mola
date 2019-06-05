@@ -37,9 +37,9 @@ class LeftMenu extends Component {
                   <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to="/">
                     Movie
                   </Link>
-                  <Link className={activeMenu === 'sport' ? styles.left_menu__active : ''} to="/sport">
+                  {/* <Link className={activeMenu === 'sport' ? styles.left_menu__active : ''} to="/sport">
                     Sport
-                  </Link>
+                  </Link> */}
                   {activeMenu === 'movie' ? (
                     <Link
                       className={`${styles.left_menu_lib} ${activeMenu === 'library' ? styles.left_menu__active : ''}`}
