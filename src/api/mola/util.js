@@ -419,7 +419,7 @@ const normalizeFeatureBanner = response => {
   if (data && data.length > 0) {
     const result = data.map(({ attributes: { banners } }) =>
       banners.map(banner => {
-        const { id, type, attributes: { name, description, imageUrl, buttonText, link } } = banner
+        const { id, type, attributes: { name, description, imageUrl, buttonText, link, isDark = 0 } } = banner
 
         return {
           id,
@@ -432,6 +432,7 @@ const normalizeFeatureBanner = response => {
           },
           buttonText,
           link,
+          isDark,
         }
       })
     )

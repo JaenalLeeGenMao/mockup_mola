@@ -445,11 +445,11 @@ class Home extends Component {
                           <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                         </Link>
                       )}
-                    {activeSlide.buttonText && (
+                    {/* {activeSlide.buttonText && (
                       <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                         <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
                       </Link>
-                    )}
+                    )} */}
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper}>
