@@ -530,7 +530,7 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={styles.home__gradient} />
+                {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
@@ -548,11 +548,11 @@ class Home extends Component {
                           <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
                         </Link>
                       )}
-                    {activeSlide.buttonText && (
+                    {/* {activeSlide.buttonText && (
                       <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                         <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
                       </Link>
-                    )}
+                    )} */}
                   </LazyLoad>
                 )}
                 <div className={`${styles.header__movie_slider} tourSlide`}>

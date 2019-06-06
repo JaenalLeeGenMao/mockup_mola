@@ -39,6 +39,7 @@ class Content extends Component {
           return (
             <div key={id} className="grid-slick" isdark={isDark}>
               <img src={background.landscape} />
+              {index !== 0 && <div className={styles.content__gradient} />}
             </div>
           )
         })}

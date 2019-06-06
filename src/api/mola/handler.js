@@ -16,6 +16,7 @@ import {
 import utils from './util'
 
 import { endpoints } from '@source/config'
+import { resolve } from 'q'
 
 const getHomePlaylist = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
@@ -46,29 +47,57 @@ const getHomePlaylist = () => {
 }
 
 const getFeatureBanner = (isMobile = false) => {
-  return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeFeatureBanner(response)
-      return {
-        meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
-          error: '',
+  // return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
+  //   ...endpoints.setting,
+  // })
+  //   .then(response => {
+  const response = {
+    data: {
+      data: [
+        {
+          id: 7,
+          attributes: {
+            name: isMobile ? 'mobile-featured' : 'desktop-featured',
+            banners: [
+              {
+                id: 767,
+                type: 'banners',
+                attributes: {
+                  buttonText: ' ',
+                  description: ' ',
+                  imageUrl: isMobile ? 'https://mola01.koicdn.com/images/epl-mola-banner1.jpg' : 'https://mola01.koicdn.com/images/epl-mola-banner2.jpg',
+                  link: ' ',
+                  name: ' ',
+                  isDark: isMobile ? 1 : 0,
+                },
+              },
+            ],
+          },
         },
-        data: [...result[0]] || [],
-      }
+      ],
+    },
+  }
+  const result = utils.normalizeFeatureBanner(response)
+  return new Promise(resolve =>
+    resolve({
+      meta: {
+        status: result[0].length > 0 ? 'success' : 'no_result',
+        error: '',
+      },
+      data: [...result[0]] || [],
     })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Home')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
+  )
+  // })
+  // .catch(error => {
+  //   const errorMessage = error.toString().replace('Error:', 'Mola Home')
+  //   return {
+  //     meta: {
+  //       status: 'error',
+  //       error: errorMessage,
+  //     },
+  //     data: [],
+  //   }
+  // })
 }
 
 const getSportCategoryList = () => {
