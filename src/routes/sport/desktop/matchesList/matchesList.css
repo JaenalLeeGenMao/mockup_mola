@@ -19,7 +19,7 @@
 .matchesList_grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 2rem;
+  grid-gap: 1rem;
   font-weight: bold;
 }
 
@@ -103,7 +103,7 @@
 
 .matchesList_schedule_wrapper {
   width: 100%;
-  margin: 0 10% 0 12.5%;
+  margin: 0 4% 0 12.5%;
 }
 
 .sport_youtube_img {

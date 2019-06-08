@@ -42,3 +42,5 @@ export const logoLandscapeBlue = `${imgBaseUrl}/mola-landscape-blue.svg`
 export const line = `${imgBaseUrl}/line.png`
 export const facebook = `${imgBaseUrl}/facebook.png`
 export const google = `${imgBaseUrl}/google.png`
+
+export const defaultImgClub = `${imgBaseUrl}/defaultImage.svg`

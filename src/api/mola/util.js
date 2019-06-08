@@ -33,38 +33,6 @@ const normalizeHomePlaylist = response => {
   }
   return []
 }
-// const normalizeSportCategoryList = response => {
-//   // console.log('response util normilize sport playlist', response)
-//   const { data } = response.data
-//   if (data && data.length > 0) {
-//     return data.map(({ attributes: { playlists } }) =>
-//       playlists
-//         .map(playlist => {
-//           const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images } } = playlist
-//           const background = _get(images, 'cover', { portrait: null, landscape: null })
-//           const coverBGColor = _get(images, 'cover.backgroundColor', '')
-//           return {
-//             id,
-//             title,
-//             sortOrder,
-//             startTime,
-//             endTime,
-//             description,
-//             shortDescription: shortDescription || '',
-//             iconUrl: iconUrl || '',
-//             // coverTitle: coverTitle,
-//             background,
-//             backgroundColor: coverBGColor || '#000622',
-//             isDark: isDark || 0,
-//             isActive: false,
-//             type,
-//           }
-//         })
-//         .sort((a, b) => a.sortOrder - b.sortOrder)
-//     )
-//   }
-//   return []
-// }
 
 const normalizeMatchesList = response => {
   const { data } = response.data
@@ -205,47 +173,6 @@ const normalizeHomeVideo = response => {
   }
   return []
 }
-
-// const normalizeSportVideo = response => {
-//   const { data } = response.data
-//   if (data && data.length > 0) {
-//     const result = data.map(({ attributes: { videos } }) =>
-//       videos
-//         .map(video => {
-//           const { id, type, attributes: { title, description, shortDescription, displayOrder, isDark, images, quotes: quoteLists } } = video
-//           const background = _get(images, 'cover', { portrait: null, landscape: null })
-//           const coverBGColor = _get(images, 'cover.backgroundColor', ''),
-//             dummyQuote = {
-//               attributes: {
-//                 author: 'Comming Soon',
-//                 imageUrl: '',
-//                 role: 'Media',
-//                 text: title,
-//               },
-//               id: 1,
-//               type: 'quotes',
-//             }
-//           return {
-//             id,
-//             title,
-//             displayOrder,
-//             description,
-//             shortDescription: shortDescription || '',
-//             // coverTitle: coverTitle,
-//             background,
-//             backgroundColor: coverBGColor || '#000622',
-//             details,
-//             isDark: isDark || 0,
-//             quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
-//             type,
-//           }
-//         })
-//         .sort((a, b) => a.displayOrder - b.displayOrder)
-//     )
-//     return result
-//   }
-//   return []
-// }
 
 const normalizeHistory = response => {
   const { data } = response.data
@@ -478,8 +405,6 @@ export default {
   normalizeVideoDetail,
   normalizeMovieLibrary,
   normalizeMovieLibraryList,
-  // normalizeSportCategoryList,
-  // normalizeSportVideo,
   normalizeFeatureBanner,
   normalizeMatchesList,
   normalizeMatchDetail,
