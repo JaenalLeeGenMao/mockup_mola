@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
 import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
@@ -39,8 +38,6 @@ const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 const VideoThumbnail = getComponent('video-thumbnail')
 
-var isTabActive
-
 const Controller = ({ isActive = 'overview', onClick }) => {
   return (
     <div className={controllerContainer}>
@@ -74,7 +71,6 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -101,7 +97,7 @@ class MovieDetail extends Component {
   // }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -197,12 +193,12 @@ class MovieDetail extends Component {
       if (e.error.toLowerCase() == 'error during license server request') {
         this.props.getVUID_retry()
       } else {
-        console.log('ERROR content protection', e)
+        // console.log('ERROR content protection', e)
         // this.handleVideoError(e);
       }
     })
     player.addEventListener('error', e => {
-      console.log('error', e, '======', player.error.code)
+      // console.log('error', e, '======', player.error.code)
       // this.handleVideoError(e);
     })
   }
@@ -332,8 +328,8 @@ class MovieDetail extends Component {
                     </LazyLoad>
                   </Theoplayer>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}

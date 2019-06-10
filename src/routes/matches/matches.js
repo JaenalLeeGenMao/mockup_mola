@@ -35,7 +35,6 @@ class Matches extends React.Component {
 
   render() {
     const matchesList = this.props.matches
-    console.log(matchesList)
     // console.log('call data 2', matchesList.data[0].awayTeam.name)
     const isDark = false
     return (

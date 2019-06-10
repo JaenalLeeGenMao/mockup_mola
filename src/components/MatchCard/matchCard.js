@@ -16,14 +16,23 @@ class MatchCard extends React.Component {
 
     let matchTime = startTime && moment.unix(startTime).utcOffset(0)
     let matchEndTime = endTime && moment.unix(endTime).utcOffset(0)
-    const dateStr = moment(startTime);
+    const startDateStr = moment(startTime);
+    const endDateStr = moment(endTime);
 
-    const validDate = matchTime.isValid() ? matchTime : dateStr;
-    const simpleDate = new Date(validDate);
-    const dateFormatted = moment(simpleDate).format('D MMM');
-    // console.log("startTime", startTime)
-    // console.log('matchStartTime', matchTime)
-    // console.log("dateFormatted", dateFormatted)
+    const validStartDate = matchTime.isValid() ? matchTime : startDateStr;
+    const validEndDate = matchEndTime.isValid() ? matchEndTime : endDateStr;
+
+    const startDateTime = new Date(validStartDate);
+    const endDateTime = new Date(validEndDate);
+
+    const dateFormatted = moment(startDateTime).format('D MMM');
+
+    // console.log("matchTime", matchTime)
+    // console.log('startDateStr', startDateStr)
+    // console.log("validStartDate", validStartDate)
+    // console.log("startDateTime", startDateTime)
+    // console.log("endDateTime", endDateTime)
+    // console.log(" moment(startTime)", moment(startTime).format('D MMM HH:mm'))
     // console.log('matchEndTime', matchEndTime)
     // console.log("moment(matchTime).isBefore(moment().subtract(2, 'hours'))", moment(matchTime).isBefore(moment().subtract(2, 'hours')))
     if (moment(matchTime).isBefore(moment().subtract(2, 'hours'))) {
@@ -48,8 +57,8 @@ class MatchCard extends React.Component {
           .format('YYYY-MM-DD 23:59:00')
       )
       if (moment(matchTime).isBefore(midnight)) {
-        let endTime = moment(matchEndTime).format('HH:mm')
-        let startTime = moment(matchTime).format('HH:MM')
+        let endTime = moment(endDateTime).format('HH:mm')
+        let startTime = moment(startDateTime).format('HH:mm')
         let currentTime = moment().format('HH:mm')
         if (currentTime >= startTime && currentTime <= endTime) {
           text = 'LIVE NOW'
@@ -87,8 +96,6 @@ class MatchCard extends React.Component {
 
   render() {
     const { id, homeTeam, awayTeam, league, startTime, endTime } = this.props.matchData
-    // console.log('tezzzz', this.props)
-    // console.log('aaaaaaa', startTime)
     const showScore = Date.now() > endTime * 1000;
     return (
       <Link to={`/watch?v=${id}`} key={id} className={styles.matchCard__schedule}>
