@@ -14,11 +14,11 @@ class Tracker {
     let sessionId = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf('__sessionId=') >= 0
       })
 
-    if (sessionId && sessionId.length) {
+    if (sessionId && sessionId.length > 0) {
       sessionId = sessionId[0].split('=')[1]
       document.cookie = `__sessionId=${sessionId}; max-age=${30 * 60}; path=/;`
     } else {
@@ -41,11 +41,11 @@ class Tracker {
     let clientId = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf('__clientId=') >= 0
       })
 
-    if (clientId && clientId.length) {
+    if (clientId && clientId.length > 0) {
       clientId = clientId[0].split('=')[1]
     } else {
       clientId =
@@ -74,18 +74,17 @@ class Tracker {
     let location = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf('__loc=') >= 0
       })
-
-    if (location && location.length) {
+    if (location && location.length > 0) {
       location = location[0].split('=')[1]
     } else {
       location = localStorage.getItem('user-location')
       if (window.navigator.geolocation) {
         // console.log("MASUK SINI?")
         window.navigator.geolocation.getCurrentPosition(
-          function(position) {
+          function (position) {
             latitude = position.coords.latitude
             longitude = position.coords.longitude
             location = `${latitude},${longitude}`
@@ -94,7 +93,7 @@ class Tracker {
             document.cookie = `__loc=${location}; max-age=${60 * 60}; path=/;`
             localStorage.setItem('user-location', location)
           },
-          function() {},
+          function () { },
           options
         )
       }
@@ -108,7 +107,7 @@ class Tracker {
     let token = _get(document, 'cookie')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf(`${cookieName}=`) >= 0
       })
     if (token.length > 0) {
@@ -158,7 +157,7 @@ class Tracker {
       data: JSON.stringify(reqBody),
       url: PUBSUB_ENDPOINT,
     }
-    return axios(options).catch(() => {})
+    return axios(options).catch(() => { })
   }
 }
 

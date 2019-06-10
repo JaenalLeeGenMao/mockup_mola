@@ -6,15 +6,15 @@ const normalizeHomePlaylist = response => {
   if (data && data.length > 0) {
     return data.map(
       ({ attributes: { playlists } }) =>
-        playlists && playlists.map(playlist => {
-          const { id, type, attributes: { title, description, shortDescription, sortOrder, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
+        playlists && playlists.map((playlist, index) => {
+          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
             id,
             title,
             visibility,
-            sortOrder,
+            sortOrder: index + 1,
             startTime,
             endTime,
             description,

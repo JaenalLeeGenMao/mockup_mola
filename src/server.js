@@ -66,14 +66,14 @@ app.get('/ping', (req, res) => {
   res.send('PONG')
 })
 
-//app.use(
-//  '/api',
-//  proxy(`${config.endpoints.domain}/api/`, {
-//    proxyReqPathResolver: (req, res) => {
-//      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//    },
-//  })
-//)
+// app.use(
+//   '/api',
+//   proxy(`${config.endpoints.domain}/api/`, {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path);
+//     },
+//   })
+// );
 
 // app.use(
 //   '/accounts/_',

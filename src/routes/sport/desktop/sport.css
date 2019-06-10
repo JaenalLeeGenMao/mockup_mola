@@ -269,7 +269,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  color: #fff;
+  color: #808080;
   font-size: 1.5rem;
   z-index: 1;
   margin: 10% 47.5% 0 12.5%;
@@ -279,7 +279,7 @@ body {
 .sport_header__playlist_title:before {
   content: '';
   border: 0;
-  background-color: #fff;
+  background-color: #808080;
   width: 72px;
   width: 4.5rem;
   height: 2px;

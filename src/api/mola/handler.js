@@ -6,7 +6,6 @@ import {
   SEARCH_ENDPOINT,
   SEARCH_GENRE_ENDPOINT,
   RECENT_SEARCH_ENDPOINT,
-  MOVIE_DETAIL_ENDPOINT,
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
@@ -396,7 +395,7 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
 }
 
 const getMovieDetail = ({ id }) => {
-  return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
+  return get(`${VIDEOS_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
