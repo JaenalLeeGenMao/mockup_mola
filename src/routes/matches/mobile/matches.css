@@ -51,7 +51,7 @@ body {
 
 .matches__filter {
   position: absolute;
-  left: 15px;
+  left: 1.4rem;
   top: 85px;
 }
 
@@ -59,11 +59,18 @@ body {
   border: 0;
   outline: 0;
   color: white;
-  background-color: transparent;
   font-size: 1.3rem;
   margin: 0;
   font-weight: bold;
-  padding-bottom: 3px;
+  padding-bottom: 5px;
+  padding-right: 25px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('./assets/down-arrow.png') no-repeat;
+  background-color: transparent;
+  background-position: right;
+  background-size: 13px;
 }
 
 .matches__filter select option {

@@ -12,10 +12,6 @@ import styles from './card.css'
 // import defaultImageMatches from '@global/assets-global/images/defaultImage.svg'
 
 class Card extends Component {
-  componentDidMount() {
-    const { playlists, homeTeam, awayTeam, startTime } = this.props
-  }
-
   cardDateFormat = (startUnix, endUnix) => {
     const { index, matchesList } = this.props
     const localTime = convertToLocalDateTime(startUnix)
@@ -42,6 +38,33 @@ class Card extends Component {
     return text
   }
 
+  renderMatch() {
+    const { homeTeam, awayTeam, league, title } = this.props.data
+    if (homeTeam && awayTeam) {
+      return (
+        <div className={styles.card__matches}>
+          <div className={styles.card__club}>
+            <img src={homeTeam.logo} />
+            <span>{homeTeam.name}</span>
+          </div>
+          <div className={styles.card__club}>
+            <img src={awayTeam.logo} />
+            <span>{awayTeam.name}</span>
+          </div>
+          {league ? <img className={styles.card__league_logo} src={league.iconUrl} /> : ''}
+        </div>
+      )
+    } else {
+      return (
+        <div className={styles.card__matches}>
+          <div className={styles.card__club}>
+            <span>{title}</span>
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     const { data } = this.props
     const { homeTeam, awayTeam, league } = data
@@ -53,17 +76,7 @@ class Card extends Component {
         <div className={matchLive ? styles.card__date + ' ' + styles.card__live_now : styles.card__date}>
           <p> {date} </p>
         </div>
-        <div className={styles.card__matches}>
-          <div className={styles.card__club}>
-            <img src={homeTeam.logo} />
-            <span>{homeTeam.name}</span>
-          </div>
-          <div className={styles.card__club}>
-            <img src={awayTeam.logo} />
-            <span>{homeTeam.name}</span>
-          </div>
-          {league ? <img className={styles.card__league_logo} src={league.iconUrl} /> : ''}
-        </div>
+        {this.renderMatch()}
       </div>
     )
   }
