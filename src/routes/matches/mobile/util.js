@@ -1,54 +1,29 @@
-/*
-  Multiline Ellipsis Simple Library
-  Need to set container height and overflow:hidden
-  example:
-  export const ThumbnailTitle = styled('div')`{
-    font-size: 2rem;
-    ...
-    height: 48px;
-    overflow: hidden;
-    ...
-  }`;
+import moment from 'moment'
 
-  How to Call:
-  import { setMultilineEllipsis } from '@source/lib/ellipsis';
-  //on componentdidmount
-  componentDidMount () {
-    setMultilineEllipsis('multilineEllipsis');
+export const convertToLocalDateTime = unix => {
+  const getLocalDate = moment.unix(unix).utc()
+  const date = new Date(getLocalDate)
+  return date
+}
+
+export const isMatchLive = (startTime, endTime) => {
+  const start = moment(convertToLocalDateTime(moment().unix())).isBefore(convertToLocalDateTime(startTime), 'minutes')
+  const end = moment(convertToLocalDateTime(moment().unix())).isBefore(convertToLocalDateTime(endTime), 'minutes')
+  let isLive = false
+  if (!start && end) {
+    isLive = true
   }
+  return isLive
+}
 
-  //on render, can multiple component using the same classname
-  <ThumbnailTitle className={'multilineEllipsis'}>{`"Grannies Try Weed For The First Time" GROUP CHAT "`}</ThumbnailTitle>
-  <MovieTitle className={'multilineEllipsis'}>{`This is example of long long text`}</ThumbnailTitle>
- */
-export const setMultilineEllipsis = className => {
-  const dataArray = document.getElementsByClassName(className);
-  [].forEach.call(dataArray, function(el) {
-    let wordArray = el.innerHTML.split(' ');
-    while (el.scrollHeight > el.offsetHeight) {
-      if (wordArray.length > 1) {
-        wordArray.pop();
-      } else {
-        return;
-      }
-      el.innerHTML = `${wordArray.join(' ')}...`;
-    }
-  });
-};
+export const isMatchPassed = endTime => {
+  return moment(convertToLocalDateTime(moment().unix())).isAfter(convertToLocalDateTime(endTime), 'minutes')
+}
 
-export const filterString = (str, n = 20) => {
-  if (str) {
-    let result = '';
-    const strList = str.split(' ');
-    strList.map((s, i) => {
-      if (i < n) {
-        result += ` ${s}`;
-      }
-    });
+export const timeDiff = (current, dateCompare, type = 'days') => {
+  const currentLocalTime = convertToLocalDateTime(current)
+  const dateCompareLocalTime = convertToLocalDateTime(dateCompare)
+  const compare = moment(currentLocalTime).diff(dateCompareLocalTime, type)
 
-    result += strList.length > n ? '...' : '';
-
-    return result;
-  }
-  return '';
-};
+  return compare
+}

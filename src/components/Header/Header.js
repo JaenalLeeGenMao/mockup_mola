@@ -100,14 +100,15 @@ class Header extends Component {
       profileOff = false,
       backButtonOn = false,
       shareButtonOn = false,
+      greyBackground,
     } = this.props
 
     const color = isDark ? 'black' : 'white'
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container
-
     return (
       <div className={typeHeader}>
-        {isMobile && <div className={styles.header__shadow_mobile} />}
+        {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} />}
+        {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} />}
         {!isMobile && <div className={styles.header__shadow_desktop} />}
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
           {!logoOff && (

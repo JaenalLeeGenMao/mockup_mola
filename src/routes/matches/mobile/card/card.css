@@ -1,0 +1,61 @@
+.card__container {
+  color: white;
+  font-weight: bold;
+  display: flex;
+  flex-wrap: nowrap;
+
+  /* height: 123px; */
+  height: 8rem;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.card__date {
+  /* flex: 0.3; */
+  font-size: 1.3rem;
+  line-height: 1.6rem;
+  padding: 5px;
+  width: 74px;
+  background-color: #383838;
+}
+
+.card__live_now {
+  background-color: #0d2caa;
+}
+
+.card__matches {
+  /* flex: 0.7; */
+  display: flex;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+  flex-direction: column;
+  background: #191919;
+}
+
+.card__league_logo {
+  /* align-self: flex-end; */
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 3.2rem;
+}
+
+.card__club {
+  display: flex;
+  height: 2.6rem;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.card__club img {
+  width: 2.3rem;
+
+  /* height: 2.3rem; */
+}
+
+.card__club span {
+  align-self: center;
+  padding-left: 10px;
+  font-size: 1.1rem;
+}
