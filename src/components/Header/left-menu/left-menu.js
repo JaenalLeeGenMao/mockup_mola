@@ -41,14 +41,14 @@ class LeftMenu extends Component {
                     Sport
                   </Link>
                   <Link
-                    className={`${styles.left_menu_lib} ${activeMenu === 'channels' ? styles.left_menu__active : ''}`}
+                    className={`${activeMenu === 'channels' ? styles.left_menu__active : ''}`}
                     to={`/channels`}
                   >
                     Channels
                   </Link>
                   {activeMenu === 'movie' && (
                     <Link
-                      className={`${styles.left_menu_lib} ${activeMenu === 'library' ? styles.left_menu__active : ''}`}
+                      className={`${activeMenu === 'library' ? styles.left_menu__active : ''}`}
                       to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}
                     >
                       Library

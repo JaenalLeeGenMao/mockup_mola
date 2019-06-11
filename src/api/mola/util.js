@@ -38,7 +38,7 @@ const normalizeMatchesList = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(({ attributes: { videos } }) =>
-      videos
+      videos && videos
         .map(video => {
           const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images, league } } = video
           const background = _get(images, 'cover', { portrait: null, landscape: null })

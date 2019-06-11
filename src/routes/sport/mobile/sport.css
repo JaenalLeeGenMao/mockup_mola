@@ -92,6 +92,23 @@ body {
   animation-delay: 30s;
 }
 
+.header__playlist_title {
+  margin: 15px 0 0 20px;
+  font-style: italic;
+  font-size: 12px;
+  position: relative;
+}
+
+.header__playlist_title:before {
+  content: '';
+  position: absolute;
+  background-color: white;
+  width: 14px;
+  height: 1px;
+  top: 50%;
+  left: -20px;
+}
+
 .sport__detail_button {
   padding: 25px;
   border-radius: 50%;
@@ -112,6 +129,12 @@ body {
   border: 0.12rem solid rgba(66, 66, 66, 0.6);
   background: #c00;
   color: #fff;
+}
+
+.featured_button {
+  background: #fff;
+  color: #2b2b2b;
+  font-size: 16px;
 }
 
 .play_icon {

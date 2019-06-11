@@ -485,7 +485,7 @@ class Sport extends Component {
     let filteredQuote = ''
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.description, 36)
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
     const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists
 
@@ -525,10 +525,18 @@ class Sport extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {/* <p className={styles.quote}>{filteredQuote}</p> ${activeSlide.id} */}
-                    <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      <span className={styles.play_icon} />
-                      <p>{locale['view_movie']}</p>
-                    </Link>
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <span className={styles.play_icon} />
+                          <p>{locale['view_movie']}</p>
+                        </Link>
+                      )}
+                    {activeSlide.buttonText && (
+                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </a>
+                    )}
                     {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
