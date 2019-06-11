@@ -174,6 +174,10 @@ body {
   z-index: 2;
 }
 
+.sport_schedule_link {
+  display: none;
+}
+
 .header__library_logo_white {
   width: 2.4rem;
   height: 2.4rem;
@@ -226,7 +230,7 @@ body {
   justify-content: center;
   z-index: 1;
   left: 20px;
-  top: -80px;
+  top: 0;
 }
 
 .play_icon {
@@ -325,6 +329,76 @@ body {
 @media screen and (min-width: 2000px) {
   .header__detail_container {
     margin: 0 47.5% 15.5% 12.5%;
+  }
+}
+
+@media screen and (min-height: 600px) and (max-height: 768px) {
+  .sport_header__playlist_title {
+    margin: 8% 47.5% 0 12.5%;
+  }
+
+  .header__detail_container {
+    margin: 0 41% 7% 12.5%;
+  }
+
+  .header__detail_container > p {
+    font-size: 1.9rem;
+  }
+
+  .header__detail_container > h1.small {
+    font-size: 4.6rem;
+  }
+
+  .sport_schedule_container {
+    display: none;
+  }
+
+  .sport_schedule_link {
+    position: absolute;
+    bottom: 4%;
+    left: 12.5%;
+    width: 300px;
+    z-index: 2;
+    color: #fff;
+    display: block;
+    font-size: 21px;
+    cursor: pointer;
+  }
+
+  .sport_schedule_link i {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMS4wMDMiIGhlaWdodD0iMTIuMDYxIiB2aWV3Qm94PSIwIDAgMjEuMDAzIDEyLjA2MSI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6I2ZmZjtzdHJva2U6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9ImEiIGQ9Ik0uNSw2LjAxYS41LjUsMCwwLDAsLjM1NC0uMTQ3TDUuMDEsMS43MDZWMTkuNWEuNS41LDAsMCwwLDEsMFYxLjcwNmw0LjEzNiw0LjEzNmEuNS41LDAsMSwwLC43MDctLjcwN0w1Ljg2NC4xNDZBLjQ5Mi40OTIsMCwwLDAsNS43LjAzOGEuNS41LDAsMCwwLS41NDUuMTA5TC4xNDcsNS4xNTZBLjUuNSwwLDAsMCwuNSw2LjAxWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAuNSAwLjUpIHJvdGF0ZSg5MCkiLz48L3N2Zz4=');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 12px;
+    position: absolute;
+    top: 8px;
+    right: 125px;
+    transition: right 500ms;
+  }
+
+  .sport_schedule_viewAll {
+    width: 0;
+    left: 120px;
+    top: 0;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    transition: left 500ms, width 300ms;
+    color: #A2A2A2;
+  }
+
+  .sport_schedule_link:hover .sport_schedule_viewAll {
+    width: 80px;
+    left: 160px;
+    transition: left 500ms, width 300ms;
+  }
+
+  .sport_schedule_link:hover i {
+    right: 46px;
+    transition: right 500ms;
+    color: #A2A2A2;
   }
 }
 

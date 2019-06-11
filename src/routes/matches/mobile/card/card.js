@@ -3,35 +3,25 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 
-import Link from '@components/Link'
-import LazyLoad from '@components/common/Lazyload'
-
-import { convertToLocalDateTime, timeDiff, isMatchLive } from '../util'
-
+import { formatDateTime, isToday, isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
 import styles from './card.css'
-// import defaultImageMatches from '@global/assets-global/images/defaultImage.svg'
+
+import { defaultImgClub } from '@global/imageUrl'
 
 class Card extends Component {
-  cardDateFormat = (startUnix, endUnix) => {
-    const { index, matchesList } = this.props
-    const localTime = convertToLocalDateTime(startUnix)
+  cardDateFormat = (startTime, endTime) => {
 
-    const time = moment(localTime).format('ddd, HH.mm')
-    let text = time
+    let text = '';
+    text = formatDateTime(startTime, 'ddd, HH.mm');
 
-    const dateDifference = timeDiff(moment().unix(), startUnix, 'days')
-    const isToday = dateDifference === 0
-
-    if (isToday) {
-      const isMatchNowLive = isMatchLive(startUnix, endUnix)
-      let isMatchBeforeLive = false
-      if (matchesList.length > 1) {
-        isMatchBeforeLive = isMatchLive(matchesList[index - 1].startTime, matchesList[index - 1].endTime)
-      }
-      if (isMatchNowLive) {
-        text = 'LIVE'
-      } else if (isMatchBeforeLive) {
-        text = 'Next'
+    if (isToday(startTime)) {
+      let endDateTime = formatDateTime(endTime, 'HH:mm');
+      let startDateTime = formatDateTime(startTime, 'HH:mm');
+      let currentTime = moment().format('HH:mm')
+      if (currentTime >= startDateTime && currentTime <= endDateTime) {
+        text = 'LIVE ' + formatDateTime(startTime, 'HH.mm');
+      } else if (!isMatchPassed(endTime)) {
+        text = 'Next ' + formatDateTime(startTime, 'HH.mm');
       }
     }
 
@@ -44,11 +34,15 @@ class Card extends Component {
       return (
         <div className={styles.card__matches}>
           <div className={styles.card__club}>
-            <img src={homeTeam.logo} />
+            <img src={homeTeam.logo} onError={e => {
+              e.target.src = defaultImgClub;
+            }} />
             <span>{homeTeam.name}</span>
           </div>
           <div className={styles.card__club}>
-            <img src={awayTeam.logo} />
+            <img src={awayTeam.logo} onError={e => {
+              e.target.src = defaultImgClub;
+            }} />
             <span>{awayTeam.name}</span>
           </div>
           {league ? <img className={styles.card__league_logo} src={league.iconUrl} /> : ''}
@@ -67,7 +61,6 @@ class Card extends Component {
 
   render() {
     const { data } = this.props
-    const { homeTeam, awayTeam, league } = data
     const date = this.cardDateFormat(data.startTime, data.endTime)
     const matchLive = isMatchLive(data.startTime, data.endTime)
 

@@ -16,7 +16,7 @@
   border-radius: 8px;
 }
 
-.matchCard__icon {
+.matchCard__icon_play {
   width: 4.5rem;
   height: 4.5rem;
   float: right;
@@ -58,7 +58,7 @@
 }
 
 .matchCard__info_label {
-  color: #f00;
+  color: #FFFFFF;
   padding: 0;
   font-size: 1.2rem;
   white-space: nowrap;
@@ -74,6 +74,10 @@
 
 .btnReplay {
   color: #cbcbcb;
+}
+
+.btnLiveNow {
+  color: #FF0000;
 }
 
 .matchCard__scoring {
