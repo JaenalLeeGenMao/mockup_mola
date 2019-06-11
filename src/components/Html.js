@@ -10,9 +10,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
-import config from '../config'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
-
+import { logoLandscapeBlue } from '@global/imageUrl'
+import config from '../config';
 import yoastSEOPlugin from './yoastSEOPlugin.json'
 
 class Html extends React.Component {
@@ -63,7 +62,7 @@ class Html extends React.Component {
           <meta property="og:url" content={url} data-react-helmet="true" />
           <meta property="og:type" content={type} data-react-helmet="true" />
 
-          <meta property="twitter:title" content={title} data-react-helmet="true" />
+          <meta name="twitter:text:title" content={title} data-react-helmet="true" />
           <meta name="twitter:description" content={description} data-react-helmet="true" />
           <meta name="twitter:image:src" content={image} data-react-helmet="true" />
           <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" />
@@ -82,6 +81,18 @@ class Html extends React.Component {
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
           {scripts.map(script => <script key={script} src={script} />)}
+          <script
+            dangerouslySetInnerHTML={{
+              __html:
+                'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
+                `ga('create',${config.env === 'production' ? '\'UA-140128558-1\'' : '\'UA-140128558-2\''},'auto');ga('send','pageview')`
+            }}
+          />
+          <script
+            src="https://www.google-analytics.com/analytics.js"
+            async=""
+            defer=""
+          />
         </body>
       </html>
     )

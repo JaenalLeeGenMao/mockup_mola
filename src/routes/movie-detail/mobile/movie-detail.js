@@ -4,24 +4,22 @@ import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
-import notificationBarBackground from '@global/style/icons/notification-bar.png'
-import { endpoints } from '@source/config'
-import Tracker from '@source/lib/tracker'
+
+import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
+import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
+import DRMConfig from '@source/lib/DRMConfig';
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
+import { getVUID, getVUID_retry } from '@actions/vuid';
 
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
-
+import { unavailableImg } from '@global/imageUrl'
 import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
-import { videoSettings as defaultVideoSettings } from '../const'
-
-import { handleTracker } from '../tracker'
 
 import {
   playButton,
@@ -46,7 +44,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   return (
     <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
-        const imageSource = background.landscape || require('@global/style/icons/unavailable-image.png')
+        const imageSource = background.landscape || unavailableImg
         return (
           <Link to={`/movie-detail/${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
@@ -66,7 +64,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -119,30 +117,6 @@ class MovieDetail extends Component {
     }
   }
 
-  handleOnTimePerMinute = ({ action, heartbeat }) => {
-    const { clientIp, uid, sessionId } = this.props.user
-    const currentDuration = this.player ? this.player.currentTime : ''
-    const totalDuration = this.player ? this.player.duration : ''
-    const payload = {
-      action,
-      clientIp,
-      sessionId,
-      userId: uid,
-      heartbeat: heartbeat ? 60 : 0,
-      window: window,
-      // currentDuration,
-      // totalDuration,
-    }
-    window.__theo_start = window.__theo_start || Date.now()
-    window.__theo_ps = Date.now()
-
-    // const minutesElapsed = Math.floor((window.__theo_ps - window.__theo_start) / (60 * 1000))
-    // if (minutesElapsed >= 1) {
-    handleTracker(payload, this.props.movieDetail.data[0])
-    window.__theo_start = window.__theo_ps
-    // }
-  }
-
   handleOnVideoPause = (payload = false, player) => {
     this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
     this.setState({ toggleSuggestion: true })
@@ -155,30 +129,22 @@ class MovieDetail extends Component {
     this.setState({ toggleSuggestion: false })
   }
 
-  handleVideoTimeUpdate = (payload = 0, player) => {
-    const time = Math.round(payload)
-    if (time % 60 === 0 && this.isPlay && !player.ads.playing) {
-      if (!ticker.includes(time)) {
-        ticker.push(time)
-        this.handleOnTimePerMinute({ action: 'timeupdate', heartbeat: time !== 0 })
-      }
-    }
-  }
-
   handleOnVideoLoad = player => {
     this.player = player
   }
 
   subtitles() {
     const { movieDetail } = this.props
-    const subtitles = movieDetail.data.length > 0 ? movieDetail.data[0].subtitles : []
+    const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
-    const myTheoPlayer = subtitles.map(({ id, format /* srt, emsg, eventstream, ttml, webvtt */, locale, type /* subtitles, captions, descriptions, chapters, metadata */, url }) => ({
-      kind: type,
-      src: url,
-      label: locale,
-      type: format,
-    }))
+    const myTheoPlayer =
+      subtitles &&
+      subtitles.map(({ subtitleUrl, country }) => ({
+        kind: 'subtitles',
+        src: subtitleUrl,
+        label: country,
+        type: 'srt',
+      }))
 
     return myTheoPlayer
   }
@@ -188,12 +154,17 @@ class MovieDetail extends Component {
       getMovieDetail,
       movieId, //passed as props from index.js,
       onHandleHotPlaylist,
+      user,
+      getVUID
     } = this.props
 
     getMovieDetail(movieId)
     onHandleHotPlaylist()
 
     this.updateEncryption()
+
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
+    getVUID(deviceId);
   }
 
   componentDidUpdate() {
@@ -227,38 +198,35 @@ class MovieDetail extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    // const streamSource = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
-    // const streamSource = 'https://s3-ap-southeast-1.amazonaws.com/my-vmx-video-out/mukesh_demo2/redbull.mpd'
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    //Get Time Right Now
-    const todayDate = new Date().getTime()
+    const { user } = this.props
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
 
-    //Get ExpireAt
-    const setSubscribe = this.props.user.subscriptions
-    const setSubscribeExp = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.expireAt)
-    const setSubscribeExpVal = new Date(setSubscribeExp).getTime()
+    const defaultVidSetting = status === 'success' ?
+      defaultVideoSetting(
+        user,
+        dataFetched,
+        vuidStatus === 'success' ? vuid : '') : {}
 
-    //Validation Ads Show
-    const resultCompareDate = setSubscribeExpVal - todayDate
-
-    //Get Status Subscribe Type from User
-    const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-    // console.log(this.props.user)
-
-    let videoSettings = {}
-    if (resultCompareDate > 0) {
-      videoSettings = {
-        ...defaultVideoSettings,
-      }
-    } else {
-      videoSettings = {
-        ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
-      }
+    const videoSettings = {
+      ...defaultVidSetting,
+      // getUrlResponse: this.getUrlResponse
     }
+
+    let drmStreamUrl = '',
+      isDRM = false;
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari
+        ? dataFetched.drm.fairplay.streamUrl
+        : dataFetched.drm.widevine.streamUrl;
+    }
+    isDRM = drmStreamUrl ? true : false;
+
+    const loadPlayer =
+      status === 'success' &&
+      ((isDRM && vuidStatus === 'success') || !isDRM);
 
     return (
       <>
@@ -268,21 +236,19 @@ class MovieDetail extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={streamSource ? dataFetched.isDark : 0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
+            <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
-                {streamSource ? (
+                {loadPlayer ? (
                   <Theoplayer
                     className={customTheoplayer}
                     subtitles={this.subtitles()}
                     poster={poster}
                     autoPlay={false}
-                    movieUrl={streamSource}
                     // certificateUrl="test"
                     handleOnVideoLoad={this.handleOnVideoLoad}
                     handleOnVideoPause={this.handleOnVideoPause}
                     handleOnVideoPlay={this.handleOnVideoPlay}
-                    handleVideoTimeUpdate={this.handleVideoTimeUpdate}
                     showBackBtn={false}
                     {...videoSettings}
                     showChildren
@@ -304,8 +270,8 @@ class MovieDetail extends Component {
                     )}
                   </Theoplayer>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
@@ -327,6 +293,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  getVUID: deviceId => dispatch(getVUID(deviceId)),
+  getVUID_retry: () => dispatch(getVUID_retry())
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

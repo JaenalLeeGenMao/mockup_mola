@@ -10,8 +10,8 @@
 import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import style from './FormInput.css'
-import visible from '@global/style/icons/eye/visible.png'
-import unVisible from '@global/style/icons/eye/notvisible.png'
+
+import { eyeVisible as visible, eyeNotVisible as unVisible } from '@global/imageUrl'
 
 class FormInput extends React.Component {
   constructor(props) {

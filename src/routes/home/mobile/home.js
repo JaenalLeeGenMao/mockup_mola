@@ -1,40 +1,41 @@
-import React, { Component, Fragment } from 'react'
-import Slider from 'react-slick'
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import Joyride from 'react-joyride'
-import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
-import $ from 'jquery'
+import React, { Component, Fragment } from 'react';
+import Slider from 'react-slick';
+import { Link as RSLink, Element, Events, scroller } from 'react-scroll';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import Joyride from 'react-joyride';
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants';
+import $ from 'jquery';
 
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _get from 'lodash/get'
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import _get from 'lodash/get';
 
-import homeActions from '@actions/home'
+import homeActions from '@actions/home';
 
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+import { logoLandscapeBlue } from '@global/imageUrl';
 
-import { swipeGestureListener, getErrorCode } from '@routes/home/util'
+import { swipeGestureListener, getErrorCode } from '@routes/home/util';
 
-import Header from '@components/Header'
-import LazyLoad from '@components/common/Lazyload'
-import Link from '@components/Link'
+import Header from '@components/Header';
+import LazyLoad from '@components/common/Lazyload';
+import Link from '@components/Link';
 
-import HomeError from '@components/common/error'
-import HomePlaceholder from './placeholder'
-import HomeArrow from '../arrow'
-import HomeMobileContent from './content'
-import HomeMobileMenu from './menu'
+import HomeError from '@components/common/error';
+import HomePlaceholder from './placeholder';
+import HomeArrow from '../arrow';
+import HomeMobileContent from './content';
+import HomeMobileMenu from './menu';
 
-import styles from './home.css'
-import contentStyles from './content/content.css'
-import { filterString, setMultilineEllipsis } from './util'
-import { SETTINGS_VERTICAL } from '../const'
-import { tourSteps } from './const'
+import styles from './home.css';
+import contentStyles from './content/content.css';
+import { filterString, setMultilineEllipsis } from './util';
+import { SETTINGS_VERTICAL } from '../const';
+import { tourSteps } from './const';
+import history from '@source/history';
 
-let activePlaylist
-let deferredPrompt
-const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
+let activePlaylist;
+let deferredPrompt;
+const trackedPlaylistIds = []; /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
   state = {
@@ -51,43 +52,43 @@ class Home extends Component {
     steps: tourSteps[this.props.user.lang],
     sliderRefs: [],
     playlistSuccess: false,
-  }
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps;
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
-      onHandlePlaylist()
+      onHandlePlaylist();
     } else {
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
-          trackedPlaylistIds.push(playlist.id)
-          onHandleVideo(playlist)
+          trackedPlaylistIds.push(playlist.id);
+          onHandleVideo(playlist);
         }
         if (!activePlaylist && index === 0) {
-          activePlaylist = playlists.data[0]
-          onUpdatePlaylist(activePlaylist.id)
+          activePlaylist = playlists.data[0];
+          onUpdatePlaylist(activePlaylist.id);
         }
-      })
+      });
     }
-    return { ...prevState, playlists, videos }
+    return { ...prevState, playlists, videos };
   }
   //added
 
   handleTourCallback = data => {
-    const { type, action, index } = data
-    const { videos } = this.props.home
+    const { type, action, index } = data;
+    const { videos } = this.props.home;
 
     if (type === EVENTS.TOUR_END) {
-      localStorage.setItem('tour-home', true)
+      localStorage.setItem('tour-home', true);
       // document.cookie = '__trh=1; path=/;';
-      return true
+      return true;
     }
 
     if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
       this.setState({
         stepIndex: index + 1,
-      })
+      });
       // alert('next')
     } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
       this.setState(
@@ -96,30 +97,30 @@ class Home extends Component {
         },
         () => {
           if (index === 4) {
-            this.sliderRefs[0].slickPrev()
+            this.sliderRefs[0].slickPrev();
           }
         }
-      )
+      );
       // alert('prev')
     } else {
       if (action === ACTIONS.NEXT && index === 4) {
         if (videos.data[0].data.length > 1) {
-          this.sliderRefs[0].slickNext()
+          this.sliderRefs[0].slickNext();
         } else {
           this.setState({
             stepIndex: index + 1,
-          })
+          });
         }
       }
     }
-  }
+  };
 
   componentDidUpdate() {
-    const { playlists, videos } = this.props.home
+    const { playlists, videos } = this.props.home;
 
     if (playlists.meta.status === 'success') {
       if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
-        this.initTour()
+        this.initTour();
       }
     }
   }
@@ -127,113 +128,119 @@ class Home extends Component {
   componentDidMount() {
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
-      activePlaylist = this.state.playlists.data[0]
-      this.props.onUpdatePlaylist(activePlaylist.id)
+      activePlaylist = this.state.playlists.data[0];
+      this.props.onUpdatePlaylist(activePlaylist.id);
     }
-    setMultilineEllipsis('filteredText')
+    setMultilineEllipsis('filteredText');
 
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
-    })
+    });
 
-    this.prevTouchX = 0
-    this.nextTouchX = 0
-    this.prevTouchY = 0
-    this.nextTouchY = 0
+    this.prevTouchX = 0;
+    this.nextTouchX = 0;
+    this.prevTouchY = 0;
+    this.nextTouchY = 0;
 
     document.ontouchstart = event => {
-      this.prevTouchX = event.changedTouches[0].screenX
-      this.prevTouchY = event.changedTouches[0].screenY
-    }
+      this.prevTouchX = event.changedTouches[0].screenX;
+      this.prevTouchY = event.changedTouches[0].screenY;
+    };
 
     document.ontouchend = event => {
-      this.nextTouchX = event.changedTouches[0].screenX
-      this.nextTouchY = event.changedTouches[0].screenY
+      this.nextTouchX = event.changedTouches[0].screenX;
+      this.nextTouchY = event.changedTouches[0].screenY;
 
-      const distance = Math.abs(this.prevTouchY - this.nextTouchY)
+      const distance = Math.abs(this.prevTouchY - this.nextTouchY);
       if (distance <= window.innerHeight * 0.2) {
         /* if distance less than 20 scroll horizontally */
-        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX);
       } else {
         /* else distance greater than 20 scroll vertically */
-        this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
+        this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical');
       }
-    }
+    };
 
     // Prompt user to AddToHomeScreen
     window.addEventListener('beforeinstallprompt', e => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       // e.preventDefault()
       // Stash the event so it can be triggered later.
-      deferredPrompt = e
+      deferredPrompt = e;
 
-      const a2hsInstalled = localStorage.getItem('a2hs')
+      const a2hsInstalled = localStorage.getItem('a2hs');
       if (!a2hsInstalled) {
         // Update UI notify the user they can add to home screen
-        this.a2hsContainer.style.display = 'flex'
+        this.a2hsContainer.style.display = 'flex';
       }
-    })
+    });
 
     this.btnAdd.addEventListener('click', e => {
       // hide our user interface that shows our A2HS button
-      this.a2hsContainer.style.display = 'none'
+      this.a2hsContainer.style.display = 'none';
       // Show the prompt
-      deferredPrompt.prompt()
+      deferredPrompt.prompt();
       // Wait for the user to respond to the prompt
       deferredPrompt.userChoice.then(choiceResult => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-          localStorage.setItem('a2hs', true)
+          console.log('User accepted the A2HS prompt');
+          localStorage.setItem('a2hs', true);
         } else {
-          console.log('User dismissed the A2HS prompt')
-          localStorage.setItem('a2hs', false)
+          console.log('User dismissed the A2HS prompt');
+          localStorage.setItem('a2hs', false);
         }
-        deferredPrompt = null
-      })
-    })
+        deferredPrompt = null;
+      });
+    });
 
     window.addEventListener('appinstalled', evt => {
-      app.logEvent('a2hs', 'installed')
-      localStorage.setItem('a2hs', true)
-    })
+      app.logEvent('a2hs', 'installed');
+      localStorage.setItem('a2hs', true);
+    });
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs, scrollIndex } = this.state
+      { sliderRefs, scrollIndex, swipeIndex } = this.state;
 
     if (mode === 'vertical') {
       if (this.rootSlider) {
         if (this.rootSlider.innerSlider === null) {
-          return false
+          return false;
         }
         if (distance <= window.innerHeight * 0.25) {
           // do nothing
         } else if (prevX > nextX) {
-          this.rootSlider.slickNext()
+          this.rootSlider.slickNext();
         } else {
-          this.rootSlider.slickPrev()
+          this.rootSlider.slickPrev();
         }
       }
     } else {
+      const { playlists: { data: playlistDt }, videos: { data: videoDt } } = this.props.home;
       if (slider) {
         if (slider.innerSlider === null) {
-          return false
+          return false;
         }
         if (distance <= window.innerWidth * 0.2) {
           // do nothing
         } else if (prevX > nextX) {
-          sliderRefs[scrollIndex].slickNext()
+          if (videoDt && videoDt[scrollIndex].data && swipeIndex + 1 == videoDt[scrollIndex].data.length) {
+            const playlistId = playlistDt[scrollIndex].id;
+            history.push(`/movie-library/${scrollIndex > 0 ? playlistId.replace('f-', '') : ''}`);
+          } else {
+            sliderRefs[scrollIndex].slickNext();
+          }
         } else {
-          sliderRefs[scrollIndex].slickPrev()
+          sliderRefs[scrollIndex].slickPrev();
         }
       } else {
         if (distance <= window.innerWidth * 0.2) {
           // do nothing
         } else if (prevX > nextX) {
-          sliderRefs[0].slickNext()
+          sliderRefs[0].slickNext();
         } else {
-          sliderRefs[0].slickPrev()
+          sliderRefs[0].slickPrev();
         }
       }
     }
@@ -245,58 +252,58 @@ class Home extends Component {
         playlistSuccess: true,
       },
       () => {
-        let isTourDone = localStorage.getItem('tour-home')
+        let isTourDone = localStorage.getItem('tour-home');
 
         if (!isTourDone) {
           this.setState({
             startGuide: true,
-          })
+          });
         }
       }
-    )
-  }
+    );
+  };
 
   componentWillUnmount() {
-    document.body.removeEventListener('touchmove', this.preventDefault)
+    document.body.removeEventListener('touchmove', this.preventDefault);
   }
 
   preventDefault = e => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   handleColorChange = (index, swipeIndex = 0) => {
-    const that = this
-    this.activeSlider = this.state.sliderRefs[index]
+    const that = this;
+    this.activeSlider = this.state.sliderRefs[index];
     setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
-        { videos, sliderRefs } = that.state
-      let isDark = 1
+        { videos, sliderRefs } = that.state;
+      let isDark = 1;
       if (activeSlick) {
-        isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
+        isDark = parseInt(activeSlick.getAttribute('isdark'), 10);
       }
       if (typeof isDark === 'number') {
-        that.setState({ isDark, activeSlide: videos.data[0].data[0] })
+        that.setState({ isDark, activeSlide: videos.data[0].data[0] });
       }
       if (index || index === 0) {
-        sliderRefs[index].slickGoTo(0)
+        sliderRefs[index].slickGoTo(0);
         that.setState({
           scrollIndex: index,
           swipeIndex,
           activeSlide: videos.data[index].data[swipeIndex],
           activeSlideDots: videos.data[index].data,
-        })
+        });
       }
-    }, 300)
-  }
+    }, 300);
+  };
 
   handleUpdateSlider = refs => {
-    const { sliderRefs } = this.state
+    const { sliderRefs } = this.state;
     if (sliderRefs.length < trackedPlaylistIds.length) {
-      sliderRefs.push(refs)
+      sliderRefs.push(refs);
     }
-    sliderRefs.sort((a, b) => a.props.id - b.props.id)
-  }
+    sliderRefs.sort((a, b) => a.props.id - b.props.id);
+  };
 
   render() {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
@@ -311,16 +318,16 @@ class Home extends Component {
         ...SETTINGS_VERTICAL,
         className: styles.home__slick_slider_fade,
         onInit: node => {
-          this.activeSlider = sliderRefs[0]
-          this.handleColorChange()
+          this.activeSlider = sliderRefs[0];
+          this.handleColorChange();
         },
         beforeChange: (currentIndex, nextIndex) => {
-          activePlaylist = playlists.data[nextIndex]
-          this.handleColorChange(nextIndex)
+          activePlaylist = playlists.data[nextIndex];
+          this.handleColorChange(nextIndex);
         },
       },
       playlistErrorCode = getErrorCode(playlistError),
-      videoErrorCode = getErrorCode(videoError)
+      videoErrorCode = getErrorCode(videoError);
 
     const customTourStyle = {
       buttonNext: {
@@ -372,13 +379,13 @@ class Home extends Component {
       spotlight: {
         borderRadius: '4rem',
       },
-    }
+    };
 
-    let filteredDesc = ''
-    let filteredQuote = ''
+    let filteredDesc = '';
+    let filteredQuote = '';
     if (activeSlide) {
-      filteredDesc = activeSlide.shortDescription
-      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+      filteredDesc = activeSlide.shortDescription;
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`;
     }
 
     return (
@@ -398,7 +405,7 @@ class Home extends Component {
         <div>
           <div
             ref={node => {
-              this.a2hsContainer = node
+              this.a2hsContainer = node;
             }}
             className={styles.home__a2hs_container}
           >
@@ -407,7 +414,7 @@ class Home extends Component {
             </div>
             <div
               ref={node => {
-                this.btnAdd = node
+                this.btnAdd = node;
               }}
             >
               ADD TO HOME SCREEN
@@ -415,13 +422,14 @@ class Home extends Component {
             <div
               onClick={() => {
                 // hide our user interface that shows our A2HS button
-                this.a2hsContainer.style.display = 'none'
-                localStorage.setItem('a2hs', false)
+                this.a2hsContainer.style.display = 'none';
+                localStorage.setItem('a2hs', false);
               }}
             />
           </div>
           {playlistStatus !== 'error' && (
             <Header
+              shadowMobile
               libraryOff
               className={styles.placeholder__header}
               isDark={0}
@@ -456,9 +464,9 @@ class Home extends Component {
                         </Link>
                       )}
                     {activeSlide.buttonText && (
-                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                         <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                      </Link>
+                      </a>
                     )}
                   </LazyLoad>
                 )}
@@ -469,32 +477,32 @@ class Home extends Component {
                   {...settings}
                   id="rootSlider"
                   ref={node => {
-                    this.rootSlider = node
+                    this.rootSlider = node;
                   }}
                 >
                   {videos.data.map((video, index) => {
-                    const { id, sortOrder } = video.meta
-                    return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                    const { id, sortOrder } = video.meta;
+                    return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />;
                   })}
                 </Slider>
               </>
             )}
         </div>
       </Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     ...state,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
   onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist, true)),
   onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
-})
+});
 
-export default compose(withStyles(styles, contentStyles), connect(mapStateToProps, mapDispatchToProps))(Home)
+export default compose(withStyles(styles, contentStyles), connect(mapStateToProps, mapDispatchToProps))(Home);

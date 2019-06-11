@@ -1,36 +1,30 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
-import notificationBarBackground from '@global/style/icons/notification-bar.png'
-import { endpoints } from '@source/config'
+import { notificationBarBackground } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
-
+import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import DRMConfig from '@source/lib/DRMConfig';
 import * as movieDetailActions from '@actions/movie-detail'
-
-import { videoSettings as defaultVideoSettings } from './const'
-
-import { handleTracker } from './tracker'
-
 import styles from '@global/style/css/grainBackground.css'
+import { getVUID, getVUID_retry } from '@actions/vuid';
 
+import CountDown from '@components/CountDown'
 import { customTheoplayer } from './theoplayer-style'
 //const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
-let ticker = [] /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
-    toggleSuggestion: false,
     movieDetail: [],
-    isControllerActive: 'overview',
+    countDownStatus: true,
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -83,60 +77,6 @@ class MovieDetail extends Component {
     }
   }
 
-  handleOnTimePerMinute = ({ action, heartbeat }) => {
-    const { clientIp, uid, sessionId } = this.props.user
-    const currentDuration = this.player ? this.player.currentTime : ''
-    const totalDuration = this.player ? this.player.duration : ''
-    const payload = {
-      action,
-      clientIp,
-      sessionId,
-      heartbeat: heartbeat ? 60 : 0,
-      window: window,
-      // currentDuration,
-      // totalDuration,
-    }
-
-    if (uid) {
-      payload.userId = uid
-    }
-
-    window.__theo_start = window.__theo_start || Date.now()
-    window.__theo_ps = Date.now()
-
-    // const minutesElapsed = Math.floor((window.__theo_ps - window.__theo_start) / (60 * 1000))
-    // if (minutesElapsed >= 1) {
-    handleTracker(payload, this.props.movieDetail.data[0])
-    window.__theo_start = window.__theo_ps
-    // }
-  }
-
-  handleControllerClick = name => {
-    this.setState({ isControllerActive: name })
-  }
-
-  handleOnVideoPause = (payload = false, player) => {
-    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
-    this.setState({ toggleSuggestion: true })
-  }
-
-  handleOnVideoPlay = (payload = true, player) => {
-    // window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    this.isPlay = true
-    this.setState({ toggleSuggestion: false })
-  }
-
-  handleVideoTimeUpdate = (payload = 0, player) => {
-    const time = Math.round(payload)
-    if (time % 60 === 0 && this.isPlay && !player.ads.playing) {
-      if (!ticker.includes(time)) {
-        ticker.push(time)
-        this.handleOnTimePerMinute({ action: 'timeupdate', heartbeat: time !== 0 })
-      }
-    }
-  }
-
   handleOnVideoLoad = player => {
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
@@ -180,53 +120,85 @@ class MovieDetail extends Component {
   componentDidMount() {
     const {
       getMovieDetail,
-      videoId, //passed as props from index.js,
-      onHandleHotPlaylist,
+      videoId,
+      getVUID,
+      user
     } = this.props
 
     getMovieDetail(videoId)
     this.updateEncryption()
+
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
+    getVUID(deviceId);
   }
 
   componentDidUpdate() {
     this.updateMetaTag()
   }
 
+  hideCountDown = () => {
+    this.setState({
+      countDownStatus: false,
+    })
+  }
+
+  renderVideo = () => {
+    const { user, getMovieDetail, videoId } = this.props
+    const { meta: { status, error }, data } = this.props.movieDetail
+
+    if (status === 'success' && data.length > 0) {
+      const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
+
+      const defaultVidSetting = status === 'success' ?
+        defaultVideoSetting(
+          user,
+          data[0],
+          vuidStatus === 'success' ? vuid : '') : {}
+
+      const videoSettings = {
+        ...defaultVidSetting,
+        // getUrlResponse: this.getUrlResponse
+      }
+
+      // console.log("aaaa", this.state.countDownStatus, dataFetched.contentType, dataFetched.startTime * 1000, Date.now())
+      // console.log("dataFetched.streamSourceUrl", dataFetched.streamSourceUrl)
+      if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
+        return <CountDown hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} />
+      } else if (data[0].streamSourceUrl) {
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
+            // isDRM={true}
+            showBackBtn
+            {...videoSettings}
+          />
+        )
+      }
+    }
+  }
+
   render() {
-    const { isControllerActive, toggleSuggestion } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-
-    //Get Time Right Now
-    const todayDate = new Date().getTime()
-
-    //Get ExpireAt
-    const setSubscribe = this.props.user.subscriptions
-    const setSubscribeExp = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.expireAt)
-    const setSubscribeExpVal = new Date(setSubscribeExp).getTime()
-
-    //Validation Ads Show
-    const resultCompareDate = setSubscribeExpVal - todayDate
-
-    //Get Status Subscribe Type from User
-    const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
-
-    let videoSettings = {}
-    if (resultCompareDate > 0) {
-      videoSettings = {
-        ...defaultVideoSettings,
-      }
-    } else {
-      videoSettings = {
-        ...defaultVideoSettings,
-        adsSource: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-preroll-video?params=${this.encryptPayload}`,
-        adsBannerUrl: `${endpoints.ads}/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=${this.encryptPayload}`,
-        // skipVideoAdsOffset: 1
-      }
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
+    let drmStreamUrl = '',
+      isDRM = false;
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari
+        ? dataFetched.drm.fairplay.streamUrl
+        : dataFetched.drm.widevine.streamUrl;
     }
+    isDRM = drmStreamUrl ? true : false;
+
+    const loadPlayer =
+      status === 'success' &&
+      ((isDRM && vuidStatus === 'success') || !isDRM);
 
     return (
       <>
@@ -235,19 +207,17 @@ class MovieDetail extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            <Theoplayer
+            {loadPlayer && this.renderVideo()}
+            {/* <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
-              movieUrl={streamSource}
               // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
               handleOnVideoLoad={this.handleOnVideoLoad}
-              handleOnVideoPause={this.handleOnVideoPause}
-              handleOnVideoPlay={this.handleOnVideoPlay}
-              handleVideoTimeUpdate={this.handleVideoTimeUpdate}
               // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
               // isDRM={true}
+              showBackBtn
               {...videoSettings}
-            />
+            /> */}
           </>
         )}
       </>
@@ -263,6 +233,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
+  getVUID: deviceId => dispatch(getVUID(deviceId)),
+  getVUID_retry: () => dispatch(getVUID_retry())
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

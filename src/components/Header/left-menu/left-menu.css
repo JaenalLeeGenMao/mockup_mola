@@ -10,7 +10,6 @@
 .left_menu_outer {
   width: 28rem;
   height: 20px;
-  overflow: auto;
   white-space: nowrap;
 }
 

@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
+import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
@@ -10,8 +10,7 @@ import LazyLoad from '@components/common/Lazyload'
 
 import matchListActions from '@actions/matches'
 
-import s from './matches.css'
-let sessionId
+import s from './matches.css';
 
 class Matches extends React.Component {
   constructor(props) {
@@ -29,13 +28,14 @@ class Matches extends React.Component {
   }
 
   componentDidMount() {
-    const { getMatchesList } = this.props
-    getMatchesList()
+    this.props.getMatches()
   }
 
+  onHandleLoadMore = () => { };
+
   render() {
-    // console.log('az', this.props.matches)
     const matchesList = this.props.matches
+    // console.log('call data 2', matchesList.data[0].awayTeam.name)
     const isDark = false
     return (
       <>
@@ -43,7 +43,7 @@ class Matches extends React.Component {
         {matchesList.meta.status === 'success' && (
           <>
             <div className={s.headerContainer}>
-              <Header stickyOff isDark={isDark} activeMenu="sport" logoOff libraryOff {...this.props} />
+              <Header stickyOff searchOff isDark={isDark} activeMenu="matches" libraryOff {...this.props} />
             </div>
             <div className={s.root}>
               <div className={s.matchlist_container}>
@@ -52,7 +52,18 @@ class Matches extends React.Component {
                   <div className={s.matchlist_wrappercontent_center}>
                     <div className={s.matchcard__positiontitle}>{/* <h5 className={s.matchcards__filtertitle}>Filter</h5> */}</div>
                     <div className={s.matchlist_Pagetitle}>
-                      <MatchCard playlists={matchesList.data} />
+                      <LazyLoad containerClassName={s.matchesCardList__container}>
+                        {matchesList.data.map((matchDt) => (
+                          <MatchCard key={matchDt.id} matchData={matchDt} />
+                        ))
+                        }
+                      </LazyLoad>
+                      <div className={s.matches__loadmorecontent}>
+                        <span className={s.matches__loadmore}>Load More</span>
+                      </div>
+                      <div className={s.matches__contentabtn}>
+                        <span className={s.matches__loadmoreaction}>^</span>
+                      </div>
                     </div>
                     <div className={s.matchlist_gridcontainer}>
                       <LazyLoad containerClassName={s.matchlist_valuelistitem}>
@@ -74,14 +85,13 @@ class Matches extends React.Component {
 }
 
 function mapStateToProps(state) {
-  // console.log('checking data routes', state)
   return {
     ...state,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMatchesList: () => dispatch(matchListActions.getGetMatchesList()),
+  getMatches: () => dispatch(matchListActions.getSportList()),
 })
 
 export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)

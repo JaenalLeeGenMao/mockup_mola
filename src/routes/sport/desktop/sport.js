@@ -24,7 +24,7 @@ import SportPlaceholder from './placeholder'
 import SportArrow from '../arrow'
 import SportMobileContent from './content'
 import SportMobileMenu from './menu'
-import LiveNowUpcomingSchedule from './livenowupcoming'
+import MatchesList from './matchesList';
 
 import styles from './sport.css'
 import contentStyles from './content/content.css'
@@ -174,7 +174,6 @@ class Sport extends Component {
 
   componentDidMount() {
     const { playlists, videos } = this.props.sport
-    // console.log('checking data did', this.props.sport) //same 0
 
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
@@ -314,10 +313,9 @@ class Sport extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
-
         if (delta < 0) {
           if (that.rootSlider) {
             that.rootSlider.slickNext()
@@ -409,8 +407,8 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function() {
-      that.props.onUpdatePlaylist(activePlaylist.id)
+    setTimeout(function () {
+      // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
       let isDark = 1
@@ -421,7 +419,6 @@ class Sport extends Component {
         that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
       }
       if (index || index === 0) {
-        sliderRefs[index].slickGoTo(0)
         that.setState({
           scrollIndex: index,
           swipeIndex,
@@ -490,11 +487,12 @@ class Sport extends Component {
       filteredDesc = filterString(activeSlide.description, 36)
       filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
+    const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists
 
     return (
       <Fragment>
         {/* <Joyride
-          disableOverlayClose={true}
+          disableOverlayClose={true}o
           stepIndex={stepIndex}
           continuous
           showSkipButton
@@ -506,7 +504,7 @@ class Sport extends Component {
         /> */}
 
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff searchOff activeMenu="sport" className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -517,6 +515,7 @@ class Sport extends Component {
                 <div className={styles.sport__gradient} />
                 <div className={styles.sport__sidebar}>
                   <SportMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  {/* {console.log('uuuuuu', this.state.playlists.data)} */}
                 </div>
                 <LazyLoad containerClassName={styles.sport_header__playlist_title}>
                   <div>{this.state.playlists.data[scrollIndex].title}</div>
@@ -533,8 +532,13 @@ class Sport extends Component {
                     {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
+                {/* {validationMatchCards.id == 'mola-soc' ? (
+                  <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
+                    <LiveNowUpcomingSchedule />
+                  </div>
+                ) : null} */}
                 <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
-                  <LiveNowUpcomingSchedule />
+                  {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} />}
                 </div>
                 <Slider
                   {...settings}
@@ -546,8 +550,7 @@ class Sport extends Component {
                     videos.data.length > 0 &&
                     videos.data.map((video, index) => {
                       const { id, sortOrder } = video.meta
-                      // console.log('checking slider exist?? ', video)
-                      return <SportMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                      return <SportMobileContent key={id} videos={video.data} index={scrollIndex} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
                     })}
                 </Slider>
               </>
@@ -566,7 +569,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onHandlePlaylist: () => dispatch(sportActions.getSportCategoryList()),
+  onHandlePlaylist: () => dispatch(sportActions.getSportList()),
   onHandleVideo: playlist => dispatch(sportActions.getSportVideo(playlist)),
   onUpdatePlaylist: id => dispatch(sportActions.updateActivePlaylist(id)),
 })

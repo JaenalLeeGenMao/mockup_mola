@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-const dotenv = require('dotenv')
-dotenv.config()
+const dotenv = require('dotenv');
+dotenv.config();
 
-const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
+const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging';
 // const env = 'development'
 
 const oauth = {
@@ -19,7 +19,7 @@ const oauth = {
     'paymentmethods:read.internal',
     'payments:payment.dopay',
   ].join(' '),
-}
+};
 
 const serverApi = {
   VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://10.0.3.10', //'https://stag.mola.tv/api/v2/videos',
@@ -27,7 +27,7 @@ const serverApi = {
   SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://10.0.3.26', //'https://stag.mola.tv/api/v2/subscriptions',
   appId: 'molatv',
   xAppId: 2,
-}
+};
 
 const oauthApp = {
   appKey: 'LDZJgphCc7',
@@ -42,13 +42,13 @@ const oauthApp = {
     'paymentmethods:read.internal',
     'payments:payment.dopay',
   ].join(' '),
-}
+};
 
 const uploader = {
   clientId: 'ef4723e0-b3b4-4ed9-a45f-fb1cd5a8f024',
   clientSecret: '289cf0055454348a172d1520c8c70eb9',
   ptoken: '3e0d9625b0ecc7a547ec853c76834d85',
-}
+};
 
 const options = {
   development: {
@@ -77,6 +77,7 @@ const options = {
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
+      asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
       setting: {
         timeout: 10000,
         maxRedirects: 1,
@@ -93,22 +94,24 @@ const options = {
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
+      asset: 'https://mola01.koicdn.com/assets-global',
       setting: {
         timeout: 10000,
         maxRedirects: 1,
       },
     },
   },
-}
+};
 
-const baseConfig = require('@supersoccer/gandalf').config
-baseConfig.updateConfig(options)
-const config = baseConfig.default[env]
+const baseConfig = require('@supersoccer/gandalf').config;
+baseConfig.updateConfig(options);
+const config = baseConfig.default[env];
 
 // const config = require('@source/global/config')[env]
 
 module.exports = {
   // Node.js app
+  env,
   ...config,
   serverApi,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
@@ -116,4 +119,4 @@ module.exports = {
   oauth,
   oauthApp,
   uploader,
-}
+};

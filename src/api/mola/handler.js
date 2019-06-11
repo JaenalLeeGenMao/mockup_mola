@@ -1,5 +1,4 @@
-import { get, post, delete as axiosDelete } from 'axios'
-import qs from 'query-string'
+import axios, { get, post, delete as axiosDelete } from 'axios'
 import {
   VIDEOS_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT,
@@ -7,13 +6,14 @@ import {
   SEARCH_ENDPOINT,
   SEARCH_GENRE_ENDPOINT,
   RECENT_SEARCH_ENDPOINT,
-  MOVIE_DETAIL_ENDPOINT,
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
   CAMPAIGN_ENDPOINT,
+  ADD_DEVICE_ENDPOINT
 } from './endpoints'
 import utils from './util'
+import axiosRetry from 'axios-retry';
 
 import { endpoints } from '@source/config'
 
@@ -22,9 +22,7 @@ const getHomePlaylist = () => {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler home response', response)
       const result = utils.normalizeHomePlaylist(response)
-      // console.log('handler home result', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -71,8 +69,8 @@ const getFeatureBanner = (isMobile = false) => {
     })
 }
 
-const getSportCategoryList = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
+const getSportList = (id = 'mola-sport') => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -97,14 +95,14 @@ const getSportCategoryList = () => {
       }
     })
 }
-const getMatchesList = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/live-soc`, {
+const getMatchesList = (id) => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
       // console.log('response handler matcheslist', response)
       const result = utils.normalizeMatchesList(response)
-      // console.log('after normalize', result)
+      // console.log('after normalize matchlist', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -137,12 +135,13 @@ const getMatchDetail = id => {
   )
     .then(response => {
       const result = utils.normalizeMatchDetail(response)
+      // console.log('handler: after normalize match detail', result)
       return {
         meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result || null,
       }
     })
     .catch(error => {
@@ -396,7 +395,7 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
 }
 
 const getMovieDetail = ({ id }) => {
-  return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
+  return get(`${VIDEOS_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -459,7 +458,7 @@ const getMovieLibrary = id => {
           status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result.length > 0 ? result : [],
       }
     })
     .catch(error => {
@@ -651,6 +650,47 @@ const getOrderHistoryTransactions = ({ uid, token }) => {
     })
 }
 
+const getVUID = ({ deviceId, r }) => {
+  let urlParam = `deviceId=${deviceId}`;
+
+  if (r === 1) {
+    urlParam = 'r=1';
+  }
+
+  return axios.get(`${ADD_DEVICE_ENDPOINT}?${urlParam}&test=1`, {
+    timeout: 15000
+  })
+    .then(response => {
+      const vuid = response.data.data.attributes.vuid;
+      return {
+        meta: {
+          status: vuid ? 'success' : 'no_vuid',
+          error: ''
+        },
+        data: vuid || null
+      };
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `vuid/getVUID - ${error}`
+        },
+        data: null
+      };
+    });
+};
+
+axiosRetry(axios, {
+  retries: 3,
+  retryDelay: (retryCount) => {
+    return retryCount * 2000;
+  },
+  retryCondition: () => true
+});
+// axiosRetry(getVUID, { retries: 3 });
+
+
 export default {
   getHomePlaylist,
   getFeatureBanner,
@@ -670,8 +710,9 @@ export default {
   createOrder,
   createMidtransPayment,
   getOrderHistoryTransactions,
-  getSportCategoryList,
+  getSportList,
   getSportVideo,
   getMatchesList,
   getMatchDetail,
+  getVUID
 }

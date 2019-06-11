@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getSportCategoryList = () => dispatch => {
+const getSportList = () => dispatch => {
   dispatch({
     type: types.GET_SPORT_PLAYLIST_LOADING,
     payload: {
@@ -13,7 +13,7 @@ const getSportCategoryList = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getSportCategoryList().then(async result => {
+  return Mola.getSportList().then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_SPORT_PLAYLIST_ERROR,
@@ -21,36 +21,19 @@ const getSportCategoryList = () => dispatch => {
       })
     } else {
       if (result.data) {
-        if (result.data[0].id === 'mola-soc') {
-          for (const liveSoc of result.data) {
-            const liveSocPlaylists = await Mola.getMatchesList(liveSoc.id)
-            liveSoc.playlists = liveSocPlaylists
-            // console.log('get data live soc all', liveSocPlaylists)
-            // const allMatchDetail = []
-            // if (allMatchDetail != null && liveSoc.playlists.data.playlists !== null) {
-            //   for (const MatchDetail of liveSocPlaylists.data) {
-            //     allMatchDetail.push(MatchDetail.id)
-            //     // console.log('allMatchDetail', allMatchDetail)
-            //   }
-            //   const MatchDetailList = await Mola.getMatchDetail(allMatchDetail)
-            //   allMatchDetail.playlists = MatchDetailList
-            //   // console.log('rrrr', MatchDetailList)
-            // }
+        for (const sportList of result.data) {
+          const matchesPlaylist = await Mola.getSportList(sportList.id)
+          if (matchesPlaylist.data.length > 0) {
+            const matchesVideoList = matchesPlaylist.data.length > 0 && await Mola.getMatchesList(matchesPlaylist.data[0].id)
+            const allMatchDetail = []
+            for (const matchDetail of matchesVideoList.data) {
+              allMatchDetail.push(matchDetail.id)
+            }
+            const matchDetailDt = await Mola.getMatchDetail(allMatchDetail)
+            sportList.playlists = matchDetailDt
           }
         }
       }
-      /*if (allMatchDetail.playlists.meta.status === 'success'){
-          dispatch({
-            type: types.GET_SPORT_PLAYLIST_SUCCESS,
-            payload: allMatchDetail
-          })
-        } esle {
-          dispatch({
-            type: types.GET_SPORT_PLAYLIST_ERROR,
-            payload: allMatchDetail           
-          })
-        }
-        */
       return dispatch({
         type: types.GET_SPORT_PLAYLIST_SUCCESS,
         payload: result,
@@ -64,7 +47,6 @@ const getSportVideo = playlist => dispatch => {
       meta: {
         status: result.meta.status,
         id: playlist.id,
-        sortOrder: playlist.sortOrder,
       },
       data: result.data,
       background: {
@@ -74,7 +56,7 @@ const getSportVideo = playlist => dispatch => {
     if (result.data.playlists) {
       for (const liveSoc of result.data.playlists) {
         if (liveSoc.id === 'live-soc') {
-          const liveSocPlaylists = getSubPlaylistLiveNowUpcomingVideo()
+          const liveSocPlaylists = getMatchesList(liveSoc.id)
           liveSoc.playlists = liveSocPlaylists.playlists
           liveSoc.videos = liveSocPlaylists.videos
         }
@@ -106,7 +88,7 @@ const updateActivePlaylist = id => (dispatch, getState) => {
 }
 
 export default {
-  getSportCategoryList,
+  getSportList,
   getSportVideo,
   updateActivePlaylist,
 }

@@ -39,6 +39,7 @@ import { setRuntimeVariable } from './actions/runtime'
 import config from './config'
 import Axios from 'axios'
 import Crypto from 'crypto.js'
+import _get from 'lodash/get'
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -69,10 +70,10 @@ app.get('/ping', (req, res) => {
 //   '/api',
 //   proxy(`${config.endpoints.domain}/api/`, {
 //     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path);
 //     },
 //   })
-// )
+// );
 
 // app.use(
 //   '/accounts/_',
@@ -268,14 +269,14 @@ app.use('*', async (req, res, next) => {
       httpOnly: true,
     })
   }
-  if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
-    const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
-    res.cookie('__deviceId', deviceId, {
-      path: '/',
-      maxAge: 30 * 24 * 3600 * 1000,
-      httpOnly: true,
-    })
-  }
+  // if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
+  //   const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
+  //   res.cookie('__deviceId', deviceId, {
+  //     path: '/',
+  //     maxAge: 30 * 24 * 3600 * 1000,
+  //     httpOnly: true,
+  //   })
+  // }
   next() // <-- important!
 })
 
@@ -494,7 +495,7 @@ app.get('*', async (req, res, next) => {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
         sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
-        sessionId: req.cookies.__sessId || '',
+        sessionId: req.cookies.__sessionId || '',
         firstName: userInfo ? userInfo.first_name : '',
         lastName: userInfo ? userInfo.last_name : '',
         email: userInfo ? userInfo.email : '',
@@ -515,7 +516,7 @@ app.get('*', async (req, res, next) => {
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
         // vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
-        deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
+        // deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         debugError: {
           subs: userSubsError,
           userInfo: userInfoError,
@@ -567,10 +568,18 @@ app.get('*', async (req, res, next) => {
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
-    if (firstPath === 'movie-detail') {
-      const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+    if (firstPath === 'movie-detail' || firstPath === 'watch') {
+      let videoId = '',
+        appLink = ''
+      if (firstPath === 'movie-detail') {
+        videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+        appLink = 'movie-detail/' + videoId
+      } else {
+        videoId = req.query.v
+        appLink = 'watch?v=' + videoId
+      }
       if (videoId) {
-        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id${appId}`, {
+        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id=${appId}`, {
           timeout: 5000,
           maxRedirects: 1,
           // headers: {
@@ -586,10 +595,11 @@ app.get('*', async (req, res, next) => {
           })
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
-        data.image = response ? response[0].attributes.images.cover.background.landscape : ''
+        const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
+        data.image = response ? background.landscape : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
-        data.appLinkUrl = 'movie-detail/' + videoId
+        data.appLinkUrl = appLink
       }
     }
 

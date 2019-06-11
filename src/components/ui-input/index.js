@@ -2,8 +2,7 @@ import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './index.css'
 
-import imgVisible from '../../global/style/icons/eye/visible.png'
-import imgUnVisible from '../../global/style/icons/eye/notvisible.png'
+import { eyeVisible as imgVisible, eyeNotVisible as imgUnVisible } from '@global/imageUrl'
 
 class Input extends React.Component {
   constructor(props) {

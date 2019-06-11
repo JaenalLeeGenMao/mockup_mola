@@ -39,12 +39,11 @@ const Overview = ({ data }) => {
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
           <p className={sectionLeftText}>{genre}</p>
-          <p className={sectionLeftDuration}>{`${year}  13+  ${Math.floor(duration / 3600)}h${Math.floor((duration % 3600) / 60)}m`}</p>
+          <p className={sectionLeftDuration}>{`${year ? year : ''}  13+  ${Math.floor(duration / 3600)}h${Math.floor((duration % 3600) / 60)}m`}</p>
         </div>
       </div>
       <div className={contentOverviewSectionMiddle}>
         <div>
-          <h1 className={sectionMiddleTitle}>storyline</h1>
           <p className={sectionMiddleText}>{description}</p>
         </div>
       </div>
@@ -53,7 +52,7 @@ const Overview = ({ data }) => {
           {typeof casts !== 'undefined' &&
             casts.length > 0 && (
               <>
-                <h1 className={sectionRightTitle}>cast</h1>
+                <p className={sectionRightTitle}>Cast: </p>
                 <p className={sectionRightText}>{casts}</p>
               </>
             )}

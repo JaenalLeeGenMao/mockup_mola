@@ -12,7 +12,7 @@ import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
 import sport from './sport'
 import matches from './matches'
-
+import vuid from './vuid'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -31,4 +31,5 @@ export default combineReducers({
   subscribe,
   sport,
   matches,
+  vuid,
 })

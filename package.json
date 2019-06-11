@@ -9,8 +9,9 @@
   "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
   "dependencies": {
     "@babel/polyfill": "7.0.0",
-    "@supersoccer/gandalf": "^1.0.37",
+    "@supersoccer/gandalf": "^1.0.39",
     "axios": "0.18.0",
+    "axios-retry": "^3.1.2",
     "bluebird": "3.5.1",
     "body-parser": "1.18.2",
     "classnames": "2.2.5",
@@ -41,6 +42,7 @@
     "prop-types": "15.6.1",
     "query-string": "^6.2.0",
     "react": "16.6.3",
+    "react-countdown-now": "^2.1.0",
     "react-datepicker": "1.6.0",
     "react-device-detect": "^1.6.1",
     "react-dom": "16.5.1",

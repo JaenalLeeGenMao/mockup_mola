@@ -14,8 +14,8 @@ body {
 
 .matchlist_wrappergrid {
   display: grid;
-  grid-template-columns: 0.18fr 1.5fr 0.18fr;
-  grid-template-rows: repeat(3, 0.2fr 0 1.3fr);
+  grid-template-columns: 0.5fr 1.5fr 0.18fr;
+  grid-template-rows: repeat(3, 0.1fr 0.1fr 0.1fr);
   color: white;
 
   /* justify-content: left; */
@@ -27,7 +27,8 @@ body {
 
 .matchlist_Pagetitle {
   color: white;
-  font-size: 17.5px;
+
+  /* font-size: 17.5px; */
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   text-align: left;
@@ -63,4 +64,32 @@ body {
   float: right;
 }
 
-/* ga */
+.matches__loadmorecontent {
+  text-align: center;
+}
+
+.matches__loadmore {
+  color: white;
+  font-size: 1.3rem;
+}
+
+.matches__contentabtn {
+  text-align: center;
+}
+
+.matches__loadmoreaction {
+  color: white;
+  text-align: center;
+  font-size: 1.3rem;
+  transform: rotate(180deg);
+  position: absolute;
+}
+
+.matchesCardList__container {
+  color: white;
+  display: grid;
+  grid-gap: 4.5rem;
+  column-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(4, 0.73fr);
+}
