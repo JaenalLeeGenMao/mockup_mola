@@ -130,6 +130,12 @@ body {
   box-shadow: 0 0 1rem 0 white;
 }
 
+.featured_button {
+  background: #fff;
+  color: #2b2b2b;
+  font-size: 1.8rem;
+}
+
 .sport__custom_arrow {
   border-radius: 50%;
   width: 3.6rem;
