@@ -532,14 +532,14 @@ class Sport extends Component {
                     {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
-                {/* {validationMatchCards.id == 'mola-soc' ? (
-                  <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
-                    <LiveNowUpcomingSchedule />
-                  </div>
-                ) : null} */}
-                <div className={styles.sport_schedule_container} style={{ bottom: '20px' }}>
+                <div className={styles.sport_schedule_container} style={{ bottom: '0' }}>
                   {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} />}
                 </div>
+                <a href="/matches" className={styles.sport_schedule_link}>
+                  {matchesList && matchesList.meta.status === 'success' && matchesList.data &&
+                    <div>Match schedule <span className={styles.sport_schedule_viewAll}>view all</span> <i /></div>
+                  }
+                </a>
                 <Slider
                   {...settings}
                   ref={node => {

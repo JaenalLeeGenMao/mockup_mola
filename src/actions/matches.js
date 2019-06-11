@@ -14,7 +14,6 @@ const getSportList = () => dispatch => {
     },
   })
   return Mola.getMatchesList('live-soc').then(async result => {
-    // console.log('action matches', result)
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MATCHES_PLAYLIST_ERROR,
@@ -25,10 +24,8 @@ const getSportList = () => dispatch => {
       result.data.map(matchDetail => {
         allMatchDetailId.push(matchDetail.id)
       })
-      // console.log('see result', allMatchDetailId)
       let matchDetailList = []
       matchDetailList = await Mola.getMatchDetail(allMatchDetailId)
-      // console.log('see result 2', matchDetailList)
 
       if (matchDetailList.meta.status === 'success') {
         dispatch({
