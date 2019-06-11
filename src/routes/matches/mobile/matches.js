@@ -5,14 +5,11 @@ import { compose } from 'redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
-import moment from 'moment'
 
 import MatchesPlaceholder from './placeholder'
 
 import MatchCard from './card'
-import { convertToLocalDateTime, timeDiff, isMatchPassed } from './util'
-// import MatchPlaceholder from './placeholder'
-
+import { formatDateTime, isToday, isTomorrow, isMatchPassed } from '@source/lib/dateTimeUtil'
 import matchListActions from '@actions/matches'
 
 import Header from '@components/Header'
@@ -68,7 +65,7 @@ class Matches extends Component {
     const filteredMatch = []
 
     data.forEach(el => {
-      if (isMatchPassed(el.endTime)) {
+      if (el.homeTeam && el.awayTeam && isMatchPassed(el.endTime)) {
         filteredMatch.push(el)
       }
     })
@@ -106,18 +103,11 @@ class Matches extends Component {
     }
   }
 
-  matchesDateFormat = unix => {
-    const localTime = convertToLocalDateTime(unix)
-
-    const time = moment(localTime).format('ddd, D MMM YYYY')
-    let text = time
-
-    const dateDifference = timeDiff(moment().unix(), unix, 'days')
-    const isToday = dateDifference === 0
-    const isTomorrow = dateDifference === -1
-    if (isToday) {
+  matchesDateFormat = startTime => {
+    let text = formatDateTime(startTime, 'ddd, D MMM YYYY')
+    if (isToday(startTime)) {
       text = 'Today'
-    } else if (isTomorrow) {
+    } else if (isTomorrow(startTime)) {
       text = 'Tomorrow'
     }
 
@@ -135,7 +125,9 @@ class Matches extends Component {
   renderDate(data, index, matchesList) {
     let isDifferent = false
     if (index > 0) {
-      isDifferent = timeDiff(data.startTime, matchesList[index - 1].startTime, 'days') != 0
+      const thisDate = formatDateTime(data.startTime, 'DD MM YYYY')
+      const prevDate = formatDateTime(matchesList[index - 1].startTime, 'DD MM YYYY')
+      isDifferent = thisDate !== prevDate
       if (isDifferent) {
         return (
           <div className={styles.matches__date}>
@@ -187,9 +179,7 @@ class Matches extends Component {
   }
 
   render() {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    const { data, meta } = this.props.matches
-
+    const { meta } = this.props.matches
     const { matches } = this.state
     let sortedByStartDate = matches
     if (matches.length > 0) {

@@ -31,7 +31,7 @@ class CountDown extends React.Component {
 
     return (
       <Countdown
-        date={Date.now() + startTime * 1000 - Date.now()}
+        date={startTime * 1000}
         // date = {Date.now() + 5000}
         renderer={renderer}
       />
