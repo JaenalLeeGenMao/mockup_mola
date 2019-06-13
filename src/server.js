@@ -41,6 +41,37 @@ import Axios from 'axios'
 import Crypto from 'crypto.js'
 import _get from 'lodash/get'
 
+const oauth = {
+  endpoint: config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
+  appKey: 'wIHGzJhset',
+  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
+  ].join(' '),
+}
+
+const oauthApp = {
+  appKey: 'LDZJgphCc7',
+  appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
+  ].join(' '),
+}
+
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
   // send entire app down. Process manager will restart it
@@ -66,14 +97,14 @@ app.get('/ping', (req, res) => {
   res.send('PONG')
 })
 
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path);
-//     },
-//   })
-// );
+//app.use(
+//  '/api',
+//  proxy(`${config.endpoints.domain}/api/`, {
+//    proxyReqPathResolver: (req, res) => {
+//      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//    },
+//  })
+//)
 
 // app.use(
 //   '/accounts/_',
@@ -100,7 +131,9 @@ app.use(
 )
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain }, oauth: { appKey, appSecret, endpoint: oauthEndpoint } } = config
+const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain } } = config
+
+const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 
 // let count = 0
 // var inboxInterval;
