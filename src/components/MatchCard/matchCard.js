@@ -5,7 +5,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Link from '@components/Link'
 
 import styles from './matchCard.css'
-import moment from 'moment'
 import { defaultImgClub } from '@global/imageUrl'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 class MatchCard extends React.Component {
