@@ -1,6 +1,6 @@
 .channels_container {
-  display: grid;
-  grid-template-rows: 68vh 32vh;
+  /* display: grid;
+  grid-template-rows: 68vh 32vh; */
   overflow: hidden;
   height: 100vh;
 }

@@ -4,9 +4,15 @@ import styles from './schedule.css'
 
 import { formatDateTime } from '@source/lib/dateTimeUtil'
 
+var interval = 1000 / 60;
+var now;
+var then = Date.now();
+var delta;
+
 class Schedule extends Component {
   state = {
-    activeChannel: this.props.scheduleList.length > 0 && this.props.scheduleList[0].id
+    activeChannel: this.props.scheduleList.length > 0 && this.props.scheduleList[0].id,
+    scrollWidth: '3360px'
   }
 
   clickChannel = (channelId) => {
@@ -16,10 +22,42 @@ class Schedule extends Component {
     this.props.clickChannel && this.props.clickChannel(channelId);
   }
 
+  //animation untuk current time marker yg warna biru
+  timeIncrement = (timestamp) => {
+    window.requestAnimationFrame(this.timeIncrement);
+    now = Date.now();
+    delta = now - then;
+    if (delta > interval) {
+      then = now - (delta % interval);
+
+      const currentTs = Math.floor(now / 1000)
+      const currentMin = formatDateTime(currentTs, 'm')
+      const startMin = currentMin > 30 ? 30 : 0;
+      const startHour = formatDateTime(currentTs, 'H')
+      const d = new Date();
+      d.setHours(startHour, startMin, 0, 0);
+      const tsStartMarkTime = Math.floor(d / 1000);
+
+      const diff = (now / 1000) - tsStartMarkTime;
+      this.timeMarker.style.left = `${diff * 14 / 60}px` //add px per second
+    }
+  }
+
+  componentDidMount() {
+    if (process.env.BROWSER) {
+      //safari need to specify scroll width biar bisa di scroll
+      this.setState({
+        scrollWidth: `${window.innerWidth - 200}px`
+      })
+    }
+
+    window.requestAnimationFrame(this.timeIncrement);
+  }
+
   render() {
     const schedule = this.props.scheduleList
 
-    const { activeChannel } = this.state
+    const { activeChannel, scrollWidth } = this.state
 
     const currentTs = Math.floor(Date.now() / 1000)
     const currentMin = formatDateTime(currentTs, 'm')
@@ -28,9 +66,9 @@ class Schedule extends Component {
     //startHour dan startMin = pembulatan kebawah untuk current time dg kelipatan 30menit
     //misal sekarang jam 9.45, maka startHour = jam 9, startMin = menit ke 30
 
-    var d = new Date();
+    const d = new Date();
     d.setHours(startHour, startMin, 0, 0);
-    var tsStartMarkTime = Math.floor(d / 1000);
+    const tsStartMarkTime = Math.floor(d / 1000);
     //tsStartMarkTime = startHour dan startMin dalam timestamp eg: 1560394560
 
     let timeMark = [];
@@ -59,7 +97,8 @@ class Schedule extends Component {
           </div>
           <div className={styles.schedule_panel_wrapper}>
             <div className={styles.schedule_header_shadow} />
-            <div className={styles.schedule_scroll_container}>
+            <div className={styles.schedule_scroll_container} style={{ width: scrollWidth }}>
+              <div ref={node => { this.timeMarker = node }} className={styles.schedule_current_time_marker} />
               <div className={styles.schedule_content_container}>
                 <div className={styles.schedule_time_container}>
                   {timeMark && timeMark.map((time) => {
