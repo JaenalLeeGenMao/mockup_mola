@@ -8,18 +8,18 @@ import { Helmet } from 'react-helmet'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
-import DRMConfig from '@source/lib/DRMConfig';
+import DRMConfig from '@source/lib/DRMConfig'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
-import { getVUID, getVUID_retry } from '@actions/vuid';
+import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 import { unavailableImg } from '@global/imageUrl'
-import { Synopsis as ContentSynopsis, Creator as ContentCreator } from './content'
+import { Synopsis as ContentSynopsis, Creator as ContentCreator, Suggestions as ContentSuggestions } from './content'
 
 import {
   playButton,
@@ -57,14 +57,14 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /*default 0 */ /* important for analytics tracker */
+let ticker = [] /* important for analytics tracker */ /*default 0 */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -155,7 +155,7 @@ class MovieDetail extends Component {
       movieId, //passed as props from index.js,
       onHandleHotPlaylist,
       user,
-      getVUID
+      getVUID,
     } = this.props
 
     getMovieDetail(movieId)
@@ -163,8 +163,8 @@ class MovieDetail extends Component {
 
     this.updateEncryption()
 
-    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId();
-    getVUID(deviceId);
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
+    getVUID(deviceId)
   }
 
   componentDidUpdate() {
@@ -200,14 +200,10 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user } = this.props
-    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid;
+    const { user, notFound } = this.props
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-    const defaultVidSetting = status === 'success' ?
-      defaultVideoSetting(
-        user,
-        dataFetched,
-        vuidStatus === 'success' ? vuid : '') : {}
+    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
       ...defaultVidSetting,
@@ -215,18 +211,14 @@ class MovieDetail extends Component {
     }
 
     let drmStreamUrl = '',
-      isDRM = false;
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent);
+      isDRM = false
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
-      drmStreamUrl = isSafari
-        ? dataFetched.drm.fairplay.streamUrl
-        : dataFetched.drm.widevine.streamUrl;
+      drmStreamUrl = isSafari ? dataFetched.drm.fairplay.streamUrl : dataFetched.drm.widevine.streamUrl
     }
-    isDRM = drmStreamUrl ? true : false;
+    isDRM = drmStreamUrl ? true : false
 
-    const loadPlayer =
-      status === 'success' &&
-      ((isDRM && vuidStatus === 'success') || !isDRM);
+    const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
     return (
       <>
@@ -253,28 +245,14 @@ class MovieDetail extends Component {
                     {...videoSettings}
                     showChildren
                     isMobile
-                  >
-                    {toggleSuggestion && (
-                      <LazyLoad
-                        containerClassName={videoSuggestionContainer}
-                        containerStyle={{
-                          display: toggleSuggestion ? 'inline-block' : 'none',
-                          width: this.isAds ? '84%' : '95%',
-                          left: this.isAds ? '8%' : '2.5%',
-                          bottom: this.isAds ? '25%' : '5rem',
-                        }}
-                      >
-                        <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2>
-                        <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                      </LazyLoad>
-                    )}
-                  </Theoplayer>
+                  />
                 ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
               </div>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
+              {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}
             </div>
           </>
         )}
@@ -294,7 +272,7 @@ const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
-  getVUID_retry: () => dispatch(getVUID_retry())
+  getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)
