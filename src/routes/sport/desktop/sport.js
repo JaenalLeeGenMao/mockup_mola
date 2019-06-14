@@ -526,7 +526,7 @@ class Sport extends Component {
                     {/* <p className={styles.quote}>{filteredQuote}</p> ${activeSlide.id} */}
                     {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
-                        <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                           <span className={styles.play_icon} />
                           <p>{locale['view_movie']}</p>
                         </Link>

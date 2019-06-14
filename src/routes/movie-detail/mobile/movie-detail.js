@@ -31,6 +31,7 @@ import {
   videoSuggestionPlayer,
   videoSuggestionPlayerDetail,
   videoSuggestionTitle,
+  videoTitle,
 } from './style'
 import styles from '@global/style/css/grainBackground.css'
 
@@ -57,7 +58,7 @@ const RelatedVideos = ({ style = {}, containerClassName, className = '', videos 
   )
 }
 
-let ticker = [] /* important for analytics tracker */ /*default 0 */
+let ticker = [] /*default 0 */ /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
@@ -250,6 +251,7 @@ class MovieDetail extends Component {
                   <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                 )}
               </div>
+              <h1 className={videoTitle}>{dataFetched.title}</h1>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
               {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}

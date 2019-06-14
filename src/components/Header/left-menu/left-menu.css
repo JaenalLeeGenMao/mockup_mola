@@ -82,13 +82,41 @@
     top: 30px;
   }
 
-  .left__menu a {
-    font-size: 12px;
-    width: 15%;
-    color: #b5b5b5;
+  .left_menu_select_wrapper {
+    position: relative;
   }
 
-  .left_menu_item_inner {
+  .left_menu_select_wrapper select {
+    font-size: 12px;
+    width: auto;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: transparent;
+    position: absolute;
+    left: -5px;
+    top: -3px;
+  }
+
+  .left_menu_title {
+    font-size: 12px;
+    width: auto;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    pointer-events: none;
+    position: relative;
+    display: inline-block;
+  }
+
+  .select_icon {
+    color: white;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    pointer-events: none;
+  }
+
+  /* .left_menu_item_inner {
     width: 18%;
   }
 
@@ -133,7 +161,7 @@
     cursor: pointer;
     color: white;
     font-family: 'Open Sans', sans-serif;
-  }
+  } */
 }
 
 .left_menu_button > a {

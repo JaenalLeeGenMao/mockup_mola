@@ -189,6 +189,10 @@ export const videoPlayerContainer = css`
   height: 74vh;
   width: 100vw;
   margin: auto;
+
+  @media screen and (min-height: 600px) and (max-height: 768px) {
+    height: 68vh;
+  }
 `
 
 export const videoSuggestionContainer = css`

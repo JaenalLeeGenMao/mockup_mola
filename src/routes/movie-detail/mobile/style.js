@@ -213,3 +213,10 @@ export const videoSuggestionTitle = css`
   left: 1rem;
   top: 0.5rem;
 `
+
+export const videoTitle = css`
+  font-size: 28px;
+  line-height: 1.35;
+  font-weight: 600;
+  padding: 0 15px;
+`
