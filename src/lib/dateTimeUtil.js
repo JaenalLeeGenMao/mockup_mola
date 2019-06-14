@@ -2,10 +2,11 @@ import moment from 'moment'
 
 export const formatDateTime = (dateTime, format) => {
   let text = ''
-  let dateTimeUnix = dateTime && moment.unix(dateTime).utcOffset(0)
+  let dateTimeUnix = ''
+  dateTimeUnix = dateTime && moment.unix(dateTime).utcOffset(0)
   const dateStr = moment(dateTime);
 
-  const validDate = dateTimeUnix.isValid() ? dateTimeUnix : dateStr;
+  const validDate = moment(dateTimeUnix, moment.ISO_8601).isValid() ? dateTimeUnix : dateStr;
 
   const dateTimeLocal = new Date(validDate);
   text = moment(dateTimeLocal).format(format)
