@@ -24,7 +24,7 @@ import SportPlaceholder from './placeholder'
 import SportArrow from '../arrow'
 import SportMobileContent from './content'
 import SportMobileMenu from './menu'
-import MatchesList from './matchesList';
+import MatchesList from './matchesList'
 
 import styles from './sport.css'
 import contentStyles from './content/content.css'
@@ -313,7 +313,7 @@ class Sport extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function () {
+      setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -407,7 +407,7 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -515,7 +515,6 @@ class Sport extends Component {
                 <div className={styles.sport__gradient} />
                 <div className={styles.sport__sidebar}>
                   <SportMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
-                  {/* {console.log('uuuuuu', this.state.playlists.data)} */}
                 </div>
                 <LazyLoad containerClassName={styles.sport_header__playlist_title}>
                   <div>{this.state.playlists.data[scrollIndex].title}</div>
@@ -544,9 +543,13 @@ class Sport extends Component {
                   {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} />}
                 </div>
                 <a href="/matches" className={styles.sport_schedule_link}>
-                  {matchesList && matchesList.meta.status === 'success' && matchesList.data &&
-                    <div>Match schedule <span className={styles.sport_schedule_viewAll}>view all</span> <i /></div>
-                  }
+                  {matchesList &&
+                    matchesList.meta.status === 'success' &&
+                    matchesList.data && (
+                      <div>
+                        Match schedule <span className={styles.sport_schedule_viewAll}>view all</span> <i />
+                      </div>
+                    )}
                 </a>
                 <Slider
                   {...settings}
