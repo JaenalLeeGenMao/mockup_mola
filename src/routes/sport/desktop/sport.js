@@ -24,7 +24,7 @@ import SportPlaceholder from './placeholder'
 import SportArrow from '../arrow'
 import SportMobileContent from './content'
 import SportMobileMenu from './menu'
-import MatchesList from './matchesList';
+import MatchesList from './matchesList'
 
 import styles from './sport.css'
 import contentStyles from './content/content.css'
@@ -313,7 +313,7 @@ class Sport extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function () {
+      setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -407,7 +407,7 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -485,7 +485,7 @@ class Sport extends Component {
     let filteredQuote = ''
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.description, 36)
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
     const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists
 
@@ -515,7 +515,6 @@ class Sport extends Component {
                 <div className={styles.sport__gradient} />
                 <div className={styles.sport__sidebar}>
                   <SportMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
-                  {/* {console.log('uuuuuu', this.state.playlists.data)} */}
                 </div>
                 <LazyLoad containerClassName={styles.sport_header__playlist_title}>
                   <div>{this.state.playlists.data[scrollIndex].title}</div>
@@ -525,10 +524,18 @@ class Sport extends Component {
                     <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {/* <p className={styles.quote}>{filteredQuote}</p> ${activeSlide.id} */}
-                    <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      <span className={styles.play_icon} />
-                      <p>{locale['view_movie']}</p>
-                    </Link>
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <span className={styles.play_icon} />
+                          <p>{locale['view_movie']}</p>
+                        </Link>
+                      )}
+                    {activeSlide.buttonText && (
+                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </a>
+                    )}
                     {/* <div className={styles.sport__live_label}>{locale['info_movie']}</div> */}
                   </LazyLoad>
                 )}
@@ -536,9 +543,13 @@ class Sport extends Component {
                   {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} />}
                 </div>
                 <a href="/matches" className={styles.sport_schedule_link}>
-                  {matchesList && matchesList.meta.status === 'success' && matchesList.data &&
-                    <div>Match schedule <span className={styles.sport_schedule_viewAll}>view all</span> <i /></div>
-                  }
+                  {matchesList &&
+                    matchesList.meta.status === 'success' &&
+                    matchesList.data && (
+                      <div>
+                        Match schedule <span className={styles.sport_schedule_viewAll}>view all</span> <i />
+                      </div>
+                    )}
                 </a>
                 <Slider
                   {...settings}

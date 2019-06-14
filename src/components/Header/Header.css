@@ -28,6 +28,7 @@
 
 .header__notsticky {
   position: absolute;
+  top: 0;
   padding: 2.5% 0% 0 2.5%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

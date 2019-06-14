@@ -36,9 +36,8 @@ export default function sport(state = initialState, action) {
       let status
       const currentVideosLength = state.videos.data.length
       const currentPLaylistLength = state.playlists.data.length
-      // const index = findIndexByKeyValue(result, 'id', action.payload.meta.id)
-
-      const filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
+      const index = findIndexByKeyValue(result, 'id', action.payload.meta.id),
+        filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
 
       if (filteredStatus) {
         status = 'error'
@@ -48,19 +47,20 @@ export default function sport(state = initialState, action) {
         status = 'success'
       }
 
-      const resultId = action.payload.meta.id
-      const playlistIndex = state.playlists.data
-        .map(function(e) {
-          return e.id
-        })
-        .indexOf(resultId)
+      // const resultId = action.payload.meta.id
+      // const playlistIndex = state.playlists.data
+      //   .map(function (e) {
+      //     return e.id
+      //   })
+      //   .indexOf(resultId)
 
-      result.splice(playlistIndex, 0, { ...action.payload })
+      // result.splice(playlistIndex, 0, { ...action.payload })
 
-      // if (index === -1) {
-      //   result.push({ ...action.payload })
-      //   result = result.sort((a, b) => a.meta.sortOrder - b.meta.sortOrder)
-      // }
+      // console.log("playlistIndex", playlistIndex, "result", result)
+      if (index === -1) {
+        result.push({ ...action.payload })
+        result = result.sort((a, b) => a.meta.sortOrder - b.meta.sortOrder)
+      }
 
       return {
         ...state,

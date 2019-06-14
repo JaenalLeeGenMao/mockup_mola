@@ -32,13 +32,8 @@ body {
 
 .sport__gradient {
   position: fixed;
-
-  /* width: 60%; */
   width: 100%;
   height: 100%;
-
-  /* background: linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0.001)); */
-
   background: linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0));
   z-index: 1;
 }
@@ -128,6 +123,12 @@ body {
 
 .sport__detail_button.white:hover {
   box-shadow: 0 0 1rem 0 white;
+}
+
+.featured_button {
+  background: #fff;
+  color: #2b2b2b;
+  font-size: 1.8rem;
 }
 
 .sport__custom_arrow {
@@ -274,7 +275,7 @@ body {
   top: 0;
   left: 0;
   color: #808080;
-  font-size: 1.5rem;
+  font-size: 2.1rem;
   z-index: 1;
   margin: 10% 47.5% 0 12.5%;
   font-weight: bold;
@@ -386,7 +387,7 @@ body {
     position: absolute;
     white-space: nowrap;
     transition: left 500ms, width 300ms;
-    color: #A2A2A2;
+    color: #a2a2a2;
   }
 
   .sport_schedule_link:hover .sport_schedule_viewAll {
@@ -398,7 +399,7 @@ body {
   .sport_schedule_link:hover i {
     right: 46px;
     transition: right 500ms;
-    color: #A2A2A2;
+    color: #a2a2a2;
   }
 }
 

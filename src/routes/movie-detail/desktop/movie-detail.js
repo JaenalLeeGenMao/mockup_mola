@@ -15,7 +15,7 @@ import { getVUID, getVUID_retry } from '@actions/vuid'
 import MovieDetailError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
-import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
+import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
 import {
   playButton,
@@ -49,6 +49,9 @@ const Controller = ({ isActive = 'overview', onClick }) => {
       </div>
       <div className={isActive === 'review' ? 'active' : ''} onClick={() => onClick('review')}>
         review
+      </div>
+      <div className={isActive === 'suggestions' ? 'active' : ''} onClick={() => onClick('suggestions')}>
+        suggestions
       </div>
     </div>
   )
@@ -315,7 +318,7 @@ class MovieDetail extends Component {
                     showChildren
                     showBackBtn
                   >
-                    <LazyLoad
+                    {/* <LazyLoad
                       containerClassName={videoSuggestionContainer}
                       containerStyle={{
                         display: toggleSuggestion ? 'inline-block' : 'none',
@@ -323,9 +326,9 @@ class MovieDetail extends Component {
                         left: this.isAds ? '10%' : '5%',
                       }}
                     >
-                      <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2>
-                      <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                    </LazyLoad>
+                      <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2> */}
+                    {/* <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} /> */}
+                    {/* </LazyLoad> */}
                   </Theoplayer>
                 ) : (
                     <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
@@ -335,6 +338,7 @@ class MovieDetail extends Component {
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
             {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}
             {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
+            {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
             <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
           </div>
         )}
