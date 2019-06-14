@@ -21,9 +21,8 @@ const getSportList = () => dispatch => {
       })
     } else {
       if (result.data) {
-
         for (const sportList of result.data) {
-          const matchesVideoList = await Mola.getMatchesList((sportList.id).replace('f-', ''))
+          const matchesVideoList = await Mola.getMatchesList(sportList.id.replace('f-', ''))
           const allMatchDetail = []
           for (const matchDetail of matchesVideoList.data) {
             allMatchDetail.push(matchDetail.id)
@@ -51,7 +50,7 @@ const getSportList = () => dispatch => {
 }
 
 const getSportVideo = (playlist, isMobile) => dispatch => {
-  const isSport = true;
+  const isSport = true
   if (playlist.id === 'web-featured') {
     return Mola.getFeatureBanner(isMobile, isSport).then(result => {
       result = {
@@ -73,6 +72,7 @@ const getSportVideo = (playlist, isMobile) => dispatch => {
         meta: {
           status: result.meta.status,
           id: playlist.id,
+          sortOrder: playlist.sortOrder,
         },
         data: result.data,
         background: {
