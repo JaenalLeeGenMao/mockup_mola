@@ -5,12 +5,12 @@ const VideoThumbnail = getComponent('video-thumbnail')
 import LazyLoad from '@components/common/Lazyload'
 import { unavailableImg } from '@global/imageUrl'
 import Link from '@components/Link'
-import { videoSuggestionTitle, videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail, titleSuggestions, titleWrapper } from './style'
+import { videoSuggestionTitle, videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail, titleSuggestions, titleWrapper, videoSuggestionIcon } from './style'
 
 const Suggestions = ({ style = {}, videos = [] }) => {
   return (
     <>
-      <h2 className={videoSuggestionTitle}>Suggestions</h2>
+      <h2 className={videoSuggestionTitle}><span className={videoSuggestionIcon} />Suggestions</h2>
       <LazyLoad containerClassName={videoSuggestionContainer}>
         <div className={videoSuggestionWrapper} style={style}>
           {videos.map(({ id, background, title }) => {

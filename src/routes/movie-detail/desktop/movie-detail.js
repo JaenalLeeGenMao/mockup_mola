@@ -13,21 +13,14 @@ import notFoundActions from '@actions/not-found'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import MovieDetailError from '@components/common/error'
-import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
 import {
-  playButton,
   movieDetailContainer,
   movieDetailNotAvailableContainer,
   controllerContainer,
   videoPlayerContainer,
-  videoSuggestionContainer,
-  videoSuggestionWrapper,
-  videoSuggestionPlayer,
-  videoSuggestionPlayerDetail,
-  videoSuggestionTitle,
 } from './style'
 
 import styles from '@global/style/css/grainBackground.css'
@@ -57,22 +50,22 @@ const Controller = ({ isActive = 'overview', onClick }) => {
   )
 }
 
-const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
-  return (
-    <div className={containerClassName} style={style}>
-      {videos.map(({ id, background }) => {
-        const imageSource = background.landscape || unavailableImg
-        return (
-          <Link to={`/movie-detail/${id}`} key={id} className={className}>
-            <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
-              <div className={playButton} />
-            </VideoThumbnail>
-          </Link>
-        )
-      })}
-    </div>
-  )
-}
+// const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
+//   return (
+//     <div className={containerClassName} style={style}>
+//       {videos.map(({ id, background }) => {
+//         const imageSource = background.landscape || unavailableImg
+//         return (
+//           <Link to={`/movie-detail/${id}`} key={id} className={className}>
+//             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
+//               <div className={playButton} />
+//             </VideoThumbnail>
+//           </Link>
+//         )
+//       })}
+//     </div>
+//   )
+// }
 
 class MovieDetail extends Component {
   state = {
@@ -82,7 +75,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -182,10 +175,10 @@ class MovieDetail extends Component {
         // this.handleVideoError(e);
       }
     })
-    player.addEventListener('error', e => {
-      // console.log('error', e, '======', player.error.code)
-      // this.handleVideoError(e);
-    })
+    // player.addEventListener('error', e => {
+    //   console.log('error', e, '======', player.error.code)
+    //   // this.handleVideoError(e);
+    // })
   }
 
   subtitles() {
@@ -260,8 +253,7 @@ class MovieDetail extends Component {
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
-      ...defaultVidSetting,
-      // getUrlResponse: this.getUrlResponse
+      ...defaultVidSetting
     }
 
     let drmStreamUrl = '',
@@ -313,8 +305,8 @@ class MovieDetail extends Component {
                     {/* </LazyLoad> */}
                   </Theoplayer>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}

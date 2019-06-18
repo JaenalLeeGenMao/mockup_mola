@@ -162,61 +162,42 @@ export const videoPlayerContainer = css`
   height: 18rem;
 `
 
-export const videoSuggestionContainer = css`
-  position: absolute;
-  left: 2.5%;
-  bottom: 5rem;
-  height: 10rem;
-  // width: 100vw;
-  width: 95%;
-  // background: transparent;
-  background: rgba(23, 23, 23, 0.9);
-  border-radius: 0.25rem;
-`
-
-export const videoSuggestionWrapper = css`
-  position: absolute;
-  bottom: 0;
-  width: 95%;
-  height: 9rem;
-  color: #fff;
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-`
-
-export const videoSuggestionPlayer = css`
-  display: inline-block;
-  min-width: 14.5rem;
-  width: 20vw;
-  height: 100%;
-  padding: 1rem 0.8rem;
-}
-`
-
-export const videoSuggestionPlayerDetail = css`
-  position: relative;
-  width: 100%;
-  height: 100%;
-
-  div {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-`
-
-export const videoSuggestionTitle = css`
-  position: absolute;
-  font-size: 1rem;
-  font-weight: 500;
-  left: 1rem;
-  top: 0.5rem;
-`
-
 export const videoTitle = css`
   font-size: 28px;
   line-height: 1.35;
   font-weight: 600;
   padding: 0 15px;
 `
+
+export const playMovieButton = css`
+  background-color: #FFFFFF;
+  color: #414141;
+  font-size: 14px;
+  font-weight: bold;
+  position: fixed;
+  bottom: 30px;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 152px;
+  padding: 10px 0;
+  border-radius: 200px;
+  line-height: 1.2;
+
+  span {
+    vertical-align: middle;
+    display: inline-block;
+  }
+`
+
+export const playMovieIcon = css`
+  display: inline-block;
+  border-style: solid;
+  box-sizing: border-box;
+  border-color: transparent transparent transparent #202020;
+  width: 13px;
+  height: 12px;
+  border-width: 8px 0 8px 12px;
+  vertical-align: middle;
+  margin-right: 5px;
+`;

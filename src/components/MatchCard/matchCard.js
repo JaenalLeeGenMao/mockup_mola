@@ -76,10 +76,12 @@ class MatchCard extends React.Component {
       <Link to={`/watch?v=${id}`} key={id} className={styles.matchCard__schedule}>
         {isLive && <span className={styles.matchCard__icon_play} />}
         <div className={styles.matchCard__schedule_item}>
-          <div className={styles.matchCard__team_logo}>
-            {this.handleClubImage(homeTeam.logo)}
-            {homeTeam ? <span className={styles.matchCard_team_name}>{homeTeam.name}</span> : null}
-          </div>
+          {homeTeam &&
+            <div className={styles.matchCard__team_logo}>
+              {this.handleClubImage(homeTeam.logo)}
+              <span className={styles.matchCard_team_name}>{homeTeam.name}</span>
+            </div>
+          }
           <div className={styles.matchCard__middlecontent}>
             {this.renderMatchInfo(startTime, endTime)}
             <div className={styles.matchCard__scoring}>
@@ -92,10 +94,12 @@ class MatchCard extends React.Component {
             </div>
             {/* <span className={styles.matchCards__pen}>Pen. (3-4)</span> note: pen & agg di hide dulu */}
           </div>
-          <div className={styles.matchCard__team_logo}>
-            {this.handleClubImage(awayTeam.logo)}
-            {awayTeam ? <span className={styles.matchCard_team_name}>{awayTeam.name}</span> : null}
-          </div>
+          {awayTeam &&
+            <div className={styles.matchCard__team_logo}>
+              {this.handleClubImage(awayTeam.logo)}
+              <span className={styles.matchCard_team_name}>{awayTeam.name}</span>
+            </div>
+          }
         </div>
         <div className={styles.matchCard__liga_type}>
           {league ? (

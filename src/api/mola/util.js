@@ -135,7 +135,7 @@ const normalizeHomeVideo = response => {
         ({ attributes: { videos } }) =>
           videos.map(video => {
             // console.log('checking utils', video)
-            const { id, type, attributes: { title, description, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists } } = video
+            const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime } } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', ''),
               dummyQuote = {
@@ -154,11 +154,14 @@ const normalizeHomeVideo = response => {
               displayOrder,
               description,
               visibility,
+              contentType,
               shortDescription: shortDescription || description,
               // coverTitle: coverTitle,
               background,
               backgroundColor: coverBGColor || '#000622',
               isDark: isDark || 0,
+              startTime,
+              endTime,
               quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
               type,
             }

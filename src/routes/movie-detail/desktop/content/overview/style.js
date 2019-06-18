@@ -39,7 +39,7 @@ export const contentOverviewSectionRight = css`
   vertical-align: top;
   margin-top: 1rem;
 
-  div {
+  & > div {
     width: 70%;
     height: 100%;
     margin: auto;
@@ -57,6 +57,10 @@ export const contentOverviewSectionRight = css`
   span:last-of-type:after {
     content: '';
   }
+`
+
+export const peopleWrapper = css`
+  margin-bottom: 1rem;
 `
 
 export const sectionLeftTitle = css`
