@@ -11,7 +11,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
 import { logoLandscapeBlue } from '@global/imageUrl'
-import config from '../config';
+import config from '../config'
 import yoastSEOPlugin from './yoastSEOPlugin.json'
 
 class Html extends React.Component {
@@ -71,6 +71,12 @@ class Html extends React.Component {
           <meta name="referrer" content="origin-when-cross-origin" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
+          <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: 'var OneSignal = window.OneSignal || [];' + 'OneSignal.push(function() {' + 'OneSignal.init({' + 'appId: "679fe5dc-5170-4cda-8302-f9cbccc9f38c",' + '});' + '});',
+            }}
+          />
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />
@@ -85,14 +91,10 @@ class Html extends React.Component {
             dangerouslySetInnerHTML={{
               __html:
                 'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
-                `ga('create',${config.env === 'production' ? '\'UA-140128558-1\'' : '\'UA-140128558-2\''},'auto');ga('send','pageview')`
+                `ga('create',${config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"},'auto');ga('send','pageview')`,
             }}
           />
-          <script
-            src="https://www.google-analytics.com/analytics.js"
-            async=""
-            defer=""
-          />
+          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
         </body>
       </html>
     )
