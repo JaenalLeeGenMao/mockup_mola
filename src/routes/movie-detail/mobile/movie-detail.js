@@ -16,21 +16,16 @@ import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
-import LazyLoad from '@components/common/Lazyload'
-import Link from '@components/Link'
 import { unavailableImg } from '@global/imageUrl'
 import { Synopsis as ContentSynopsis, Creator as ContentCreator, Suggestions as ContentSuggestions } from './content'
 
 import {
-  playButton,
   movieDetailContainer,
   movieDetailNotAvailableContainer,
   videoPlayerContainer,
-  videoSuggestionContainer,
-  videoSuggestionWrapper,
-  videoSuggestionPlayer,
-  videoSuggestionPlayerDetail,
-  videoSuggestionTitle,
+  videoTitle,
+  playMovieButton,
+  playMovieIcon
 } from './style'
 import styles from '@global/style/css/grainBackground.css'
 
@@ -38,33 +33,14 @@ import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
-const VideoThumbnail = getComponent('video-thumbnail')
-
-const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
-  return (
-    <div className={containerClassName} style={style}>
-      {videos.map(({ id, background }) => {
-        const imageSource = background.landscape || unavailableImg
-        return (
-          <Link to={`/movie-detail/${id}`} key={id} className={className}>
-            <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
-              <div className={playButton} />
-            </VideoThumbnail>
-          </Link>
-        )
-      })}
-    </div>
-  )
-}
-
-let ticker = [] /* important for analytics tracker */ /*default 0 */
+let ticker = [] /*default 0 */ /* important for analytics tracker */
 class MovieDetail extends Component {
   state = {
     toggleSuggestion: false,
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -193,6 +169,10 @@ class MovieDetail extends Component {
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
   }
 
+  handlePlayMovie = () => {
+    this.player.play();
+  }
+
   render() {
     const { toggleSuggestion } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -247,12 +227,17 @@ class MovieDetail extends Component {
                     isMobile
                   />
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
+              <h1 className={videoTitle}>{dataFetched.title}</h1>
               <ContentSynopsis content={dataFetched.description} />
               <ContentCreator people={dataFetched.people} />
               {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}
+            </div>
+            <div className={playMovieButton} onClick={this.handlePlayMovie}>
+              <div className={playMovieIcon} />
+              <span>Play Movie</span>
             </div>
           </>
         )}

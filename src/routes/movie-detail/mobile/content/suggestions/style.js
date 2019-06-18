@@ -1,16 +1,14 @@
 import { css } from 'react-emotion'
 
 export const videoSuggestionContainer = css`
-position: absolute;
-left: 2.5%;
-// bottom: 2rem;
-height: 16rem;
-min-height: height: 10rem;
-// width: 100vw;
-width: 95%;
-background: transparent;
-background: rgba(23, 23, 23, 0.9);
-border-radius: 0.25rem;
+  position: absolute;
+  height: 12rem;
+  background: transparent;
+  border-radius: 0.25rem;
+  width: calc(100% - 30px);
+  left: 15px;
+  margin-bottom: 55px;
+}
 `
 
 export const videoSuggestionWrapper = css`
@@ -26,10 +24,10 @@ export const videoSuggestionWrapper = css`
 
 export const videoSuggestionPlayer = css`
 display: inline-block;
-min-width: 14.5vw;
-width: 22rem;
+width: 200px;
+min-width: 200px;
 height: 100%;
-padding: 1rem 0.8rem;
+padding: 0 0.8rem;
 }
 `
 
@@ -45,7 +43,7 @@ export const videoSuggestionPlayerDetail = css`
   }
 `
 export const titleWrapper = css`
-  height: 15rem;
+  height: 11rem;
 `
 
 export const titleSuggestions = css`
@@ -63,9 +61,21 @@ export const titleSuggestions = css`
 export const videoSuggestionTitle = css`
   // position: absolute;
   padding: 0px 15px;
-  font-size: 1.4rem;
-  font-weight: 500;
-  line-height: 1.7;
-  letter-spacing: 0.12rem;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.35;
   top: 0.5rem;
+  color: #969696;
+  padding-bottom: 13px;
+`
+
+export const videoSuggestionIcon = css`
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEwIDEzIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojOTY5Njk2O308L3N0eWxlPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjUuNSkiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1LjUpIj48cGF0aCBjbGFzcz0iYSIgZD0iTTM0LjI1LDBWMS40NDRIMzNWMEgyOFYxLjQ0NEgyNi43NVYwSDI1LjVWMTNoMS4yNVYxMS41NTZIMjhWMTNoNVYxMS41NTZoMS4yNVYxM0gzNS41VjBaTTI4LDEwLjExMUgyNi43NVY4LjY2N0gyOFptMC0yLjg4OUgyNi43NVY1Ljc3OEgyOFptMC0yLjg4OUgyNi43NVYyLjg4OUgyOFptNi4yNSw1Ljc3OEgzM1Y4LjY2N2gxLjI1Wm0wLTIuODg5SDMzVjUuNzc4aDEuMjVabTAtMi44ODlIMzNWMi44ODloMS4yNVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNS41KSIvPjwvZz48L2c+PC9zdmc+);
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-right: 5px;
 `

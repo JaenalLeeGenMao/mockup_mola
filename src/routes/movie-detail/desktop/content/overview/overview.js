@@ -8,10 +8,10 @@ import {
   sectionLeftTitle,
   sectionLeftText,
   sectionLeftDuration,
-  sectionMiddleTitle,
   sectionMiddleText,
   sectionRightTitle,
   sectionRightText,
+  peopleWrapper
 } from './style'
 
 const Overview = ({ data }) => {
@@ -51,26 +51,26 @@ const Overview = ({ data }) => {
         <div>
           {typeof casts !== 'undefined' &&
             casts.length > 0 && (
-              <>
+              <div className={peopleWrapper}>
                 <p className={sectionRightTitle}>Cast: </p>
                 <p className={sectionRightText}>{casts}</p>
-              </>
+              </div>
             )}
 
           {typeof directors !== 'undefined' &&
             directors.length > 0 && (
-              <>
-                <h2 className={sectionRightTitle}>director</h2>
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Director: </p>
                 <p className={sectionRightText}>{directors}</p>
-              </>
+              </div>
             )}
 
           {typeof writers !== 'undefined' &&
             writers.length > 0 && (
-              <>
-                <h2 className={sectionRightTitle}>writer</h2>
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Writer: </p>
                 <p className={sectionRightText}>{writers}</p>
-              </>
+              </div>
             )}
         </div>
       </div>

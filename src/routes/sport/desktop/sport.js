@@ -31,7 +31,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
-import { reduce } from 'rxjs/operators'
+import { isMatchLive } from '@source/lib/dateTimeUtil'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -313,7 +313,7 @@ class Sport extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -407,7 +407,7 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -507,7 +507,7 @@ class Sport extends Component {
           {playlistStatus !== 'error' && <Header libraryOff searchOff activeMenu="sport" className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
-          {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
+          {/* {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />} */}
           {videos &&
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
@@ -521,15 +521,31 @@ class Sport extends Component {
                 </LazyLoad>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
+                    <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
                     <p>{filteredDesc}</p>
                     {/* <p className={styles.quote}>{filteredQuote}</p> ${activeSlide.id} */}
                     {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
-                        <Link to={'/watch?v=vd56611105'} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                          <span className={styles.play_icon} />
-                          <p>{locale['view_movie']}</p>
-                        </Link>
+                        <>
+                          {
+                            activeSlide.contentType === 1 && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_vod_btn}`}>
+                                <p>{locale['view_movie']}</p>
+                              </Link>
+                            )
+                          }
+                          {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                            <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} tourMovieDetail`}>
+                              <span className={styles.play_icon} />
+                              <p>{locale['live_now']}</p>
+                            </Link>
+                          )}
+                          {activeSlide.startTime > Date.now() / 1000 && (
+                            <div className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                              <p>{locale['upcoming']}</p>
+                            </div>
+                          )}
+                        </>
                       )}
                     {activeSlide.buttonText && (
                       <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
