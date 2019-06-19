@@ -82,7 +82,12 @@
     top: 30px;
   }
 
-  .left_menu_select_wrapper {
+  .left_menu_dropdown_container {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  /* .left_menu_select_wrapper {
     position: relative;
   }
 
@@ -114,7 +119,7 @@
     display: inline-block;
     vertical-align: middle;
     pointer-events: none;
-  }
+  } */
 
   /* .left_menu_item_inner {
     width: 18%;

@@ -5,6 +5,7 @@ import { compose } from 'redux'
 import { IoIosArrowDown } from 'react-icons/io'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import DropdownList from '@components/DropdownList'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 import Header from '@components/Header'
@@ -61,12 +62,12 @@ class Channels extends Component {
     })
   }
 
-  handleSelectDate = e => {
-    const value = e.target.options[e.target.options.selectedIndex].innerText
+  handleSelectDate = id => {
+    // const value = e.target.options[e.target.options.selectedIndex].innerText
     let videosFiltered = []
     schedule &&
       schedule.map(dt => {
-        const date = new Date(moment(e.target.value, 'ddd, DD MMM YYYY'))
+        const date = new Date(moment(id, 'ddd, DD MMM YYYY'))
         if (dt.id == this.state.activeChannelId) {
           videosFiltered =
             dt.videos &&
@@ -80,17 +81,19 @@ class Channels extends Component {
         return videosFiltered
       })
     this.setState({
-      activeDate: value,
+      activeDate: id,
       scheduleList: videosFiltered ? videosFiltered : [],
     })
   }
 
-  handleSelectChannel = e => {
-    const value = e.target.options[e.target.options.selectedIndex].innerText
+  handleSelectChannel = id => {
+    // const value = e.target.options[e.target.options.selectedIndex].innerText
+    let value = ''
     let videosFiltered = []
     schedule &&
       schedule.map(dt => {
-        if (dt.id == e.target.value) {
+        if (dt.id == id) {
+          value = dt.title
           videosFiltered =
             dt.videos &&
             dt.videos.filter(videos => {
@@ -105,20 +108,20 @@ class Channels extends Component {
 
     this.setState({
       activeChannel: value,
-      activeChannelId: e.target.value,
+      activeChannelId: id,
       activeDate: formatDateTime(Date.now() / 1000, 'ddd, DD MMM YYYY'),
       scheduleList: videosFiltered ? videosFiltered : [],
     })
   }
 
   render() {
-    const { scheduleList, activeDate, activeChannel } = this.state
+    const { scheduleList, activeDate, activeChannel, activeChannelId } = this.state
     let sheduleDateList = []
     for (var i = 0; i < 7; i++) {
       const date = new Date(addDateTime(null, i, 'days'))
       const dtTimestamp = date.getTime()
       const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'ddd, DD MMM YYYY')
-      sheduleDateList.push(formattedDateTime)
+      sheduleDateList.push({ id: formattedDateTime, title: formattedDateTime })
     }
     return (
       <>
@@ -128,7 +131,7 @@ class Channels extends Component {
         <div className={styles.channels_container}>
           <div className={styles.channels_top_wrapper}>
             <div className={styles.channels_list_wrapper}>
-              <select
+              {/* <select
                 onChange={event => {
                   this.handleSelectChannel(event)
                 }}
@@ -143,11 +146,21 @@ class Channels extends Component {
                   })}
               </select>
               <div className={styles.channels_title}>{activeChannel}</div>
-              <IoIosArrowDown className={styles.select_icon} />
+              <IoIosArrowDown className={styles.select_icon} /> */}
+              <DropdownList
+                className={styles.channels_dropdown_container}
+                dataList={schedule}
+                activeId={activeChannelId}
+                onClick={this.handleSelectChannel} />
             </div>
 
             <div className={styles.schedule_date_wrapper}>
-              <select
+              <DropdownList
+                className={styles.channels_dropdown_container}
+                dataList={sheduleDateList}
+                activeId={activeDate}
+                onClick={this.handleSelectDate} />
+              {/* <select
                 onChange={event => {
                   this.handleSelectDate(event)
                 }}
@@ -163,7 +176,7 @@ class Channels extends Component {
                   })}
               </select>
               <div className={styles.schedule_date_title}>{activeDate}</div>
-              <IoIosArrowDown className={styles.select_icon} />
+              <IoIosArrowDown className={styles.select_icon} /> */}
             </div>
           </div>
           <div className={styles.video_container}>

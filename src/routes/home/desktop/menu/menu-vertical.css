@@ -30,17 +30,12 @@
   color: white;
 }
 
-.menu__dots.menu__top_active {
-  /* height: 2.25rem; */
-
-  /* margin-bottom: 0; */
+.menu__dots.menu__active {
   opacity: 1;
   width: 1.5rem;
   height: 1.5rem;
   background-color: transparent;
   border: 3px solid #2c56ff;
-
-  /* transform: translateY(5%); */
 }
 
 /* .menu__bot_active {
