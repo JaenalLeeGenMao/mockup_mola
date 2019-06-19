@@ -1,4 +1,4 @@
-import axios, { get, post, delete as axiosDelete } from 'axios'
+import { get, post, delete as axiosDelete } from 'axios'
 import {
   VIDEOS_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT,
@@ -10,10 +10,8 @@ import {
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
   CAMPAIGN_ENDPOINT,
-  ADD_DEVICE_ENDPOINT
 } from './endpoints'
 import utils from './util'
-import axiosRetry from 'axios-retry';
 
 import { endpoints } from '@source/config'
 
@@ -44,9 +42,9 @@ const getHomePlaylist = () => {
 }
 
 const getFeatureBanner = (isMobile = false, isSport = false) => {
-  let url = isMobile ? 'mobile-featured' : 'desktop-featured';
+  let url = isMobile ? 'mobile-featured' : 'desktop-featured'
   if (isSport) {
-    url = isMobile ? 'mobile-sport-featured' : 'desktop-sport-featured';
+    url = isMobile ? 'mobile-sport-featured' : 'desktop-sport-featured'
   }
   return get(`${CAMPAIGN_ENDPOINT}/${url}?include=banners`, {
     ...endpoints.setting,
@@ -99,7 +97,7 @@ const getSportList = (id = 'mola-sport') => {
       }
     })
 }
-const getMatchesList = (id) => {
+const getMatchesList = id => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
@@ -654,47 +652,6 @@ const getOrderHistoryTransactions = ({ uid, token }) => {
     })
 }
 
-const getVUID = ({ deviceId, r }) => {
-  let urlParam = `deviceId=${deviceId}`;
-
-  if (r === 1) {
-    urlParam = 'r=1';
-  }
-
-  return axios.get(`${ADD_DEVICE_ENDPOINT}?${urlParam}&test=1`, {
-    timeout: 15000
-  })
-    .then(response => {
-      const vuid = response.data.data.attributes.vuid;
-      return {
-        meta: {
-          status: vuid ? 'success' : 'no_vuid',
-          error: ''
-        },
-        data: vuid || null
-      };
-    })
-    .catch(error => {
-      return {
-        meta: {
-          status: 'error',
-          error: `vuid/getVUID - ${error}`
-        },
-        data: null
-      };
-    });
-};
-
-axiosRetry(axios, {
-  retries: 3,
-  retryDelay: (retryCount) => {
-    return retryCount * 2000;
-  },
-  retryCondition: () => true
-});
-// axiosRetry(getVUID, { retries: 3 });
-
-
 export default {
   getHomePlaylist,
   getFeatureBanner,
@@ -718,5 +675,4 @@ export default {
   getSportVideo,
   getMatchesList,
   getMatchDetail,
-  getVUID
 }
