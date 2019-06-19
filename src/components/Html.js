@@ -74,7 +74,13 @@ class Html extends React.Component {
           <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
           <script
             dangerouslySetInnerHTML={{
-              __html: 'var OneSignal = window.OneSignal || [];' + 'OneSignal.push(function() {' + 'OneSignal.init({' + 'appId: "679fe5dc-5170-4cda-8302-f9cbccc9f38c",' + '});' + '});',
+              __html:
+                'var OneSignal = window.OneSignal || [];' +
+                'OneSignal.push(function() {' +
+                'OneSignal.init({' +
+                `appId: ${config.env == 'production' ? '"5d6c228d-12ee-4b17-9946-cd772f84f314"' : '"679fe5dc-5170-4cda-8302-f9cbccc9f38c"'},` +
+                '});' +
+                '});',
             }}
           />
           <link rel="manifest" href="/site.webmanifest" />
