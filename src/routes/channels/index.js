@@ -3,11 +3,9 @@ import React from 'react'
 import MolaLayout from '@components/Molalayout'
 
 import ChannelsDesktop from './desktop'
+import ChannelsMobile from './mobile'
 
-async function action({ isMobile, pathname, query }) {
-  const pathnameArr = pathname.split('/'),
-    id = pathnameArr[2]
-
+async function action({ isMobile }) {
   return {
     chunks: ['channels'],
     title: '',
@@ -16,13 +14,13 @@ async function action({ isMobile, pathname, query }) {
     url: '',
     component: isMobile ? (
       <MolaLayout>
-        {/* <MovieDetailMobile pathLoc={pathnameArr[1]} movieId={id} urlParams={query} /> */}
+        <ChannelsMobile />
       </MolaLayout>
     ) : (
-        <MolaLayout>
-          <ChannelsDesktop />
-        </MolaLayout>
-      ),
+      <MolaLayout>
+        <ChannelsDesktop />
+      </MolaLayout>
+    ),
   }
 }
 

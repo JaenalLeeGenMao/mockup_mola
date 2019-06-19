@@ -11,7 +11,7 @@ import {
   sectionMiddleText,
   sectionRightTitle,
   sectionRightText,
-  peopleWrapper
+  peopleWrapper,
 } from './style'
 
 const Overview = ({ data }) => {
@@ -33,13 +33,16 @@ const Overview = ({ data }) => {
     return <span key={cast.name}>{cast.attributes.name}</span>
   })
 
+  const durationHour = duration && Math.floor(duration / 3600) + 'h'
+  const durationMin = duration && Math.floor((duration % 3600) / 60) + 'm'
+  const durationTime = duration ? durationHour + '' + durationMin : ''
   return (
     <LazyLoad containerClassName={contentOverviewContainer}>
       <div className={contentOverviewSectionLeft}>
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
           <p className={sectionLeftText}>{genre}</p>
-          <p className={sectionLeftDuration}>{`${year ? year : ''}  13+  ${Math.floor(duration / 3600)}h${Math.floor((duration % 3600) / 60)}m`}</p>
+          <p className={sectionLeftDuration}>{`${year ? year : ''}  13+  ${durationTime}`}</p>
         </div>
       </div>
       <div className={contentOverviewSectionMiddle}>
