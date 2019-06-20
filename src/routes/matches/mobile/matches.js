@@ -117,7 +117,7 @@ class Matches extends Component {
   renderHeader() {
     return (
       <div>
-        <Header libraryOff greyBackground activeMenu="matches" isDark={0} isMobile {...this.props} />
+        <Header libraryOff greyBackground activeMenu="sport" isDark={0} isMobile {...this.props} />
       </div>
     )
   }

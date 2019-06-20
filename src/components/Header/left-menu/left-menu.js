@@ -12,31 +12,42 @@ import { getLocale } from '../locale'
 
 import styles from './left-menu.css'
 import history from '@source/history'
-import { IoIosArrowDown } from 'react-icons/io'
+// import { IoIosArrowDown } from 'react-icons/io'
+import DropdownList from '@components/DropdownList'
 
+let menu = []
 class LeftMenu extends Component {
   state = {
-    link: '',
+    // link: '',
     toggle: false /* Toggle profile */,
     locale: getLocale(),
     activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
   }
 
   componentDidMount() {
-    this.setState({ link: window.location.href })
+    const { activePlaylist, activeMenu } = this.props;
+    menu = [
+      { id: 'movie', title: 'Movie', linkUrl: '/' },
+      { id: 'sport', title: 'Sport', linkUrl: '/sport' },
+      { id: 'channels', title: 'Channels', linkUrl: '/channels' },
+    ]
+
+    if (activeMenu === 'movie') {
+      const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+      menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
+    }
   }
 
-  handleNavigation = e => {
-    const menu = e.target.options[e.target.options.selectedIndex].innerText
-    this.setState({ activeMenu: menu })
-    history.push(`/${e.target.value}`)
+  handleNavigation = id => {
+    const filteredMenu = menu.filter((dt) => {
+      return dt.id == id
+    })
+    history.push(filteredMenu.length > 0 && filteredMenu[0].linkUrl)
   }
 
   render() {
     const { toggle } = this.state
-    const { color, leftMenuOff, isMenuToggled = false, isMovie, activePlaylist, activeMenu = 'movie', isMobile } = this.props
-
-    const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    const { color, leftMenuOff, isMenuToggled = false, isMovie, activeMenu = 'movie', isMobile } = this.props
 
     return (
       <>
@@ -47,7 +58,15 @@ class LeftMenu extends Component {
                 <div className={styles.left_menu_outer}>
                   {!isMobile && (
                     <>
-                      <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to="/">
+                      {menu.map((dt) => {
+                        return (
+                          <Link className={activeMenu === dt.id ? styles.left_menu__active : ''} to={dt.linkUrl}>
+                            {dt.title}
+                          </Link>
+                        )
+                      })
+                      }
+                      {/* <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to="/">
                         Movie
                       </Link>
                       <Link className={activeMenu === 'sport' ? styles.left_menu__active : ''} to="/sport">
@@ -60,13 +79,18 @@ class LeftMenu extends Component {
                         <Link className={`${activeMenu === 'library' ? styles.left_menu__active : ''}`} to={libraryUrl}>
                           Library
                         </Link>
-                      )}
+                      )} */}
                       {/*comment sementara <div className={styles.left_menu_guide}>Guide</div> */}
                     </>
                   )}
                   {isMobile && (
                     <div className={styles.left_menu_select_wrapper}>
-                      <select
+                      <DropdownList
+                        className={styles.left_menu_dropdown_container}
+                        dataList={menu}
+                        activeId={activeMenu}
+                        onClick={this.handleNavigation} />
+                      {/* <select
                         onChange={event => {
                           this.handleNavigation(event)
                         }}
@@ -78,7 +102,7 @@ class LeftMenu extends Component {
                         {activeMenu === 'movie' && <option value={libraryUrl}>Movie Library</option>}
                       </select>
                       <div className={styles.left_menu_title}>{this.state.activeMenu}</div>
-                      <IoIosArrowDown className={styles.select_icon} />
+                      <IoIosArrowDown className={styles.select_icon} /> */}
                     </div>
                   )}
                 </div>
