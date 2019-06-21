@@ -47,57 +47,89 @@ const getHomePlaylist = () => {
 }
 
 const getFeatureBanner = (isMobile = false) => {
-  // return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
-  //   ...endpoints.setting,
-  // })
-  //   .then(response => {
-  const response = {
-    data: {
-      data: [
-        {
-          id: 7,
-          attributes: {
-            name: isMobile ? 'mobile-featured' : 'desktop-featured',
-            banners: [
-              {
-                id: 767,
-                type: 'banners',
-                attributes: {
-                  buttonText: ' ',
-                  description: ' ',
-                  imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
-                  link: ' ',
-                  name: ' ',
-                  isDark: isMobile ? 1 : 0,
-                },
-              },
-            ],
-          },
+  return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // const response = {
+      //   data: {
+      //     data: [
+      //       {
+      //         id: 7,
+      //         attributes: {
+      //           name: isMobile ? 'mobile-featured' : 'desktop-featured',
+      //           banners: [
+      //             {
+      //               id: 767,
+      //               type: 'banners',
+      //               attributes: {
+      //                 buttonText: ' ',
+      //                 description: ' ',
+      //                 imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
+      //                 link: ' ',
+      //                 name: ' ',
+      //                 isDark: isMobile ? 1 : 0,
+      //               },
+      //             },
+      //             {
+      //               id: 768,
+      //               type: 'banners',
+      //               attributes: {
+      //                 buttonText: ' ',
+      //                 description: ' ',
+      //                 imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
+      //                 link: ' ',
+      //                 name: ' ',
+      //                 isDark: isMobile ? 1 : 0,
+      //               },
+      //             },
+      //             {
+      //               id: 769,
+      //               type: 'banners',
+      //               attributes: {
+      //                 buttonText: ' ',
+      //                 description: ' ',
+      //                 imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
+      //                 link: ' ',
+      //                 name: ' ',
+      //                 isDark: isMobile ? 1 : 0,
+      //               },
+      //             },
+      //           ],
+      //         },
+      //       },
+      //     ],
+      //   },
+      // }
+      const result = utils.normalizeFeatureBanner(response)
+      console.log('result', result)
+      // return new Promise(resolve =>
+      //   resolve({
+      //     meta: {
+      //       status: result[0].length > 0 ? 'success' : 'no_result',
+      //       error: '',
+      //     },
+      //     data: [...result[0]] || [],
+      //   })
+      // )
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
         },
-      ],
-    },
-  }
-  const result = utils.normalizeFeatureBanner(response)
-  return new Promise(resolve =>
-    resolve({
-      meta: {
-        status: result[0].length > 0 ? 'success' : 'no_result',
-        error: '',
-      },
-      data: [...result[0]] || [],
+        data: [...result[0]] || [],
+      }
     })
-  )
-  // })
-  // .catch(error => {
-  //   const errorMessage = error.toString().replace('Error:', 'Mola Home')
-  //   return {
-  //     meta: {
-  //       status: 'error',
-  //       error: errorMessage,
-  //     },
-  //     data: [],
-  //   }
-  // })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
 }
 
 const getSportCategoryList = () => {

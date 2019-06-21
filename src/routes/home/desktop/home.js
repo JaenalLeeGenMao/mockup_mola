@@ -504,7 +504,7 @@ class Home extends Component {
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
-      filteredDesc = filterString(activeSlide.description, 36)
+      filteredDesc = filterString(activeSlide.shortDescription, 36)
       filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
     return (
@@ -534,12 +534,14 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
-                <LazyLoad containerClassName={styles.header__playlist_title}>
-                  <div>{this.state.playlists.data[scrollIndex].title}</div>
-                </LazyLoad>
+                {scrollIndex != 0 && (
+                  <LazyLoad containerClassName={styles.header__playlist_title}>
+                    <div>{this.state.playlists.data[scrollIndex].title}</div>
+                  </LazyLoad>
+                )}
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <h1 className={styles[activeSlide.title.length > 24 ? 'small' : 'big']}>{activeSlide.title}</h1>
+                    {scrollIndex != 0 && <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>}
                     <p>{filteredDesc}</p>
                     {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
                     {!activeSlide.buttonText &&
