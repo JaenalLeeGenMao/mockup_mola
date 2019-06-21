@@ -127,7 +127,7 @@ const getMatchesList = id => {
 
 const getMatchDetail = id => {
   return post(
-    `${VIDEOS_ENDPOINT}/`,
+    `${VIDEOS_ENDPOINT}/?relationships=1`,
     {
       videos: id,
     },
