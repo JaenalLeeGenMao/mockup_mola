@@ -55,6 +55,8 @@
   display: inline-block;
   background-repeat: no-repeat;
   background-size: contain;
+  object-position: center;
+  object-fit: cover;
 }
 
 .matchCard__middlecontent {
@@ -125,8 +127,30 @@
   width: 5rem;
   height: 2rem;
   padding: 0 1rem 0 0;
+  object-position: center;
+  object-fit: cover;
 }
 
 .matchCard__matchInfo {
   /* test */
+}
+
+@media screen and (max-width: 1366px) and (max-height: 657px) {
+  .matchCard__schedule {
+    height: 16rem;
+  }
+
+  .matchCard__defaultlogoteam {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .matchCard__liga_type {
+    height: 2.5rem;
+  }
+
+  .matchCard__schedule_item {
+    margin: 1rem 1rem;
+    height: 80px;
+  }
 }

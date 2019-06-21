@@ -147,6 +147,7 @@ class Matches extends Component {
   }
 
   renderMatchesList(matchesList) {
+    console.log('see data mobile matcheslist', matchesList)
     return (
       <LazyLoad containerClassName={styles.matches__container}>
         {matchesList.map((data, index) => (
@@ -209,7 +210,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMatches: () => dispatch(matchListActions.getSportList()),
+  getMatches: () => dispatch(matchListActions.getAllMatches()),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Matches)

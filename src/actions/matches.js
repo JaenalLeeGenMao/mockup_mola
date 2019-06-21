@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getSportList = () => dispatch => {
+const getAllMatches = () => dispatch => {
   dispatch({
     type: types.GET_MATCHES_PLAYLIST_LOADING,
     payload: {
@@ -42,5 +42,5 @@ const getSportList = () => dispatch => {
   })
 }
 export default {
-  getSportList,
+  getAllMatches,
 }
