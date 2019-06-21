@@ -436,7 +436,7 @@ class Home extends Component {
                 </div>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
+                    {scrollIndex != 0 && <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>}
                     <p className="filteredText">{filteredDesc}</p>
                     <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
                     {!activeSlide.buttonText &&
