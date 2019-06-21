@@ -65,7 +65,7 @@ const getFeatureBanner = (isMobile = false) => {
                 attributes: {
                   buttonText: ' ',
                   description: ' ',
-                  imageUrl: isMobile ? 'https://mola01.koicdn.com/images/epl-mola-banner1.jpg' : 'https://mola01.koicdn.com/images/epl-mola-banner2.jpg',
+                  imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
                   link: ' ',
                   name: ' ',
                   isDark: isMobile ? 1 : 0,
