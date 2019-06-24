@@ -8,11 +8,12 @@ var interval = 1000 / 60;
 var now;
 var then = Date.now();
 var delta;
+var reqAnimation;
 
 class Schedule extends Component {
   state = {
     activeChannel: this.props.scheduleList.length > 0 && this.props.scheduleList[0].id,
-    scrollWidth: '3360px'
+    scrollWidth: '3360px',
   }
 
   clickChannel = (channelId) => {
@@ -24,7 +25,7 @@ class Schedule extends Component {
 
   //animation untuk current time marker yg warna biru
   timeIncrement = (timestamp) => {
-    window.requestAnimationFrame(this.timeIncrement);
+    reqAnimation = window.requestAnimationFrame(this.timeIncrement);
     now = Date.now();
     delta = now - then;
     if (delta > interval) {
@@ -47,11 +48,16 @@ class Schedule extends Component {
     if (process.env.BROWSER) {
       //safari need to specify scroll width biar bisa di scroll
       this.setState({
-        scrollWidth: `${window.innerWidth - 200}px`
+        scrollWidth: `${window.innerWidth - 200}px`,
       })
     }
 
-    window.requestAnimationFrame(this.timeIncrement);
+    reqAnimation = window.requestAnimationFrame(this.timeIncrement);
+  }
+
+  componentWillUnmount() {
+    const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+    cancelAnimationFrame(reqAnimation);
   }
 
   render() {

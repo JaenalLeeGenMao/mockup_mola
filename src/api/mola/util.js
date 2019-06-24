@@ -1,4 +1,5 @@
 import _get from 'lodash/get'
+import moment from 'moment'
 
 const normalizeHomePlaylist = response => {
   const { data } = response.data
@@ -401,6 +402,109 @@ const normalizeFeatureBanner = response => {
   return []
 }
 
+const normalizeChannelPlaylist = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(
+      ({ attributes: { playlists } }) =>
+        playlists && playlists.map((playlist, index) => {
+          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
+          const background = _get(images, 'cover', { portrait: null, landscape: null })
+          const coverBGColor = _get(images, 'cover.backgroundColor', '')
+          return {
+            id,
+            title,
+            visibility,
+            sortOrder: index + 1,
+            startTime,
+            endTime,
+            description,
+            shortDescription: shortDescription || '',
+            iconUrl: iconUrl || '',
+            // coverTitle: coverTitle,
+            background,
+            backgroundColor: coverBGColor || '#000622',
+            isDark: isDark || 0,
+            isActive: false,
+            type,
+          }
+        })
+      // .sort((a, b) => a.sortOrder - b.sortOrder)
+    )
+  }
+  return []
+};
+
+const normalizeProgrammeGuides = response => {
+  const { data } = response.data;
+  if (data && data.length > 0) {
+    return data.map(result => {
+      const {
+        id,
+        attributes: {
+          start,
+          end,
+          title,
+          description,
+          playlist,
+          video,
+        },
+        type,
+      } = result;
+
+      const normalizePlaylist = playlist.map(list => {
+        const {
+          id,
+          attributes: { parentId, images, sortOrder, visibility, seo }
+        } = list;
+        return {
+          id,
+          parentId,
+          images,
+          sortOrder,
+          visibility,
+          seo
+        };
+      });
+
+      const normalizeVideo = video.map(item => {
+        const {
+          id,
+          attributes: { drm, images, title, subtitles, displayOrder, seo, endTime, startTime }
+        } = item;
+        return {
+          id,
+          type,
+          images,
+          drm,
+          title,
+          subtitles,
+          displayOrder,
+          seo,
+          startTime,
+          endTime
+        };
+      });
+
+      return {
+        id,
+        start: moment(start)
+          .utcOffset(7)
+          .format(), // parse to WIB
+        end: moment(end)
+          .utcOffset(7)
+          .format(), // parse to WIB
+        title,
+        description,
+        playlist: normalizePlaylist[0],
+        video: normalizeVideo[0],
+        type
+      };
+    });
+  }
+  return [];
+};
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
@@ -414,4 +518,6 @@ export default {
   normalizeFeatureBanner,
   normalizeMatchesList,
   normalizeMatchDetail,
+  normalizeChannelPlaylist,
+  normalizeProgrammeGuides,
 }
