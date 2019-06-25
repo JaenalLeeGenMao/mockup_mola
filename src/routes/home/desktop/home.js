@@ -36,7 +36,8 @@ const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 let ticking = false,
   activePlaylist,
   scrollIndex = 0,
-  flag = false
+  flag = false,
+  timerSwipe
 const customTourStyle = {
   buttonNext: {
     backgroundColor: '#2C56FF',
@@ -337,16 +338,16 @@ class Home extends Component {
       ticking = false
 
       const { activeSlide } = this.state
-
+      const that = this
       switch (event.which || event.keyCode) {
         case 37 /* left */:
-          console.log('LEFT: ', this.handleSwipeDirection(this.activeSlider, 0, 1000))
+          this.handleSwipeDirection(this.activeSlider, 0, 1000)
           return event.preventDefault()
         case 38 /* up */:
           this.handleScrollToIndex(this.state.scrollIndex - 1)
           break
         case 39 /* right */:
-          console.log('RIGHT: ', this.handleSwipeDirection(this.activeSlider, 1000, 0))
+          this.handleSwipeDirection(this.activeSlider, 1000, 0)
           return event.preventDefault()
         case 40 /* down */:
           this.handleScrollToIndex(this.state.scrollIndex + 1)
@@ -366,8 +367,7 @@ class Home extends Component {
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs, scrollIndex } = this.state
-
+      { sliderRefs, scrollIndex, videos } = this.state
     if (mode === 'vertical') {
       if (this.rootSlider) {
         if (this.rootSlider.innerSlider === null) {
@@ -383,6 +383,7 @@ class Home extends Component {
       }
     } else {
       if (slider) {
+        const videosLength = videos.data[scrollIndex].data.length
         if (slider.innerSlider === null) {
           return false
         }
@@ -390,13 +391,15 @@ class Home extends Component {
           // do nothing
         } else if (prevX > nextX) {
           slider.slickNext()
+          const swpIndex = this.state.swipeIndex + 1 >= videosLength ? 0 : this.state.swipeIndex + 1
           this.setState({
-            swipeIndex: this.state.swipeIndex + 1,
+            swipeIndex: swpIndex,
           })
         } else {
           slider.slickPrev()
+          const swpIndex = this.state.swipeIndex - 1 < 0 ? videosLength - 1 : this.state.swipeIndex - 1
           this.setState({
-            swipeIndex: this.state.swipeIndex - 1,
+            swipeIndex: swpIndex,
           })
         }
       } else {
@@ -533,9 +536,9 @@ class Home extends Component {
               {...this.props}
             />
           )}
-          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'loading' || videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
-          {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
+          {/* {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />} */}
           {videos &&
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
