@@ -384,7 +384,6 @@ class Home extends Component {
       }
     } else {
       if (slider) {
-        console.log('videos.data[scrollIndex].data', videos.data[scrollIndex].data)
         const videosLength = videos.data[scrollIndex].data.length
         if (slider.innerSlider === null) {
           return false
@@ -394,7 +393,6 @@ class Home extends Component {
         } else if (prevX > nextX) {
           slider.slickNext()
           const swpIndex = this.state.swipeIndex + 1 >= videosLength ? videosLength - 1 : this.state.swipeIndex + 1
-          console.log('swpIndex', swpIndex)
           this.setState({
             swipeIndex: swpIndex,
           })
@@ -418,15 +416,13 @@ class Home extends Component {
   }
 
   handleColorChange = (index, swipeIndex = 0) => {
-    console.log('MASUK SINI swipeIndex????', swipeIndex)
+    // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
     setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
       let isDark = 1
-
-      console.log('==videos.data[index].data', videos.data)
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
