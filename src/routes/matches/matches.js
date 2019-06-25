@@ -10,12 +10,16 @@ import LazyLoad from '@components/common/Lazyload'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import matchListActions from '@actions/matches'
 import s from './matches.css'
-import { match } from 'tcomb'
+import { match, union } from 'tcomb'
 import LoaderComp from './loaderComp'
 import { isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 import moment from 'moment'
+import _unionBy from 'lodash/unionBy'
+import _union from 'lodash/union'
 
 import { UiCheckbox } from '@components'
+import { get } from 'http'
+import { Point } from 'terraformer'
 
 const style = {
   height: 160,
@@ -35,18 +39,9 @@ class Matches extends React.Component {
     resultShowData: 1,
     initialized: false,
     matches: [],
-    isScrolling: false, // recognize loading dot
+    // isScrolling: false, // recognize loading dot
     modalActive: false,
-    optionsCheckboxVideoType: [],
-    optionCheckboxWeek: [],
-    checkedLastWeek: false,
-    checkedThisWeek: false,
-    checkedNextWeek: false,
-    checkedLive: false,
-    checkedFrm: false,
-    checkedhr: false,
-    checked: false,
-    getLiga: 1,
+    selectedLeague: [],
   }
 
   fetchMoreData = () => {
@@ -67,199 +62,6 @@ class Matches extends React.Component {
     }
   }
 
-  filterAllMatchesShow = () => {
-    //view all matches
-    const { data } = this.props.matches
-    const getAllMatchesData = []
-
-    data.forEach(index => {
-      getAllMatchesData.push(index)
-    })
-
-    this.setState({ matches: getAllMatchesData })
-  }
-
-  filterLastWeek = () => {
-    const { data } = this.props.matches
-
-    let thisWeek = moment()
-      .isoWeekday(1)
-      .week() // now
-    let lastWeek = thisWeek === 1 ? 52 : thisWeek - 1
-    let getLastWeekData = []
-
-    for (let i = 0; i < data.length; i++) {
-      let getDataLastWeek = moment.unix(data[i].startTime)
-      let weekValidate = moment(getDataLastWeek)
-        .isoWeekday(1)
-        .week()
-
-      if (lastWeek === weekValidate) {
-        getLastWeekData.push(data[i])
-      }
-    }
-
-    this.setState({ matches: getLastWeekData, checkedLastWeek: !this.state.checkedLastWeek })
-
-    // console.log('see result last week data', getLastWeekData)
-
-    return getLastWeekData.sort((a, b) => {
-      return new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-    })
-  }
-
-  filterThisWeek = () => {
-    const { data } = this.props.matches
-    let thisWeek = moment()
-      .isoWeekday(1)
-      .week()
-
-    let dataThisWeek = []
-
-    for (let i = 0; i < data.length; i++) {
-      let getDataThisWeek = moment.unix(data[i].startTime)
-      let weekValidate = moment(getDataThisWeek)
-        .isoWeekday(1)
-        .week()
-
-      if (thisWeek === weekValidate) {
-        dataThisWeek.push(data[i])
-      }
-
-      this.setState({ matches: dataThisWeek, checkedThisWeek: !this.state.checkedThisWeek })
-      // console.log('get data this week', dataThisWeek)
-    }
-  }
-
-  filterNextWeek = () => {
-    const { data } = this.props.matches
-
-    let thisWeek = moment()
-      .isoWeekday(1)
-      .week()
-    let nextWeek = thisWeek === 52 ? 1 : thisWeek + 1
-    let dataNextWeek = []
-
-    for (let i = 0; i < data.length; i++) {
-      let getDataNextWeek = moment.unix(data[i].startTime)
-      let weekValidate = moment(getDataNextWeek)
-        .isoWeekday(1)
-        .week()
-
-      if (nextWeek === weekValidate) {
-        dataNextWeek.push(data[i])
-      }
-    }
-
-    this.setState({ matches: dataNextWeek, checkedNextWeek: !this.state.checkedNextWeek })
-    // console.log('see result masuk', dataNextWeek)
-
-    return dataNextWeek.sort((a, b) => {
-      return new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-    })
-  }
-
-  filterLive = () => {
-    const { data } = this.props.matches
-
-    const getLiveData = []
-
-    data.forEach(el => {
-      if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
-        // console.log('yaaaa', getLiveData)
-        getLiveData.push(el)
-      }
-    })
-    console.log('see result live', getLiveData)
-    this.setState({ matches: getLiveData, checkedLive: !this.state.checkedLive })
-  }
-
-  filterFrm = () => {
-    const { data } = this.props.matches
-    const getFullReplayMatch = []
-
-    data.forEach(index => {
-      if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
-        getFullReplayMatch.push(index)
-      }
-    })
-    console.log('see result full replay match', getFullReplayMatch)
-
-    this.setState({ matches: getFullReplayMatch, checkedFrm: !this.state.checkedFrm })
-  }
-
-  filterHr = () => {
-    const { data } = this.props.matches
-
-    const getHightlightData = []
-
-    data.forEach(el => {
-      if (!el.homeTeam || !el.awayTeam) {
-        getHightlightData.push(el)
-      }
-    })
-
-    // console.log('see result hightlight', getHightlightData)
-
-    this.setState({ matches: getHightlightData, checkedhr: !this.state.checkedhr })
-  }
-
-  filterLeague = filterEplId => {
-    const getValueId = filterEplId.target.valueMatches
-    // console.log('return id', getValueId)
-    const { data } = this.props.matches
-    const getEplLeagueData = []
-
-    data.forEach(el => {
-      if (el.league) {
-        const filterLeagueId = el.league.id
-        // console.log('see return', getEplLeagueData)
-        if (filterLeagueId == filterEplId) {
-          getEplLeagueData.push(el)
-        }
-      }
-      this.setState({ matches: getEplLeagueData })
-    })
-  }
-
-  filterChanging = resultShowData => {
-    const value = resultShowData.target.value
-    this.setState({ resultShowData: value })
-
-    if (value == 'all') {
-      this.filterAllMatchesShow()
-    }
-    if (value == 'lastWeek') {
-      this.filterLastWeek()
-    }
-
-    if (value == 'thisWeek') {
-      this.filterThisWeek()
-    }
-    if (value == 'nextWeek') {
-      this.filterNextWeek()
-    }
-    if (value == 'live') {
-      this.filterLive()
-    }
-    if (value == 'frm') {
-      this.filterFrm()
-    }
-    if (value == 'hr') {
-      this.filterHr()
-    }
-  }
-
-  filterChooseLeague = getLiga => {
-    const { matches } = this.state
-
-    // console.log('see data liga', getLiga)
-
-    if (value == 'epl') {
-      this.filterLeague()
-    }
-  }
-
   openModal = () => {
     this.setState({ modalActive: true })
   }
@@ -268,29 +70,18 @@ class Matches extends React.Component {
     this.setState({ modalActive: false })
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (!state.initialized && props.matches.data.length > 0 && state.matches.length === 0) {
-      return {
-        resultShowData: 0,
-        initialized: true,
-      }
-    }
-    return null
-  }
-
   componentDidMount() {
     this.props.getMatches()
-    window.addEventListener('scroll', this.onScroll) // test hide and show LoaderComp
+    // window.addEventListener('scroll', this.onScroll) // test hide and show LoaderComp
     // this.handleCheckbox()
   }
 
   componentWillMount() {
-    window.addEventListener('scroll', this.onScroll)
+    // window.addEventListener('scroll', this.onScroll)
   }
 
   onScroll = () => {
     this.setState({ isScrolling: true })
-    console.log('see status', isScrolling)
 
     clearTimeout(this.timeout)
 
@@ -300,15 +91,175 @@ class Matches extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.matches.data.length != this.props.matches.data.length && this.state.matches.length === 0) {
-      this.filterAllMatchesShow()
+    if (this.props.matches.meta.status != prevProps.matches.meta.status && this.props.matches.meta.status === 'success') {
+      this.setState({ matches: this.props.matches.data })
     }
   }
 
+  filterAllLeague = leagueId => {
+    const { data: matches } = this.props.matches
+    const AllLeagueData = []
+
+    matches.forEach(dt => {
+      if (dt.league != null) {
+        if (dt.league.id == leagueId) {
+          AllLeagueData.push(dt)
+        }
+      }
+    })
+
+    return AllLeagueData
+  }
+
+  getSelectedLeague = leagueId => {
+    let selLeague = []
+    selLeague = selLeague.concat(this.state.selectedLeague)
+
+    if (!selLeague.includes(leagueId)) {
+      selLeague.push(leagueId)
+    } else {
+      var index = selLeague.indexOf(leagueId)
+      if (index > -1) {
+        selLeague.splice(index, 1)
+      }
+    }
+    this.setState({ selectedLeague: selLeague })
+  }
+
+  handleSubmit = () => {
+    let matchesTemp = []
+
+    const filterCheckbox = document.getElementsByClassName('myCheckboxFilter')
+
+    for (let i = 0; i < filterCheckbox.length; i++) {
+      if (filterCheckbox[i].checked) {
+        if (filterCheckbox[i].value == 'thisWeek') {
+          const { data } = this.props.matches
+          let thisWeek = moment()
+            .isoWeekday(1)
+            .week()
+
+          let dataThisWeek = []
+
+          for (let i = 0; i < data.length; i++) {
+            let getDataThisWeek = moment.unix(data[i].startTime)
+            let weekValidate = moment(getDataThisWeek)
+              .isoWeekday(1)
+              .week()
+
+            if (thisWeek === weekValidate) {
+              dataThisWeek.push(data[i])
+            }
+          }
+          matchesTemp = _unionBy(matchesTemp, dataThisWeek, 'id')
+        }
+        if (filterCheckbox[i].value == 'lastWeek') {
+          const { data } = this.props.matches
+          let thisWeek = moment()
+            .isoWeekday(1)
+            .week() // now
+          let lastWeek = thisWeek === 1 ? 52 : thisWeek - 1
+          let getLastWeekData = []
+
+          for (let i = 0; i < data.length; i++) {
+            let getDataLastWeek = moment.unix(data[i].startTime)
+            let weekValidate = moment(getDataLastWeek)
+              .isoWeekday(1)
+              .week()
+
+            if (lastWeek === weekValidate) {
+              getLastWeekData.push(data[i])
+            }
+          }
+          matchesTemp = _unionBy(matchesTemp, getLastWeekData, 'id')
+        }
+        if (filterCheckbox[i].value == 'nextWeek') {
+          const { data } = this.props.matches
+
+          let thisWeek = moment()
+            .isoWeekday(1)
+            .week()
+          let nextWeek = thisWeek === 52 ? 1 : thisWeek + 1
+          let dataNextWeek = []
+
+          for (let i = 0; i < data.length; i++) {
+            let getDataNextWeek = moment.unix(data[i].startTime)
+            let weekValidate = moment(getDataNextWeek)
+              .isoWeekday(1)
+              .week()
+
+            if (nextWeek === weekValidate) {
+              dataNextWeek.push(data[i])
+            }
+          }
+          matchesTemp = _unionBy(matchesTemp, dataNextWeek, 'id')
+        }
+        if (filterCheckbox[i].value == 'live') {
+          const { data } = this.props.matches
+
+          const getLiveData = []
+
+          data.forEach(el => {
+            if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
+              getLiveData.push(el)
+            }
+          })
+
+          matchesTemp = _unionBy(matchesTemp, getLiveData, 'id')
+        }
+        if (filterCheckbox[i].value == 'frm') {
+          const { data } = this.props.matches
+          const getFullReplayMatch = []
+
+          data.forEach(index => {
+            if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
+              getFullReplayMatch.push(index)
+            }
+          })
+          matchesTemp = _unionBy(matchesTemp, getFullReplayMatch, 'id')
+        }
+        if (filterCheckbox[i].value == 'highlightReplay') {
+          const { data } = this.props.matches
+
+          const getHightlightData = []
+
+          data.forEach(dt => {
+            if (dt.isHighlight > 0) {
+              getHightlightData.push(dt)
+            }
+          })
+
+          matchesTemp = _unionBy(matchesTemp, getHightlightData, 'id')
+        }
+      }
+    }
+
+    const { selectedLeague } = this.state
+
+    for (let i = 0; i < selectedLeague.length; i++) {
+      const ref = this.filterAllLeague(selectedLeague[i])
+      matchesTemp = _unionBy(matchesTemp, this.filterAllLeague(selectedLeague[i]), 'id')
+    }
+    this.setState({ matches: matchesTemp })
+  }
+
   showFilterChanging = () => {
-    const getDataFilterLeagueId = this.state.matches
-    // console.log('geeezzz', getDataFilterLeagueId)
-    const { getliga } = this.state
+    const { selectedLeague } = this.state
+
+    const getDataFilterLeagueId = this.props.matches.data
+    const leagueList = []
+    getDataFilterLeagueId.map(matches => {
+      const leagueData = matches.league
+      if (leagueData != null) {
+        const filterLeague = leagueList.filter(dt => {
+          return dt.id == matches.league.id
+        })
+        if (filterLeague.length === 0) {
+          leagueList.push(leagueData)
+        }
+      }
+    })
+
     return (
       <LazyLoad>
         <div>
@@ -321,33 +272,18 @@ class Matches extends React.Component {
               <>
                 {/* <LazyLoad> */}
                 <div div className={s.contentFilterLeague}>
-                  {getDataFilterLeagueId.map(index => {
-                    const getDataMatch = index.league
-                    // const uniKeys = [...new Set(getDataMatch.map(({ id }) => id))]
-                    // console.log('1111111', uniKeys)
+                  {leagueList.map(league => {
                     return (
                       <>
-                        {getDataMatch != null ? (
-                          <>
-                            {getDataMatch.id != null ? (
-                              <div>
-                                <img
-                                  className={s.filterimg}
-                                  src={index.league.iconUrl}
-                                  value={index.league.id}
-                                  onClick={event => {
-                                    this.filterChooseLeague(event)
-                                  }}
-                                />
-                                <span value={index.league.id}>{index.league.name}</span>
-                              </div>
-                            ) : (
-                              ''
-                            )}
-                          </>
-                        ) : (
-                          ''
-                        )}
+                        <img className={s.filterimg} src={league.iconUrl} onClick={() => this.getSelectedLeague(league.id)} />
+                        {selectedLeague.includes(league.id) ? (
+                          <div className={s.btnLeague}>
+                            <span className={s.checklistBtnLeague} />
+                          </div>
+                        ) : null}
+                        <span value={league.id} className={s.nameleague} onClick={() => this.getSelectedLeague(league.id)}>
+                          {league.name}
+                        </span>
                       </>
                     )
                   })}
@@ -366,7 +302,12 @@ class Matches extends React.Component {
                 X
               </a> */}
               <div className={s.positionSubmitBtn}>
-                <button className={s.submitBtn} onClick={this.closeModal}>
+                <button
+                  className={s.submitBtn}
+                  onClick={() => {
+                    this.handleSubmit()
+                  }}
+                >
                   OK
                 </button>
               </div>
@@ -378,40 +319,19 @@ class Matches extends React.Component {
   }
 
   showCheckBoxVideoType = () => {
-    const { optionsCheckboxVideoType } = this.state
-    // console.log('see value video type', optionsCheckboxVideoType)
+    // const { optionsCheckboxVideoType } = this.state
 
     return (
       // <LazyLoad>
       <div className={s.checkbox_content_VideoType}>
         <label className={s.checkbox_checked}>
-          <input
-            type="checkbox"
-            value="live"
-            checked={this.state.checkedLive}
-            onChange={event => {
-              this.filterChanging(event)
-            }}
-          />{' '}
-          <span className={s.label_text}>Live</span>
-          <input
-            type="checkbox"
-            value="frm"
-            checkedFrm={this.state.checkedFrm}
-            onChange={event => {
-              this.filterChanging(event)
-            }}
-          />{' '}
-          <span className={s.label_text}>Full replay match</span>
-          <input
-            type="checkbox"
-            value="hr"
-            checkedhr={this.state.checkedhr}
-            onChange={event => {
-              this.filterChanging(event)
-            }}
-          />{' '}
-          <span className={s.label_text}>Highlight replay</span>
+          <input type="checkbox" value="live" className="myCheckboxFilter" /> <span className={s.label_text}>Live</span>
+        </label>
+        <label>
+          <input type="checkbox" value="frm" className="myCheckboxFilter" /> <span className={s.label_text}>Full replay match</span>
+        </label>
+        <label>
+          <input type="checkbox" value="highlightReplay" className="myCheckboxFilter" /> <span className={s.label_text}>Highlight replay</span>
         </label>
       </div>
       // </LazyLoad>
@@ -419,40 +339,17 @@ class Matches extends React.Component {
   }
 
   showCheckBoxWeek = () => {
-    const { optionCheckboxWeek } = this.state
-    // console.log('see value week', optionCheckboxWeek)
-
     return (
       // <LazyLoad>
       <div className={s.checkbox_content_Week}>
         <label className={s.checkbox_checked}>
-          <input
-            type="checkbox"
-            value="thisWeek"
-            checkedThisWeek={this.state.checkedThisWeek}
-            onChange={event => {
-              this.filterChanging(event)
-            }}
-          />{' '}
-          <span className={s.label_text}>This Week</span>
-          <input
-            type="checkbox"
-            value="lastWeek"
-            checkedLastWeek={this.state.checkedLastWeek}
-            onChange={event => {
-              this.filterChanging(event)
-            }}
-          />{' '}
-          <span className={s.label_text}>Last Week</span>
-          <input
-            type="checkbox"
-            value="nextWeek"
-            checkedNextWeek={this.state.checkedNextWeek}
-            onChange={event => {
-              this.filterChanging(event)
-            }}
-          />{' '}
-          <span className={s.label_text}>Next Week</span>
+          <input type="checkbox" value="thisWeek" className="myCheckboxFilter" /> <span className={s.label_text}>This Week</span>
+        </label>
+        <label>
+          <input type="checkbox" value="lastWeek" className="myCheckboxFilter" /> <span className={s.label_text}>Last Week</span>
+        </label>
+        <label>
+          <input type="checkbox" value="nextWeek" className="myCheckboxFilter" /> <span className={s.label_text}>Next Week</span>
         </label>
       </div>
       // </LazyLoad>
@@ -480,7 +377,6 @@ class Matches extends React.Component {
 
     let sortedByStartDate = matches
     if (matches.length > 0) {
-      console.log('see', matches.length)
       sortedByStartDate = matches.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
     }
 
