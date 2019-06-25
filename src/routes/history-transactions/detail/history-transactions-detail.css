@@ -1,0 +1,115 @@
+@import '../../../global/style/css/grainBackground.css';
+
+.root {
+  background-color: #000;
+  height: calc(100vh - 0);
+  overflow: hidden;
+}
+
+.historyTransactionsDetail_Pagetitle {
+  color: white;
+  font-size: 15px;
+  font-family: 'Open Sans', sans-serif;
+  text-align: left;
+}
+
+.historyTransactionDetail_borderline {
+  border-bottom: 0.1rem solid #2b2b2b;
+}
+
+.historyTransactionsDetail_columngrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
+  color: white;
+  justify-content: center;
+}
+
+.historyTransactionsDetail_columngrid div {
+  padding: 8px 0;
+  color: #a7a7a7;
+  font-size: 13px;
+  text-align: left;
+}
+
+.historyTransactionsDetail_columngrid span {
+  padding: 8px 0;
+  color: white;
+  font-size: 13px;
+  text-align: right;
+}
+
+.historyTransaactionsDetail_wrappergrid {
+  display: grid;
+  grid-template-columns: 0.5fr 0.7fr 0.5fr;
+  grid-template-rows: repeat(3, 0 1fr 1fr);
+  color: white;
+  justify-content: left;
+}
+
+.headerContainer {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.historyTransactionsDetail_wrappercontent_center {
+  margin-top: 13rem;
+}
+
+/* mobile grid template columns 100px */
+@media only screen and (min-width: 3840px) {
+  .historyTransactionsDetail_Pagetitle {
+    font-size: 2rem;
+  }
+
+  .historyTransactionsDetail_columngrid span {
+    font-size: 2rem;
+    align-items: left;
+    padding: 1rem 0;
+  }
+
+  .historyTransactionsDetail_columngrid div {
+    font-size: 2rem;
+    align-items: left;
+    padding: 1rem 0;
+  }
+
+  .historyTransactionDetail_valuelistitem div {
+    font-size: 2rem;
+    align-items: left;
+  }
+
+  .historyTransactionDetail_borderline {
+    margin: 1.5rem 0 1.5rem 0;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .historyTransactionsDetail_Pagetitle {
+    padding: 5px;
+  }
+
+  .historyTransaactionsDetail_wrappergrid {
+    grid-template-columns: 0 1fr 0;
+  }
+
+  .historyTransactionDetail_borderline {
+    margin: 0.2rem 0 0.2rem 0;
+  }
+
+  .historyTransactionDetail_gridcontainer {
+    margin: auto;
+    width: 95%;
+  }
+
+  .historyTransactionsDetail_columngrid div {
+    font-size: 11px;
+  }
+
+  .historyTransactionsDetail_wrappercontent_center {
+    margin: 5rem 2rem 5rem 3rem;
+  }
+}

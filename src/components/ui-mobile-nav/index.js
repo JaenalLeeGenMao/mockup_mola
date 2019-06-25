@@ -1,39 +1,40 @@
-import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import Link from '@components/Link';
+import Link from '@components/Link'
 
-import history from '../../history';
-import s from './index.css';
+import history from '../../history'
+import s from './index.css'
 
 class MobileNav extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      currentPath: '/'
-    };
+      currentPath: '/',
+    }
   }
 
   componentDidMount() {
-    let currentLocation = '/';
+    let currentLocation = '/'
     if (typeof window !== 'undefined') {
-      currentLocation = window.location.pathname;
+      currentLocation = window.location.pathname
     }
 
     this.setState({
-      currentPath: currentLocation
-    });
+      currentPath: currentLocation,
+    })
   }
 
   handleGoBack() {
-    const { goBack } = history;
+    const { goBack } = history
+
     if (goBack) {
-      goBack();
+      goBack()
     }
   }
 
   render() {
-    const props = this.props;
+    const props = this.props
     return (
       <div className={s.ui_mobile_nav__wrapper}>
         <div className={s.ui_mobile_nav__header}>
@@ -44,20 +45,20 @@ class MobileNav extends React.Component {
         </div>
         <ul className={s.ui_mobile_nav__component}>
           {props.menus.map((menu, index) => {
-            let className = '';
+            let className = ''
             if (menu.href === this.state.currentPath) {
-              className = s.active;
+              className = s.active
             }
             return (
               <li key={index} className={className}>
                 <Link to={menu.href}>{menu.title}</Link>
               </li>
-            );
+            )
           })}
         </ul>
       </div>
-    );
+    )
   }
 }
 
-export const UiMobileNav = withStyles(s)(MobileNav);
+export const UiMobileNav = withStyles(s)(MobileNav)

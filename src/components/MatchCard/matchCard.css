@@ -1,0 +1,156 @@
+.matchCard__container {
+  color: white;
+  display: grid;
+  grid-gap: 4.5rem;
+  column-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(4, 0.73fr);
+}
+
+.matchCard__schedule {
+  color: #fff;
+  background-color: #000;
+  height: 16rem;
+  width: 30rem;
+  opacity: 0.7;
+  border-radius: 8px;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+
+.matchCard__schedule:hover {
+  transform: translateY(-10px);
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  opacity: 0.9;
+}
+
+.matchCard__icon_play {
+  width: 4.5rem;
+  height: 4.5rem;
+  float: right;
+  margin-right: -6px;
+  margin-left: -38px;
+  margin-top: -14px;
+  opacity: 1;
+  display: inline-block;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNjgiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA2OCA3MCI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6I2MwMDt9LmJ7ZmlsbDojZmZmO30uY3tmaWx0ZXI6dXJsKCNhKTt9PC9zdHlsZT48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIiB3aWR0aD0iNjgiIGhlaWdodD0iNzAiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGZlT2Zmc2V0IGR5PSI2IiBpbnB1dD0iU291cmNlQWxwaGEiLz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI2IiByZXN1bHQ9ImIiLz48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwLjI1MSIvPjxmZUNvbXBvc2l0ZSBvcGVyYXRvcj0iaW4iIGluMj0iYiIvPjxmZUNvbXBvc2l0ZSBpbj0iU291cmNlR3JhcGhpYyIvPjwvZmlsdGVyPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjM2IC05NjcpIj48ZyBjbGFzcz0iYyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgMjM2LCA5NjcpIj48cmVjdCBjbGFzcz0iYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjM0IiByeD0iNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTggMTIpIi8+PC9nPjxwYXRoIGNsYXNzPSJiIiBkPSJNMCwwVjE0TDEyLDYuOTY2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjY1IDk4OSkiLz48L2c+PC9zdmc+);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.matchCard__schedule_item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 1.5rem 2rem;
+  align-items: center;
+  height: 94px;
+}
+
+.matchCard__team_logo {
+  text-align: center;
+}
+
+.matchCard__defaultlogoteam {
+  width: 5.5rem;
+  height: 5.5rem;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  object-position: center;
+  object-fit: cover;
+}
+
+.matchCard__middlecontent {
+  text-align: center;
+  padding: 0;
+  line-height: 1.5;
+  min-width: auto;
+}
+
+.matchCard__info_label {
+  color: #fff;
+  padding: 0;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.btnUpcoming {
+  color: #00a500;
+}
+
+.btnDate {
+  color: #00ceff;
+}
+
+.btnReplay {
+  color: #cbcbcb;
+}
+
+.btnLiveNow {
+  color: #f00;
+}
+
+.matchCard__scoring {
+  font-size: 2.6rem;
+  font-weight: normal;
+  color: white;
+  opacity: 1;
+  padding: 0;
+}
+
+.matchCard_team_name {
+  font-size: 1rem;
+  padding-top: 0.5rem;
+  display: block;
+}
+
+.matchCard__liga_type {
+  background-color: black;
+  text-align: center;
+  border-radius: 0 0 8px 8px;
+  opacity: 1;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.matchCards__pen {
+  font-size: 1rem;
+}
+
+.matchCard__liga_type_title {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.matchCard__liga_type_img {
+  width: 5rem;
+  height: 2rem;
+  padding: 0 1rem 0 0;
+  object-position: center;
+  object-fit: cover;
+}
+
+.matchCard__matchInfo {
+  /* test */
+}
+
+@media screen and (max-width: 1366px) and (max-height: 657px) {
+  .matchCard__schedule {
+    height: 16rem;
+  }
+
+  .matchCard__defaultlogoteam {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .matchCard__liga_type {
+    height: 2.5rem;
+  }
+
+  .matchCard__schedule_item {
+    margin: 1rem 1rem;
+    height: 80px;
+  }
+}

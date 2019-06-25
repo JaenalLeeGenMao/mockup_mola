@@ -6,11 +6,7 @@ import Link from '@components/Link'
 import Layout from '@components/Molalayout'
 import LazyLoad from '@components/common/Lazyload'
 
-import molaLogo from '@global/style/icons/error/mola-text.png'
-
-import notFound from '@global/style/icons/error/night-mode-404.png'
-import internalServerError from '@global/style/icons/error/internal-server-error-502.png'
-import commonError from '@global/style/icons/error/common-error.png'
+import { nightMode404 as notFound, internalServerError, commonError, molaText as molaLogo } from '@global/imageUrl'
 
 import styles from './error.css'
 
@@ -18,15 +14,15 @@ const Error = ({ className = '', title = '', message = '', isDark = 0 /** isDark
   let imageUri
   switch (status) {
     case 400:
-      title = 'Page not found'
+      title = 'This is not the web page you are looking for'
       imageUri = notFound
       break
     case 502:
-      title = 'Bad gateway'
+      title = 'Server on Maintenance'
       imageUri = internalServerError
       break
     default:
-      title = 'Oops, sorry :('
+      title = 'Oops, Sorry :('
       imageUri = commonError
       break
   }
@@ -37,7 +33,7 @@ const Error = ({ className = '', title = '', message = '', isDark = 0 /** isDark
           <Link to="/" className={styles.error__wrapper}>
             <img alt="mola" className={styles.error__mola_title} src={molaLogo} />
             <div style={{ color: isDark ? 'black' : 'white' }}>
-              <img alt={message} className={styles.error__mola_background} src={imageUri} />
+              <img alt="mola error background" className={styles.error__mola_background} src={imageUri} />
               <h2 className={styles.error__title}>{title}</h2>
               <p className={styles.error__description}>{message}</p>
             </div>

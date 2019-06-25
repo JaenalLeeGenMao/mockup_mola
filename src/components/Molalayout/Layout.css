@@ -1,14 +1,19 @@
 /* @import url('https://fonts.googleapis.com/css?family=Roboto'); */
 
+/* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300;300i,400,600i,700'); */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,600');
+
 html {
   font-size: 62.5%;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
 }
 
 html,
 body {
   height: 100%;
   background: #000311;
+  margin: 0;
 }
 
 /*
@@ -36,6 +41,21 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+input::-webkit-inner-spin-button,
+input::-webkit-clear-button {
+  display: none;
+}
+
+input::-webkit-calendar-picker-indicator {
+  width: 1rem;
+  height: 1rem;
+}
+
+input::-webkit-calendar-picker-indicator:hover {
+  background: rgba(0, 0, 0, 0);
+  opacity: 1;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   html {
@@ -43,8 +63,15 @@ a {
   }
 }
 
+/* big window Styles */
+@media screen and (min-height: 1079px) and (max-height: 1439px) {
+  html {
+    font-size: 95%;
+  }
+}
+
 /* Mac Styles */
-@media screen and (min-height: 1599px) and (max-height: 1800px) {
+@media screen and (min-height: 1440px) and (max-height: 1800px) {
   html {
     font-size: 125%;
   }

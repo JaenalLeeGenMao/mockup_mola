@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { get } from 'axios';
-import parser from 'ua-parser-js';
-import Header from '@components/Header';
-import { SystemInfoWrapper, SystemInfoContainer } from './style';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { get } from 'axios'
+import parser from 'ua-parser-js'
+import Header from '@components/Header'
+import { SystemInfoWrapper, SystemInfoContainer } from './style'
 
 class SystemInfo extends Component {
   state = {
-    info: null
-  };
+    info: null,
+  }
   componentDidMount() {
-    get('//ip-api.com/json').then(({ data }) => {
-      this.setState({ info: data });
-    });
+    get('//ipinfo.io/json').then(({ data }) => {
+      this.setState({ info: data })
+    })
   }
   render() {
     const { info = null } = this.state,
-      parserInfo = parser(navigator.userAgent);
+      parserInfo = parser(navigator.userAgent)
     return (
       <div>
-        <Header stickyOff rightMenuOff libraryOff {...this.props} />
+        <Header stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
         {info !== null && (
           <div className={SystemInfoWrapper}>
             <div className={SystemInfoContainer}>
@@ -31,22 +31,22 @@ class SystemInfo extends Component {
                 OS {parserInfo.os.name} {parserInfo.os.version}
               </div>
               <div>
-                LOCATION {info.regionName}/{info.countryCode} ({info.lat}, {info.lon})
+                LOCATION {info.city}/{info.country} ({info.loc})
               </div>
-              <div>ISP {info.as}</div>
-              <div>IP {info.query}</div>
+              <div>ISP {info.org}</div>
+              <div>IP {info.ip}</div>
             </div>
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    ...state
-  };
-};
+    ...state,
+  }
+}
 
-export default connect(mapStateToProps)(SystemInfo);
+export default connect(mapStateToProps)(SystemInfo)

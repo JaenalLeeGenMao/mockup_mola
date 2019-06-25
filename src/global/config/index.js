@@ -7,11 +7,12 @@ module.exports = {
       api: 'http://mola.lukitomo.com/api/v2',
       auth: 'http://jaenal.mola.tv/accounts/_',
       domain: 'http://jaenal.mola.tv',
+      ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
-        maxRedirects: 1
-      }
-    }
+        maxRedirects: 1,
+      },
+    },
   },
   staging: {
     port: 3000,
@@ -21,11 +22,12 @@ module.exports = {
       api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
+      ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
-        maxRedirects: 1
-      }
-    }
+        maxRedirects: 1,
+      },
+    },
   },
   production: {
     port: 3000,
@@ -35,10 +37,11 @@ module.exports = {
       api: 'https://mola.tv/api/v2',
       auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
+      ads: 'https://api-beta.sent.tv',
       setting: {
         timeout: 10000,
-        maxRedirects: 1
-      }
-    }
-  }
-};
+        maxRedirects: 1,
+      },
+    },
+  },
+}

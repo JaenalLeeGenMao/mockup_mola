@@ -1,0 +1,133 @@
+@import '../../global/style/css/grainBackground.css';
+
+.root {
+  background-color: #000;
+  height: calc(100vh - 0);
+  overflow: hidden;
+}
+
+.historyTransactions_Pagetitle {
+  color: white;
+  font-size: 17.5px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-align: left;
+}
+
+.historyTransaction_borderline {
+  border-bottom: 0.1rem solid #2b2b2b;
+  margin: 20px 0 20px 0;
+}
+
+.historyTransactions_wrappercontent_center {
+  grid-area: 3/2;
+}
+
+.historyTransaactions_wrappergrid {
+  display: grid;
+  grid-template-columns: 0.4fr 1fr 0.4fr;
+  grid-template-rows: repeat(3, 0 1fr 1fr);
+  color: white;
+  justify-content: left;
+}
+
+.historyTransactions_columngrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  color: white;
+  justify-content: left;
+}
+
+.historyTransactions_columngrid div {
+  text-align: left;
+  padding: 8px 0;
+  color: #a7a7a7;
+  font-size: 13px;
+}
+
+.historyTransaction_valuelistitem {
+  color: white;
+  justify-content: left;
+}
+
+.wrapperData {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.historyTransaction_valuelistitem div {
+  text-align: left;
+  padding: 8px 0;
+  color: #fff;
+  font-size: 15px;
+}
+
+.historyTransaction_viewlinkdetail {
+  color: #2c66ff;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.historyTransaction_dec {
+  text-decoration: none;
+}
+
+.showdatatest {
+  color: white;
+}
+
+.historyTransactions_container {
+  padding: 8px;
+}
+
+.historyTransaction_NoTranSac {
+  color: #fff;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 8px 0;
+}
+
+/* mobile grid template columns 100px */
+
+@media only screen and (min-width: 3840px) {
+  .historyTransactions_Pagetitle {
+    font-size: 2rem;
+  }
+
+  .historyTransactions_columngrid div {
+    font-size: 2rem;
+    align-items: left;
+    padding: 1rem 0;
+  }
+
+  .historyTransaction_valuelistitem div {
+    font-size: 2rem;
+    align-items: left;
+  }
+
+  .historyTransaction_borderline {
+    margin: 1.5rem 0 1.5rem 0;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .historyTransaactions_wrappergrid {
+    grid-template-columns: 0 1fr 0;
+    margin: 5rem 0.5rem 5rem 0.5rem;
+  }
+
+  .historyTransaction_borderline {
+    margin: 1.5rem 0 1.5rem 0;
+  }
+
+  .historyTransactions_columngrid div {
+    font-size: 11px;
+  }
+
+  .historyTransaction_valuelistitem div {
+    font-size: 11px;
+  }
+}

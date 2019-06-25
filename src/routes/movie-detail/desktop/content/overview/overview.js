@@ -8,35 +8,73 @@ import {
   sectionLeftTitle,
   sectionLeftText,
   sectionLeftDuration,
-  sectionMiddleTitle,
   sectionMiddleText,
   sectionRightTitle,
   sectionRightText,
+  peopleWrapper,
 } from './style'
 
 const Overview = ({ data }) => {
-  const { title, description } = data
+  const { title, description, year, genre, duration } = data
+  const filterPeople = type =>
+    data.people.filter(item => {
+      return item.attributes.peopleTypeName === type
+    })
+
+  const casts = filterPeople('cast').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
+  })
+
+  const directors = filterPeople('director').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
+  })
+
+  const writers = filterPeople('writer').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
+  })
+
+  const durationHour = duration && Math.floor(duration / 3600) + 'h'
+  const durationMin = duration && Math.floor((duration % 3600) / 60) + 'm'
+  const durationTime = duration ? durationHour + '' + durationMin : ''
   return (
     <LazyLoad containerClassName={contentOverviewContainer}>
       <div className={contentOverviewSectionLeft}>
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
-          <p className={sectionLeftText}>Documenter, Drama</p>
-          <p className={sectionLeftDuration}>{'1967  13+  2h13m'}</p>
+          <p className={sectionLeftText}>{genre}</p>
+          <p className={sectionLeftDuration}>{`${year ? year : ''}  13+  ${durationTime}`}</p>
         </div>
       </div>
       <div className={contentOverviewSectionMiddle}>
         <div>
-          <h1 className={sectionMiddleTitle}>storyline</h1>
           <p className={sectionMiddleText}>{description}</p>
         </div>
       </div>
       <div className={contentOverviewSectionRight}>
         <div>
-          <h1 className={sectionRightTitle}>cast</h1>
-          <p className={sectionRightText}>Kurt Cobain, Dave Grohl, Krist Novoselic, Pat smear, Chad Channing</p>
-          <h2 className={sectionRightTitle}>director</h2>
-          <p className={sectionRightText}>AJ Schnack</p>
+          {typeof casts !== 'undefined' &&
+            casts.length > 0 && (
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Cast: </p>
+                <p className={sectionRightText}>{casts}</p>
+              </div>
+            )}
+
+          {typeof directors !== 'undefined' &&
+            directors.length > 0 && (
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Director: </p>
+                <p className={sectionRightText}>{directors}</p>
+              </div>
+            )}
+
+          {typeof writers !== 'undefined' &&
+            writers.length > 0 && (
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Writer: </p>
+                <p className={sectionRightText}>{writers}</p>
+              </div>
+            )}
         </div>
       </div>
     </LazyLoad>

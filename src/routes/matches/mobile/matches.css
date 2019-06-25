@@ -1,0 +1,78 @@
+@import '../../../components/variables.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  min-width: 0;
+  width: auto;
+}
+
+/* :root {
+  overflow: hidden;
+  max-height: 100vh;
+} */
+
+a:hover {
+  transition: 100ms ease;
+}
+
+html,
+body {
+  height: 100%;
+  margin: auto;
+  background: #212121;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.relative {
+  position: relative;
+}
+
+.matches__container {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-top: 110px;
+  margin-bottom: 50px;
+}
+
+.matches__date {
+  color: #ddd;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 25px;
+}
+
+.matches__filter {
+  position: absolute;
+  left: 1.4rem;
+  top: 85px;
+}
+
+.matches__filter select {
+  border: 0;
+  outline: 0;
+  color: white;
+  font-size: 1.3rem;
+  margin: 0;
+  font-weight: bold;
+  padding-bottom: 5px;
+  padding-right: 25px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('./assets/down-arrow.png') no-repeat;
+  background-color: transparent;
+  background-position: right;
+  background-size: 13px;
+}
+
+.matches__filter select option {
+  color: black;
+}

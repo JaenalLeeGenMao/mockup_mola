@@ -22,23 +22,23 @@
   <MovieTitle className={'multilineEllipsis'}>{`This is example of long long text`}</ThumbnailTitle>
  */
 export const setMultilineEllipsis = className => {
-  const dataArray = document.getElementsByClassName(className);
-  [].forEach.call(dataArray, function(el) {
-    let wordArray = el.innerHTML.split(' ');
+  const dataArray = document.getElementsByClassName(className)
+  ;[].forEach.call(dataArray, function(el) {
+    let wordArray = el.innerHTML.split(' ')
     while (el.scrollHeight > el.offsetHeight) {
       if (wordArray.length > 1) {
-        wordArray.pop();
+        wordArray.pop()
       } else {
-        return;
+        return
       }
-      el.innerHTML = `${wordArray.join(' ')}...`;
+      el.innerHTML = `${wordArray.join(' ')}...`
     }
-  });
-};
+  })
+}
 
 export const unsetMultilineEllipsis = (className, text) => {
-  const dataArray = document.getElementsByClassName(className);
-  [].forEach.call(dataArray, function(el) {
-    el.innerHTML = text;
-  });
-};
+  const dataArray = document.getElementsByClassName(className)
+  ;[].forEach.call(dataArray, function(el) {
+    el.innerHTML = text
+  })
+}

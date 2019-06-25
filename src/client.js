@@ -19,8 +19,11 @@ import configureStore from './store/configureStore'
 import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
-import * as serviceWorker from './service-worker'
-// import { setRuntimeVariable } from './actions/runtime';
+// import * as serviceWorker from './service-worker'
+
+// import { setRuntimeVariable } from '@actions/runtime'
+// import config from '@source/config'
+// import Auth from '@api/auth'
 
 // let inboxInterval;
 // let count = window.App.inbox.unread;
@@ -95,7 +98,7 @@ async function onLocationChange(location, action) {
     }
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render
-    appInstance = renderReactApp(<App context={context}>{route.component}</App>, container, () => {
+    appInstance = renderReactApp(<App context={context}>{route.component}</App>, container, async () => {
       if (isInitialRender) {
         // Switch off the native scroll restoration behavior and handle it manually
         // https://developers.google.com/web/updates/2015/09/history-api-scroll-restoration
@@ -158,6 +161,32 @@ async function onLocationChange(location, action) {
       window.location.reload()
     }
   }
+
+  window.debugError = context.store.getState().runtime.debugError
+
+  // if (context.store.getState().user.sid) {
+  //   const tokenExpired = context.store.getState().user.tokenExpired * 1000
+  //   if (tokenExpired < Date.now()) {
+  //     window.location.href = '/accounts'
+  //   }
+  // }
+
+  // const { domain } = config.endpoints
+  // const payload = {
+  //   appKey: 'wIHGzJhset',
+  //   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  //   responseType: 'token',
+  //   scope: 'https://internal.supersoccer.tv/users/users.profile.read',
+  //   redirectUri: `${domain}/accounts`,
+  // }
+
+  // const guestInfo = await Auth.requestGuestToken({ ...payload })
+
+  // if (guestInfo.data !== undefined) {
+  //   context.store.dispatch(setRuntimeVariable({ name: 'gt', value: guestInfo.data.token }))
+  // } else {
+  //   context.store.dispatch(setRuntimeVariable({ name: 'gt', value: '' }))
+  // }
 }
 // Handle client-side navigation by using HTML5 History API
 // For more information visit https://github.com/mjackson/history#readme
@@ -176,6 +205,20 @@ if (module.hot) {
   })
 }
 
+// if ('serviceWorker' in navigator) {
+//   serviceWorker.register()
+// }
+
 if ('serviceWorker' in navigator) {
-  serviceWorker.register()
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(
+      function(registration) {
+        // window.Notification.requestPermission();
+        console.log('ServiceWorker registration successful with scope: ', registration.scope)
+      },
+      function(err) {
+        console.log('ServiceWorker registration failed: ', err)
+      }
+    )
+  })
 }

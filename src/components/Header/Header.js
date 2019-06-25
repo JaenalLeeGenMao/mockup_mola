@@ -16,12 +16,13 @@ import LazyLoad from '@components/common/Lazyload'
 // const LazyLoad = getComponent('LazyLoad')
 
 import history from '../../history'
-import logoBlue from '@global/style/icons/mola-blue.svg'
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+
+import { logoBlue, logoMobile } from '@global/imageUrl'
 
 import Link from '../Link'
 
 import RightMenu from './right-menu'
+import LeftMenu from './left-menu'
 import styles from './Header.css'
 
 class Header extends Component {
@@ -59,30 +60,26 @@ class Header extends Component {
   }
 
   renderHeaderLibrary() {
-    const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId } = this.props
+    const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId, cardTitle } = this.props
 
     const { genre: { data: genreDt } } = this.state
     const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId))
-    const iconToggleStyle = {
-      transform: 'rotate(180deg) translateY(0%)',
-      top: '-3px',
-    }
     const color = isDark ? 'black' : 'white'
-
     return (
       isLibraryCopy && (
         <div className={styles.header__copy_library}>
           <LazyLoad>
             <div className={styles.header__logo_wrap}>
-              <Link to="/">
-                <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-              </Link>
+              {/* <Link to="/">
+                <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+              </Link> */}
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-                  {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} style={isMenuToggled ? iconToggleStyle : ''} />
+                  {currentGenre.title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
                 </button>
               )}
             </div>
+            <div />
           </LazyLoad>
         </div>
       )
@@ -96,24 +93,28 @@ class Header extends Component {
       logoOff = false,
       libraryOff = false,
       rightMenuOff = false,
+      leftMenuOff = false,
       searchOff = false,
       isMobile = false,
       stickyOff = false,
       profileOff = false,
       backButtonOn = false,
       shareButtonOn = false,
+      greyBackground,
     } = this.props
 
     const color = isDark ? 'black' : 'white'
     const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container
-
     return (
       <div className={typeHeader}>
-        <div className={styles.header__logo_wrapper} style={{ left: backButtonOn ? '0' : '2.5%' }}>
+        {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} />}
+        {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} />}
+        {!isMobile && <div className={styles.header__shadow_desktop} />}
+        <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
           {!logoOff && (
             <LazyLoad>
               <Link to="/">
-                <img alt="MOLA" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
+                <img alt="molatv" src={isMobile ? logoMobile : logoBlue} className={styles.header__logo} />
               </Link>
             </LazyLoad>
           )}
@@ -132,9 +133,8 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         )}
-
         {this.renderHeaderLibrary()}
-
+        {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} {/*tambahan left menu nampung sport(design baru)*/}
         {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
       </div>
     )

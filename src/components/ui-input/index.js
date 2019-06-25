@@ -1,69 +1,68 @@
-import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './index.css';
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import s from './index.css'
 
-import imgVisible from '../../global/style/icons/eye/visible.png';
-import imgUnVisible from '../../global/style/icons/eye/notvisible.png';
+import { eyeVisible as imgVisible, eyeNotVisible as imgUnVisible } from '@global/imageUrl'
 
 class Input extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       visible: false,
       focus: false,
-      type: 'text'
-    };
+      type: 'text',
+    }
 
-    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this)
   }
 
   toggle(target) {
     this.setState({
-      [target]: !this.state[target]
-    });
+      [target]: !this.state[target],
+    })
 
-    this.toggleVisible(this.state.visible);
+    this.toggleVisible(this.state.visible)
   }
 
   toggleVisible(condition) {
-    let type = 'password';
+    let type = 'password'
     if (!condition) {
-      type = 'text';
+      type = 'text'
     }
 
     this.setState({
-      type: type
-    });
+      type: type,
+    })
   }
 
   handleKeyUp(e) {
     if (this.state.type === 'password') {
-      const value = e.target.value;
-      let focus = false;
+      const value = e.target.value
+      let focus = false
       if (value.length > 0) {
-        focus = true;
+        focus = true
       }
 
       this.setState({
-        focus: focus
-      });
+        focus: focus,
+      })
     }
   }
 
   componentWillMount() {
-    let { type } = this.props;
-    type = type || 'text';
+    let { type } = this.props
+    type = type || 'text'
 
     this.setState({
-      type: type
-    });
+      type: type,
+    })
   }
 
   render() {
-    const props = this.props;
-    let uiStyle = props.uiStyle || 'transparent';
-    let placeholder = props.placeholder || '';
-    let type = this.state.type;
+    const props = this.props
+    let uiStyle = props.uiStyle || 'transparent'
+    let placeholder = props.placeholder || ''
+    let type = this.state.type
 
     return (
       <div className={s.ui_input__wrapper}>
@@ -86,13 +85,17 @@ class Input extends React.Component {
           {this.props.type === 'password' &&
             this.state.focus && (
               <div className={s.ui_input__eye}>
-                {this.state.visible ? <img src={imgUnVisible} alt="unVisible" onClick={() => this.toggle('visible')} /> : <img src={imgVisible} alt="visible" onClick={() => this.toggle('visible')} />}
+                {this.state.visible ? (
+                  <img src={imgUnVisible} alt="hidden mola" onClick={() => this.toggle('visible')} />
+                ) : (
+                  <img src={imgVisible} alt="visible mola" onClick={() => this.toggle('visible')} />
+                )}
               </div>
             )}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export const UiInput = withStyles(s)(Input);
+export const UiInput = withStyles(s)(Input)

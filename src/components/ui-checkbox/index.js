@@ -1,15 +1,14 @@
-import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './index.css';
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import s from './index.css'
 
-import imgActice from '@global/style/icons/checkbox/active.png';
-import imgUnActice from '@global/style/icons/checkbox/unactive.png';
+import { unactiveRadioBtn as imgUnActice, activeRadioBtn as imgActice } from '@global/imageUrl'
 
 const Checkbox = props => {
-  const options = props.options || [];
-  const selected = props.selected || [];
-  const uiStyle = props.uiStyle || 'single';
-  const rootStyle = props.rootStyle || {};
+  const options = props.options || []
+  const selected = props.selected || []
+  const uiStyle = props.uiStyle || 'single'
+  const rootStyle = props.rootStyle || {}
 
   return (
     <div className={s.root} style={rootStyle}>
@@ -20,10 +19,10 @@ const Checkbox = props => {
         {uiStyle === 'single' ? (
           <div>
             {options.map((option, index) => {
-              let idInput = option.replace(/ /g, '_') + '-' + index;
-              let elChecked = false;
+              let idInput = option.replace(/ /g, '_') + '-' + index
+              let elChecked = false
               if (selected.find(x => x == option)) {
-                elChecked = true;
+                elChecked = true
               }
               return (
                 <div key={index} className={s.ui_checkbox__component}>
@@ -33,16 +32,16 @@ const Checkbox = props => {
                     {option}
                   </label>
                 </div>
-              );
+              )
             })}
           </div>
         ) : (
           <div className={s.ui_checkbox__radioLongDesc}>
             {options.map((option, index) => {
-              let idInput = option.value + '-' + index;
-              let elChecked = false;
+              let idInput = option.value + '-' + index
+              let elChecked = false
               if (selected.find(x => x == option.value)) {
-                elChecked = true;
+                elChecked = true
               }
               return (
                 <div key={index} className={s.ui_checkbox__componentItem}>
@@ -55,12 +54,12 @@ const Checkbox = props => {
                     </div>
                   </label>
                 </div>
-              );
+              )
             })}
           </div>
         )}
       </div>
     </div>
-  );
-};
-export const UiCheckbox = withStyles(s)(Checkbox);
+  )
+}
+export const UiCheckbox = withStyles(s)(Checkbox)

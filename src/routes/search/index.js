@@ -1,11 +1,11 @@
 import React from 'react'
-import MolaLayout from '../../components/Molalayout'
+import MolaLayout from '@components/Molalayout'
 import SearchDesktop from './Search'
 
 const title = 'Search Page'
 const description = 'Search your favourite movies via Mola'
 
-function action({ query }) {
+function action({ query, isMobile }) {
   const qs = query.q ? query.q : ''
   return {
     chunks: ['search'],
@@ -13,7 +13,7 @@ function action({ query }) {
     description,
     component: (
       <MolaLayout>
-        <SearchDesktop title={title} searchKeyword={qs} />
+        <SearchDesktop title={title} searchKeyword={qs} isMobile={isMobile} />
       </MolaLayout>
     ),
   }

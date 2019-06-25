@@ -10,12 +10,17 @@ export const customTheoplayer = css`
       float: left;
     }
 
+    &.theoplayer-skin:not(.theo-seekbar-inside-controls) .theo-button-tooltip {
+      left: auto!important;
+      right: 0!important;
+    }
+
     &.video-container .theo-primary-color {
       color: #fff !important;
     }
 
     &.video-container .theoplayer-poster {
-      //   background-position: center !important;
+      // background-position: center !important;
       background-size: cover !important;
     }
 
@@ -28,14 +33,15 @@ export const customTheoplayer = css`
     }
 
     &.video-container .vjs-big-play-button {
-      width: 6% !important;
+      width: 10% !important;
       background: none !important;
       background-color: transparent !important;
+      display: none!important;
     }
 
     &.video-container .vjs-big-play-button::after {
       margin-top: 117% !important;
-      height: 30% !important;
+      height: 50% !important;
     }
 
     .video-container.video-js.theoplayer-skin {
@@ -47,12 +53,16 @@ export const customTheoplayer = css`
       background-color: #0070b2 !important;
     }
 
+    &.video-container .vjs-control-bar {
+      z-index: 1;
+    }
+
     @media (max-width: 640px) {
-      &.video-container,
-      &.video-container.video-js.vjs-fluid {
-        height: 15.4rem !important;
-        width: 100vw;
-      }
+      // &.video-container,
+      // &.video-container.video-js.vjs-fluid {
+      //   height: 16rem !important;
+      //   width: 100vw;
+      // }
 
       .arrow {
         width: 3rem;

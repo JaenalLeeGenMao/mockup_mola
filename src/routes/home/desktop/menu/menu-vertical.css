@@ -1,0 +1,60 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.menu__dots {
+  width: 1rem;
+  height: 1rem;
+  margin: 0.65rem 0;
+  border-radius: 100%;
+  transition: all 0.5s;
+  opacity: 1;
+}
+
+.menu__dots:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.menu__dots.black {
+  background: black;
+  color: black;
+}
+
+.menu__dots.white {
+  background: white;
+  color: white;
+}
+
+.menu__dots.menu__active {
+  opacity: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: transparent;
+  border: 3px solid #2c56ff;
+}
+
+/* .menu__bot_active {
+  height: 2.25rem;
+  margin-top: 0;
+  opacity: 1;
+  transform: translateY(-5%);
+} */
+
+/* .menu__text {
+  opacity: 0;
+  padding: 0 2rem;
+  font-weight: 300;
+  font-size: 1.2rem;
+  font-style: italic;
+  position: absolute;
+}
+
+.menu__text.active {
+  padding: 0.5rem 1.25rem;
+  opacity: 1;
+} */

@@ -1,5 +1,5 @@
-import Mola from '../api/mola';
-import types from '../constants';
+import Mola from '../api/mola'
+import types from '../constants'
 
 export const getMovieLibrary = id => dispatch => {
   dispatch({
@@ -7,25 +7,28 @@ export const getMovieLibrary = id => dispatch => {
     payload: {
       meta: {
         status: 'loading',
-        error: ''
+        error: '',
       },
-      data: []
-    }
-  });
+      data: [],
+    },
+  })
   return Mola.getMovieLibrary(id).then(result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MOVIE_LIBRARY_ERROR,
-        payload: result
-      });
+        payload: result,
+      })
     } else {
+      result.data = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
       dispatch({
         type: types.GET_MOVIE_LIBRARY_SUCCESS,
-        payload: result
-      });
+        payload: result,
+      })
     }
-  });
-};
+  })
+}
 
 export const getMovieLibraryList = () => dispatch => {
   dispatch({
@@ -33,22 +36,22 @@ export const getMovieLibraryList = () => dispatch => {
     payload: {
       meta: {
         status: 'loading',
-        error: ''
+        error: '',
       },
-      data: []
-    }
-  });
+      data: [],
+    },
+  })
   return Mola.getMovieLibraryList().then(result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MOVIE_LIBRARY_LIST_ERROR,
-        payload: result
-      });
+        payload: result,
+      })
     } else {
       dispatch({
         type: types.GET_MOVIE_LIBRARY_LIST_SUCCESS,
-        payload: result
-      });
+        payload: result,
+      })
     }
-  });
-};
+  })
+}

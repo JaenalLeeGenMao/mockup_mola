@@ -2,7 +2,8 @@ import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Link from '@components/Link'
 import s from './index.css'
-import logo from '@global/style/icons/mola-blue.svg'
+
+import { logoBlue as logo } from '@global/imageUrl'
 import Lazyload from '../common/Lazyload/Lazyload'
 
 class Navigation extends React.Component {

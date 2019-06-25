@@ -1,28 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import { Helmet } from 'react-helmet'
+import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
+import { updateCustomMeta } from '@source/DOMUtils'
+import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import DRMConfig from '@source/lib/DRMConfig'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
+import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import MovieDetailError from '@components/common/error'
-import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
-
-import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer } from './content'
-
-import { handleTracker } from './tracker'
+import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
 import {
-  playButton,
   movieDetailContainer,
+  movieDetailNotAvailableContainer,
   controllerContainer,
   videoPlayerContainer,
-  videoSuggestionContainer,
-  videoSuggestionWrapper,
-  videoSuggestionPlayer,
-  videoSuggestionPlayerDetail,
-  videoSuggestionTitle,
 } from './style'
+
+import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
@@ -42,26 +43,29 @@ const Controller = ({ isActive = 'overview', onClick }) => {
       <div className={isActive === 'review' ? 'active' : ''} onClick={() => onClick('review')}>
         review
       </div>
+      <div className={isActive === 'suggestions' ? 'active' : ''} onClick={() => onClick('suggestions')}>
+        suggestions
+      </div>
     </div>
   )
 }
 
-const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
-  return (
-    <div className={containerClassName} style={style}>
-      {videos.map(({ id, background }) => {
-        const imageSource = background.desktop.landscape || require('@global/style/icons/unavailable-image.png')
-        return (
-          <Link to={`/movie-detail/${id}`} key={id} className={className}>
-            <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
-              <div className={playButton} />
-            </VideoThumbnail>
-          </Link>
-        )
-      })}
-    </div>
-  )
-}
+// const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
+//   return (
+//     <div className={containerClassName} style={style}>
+//       {videos.map(({ id, background }) => {
+//         const imageSource = background.landscape || unavailableImg
+//         return (
+//           <Link to={`/movie-detail/${id}`} key={id} className={className}>
+//             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
+//               <div className={playButton} />
+//             </VideoThumbnail>
+//           </Link>
+//         )
+//       })}
+//     </div>
+//   )
+// }
 
 class MovieDetail extends Component {
   state = {
@@ -70,46 +74,58 @@ class MovieDetail extends Component {
     isControllerActive: 'overview',
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getMovieDetail,
-      movieDetail,
-      movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
-    } = nextProps
-    if (nextProps.movieDetail.meta.status === 'loading' && prevState.movieDetail.length <= 0) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-    } else if (nextProps.movieDetail.meta.status === 'success' && nextProps.movieDetail.data[0].id != movieId) {
-      getMovieDetail(movieId)
-      onHandleHotPlaylist()
-      return { ...prevState, movieDetail, toggleSuggestion: false }
-    }
-    return { ...prevState, movieDetail }
+  uuidADS = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
   }
 
   /* eslint-disable */
-  handleOnTimePerMinute = ({ action }) => {
-    const currentDuration = document.querySelector('.vjs-current-time-display').innerText || ''
-    const totalDuration = document.querySelector('.vjs-duration-display').innerText || ''
-    const payload = {
-      action,
-      clientIp: undefined,
-      userId: this.props.user.uid,
-      videoType: undefined,
-      heartbeat: true,
-      window: window,
-      currentDuration,
-      totalDuration,
-    }
-    window.__theo_start = window.__theo_start || Date.now()
-    window.__theo_ps = Date.now()
+  updateEncryption() {
+    const { clientIp, uid, sessionId } = this.props.user
+    const { data } = this.props.movieDetail
 
-    // const minutesElapsed = Math.floor((window.__theo_ps - window.__theo_start) / (60 * 1000))
-    // if (minutesElapsed >= 1) {
-    handleTracker(payload, this.props.movieDetail.data[0])
-    window.__theo_start = window.__theo_ps
-    // }
+    /* eslint-disable */
+    const payload = {
+      project_id: '2',
+      video_id: this.props.movieId,
+      app_id: 'sent_ads',
+      session_id: sessionId,
+      client_ip: clientIp,
+      uuid: this.uuidADS(),
+    }
+
+    this.encryptPayload = window.btoa(JSON.stringify(payload))
+  }
+
+  updateMetaTag() {
+    const { movieDetail } = this.props
+    if (movieDetail.data.length > 0) {
+      const { title, description, background } = movieDetail.data[0]
+      updateCustomMeta('og:title', title)
+      updateCustomMeta('og:image', background.landscape)
+      updateCustomMeta('og:description', description)
+      updateCustomMeta('og:url', window.location.href)
+    }
+    /* When audio starts playing... */
+    if ('mediaSession' in navigator) {
+      const currentMovie = movieDetail.data.length > 0 ? movieDetail.data[0] : { title: 'Mola TV' }
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentMovie.title,
+        artist: 'Mola TV',
+        album: 'Watch Movies & Streaming Online',
+        artwork: [
+          { src: notificationBarBackground, sizes: '96x96', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '128x128', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '192x192', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '256x256', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '384x384', type: 'image/png' },
+          { src: notificationBarBackground, sizes: '512x512', type: 'image/png' },
+        ],
+      })
+    }
   }
 
   handleControllerClick = name => {
@@ -117,77 +133,190 @@ class MovieDetail extends Component {
   }
 
   handleOnVideoPause = (payload = false, player) => {
-    this.handleOnTimePerMinute({ action: 'pause' })
+    this.isAds = document.querySelector('.theoplayer-ad-nonlinear-content') /* important to determine suggestion box position */
     this.setState({ toggleSuggestion: true })
   }
 
   handleOnVideoPlay = (payload = true, player) => {
-    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-
-    // ev.preventDefault()
-    // return (ev.returnValue = 'Are you sure you want to close?')
-
-    this.handleOnTimePerMinute({ action: 'play' })
+    // window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+    // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+    this.isPlay = true
     this.setState({ toggleSuggestion: false })
   }
 
-  componentWillUnmount() {
-    this.handleOnTimePerMinute({ action: 'closed' })
-    window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+  handleOnVideoLoad = player => {
+    const playerButton = document.querySelector('.vjs-button')
+    /** handle keyboard pressed */
+    document.onkeyup = event => {
+      switch (event.which || event.keyCode) {
+        case 13 /* enter */:
+          if (player.src) {
+            playerButton.click()
+          }
+          break
+        case 32 /* space */:
+          if (player.src) {
+            playerButton.click()
+          }
+          break
+        default:
+          event.preventDefault()
+          break
+      }
+    }
+
+    this.player = player
+
+    player.addEventListener('contentprotectionerror', e => {
+      if (e.error.toLowerCase() == 'error during license server request') {
+        this.props.getVUID_retry()
+      } else {
+        // console.log('ERROR content protection', e)
+        // this.handleVideoError(e);
+      }
+    })
+    // player.addEventListener('error', e => {
+    //   console.log('error', e, '======', player.error.code)
+    //   // this.handleVideoError(e);
+    // })
   }
-  // isTheoPlayer() {
-  //   const { movieStream: { data: movieStream } } = this.props;
-  //   const subtitlesDt = movieStream.length > 0 ? movieStream[0].subtitles : '';
 
-  //   const myTheoPlayer = subtitlesDt.map(obj => ({
-  //     kind: obj.type,
-  //     srclang: obj.attributes.locale,
-  //     src: obj.attributes.url,
-  //     label: obj.attributes.label
-  //   }));
+  subtitles() {
+    const { movieDetail } = this.props
+    const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
-  //   return myTheoPlayer;
-  // }
+    const myTheoPlayer =
+      subtitles &&
+      subtitles.map(({ subtitleUrl, country }) => ({
+        kind: 'subtitles',
+        src: subtitleUrl,
+        label: country,
+        type: 'srt',
+      }))
+
+    return myTheoPlayer
+  }
+
+  componentDidMount() {
+    const {
+      getMovieDetail,
+      movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
+      user,
+      getVUID,
+    } = this.props
+
+    getMovieDetail(movieId)
+    onHandleHotPlaylist()
+
+    this.updateEncryption()
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
+    getVUID(deviceId)
+  }
+
+  componentDidUpdate() {
+    const {
+      getMovieDetail,
+      movieDetail,
+      movieId, //passed as props from index.js,
+      onHandleHotPlaylist,
+    } = this.props
+
+    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+      getMovieDetail(movieId)
+      onHandleHotPlaylist()
+      this.setState({
+        toggleSuggestion: false,
+      })
+    }
+
+    this.updateMetaTag()
+  }
+
+  componentWillUnmount() {
+    updateCustomMeta('og:title', 'Mola TV')
+    updateCustomMeta('og:image', logoLandscapeBlue)
+    updateCustomMeta('og:description', 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.')
+    updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
+  }
 
   render() {
-    const { isControllerActive, movieDetail, toggleSuggestion } = this.state
-    const { meta: { status }, data } = movieDetail
+    const { isControllerActive, toggleSuggestion } = this.state
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const streamSource = apiFetched ? dataFetched.streamSourceUrl : ''
-    const poster = apiFetched ? dataFetched.images.cover.background.desktop.landscape : ''
+    const poster = apiFetched ? dataFetched.background.landscape : ''
+
+    const { user } = this.props
+    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+
+    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+
+    const videoSettings = {
+      ...defaultVidSetting
+    }
+
+    let drmStreamUrl = '',
+      isDRM = false
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari ? dataFetched.drm.fairplay.streamUrl : dataFetched.drm.widevine.streamUrl
+    }
+    isDRM = drmStreamUrl ? true : false
+
+    const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
     return (
       <>
         {dataFetched && (
           <div className={movieDetailContainer}>
-            <div className={videoPlayerContainer}>
-              <Theoplayer
-                className={customTheoplayer}
-                // theoConfig={this.isTheoPlayer()}
-                poster={poster}
-                autoPlay={false}
-                movieUrl={streamSource}
-                handleOnVideoPause={this.handleOnVideoPause}
-                handleOnVideoPlay={this.handleOnVideoPlay}
-                showChildren
-              >
-                {toggleSuggestion && (
-                  <LazyLoad containerClassName={videoSuggestionContainer}>
-                    <h2 className={videoSuggestionTitle}>Suggestions</h2>
-                    <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} />
-                  </LazyLoad>
-                )}
-              </Theoplayer>
+            <Helmet>
+              <title>{dataFetched.title}</title>
+            </Helmet>
+            <div style={{ width: '100vw', background: '#000' }}>
+              <div className={videoPlayerContainer}>
+                {loadPlayer ? (
+                  <Theoplayer
+                    className={customTheoplayer}
+                    subtitles={this.subtitles()}
+                    poster={poster}
+                    autoPlay={false}
+                    // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
+                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    handleOnVideoPause={this.handleOnVideoPause}
+                    handleOnVideoPlay={this.handleOnVideoPlay}
+                    // handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+                    // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
+                    // isDRM={true}
+                    {...videoSettings}
+                    showChildren
+                    showBackBtn
+                  >
+                    {/* <LazyLoad
+                      containerClassName={videoSuggestionContainer}
+                      containerStyle={{
+                        display: toggleSuggestion ? 'inline-block' : 'none',
+                        width: this.isAds ? '80%' : '90%',
+                        left: this.isAds ? '10%' : '5%',
+                      }}
+                    >
+                      <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2> */}
+                    {/* <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} /> */}
+                    {/* </LazyLoad> */}
+                  </Theoplayer>
+                ) : (
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
+              </div>
             </div>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
             {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}
             {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
+            {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
             <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
           </div>
         )}
-        {!dataFetched && status === 'error' && <MovieDetailError message={movieDetail.meta.error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }
@@ -202,6 +331,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
   onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  getVUID: deviceId => dispatch(getVUID(deviceId)),
+  getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)

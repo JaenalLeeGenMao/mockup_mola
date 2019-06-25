@@ -1,0 +1,105 @@
+@import '../../../../../global/style/css/reactReduxToastr.css';
+
+.security__container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.sideLeft {
+  width: 27%;
+}
+
+.security_form_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem;
+}
+
+.security_form_wrapper label {
+  color: #6f6f6f;
+  font-weight: lighter;
+  font-size: 1.42rem;
+}
+
+.security_form_wrapper input {
+  background: #343434;
+  border-radius: 0.4rem;
+  border: none;
+  color: #fff;
+  width: 50%;
+  padding: 0.38rem 4.5%;
+}
+
+.security_button_active {
+  color: white;
+  background: #2c56ff;
+  border: 0.1rem solid #2c56ff;
+  border-radius: 0.2rem;
+  padding: 1.12rem 2.8rem;
+  margin-right: 2.5rem;
+  font-size: 1.42rem;
+}
+
+.security_button_active:hover {
+  background: #2242c4;
+  border: 0.1rem solid #2242c4;
+  cursor: pointer;
+}
+
+.security_button {
+  color: #a7a7a7;
+  background: transparent;
+  box-shadow: 0 0 0 0.1rem #a7a7a7;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 1.12rem 2.8rem;
+  margin-right: 2.5rem;
+  font-size: 1.42rem;
+}
+
+.security_button:hover {
+  background: #1d1d1d;
+  cursor: pointer;
+}
+
+.custom_dots {
+  background: white;
+  padding: 0.28rem;
+  margin: 0 0.28rem;
+  border-radius: 50%;
+}
+
+.sideCenter {
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .security_form_wrapper label {
+    color: #6f6f6f;
+    font-weight: lighter;
+    font-size: 0.9rem;
+  }
+
+  .sideCenter {
+    width: 100%;
+    padding: 0 30px;
+    padding-bottom: 140px;
+  }
+
+  .security_button,
+  .security_button_active {
+    font-size: 0.8rem;
+    border-radius: 4px;
+    margin-right: 1.125rem;
+    padding: 0.72rem 2rem;
+  }
+
+  .custom_dots {
+    padding: 2px;
+    margin: 0 2px;
+  }
+}

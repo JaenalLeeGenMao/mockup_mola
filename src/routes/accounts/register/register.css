@@ -1,0 +1,141 @@
+.register__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  color: #fff;
+  background: linear-gradient(#0e1d3d, #000);
+}
+
+.register__header_wrapper,
+.register__footer_wrapper,
+.register__content_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.register__header_wrapper,
+.register__footer_wrapper {
+  margin-bottom: 5rem;
+}
+
+.register__content_form {
+  letter-spacing: 0.036rem;
+  width: 20%;
+  min-width: 285px;
+  margin: auto;
+  padding: 2.5rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  line-height: 1.5rem;
+}
+
+.register__content_title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.16rem;
+}
+
+.register__content_subtitle {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.register__content_input input {
+  height: 4rem;
+}
+
+.register__content_input_error input {
+  box-shadow: 0 0 2rem 0.1rem red;
+}
+
+.register__content_submit {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem 1.6rem;
+  height: 5rem;
+  width: 100%;
+  background: #2c56ff;
+  border: 0.1rem solid #373277;
+  border-radius: 0.4rem;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.46rem;
+  cursor: pointer;
+  letter-spacing: 0.191rem;
+  font-weight: 500;
+}
+
+.register__content_submit:hover {
+  background: #2242c4;
+}
+
+.register__content_separator {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.register__content_social_logo {
+  width: 3rem !important;
+}
+
+.register__content_social_wrapper button {
+  height: 5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  background: rgba(36, 37, 40, 0.8);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
+}
+
+.register__content_social_wrapper button:hover {
+  background: rgba(36, 37, 40, 0.6);
+  cursor: pointer;
+}
+
+.register__label_resend {
+  font-size: 1rem;
+  letter-spacing: 0.136rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(0, 106, 255, 1);
+}
+
+.register__label_resend:hover {
+  cursor: pointer;
+  color: rgba(9, 106, 255, 0.7);
+}
+
+@media screen and (max-width: 640px) {
+  .register__header_wrapper > div {
+    padding: 5%;
+  }
+
+  .register__content_form {
+    margin: 0 5%;
+    width: auto;
+    padding: 5%;
+  }
+
+  .register__content_input input {
+    height: 3.25rem;
+    margin: 0.5rem 0;
+  }
+
+  .register__content_submit {
+    height: 3.25rem;
+    font-size: 1rem;
+  }
+
+  .register__content_social_wrapper button {
+    height: 3.25rem;
+  }
+
+  .register__content_social_logo {
+    width: 2rem !important;
+  }
+}

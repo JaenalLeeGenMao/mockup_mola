@@ -93,7 +93,7 @@
 }
 
 :global(.slick-next)::before,
-[dir=rtl] :global(.slick-prev)::before {
+[dir='rtl'] :global(.slick-prev)::before {
   content: '›';
 }
 
@@ -120,7 +120,7 @@
 :global(.slick-track) {
   top: 0;
   left: 0;
-  transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
+  transition: all 0s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 :global(.slick-arrow) {
@@ -140,9 +140,15 @@
   min-height: 1px;
 }
 
+:global(.slick-slide) img {
+  transform: scale(1) translate(0);
+  transition: all 500ms ease;
+}
+
 :global(.slick-slider) :global(.slick-list),
 :global(.slick-slider) :global(.slick-track) {
   transform: translate3d(0, 0, 0);
+  max-height: 100.25vh;
 }
 
 :global(.slick-initialized) :global(.slick-slide) {
@@ -150,9 +156,20 @@
 }
 
 :global(.slick-active) img {
-  transform: scale(1);
+  transform: scale(1) translateY(0%);
+
+  /* animation: cssAnimation 2s 1 ease-in-out; */
 }
 
 * {
   outline: 0;
 }
+
+/* @keyframes cssAnimation {
+  from {
+    transform: scale(0.25) translate(400px);
+  }
+  to {
+    transform: scale(1) translate(0px);
+  }
+} */
