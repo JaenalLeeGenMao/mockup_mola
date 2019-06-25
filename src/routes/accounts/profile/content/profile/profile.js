@@ -6,7 +6,8 @@ import Select from 'react-select'
 import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
 import Uploader from '@api/uploader'
-import { updateProfile } from '@actions/user'
+
+import { updateProfile, fetchProfile } from '@actions/user'
 
 import LazyLoad from '@components/common/Lazyload'
 
@@ -91,6 +92,10 @@ class Profile extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  componentDidMount() {
+    this.props.fetchProfile()
+  }
+
   handleSubmit = async e => {
     const { name = '', email = '', birthdate = '', photo = '', gender = '', location = '', phoneNumber = '', uploadStatus } = this.state
     const { csrf } = this.props.runtime
@@ -110,7 +115,6 @@ class Profile extends React.Component {
     if (update.meta.status === 'success') {
       this.props.updateProfile(payload)
       this.handleClick()
-
       toastr.success('Notification', 'Update profile success!')
     } else {
       toastr.warning('Notification', 'Update profile failed!')
@@ -278,6 +282,7 @@ const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
     updateProfile: data => dispatch(updateProfile(data)),
+    fetchProfile: () => dispatch(fetchProfile()),
   }
 }
 
