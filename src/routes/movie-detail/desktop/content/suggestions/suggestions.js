@@ -1,20 +1,11 @@
 import React from 'react'
-const { getComponent } = require('../../../../../../../gandalf');//require('@supersoccer/gandalf')
+const { getComponent } = require('@supersoccer/gandalf')
 const VideoThumbnail = getComponent('video-thumbnail')
 
 import LazyLoad from '@components/common/Lazyload'
 import { unavailableImg } from '@global/imageUrl'
 import Link from '@components/Link'
-import {
-  videoSuggestionContainer,
-  videoSuggestionWrapper,
-  videoSuggestionInnerWrapper,
-  videoSuggestionPlayer,
-  videoSuggestionPlayerDetail,
-  titleSuggestions,
-  imageWrapper,
-  playIcon,
-} from './style'
+import { videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionInnerWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail, titleSuggestions, imageWrapper, playIcon } from './style'
 
 const Suggestions = ({ style = {}, videos = [] }) => {
   return (
@@ -31,11 +22,14 @@ const Suggestions = ({ style = {}, videos = [] }) => {
                     thumbnailPosition="wrap"
                     className={videoSuggestionPlayerDetail}
                     imgWrapperClassName={imageWrapper}
-                  // detailStyle={{ position: 'absolute' }}
+                    // detailStyle={{ position: 'absolute' }}
                   >
                     <div>
                       <span className={playIcon} />
-                      <div className={titleSuggestions}> <span>{title}</span></div>
+                      <div className={titleSuggestions}>
+                        {' '}
+                        <span>{title}</span>
+                      </div>
                     </div>
                   </VideoThumbnail>
                 </Link>
