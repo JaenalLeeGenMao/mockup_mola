@@ -44,3 +44,6 @@ export const facebook = `${imgBaseUrl}/facebook.png`
 export const google = `${imgBaseUrl}/google.png`
 
 export const defaultImgClub = `${imgBaseUrl}/defaultImage.svg`
+
+export const viewAllMovieBg = `${imgBaseUrl}/background_darker.png`
+export const viewAllMovieImg = `${imgBaseUrl}/viewallmovie.png`

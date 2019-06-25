@@ -221,6 +221,27 @@ body {
   background-size: contain;
 }
 
+.view_all_movie_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.view_all_movie_container > img {
+  width: 20rem;
+}
+
+.view_all_movie_container > div {
+  color: #fff;
+  font-size: 3.6rem;
+  font-weight: 600;
+  text-align: center;
+  padding-top: 2rem;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .swipeUpIcon {

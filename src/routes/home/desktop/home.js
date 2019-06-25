@@ -30,6 +30,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
+import { viewAllMovieImg } from '@global/imageUrl'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -313,7 +314,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function () {
+      setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
 
@@ -391,13 +392,13 @@ class Home extends Component {
           // do nothing
         } else if (prevX > nextX) {
           slider.slickNext()
-          const swpIndex = this.state.swipeIndex + 1 >= videosLength ? 0 : this.state.swipeIndex + 1
+          const swpIndex = this.state.swipeIndex + 1 >= videosLength ? videosLength - 1 : this.state.swipeIndex + 1
           this.setState({
             swipeIndex: swpIndex,
           })
         } else {
           slider.slickPrev()
-          const swpIndex = this.state.swipeIndex - 1 < 0 ? videosLength - 1 : this.state.swipeIndex - 1
+          const swpIndex = this.state.swipeIndex - 1 < 0 ? 0 : this.state.swipeIndex - 1
           this.setState({
             swipeIndex: swpIndex,
           })
@@ -415,13 +416,13 @@ class Home extends Component {
   }
 
   handleColorChange = (index, swipeIndex = 0) => {
+    // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
       let isDark = 1
-
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
@@ -536,7 +537,7 @@ class Home extends Component {
               {...this.props}
             />
           )}
-          {playlistStatus === 'loading' || videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'loading' || (videoStatus === 'loading' && <HomePlaceholder />)}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {/* {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />} */}
           {videos &&
@@ -547,26 +548,35 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
-                <LazyLoad containerClassName={styles.header__playlist_title}>
-                  <div>{this.state.playlists.data[scrollIndex].title}</div>
-                </LazyLoad>
-                {activeSlide && (
-                  <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                    <p>{filteredDesc}</p>
-                    {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
-                    {!activeSlide.buttonText &&
-                      scrollIndex != 0 && (
-                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                          <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
-                        </Link>
-                      )}
-                    {activeSlide.buttonText && (
-                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                      </a>
-                    )}
-                  </LazyLoad>
+                {activeSlide &&
+                  activeSlide.id && (
+                    <>
+                      <LazyLoad containerClassName={styles.header__playlist_title}>
+                        <div>{this.state.playlists.data[scrollIndex].title}</div>
+                      </LazyLoad>
+                      <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
+                        <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
+                        <p>{filteredDesc}</p>
+                        {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
+                        {!activeSlide.buttonText &&
+                          scrollIndex != 0 && (
+                            <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                              <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
+                            </Link>
+                          )}
+                        {activeSlide.buttonText && (
+                          <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                            <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                          </a>
+                        )}
+                      </LazyLoad>
+                    </>
+                  )}
+                {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
+                  <div className={styles.view_all_movie_container}>
+                    <img src={viewAllMovieImg} />
+                    <div>{locale['view_all_movie']}</div>
+                  </div>
                 )}
                 <div className={`${styles.header__movie_slider} tourSlide`}>
                   {activeSlideDots && activeSlideDots.length > 1 && <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
