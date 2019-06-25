@@ -6,6 +6,7 @@ import Select from 'react-select'
 import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
 import Uploader from '@api/uploader'
+import { updateProfile } from '@actions/user'
 
 import LazyLoad from '@components/common/Lazyload'
 
@@ -107,7 +108,9 @@ class Profile extends React.Component {
 
     const update = await Auth.updateProfile(payload)
     if (update.meta.status === 'success') {
+      this.props.updateProfile(payload)
       this.handleClick()
+
       toastr.success('Notification', 'Update profile success!')
     } else {
       toastr.warning('Notification', 'Update profile failed!')
@@ -274,6 +277,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
+    updateProfile: data => dispatch(updateProfile(data)),
   }
 }
 
