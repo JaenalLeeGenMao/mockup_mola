@@ -511,6 +511,8 @@ class Home extends Component {
       filteredDesc = filterString(activeSlide.shortDescription, 36)
       filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
+    const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+    const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
     return (
       <Fragment>
         {/* <Joyride
@@ -573,10 +575,13 @@ class Home extends Component {
                     </>
                   )}
                 {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
-                  <div className={styles.view_all_movie_container}>
+                  <LazyLoad containerClassName={styles.view_all_movie_container}>
                     <img src={viewAllMovieImg} />
-                    <div>{locale['view_all_movie']}</div>
-                  </div>
+                    <a href={`/movie-library/${libraryId}`}>
+                      <span>{locale['view_all_movie']}</span>
+                      <i />
+                    </a>
+                  </LazyLoad>
                 )}
                 <div className={`${styles.header__movie_slider} tourSlide`}>
                   {activeSlideDots && activeSlideDots.length > 1 && <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
