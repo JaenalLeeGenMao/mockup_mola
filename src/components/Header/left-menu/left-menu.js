@@ -18,7 +18,6 @@ import DropdownList from '@components/DropdownList'
 let menu = []
 class LeftMenu extends Component {
   state = {
-    // link: '',
     toggle: false /* Toggle profile */,
     locale: getLocale(),
     activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
@@ -66,21 +65,6 @@ class LeftMenu extends Component {
                         )
                       })
                       }
-                      {/* <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to="/">
-                        Movie
-                      </Link>
-                      <Link className={activeMenu === 'sport' ? styles.left_menu__active : ''} to="/sport">
-                        Sport
-                      </Link>
-                      <Link className={`${activeMenu === 'channels' ? styles.left_menu__active : ''}`} to={'/channels'}>
-                        Channels
-                      </Link>
-                      {activeMenu === 'movie' && (
-                        <Link className={`${activeMenu === 'library' ? styles.left_menu__active : ''}`} to={libraryUrl}>
-                          Library
-                        </Link>
-                      )} */}
-                      {/*comment sementara <div className={styles.left_menu_guide}>Guide</div> */}
                     </>
                   )}
                   {isMobile && (
@@ -90,23 +74,9 @@ class LeftMenu extends Component {
                         dataList={menu}
                         activeId={activeMenu}
                         onClick={this.handleNavigation} />
-                      {/* <select
-                        onChange={event => {
-                          this.handleNavigation(event)
-                        }}
-                        value={activeMenu == 'movie-library' ? libraryUrl : activeMenu}
-                      >
-                        <option value="">Movie</option>
-                        <option value="sport">Sport</option>
-                        <option value="channels">Channels</option>
-                        {activeMenu === 'movie' && <option value={libraryUrl}>Movie Library</option>}
-                      </select>
-                      <div className={styles.left_menu_title}>{this.state.activeMenu}</div>
-                      <IoIosArrowDown className={styles.select_icon} /> */}
                     </div>
                   )}
                 </div>
-                {/* <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} /> */}
               </LazyLoad>
             </span>
           )}

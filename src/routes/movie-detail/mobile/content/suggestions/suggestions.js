@@ -17,7 +17,12 @@ const Suggestions = ({ style = {}, videos = [] }) => {
             const imageSource = background.landscape || unavailableImg
             return (
               <Link to={`/movie-detail/${id}`} key={id} className={videoSuggestionPlayer}>
-                <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="top" className={videoSuggestionPlayerDetail}>
+                <VideoThumbnail
+                  thumbnailUrl={imageSource}
+                  thumbnailPosition="top"
+                  className={videoSuggestionPlayerDetail}
+                // imgWrapperClassName={}
+                >
                   <div className={titleWrapper}>
                     <div className={titleSuggestions}> {title} </div>
                   </div>

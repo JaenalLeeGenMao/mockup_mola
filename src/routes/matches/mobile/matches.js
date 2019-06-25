@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 
+import DropdownList from '@components/DropdownList'
 import MatchesPlaceholder from './placeholder'
 
 import MatchCard from './card'
@@ -47,7 +48,7 @@ class Matches extends Component {
     }
   }
 
-  liveUpcomingFilter() {
+  liveUpcomingFilter = () => {
     const { data } = this.props.matches
     const filteredMatch = []
 
@@ -60,7 +61,7 @@ class Matches extends Component {
     this.setState({ matches: filteredMatch })
   }
 
-  lastMatchesFilter() {
+  lastMatchesFilter = () => {
     const { data } = this.props.matches
     const filteredMatch = []
 
@@ -73,7 +74,7 @@ class Matches extends Component {
     this.setState({ matches: filteredMatch })
   }
 
-  highlightFilter() {
+  highlightFilter = () => {
     const { data } = this.props.matches
     const filteredMatch = []
 
@@ -86,19 +87,16 @@ class Matches extends Component {
     this.setState({ matches: filteredMatch })
   }
 
-  filterChange(filter) {
-    const value = filter.target.value
-    this.setState({ filter: value })
-
-    if (value == 0) {
+  filterChange = (filterId) => {
+    if (filterId == 0) {
       this.liveUpcomingFilter()
     }
 
-    if (value == 1) {
+    if (filterId == 1) {
       this.lastMatchesFilter()
     }
 
-    if (value == 2) {
+    if (filterId == 2) {
       this.highlightFilter()
     }
   }
@@ -147,10 +145,9 @@ class Matches extends Component {
   }
 
   renderMatchesList(matchesList) {
-    console.log('see data mobile matcheslist', matchesList)
     return (
       <LazyLoad containerClassName={styles.matches__container}>
-        {matchesList.map((data, index) => (
+        {matchesList.length > 0 && matchesList.map((data, index) => (
           <>
             {this.renderDate(data, index, matchesList)}
             <Link to={'/watch?v=' + data.id}>
@@ -158,23 +155,27 @@ class Matches extends Component {
             </Link>
           </>
         ))}
+        {
+          matchesList.length === 0 &&
+          <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>
+        }
       </LazyLoad>
     )
   }
 
   renderFilter() {
+    const filterList = [
+      { id: 0, title: 'Live and Upcoming' },
+      { id: 1, title: 'Last Matches' },
+      { id: 2, title: 'Highlight' }
+    ]
     return (
       <LazyLoad containerClassName={styles.matches__filter}>
-        <select
-          onChange={event => {
-            this.filterChange(event)
-          }}
-          value={this.state.filter}
-        >
-          <option value="0">Live and Upcoming</option>
-          <option value="1">Last Matches</option>
-          <option value="2">Highlight</option>
-        </select>
+        <DropdownList
+          className={styles.matches_dropdown_container}
+          dataList={filterList}
+          activeId={this.state.filter}
+          onClick={this.filterChange} />
       </LazyLoad>
     )
   }

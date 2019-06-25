@@ -23,11 +23,11 @@ export const videoSuggestionWrapper = css`
 `
 
 export const videoSuggestionPlayer = css`
-display: inline-block;
-width: 200px;
-min-width: 200px;
-height: 100%;
-padding: 0 0.8rem;
+  display: inline-block;
+  width: 200px;
+  min-width: 200px;
+  height: 100%;
+  padding: 0 0.8rem;
 }
 `
 
@@ -59,7 +59,6 @@ export const titleSuggestions = css`
 `
 
 export const videoSuggestionTitle = css`
-  // position: absolute;
   padding: 0px 15px;
   font-size: 14px;
   font-weight: bold;
