@@ -131,22 +131,6 @@ class Channels extends Component {
         <div className={styles.channels_container}>
           <div className={styles.channels_top_wrapper}>
             <div className={styles.channels_list_wrapper}>
-              {/* <select
-                onChange={event => {
-                  this.handleSelectChannel(event)
-                }}
-              >
-                {schedule &&
-                  schedule.map(dt => {
-                    return (
-                      <option key={dt.id} value={dt.id}>
-                        {dt.title}
-                      </option>
-                    )
-                  })}
-              </select>
-              <div className={styles.channels_title}>{activeChannel}</div>
-              <IoIosArrowDown className={styles.select_icon} /> */}
               <DropdownList
                 className={styles.channels_dropdown_container}
                 dataList={schedule}
@@ -160,23 +144,6 @@ class Channels extends Component {
                 dataList={sheduleDateList}
                 activeId={activeDate}
                 onClick={this.handleSelectDate} />
-              {/* <select
-                onChange={event => {
-                  this.handleSelectDate(event)
-                }}
-                value={activeDate}
-              >
-                {sheduleDateList &&
-                  sheduleDateList.map(datetime => {
-                    return (
-                      <option key={datetime} value={datetime}>
-                        {datetime}
-                      </option>
-                    )
-                  })}
-              </select>
-              <div className={styles.schedule_date_title}>{activeDate}</div>
-              <IoIosArrowDown className={styles.select_icon} /> */}
             </div>
           </div>
           <div className={styles.video_container}>

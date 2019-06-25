@@ -74,6 +74,15 @@ export const sectionLeftText = css`
   font-size: 1.4rem;
   margin-bottom: 1.2rem;
   color: #ababab;
+
+  span:after {
+    content: ',';
+    margin-right: 0.5rem;
+  }
+
+  span:last-of-type:after {
+    content: '';
+  }
 `
 
 export const sectionLeftDuration = css`

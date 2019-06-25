@@ -41,7 +41,13 @@ const Overview = ({ data }) => {
       <div className={contentOverviewSectionLeft}>
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
-          <p className={sectionLeftText}>{genre}</p>
+          <p className={sectionLeftText}>
+            {
+              genre && genre.map((genreName) => {
+                return <span>{genreName}</span>
+              })
+            }
+          </p>
           <p className={sectionLeftDuration}>{`${year ? year : ''}  13+  ${durationTime}`}</p>
         </div>
       </div>

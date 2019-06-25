@@ -21,6 +21,7 @@ import {
   movieDetailNotAvailableContainer,
   controllerContainer,
   videoPlayerContainer,
+  movieDetailBottom
 } from './style'
 
 import styles from '@global/style/css/grainBackground.css'
@@ -292,28 +293,19 @@ class MovieDetail extends Component {
                     showChildren
                     showBackBtn
                   >
-                    {/* <LazyLoad
-                      containerClassName={videoSuggestionContainer}
-                      containerStyle={{
-                        display: toggleSuggestion ? 'inline-block' : 'none',
-                        width: this.isAds ? '80%' : '90%',
-                        left: this.isAds ? '10%' : '5%',
-                      }}
-                    >
-                      <h2 className={videoSuggestionTitle}>Video lain dari Mola TV</h2> */}
-                    {/* <RelatedVideos videos={this.props.notFound.data} containerClassName={videoSuggestionWrapper} className={videoSuggestionPlayer} /> */}
-                    {/* </LazyLoad> */}
                   </Theoplayer>
                 ) : (
                     <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                   )}
               </div>
             </div>
-            {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
-            {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}
-            {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
-            {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
-            <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
+            <div className={movieDetailBottom}>
+              {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
+              {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}
+              {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
+              {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
+              <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
+            </div>
           </div>
         )}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}

@@ -438,7 +438,7 @@ class Home extends Component {
               {...this.props}
             />
           )}
-          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus === 'loading' || videoStatus === 'loading' && <HomePlaceholder />}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {/* {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />} */}
           {videos &&
