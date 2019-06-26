@@ -40,13 +40,21 @@ class Content extends Component {
           const { id, isDark, background, link } = video
           return index != 0 ? (
             <>
-              <img src={background.portrait} />
+              <picture>
+                <source srcSet={background.portraitWebp} type="image/webp" />
+                <source srcSet={background.portrait} type="image/jpeg" />
+                <img src={background.portrait} />
+              </picture>
               <div className={styles.content__gradient} />
             </>
           ) : (
             <a href={link} key={id} className="grid-slick" isdark={isDark}>
               <div key={id} className="grid-slick" isdark={isDark}>
-                <img src={background.portrait} />
+                <picture>
+                  <source srcSet={background.portraitWebp} type="image/webp" />
+                  <source srcSet={background.portrait} type="image/jpeg" />
+                  <img src={background.portrait} />
+                </picture>
               </div>
             </a>
           )

@@ -26,7 +26,7 @@ import HomeArrow from '../arrow'
 import HomeMobileContent from './content'
 import HomeMobileMenu from './menu'
 
-import { viewAllMovieImg } from '@global/imageUrl'
+import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
 import styles from './home.css'
 import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
@@ -290,6 +290,7 @@ class Home extends Component {
       if (index || index === 0) {
         sliderRefs[index].slickGoTo(0)
         that.setState({
+          isDark: videos.data[index].data[swipeIndex].isDark,
           scrollIndex: index,
           swipeIndex,
           activeSlide: videos.data[index].data[swipeIndex],
@@ -480,7 +481,11 @@ class Home extends Component {
                 {scrollIndex != 0 &&
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>
-                      <img src={viewAllMovieImg} />
+                      <picture>
+                        <source srcSet={viewAllMovieImgWebp} type="image/webp" />
+                        <source srcSet={viewAllMovieImg} type="image/jpeg" />
+                        <img src={viewAllMovieImg} />
+                      </picture>
                       <a href={`/movie-library/${libraryId}`}>
                         <span>{locale['view_all_movie']}</span>
                         <i />
