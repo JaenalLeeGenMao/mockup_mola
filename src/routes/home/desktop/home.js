@@ -546,11 +546,12 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={styles.home__gradient} />
+                {scrollIndex != 0 && <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />}
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
-                {activeSlide &&
+                {scrollIndex != 0 &&
+                  activeSlide &&
                   activeSlide.id && (
                     <>
                       <LazyLoad containerClassName={styles.header__playlist_title}>
@@ -574,15 +575,16 @@ class Home extends Component {
                       </LazyLoad>
                     </>
                   )}
-                {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
-                  <LazyLoad containerClassName={styles.view_all_movie_container}>
-                    <img src={viewAllMovieImg} />
-                    <a href={`/movie-library/${libraryId}`}>
-                      <span>{locale['view_all_movie']}</span>
-                      <i />
-                    </a>
-                  </LazyLoad>
-                )}
+                {scrollIndex != 0 &&
+                  swipeIndex + 1 === videos.data[scrollIndex].data.length && (
+                    <LazyLoad containerClassName={styles.view_all_movie_container}>
+                      <img src={viewAllMovieImg} />
+                      <a href={`/movie-library/${libraryId}`}>
+                        <span>{locale['view_all_movie']}</span>
+                        <i />
+                      </a>
+                    </LazyLoad>
+                  )}
                 <div className={`${styles.header__movie_slider} tourSlide`}>
                   {activeSlideDots && activeSlideDots.length > 1 && <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
                 </div>

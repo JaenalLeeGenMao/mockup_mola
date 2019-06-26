@@ -163,7 +163,7 @@ class Home extends Component {
       }
     }
 
-    // Prompt user to AddToHomeScreen
+    // Prompt user to f AddToHomeScreen
     window.addEventListener('beforeinstallprompt', e => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       // e.preventDefault()
@@ -428,7 +428,9 @@ class Home extends Component {
                 this.a2hsContainer.style.display = 'none'
                 localStorage.setItem('a2hs', false)
               }}
-            />
+            >
+              ✖
+            </div>
           </div>
           {playlistStatus !== 'error' && (
             <Header
@@ -452,7 +454,8 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
-                {activeSlide &&
+                {scrollIndex != 0 &&
+                  activeSlide &&
                   activeSlide.id && (
                     <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
@@ -474,15 +477,16 @@ class Home extends Component {
                       )}
                     </LazyLoad>
                   )}
-                {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
-                  <LazyLoad containerClassName={styles.view_all_movie_container}>
-                    <img src={viewAllMovieImg} />
-                    <a href={`/movie-library/${libraryId}`}>
-                      <span>{locale['view_all_movie']}</span>
-                      <i />
-                    </a>
-                  </LazyLoad>
-                )}
+                {scrollIndex != 0 &&
+                  swipeIndex + 1 === videos.data[scrollIndex].data.length && (
+                    <LazyLoad containerClassName={styles.view_all_movie_container}>
+                      <img src={viewAllMovieImg} />
+                      <a href={`/movie-library/${libraryId}`}>
+                        <span>{locale['view_all_movie']}</span>
+                        <i />
+                      </a>
+                    </LazyLoad>
+                  )}
                 <div className={styles.header__library_link_wrapper}>
                   {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>

@@ -17,6 +17,7 @@ import UaParser from 'ua-parser-js'
 import history from '../history'
 
 import tracker from '../lib/tracker'
+import { globalTracker } from '@source/lib/globalTracker'
 
 // let firstRender = true;
 let currentLocation = history.location
@@ -179,9 +180,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function (t) {
+      timer = setTimeout(function(t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)
@@ -207,51 +208,51 @@ const track = async store => {
     // }
 
     // Try get platform and browser
-    const platform = _get(UA.getDevice(), 'type', null)
-    const osName = _get(UA.getOS(), 'name', null)
-    const osVersion = _get(UA.getOS(), 'version', null)
-    const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
-    const vendor = _get(UA.getDevice(), 'vendor', null)
-    const device = vendor !== null ? `${vendor}` : null
-    const browserName = _get(UA.getBrowser(), 'name', null)
-    const browserVersion = _get(UA.getBrowser(), 'version', null)
-    const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
+    // const platform = _get(UA.getDevice(), 'type', null)
+    // const osName = _get(UA.getOS(), 'name', null)
+    // const osVersion = _get(UA.getOS(), 'version', null)
+    // const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
+    // const vendor = _get(UA.getDevice(), 'vendor', null)
+    // const device = vendor !== null ? `${vendor}` : null
+    // const browserName = _get(UA.getBrowser(), 'name', null)
+    // const browserVersion = _get(UA.getBrowser(), 'version', null)
+    // const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
 
-    const geolocation = tracker.getLangLat() ? tracker.getLangLat() : ''
-    const latitude = geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
-    const longitude = geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    // const geolocation = tracker.getLangLat() ? tracker.getLangLat() : ''
+    // const latitude = geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    // const longitude = geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
 
-    // Initialize Payload
-    const payload = {
-      data: {
-        project_id: 'molatv',
-        referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
-        host: `${window.location.host}`,
-        path: `${window.location.host}${location.pathname}${location.search}`,
-        session_id: tracker.sessionId(), // Try get+set session_id
-        client_id: tracker.clientId(),
-        page_content: document.title || null,
-        ip: user.clientIp,
-        platform,
-        os,
-        device,
-        app: browser,
-        client: 'mola-web',
-        screen_resolution: `${window.screen.width}x${window.screen.height}`,
-        current_subscription_id: adjustedSubs,
-        hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
-        utm_source: urlParams.utm_source || undefined,
-        utm_medium: urlParams.utm_medium || undefined,
-        utm_campaign: urlParams.utm_campaign || undefined,
-        latitude,
-        longitude,
-      },
-      table: 'event_pages',
-    }
+    // // Initialize Payload
+    // const payload = {
+    //   data: {
+    //     project_id: 'molatv',
+    //     referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
+    //     host: `${window.location.host}`,
+    //     path: `${window.location.host}${location.pathname}${location.search}`,
+    //     session_id: tracker.sessionId(), // Try get+set session_id
+    //     client_id: tracker.clientId(),
+    //     page_content: document.title || null,
+    //     ip: user.clientIp,
+    //     platform,
+    //     os,
+    //     device,
+    //     app: browser,
+    //     client: 'mola-web',
+    //     screen_resolution: `${window.screen.width}x${window.screen.height}`,
+    //     current_subscription_id: adjustedSubs,
+    //     hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
+    //     utm_source: urlParams.utm_source || undefined,
+    //     utm_medium: urlParams.utm_medium || undefined,
+    //     utm_campaign: urlParams.utm_campaign || undefined,
+    //     latitude,
+    //     longitude,
+    //   },
+    //   table: 'event_pages',
+    // }
 
-    if (user.uid) {
-      payload.data.user_id = user.uid
-    }
+    // if (user.uid) {
+    //   payload.data.user_id = user.uid
+    // }
 
     // if (firstRender) {
     //   firstRender = false;
@@ -265,19 +266,42 @@ const track = async store => {
     // get the token
     const token = await tracker.getOrCreateToken()
     // Post to ds-feeder if there's token && not in search page
-    if (token && !inSearchPage) tracker.sendPubSub(payload, token)
+    if (token && !inSearchPage) {
+      const payload = {
+        window,
+        user: user,
+        event: 'event_pages',
+      }
+      globalTracker(payload)
+    }
+    //tracker.sendPubSub(payload, token)
 
     const paths = pathname.split('/')
     const lastPathIndex = paths.length - 1
-
     if (pathname.includes('movie-detail')) {
-      payload.data.video_id = paths[lastPathIndex]
-      payload.table = 'event_videos'
-      if (token && !inSearchPage) tracker.sendPubSub(payload, token)
+      // payload.data.video_id = paths[lastPathIndex]
+      // payload.table = 'event_videos'
+      if (token && !inSearchPage) {
+        const payload = {
+          window,
+          videoId: paths.length > 2 ? paths[2] : '',
+          user: user,
+          event: 'event_videos',
+        }
+        globalTracker(payload)
+      } //tracker.sendPubSub(payload, token)
     } else if (pathname.includes('watch')) {
-      payload.data.video_id = urlParams.v
-      payload.table = 'event_videos'
-      if (token && !inSearchPage) tracker.sendPubSub(payload, token)
+      // payload.data.video_id = urlParams.v
+      // payload.table = 'event_videos'
+      if (token && !inSearchPage) {
+        const payload = {
+          window,
+          videoId: urlParams.v,
+          user: user,
+          event: 'event_videos',
+        }
+        globalTracker(payload)
+      } //tracker.sendPubSub(payload, token)
     }
 
     // HOTFIX need to find a way to get refferer in react
