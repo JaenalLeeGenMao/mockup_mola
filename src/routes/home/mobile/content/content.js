@@ -37,12 +37,18 @@ class Content extends Component {
         {...settings}
       >
         {this.props.videos.map(video => {
-          const { id, isDark, background } = video
-          return (
-            <div key={id} className="grid-slick" isdark={isDark}>
+          const { id, isDark, background, link } = video
+          return index != 0 ? (
+            <>
               <img src={background.portrait} />
               <div className={styles.content__gradient} />
-            </div>
+            </>
+          ) : (
+            <a href={link} key={id} className="grid-slick" isdark={isDark}>
+              <div key={id} className="grid-slick" isdark={isDark}>
+                <img src={background.portrait} />
+              </div>
+            </a>
           )
         })}
       </Slider>
