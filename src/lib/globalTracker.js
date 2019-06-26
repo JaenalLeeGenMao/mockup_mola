@@ -86,7 +86,7 @@ export const globalTracker = async data => {
 
   // get the token
   const token = await tracker.getOrCreateToken()
-  console.log('PAYLOAD', payload, 'token', token)
+  // console.log('PAYLOAD', payload, 'token', token)
   // Post to ds-feeder if there's token && not in search page
   return tracker.sendPubSub(payload, token)
 
