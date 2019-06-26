@@ -274,17 +274,13 @@ class Matches extends React.Component {
                 <div div className={s.contentFilterLeague}>
                   {leagueList.map(league => {
                     return (
-                      <>
+                      <div key={league.id}>
                         <img className={s.filterimg} src={league.iconUrl} onClick={() => this.getSelectedLeague(league.id)} />
-                        {selectedLeague.includes(league.id) ? (
-                          <div className={s.btnLeague}>
-                            <span className={s.checklistBtnLeague} />
-                          </div>
-                        ) : null}
+                        {selectedLeague.includes(league.id) ? <span className={s.checklistBtnLeague} /> : null}
                         <span value={league.id} className={s.nameleague} onClick={() => this.getSelectedLeague(league.id)}>
                           {league.name}
                         </span>
-                      </>
+                      </div>
                     )
                   })}
                 </div>
