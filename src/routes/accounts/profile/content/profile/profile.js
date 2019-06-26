@@ -76,6 +76,7 @@ class Profile extends React.Component {
     super(props)
 
     const { uid, firstName, lastName, email, phoneNumber, photo, birthdate, gender, location, subscriptions } = props.user
+    // this.propsName = `${firstName} ${lastName}`
 
     this.state = {
       isToggled: false,
@@ -92,15 +93,29 @@ class Profile extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount() {
-    this.props.fetchProfile()
+  setData = data => {
+    this.setState({
+      isToggled: false,
+      name: data.firstName + ' ' + data.lastName,
+      email: data.email || '',
+      phoneNumber: data.phoneNumber || '',
+      photo: data.photo || '',
+      birthdate: data.birthdate || '',
+      gender: data.gender || '',
+      location: data.location || '',
+    })
+  }
+
+  async componentDidMount() {
+    let data = await this.props.fetchProfile()
+    this.setData(data)
   }
 
   handleSubmit = async e => {
-    const { name = '', email = '', birthdate = '', photo = '', gender = '', location = '', phoneNumber = '', uploadStatus } = this.state
+    const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
-    const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
+    const payload = { firstName: name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
     if (uploadStatus && uploadStatus.success) {
       // success upload button nyalain
@@ -113,7 +128,7 @@ class Profile extends React.Component {
 
     const update = await Auth.updateProfile(payload)
     if (update.meta.status === 'success') {
-      this.props.updateProfile(payload)
+      // this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
     } else {
@@ -252,13 +267,13 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changeName" label="Nama Pengguna" value={name} />
-            <FormPlaceholder id="changeEmail" label="Email" value={email} />
-            <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={phoneNumber} />
-            <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={birthdate} />
-            <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={gender} />
-            <FormPlaceholder id="changeLocation" label="Lokasi" value={location} />
-            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName + ' ' + user.lastName} />
+            <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
+            <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phoneNumber} />
+            <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
+            <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={user.gender} />
+            <FormPlaceholder id="changeLocation" label="Lokasi" value={user.location} />
+            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={user.subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleClick}>
                 Ubah
