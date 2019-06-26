@@ -30,7 +30,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
-import { viewAllMovieImg } from '@global/imageUrl'
+import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -578,7 +578,11 @@ class Home extends Component {
                 {scrollIndex != 0 &&
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>
-                      <img src={viewAllMovieImg} />
+                      <picture>
+                        <source srcSet={viewAllMovieImgWebp} type="image/webp" />
+                        <source srcSet={viewAllMovieImg} type="image/jpeg" />
+                        <img src={viewAllMovieImg} />
+                      </picture>
                       <a href={`/movie-library/${libraryId}`}>
                         <span>{locale['view_all_movie']}</span>
                         <i />

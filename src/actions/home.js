@@ -1,8 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Mola from '@api/mola'
 import types from '../constants'
-
-import { viewAllMovieBg } from '@global/imageUrl'
+import { viewAllMovieBg, viewAllMovieBgWebp, viewAllMovieMobileBg, viewAllMovieMobileBgWebp } from '@global/imageUrl'
 
 const getHomePlaylist = () => dispatch => {
   dispatch({
@@ -61,7 +60,11 @@ const getHomeVideo = (playlist, isMobile) => dispatch => {
       const viewAllSection = {
         background: {
           landscape: viewAllMovieBg,
+          landscapeWebp: viewAllMovieBgWebp,
+          portrait: viewAllMovieMobileBg,
+          portraitWebp: viewAllMovieMobileBgWebp,
         },
+        isDark: 0,
       }
 
       const filterVisibility = result.data.filter(dt => {
