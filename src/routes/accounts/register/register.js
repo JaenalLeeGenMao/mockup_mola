@@ -12,6 +12,8 @@ import Header from '@components/Header'
 import Footer from '@components/Footer'
 import Link from '@components/Link'
 
+import history from '@source/history'
+
 import { getLocale } from './locale'
 import styles from './register.css'
 
@@ -74,7 +76,12 @@ class Register extends Component {
     })
 
     if (result.meta.status === 'success') {
-      window.location.href = `${config.endpoints.domain}/accounts/login`
+      history.push({
+        pathname: '/accounts/thankyou',
+        state: {
+          isAccesible: true,
+        },
+      })
     } else {
       this.setState({
         error: 'Invalid Token',

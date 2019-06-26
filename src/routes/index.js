@@ -96,6 +96,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
     },
     {
+      path: '/accounts/thankyou',
+      load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
+    },
+    {
       path: '/system-info',
       load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
     },
@@ -179,9 +183,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function (t) {
+      timer = setTimeout(function(t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)
