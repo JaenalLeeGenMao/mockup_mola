@@ -87,9 +87,9 @@ class FormInput extends React.Component {
           this.state.focus && (
             <div className={style.eye}>
               {this.state.visible ? (
-                <img src={unVisible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
-              ) : (
                 <img src={visible} alt="mola tv hidden" onClick={() => this.toggle('visible')} />
+              ) : (
+                <img src={unVisible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
               )}
             </div>
           )}
