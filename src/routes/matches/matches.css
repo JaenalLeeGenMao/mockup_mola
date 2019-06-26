@@ -78,7 +78,13 @@ body {
 
 .loadmore {
   font-size: 1rem;
-  width: 141rem;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAB7gAAAe4BoWPTtwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABySURBVEiJ7ZBLDoAgDAXhYh5IDyDhBC5Z+rmr40ISCSEgpombzpK+dsgzRlGUfwEGiUxpyQIHN76S8zGzA7ZXsMXlExgLmSnOANYuQSIJPLhk5pL3petwQzKLHc8kaV3fa2lIgujPKxL545lEphZFec0FhgvHaFm/1ocAAAAASUVORK5CYII=);
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 0 69.5rem 0 69.5rem;
 }
 
 .labelAllItemSeen > span {

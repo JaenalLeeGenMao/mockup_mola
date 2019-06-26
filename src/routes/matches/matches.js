@@ -393,17 +393,18 @@ class Matches extends React.Component {
                   hasMore={this.state.hasMore}
                   loader={
                     <div className={s.labelLoadMore}>
-                      {this.state.isScrolling ? <LoaderComp /> : null}
+                      <LoaderComp />
+                      {/* {this.state.isScrolling ?  : null} */}
                       Load more
-                      <div className={s.loadmore}>v</div>
+                      <span className={s.loadmore} />
                     </div>
                   }
                   height={750}
-                  endMessage={
-                    <div className={s.labelAllItemSeen}>
-                      <span>Semua Jadwal Matches Sudah dilihat</span>
-                    </div>
-                  }
+                  // endMessage={
+                  // <div className={s.labelAllItemSeen}>
+                  //   <span>Semua Jadwal Matches Sudah dilihat</span>
+                  // </div>
+                  // }
                 >
                   <div className={s.matchlist_wrappergrid}>
                     <div className={s.matches_grid}>
