@@ -38,12 +38,18 @@ class Content extends Component {
       >
         {this.props.videos.map(video => {
           const { id, isDark, background } = video
-          return (
-            <div key={id} className="grid-slick" isdark={isDark}>
+          return index != 0 ? (
+            <>
               <img src={background.portrait} />
               <div className={styles.content__gradient} />
-            </div>
-          )
+            </>
+          ) : (
+              <a href="https://blibli.com" key={id} className="grid-slick" isdark={isDark}>
+                <div key={id} className="grid-slick" isdark={isDark}>
+                  <img src={background.portrait} />
+                </div>
+              </a>
+            )
         })}
       </Slider>
     )

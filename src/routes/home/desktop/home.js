@@ -314,7 +314,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
 
@@ -418,7 +418,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -546,41 +546,31 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={styles.home__gradient} />
+                {scrollIndex != 0 && <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />}
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
-                {activeSlide &&
-                  activeSlide.id && (
-                    <>
-                      <LazyLoad containerClassName={styles.header__playlist_title}>
-                        <div>{this.state.playlists.data[scrollIndex].title}</div>
-                      </LazyLoad>
-                      <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                        <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                        <p>{filteredDesc}</p>
-                        {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
-                        {!activeSlide.buttonText &&
-                          scrollIndex != 0 && (
-                            <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                              <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
-                            </Link>
-                          )}
-                        {activeSlide.buttonText && (
-                          <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                            <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                          </a>
-                        )}
-                      </LazyLoad>
-                    </>
-                  )}
-                {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
-                  <LazyLoad containerClassName={styles.view_all_movie_container}>
-                    <img src={viewAllMovieImg} />
-                    <a href={`/movie-library/${libraryId}`}>
-                      <span>{locale['view_all_movie']}</span>
-                      <i />
-                    </a>
+                {scrollIndex != 0 && (
+                  <LazyLoad containerClassName={styles.header__playlist_title}>
+                    <div>{this.state.playlists.data[scrollIndex].title}</div>
+                  </LazyLoad>
+                )}
+                {activeSlide && (
+                  <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
+                    {scrollIndex != 0 && <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>}
+                    <p>{filteredDesc}</p>
+                    {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
+                        </Link>
+                      )}
+                    {/* {activeSlide.buttonText && (
+                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </Link>
+                    )} */}
                   </LazyLoad>
                 )}
                 <div className={`${styles.header__movie_slider} tourSlide`}>

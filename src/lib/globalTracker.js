@@ -8,7 +8,7 @@ import dateFormat from 'dateformat'
 export const globalTracker = async data => {
   const { user, heartbeat, window: clientWindow, event, referrer, video_quality, bitrate, client_bandwidth, videoId } = data
 
-  console.log('user', user)
+  // console.log('user', user)
   let currentLocation = history.location
   const UA = new UaParser()
   UA.setUA(navigator.userAgent)
@@ -40,6 +40,7 @@ export const globalTracker = async data => {
       path: `${window.location.host}${location.pathname}${location.search}`,
       session_id: tracker.sessionId(), // Try get+set session_id
       client_id: tracker.clientId(),
+      video_id: videoId,
       page_content: document.title || null,
       ip: user.clientIp,
       platform,

@@ -163,7 +163,7 @@ class Home extends Component {
       }
     }
 
-    // Prompt user to AddToHomeScreen
+    // Prompt user to f AddToHomeScreen
     window.addEventListener('beforeinstallprompt', e => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       // e.preventDefault()
@@ -276,7 +276,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
     this.activeSlider = this.state.sliderRefs[index]
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -428,7 +428,9 @@ class Home extends Component {
                 this.a2hsContainer.style.display = 'none'
                 localStorage.setItem('a2hs', false)
               }}
-            />
+            >
+              ✖
+            </div>
           </div>
           {playlistStatus !== 'error' && (
             <Header
@@ -452,56 +454,65 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
-                {activeSlide &&
-                  activeSlide.id && (
-                    <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                      <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
-                      <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      <p className="filteredText">{filteredDesc}</p>
-                      <p className="filteredText">{filteredQuote}</p>
-                      <p className="filteredText">{filteredDesc}</p>
-                      <p className="filteredText">{filteredQuote}</p>
-                      {!activeSlide.buttonText &&
-                        scrollIndex != 0 && (
-                          <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                            <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
-                          </Link>
-                        )}
-                      {activeSlide.buttonText && (
-                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                          <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                        </a>
-                      )}
-                    </LazyLoad>
+<<<<<<< HEAD
+          {activeSlide &&
+            activeSlide.id && (
+=======
+                {scrollIndex != 0 &&
+                  activeSlide && (
+>>>>>>> remove button and detail and clickable banner
+              <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
+                <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
+                <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
+                <p className="filteredText">{filteredDesc}</p>
+                <p className="filteredText">{filteredQuote}</p>
+                <p className="filteredText">{filteredDesc}</p>
+                <p className="filteredText">{filteredQuote}</p>
+                {!activeSlide.buttonText &&
+                  scrollIndex != 0 && (
+                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                      <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                    </Link>
                   )}
-                {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
-                  <LazyLoad containerClassName={styles.view_all_movie_container}>
-                    <img src={viewAllMovieImg} />
-                    <a href={`/movie-library/${libraryId}`}>
-                      <span>{locale['view_all_movie']}</span>
-                      <i />
-                    </a>
-                  </LazyLoad>
+                {activeSlide.buttonText && (
+                  <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                    <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                  </a>
                 )}
-                <div className={styles.header__library_link_wrapper}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
-                </div>
-                <Slider
-                  {...settings}
-                  id="rootSlider"
-                  ref={node => {
-                    this.rootSlider = node
-                  }}
-                >
-                  {videos.data.map((video, index) => {
-                    const { id, sortOrder } = video.meta
-                    return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
-                  })}
-                </Slider>
-              </>
+              </LazyLoad>
             )}
+<<<<<<< HEAD
+        {swipeIndex + 1 === videos.data[scrollIndex].data.length && (
+          <LazyLoad containerClassName={styles.view_all_movie_container}>
+            <img src={viewAllMovieImg} />
+            <a href={`/movie-library/${libraryId}`}>
+              <span>{locale['view_all_movie']}</span>
+              <i />
+            </a>
+          </LazyLoad>
+        )}
+=======
+>>>>>>> remove button and detail and clickable banner
+        <div className={styles.header__library_link_wrapper}>
+          {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
         </div>
-      </Fragment>
+        <Slider
+          {...settings}
+          id="rootSlider"
+          ref={node => {
+            this.rootSlider = node
+          }}
+        >
+          {videos.data.map((video, index) => {
+            const { id, sortOrder } = video.meta
+            return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+          })}
+        </Slider>
+              </>
+    )
+  }
+        </div>
+      </Fragment >
     )
   }
 }

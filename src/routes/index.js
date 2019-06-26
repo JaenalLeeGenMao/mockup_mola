@@ -278,13 +278,13 @@ const track = async store => {
 
     const paths = pathname.split('/')
     const lastPathIndex = paths.length - 1
-
     if (pathname.includes('movie-detail')) {
       // payload.data.video_id = paths[lastPathIndex]
       // payload.table = 'event_videos'
       if (token && !inSearchPage) {
         const payload = {
-          videoId: paths[lastPathIndex],
+          window,
+          videoId: paths.length > 2 ? paths[2] : '',
           user: user,
           event: 'event_videos',
         }
@@ -295,6 +295,7 @@ const track = async store => {
       // payload.table = 'event_videos'
       if (token && !inSearchPage) {
         const payload = {
+          window,
           videoId: urlParams.v,
           user: user,
           event: 'event_videos',
