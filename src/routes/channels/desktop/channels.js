@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react'
-
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import moment from 'moment'
@@ -10,8 +9,9 @@ const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
 import Header from '@components/Header'
-import Schedule from './schedule'
 import channelActions from '@actions/channels'
+import Schedule from './schedule'
+import { getChannelProgrammeGuides } from '../selectors';
 
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
@@ -35,37 +35,11 @@ class Channels extends Component {
   clickChannel = (channelId) => {
     // console.log("MASUKKK", channelId)
     //rerender player here
+
   }
 
   render() {
-    //dummy json
-    const schedule = [
-      {
-        'id': 'kids-channel',
-        'title': 'KIDS C',
-        'videos': [
-          { 'id': 1, 'title': 'The Rugrats', 'startTime': 1560387600, 'endTime': 1560391200 },
-          { 'id': 2, 'title': 'Spongebob SquarePants', 'startTime': 1560391200, 'endTime': 1560393000 },
-          { 'id': 3, 'title': 'Hey! Tayo', 'startTime': 1560393000, 'endTime': 1560394800 },
-          { 'id': 4, 'title': 'Coco Melon: The Wheels on The Bus', 'startTime': 1560394800, 'endTime': 1560399300 },
-          { 'id': 5, 'title': 'Coco Melon:  Johnny Yes Papa', 'startTime': 1560399300, 'endTime': 1560409300 }
-        ]
-      },
-      {
-        'id': 'movie-channel',
-        'title': 'MOVIE',
-        'videos': [
-          { 'id': 6, 'title': 'Once Upon A Time', 'startTime': 1560388500, 'endTime': 1560391200 },
-          { 'id': 7, 'title': 'Letters to Juliet', 'startTime': 1560391200, 'endTime': 1560394800 },
-          { 'id': 8, 'title': 'Split', 'startTime': 1560394800, 'endTime': 1560396000 },
-          { 'id': 9, 'title': 'When The Night Comes', 'startTime': 1560396000, 'endTime': 1560400200 },
-          { 'id': 10, 'title': 'Gangnam Beauty', 'startTime': 1560400200, 'endTime': 1560403800 },
-          { 'id': 11, 'title': 'Oh My God', 'startTime': 1560403800, 'endTime': 1560407400 }
-        ]
-      }
-    ]
-
-    const { channelsPlaylist, programmeGuides } = this.props
+    const { programmeGuides, channelSchedule } = this.props
     return (
       <>
         <div>
@@ -81,18 +55,21 @@ class Channels extends Component {
               }
             />
           </div>
-          <Schedule scheduleList={schedule} clickChannel={this.clickChannel} />
+          {programmeGuides.loading && <div> please wait... </div>}
+          {programmeGuides.data && channelSchedule && (
+            <Schedule scheduleList={channelSchedule} clickChannel={this.clickChannel} />
+          )}
+          {programmeGuides.error && !programmeGuides.data && <div> terjadi kesalahan </div>}
         </div>
       </>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    ...state,
-  }
-}
+const mapStateToProps = (state) => ({
+  channelSchedule: getChannelProgrammeGuides(state),
+  ...state
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchChannelsPlaylist: () => dispatch(channelActions.getChannelsPlaylist()),

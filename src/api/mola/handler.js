@@ -746,13 +746,13 @@ const getProgrammeGuides = (date, playlistId) => {
   })
     .then(response => {
       const result = utils.normalizeProgrammeGuides(response);
+
       return {
         meta: {
           status: 'success',
           error: ''
         },
         data: result,
-        playlistId: result[0].playlist.id
       };
     })
     .catch(error => {

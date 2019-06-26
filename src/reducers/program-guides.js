@@ -2,7 +2,7 @@ import types from '../constants'
 
 const initialState = {
   loading: true,
-  data: {},
+  data: null,
   error: false
 }
 

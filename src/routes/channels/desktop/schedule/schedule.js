@@ -93,6 +93,9 @@ class Schedule extends Component {
         <div className={styles.schedule_wrapper}>
           <div className={styles.schedule_name_list}>
             <div className={styles.schedule_header_left} />
+            {/* {for (key in this.props.epg) {
+
+            }} */}
             {schedule && schedule.map((dt) => {
               return (
                 <>

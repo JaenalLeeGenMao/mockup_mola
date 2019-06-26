@@ -446,45 +446,13 @@ const normalizeProgrammeGuides = response => {
           end,
           title,
           description,
-          playlist,
-          video,
+          playlist: { id: playlistId,
+            attributes: { parentId, images: playlistImages, isFree, country, sortOrder, visibility, seo: playlistSeo } },
+          video: { id: videoId,
+            attributes: { drm, images: videoImage, title: videoTtile, subtitles, displayOrder, seo: videoSeo, endTime, startTime } }
         },
         type,
       } = result;
-
-      const normalizePlaylist = playlist.map(list => {
-        const {
-          id,
-          attributes: { parentId, images, sortOrder, visibility, seo }
-        } = list;
-        return {
-          id,
-          parentId,
-          images,
-          sortOrder,
-          visibility,
-          seo
-        };
-      });
-
-      const normalizeVideo = video.map(item => {
-        const {
-          id,
-          attributes: { drm, images, title, subtitles, displayOrder, seo, endTime, startTime }
-        } = item;
-        return {
-          id,
-          type,
-          images,
-          drm,
-          title,
-          subtitles,
-          displayOrder,
-          seo,
-          startTime,
-          endTime
-        };
-      });
 
       return {
         id,
@@ -494,11 +462,41 @@ const normalizeProgrammeGuides = response => {
         end: moment(end)
           .utcOffset(7)
           .format(), // parse to WIB
+        startTime: moment(start)
+          .utcOffset(7)
+          .unix(), // parse to WIB
+        endTime: moment(end)
+          .utcOffset(7)
+          .unix(), // parse to WIB
+        href: `/movie-detail/${videoId}`,
         title,
         description,
-        playlist: normalizePlaylist[0],
-        video: normalizeVideo[0],
-        type
+        playlist: {
+          id: playlistId,
+          attributes: {
+            parentId,
+            images: playlistImages,
+            isFree,
+            country,
+            sortOrder,
+            visibility,
+            seo: playlistSeo
+          }
+        },
+        video: {
+          id: videoId,
+          attributes: {
+            drm,
+            images: videoImage,
+            title: videoTtile,
+            subtitles,
+            displayOrder,
+            seo: videoSeo,
+            endTime,
+            startTime
+          }
+        },
+        type,
       };
     });
   }
