@@ -70,6 +70,11 @@ class Matches extends React.Component {
     this.setState({ modalActive: false })
   }
 
+  handleCloseModalAfterSubmit = () => {
+    this.closeModal()
+    this.handleSubmit()
+  }
+
   componentDidMount() {
     this.props.getMatches()
     // window.addEventListener('scroll', this.onScroll) // test hide and show LoaderComp
@@ -294,14 +299,11 @@ class Matches extends React.Component {
                 <span>Week</span>
                 <>{this.showCheckBoxWeek()}</>
               </div>
-              {/* <a title="Close" onClick={this.closeModal}>
-                X
-              </a> */}
               <div className={s.positionSubmitBtn}>
                 <button
                   className={s.submitBtn}
                   onClick={() => {
-                    this.handleSubmit()
+                    this.handleCloseModalAfterSubmit()
                   }}
                 >
                   OK
@@ -394,18 +396,13 @@ class Matches extends React.Component {
                   loader={
                     <div className={s.labelLoadMore}>
                       <LoaderComp />
-                      {/* {this.state.isScrolling ?  : null} */}
                       Load more
                       <span className={s.loadmore} />
                     </div>
                   }
                   height={750}
-                  // endMessage={
-                  // <div className={s.labelAllItemSeen}>
-                  //   <span>Semua Jadwal Matches Sudah dilihat</span>
-                  // </div>
-                  // }
                 >
+                  <div className={s.matches__wpgrid}>bundle grid</div>
                   <div className={s.matchlist_wrappergrid}>
                     <div className={s.matches_grid}>
                       <div className={s.matchlist_wrappercontent_center}>
