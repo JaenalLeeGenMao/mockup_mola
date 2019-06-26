@@ -2,31 +2,18 @@ import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 
-import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/Header'
 import MatchCard from '@components/MatchCard'
 import LazyLoad from '@components/common/Lazyload'
+import Placeholder from './placeholder'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import matchListActions from '@actions/matches'
 import s from './matches.css'
-import { match, union } from 'tcomb'
 import LoaderComp from './loaderComp'
 import { isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 import moment from 'moment'
 import _unionBy from 'lodash/unionBy'
-import _union from 'lodash/union'
-
-import { UiCheckbox } from '@components'
-import { get } from 'http'
-import { Point } from 'terraformer'
-
-const style = {
-  height: 160,
-  border: '1px solid green',
-  margin: 6,
-  padding: 8,
-}
 
 class Matches extends React.Component {
   constructor(props) {
@@ -243,7 +230,7 @@ class Matches extends React.Component {
 
     for (let i = 0; i < selectedLeague.length; i++) {
       const ref = this.filterAllLeague(selectedLeague[i])
-      matchesTemp = _unionBy(matchesTemp, this.filterAllLeague(selectedLeague[i]), 'id')
+      matchesTemp = _unionBy(matchesTemp, ref, 'id')
     }
     this.setState({ matches: matchesTemp })
   }
@@ -381,12 +368,15 @@ class Matches extends React.Component {
     const isDark = false
     return (
       <>
-        {/* {matchesList.meta === 'loading' && ()} */}
+        <div className={s.headerContainer}>
+          <Header stickyOff searchOff isDark={isDark} activeMenu="sport" libraryOff {...this.props} />
+        </div>
+
+        {matchesList.meta.status === 'loading' && (
+          <Placeholder />
+        )}
         {matchesList.meta.status === 'success' && (
           <>
-            <div className={s.headerContainer}>
-              <Header stickyOff searchOff isDark={isDark} activeMenu="sport" libraryOff {...this.props} />
-            </div>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
                 <InfiniteScroll
@@ -401,8 +391,12 @@ class Matches extends React.Component {
                     </div>
                   }
                   height={750}
+                  endMessage={
+                    <div className={s.labelAllItemSeen}>
+                      <span>Semua Jadwal Matches Sudah dilihat</span>
+                    </div>
+                  }
                 >
-                  <div className={s.matches__wpgrid}>bundle grid</div>
                   <div className={s.matchlist_wrappergrid}>
                     <div className={s.matches_grid}>
                       <div className={s.matchlist_wrappercontent_center}>
@@ -413,8 +407,8 @@ class Matches extends React.Component {
                               {this.ShowMatchCard(sortedByStartDate)}
                             </>
                           ) : (
-                            <div>Tidak Ada Jadwal Matches</div>
-                          )}
+                              <div>Tidak Ada Jadwal Matches</div>
+                            )}
                         </div>
                       </div>
                       <div className={s.matchlist_gridcontainer}>

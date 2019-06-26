@@ -119,10 +119,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-              id: league.id,
-              name: league.attributes.name,
-              iconUrl: league.attributes.iconUrl,
-            }
+            id: league.id,
+            name: league.attributes.name,
+            iconUrl: league.attributes.iconUrl,
+          }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -288,7 +288,7 @@ const normalizeVideoDetail = response => {
     return data.map(result => {
       const {
         id,
-        attributes: { title, images, quotes, drm, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType },
+        attributes: { title, images, quotes, drm, trailers, description, source, streamSourceUrl, suitableAge, releaseDate, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType },
       } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
@@ -300,6 +300,8 @@ const normalizeVideoDetail = response => {
         source,
         streamSourceUrl,
         drm,
+        suitableAge,
+        releaseDate,
         subtitles,
         people,
         genre,
