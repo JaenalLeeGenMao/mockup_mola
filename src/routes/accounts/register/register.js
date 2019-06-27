@@ -120,7 +120,7 @@ class Register extends Component {
           <div id="main_form" className={styles.register__content_form}>
             <div className={styles.register__content_title}>{locale['register_title']}</div>
             <div>{error && <p className={styles.register__content_error}>{error}</p>}</div>
-            <TextInput
+            {/* <TextInput
               id="username"
               name="username"
               onChange={this.handleInputChange}
@@ -131,7 +131,7 @@ class Register extends Component {
               placeholder="Username"
               type="text"
               onKeyUp={this.handleKeyUp}
-            />
+            /> */}
             <TextInput
               id="email"
               name="email"
