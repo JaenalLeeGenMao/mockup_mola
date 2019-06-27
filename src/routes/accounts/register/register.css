@@ -105,6 +105,14 @@
   color: rgba(0, 106, 255, 1);
 }
 
+.register__label_resend_disable {
+  font-size: 1rem;
+  letter-spacing: 0.136rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: grey;
+}
+
 .register__label_resend:hover {
   cursor: pointer;
   color: rgba(9, 106, 255, 0.7);
