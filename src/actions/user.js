@@ -35,9 +35,7 @@ export const updateProfile = params => {
     }
 
     const update = await Auth.updateProfile({
-      // name: params.firstName + ' ' + params.lastName,
-      firstName: params.firstName,
-      lastName: params.lastName,
+      name: params.firstName,
       csrf: csrf,
       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
@@ -64,9 +62,7 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      // data.username = `${data.firstName || ''} ${data.lastName || ''}`.trim()
-      data.firstName = data.firstName.trim()
-      data.lastName = data.lastName.trim()
+      data.username = data.firstName.trim()
       data.phoneNumber = data.phone
 
       if (data.birthdate == null) {
