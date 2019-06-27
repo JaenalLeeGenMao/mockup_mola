@@ -15,7 +15,7 @@ import {
 } from './style'
 
 const Overview = ({ data }) => {
-  const { title, description, year, genre, duration } = data
+  const { title, description, releaseDate, suitableAge, genre, duration } = data
   const filterPeople = type =>
     data.people.filter(item => {
       return item.attributes.peopleTypeName === type
@@ -33,6 +33,25 @@ const Overview = ({ data }) => {
     return <span key={cast.name}>{cast.attributes.name}</span>
   })
 
+  const releaseYear = (releaseDate) => {
+    let releaseYearArr = null;
+    let releaseYear = '';
+    releaseDate.map((data) => {
+      if (data.country == '') {
+        if (!releaseYearArr) {
+          releaseYearArr = { ...data }
+        }
+      } else if (data.country == 'ID') {
+        releaseYearArr = { ...data }
+      }
+    })
+    if (releaseYearArr) {
+      const dateTime = new Date(releaseYearArr.date)
+      releaseYear = dateTime.getFullYear()
+    }
+    return releaseYear
+  }
+
   const durationHour = duration && Math.floor(duration / 3600) + 'h'
   const durationMin = duration && Math.floor((duration % 3600) / 60) + 'm'
   const durationTime = duration ? durationHour + '' + durationMin : ''
@@ -44,11 +63,15 @@ const Overview = ({ data }) => {
           <p className={sectionLeftText}>
             {
               genre && genre.map((genreName) => {
-                return <span>{genreName}</span>
+                return <span key={genreName}>{genreName}</span>
               })
             }
           </p>
-          <p className={sectionLeftDuration}>{`${year ? year : ''}  13+  ${durationTime}`}</p>
+          <p className={sectionLeftDuration}>
+            {releaseYear(releaseDate)}
+            <span>{suitableAge ? suitableAge : '13+'}</span>
+            {durationTime}
+          </p>
         </div>
       </div>
       <div className={contentOverviewSectionMiddle}>

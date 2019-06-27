@@ -89,6 +89,12 @@ export const sectionLeftDuration = css`
   margin-bottom: 1.2rem;
   color: #a9a9a9;
   font-size: 1.4rem;
+
+  span {
+    margin: 0 5px;
+    border: 1px solid #a9a9a9;
+    padding: 2px;
+  }
 `
 
 export const sectionMiddleTitle = css`

@@ -262,6 +262,40 @@ body {
   height: 2.28rem;
 }
 
+.view_all_movie_container {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  z-index: 2;
+  text-align: center;
+  transform: translate(-50%, -40%);
+}
+
+.view_all_movie_container > img {
+  width: 150px;
+}
+
+.view_all_movie_container > a {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  padding-top: 2rem;
+  display: block;
+  white-space: nowrap;
+}
+
+.view_all_movie_container i {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDQ1IDMwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojZmZmO308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iYSIgZD0iTTQ1LDQ5LjQ3Nkg0LjY1NmwxMC40Ni0xMS43MTJMMTMuNCwzNS44MzgsMCw1MC44MzhsMTMuNCwxNSwxLjcyLTEuOTI2TDQuNjU2LDUyLjJINDVaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NSA2NS44MzgpIHJvdGF0ZSgxODApIi8+PC9zdmc+');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 15px;
+  margin-left: 5px;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .swipeUpIcon {

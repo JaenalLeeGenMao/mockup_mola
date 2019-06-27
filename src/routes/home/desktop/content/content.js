@@ -13,7 +13,7 @@ class Content extends Component {
     const settings = {
       dots: false,
       arrows: false,
-      infinite: true,
+      infinite: false,
       touchMove: false,
       speed: 500,
       slidesToShow: 1,
@@ -35,11 +35,15 @@ class Content extends Component {
         {...settings}
       >
         {this.props.videos.map(video => {
-          const { id, isDark, background } = video
-          return (
+          const { id, isDark, background, link } = video
+          return index != 0 ? (
             <div key={id} className="grid-slick" isdark={isDark}>
               <img src={background.landscape} />
             </div>
+          ) : (
+            <a href={link} key={id} className="grid-slick" isdark={isDark}>
+              <img src={background.landscape} />
+            </a>
           )
         })}
       </Slider>

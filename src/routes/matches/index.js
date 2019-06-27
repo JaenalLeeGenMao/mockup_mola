@@ -1,12 +1,12 @@
 import React from 'react';
 import MolaLayout from '@components/Molalayout';
-import Matches from './matches';
+import MatchesDesktop from './desktop';
 import MatchesMobile from './mobile';
 
 const title = 'Match List Page';
 const description = 'Choose your favourite Matches via Mola';
 
-function action({ query, isMobile, store }) {
+function action({ isMobile, store }) {
   return {
     chunks: ['matches'],
     title,
@@ -16,10 +16,10 @@ function action({ query, isMobile, store }) {
         <MatchesMobile {...store} />
       </MolaLayout>
     ) : (
-      <MolaLayout>
-        <Matches title={title} />
-      </MolaLayout>
-    ),
+        <MolaLayout>
+          <MatchesDesktop title={title} />
+        </MolaLayout>
+      ),
   };
 }
 
