@@ -7,7 +7,7 @@ import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
 import Uploader from '@api/uploader'
 
-import { fetchProfile } from '@actions/user'
+import { updateProfile, fetchProfile } from '@actions/user'
 
 import LazyLoad from '@components/common/Lazyload'
 
@@ -80,8 +80,7 @@ class Profile extends React.Component {
 
     this.state = {
       isToggled: false,
-      // name: `${firstName || ''} ${lastName || ''}`,
-      name: firstName || '',
+      name: `${firstName} ${lastName}` || '',
       email: email || '',
       phoneNumber: phoneNumber || '',
       photo: photo || '',
@@ -97,7 +96,7 @@ class Profile extends React.Component {
   setData = data => {
     this.setState({
       isToggled: false,
-      name: data.firstName || '',
+      name: data.firstName + ' ' + data.lastName,
       email: data.email || '',
       phoneNumber: data.phoneNumber || '',
       photo: data.photo || '',
@@ -113,10 +112,10 @@ class Profile extends React.Component {
   }
 
   handleSubmit = async e => {
-    const { firstName, lastName, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
+    const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
-    const payload = { firstName: name, email, photo, csrf, birthdate, gender, location, token, phone: phoneNumber }
+    const payload = { firstName: name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
     if (uploadStatus && uploadStatus.success) {
       // success upload button nyalain
@@ -235,7 +234,7 @@ class Profile extends React.Component {
   render() {
     const { isMobile, onClick, user } = this.props
     const { uid, subscriptions } = user
-    const { isToggled, firstName, lastName, email, phoneNumber, photo, birthdate, gender, location } = this.state
+    const { isToggled, name, email, phoneNumber, photo, birthdate, gender, location } = this.state
 
     return (
       <div>
@@ -248,8 +247,7 @@ class Profile extends React.Component {
               </div>
               <input id="file" className={s.profile_image_input} type="file" accept="image/*" onChange={this.handleFileSelect} />
             </div>
-            <FormContent type="text" id="firstName" label="Ubah nama depan" value={firstName} onChange={this.onChangeInput} />
-            <FormContent type="text" id="lastName" label="Ubah nama belakang" value={lastName} onChange={this.onChangeInput} />
+            <FormContent type="text" id="name" label="Ubah nama" value={name} onChange={this.onChangeInput} />
             <FormContent type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} disabled />
             <FormContent type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} disabled />
             <FormContent type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} />
@@ -269,7 +267,7 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName + ' ' + user.lastName} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
             <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phoneNumber} />
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
@@ -298,7 +296,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
-    // updateProfile: data => dispatch(updateProfile(data)),
+    updateProfile: data => dispatch(updateProfile(data)),
     fetchProfile: () => dispatch(fetchProfile()),
   }
 }
