@@ -7,7 +7,7 @@ import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
 import Uploader from '@api/uploader'
 
-import { updateProfile, fetchProfile } from '@actions/user'
+import { fetchProfile } from '@actions/user'
 
 import LazyLoad from '@components/common/Lazyload'
 
@@ -80,9 +80,8 @@ class Profile extends React.Component {
 
     this.state = {
       isToggled: false,
-      // name: `${firstName} ${lastName}`,
-      firstName: firstName || '',
-      lastName: lastName || '',
+      // name: `${firstName || ''} ${lastName || ''}`,
+      name: firstName || '',
       email: email || '',
       phoneNumber: phoneNumber || '',
       photo: photo || '',
@@ -98,9 +97,7 @@ class Profile extends React.Component {
   setData = data => {
     this.setState({
       isToggled: false,
-      // name: data.firstName + ' ' + data.lastName,
-      firstName: data.firstName || '',
-      lastName: data.lastName || '',
+      name: data.firstName || '',
       email: data.email || '',
       phoneNumber: data.phoneNumber || '',
       photo: data.photo || '',
@@ -119,7 +116,7 @@ class Profile extends React.Component {
     const { firstName, lastName, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
-    const payload = { firstName, lastName, csrf, birthdate, gender, location, token, phone: phoneNumber }
+    const payload = { firstName: name, email, photo, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
     if (uploadStatus && uploadStatus.success) {
       // success upload button nyalain
@@ -272,14 +269,13 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changefirstName" label="Nama Depan" value={user.firstName} />
-            <FormPlaceholder id="changelastName" label="Nama Belakang" value={user.lastName} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
             <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phoneNumber} />
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
             <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={user.gender} />
             <FormPlaceholder id="changeLocation" label="Lokasi" value={user.location} />
-            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={user.subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
+            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleClick}>
                 Ubah
@@ -302,7 +298,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
-    updateProfile: data => dispatch(updateProfile(data)),
+    // updateProfile: data => dispatch(updateProfile(data)),
     fetchProfile: () => dispatch(fetchProfile()),
   }
 }
