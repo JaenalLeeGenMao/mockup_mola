@@ -271,7 +271,7 @@ body {
   transform: translate(-50%, -40%);
 }
 
-.view_all_movie_container > img {
+.view_all_movie_container img {
   width: 150px;
 }
 
