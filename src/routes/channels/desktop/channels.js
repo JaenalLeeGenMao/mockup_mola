@@ -8,6 +8,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
+import history from '@source/history';
 import Header from '@components/Header'
 import channelActions from '@actions/channels'
 import Schedule from './schedule'
@@ -33,13 +34,11 @@ class Channels extends Component {
   }
 
   clickChannel = (channelId) => {
-    // console.log("MASUKKK", channelId)
-    //rerender player here
-
+    history.push(`/channels/${channelId}`);
   }
 
   render() {
-    const { programmeGuides, channelSchedule } = this.props
+    const { programmeGuides, channelSchedule, pathId } = this.props
     return (
       <>
         <div>
@@ -55,9 +54,9 @@ class Channels extends Component {
               }
             />
           </div>
-          {programmeGuides.loading && <div> please wait... </div>}
+          {programmeGuides.loading && <div> Please Wait... </div>}
           {programmeGuides.data && channelSchedule && (
-            <Schedule scheduleList={channelSchedule} clickChannel={this.clickChannel} />
+            <Schedule scheduleList={channelSchedule} clickChannel={this.clickChannel} pathId={pathId} />
           )}
           {programmeGuides.error && !programmeGuides.data && <div> terjadi kesalahan </div>}
         </div>

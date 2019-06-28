@@ -1,7 +1,7 @@
 export const getChannelProgrammeGuides = state => {
   const { programmeGuides } = state;
   const date = new Date();
-  let today = new Date(date).getDate();
+  const today = new Date(date).getDate();
 
   if (!programmeGuides.loading && programmeGuides.data) {
     let mergedSchedules = [];

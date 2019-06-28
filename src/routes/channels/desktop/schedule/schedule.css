@@ -19,6 +19,7 @@
   border-right: 1px solid #000;
   background-color: #3a3a3c;
   color: #959596;
+  cursor: pointer;
 }
 
 .schedule_active_channel_name {
@@ -45,7 +46,7 @@
   flex-direction: column;
   justify-content: center;
   padding-left: 1.5rem;
-  width: 30rem;
+  /* width: 30rem; */
   box-sizing: border-box;
 }
 
@@ -154,7 +155,7 @@
   .schedule_item_title {
     font-size: 1.68rem;
   }
-  
+
   .schedule_item_time {
     font-size: 1.44rem;
   }

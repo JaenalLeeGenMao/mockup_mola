@@ -12,7 +12,7 @@ var reqAnimation;
 
 class Schedule extends Component {
   state = {
-    activeChannel: this.props.scheduleList.length > 0 && this.props.scheduleList[0].id,
+    activeChannel: this.props.scheduleList.length > 0 && (!this.props.pathId ? this.props.scheduleList[0].id : this.props.pathId),
     scrollWidth: '3360px',
   }
 
@@ -93,13 +93,10 @@ class Schedule extends Component {
         <div className={styles.schedule_wrapper}>
           <div className={styles.schedule_name_list}>
             <div className={styles.schedule_header_left} />
-            {/* {for (key in this.props.epg) {
-
-            }} */}
             {schedule && schedule.map((dt) => {
               return (
                 <>
-                  <div className={`${styles.schedule_header_name} ${activeChannel === dt.id ? styles.schedule_active_channel_name : ''}`}>{dt.title}</div>
+                  <div className={`${styles.schedule_header_name} ${activeChannel === dt.id ? styles.schedule_active_channel_name : ''}`} onClick={() => this.clickChannel(dt.id)}>{dt.title}</div>
                 </>
               )
             })}
