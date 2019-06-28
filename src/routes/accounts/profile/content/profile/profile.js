@@ -75,12 +75,12 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
 
-    const { uid, firstName, lastName, email, phoneNumber, photo, birthdate, gender, location, subscriptions } = props.user
+    const { uid, first_name, last_name, email, phoneNumber, photo, birthdate, gender, location, subscriptions } = props.user
     // this.propsName = `${firstName} ${lastName}`
 
     this.state = {
       isToggled: false,
-      name: `${firstName} ${lastName}` || '',
+      name: `${first_name} ${last_name}` || '',
       email: email || '',
       phoneNumber: phoneNumber || '',
       photo: photo || '',
@@ -96,7 +96,7 @@ class Profile extends React.Component {
   setData = data => {
     this.setState({
       isToggled: false,
-      name: data.firstName + ' ' + data.lastName,
+      name: data.first_name + ' ' + data.last_name,
       email: data.email || '',
       phoneNumber: data.phoneNumber || '',
       photo: data.photo || '',
@@ -115,7 +115,7 @@ class Profile extends React.Component {
     const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
-    const payload = { firstName: name, csrf, birthdate, gender, location, token, phone: phoneNumber }
+    const payload = { first_name: name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
     if (uploadStatus && uploadStatus.success) {
       // success upload button nyalain
@@ -267,7 +267,7 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName + ' ' + user.lastName} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.first_name + ' ' + user.last_name} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
             <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phoneNumber} />
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
