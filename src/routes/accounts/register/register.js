@@ -37,6 +37,15 @@ class Register extends Component {
     locale: getLocale(),
   }
 
+  componentDidMount() {
+    if (history.location.state && history.location.state.isInVerified && history.location.state.email) {
+      this.setState({
+        isInVerified: true,
+        email: history.location.state.email,
+      })
+    }
+  }
+
   handleInputChange = e => {
     const target = e.target
     const { id, value } = target
@@ -66,9 +75,16 @@ class Register extends Component {
       })
     } else {
       if (result.meta.error && result.meta.error.error_description) {
-        this.setState({
-          error: result.meta.error.error_description,
-        })
+        if (result.meta.error.error === 'account_not_verified') {
+          this.setState({
+            error: '',
+            isInVerified: true,
+          })
+        } else {
+          this.setState({
+            error: result.meta.error.error_description,
+          })
+        }
       }
     }
   }
