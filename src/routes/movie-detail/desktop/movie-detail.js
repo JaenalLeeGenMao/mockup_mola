@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
+import _get from 'lodash/get'
+
 import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
@@ -16,13 +18,7 @@ import MovieDetailError from '@components/common/error'
 import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
-import {
-  movieDetailContainer,
-  movieDetailNotAvailableContainer,
-  controllerContainer,
-  videoPlayerContainer,
-  movieDetailBottom
-} from './style'
+import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom } from './style'
 
 import styles from '@global/style/css/grainBackground.css'
 
@@ -76,7 +72,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -198,6 +194,15 @@ class MovieDetail extends Component {
     return myTheoPlayer
   }
 
+  disableAds = (status, videoSettings) => {
+    status === 'success' && (videoSettings.adsBannerOptions.ipaEnabled = false)
+    status === 'success' && (videoSettings.adsBannerOptions.araEnabled = false)
+    status === 'success' && (videoSettings.adsSource = '')
+    status === 'success' && (videoSettings.adsBannerUrl = '')
+
+    return videoSettings
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -248,13 +253,15 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user } = this.props
+    const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-
+    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].title', null) : null
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
+    const checkAdsSettings = adsFlag !== null && adsFlag !== 1 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
+
     const videoSettings = {
-      ...defaultVidSetting
+      ...checkAdsSettings,
     }
 
     let drmStreamUrl = '',
@@ -292,11 +299,10 @@ class MovieDetail extends Component {
                     {...videoSettings}
                     showChildren
                     showBackBtn
-                  >
-                  </Theoplayer>
+                  />
                 ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
               </div>
             </div>
             <div className={movieDetailBottom}>
