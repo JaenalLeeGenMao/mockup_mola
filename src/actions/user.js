@@ -62,7 +62,7 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      data.username = `${data.firstName || ''} ${data.lastName || ''}`.trim()
+      data.name = `${data.firstName || ''} ${data.lastName || ''}`.trim()
       data.phoneNumber = data.phone
 
       if (data.birthdate == null) {
@@ -77,8 +77,8 @@ export function fetchProfile() {
     }
     // let data = {
     //   birthdate: '2019-06-05',
-    //   firstName: 'dsadsad',
-    //   lastName: 'cek',
+    //   firstName: '',
+    //   lastName: '',
     //   gender: 'f',
     //   id: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
     //   last_name: '',
