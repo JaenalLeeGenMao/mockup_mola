@@ -89,6 +89,12 @@ export const imageWrapper = css`
     bottom: 0;
     left: 0;
   }
+
+  img {
+    flex: none;
+    left: unset;
+    display: block;
+  }
 `
 
 export const playIcon = css`
