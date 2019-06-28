@@ -7,6 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Auth from '@api/auth'
 
 import { facebook, google, line } from '@global/imageUrl'
+import history from '@source/history'
 
 import Header from '@components/Header'
 import Footer from '@components/Footer'
@@ -63,9 +64,21 @@ class Login extends Component {
       if (result.meta.status === 'success') {
         window.location.href = '/accounts/signin'
       } else {
-        this.setState({
-          error: result.meta.error.error_description,
-        })
+        if (result.meta.error && result.meta.error.error_description) {
+          if (result.meta.error.error === 'account_not_verified') {
+            history.push({
+              pathname: '/accounts/register',
+              state: {
+                isInVerified: true,
+                email: emailInputRef.value,
+              },
+            })
+          } else {
+            this.setState({
+              error: result.meta.error.error_description,
+            })
+          }
+        }
       }
     }
   }
@@ -89,7 +102,7 @@ class Login extends Component {
   }
 
   render() {
-    const { locale, email, password, error } = this.state
+    const { locale, error } = this.state
     return (
       <div className={styles.login__container}>
         <div className={styles.login__header_wrapper}>
