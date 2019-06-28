@@ -20,7 +20,7 @@ export const videoSuggestionWrapper = css`
 
 export const videoSuggestionInnerWrapper = css`
   height: 65%;
-`;
+`
 
 export const videoSuggestionPlayer = css`
   display: inline-block;
@@ -51,9 +51,9 @@ export const videoSuggestionPlayerDetail = css`
   }
 
   &:hover img {
-    background-color: transparent!important;
-    opacity: 1!important;
-    transition: none!important;
+    background-color: transparent !important;
+    opacity: 1 !important;
+    transition: none !important;
   }
 `
 
@@ -69,13 +69,19 @@ export const imageWrapper = css`
 
   &::before {
     content: '';
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(8, 8, 8, 0.80) 55%, rgb(0, 0, 0) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(8, 8, 8, 0.8) 55%, rgb(0, 0, 0) 100%);
     height: 60px;
     width: 100%;
     display: block;
     position: absolute;
     bottom: 0;
     left: 0;
+  }
+
+  img {
+    flex: none;
+    left: unset;
+    display: block;
   }
 `
 
