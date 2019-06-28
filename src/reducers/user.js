@@ -3,8 +3,8 @@ import types from '../constants'
 const initialState = {
   uid: '',
   sid: '',
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
   birthdate: '',
   gender: '',
