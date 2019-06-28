@@ -38,11 +38,19 @@ class Content extends Component {
           const { id, isDark, background, link } = video
           return index != 0 ? (
             <div key={id} className="grid-slick" isdark={isDark}>
-              <img src={background.landscape} />
+              <picture>
+                <source srcSet={background.landscapeWebp} type="image/webp" />
+                <source srcSet={background.landscape} type="image/jpeg" />
+                <img src={background.landscape} />
+              </picture>
             </div>
           ) : (
             <a href={link} key={id} className="grid-slick" isdark={isDark}>
-              <img src={background.landscape} />
+              <picture>
+                <source srcSet={background.landscapeWebp} type="image/webp" />
+                <source srcSet={background.landscape} type="image/jpeg" />
+                <img src={background.landscape} />
+              </picture>
             </a>
           )
         })}
