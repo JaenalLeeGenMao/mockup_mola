@@ -255,10 +255,10 @@ class MovieDetail extends Component {
 
     const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].title', null) : null
+    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
-    const checkAdsSettings = adsFlag !== null && adsFlag !== 1 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
+    const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
 
     const videoSettings = {
       ...checkAdsSettings,
