@@ -33,6 +33,11 @@ const handleTimeUpdate = (payload, player) => {
     video_quality = '',
     client_bandwidth = ''
 
+  // console.log("time", time)
+  // console.log("buffer start", player.buffered.start(0))
+  // console.log("buffer end", player.buffered.end(0))
+  // console.log("buffer length", player.buffered.length)
+
   if (time % 60 === 0 && !player.ads.playing) {
     var calcTime = time
     /* NOTE:
@@ -90,7 +95,7 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)

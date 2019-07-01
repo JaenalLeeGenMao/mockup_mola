@@ -35,7 +35,7 @@ export const updateProfile = params => {
     }
 
     const update = await Auth.updateProfile({
-      name: params.first_name + ' ' + params.last_name,
+      name: params.first_name.replace(/ /g, ''),
       csrf: csrf,
       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
@@ -62,8 +62,14 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      data.name = `${data.first_name || ''} ${data.last_name || ''}`.trim()
-      data.phoneNumber = data.phone
+      // data.name = `${data.first_name || ''} ${data.last_name || ''}`.trim()
+      if (data.first_name == null) {
+        data.first_name = ''
+      }
+
+      if (data.last_name == null) {
+        data.last_name = ''
+      }
 
       if (data.birthdate == null) {
         data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
@@ -77,14 +83,14 @@ export function fetchProfile() {
     }
     // let data = {
     //   birthdate: '2019-06-05',
-    //   first_name: '',
-    //   last_name: null,
-    //   lastName: '',
+    //   first_name: 'ini bisa dums yaa',
+    //   last_name: '',
+    //   email: 'gantengaja@gmail.com',
+    //   // lastName: '',
     //   gender: 'f',
     //   id: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
-    //   last_name: '',
     //   location: 'Andorra',
-    //   phone: null,
+    //   phone: '08211881818181',
     // }
     // dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
     // return data

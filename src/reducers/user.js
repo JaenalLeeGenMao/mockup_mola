@@ -3,14 +3,15 @@ import types from '../constants'
 const initialState = {
   uid: '',
   sid: '',
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   birthdate: '',
   gender: '',
   location: '',
   token: '',
   refreshToken: '',
+  phone: '',
   expire: '',
   type: '',
   isLoading: false,
@@ -70,9 +71,17 @@ export default function runtime(state = initialState, action) {
       }
 
     case types.FETCH_PROFILE_USER:
+      const { first_name, last_name, birthdate, email, gender, location, phone, uid } = action.payload
       return {
         ...state,
-        ...action.payload,
+        firstName: first_name,
+        lastName: last_name,
+        birthdate,
+        email,
+        gender,
+        location,
+        phone,
+        uid,
         isLoading: false,
       }
 
