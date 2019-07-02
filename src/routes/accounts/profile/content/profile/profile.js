@@ -80,8 +80,8 @@ class Profile extends React.Component {
 
     this.state = {
       isToggled: false,
-      // name: `${first_name} ${last_name}` || '',
-      name: firstName || '',
+      name: `${firstName} ${lastName}` || '',
+      // name: firstName || '',
       email: email || '',
       phoneNumber: phone || '',
       photo: photo || '',
@@ -97,8 +97,8 @@ class Profile extends React.Component {
   setData = data => {
     this.setState({
       isToggled: false,
-      // name: data.first_name + ' ' + data.last_name,
-      name: data.first_name || '',
+      name: data.name,
+      // name: data.first_name || '',
       email: data.email || '',
       phoneNumber: data.phone || '',
       photo: data.photo || '',
@@ -130,7 +130,7 @@ class Profile extends React.Component {
 
     const update = await Auth.updateProfile(payload)
     if (update.meta.status === 'success') {
-      // this.props.updateProfile(payload)
+      this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
     } else {
@@ -269,7 +269,7 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.firstName + ' ' + user.lastName} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
             <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phone} />
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />

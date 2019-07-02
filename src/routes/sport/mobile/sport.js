@@ -1,20 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import Slider from 'react-slick'
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
+// import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import Joyride from 'react-joyride'
 import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
-import $ from 'jquery'
+// import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 
 import sportActions from '@actions/sport'
 
-import { logoLandscapeBlue } from '@global/imageUrl'
+// import { logoLandscapeBlue } from '@global/imageUrl'
 
-import { swipeGestureListener, getErrorCode } from '@routes/sport/util'
+import { getErrorCode } from '@routes/sport/util'
 import { getLocale } from '@routes/sport/locale'
 
 import Header from '@components/Header'
@@ -23,23 +23,24 @@ import Link from '@components/Link'
 
 import SportError from '@components/common/error'
 import SportPlaceholder from './placeholder'
-import SportArrow from '../arrow'
+// import SportArrow from '../arrow'
 import SportMobileContent from './content'
 import SportMobileMenu from './menu'
 
 import styles from './sport.css'
 import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
-import { SETTINGS_VERTICAL } from '../const'
+import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
+import { isMatchLive } from '@source/lib/dateTimeUtil'
 
 let activePlaylist
-let deferredPrompt
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
 class Sport extends Component {
   state = {
     locale: getLocale(),
+    isLandscape: false,
     isDark: undefined,
     activeSlide: undefined,
     activeSlideDots: undefined,
@@ -83,6 +84,35 @@ class Sport extends Component {
     }
     setMultilineEllipsis('filteredText')
 
+    let isLandscapeVar = false
+    if (window.innerHeight > window.innerWidth) {
+      isLandscapeVar = false
+    } else {
+      isLandscapeVar = true
+    }
+    var resizeTimer;
+    const that = this
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (window.innerHeight > window.innerWidth) {
+          isLandscapeVar = false
+        } else {
+          isLandscapeVar = true
+        }
+        if (that.state.isLandscape != isLandscapeVar) {
+          that.setState({
+            isLandscape: isLandscapeVar
+          })
+        }
+      }, 300);
+    }, false);
+
+    if (this.state.isLandscape != isLandscapeVar) {
+      this.setState({
+        isLandscape: isLandscapeVar
+      })
+    }
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
     })
@@ -203,9 +233,9 @@ class Sport extends Component {
       videos,
       videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
     } = this.props.sport
-    const { locale, isDark, startGuide, steps, sportCategoryListSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state
+    const { locale, isDark, isLandscape, startGuide, steps, sportCategoryListSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state
     const settings = {
-      ...SETTINGS_VERTICAL,
+      ...SETTINGS_MOBILE,
       className: styles.sport__slick_slider_fade,
       onInit: node => {
         this.activeSlider = sliderRefs[0]
@@ -296,13 +326,36 @@ class Sport extends Component {
                   <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
                 {activeSlide && (
-                  <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    {!activeSlide.buttonText &&
+                  <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                    {/* {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
                         <Link to={'/watch?v=' + activeSlide.id} className={`${styles.sport__button_livenow}`}>
                           <span className={styles.play_icon} />
                           <p>{locale['view_movie']}</p>
                         </Link>
+                      )} */}
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <>
+                          {
+                            activeSlide.contentType === 1 && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
+                                <p>{locale['view_movie']}</p>
+                              </Link>
+                            )
+                          }
+                          {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                            <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
+                              <span className={styles.play_icon} />
+                              <p>{locale['live_now']}</p>
+                            </Link>
+                          )}
+                          {activeSlide.startTime > Date.now() / 1000 && (
+                            <div className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                              <p>{locale['upcoming']}</p>
+                            </div>
+                          )}
+                        </>
                       )}
 
                     {activeSlide.buttonText && (
@@ -333,7 +386,7 @@ class Sport extends Component {
                     videos.data.length > 0 &&
                     videos.data.map((video, index) => {
                       const { id } = video.meta
-                      return <SportMobileContent key={id} videos={video.data} index={scrollIndex} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                      return <SportMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
                     })}
                 </Slider>
               </>

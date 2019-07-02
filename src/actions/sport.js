@@ -68,13 +68,17 @@ const getSportVideo = (playlist, isMobile) => dispatch => {
     })
   } else {
     return Mola.getSportVideo({ id: playlist.id }).then(result => {
+      const filterVisibility = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
+
       result = {
         meta: {
           status: result.meta.status,
           id: playlist.id,
           sortOrder: playlist.sortOrder,
         },
-        data: result.data,
+        data: filterVisibility,
         background: {
           landscape: playlist.background.landscape,
         },

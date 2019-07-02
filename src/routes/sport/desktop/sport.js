@@ -22,8 +22,8 @@ import Link from '@components/Link'
 import SportError from '@components/common/error'
 import SportPlaceholder from './placeholder'
 import SportArrow from '../arrow'
-import SportMobileContent from './content'
-import SportMobileMenu from './menu'
+import SportContent from './content'
+import SportMenu from './menu'
 import MatchesList from './matchesList'
 
 import styles from './sport.css'
@@ -111,7 +111,7 @@ class Sport extends Component {
     sportCategoryListSuccess: false,
     sliderRefs: [],
   }
-
+  sliderMovements = 0
   static getDerivedStateFromProps(nextProps, prevState) {
     const { onUpdatePlaylist, onHandleVideo, onHandlePlaylist, sport: { playlists, videos }, runtime } = nextProps
     // console.log('AAAAAAAA ini sport', nextProps)
@@ -178,7 +178,7 @@ class Sport extends Component {
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
       activePlaylist = this.state.playlists.data[0]
-      this.props.onUpdatePlaylist(activePlaylist.id)
+      // this.props.onUpdatePlaylist(activePlaylist.id)
     }
 
     this.handleKeyboardEvent()
@@ -340,13 +340,13 @@ class Sport extends Component {
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
-          console.log('LEFT: ', this.handleSwipeDirection(this.activeSlider, 0, 1000))
+          this.handleSwipeDirection(this.activeSlider, 0, 1000)
           return event.preventDefault()
         case 38 /* up */:
           this.handleScrollToIndex(this.state.scrollIndex - 1)
           break
         case 39 /* right */:
-          console.log('RIGHT: ', this.handleSwipeDirection(this.activeSlider, 1000, 0))
+          this.handleSwipeDirection(this.activeSlider, 1000, 0)
           return event.preventDefault()
         case 40 /* down */:
           this.handleScrollToIndex(this.state.scrollIndex + 1)
@@ -366,7 +366,7 @@ class Sport extends Component {
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs, scrollIndex } = this.state
+      { sliderRefs, scrollIndex, videos } = this.state
 
     if (mode === 'vertical') {
       if (this.rootSlider) {
@@ -383,15 +383,24 @@ class Sport extends Component {
       }
     } else {
       if (slider) {
+        const videosLength = videos.data[scrollIndex].data.length
         if (slider.innerSlider === null) {
           return false
         }
         if (distance <= 20) {
           // do nothing
         } else if (prevX > nextX) {
-          sliderRefs[scrollIndex].slickNext()
+          slider.slickNext()
+          const swpIndex = this.state.swipeIndex + 1 >= videosLength ? 0 : this.state.swipeIndex + 1
+          this.setState({
+            swipeIndex: swpIndex,
+          })
         } else {
-          sliderRefs[scrollIndex].slickPrev()
+          slider.slickPrev()
+          const swpIndex = this.state.swipeIndex - 1 < 0 ? videosLength - 1 : this.state.swipeIndex - 1
+          this.setState({
+            swipeIndex: swpIndex,
+          })
         }
       } else {
         if (distance <= 20) {
@@ -416,7 +425,8 @@ class Sport extends Component {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
-        that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
+        // that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
+        that.setState({ isDark, activeSlide: videos.data[0].data[0] })
       }
       if (index || index === 0) {
         that.setState({
@@ -453,6 +463,19 @@ class Sport extends Component {
     if (this.rootSlider) {
       this.rootSlider.slickGoTo(index)
     }
+  }
+
+  /* Horizontal scroll handler */
+  handleNextPrevSlide = (index = 0) => {
+    const { sliderRefs } = this.state
+    if (this.activeSlider) {
+      this.activeSlider.slickGoTo(index)
+    } else {
+      sliderRefs[0].slickGoTo(index)
+    }
+    this.setState({
+      swipeIndex: index,
+    })
   }
 
   render() {
@@ -514,7 +537,7 @@ class Sport extends Component {
               <>
                 <div className={styles.sport__gradient} />
                 <div className={styles.sport__sidebar}>
-                  <SportMobileMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  <SportMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
                 <LazyLoad containerClassName={styles.sport_header__playlist_title}>
                   <div>{this.state.playlists.data[scrollIndex].title}</div>
@@ -567,18 +590,34 @@ class Sport extends Component {
                       </div>
                     )}
                 </a>
+                <div className={`${styles.sport__swipe_slider} tourSlide`}>
+                  {activeSlideDots && activeSlideDots.length > 1 && <SportMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
+                </div>
                 <Slider
                   {...settings}
                   ref={node => {
                     this.rootSlider = node
                   }}
                 >
-                  {videos &&
-                    videos.data.length > 0 &&
-                    videos.data.map((video, index) => {
-                      const { id, sortOrder } = video.meta
-                      return <SportMobileContent key={id} videos={video.data} index={scrollIndex} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
-                    })}
+                  {videos.data.map((video, index) => {
+                    const { id, sortOrder } = video.meta
+                    return (
+                      <SportContent
+                        key={id}
+                        videos={video.data}
+                        index={index}
+                        updateSlider={ref => {
+                          const { sliderRefs } = this.state
+                          if (index < playlists.data.length - 1 && !sliderRefs[index]) sliderRefs[index] = ref
+                          else if (index == playlists.data.length - 1 && this.sliderMovements == 1) sliderRefs[index] = ref
+                          else sliderRefs.sort((a, b) => a.props.id - b.props.id)
+
+                          if (index == playlists.data.length - 1) this.sliderMovements++
+                        }}
+                        updateColorChange={this.handleColorChange}
+                      />
+                    )
+                  })}
                 </Slider>
               </>
             )}

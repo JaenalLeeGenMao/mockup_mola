@@ -101,16 +101,18 @@ class Header extends Component {
       backButtonOn = false,
       shareButtonOn = false,
       greyBackground,
+      isLandscape = false
     } = this.props
-
     const color = isDark ? 'black' : 'white'
-    const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container
+    const headerStyle = isMobile ? styles.header__container_m : styles.header__container
+    const typeHeader = stickyOff ? headerStyle + ' ' + styles.header__notsticky : headerStyle
+    const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
     return (
-      <div className={typeHeader}>
+      <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
         {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} />}
         {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} />}
         {!isMobile && <div className={styles.header__shadow_desktop} />}
-        <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
+        <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : logoWrapper}>
           {!logoOff && (
             <LazyLoad>
               <Link to="/">

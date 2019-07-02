@@ -30,7 +30,7 @@
   color: white;
 }
 
-.menu__dots.menu__top_active {
+.menu__dots.menu__active {
   margin-bottom: 5px;
   opacity: 1;
   transform: translateY(5%);

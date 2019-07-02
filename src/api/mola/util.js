@@ -1,7 +1,6 @@
 import _get from 'lodash/get'
 
 const normalizeHomePlaylist = response => {
-  // console.log('response util normilize home playlist', response)
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(
@@ -71,11 +70,9 @@ const normalizeMatchesList = response => {
 }
 
 const normalizeMatchDetail = response => {
-  // console.log('UTILS: FFFFFF', response)
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      // console.log('Utils: Data result normalize', result)
       const {
         id,
         type,
@@ -139,7 +136,6 @@ const normalizeHomeVideo = response => {
       const result = data.map(
         ({ attributes: { videos } }) =>
           videos.map(video => {
-            // console.log('checking utils', video)
             const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime } } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', ''),
@@ -173,10 +169,8 @@ const normalizeHomeVideo = response => {
           })
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
-      // console.log('resss', result)
       return result
     } catch (err) {
-      // console.log('ERRR', err)
     }
   }
   return []

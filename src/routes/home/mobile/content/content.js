@@ -11,7 +11,7 @@ class Content extends Component {
   }
 
   render() {
-    const { updateColorChange, index } = this.props
+    const { updateColorChange, index, isLandscape } = this.props
     const settings = {
       dots: false,
       arrows: false,
@@ -26,7 +26,6 @@ class Content extends Component {
         updateColorChange(index, nextIndex)
       },
     }
-
     return (
       <Slider
         id={index}
@@ -41,23 +40,23 @@ class Content extends Component {
           return index != 0 ? (
             <>
               <picture>
-                <source srcSet={background.portraitWebp} type="image/webp" />
-                <source srcSet={background.portrait} type="image/jpeg" />
-                <img src={background.portrait} />
+                <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
+                <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
+                <img src={isLandscape ? background.landscape : background.portrait} />
               </picture>
               <div className={styles.content__gradient} />
             </>
           ) : (
-            <a href={link} key={id} className="grid-slick" isdark={isDark}>
-              <div key={id} className="grid-slick" isdark={isDark}>
-                <picture>
-                  <source srcSet={background.portraitWebp} type="image/webp" />
-                  <source srcSet={background.portrait} type="image/jpeg" />
-                  <img src={background.portrait} />
-                </picture>
-              </div>
-            </a>
-          )
+              <a href={link} key={id} className="grid-slick" isdark={isDark}>
+                <div key={id} className="grid-slick" isdark={isDark}>
+                  <picture>
+                    <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
+                    <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
+                    <img src={isLandscape ? background.landscape : background.portrait} />
+                  </picture>
+                </div>
+              </a>
+            )
         })}
       </Slider>
     )
