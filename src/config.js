@@ -111,6 +111,7 @@ const config = baseConfig.default[env]
 
 module.exports = {
   // Node.js app
+  env,
   ...config,
   serverApi,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
