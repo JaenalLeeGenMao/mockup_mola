@@ -177,9 +177,9 @@ class MovieLibrary extends Component {
           <div className={s.main_container}>
             <Libheader cardTitle={title} {...this.props} />
             <div className={s.card_container}>
-              <div className={s.card_wrapper}>
-                {this.renderLoading()}
-                {this.renderContent()}
+              <div className={`${s.card_wrapper} ${status === 'loading' ? s.card_wrapper_loading : ''} `}>
+                {status == 'loading' && this.renderLoading()}
+                {status == 'success' && this.renderContent()}
               </div>
             </div>
           </div>

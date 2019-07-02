@@ -29,6 +29,10 @@
   flex-wrap: wrap;
 }
 
+.card_wrapper_loading {
+  justify-content: center;
+}
+
 .overlay {
   display: none;
   position: fixed;
