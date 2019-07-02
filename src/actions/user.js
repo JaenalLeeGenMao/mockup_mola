@@ -34,15 +34,15 @@ export const updateProfile = params => {
       date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0])
     }
 
-    const update = await Auth.updateProfile({
-      name: params.first_name,
-      csrf: csrf,
-      birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
-      gender: params.gender,
-      location: params.location,
-      token: token,
-      phone: params.phoneNumber,
-    })
+    // const update = await Auth.updateProfile({
+    //   name: params.first_name,
+    //   csrf: csrf,
+    //   birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
+    //   gender: params.gender,
+    //   location: params.location,
+    //   token: token,
+    //   phone: params.phoneNumber,
+    // })
 
     if (update.meta.status !== 'success') {
       toastr.warning('Notification', 'Update profile is failed')
@@ -83,8 +83,9 @@ export function fetchProfile() {
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
       return data
     }
-    //ini dummy ya
+    // ini dummy ya
     // let data = {
+    //   name: 'ashiaap',
     //   birthdate: '2019-06-05',
     //   first_name: 'fisrname',
     //   last_name: 'lastname',
