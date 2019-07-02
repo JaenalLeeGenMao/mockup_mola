@@ -128,8 +128,8 @@ class Profile extends React.Component {
       }
     }
 
-    // const update = await Auth.updateProfile(payload)
-    const update = this.props.updateProfile(payload)
+    const update = await Auth.updateProfile(payload)
+    // const update = this.props.updateProfile(payload)
     if (update.meta.status === 'success') {
       this.props.updateProfile(payload)
       this.handleClick()
