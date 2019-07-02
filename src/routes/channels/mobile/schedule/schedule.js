@@ -5,11 +5,29 @@ import styles from './schedule.css'
 import { formatDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
 
 class Schedule extends Component {
+  state = {
+    selectedSchedule: [],
+    activeChannelId: this.props.activeChannelId ? this.props.activeChannelId : ''
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.selectedSchedule.length === 0 || prevState.activeChannelId !== nextProps.activeChannelId) {
+      const schedule = nextProps.channelSchedule.find(item => item.id == nextProps.activeChannelId)
+
+      if (schedule) {
+        const activeChannelId = schedule.id || ''
+        const selectedSchedule = schedule.videos || []
+        nextProps.handleSelectChannel(activeChannelId)
+        return { ...prevState, selectedSchedule, activeChannelId }
+      }
+    }
+    return { ...prevState }
+  }
   render() {
-    const schedule = this.props.scheduleList
+    const schedule = this.state.selectedSchedule
     return (
       <div className={styles.schedule_container}>
-        {schedule &&
+        {schedule.length > 0 &&
           schedule.map((dt, index) => {
             const isLive = isMatchLive(dt.startTime, dt.endTime)
             const endTime = index + 1 == schedule.length ? dt.endTime : schedule[index + 1].startTime

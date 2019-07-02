@@ -8,6 +8,8 @@ import ChannelsMobile from './mobile'
 async function action({ isMobile, pathname }) {
   const pathnameArr = pathname.split('/');
   const pathId = pathnameArr.length === 3 ? pathnameArr[pathnameArr.length - 1] : '';
+  // const today = moment().format('YYYYMMDD')
+  // await store.dispatch(fetchChannelPlaylists()).then(() => store.dispatch(fetchChannelSchedule(today)))
 
   return {
     chunks: ['channels'],

@@ -39,6 +39,6 @@ export const getChannelProgrammeGuides = state => {
     });
     return mergedSchedules;
   }
-  return null;
+  return [];
 };
 

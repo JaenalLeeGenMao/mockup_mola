@@ -12,7 +12,7 @@ var reqAnimation;
 
 class Schedule extends Component {
   state = {
-    activeChannel: this.props.scheduleList.length > 0 && (!this.props.pathId ? this.props.scheduleList[0].id : this.props.pathId),
+    activeChannel: this.props.scheduleList.length > 0 && (!this.props.pathId ? this.props.channelsPlaylist.data[0].id : this.props.pathId),
     scrollWidth: '3360px',
   }
 
