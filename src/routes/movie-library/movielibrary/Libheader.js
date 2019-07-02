@@ -83,6 +83,7 @@ class Libheader extends Component {
         {isMobile ? (
           <Header
             isDark={0}
+            activeMenu="library"
             libraryOff
             logoOff
             backButtonOn
@@ -95,18 +96,19 @@ class Libheader extends Component {
             isMenuToggled={this.state.isMenuToggled}
           />
         ) : (
-          <Header
-            isDark={0}
-            libraryOff
-            title={cardTitle}
-            isLibrary
-            isLibraryCopy
-            shadowDesktop
-            {...this.props}
-            handleMenuToggleClick={this.handleMenuToggleClick}
-            isMenuToggled={this.state.isMenuToggled}
-          />
-        )}
+            <Header
+              isDark={0}
+              activeMenu="library"
+              libraryOff
+              title={cardTitle}
+              isLibrary
+              isLibraryCopy
+              shadowDesktop
+              {...this.props}
+              handleMenuToggleClick={this.handleMenuToggleClick}
+              isMenuToggled={this.state.isMenuToggled}
+            />
+          )}
 
         {this.state.isMenuToggled ? this.renderMenu() : null}
       </div>

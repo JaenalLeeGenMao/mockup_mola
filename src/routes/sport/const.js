@@ -1,19 +1,4 @@
 // export const SETTINGS = {
-//   dots: false,
-//   arrows: true,
-//   infinite: true,
-//   autoplay: false,
-//   edgeFriction: false,
-//   adaptiveHeight: true,
-//   fade: true,
-//   swipe: true,
-//   swipeToSlide: true,
-//   speed: 500,
-//   autoplaySpeed: 3000,
-//   lazyLoad: 'ondemand',
-//   cssEase: 'linear',
-// }
-
 export const SETTINGS_VERTICAL = {
   arrows: false,
   dots: false,
@@ -24,6 +9,22 @@ export const SETTINGS_VERTICAL = {
   touchMove: false,
   // slidesToShow: 1,
   // slidesToScroll: 1,
+  fade: false,
+  autoplay: false,
+  autoplaySpeed: 4000,
+  speed: 500,
+}
+
+export const SETTINGS_MOBILE = {
+  mobileFirst: true,
+  variableWidth: false,
+  arrows: false,
+  dots: false,
+  vertical: true,
+  verticalSwiping: false,
+  touchThreshold: 5,
+  infinite: true,
+  touchMove: false,
   fade: false,
   autoplay: false,
   autoplaySpeed: 4000,

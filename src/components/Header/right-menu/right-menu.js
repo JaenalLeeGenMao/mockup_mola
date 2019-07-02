@@ -104,7 +104,7 @@ class RightMenu extends Component {
 
   render() {
     const { toggle } = this.state
-    const { color, searchOff, profileOff, shareButtonOn, dropdownMenu, closeMenuOn, handleMenuToggleClick, isMenuToggled = false } = this.props
+    const { color, isMobile, searchOff, profileOff, shareButtonOn, dropdownMenu, closeMenuOn, handleMenuToggleClick, isMenuToggled = false } = this.props
     const iconToggleStyle = {
       transform: 'rotate(180deg) translateY(0%)',
       top: '-3px',
@@ -112,7 +112,7 @@ class RightMenu extends Component {
 
     return (
       <>
-        <div className={styles.right__menu}>
+        <div className={`${isMobile ? styles.right__menu_m : styles.right__menu}`}>
           {/* {!dropdownMenu && (
             <span className={styles.right__menu_wrapper}>
               <LazyLoad className={styles.right__menu_icon_wrapper}>
@@ -141,7 +141,7 @@ class RightMenu extends Component {
             <span className={styles.right__menu_wrapper}>
               <LazyLoad className={styles.right__menu_icon_wrapper}>
                 <input type="text" value={this.state.link} id="myInput" style={{ position: 'fixed', transform: 'translate(-100%, -500%)' }} />
-                <div className={styles.right__menu_tooltip}>
+                <div className={`${isMobile ? styles.right__menu_tooltip_m : styles.right__menu_tooltip} `}>
                   <button onClick={this.handleCopyToClipboard} onMouseOut={this.handleMouseOut} to="">
                     <link className={color === 'black' ? styles.right__menu_share_black : styles.right__menu_share_white} />
                     <span className={styles.right__menu_tooltip_text} id="myTooltip">

@@ -35,7 +35,11 @@ body {
   color: white;
   bottom: 0;
   width: calc(100% - 40px);
-  margin: 0 20px 35%;
+  margin: 0 20px 39%;
+}
+
+.header__detail_container_ls {
+  margin: 0 20px 10%;
 }
 
 .header__detail_container.black {
@@ -64,7 +68,7 @@ body {
 .header__detail_container > p {
   max-width: 80vw;
   opacity: 0;
-  height: 5rem;
+  height: 80px;
   font-weight: 400;
   font-size: 14px;
   position: absolute;
@@ -75,8 +79,6 @@ body {
 
 .sport__button_livenow p {
   display: inline-block;
-  margin: 0 -0.8rem;
-  height: 3rem;
   vertical-align: middle;
 }
 
@@ -110,24 +112,41 @@ body {
 }
 
 .sport__detail_button {
-  padding: 25px;
-  border-radius: 50%;
-  position: absolute;
-  top: -45px;
+  display: inline-block;
+  padding: 10px;
+  font-weight: 600;
+  width: auto;
+  height: 42px;
+  margin: auto;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  color: #000;
+}
+
+.sport__detail_upc_btn {
+  background-color: #808080;
+  color: #fff;
+}
+
+.sport__detail_button p {
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
 }
 
 .sport__button_livenow {
   display: inline-block;
-  padding: 8px;
-  font-weight: bold;
-  width: 9.8rem;
-  height: 3.3rem;
-  margin: auto auto 10px -3px;
-  text-align: left;
-  font-size: 1.1rem;
+  padding: 10px;
+  font-weight: 600;
+  width: auto;
+  height: 42px;
+  margin: auto;
+  text-align: center;
+  font-size: 16px;
   border-radius: 0.5rem;
-  border: 0.12rem solid rgba(66, 66, 66, 0.6);
-  background: #c00;
+  background-color: #466bff;
   color: #fff;
 }
 
@@ -138,12 +157,13 @@ body {
 }
 
 .play_icon {
-  width: 3.6rem;
-  height: 2rem;
+  width: 32px;
+  height: 20px;
   display: inline-block;
   background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDMwIDI2Ij48ZGVmcz48c3R5bGU+LmF7ZmlsbDojZmZmO308L3N0eWxlPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjg3IC04MjkpIj48cGF0aCBjbGFzcz0iYSIgZD0iTTAsMFY3TDYsMy40ODNaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDAgODM2KSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4NyA3OTMpIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDM2KSI+PHBhdGggY2xhc3M9ImEiIGQ9Ik0yNi40ODQsMzZIMy41MTZBMy41MzUsMy41MzUsMCwwLDAsMCwzOS41NDVWNTMuNzI3YTMuNTM1LDMuNTM1LDAsMCwwLDMuNTE2LDMuNTQ1SDEzLjgyOHYyLjM2NEg3LjczNFY2MkgyMi4yNjZWNTkuNjM2SDE2LjE3MlY1Ny4yNzNIMjYuNDg0QTMuNTM1LDMuNTM1LDAsMCwwLDMwLDUzLjcyN1YzOS41NDVBMy41MzUsMy41MzUsMCwwLDAsMjYuNDg0LDM2Wm0xLjE3MiwxNy43MjdhMS4xNzgsMS4xNzgsMCwwLDEtMS4xNzIsMS4xODJIMy41MTZhMS4xNzgsMS4xNzgsMCwwLDEtMS4xNzItMS4xODJWMzkuNTQ1YTEuMTc4LDEuMTc4LDAsMCwxLDEuMTcyLTEuMTgySDI2LjQ4NGExLjE3OCwxLjE3OCwwLDAsMSwxLjE3MiwxLjE4MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTM2KSIvPjwvZz48L2c+PC9nPjwvc3ZnPg==);
   background-repeat: no-repeat;
-  background-size: 27px;
+  background-size: 22px;
+  vertical-align: middle;
 }
 
 .sport__detail_button.black {

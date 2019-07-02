@@ -193,7 +193,6 @@ const getSportVideo = ({ id }) => {
     .then(response => {
       // console.log('handler response get sport 2222', response) //here video exist?
       const result = utils.normalizeHomeVideo(response)
-      // console.log('handler response get result 3333', result) //data null
       return {
         meta: {
           status: 'success',

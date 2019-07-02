@@ -30,36 +30,10 @@
   color: white;
 }
 
-.menu__dots.menu__top_active {
-  /* height: 2.25rem; */
-
-  /* margin-bottom: 0; */
+.menu__dots.menu__active {
   opacity: 1;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   background-color: transparent;
   border: 3px solid #2c56ff;
-
-  /* transform: translateY(5%); */
 }
-
-/* .menu__bot_active {
-  height: 2.25rem;
-  margin-top: 0;
-  opacity: 1;
-  transform: translateY(-5%);
-} */
-
-/* .menu__text {
-  opacity: 0;
-  padding: 0 2rem;
-  font-weight: 300;
-  font-size: 1.2rem;
-  font-style: italic;
-  position: absolute;
-}
-
-.menu__text.active {
-  padding: 0.5rem 1.25rem;
-  opacity: 1;
-} */

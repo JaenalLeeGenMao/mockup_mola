@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _get from 'lodash/get'
 
 import DropdownList from '@components/DropdownList'
 import MatchesPlaceholder from './placeholder'
@@ -115,7 +114,7 @@ class Matches extends Component {
   renderHeader() {
     return (
       <div>
-        <Header libraryOff greyBackground activeMenu="sport" isDark={0} isMobile {...this.props} />
+        <Header libraryOff greyBackground activeMenu="matches" isDark={0} isMobile {...this.props} />
       </div>
     )
   }

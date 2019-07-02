@@ -18,20 +18,20 @@ import DropdownList from '@components/DropdownList'
 let menu = []
 class LeftMenu extends Component {
   state = {
-    toggle: false /* Toggle profile */,
     locale: getLocale(),
     activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
   }
 
   componentDidMount() {
-    const { activePlaylist, activeMenu } = this.props;
+    const { activePlaylist, activeMenu, isMobile } = this.props;
     menu = [
       { id: 'movie', title: 'Movie', linkUrl: '/' },
       { id: 'sport', title: 'Sport', linkUrl: '/sport' },
       { id: 'channels', title: 'Channels', linkUrl: '/channels' },
     ]
 
-    if (activeMenu === 'movie') {
+    const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
+    if (showLibrary) {
       const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
       menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
     }
@@ -45,21 +45,34 @@ class LeftMenu extends Component {
   }
 
   render() {
-    const { toggle } = this.state
-    const { color, leftMenuOff, isMenuToggled = false, isMovie, activeMenu = 'movie', isMobile } = this.props
+    const { color, leftMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape } = this.props
 
+    let activeMenuDropdown = ''
+    if (activeMenu === 'library') {
+      activeMenuDropdown = 'movie'
+    } else if (activeMenu === 'matches') {
+      activeMenuDropdown = 'sport'
+    } else {
+      activeMenuDropdown = activeMenu
+    }
+
+    let libraryUrl = ''
+    const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels'
+    if (showLibrary) {
+      libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    }
     return (
       <>
         <div className={styles.left__menu}>
           {!leftMenuOff && (
-            <span className={styles.left__menu_wrapper}>
+            <span>
               <LazyLoad className={styles.left__menu_icon_wrapper}>
                 <div className={styles.left_menu_outer}>
                   {!isMobile && (
                     <>
                       {menu.map((dt) => {
                         return (
-                          <Link className={activeMenu === dt.id ? styles.left_menu__active : ''} to={dt.linkUrl}>
+                          <Link key={dt.id} className={activeMenu === dt.id ? styles.left_menu__active : ''} to={dt.linkUrl}>
                             {dt.title}
                           </Link>
                         )
@@ -68,12 +81,22 @@ class LeftMenu extends Component {
                     </>
                   )}
                   {isMobile && (
-                    <div className={styles.left_menu_select_wrapper}>
+                    <div className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''}`}>
                       <DropdownList
                         className={styles.left_menu_dropdown_container}
                         dataList={menu}
-                        activeId={activeMenu}
+                        activeId={activeMenuDropdown}
                         onClick={this.handleNavigation} />
+                      {showLibrary &&
+                        <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>
+                          Library
+                      </Link>
+                      }
+                      {(activeMenu === 'sport' || activeMenu === 'matches') &&
+                        <Link className={activeMenu === 'matches' ? styles.left_menu__active : ''} to={'/matches'}>
+                          Matches
+                        </Link>
+                      }
                     </div>
                   )}
                 </div>
