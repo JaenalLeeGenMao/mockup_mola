@@ -72,11 +72,12 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: 'https://mola.tv/api/v2',
+      api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
+      asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
       setting: {
         timeout: 10000,
         maxRedirects: 1,
@@ -93,6 +94,7 @@ const options = {
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
+      asset: 'https://mola01.koicdn.com/assets-global',
       setting: {
         timeout: 10000,
         maxRedirects: 1,
