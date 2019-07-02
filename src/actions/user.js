@@ -34,15 +34,15 @@ export const updateProfile = params => {
       date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0])
     }
 
-    // const update = await Auth.updateProfile({
-    //   name: params.first_name,
-    //   csrf: csrf,
-    //   birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
-    //   gender: params.gender,
-    //   location: params.location,
-    //   token: token,
-    //   phone: params.phoneNumber,
-    // })
+    const update = await Auth.updateProfile({
+      name: params.first_name,
+      csrf: csrf,
+      birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
+      gender: params.gender,
+      location: params.location,
+      token: token,
+      phone: params.phoneNumber,
+    })
 
     if (update.meta.status !== 'success') {
       toastr.warning('Notification', 'Update profile is failed')
@@ -69,10 +69,6 @@ export function fetchProfile() {
         data.name = ''
       }
 
-      // if (data.last_name == null) {
-      //   data.last_name = ''
-      // }
-
       if (data.birthdate == null) {
         data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
       }
@@ -85,7 +81,7 @@ export function fetchProfile() {
     }
     // ini dummy ya
     // let data = {
-    //   name: 'ashiaap',
+    //   // name: 'ashiaap',
     //   birthdate: '2019-06-05',
     //   first_name: 'fisrname',
     //   last_name: 'lastname',
@@ -100,12 +96,12 @@ export function fetchProfile() {
     // // data.name = data.first_name.trim()
     // // data.name = data.first_name.replace(/ /g, '')
     // if (data.name == null) {
-    //   data.name = ''
+    //   data.name = 'kosong'
     // }
 
-    // // if (data.last_name == null) {
-    // //   data.last_name = ''
-    // // }
+    // if (data.last_name == null) {
+    //   data.last_name = ''
+    // }
 
     // if (data.birthdate == null) {
     //   data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
