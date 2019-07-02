@@ -35,7 +35,7 @@ export const updateProfile = params => {
     }
 
     const update = await Auth.updateProfile({
-      name: params.first_name.replace(/ /g, ''),
+      name: params.first_name,
       csrf: csrf,
       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
@@ -50,7 +50,7 @@ export const updateProfile = params => {
     }
 
     toastr.success('Notification', 'Update profile is success')
-    // dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
+    dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
     return null
   }
 }
@@ -63,8 +63,10 @@ export function fetchProfile() {
     if (profile.meta.status === 'success') {
       let data = profile.data
       // data.name = `${data.first_name || ''} ${data.last_name || ''}`.trim()
-      if (data.first_name == null) {
-        data.first_name = ''
+      data.name = data.first_name.trim()
+      // data.name = data.first_name.replace(/ /g, '')
+      if (data.name == null) {
+        data.name = ''
       }
 
       if (data.last_name == null) {
@@ -83,7 +85,7 @@ export function fetchProfile() {
     }
     // let data = {
     //   birthdate: '2019-06-05',
-    //   first_name: 'ini bisa dums yaa',
+    //   first_name: '        ini bisa dums yaa'.trim(),
     //   last_name: '',
     //   email: 'gantengaja@gmail.com',
     //   // lastName: '',
