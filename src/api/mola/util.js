@@ -5,9 +5,10 @@ const normalizeHomePlaylist = response => {
   // console.log('response util normilize home playlist', response)
   const { data } = response.data
   if (data && data.length > 0) {
-    return data.map(({ attributes: { playlists } }) =>
-      playlists
-        .map(playlist => {
+    return data.map(
+      ({ attributes: { playlists } }) =>
+        playlists &&
+        playlists.map((playlist, index) => {
           const {
             id,
             type,
@@ -16,7 +17,6 @@ const normalizeHomePlaylist = response => {
               visibility,
               description,
               shortDescription,
-              sortOrder,
               iconUrl,
               isDark,
               images: {
@@ -33,7 +33,7 @@ const normalizeHomePlaylist = response => {
             id,
             title,
             visibility,
-            sortOrder,
+            sortOrder: index + 1,
             description,
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
@@ -46,7 +46,7 @@ const normalizeHomePlaylist = response => {
             type,
           }
         })
-        .sort((a, b) => a.sortOrder - b.sortOrder)
+      // .sort((a, b) => a.sortOrder - b.sortOrder)
     )
   }
   return []
@@ -103,9 +103,9 @@ const normalizeSportCategoryList = response => {
 const normalizeHomeVideo = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    const result = data.map(({ attributes: { videos } }) =>
-      videos
-        .map(video => {
+    const result = data.map(
+      ({ attributes: { videos } }) =>
+        videos.map(video => {
           const {
               id,
               type,
@@ -153,7 +153,7 @@ const normalizeHomeVideo = response => {
             type,
           }
         })
-        .sort((a, b) => a.displayOrder - b.displayOrder)
+      // .sort((a, b) => a.displayOrder - b.displayOrder)
     )
     return result
   }

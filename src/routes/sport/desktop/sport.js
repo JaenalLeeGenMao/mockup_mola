@@ -445,7 +445,6 @@ class Sport extends Component {
       sliderRefs.push(refs)
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
-    console.log(sliderRefs)
   }
 
   /* Vertical scroll handler */

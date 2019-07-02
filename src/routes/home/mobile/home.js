@@ -13,7 +13,7 @@ import _get from 'lodash/get'
 import homeActions from '@actions/home'
 
 import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
-
+import { getLocale } from '@routes/home/locale'
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
 
 import Header from '@components/Header'
@@ -26,6 +26,7 @@ import HomeArrow from '../arrow'
 import HomeMobileContent from './content'
 import HomeMobileMenu from './menu'
 
+import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
 import styles from './home.css'
 import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
@@ -38,6 +39,7 @@ const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
   state = {
+    locale: getLocale(),
     isDark: undefined,
     activeSlide: undefined,
     activeSlideDots: undefined,
@@ -306,7 +308,7 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
       } = this.props.home,
-      { isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
+      { isDark, locale, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
         ...SETTINGS_VERTICAL,
         className: styles.home__slick_slider_fade,
@@ -380,7 +382,8 @@ class Home extends Component {
       filteredDesc = activeSlide.shortDescription
       filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
     }
-
+    const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+    const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
     return (
       <Fragment>
         {/* <Joyride
@@ -434,24 +437,42 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
-                {activeSlide && (
-                  <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                    {scrollIndex != 0 && <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>}
-                    <p className="filteredText">{filteredDesc}</p>
-                    <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
-                    {!activeSlide.buttonText &&
-                      scrollIndex != 0 && (
-                        <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                          <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
-                        </Link>
-                      )}
-                    {/* {activeSlide.buttonText && (
+                {scrollIndex != 0 &&
+                  activeSlide &&
+                  activeSlide.id && (
+                    <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
+                      {scrollIndex != 0 && <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>}
+                      <p className="filteredText">{filteredDesc}</p>
+                      <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
+                      {!activeSlide.buttonText &&
+                        scrollIndex != 0 && (
+                          <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                            <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                          </Link>
+                        )}
+                      {/* {activeSlide.buttonText && (
                       <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                         <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
                       </Link>
                     )} */}
-                  </LazyLoad>
-                )}
+                    </LazyLoad>
+                  )}
+
+                {scrollIndex != 0 &&
+                  swipeIndex + 1 === videos.data[scrollIndex].data.length && (
+                    <LazyLoad containerClassName={styles.view_all_movie_container}>
+                      <picture>
+                        <source srcSet={viewAllMovieImgWebp} type="image/webp" />
+                        <source srcSet={viewAllMovieImg} type="image/jpeg" />
+                        <img src={viewAllMovieImg} />
+                      </picture>
+                      <a href={`/movie-library/${libraryId}`}>
+                        <span>{locale['view_all_movie']}</span>
+                        <i />
+                      </a>
+                    </LazyLoad>
+                  )}
+
                 <div className={styles.header__library_link_wrapper}>
                   {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>

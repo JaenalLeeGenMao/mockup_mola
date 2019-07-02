@@ -21,47 +21,18 @@ import LoadingPlaceholder from '../../components/common/LoadingPlaceholder/Loadi
 
 class MovieLibrary extends Component {
   state = {
-    movieLibrary: [],
-    search: {
-      genre: [],
-    },
     genreId: '',
-    isLoading: true,
     active: true,
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      getMovieLibrary,
-      getMovieLibraryList,
-      getSearchGenre,
-      search,
-      movieLibrary,
-      genreId, //passed as props from index.js
-    } = nextProps
-
-    if (typeof genreId !== 'undefined' && genreId !== '') {
-      if (genreId !== prevState.genreId) {
-        getMovieLibrary(genreId)
-      }
-    }
-
-    if (movieLibrary.meta.status === 'loading' && prevState.movieLibrary.length <= 0) {
-      if (typeof genreId !== 'undefined' && genreId !== '') {
-        getMovieLibrary(genreId)
-      } else {
-        getMovieLibraryList()
-      }
-    }
-
-    if (search.genre.meta.status === 'loading' && prevState.search.genre.length <= 0) {
-      getSearchGenre()
-    }
-
-    return { ...prevState, movieLibrary, search, genreId: nextProps.genreId }
-  }
-
   componentDidMount() {
+    const { getMovieLibrary, getSearchGenre, genreId } = this.props
+
+    getSearchGenre()
+    if (genreId) {
+      getMovieLibrary(genreId)
+    }
+
     document.ontouchend = event => {
       const halfScreenWidth = window.innerWidth * 0.5
 
@@ -81,19 +52,22 @@ class MovieLibrary extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { movieLibrary } = this.props
+    const { getMovieLibrary, genreId, movieLibrary: { meta: { status: libraryStatus } }, search: { genre: { meta: { status: genreStatus }, data: genreData } } } = this.props
 
-    //update loading state
-    if (prevProps.movieLibrary.meta.status !== movieLibrary.meta.status && movieLibrary.meta.status !== 'loading') {
-      this.setState({
-        isLoading: false,
-      })
+    //if no genre ('movie-library/') then pick the first genre and show list of relevant movie
+    if (!genreId && prevProps.search.genre.meta.status != genreStatus && genreStatus === 'success') {
+      const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
+      if (firstGenre) {
+        getMovieLibrary(firstGenre)
+      }
+    } else if (genreId !== prevProps.genreId) {
+      //if change genre from genre list
+      getMovieLibrary(genreId)
     }
   }
 
   renderLoading = () => {
     const { isMobile } = this.props
-    const isLoading = this.props.movieLibrary.meta.status === 'loading'
 
     const cardImageLoading = [
       { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
@@ -128,16 +102,15 @@ class MovieLibrary extends Component {
       { id: '12', width: isMobile ? 'auto' : '17rem', height: '27rem' },
     ]
 
-    return isLoading && cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, margin: '12px' }} key={obj.id} />)
+    return cardImageLoading.map(obj => <LoadingPlaceholder isLight style={{ width: obj.width, height: obj.height, margin: '12px' }} key={obj.id} />)
   }
 
   renderContent = () => {
     // const { movieLibrary: { data: libraryDt } } = this.props
-    const { isLoading, movieLibrary: { data: libraryDt } } = this.state
-    const cardImageLib = libraryDt.length > 0 ? libraryDt : null
+    const { movieLibrary: { data: libraryDt } } = this.props
+    const cardImageLib = libraryDt && libraryDt.length > 0 ? libraryDt : null
 
     return (
-      !isLoading &&
       cardImageLib &&
       cardImageLib.map((videos, index) => {
         return <CardLibrary {...videos} key={videos.id} index={index} active={this.state.active} />
@@ -151,25 +124,24 @@ class MovieLibrary extends Component {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
-      marginTop: '10rem',
+      marginTop: '10%',
     }
 
-    return isLoading === 'error' ? (
+    return isLoading === 'error' || isLoading === 'no_result' ? (
       <Error
         errorTitle="Video not found"
-        errorText={`Video with genre ${this.props.genreId} does not exists`}
+        errorText={`Video with genre '${this.props.genreId}' does not exists`}
         wrapperStyle={wrapperStyle}
         imageClass={s.errorImage}
-        titleStyle={{ color: '#000' }}
-        detailStyle={{ color: '#000' }}
+        titleStyle={{ color: '#FFF' }}
+        detailStyle={{ color: '#FFF' }}
       />
     ) : null
   }
 
   render() {
-    const { movieLibrary: { data: libraryDt } } = this.props
-    const status = this.props.movieLibrary.meta.status
-    const title = libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : ''
+    const { movieLibrary: { meta: { status }, data: libraryDt }, genreId } = this.props
+    const title = genreId //libraryDt.length > 0 ? libraryDt[0].genreTitle.toUpperCase() : ''
 
     return (
       <Fragment>

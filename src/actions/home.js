@@ -1,13 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Mola from '@api/mola'
 import types from '../constants'
-
-// import { getAction } from '../../../gandalf';
-// const { home: { getHomePlaylist } } = getAction();
-
-// export default {
-//   getHomePlaylist
-// };
+import { viewAllMovieBg, viewAllMovieBgWebp, viewAllMovieMobileBg, viewAllMovieMobileBgWebp } from '@global/imageUrl'
 
 const getHomePlaylist = () => dispatch => {
   dispatch({
@@ -63,15 +57,27 @@ const getHomeVideo = (playlist, isMobile) => dispatch => {
     })
   } else {
     return Mola.getHomeVideo({ id: playlist.id }).then(result => {
+      const viewAllSection = {
+        background: {
+          landscape: viewAllMovieBg,
+          landscapeWebp: viewAllMovieBgWebp,
+          portrait: viewAllMovieMobileBg,
+          portraitWebp: viewAllMovieMobileBgWebp,
+        },
+        isDark: 0,
+      }
+
+      const filterVisibility = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
+
       result = {
         meta: {
           status: result.meta.status,
           id: playlist.id,
           sortOrder: playlist.sortOrder,
         },
-        data: result.data.filter(dt => {
-          return dt.visibility === 1
-        }),
+        data: filterVisibility.concat(viewAllSection),
       }
       dispatch({
         type: types.GET_HOME_VIDEO,
