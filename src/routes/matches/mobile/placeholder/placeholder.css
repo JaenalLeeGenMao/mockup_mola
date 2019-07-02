@@ -21,7 +21,6 @@
 
 .placeholder__detail div:nth-child(1) {
   display: block;
-  margin: 0.25rem;
   margin-top: 1.2rem;
   width: 13rem;
   height: 2rem;
@@ -41,7 +40,6 @@
   display: block;
   width: 100%;
   height: 8.4rem;
-  margin: 0.25rem;
   margin-top: 1.2rem;
 }
 
@@ -49,7 +47,6 @@
   display: block;
   width: 100%;
   height: 8.4rem;
-  margin: 0.25rem;
   margin-top: 1.2rem;
 }
 
@@ -66,7 +63,6 @@
   display: block;
   width: 100%;
   height: 8.4rem;
-  margin: 0.25rem;
   margin-top: 1.2rem;
 }
 
@@ -74,13 +70,11 @@
   display: block;
   width: 100%;
   height: 8.4rem;
-  margin: 0.25rem;
   margin-top: 1.2rem;
 }
 
 .placeholder__line {
   height: 1.2rem;
-  margin: 0.5rem;
   animation: pulse 2s infinite ease-in-out;
 }
 

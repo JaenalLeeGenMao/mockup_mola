@@ -96,12 +96,12 @@ body {
   text-align: center;
   font-size: 1.8rem;
   border-radius: 0.5rem;
-  background-color: #b10000;
+  background-color: #466bff;
   color: #fff;
 }
 
 .sport__detail_button:hover {
-  box-shadow: 0 0 1rem 0 #b10000;
+  box-shadow: 0 0 1rem 0 #466bff;
 }
 
 .sport__detail_upc_btn {
@@ -258,6 +258,18 @@ body {
   top: 0;
 }
 
+.sport__swipe_slider {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  bottom: 0;
+  margin: 2% 2% 1%;
+  z-index: 2;
+  left: 10%;
+  bottom: 0;
+}
+
 .play_icon {
   width: 3.2rem;
   height: 2rem;
@@ -279,7 +291,7 @@ body {
 
 .sport__detail_button.white {
   border: 0.12rem solid rgba(66, 66, 66, 0.6);
-  background: #b10000;
+  background: #466bff;
   color: #fff;
 }
 

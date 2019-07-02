@@ -35,7 +35,7 @@ body {
   color: white;
   bottom: 0;
   width: calc(100% - 40px);
-  margin: 0 20px 35%;
+  margin: 0 20px 39%;
 }
 
 .header__detail_container.black {
@@ -49,6 +49,10 @@ body {
 .header__detail_container h1 {
   width: 100%;
   font-weight: 400;
+}
+
+.header__detail_container_ls {
+  margin: 0 20px 10%;
 }
 
 .header__playlist_title {
@@ -87,7 +91,7 @@ body {
 .header__detail_container > p {
   max-width: 80vw;
   opacity: 0;
-  height: 5rem;
+  height: 80px;
   font-weight: 400;
   font-size: 14px;
   position: absolute;
@@ -204,7 +208,7 @@ body {
   justify-content: center;
   z-index: 1;
   left: 20px;
-  top: -80px;
+  top: -12%;
 }
 
 .header__library_text.black {

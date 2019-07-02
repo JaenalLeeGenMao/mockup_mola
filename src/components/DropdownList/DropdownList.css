@@ -23,6 +23,7 @@
   width: auto;
   border-radius: 3px;
   margin-top: 7px;
+  position: absolute;
 }
 
 .dropdown_list_item {

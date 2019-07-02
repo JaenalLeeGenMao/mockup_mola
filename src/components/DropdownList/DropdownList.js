@@ -50,6 +50,27 @@ class DropdownList extends Component {
     }
   }
 
+  getSelectedMenu = (dataList) => {
+    const { selectedId } = this.state;
+    const { activeId } = this.props;
+    let titleArr = []
+    let title = ''
+    titleArr = dataList.filter((data) => {
+      const selId = selectedId ? selectedId : activeId;
+      return selId === data.id
+    })
+    // console.log("titleArr:", titleArr, " dataList", dataList)
+
+    if (titleArr.length == 0) {
+      title = dataList.length > 0 ? dataList[0].title : ''
+    } else {
+      title = titleArr.length > 0 ? titleArr[0].title : ''
+    }
+    return (
+      <span>{title}</span>
+    )
+  }
+
   render() {
     const { isOpenDropdown, selectedId } = this.state;
     const { dataList, className, labelClassName, activeId } = this.props;
@@ -58,16 +79,7 @@ class DropdownList extends Component {
         <>
           <div className={labelClassName ? labelClassName : ''}>
             <label ref={node => this.dropdownLabel = node}>
-              {dataList.map((dt) => {
-                const selId = selectedId ? selectedId : activeId;
-                if (selId == dt.id) {
-                  return (
-                    <>
-                      <span>{dt.title}</span>
-                    </>
-                  )
-                }
-              })}
+              {this.getSelectedMenu(dataList)}
             </label>
             <IoIosArrowDown className={s.select_icon} />
           </div>
