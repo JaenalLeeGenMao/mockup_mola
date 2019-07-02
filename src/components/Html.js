@@ -82,6 +82,14 @@ class Html extends React.Component {
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
           {scripts.map(script => <script key={script} src={script} />)}
+          <script
+            dangerouslySetInnerHTML={{
+              __html:
+                'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
+                `ga('create',${config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"},'auto');ga('send','pageview')`,
+            }}
+          />
+          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
         </body>
       </html>
     )
