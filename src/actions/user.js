@@ -62,16 +62,16 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      // data.name = `${data.first_name || ''} ${data.last_name || ''}`.trim()
-      data.name = data.first_name.trim()
+      data.name = `${data.first_name || ''} ${data.last_name || ''}`
+      // data.name = data.first_name.trim()
       // data.name = data.first_name.replace(/ /g, '')
       if (data.name == null) {
         data.name = ''
       }
 
-      if (data.last_name == null) {
-        data.last_name = ''
-      }
+      // if (data.last_name == null) {
+      //   data.last_name = ''
+      // }
 
       if (data.birthdate == null) {
         data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
@@ -83,16 +83,35 @@ export function fetchProfile() {
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
       return data
     }
+    //ini dummy ya
     // let data = {
     //   birthdate: '2019-06-05',
-    //   first_name: '        ini bisa dums yaa'.trim(),
-    //   last_name: '',
+    //   first_name: 'fisrname',
+    //   last_name: 'lastname',
     //   email: 'gantengaja@gmail.com',
     //   // lastName: '',
     //   gender: 'f',
-    //   id: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
+    //   uid: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
     //   location: 'Andorra',
     //   phone: '08211881818181',
+    // }
+    // data.name = `${data.first_name || ''} ${data.last_name || ''}`
+    // // data.name = data.first_name.trim()
+    // // data.name = data.first_name.replace(/ /g, '')
+    // if (data.name == null) {
+    //   data.name = ''
+    // }
+
+    // // if (data.last_name == null) {
+    // //   data.last_name = ''
+    // // }
+
+    // if (data.birthdate == null) {
+    //   data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
+    // }
+
+    // if (data.gender == null) {
+    //   data.gender = 'lain'
     // }
     // dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
     // return data
