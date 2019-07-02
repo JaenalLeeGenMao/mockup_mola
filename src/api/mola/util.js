@@ -129,7 +129,7 @@ const normalizeHomeVideo = response => {
             } = video,
             dummyQuote = {
               attributes: {
-                author: 'Comming Soon',
+                author: 'Coming Soon',
                 imageUrl: '',
                 role: 'Media',
                 text: title,
@@ -188,7 +188,7 @@ const normalizeSportVideo = response => {
             } = video,
             dummyQuote = {
               attributes: {
-                author: 'Comming Soon',
+                author: 'Coming Soon',
                 imageUrl: '',
                 role: 'Media',
                 text: title,
