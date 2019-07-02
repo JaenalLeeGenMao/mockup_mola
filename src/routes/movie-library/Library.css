@@ -50,4 +50,8 @@
   .card_wrapper {
     padding: 2rem 0;
   }
+
+  .errorImage {
+    width: 55% !important;
+  }
 }

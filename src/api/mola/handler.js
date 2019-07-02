@@ -102,7 +102,6 @@ const getFeatureBanner = (isMobile = false) => {
       //   },
       // }
       const result = utils.normalizeFeatureBanner(response)
-      console.log('result', result)
       // return new Promise(resolve =>
       //   resolve({
       //     meta: {

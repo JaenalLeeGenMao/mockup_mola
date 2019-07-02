@@ -25,20 +25,9 @@
   color: white;
 }
 
-.menu__dots.menu__top_active {
-  width: 20px;
-  margin-right: 0;
+.menu__dots.menu__active {
+  width: 40px;
   opacity: 1;
-  transform: translateX(5%);
-  background-color: #2c56ff;
-  height: 5px;
-}
-
-.menu__dots.menu__bot_active {
-  width: 20px;
-  margin-left: 0;
-  opacity: 1;
-  transform: translateX(-5%);
   background-color: #2c56ff;
   height: 5px;
 }

@@ -154,9 +154,14 @@
 
 @media screen and (max-width: 640px) {
   .card {
-    width: 50%;
+    width: calc(50% - 10px);
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;
+    min-height: 280px;
+  }
+
+  .card img {
+    min-height: 280px;
   }
 
   .card__detail {

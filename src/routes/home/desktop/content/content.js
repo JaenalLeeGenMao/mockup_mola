@@ -3,8 +3,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Slider from 'react-slick'
 
-import $ from 'jquery'
-
 import styles from './content.css'
 
 class Content extends Component {
@@ -13,7 +11,7 @@ class Content extends Component {
     const settings = {
       dots: false,
       arrows: false,
-      infinite: true,
+      infinite: false,
       touchMove: false,
       speed: 500,
       slidesToShow: 1,
@@ -36,7 +34,15 @@ class Content extends Component {
       >
         {this.props.videos.map(video => {
           const { id, isDark, background } = video
-          return (
+          return index != 0 ? (
+            <div key={id} className="grid-slick" isdark={isDark}>
+              <picture>
+                <source srcSet={background.landscapeWebp} type="image/webp" />
+                <source srcSet={background.landscape} type="image/jpeg" />
+                <img src={background.landscape} />
+              </picture>
+            </div>
+          ) : (
             <div key={id} className="grid-slick" isdark={isDark}>
               <img src={background.landscape} />
             </div>
