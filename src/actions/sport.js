@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getSportCategoryList = () => dispatch => {
+const getSportList = () => dispatch => {
   dispatch({
     type: types.GET_SPORT_PLAYLIST_LOADING,
     payload: {
@@ -13,42 +13,92 @@ const getSportCategoryList = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getSportCategoryList().then(result => {
-    // console.log('checking get sport cate', result)
+  return Mola.getSportList().then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_SPORT_PLAYLIST_ERROR,
         payload: result,
       })
     } else {
-      dispatch({
+      if (result.data) {
+        for (const sportList of result.data) {
+          const matchesVideoList = await Mola.getMatchesList(sportList.id.replace('f-', ''))
+          const allMatchDetail = []
+          for (const matchDetail of matchesVideoList.data) {
+            allMatchDetail.push(matchDetail.id)
+          }
+          const matchDetailDt = await Mola.getMatchDetail(allMatchDetail)
+          sportList.playlists = matchDetailDt
+        }
+      }
+      const featurePlaylist = { id: 'web-featured', title: 'Featured', sortOrder: 0, visibility: 1 }
+      const dataFeature = [featurePlaylist, ...result.data]
+      const resultFeature = {
+        data: dataFeature.filter(dt => {
+          return dt.visibility === 1
+        }),
+        meta: {
+          ...result.meta,
+        },
+      }
+      return dispatch({
         type: types.GET_SPORT_PLAYLIST_SUCCESS,
-        payload: result,
+        payload: resultFeature,
       })
     }
   })
 }
-const getSportVideo = playlist => dispatch => {
-  // console.log('checking get sport video zzzzz', playlist)
-  return Mola.getSportVideo({ id: playlist.id }).then(result => {
-    // console.log('checking get sport video oooo', result)
-    result = {
-      meta: {
-        status: result.meta.status,
-        id: playlist.id,
-        sortOrder: playlist.sortOrder,
-      },
-      data: result.data,
-      background: {
-        landscape: playlist.background.landscape,
-      },
-    }
-    // console.log('get sport video 3', result)
-    dispatch({
-      type: types.GET_SPORT_VIDEO,
-      payload: result,
+
+const getSportVideo = (playlist, isMobile) => dispatch => {
+  const isSport = true
+  if (playlist.id === 'web-featured') {
+    return Mola.getFeatureBanner(isMobile, isSport).then(result => {
+      result = {
+        meta: {
+          status: result.meta.status,
+          id: playlist.id,
+          sortOrder: 0,
+        },
+        data: result.data,
+      }
+      dispatch({
+        type: types.GET_SPORT_VIDEO,
+        payload: result,
+      })
     })
-  })
+  } else {
+    return Mola.getSportVideo({ id: playlist.id }).then(result => {
+      const filterVisibility = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
+
+      result = {
+        meta: {
+          status: result.meta.status,
+          id: playlist.id,
+          sortOrder: playlist.sortOrder,
+        },
+        data: filterVisibility,
+        background: {
+          landscape: playlist.background.landscape,
+        },
+      }
+      // if (result.data.playlists) {
+      //   for (const liveSoc of result.data.playlists) {
+      //     if (liveSoc.id === 'live-soc') {
+      //       const liveSocPlaylists = getMatchesList(liveSoc.id)
+      //       liveSoc.playlists = liveSocPlaylists.playlists
+      //       liveSoc.videos = liveSocPlaylists.videos
+      //     }
+      //   }
+      // }
+
+      dispatch({
+        type: types.GET_SPORT_VIDEO,
+        payload: result,
+      })
+    })
+  }
 }
 
 const updateActivePlaylist = id => (dispatch, getState) => {
@@ -70,7 +120,7 @@ const updateActivePlaylist = id => (dispatch, getState) => {
 }
 
 export default {
-  getSportCategoryList,
+  getSportList,
   getSportVideo,
   updateActivePlaylist,
 }

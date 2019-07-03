@@ -6,9 +6,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Auth from '@api/auth'
 
-import facebook from '@global/style/icons/facebook.png'
-import google from '@global/style/icons/google.png'
-import line from '@global/style/icons/line.png'
+import { facebook, google, line } from '@global/imageUrl'
+import history from '@source/history'
 
 import Header from '@components/Header'
 import Footer from '@components/Footer'
@@ -20,10 +19,9 @@ import styles from './login.css'
 const { getComponent } = require('@supersoccer/gandalf')
 const TextInput = getComponent('text-input')
 
+var emailInputRef, pwdInputRef
 class Login extends Component {
   state = {
-    email: '',
-    password: '',
     error: '',
     locale: getLocale(),
   }
@@ -36,22 +34,52 @@ class Login extends Component {
     })
   }
 
+  validateEmail = mail => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return true
+    }
+    return false
+  }
+
   handleLogin = async () => {
-    const { email, password } = this.state,
-      { runtime: { csrf } } = this.props
-    const result = await Auth.requestLogin({
-      email,
-      password,
-      csrf,
-    })
-    if (result.meta.status === 'success') {
-      window.location.href = '/accounts/signin'
-    } else {
+    const { runtime: { csrf } } = this.props
+
+    if (!this.validateEmail(emailInputRef.value)) {
+      emailInputRef.focus()
       this.setState({
-        email: '',
-        password: '',
-        error: result.meta.error.error_description,
+        error: 'Please enter valid email address',
       })
+    } else if (pwdInputRef.value === '') {
+      pwdInputRef.focus()
+      this.setState({
+        error: 'Please enter password',
+      })
+    } else {
+      const result = await Auth.requestLogin({
+        email: emailInputRef.value,
+        password: pwdInputRef.value,
+        csrf,
+      })
+
+      if (result.meta.status === 'success') {
+        window.location.href = '/accounts/signin'
+      } else {
+        if (result.meta.error && result.meta.error.error_description) {
+          if (result.meta.error.error === 'account_not_verified') {
+            history.push({
+              pathname: '/accounts/register',
+              state: {
+                isInVerified: true,
+                email: emailInputRef.value,
+              },
+            })
+          } else {
+            this.setState({
+              error: result.meta.error.error_description,
+            })
+          }
+        }
+      }
     }
   }
 
@@ -65,8 +93,16 @@ class Login extends Component {
     window.location.href = `/accounts/_/v1/login/${provider}`
   }
 
+  setEmailRef = ref => {
+    emailInputRef = ref
+  }
+
+  setPwdRef = ref => {
+    pwdInputRef = ref
+  }
+
   render() {
-    const { locale, email, password, error } = this.state
+    const { locale, error } = this.state
     return (
       <div className={styles.login__container}>
         <div className={styles.login__header_wrapper}>
@@ -80,25 +116,25 @@ class Login extends Component {
               id="email"
               name="email"
               onChange={this.handleInputChange}
-              value={email}
               className={styles.login__content_input}
               isError={error !== ''}
               errorClassName={styles.login__content_input_error}
               placeholder="Email"
               type="text"
               onKeyUp={this.handleKeyUp}
+              setRef={this.setEmailRef}
             />
             <TextInput
               id="password"
               name="password"
               onChange={this.handleInputChange}
-              value={password}
               className={styles.login__content_input}
               isError={error !== ''}
               errorClassName={styles.login__content_input_error}
               placeholder="Password"
               type="password"
               onKeyUp={this.handleKeyUp}
+              setRef={this.setPwdRef}
             />
             <div className={styles.login__content_forget_password}>
               <Link to="/accounts/forgotPassword">{locale['forget_password']} ?</Link>

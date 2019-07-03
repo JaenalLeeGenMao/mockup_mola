@@ -12,7 +12,7 @@ import _get from 'lodash/get'
 
 import homeActions from '@actions/home'
 
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+import { logoLandscapeBlue } from '@global/imageUrl'
 import { getLocale } from '@routes/home/locale'
 import { swipeGestureListener, getErrorCode } from '@routes/home/util'
 
@@ -30,8 +30,9 @@ import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
 import styles from './home.css'
 import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
-import { SETTINGS_VERTICAL } from '../const'
+import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
+import history from '@source/history'
 
 let activePlaylist
 let deferredPrompt
@@ -40,7 +41,8 @@ const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Home extends Component {
   state = {
     locale: getLocale(),
-    isDark: undefined,
+    isDark: 1,
+    isLandscape: false,
     activeSlide: undefined,
     activeSlideDots: undefined,
     scrollIndex: 0 /* vertical menu */,
@@ -134,6 +136,36 @@ class Home extends Component {
     }
     setMultilineEllipsis('filteredText')
 
+    let isLandscapeVar = false
+    if (window.innerHeight > window.innerWidth) {
+      isLandscapeVar = false
+    } else {
+      isLandscapeVar = true
+    }
+    var resizeTimer;
+    const that = this
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (window.innerHeight > window.innerWidth) {
+          isLandscapeVar = false
+        } else {
+          isLandscapeVar = true
+        }
+        if (that.state.isLandscape != isLandscapeVar) {
+          that.setState({
+            isLandscape: isLandscapeVar
+          })
+        }
+      }, 300);
+    }, false);
+
+    if (this.state.isLandscape != isLandscapeVar) {
+      this.setState({
+        isLandscape: isLandscapeVar
+      })
+    }
+
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
     })
@@ -162,47 +194,47 @@ class Home extends Component {
       }
     }
 
-    // Prompt user to AddToHomeScreen
-    window.addEventListener('beforeinstallprompt', e => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      // e.preventDefault()
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e
+    // // Prompt user to f AddToHomeScreen
+    // window.addEventListener('beforeinstallprompt', e => {
+    //   // Prevent Chrome 67 and earlier from automatically showing the prompt
+    //   // e.preventDefault()
+    //   // Stash the event so it can be triggered later.
+    //   deferredPrompt = e
 
-      const a2hsInstalled = localStorage.getItem('a2hs')
-      if (!a2hsInstalled) {
-        // Update UI notify the user they can add to home screen
-        this.a2hsContainer.style.display = 'flex'
-      }
-    })
+    //   const a2hsInstalled = localStorage.getItem('a2hs')
+    //   if (!a2hsInstalled) {
+    //     // Update UI notify the user they can add to home screen
+    //     this.a2hsContainer.style.display = 'flex'
+    //   }
+    // })
 
-    this.btnAdd.addEventListener('click', e => {
-      // hide our user interface that shows our A2HS button
-      this.a2hsContainer.style.display = 'none'
-      // Show the prompt
-      deferredPrompt.prompt()
-      // Wait for the user to respond to the prompt
-      deferredPrompt.userChoice.then(choiceResult => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-          localStorage.setItem('a2hs', true)
-        } else {
-          console.log('User dismissed the A2HS prompt')
-          localStorage.setItem('a2hs', false)
-        }
-        deferredPrompt = null
-      })
-    })
+    // this.btnAdd.addEventListener('click', e => {
+    //   // hide our user interface that shows our A2HS button
+    //   this.a2hsContainer.style.display = 'none'
+    //   // Show the prompt
+    //   deferredPrompt.prompt()
+    //   // Wait for the user to respond to the prompt
+    //   deferredPrompt.userChoice.then(choiceResult => {
+    //     if (choiceResult.outcome === 'accepted') {
+    //       console.log('User accepted the A2HS prompt')
+    //       localStorage.setItem('a2hs', true)
+    //     } else {
+    //       console.log('User dismissed the A2HS prompt')
+    //       localStorage.setItem('a2hs', false)
+    //     }
+    //     deferredPrompt = null
+    //   })
+    // })
 
-    window.addEventListener('appinstalled', evt => {
-      app.logEvent('a2hs', 'installed')
-      localStorage.setItem('a2hs', true)
-    })
+    // window.addEventListener('appinstalled', evt => {
+    //   app.logEvent('a2hs', 'installed')
+    //   localStorage.setItem('a2hs', true)
+    // })
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
     const distance = Math.abs(prevX - nextX),
-      { sliderRefs, scrollIndex } = this.state
+      { sliderRefs, scrollIndex, swipeIndex } = this.state
 
     if (mode === 'vertical') {
       if (this.rootSlider) {
@@ -218,6 +250,7 @@ class Home extends Component {
         }
       }
     } else {
+      const { playlists: { data: playlistDt }, videos: { data: videoDt } } = this.props.home
       if (slider) {
         if (slider.innerSlider === null) {
           return false
@@ -225,7 +258,12 @@ class Home extends Component {
         if (distance <= window.innerWidth * 0.2) {
           // do nothing
         } else if (prevX > nextX) {
+          // if (videoDt && videoDt[scrollIndex].data && swipeIndex + 1 == videoDt[scrollIndex].data.length) {
+          //   const playlistId = playlistDt[scrollIndex].id;
+          //   history.push(`/movie-library/${scrollIndex > 0 ? playlistId.replace('f-', '') : ''}`);
+          // } else {
           sliderRefs[scrollIndex].slickNext()
+          // }
         } else {
           sliderRefs[scrollIndex].slickPrev()
         }
@@ -269,8 +307,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
     this.activeSlider = this.state.sliderRefs[index]
-    setTimeout(function() {
-      // that.props.onUpdatePlaylist(activePlaylist.id)
+    setTimeout(function () {
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
       let isDark = 1
@@ -283,6 +320,7 @@ class Home extends Component {
       if (index || index === 0) {
         sliderRefs[index].slickGoTo(0)
         that.setState({
+          isDark: videos.data[index].data[swipeIndex] ? videos.data[index].data[swipeIndex].isDark : 1,
           scrollIndex: index,
           swipeIndex,
           activeSlide: videos.data[index].data[swipeIndex],
@@ -308,13 +346,13 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
       } = this.props.home,
-      { isDark, locale, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
+      { isDark, locale, isLandscape, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
-        ...SETTINGS_VERTICAL,
+        ...SETTINGS_MOBILE,
         className: styles.home__slick_slider_fade,
         onInit: node => {
           this.activeSlider = sliderRefs[0]
-          this.handleColorChange()
+          this.handleColorChange(0)
         },
         beforeChange: (currentIndex, nextIndex) => {
           activePlaylist = playlists.data[nextIndex]
@@ -399,36 +437,21 @@ class Home extends Component {
         /> */}
 
         <div>
-          <div
-            ref={node => {
-              this.a2hsContainer = node
-            }}
-            className={styles.home__a2hs_container}
-          >
-            <div className={styles.home__logo}>
-              <img alt="molatv" src={logoLandscapeBlue} />
-            </div>
-            <div
-              ref={node => {
-                this.btnAdd = node
-              }}
-            >
-              ADD TO HOME SCREEN
-            </div>
-            <div
-              onClick={() => {
-                // hide our user interface that shows our A2HS button
-                this.a2hsContainer.style.display = 'none'
-                localStorage.setItem('a2hs', false)
-              }}
-            >
-              ✖
-            </div>
-          </div>
-          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
-          {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
+          {playlistStatus !== 'error' && (
+            <Header
+              shadowMobile
+              libraryOff
+              className={styles.placeholder__header}
+              isDark={0}
+              isLandscape={isLandscape}
+              activePlaylist={activePlaylist && activePlaylist.id !== 'web-featured' ? activePlaylist : null}
+              isMobile
+              {...this.props}
+            />
+          )}
+          {playlistStatus === 'loading' || (videoStatus === 'loading' && <HomePlaceholder />)}
           {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
-          {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
+          {/* {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />} */}
           {videos &&
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
@@ -440,24 +463,38 @@ class Home extends Component {
                 {scrollIndex != 0 &&
                   activeSlide &&
                   activeSlide.id && (
-                    <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
-                      {scrollIndex != 0 && <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>}
+                    <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                      <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
+                      <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
                       <p className="filteredText">{filteredDesc}</p>
-                      <p className={`${styles.quote} filteredText`}>{filteredQuote}</p>
+                      <p className="filteredText">{filteredQuote}</p>
+                      <p className="filteredText">{filteredDesc}</p>
+                      <p className="filteredText">{filteredQuote}</p>
                       {!activeSlide.buttonText &&
                         scrollIndex != 0 && (
                           <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                             <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                           </Link>
                         )}
-                      {/* {activeSlide.buttonText && (
-                      <Link to={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                      </Link>
-                    )} */}
+                      {activeSlide.buttonText && (
+                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                        </a>
+                      )}
                     </LazyLoad>
                   )}
 
+                {/* <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                  <div className={styles.header__playlist_title}>Dokumenter</div>
+                  <h1 className={'small'}>Free Money</h1>
+                  <p className="filteredText">Setelah membunuh salah satu penghuni penjara yang mencoba kabur, Swede (Marlon Brando) harus berhadapan dengan seorang agen FBI yang terus mengikuti dirinya. Seolah masalahnya masih belum cukup banyak, keluarganya kembali hadir dan memberikan dirinya sakit kepala baru...</p>
+                  <p className="filteredText">aaa</p>
+                  <p className="filteredText">Setelah membunuh salah satu penghuni penjara yang mencoba kabur, Swede (Marlon Brando) harus berhadapan dengan seorang agen FBI yang terus mengikuti dirinya. Seolah masalahnya masih belum cukup banyak, keluarganya kembali hadir dan memberikan dirinya sakit kepala baru...</p>
+                  <p className="filteredText">aaa</p>
+                  <Link to={`/movie-detail/`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                    <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                  </Link>
+                </LazyLoad> */}
                 {scrollIndex != 0 &&
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>
@@ -472,7 +509,6 @@ class Home extends Component {
                       </a>
                     </LazyLoad>
                   )}
-
                 <div className={styles.header__library_link_wrapper}>
                   {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
@@ -485,7 +521,7 @@ class Home extends Component {
                 >
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
-                    return <HomeMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                    return <HomeMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
                   })}
                 </Slider>
               </>

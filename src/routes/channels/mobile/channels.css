@@ -1,0 +1,98 @@
+body {
+  background-color: #212121;
+}
+
+.header_container {
+  background-color: #212121;
+  display: block;
+  height: 55px;
+}
+
+.channels_container {
+  background-color: #212121;
+}
+
+.video_container {
+  width: 100vw;
+  clear: both;
+  margin-top: 50px;
+}
+
+.channels_top_wrapper {
+  position: absolute;
+  top: 57px;
+  width: 100%;
+  z-index: 1;
+}
+
+.channels_dropdown_container {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.select_icon {
+  color: white;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+.channels_list_wrapper {
+  position: relative;
+  margin: 15px 20px;
+  width: auto;
+  float: left;
+}
+
+/* 
+.channels_list_wrapper select {
+  font-size: 12px;
+  width: auto;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: transparent;
+  position: absolute;
+  left: -5px;
+  top: -3px;
+}
+
+.channels_title {
+  font-size: 12px;
+  width: auto;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  pointer-events: none;
+  position: relative;
+  display: inline-block;
+} */
+
+.schedule_date_wrapper {
+  position: relative;
+  margin: 15px 20px;
+  width: auto;
+  float: right;
+}
+
+.schedule_date_wrapper select {
+  font-size: 12px;
+  width: auto;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: transparent;
+  position: absolute;
+  left: -5px;
+  top: -3px;
+}
+
+.schedule_date_title {
+  font-size: 12px;
+  width: auto;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  pointer-events: none;
+  position: relative;
+  display: inline-block;
+}

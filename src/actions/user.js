@@ -35,7 +35,7 @@ export const updateProfile = params => {
     }
 
     const update = await Auth.updateProfile({
-      name: params.username,
+      name: params.first_name,
       csrf: csrf,
       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
@@ -50,6 +50,7 @@ export const updateProfile = params => {
     }
 
     toastr.success('Notification', 'Update profile is success')
+    dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
     return null
   }
 }
@@ -61,8 +62,14 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      data.username = `${data.first_name || ''} ${data.last_name || ''}`.trim()
-      data.phoneNumber = data.phone
+      //data.name = `${data.first_name || ''} ${data.last_name || ''}`
+      // data.name = data.first_name.trim()
+      // data.name = data.first_name.replace(/ /g, '')
+      if (data.first_name) {
+        data.name = `${data.first_name ? data.first_name + ' ' : ''}${data.last_name || ''}`
+      } else {
+        data.name = ''
+      }
 
       if (data.birthdate == null) {
         data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
@@ -71,11 +78,46 @@ export function fetchProfile() {
       if (data.gender == null) {
         data.gender = 'lain'
       }
-
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
       return data
     }
+    // ini dummy ya
+    // let data = {
+    //   // name: 'nama fjdkfj',
+    //   birthdate: '2019-06-05',
+    //   first_name: 'fisrname',
+    //   last_name: 'lastname ayu jelek',
+    //   // firstName: 'hola',
+    //   // lastName: 'oi oi',
+    //   email: 'gantengaja@gmail.com',
+    //   // lastName: '',
+    //   gender: 'f',
+    //   uid: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
+    //   location: 'Andorra',
+    //   phone: '08211881818181',
+    // }
 
+    // if (data.first_name) {
+    //   data.name = `${data.first_name ? data.first_name + ' ' : ''}${data.last_name || ''}`
+    // } else {
+    //   data.name = ''
+    // }
+
+    // console.log('NAMEEE', data.name)
+
+    // if (data.last_name == null) {
+    //   data.last_name = ''
+    // }
+
+    // if (data.birthdate == null) {
+    //   data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
+    // }
+
+    // if (data.gender == null) {
+    //   data.gender = 'lain'
+    // }
+    // dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
+    // return data
     return false
   }
 }

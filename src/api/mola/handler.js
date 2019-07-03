@@ -1,5 +1,4 @@
 import { get, post, delete as axiosDelete } from 'axios'
-import qs from 'query-string'
 import {
   VIDEOS_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT,
@@ -7,7 +6,6 @@ import {
   SEARCH_ENDPOINT,
   SEARCH_GENRE_ENDPOINT,
   RECENT_SEARCH_ENDPOINT,
-  MOVIE_DETAIL_ENDPOINT,
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
@@ -23,9 +21,7 @@ const getHomePlaylist = () => {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler home response', response)
       const result = utils.normalizeHomePlaylist(response)
-      // console.log('handler home result', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -46,8 +42,12 @@ const getHomePlaylist = () => {
     })
 }
 
-const getFeatureBanner = (isMobile = false) => {
-  return get(`${CAMPAIGN_ENDPOINT}/${isMobile ? 'mobile-featured' : 'desktop-featured'}?include=banners`, {
+const getFeatureBanner = (isMobile = false, isSport = false) => {
+  let url = isMobile ? 'mobile-featured' : 'desktop-featured'
+  if (isSport) {
+    url = isMobile ? 'mobile-sport-featured' : 'desktop-sport-featured'
+  }
+  return get(`${CAMPAIGN_ENDPOINT}/${url}?include=banners`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -131,14 +131,13 @@ const getFeatureBanner = (isMobile = false) => {
     })
 }
 
-const getSportCategoryList = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-sport`, {
+const getSportList = (id = 'mola-sport') => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler response get playlist ', response)
-      const result = utils.normalizeSportCategoryList(response)
-      // console.log('handler sport playlist masuk', result)
+      const result = utils.normalizeHomePlaylist(response)
+      // console.log('handler Sport or matches 1', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -149,6 +148,66 @@ const getSportCategoryList = () => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Sport')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+const getMatchesList = id => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('response handler matcheslist', response)
+      const result = utils.normalizeMatchesList(response)
+      // console.log('after normalize matchlist', result)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sports')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getMatchDetail = id => {
+  return post(
+    `${VIDEOS_ENDPOINT}/?relationships=1`,
+    {
+      videos: id,
+    },
+    {
+      ...endpoints.setting,
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeMatchDetail(response)
+      // console.log('handler: after normalize match detail', result)
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: result || null,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
       return {
         meta: {
           status: 'error',
@@ -193,8 +252,7 @@ const getSportVideo = ({ id }) => {
   })
     .then(response => {
       // console.log('handler response get sport 2222', response) //here video exist?
-      const result = utils.normalizeSportVideo(response)
-      // console.log('handler response get result 3333', result) //data null
+      const result = utils.normalizeHomeVideo(response)
       return {
         meta: {
           status: 'success',
@@ -398,7 +456,7 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
 }
 
 const getMovieDetail = ({ id }) => {
-  return get(`${MOVIE_DETAIL_ENDPOINT}/${id}`, {
+  return get(`${VIDEOS_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -461,7 +519,7 @@ const getMovieLibrary = id => {
           status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result.length > 0 ? result : [],
       }
     })
     .catch(error => {
@@ -672,6 +730,8 @@ export default {
   createOrder,
   createMidtransPayment,
   getOrderHistoryTransactions,
-  getSportCategoryList,
+  getSportList,
   getSportVideo,
+  getMatchesList,
+  getMatchDetail,
 }

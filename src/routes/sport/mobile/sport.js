@@ -1,20 +1,21 @@
 import React, { Component, Fragment } from 'react'
 import Slider from 'react-slick'
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
+// import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import Joyride from 'react-joyride'
 import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
-import $ from 'jquery'
+// import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 
-import homeActions from '@actions/home'
+import sportActions from '@actions/sport'
 
-import logoLandscapeBlue from '@global/style/icons/mola-landscape-blue.svg'
+// import { logoLandscapeBlue } from '@global/imageUrl'
 
-import { swipeGestureListener, getErrorCode } from '@routes/sport/util'
+import { getErrorCode } from '@routes/sport/util'
+import { getLocale } from '@routes/sport/locale'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -22,22 +23,24 @@ import Link from '@components/Link'
 
 import SportError from '@components/common/error'
 import SportPlaceholder from './placeholder'
-import SportArrow from '../arrow'
+// import SportArrow from '../arrow'
 import SportMobileContent from './content'
 import SportMobileMenu from './menu'
 
 import styles from './sport.css'
 import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
-import { SETTINGS_VERTICAL } from '../const'
+import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
+import { isMatchLive } from '@source/lib/dateTimeUtil'
 
 let activePlaylist
-let deferredPrompt
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
 class Sport extends Component {
   state = {
+    locale: getLocale(),
+    isLandscape: false,
     isDark: undefined,
     activeSlide: undefined,
     activeSlideDots: undefined,
@@ -45,16 +48,15 @@ class Sport extends Component {
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
     videos: [],
-    //add
     startGuide: false,
     stepIndex: 0,
     steps: tourSteps[this.props.user.lang],
+    sportCategoryListSuccess: false,
     sliderRefs: [],
-    playlistSuccess: false,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, sport: { playlists, videos }, runtime } = nextProps
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
@@ -74,56 +76,6 @@ class Sport extends Component {
   }
   //added
 
-  handleTourCallback = data => {
-    const { type, action, index } = data
-    const { videos } = this.props.home
-
-    if (type === EVENTS.TOUR_END) {
-      localStorage.setItem('tour-sport', true)
-      // document.cookie = '__trh=1; path=/;';
-      return true
-    }
-
-    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
-      this.setState({
-        stepIndex: index + 1,
-      })
-      // alert('next')
-    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
-      this.setState(
-        {
-          stepIndex: index - 1,
-        },
-        () => {
-          if (index === 4) {
-            this.sliderRefs[0].slickPrev()
-          }
-        }
-      )
-      // alert('prev')
-    } else {
-      if (action === ACTIONS.NEXT && index === 4) {
-        if (videos.data[0].data.length > 1) {
-          this.sliderRefs[0].slickNext()
-        } else {
-          this.setState({
-            stepIndex: index + 1,
-          })
-        }
-      }
-    }
-  }
-
-  componentDidUpdate() {
-    const { playlists, videos } = this.props.home
-
-    if (playlists.meta.status === 'success') {
-      if (videos.meta.status === 'success' && !this.state.playlistSuccess) {
-        this.initTour()
-      }
-    }
-  }
-
   componentDidMount() {
     /* set the default active playlist onload */
     if (this.state.playlists.data.length > 0) {
@@ -132,6 +84,35 @@ class Sport extends Component {
     }
     setMultilineEllipsis('filteredText')
 
+    let isLandscapeVar = false
+    if (window.innerHeight > window.innerWidth) {
+      isLandscapeVar = false
+    } else {
+      isLandscapeVar = true
+    }
+    var resizeTimer;
+    const that = this
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (window.innerHeight > window.innerWidth) {
+          isLandscapeVar = false
+        } else {
+          isLandscapeVar = true
+        }
+        if (that.state.isLandscape != isLandscapeVar) {
+          that.setState({
+            isLandscape: isLandscapeVar
+          })
+        }
+      }, 300);
+    }, false);
+
+    if (this.state.isLandscape != isLandscapeVar) {
+      this.setState({
+        isLandscape: isLandscapeVar
+      })
+    }
     document.body.addEventListener('touchmove', this.preventDefault, {
       passive: false,
     })
@@ -159,43 +140,6 @@ class Sport extends Component {
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
       }
     }
-
-    // Prompt user to AddToHomeScreen
-    window.addEventListener('beforeinstallprompt', e => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      // e.preventDefault()
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e
-
-      const a2hsInstalled = localStorage.getItem('a2hs')
-      if (!a2hsInstalled) {
-        // Update UI notify the user they can add to home screen
-        this.a2hsContainer.style.display = 'flex'
-      }
-    })
-
-    this.btnAdd.addEventListener('click', e => {
-      // hide our user interface that shows our A2HS button
-      this.a2hsContainer.style.display = 'none'
-      // Show the prompt
-      deferredPrompt.prompt()
-      // Wait for the user to respond to the prompt
-      deferredPrompt.userChoice.then(choiceResult => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-          localStorage.setItem('a2hs', true)
-        } else {
-          console.log('User dismissed the A2HS prompt')
-          localStorage.setItem('a2hs', false)
-        }
-        deferredPrompt = null
-      })
-    })
-
-    window.addEventListener('appinstalled', evt => {
-      app.logEvent('a2hs', 'installed')
-      localStorage.setItem('a2hs', true)
-    })
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
@@ -239,23 +183,6 @@ class Sport extends Component {
     }
   }
 
-  initTour = () => {
-    this.setState(
-      {
-        playlistSuccess: true,
-      },
-      () => {
-        let isTourDone = localStorage.getItem('tour-sport')
-
-        if (!isTourDone) {
-          this.setState({
-            startGuide: true,
-          })
-        }
-      }
-    )
-  }
-
   componentWillUnmount() {
     document.body.removeEventListener('touchmove', this.preventDefault)
   }
@@ -266,20 +193,20 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    this.activeSlider = this.state.sliderRefs[index]
-    setTimeout(function() {
-      that.props.onUpdatePlaylist(activePlaylist.id)
-      const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
-        { videos, sliderRefs } = that.state
+    setTimeout(function () {
+      if (activePlaylist) {
+        that.props.onUpdatePlaylist(activePlaylist.id)
+      }
+      const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`)
+      const { videos } = that.state
       let isDark = 1
       if (activeSlick) {
         isDark = parseInt(activeSlick.getAttribute('isdark'), 10)
       }
       if (typeof isDark === 'number') {
-        that.setState({ isDark, activeSlide: videos.data[0].data[0], activeSlideDots: videos.data[0].data })
+        that.setState({ isDark, activeSlide: videos.data[0].data[0] })
       }
       if (index || index === 0) {
-        sliderRefs[index].slickGoTo(0)
         that.setState({
           scrollIndex: index,
           swipeIndex,
@@ -299,28 +226,31 @@ class Sport extends Component {
   }
 
   render() {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
-      {
-        playlists,
-        playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
-        videos,
-        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
-      } = this.props.home,
-      { isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
-      settings = {
-        ...SETTINGS_VERTICAL,
-        className: styles.sport__slick_slider_fade,
-        onInit: node => {
-          this.activeSlider = sliderRefs[0]
-          this.handleColorChange()
-        },
-        beforeChange: (currentIndex, nextIndex) => {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    const {
+      playlists,
+      playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
+      videos,
+      videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
+    } = this.props.sport
+    const { locale, isDark, isLandscape, startGuide, steps, sportCategoryListSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state
+    const settings = {
+      ...SETTINGS_MOBILE,
+      className: styles.sport__slick_slider_fade,
+      onInit: node => {
+        this.activeSlider = sliderRefs[0]
+        this.handleColorChange()
+      },
+      beforeChange: (currentIndex, nextIndex) => {
+        if (nextIndex != -1) {
+          this.activeSlider = sliderRefs[nextIndex]
           activePlaylist = playlists.data[nextIndex]
           this.handleColorChange(nextIndex)
-        },
+        }
       },
-      playlistErrorCode = getErrorCode(playlistError),
-      videoErrorCode = getErrorCode(videoError)
+    }
+    const playlistErrorCode = getErrorCode(playlistError)
+    const videoErrorCode = getErrorCode(videoError)
 
     const customTourStyle = {
       buttonNext: {
@@ -378,51 +308,13 @@ class Sport extends Component {
     let filteredQuote = ''
     if (activeSlide) {
       filteredDesc = activeSlide.description
-      filteredQuote = `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
     }
 
     return (
       <Fragment>
-        <Joyride
-          disableOverlayClose={true} //
-          stepIndex={stepIndex} //
-          continuous // ?
-          showSkipButton
-          steps={steps}
-          run={startGuide}
-          styles={customTourStyle} //uk
-          floaterProps={{ disableAnimation: true }}
-          callback={this.handleTourCallback}
-        />
-
         <div>
-          <div
-            ref={node => {
-              this.a2hsContainer = node
-            }}
-            className={styles.sport__a2hs_container}
-          >
-            <div className={styles.sport__logo}>
-              <img alt="molatv" src={logoLandscapeBlue} />
-            </div>
-            <div
-              ref={node => {
-                this.btnAdd = node
-              }}
-            >
-              ADD TO HOME SCREEN
-            </div>
-            <div
-              onClick={() => {
-                // hide our user interface that shows our A2HS button
-                this.a2hsContainer.style.display = 'none'
-                localStorage.setItem('a2hs', false)
-              }}
-            >
-              ✖
-            </div>
-          </div>
-          {playlistStatus !== 'error' && <Header libraryOff className={styles.placeholder__header} isDark={isDark} activePlaylist={activePlaylist} isMobile {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -430,31 +322,58 @@ class Sport extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.sport__sidebar}>
-                  <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={0} className="tourCategory" />
+                  <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                 </div>
-                <LazyLoad containerClassName={styles.header__library_link_wrapper}>
-                  <Link to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`}>
-                    <span className={`${styles[0 ? 'header__library_logo_black' : 'header__library_logo_white']} tourLibrary`} alt="mola library" />
-                    <p style={{ color: '#fff', fontSize: '8px', textAlign: 'center', textTransform: 'capitalize', lineHeight: '14px' }}>View All</p>
-                  </Link>
-                  <p className={`${styles.header__library_text} ${0 ? styles.black : styles.white}`}>film {activePlaylist.title} lain</p>
-                </LazyLoad>
                 {activeSlide && (
-                  <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
+                  <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                    {/* {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <Link to={'/watch?v=' + activeSlide.id} className={`${styles.sport__button_livenow}`}>
+                          <span className={styles.play_icon} />
+                          <p>{locale['view_movie']}</p>
+                        </Link>
+                      )} */}
+                    {!activeSlide.buttonText &&
+                      scrollIndex != 0 && (
+                        <>
+                          {
+                            activeSlide.contentType === 1 && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
+                                <p>{locale['view_movie']}</p>
+                              </Link>
+                            )
+                          }
+                          {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                            <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
+                              <span className={styles.play_icon} />
+                              <p>{locale['live_now']}</p>
+                            </Link>
+                          )}
+                          {activeSlide.startTime > Date.now() / 1000 && (
+                            <div className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                              <p>{locale['upcoming']}</p>
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                    {activeSlide.buttonText && (
+                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                      </a>
+                    )}
+
+                    <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                     <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                    <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
                     <p className="filteredText">{filteredDesc}</p>
                     <p className="filteredText">{filteredQuote}</p>
-                    <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.sport__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                      <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
-                    </Link>
+                    <p className="filteredText">{filteredDesc}</p>
                   </LazyLoad>
                 )}
-                <div className={styles.header__library_link_wrapper} style={{ right: 0, bottom: '14px' }}>
-                  {activeSlideDots && activeSlideDots.length > 0 && <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
+                <div className={styles.header__library_link_wrapper}>
+                  {activeSlideDots && activeSlideDots.length > 1 && <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
                 <Slider
                   {...settings}
@@ -463,10 +382,12 @@ class Sport extends Component {
                     this.rootSlider = node
                   }}
                 >
-                  {videos.data.map((video, index) => {
-                    const { id, sortOrder } = video.meta
-                    return <SportMobileContent key={id} videos={video.data} index={index} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
-                  })}
+                  {videos &&
+                    videos.data.length > 0 &&
+                    videos.data.map((video, index) => {
+                      const { id } = video.meta
+                      return <SportMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                    })}
                 </Slider>
               </>
             )}
@@ -483,9 +404,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onHandlePlaylist: () => dispatch(homeActions.getHomePlaylist()),
-  onHandleVideo: playlist => dispatch(homeActions.getHomeVideo(playlist)),
-  onUpdatePlaylist: id => dispatch(homeActions.updateActivePlaylist(id)),
+  onHandlePlaylist: () => dispatch(sportActions.getSportList()),
+  onHandleVideo: playlist => dispatch(sportActions.getSportVideo(playlist)),
+  onUpdatePlaylist: id => dispatch(sportActions.updateActivePlaylist(id)),
 })
 
 export default compose(withStyles(styles, contentStyles), connect(mapStateToProps, mapDispatchToProps))(Sport)

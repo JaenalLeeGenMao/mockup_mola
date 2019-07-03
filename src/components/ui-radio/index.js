@@ -1,15 +1,14 @@
-import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './index.css';
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import s from './index.css'
 
-import imgActice from '@global/style/icons/radio/active.png';
-import imgUnActice from '@global/style/icons/radio/unactive.png';
+import { unactiveRadioBtn as imgUnActice, activeRadioBtn as imgActice } from '@global/imageUrl'
 
 const Radio = props => {
-  const options = props.options || [];
-  const checked = props.checked || '1';
-  const uiStyle = props.uiStyle || 'single';
-  const rootStyle = props.rootStyle || {};
+  const options = props.options || []
+  const checked = props.checked || '1'
+  const uiStyle = props.uiStyle || 'single'
+  const rootStyle = props.rootStyle || {}
 
   return (
     <div className={s.ui_radio__wrapper} style={rootStyle}>
@@ -20,10 +19,10 @@ const Radio = props => {
         {uiStyle === 'single' ? (
           <div>
             {options.map((option, index) => {
-              let idInput = option.value.replace(/ /g, '_') + '-' + index;
-              let elChecked = false;
+              let idInput = option.value.replace(/ /g, '_') + '-' + index
+              let elChecked = false
               if (checked === option.value) {
-                elChecked = true;
+                elChecked = true
               }
               return (
                 <div key={index} className={s.ui_radio__component}>
@@ -33,16 +32,16 @@ const Radio = props => {
                     {option.label}
                   </label>
                 </div>
-              );
+              )
             })}
           </div>
         ) : (
           <div className={s.ui_radio__radioLongDesc}>
             {options.map((option, index) => {
-              let idInput = option.value + '-' + index;
-              let elChecked = false;
+              let idInput = option.value + '-' + index
+              let elChecked = false
               if (checked == option.value) {
-                elChecked = true;
+                elChecked = true
               }
               return (
                 <div key={index} className={s.ui_radio__componentItem}>
@@ -55,12 +54,12 @@ const Radio = props => {
                     </div>
                   </label>
                 </div>
-              );
+              )
             })}
           </div>
         )}
       </div>
     </div>
-  );
-};
-export const UiRadio = withStyles(s)(Radio);
+  )
+}
+export const UiRadio = withStyles(s)(Radio)

@@ -1,46 +1,28 @@
 import _get from 'lodash/get'
-import _sample from 'lodash/sample'
 
 const normalizeHomePlaylist = response => {
-  // console.log('response util normilize home playlist', response)
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(
       ({ attributes: { playlists } }) =>
         playlists &&
         playlists.map((playlist, index) => {
-          const {
-            id,
-            type,
-            attributes: {
-              title,
-              visibility,
-              description,
-              shortDescription,
-              iconUrl,
-              isDark,
-              images: {
-                cover: {
-                  // title: coverTitle,
-                  background,
-                  details,
-                  backgroundColor: coverBGColor,
-                },
-              },
-            },
-          } = playlist
+          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
+          const background = _get(images, 'cover', { portrait: null, landscape: null })
+          const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
             id,
             title,
             visibility,
             sortOrder: index + 1,
+            startTime,
+            endTime,
             description,
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
             // coverTitle: coverTitle,
             background,
             backgroundColor: coverBGColor || '#000622',
-            details,
             isDark: isDark || 0,
             isActive: false,
             type,
@@ -51,51 +33,98 @@ const normalizeHomePlaylist = response => {
   }
   return []
 }
-const normalizeSportCategoryList = response => {
-  // console.log('response util normilize sport playlist', response)
+
+const normalizeMatchesList = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    return data.map(({ attributes: { playlists } }) =>
-      playlists
-        .map(playlist => {
-          const {
-            id,
-            type,
-            attributes: {
+    return data.map(
+      ({ attributes: { videos } }) =>
+        videos &&
+        videos
+          .map(video => {
+            const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images, league } } = video
+            const background = _get(images, 'cover', { portrait: null, landscape: null })
+            const coverBGColor = _get(images, 'cover.backgroundColor', '')
+            return {
+              id,
               title,
-              description,
-              shortDescription,
               sortOrder,
-              iconUrl,
-              isDark,
-              images: {
-                cover: {
-                  // title: coverTitle,
-                  background,
-                  details,
-                  backgroundColor: coverBGColor,
-                },
-              },
-            },
-          } = playlist
-          return {
-            id,
-            title,
-            sortOrder,
-            description,
-            shortDescription: shortDescription || '',
-            iconUrl: iconUrl || '',
-            // coverTitle: coverTitle,
-            background,
-            backgroundColor: coverBGColor || '#000622',
-            details,
-            isDark: isDark || 0,
-            isActive: false,
-            type,
-          }
-        })
-        .sort((a, b) => a.sortOrder - b.sortOrder)
+              startTime,
+              endTime,
+              description,
+              league,
+              shortDescription: shortDescription || '',
+              iconUrl: iconUrl || '',
+              // coverTitle: coverTitle,
+              background,
+              backgroundColor: coverBGColor || '#000622',
+              isDark: isDark || 0,
+              isActive: false,
+              type,
+            }
+          })
+          .sort((a, b) => a.sortOrder - b.sortOrder)
     )
+  }
+  return []
+}
+
+const normalizeMatchDetail = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(result => {
+      const {
+        id,
+        type,
+        attributes: {
+          title,
+          homeTeam,
+          awayTeam,
+          league,
+          description,
+          streamSourceUrl,
+          // permission,
+          // subtitles,
+          shortDescription,
+          displayOrder,
+          isDark,
+          isHighlight,
+          startTime,
+          endTime,
+          images,
+        },
+      } = result
+      const coverBG = _get(images, 'cover', '')
+      const coverBGColor = _get(images, 'cover.backgroundColor', '')
+      return {
+        id,
+        type,
+        title,
+        description,
+        streamSourceUrl,
+        // permission,
+        // subtitles,
+        shortDescription,
+        displayOrder,
+        isDark,
+        isHighlight,
+        startTime,
+        endTime,
+        shortDescription: shortDescription || '',
+        background: coverBG,
+        backgroundColor: coverBGColor || '#000622',
+        isDark: isDark || 0,
+        league: league
+          ? {
+            id: league.id,
+            name: league.attributes.name,
+            iconUrl: league.attributes.iconUrl,
+          }
+          : null,
+        homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
+        awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
+      }
+    })
   }
   return []
 }
@@ -103,117 +132,46 @@ const normalizeSportCategoryList = response => {
 const normalizeHomeVideo = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    const result = data.map(
-      ({ attributes: { videos } }) =>
-        videos.map(video => {
-          const {
-              id,
-              type,
-              attributes: {
-                title,
-                description,
-                visibility,
-                shortDescription,
-                displayOrder,
-                isDark,
-                images: {
-                  cover: {
-                    // title: coverTitle,p
-                    details,
-                    background,
-                    backgroundColor: coverBGColor,
-                  },
+    try {
+      const result = data.map(
+        ({ attributes: { videos } }) =>
+          videos.map(video => {
+            const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime } } = video
+            const background = _get(images, 'cover', { portrait: null, landscape: null })
+            const coverBGColor = _get(images, 'cover.backgroundColor', ''),
+              dummyQuote = {
+                attributes: {
+                  author: 'Coming Soon',
+                  imageUrl: '',
+                  role: 'Media',
+                  text: title,
                 },
-                quotes: quoteLists,
-              },
-            } = video,
-            dummyQuote = {
-              attributes: {
-                author: 'Coming Soon',
-                imageUrl: '',
-                role: 'Media',
-                text: title,
-              },
-              id: 1,
-              type: 'quotes',
-            }
-          return {
-            id,
-            title,
-            displayOrder,
-            description,
-            visibility,
-            shortDescription: shortDescription || description,
-            // coverTitle: coverTitle,
-            background,
-            backgroundColor: coverBGColor || '#000622',
-            details,
-            isDark: isDark || 0,
-            quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
-            type,
-          }
-        })
-      // .sort((a, b) => a.displayOrder - b.displayOrder)
-    )
-    return result
-  }
-  return []
-}
-
-const normalizeSportVideo = response => {
-  const { data } = response.data
-  if (data && data.length > 0) {
-    const result = data.map(({ attributes: { videos } }) =>
-      videos
-        .map(video => {
-          const {
+                id: 1,
+                type: 'quotes',
+              }
+            return {
               id,
+              title,
+              displayOrder,
+              description,
+              visibility,
+              contentType,
+              shortDescription: shortDescription || description,
+              // coverTitle: coverTitle,
+              background,
+              backgroundColor: coverBGColor || '#000622',
+              isDark: isDark || 0,
+              startTime,
+              endTime,
+              quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
               type,
-              attributes: {
-                title,
-                description,
-                shortDescription,
-                displayOrder,
-                isDark,
-                images: {
-                  cover: {
-                    // title: coverTitle,p
-                    details,
-                    background,
-                    backgroundColor: coverBGColor,
-                  },
-                },
-                quotes: quoteLists,
-              },
-            } = video,
-            dummyQuote = {
-              attributes: {
-                author: 'Coming Soon',
-                imageUrl: '',
-                role: 'Media',
-                text: title,
-              },
-              id: 1,
-              type: 'quotes',
             }
-          return {
-            id,
-            title,
-            displayOrder,
-            description,
-            shortDescription: shortDescription || '',
-            // coverTitle: coverTitle,
-            background,
-            backgroundColor: coverBGColor || '#000622',
-            details,
-            isDark: isDark || 0,
-            quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
-            type,
-          }
-        })
-        .sort((a, b) => a.displayOrder - b.displayOrder)
-    )
-    return result
+          })
+        // .sort((a, b) => a.displayOrder - b.displayOrder)
+      )
+      return result
+    } catch (err) {
+    }
   }
   return []
 }
@@ -261,8 +219,6 @@ const normalizeSearchResult = response => {
           year,
           // thumbnail,
           coverUrl,
-          name,
-          imageUrl,
         },
       } = result
 
@@ -278,8 +234,8 @@ const normalizeSearchResult = response => {
         return {
           id,
           type,
-          name,
-          imageUrl,
+          title,
+          coverUrl,
         }
       }
     })
@@ -322,18 +278,11 @@ const normalizeVideoDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(result => {
-      const { id, attributes: { title, images, quotes, trailers, description, source, streamSourceUrl, subtitles, people, genre, isDark, year, duration } } = result
-      const filteredSubtitles = subtitles.map(subtitle => {
-        const { id, type, attributes: { locale, url, format } } = subtitle
-        /* More info please visit https://support.theoplayer.com/hc/en-us/articles/214041829-TextTrack-API */
-        return {
-          id,
-          format /* srt, emsg, eventstream, ttml, webvtt */,
-          locale,
-          type /* subtitles, captions, descriptions, chapters, metadata */,
-          url,
-        }
-      })
+      const {
+        id,
+        attributes: { title, images, quotes, drm, trailers, description, source, streamSourceUrl, suitableAge, releaseDate, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType },
+      } = result
+      const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
         id,
         title,
@@ -342,13 +291,19 @@ const normalizeVideoDetail = response => {
         description,
         source,
         streamSourceUrl,
-        subtitles: filteredSubtitles,
+        drm,
+        suitableAge,
+        releaseDate,
+        subtitles,
         people,
         genre,
         isDark,
         year,
         duration,
-        images,
+        background,
+        startTime,
+        endTime,
+        contentType,
       }
     })
   }
@@ -362,34 +317,39 @@ const normalizeVideoDetail = response => {
 
 const normalizeMovieLibrary = response => {
   const { data } = response.data
+  let result
   if (data && data.length > 0) {
-    return data.map(({ attributes: { videos, title: genreTitle } }) =>
-      videos.map(({ id, attributes }) => {
-        const { title, visibility } = attributes
-        const thumbnail = _get(attributes, 'images.cover.library.portrait', '')
-        const description = _get(attributes, 'description', '')
-        const quotes = _get(attributes, 'quotes[0].attributes', '')
-        const isDark = _get(attributes, 'isDark', '0')
+    result = data.map(({ attributes: { videos, title: genreTitle, visibility: vis } }) => {
+      if (vis === 1) {
+        return videos.map(({ id, attributes }) => {
+          const { title, visibility } = attributes
+          const thumbnail = _get(attributes, 'images.cover.portrait', '')
+          const description = _get(attributes, 'description', '')
+          const quotes = _get(attributes, 'quotes[0].attributes', '')
+          const isDark = _get(attributes, 'isDark', '0')
 
+          return {
+            genreTitle,
+            id,
+            title,
+            visibility,
+            thumbnail,
+            description,
+            quotes,
+            isDark,
+          }
+        })
+      } else {
         return {
-          genreTitle,
-          id,
-          title,
-          visibility,
-          thumbnail,
-          description,
-          quotes,
-          isDark,
+          meta: {
+            status: 'no_result',
+          },
+          data: [],
         }
-      })
-    )
+      }
+    })
   }
-  return {
-    meta: {
-      status: 'no_result',
-    },
-    data: [],
-  }
+  return result[0]
 }
 
 const normalizeMovieLibraryList = response => {
@@ -451,7 +411,7 @@ export default {
   normalizeVideoDetail,
   normalizeMovieLibrary,
   normalizeMovieLibraryList,
-  normalizeSportCategoryList,
-  normalizeSportVideo,
   normalizeFeatureBanner,
+  normalizeMatchesList,
+  normalizeMatchDetail,
 }

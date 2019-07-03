@@ -10,8 +10,8 @@
 import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import style from './FormInput.css'
-import visible from '@global/style/icons/eye/visible.png'
-import unVisible from '@global/style/icons/eye/notvisible.png'
+
+import { eyeVisible as visible, eyeNotVisible as unVisible } from '@global/imageUrl'
 
 class FormInput extends React.Component {
   constructor(props) {
@@ -87,9 +87,9 @@ class FormInput extends React.Component {
           this.state.focus && (
             <div className={style.eye}>
               {this.state.visible ? (
-                <img src={unVisible} alt="mola tv hidden" onClick={() => this.toggle('visible')} />
+                <img src={visible} alt="mola tv hidden" onClick={() => this.toggle('visible')} />
               ) : (
-                <img src={visible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
+                <img src={unVisible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
               )}
             </div>
           )}

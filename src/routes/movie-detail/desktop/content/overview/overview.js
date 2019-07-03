@@ -8,21 +8,23 @@ import {
   sectionLeftTitle,
   sectionLeftText,
   sectionLeftDuration,
-  sectionMiddleTitle,
   sectionMiddleText,
   sectionRightTitle,
   sectionRightText,
+  peopleWrapper,
 } from './style'
 
 const Overview = ({ data }) => {
-  const { title, description, year, genre, duration } = data
+  const { title, description, releaseDate, suitableAge, genre, duration } = data
   const filterPeople = type =>
     data.people.filter(item => {
       return item.attributes.peopleTypeName === type
     })
 
-  const casts = filterPeople('cast').map(cast => {
-    return <span key={cast.name}>{cast.attributes.name}</span>
+  const casts = filterPeople('cast').map((cast, index) => {
+    if (index < 10) {
+      return <span key={cast.name}>{cast.attributes.name}</span>
+    }
   })
 
   const directors = filterPeople('director').map(cast => {
@@ -33,18 +35,53 @@ const Overview = ({ data }) => {
     return <span key={cast.name}>{cast.attributes.name}</span>
   })
 
+  const releaseYear = (releaseDate) => {
+    // let releaseYearArr = null;
+    let releaseYear = releaseDate && releaseDate.length > 0 && releaseDate[0].date
+    if (releaseYear) {
+      const dateTime = new Date(releaseYear)
+      releaseYear = dateTime.getFullYear()
+    }
+    // releaseDate.map((data) => {
+    //   if (data.country == '') {
+    //     if (!releaseYearArr) {
+    //       releaseYearArr = { ...data }
+    //     }
+    //   } else if (data.country == 'ID') {
+    //     releaseYearArr = { ...data }
+    //   }
+    // })
+    // if (releaseYearArr) {
+    //   const dateTime = new Date(releaseYearArr.date)
+    //   releaseYear = dateTime.getFullYear()
+    // }
+    return releaseYear
+  }
+
+  const durationHour = duration && Math.floor(duration / 3600) + 'h'
+  const durationMin = duration && Math.floor((duration % 3600) / 60) + 'm'
+  const durationTime = duration ? durationHour + '' + durationMin : ''
   return (
     <LazyLoad containerClassName={contentOverviewContainer}>
       <div className={contentOverviewSectionLeft}>
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
-          <p className={sectionLeftText}>{genre}</p>
-          <p className={sectionLeftDuration}>{`${year}  13+  ${Math.floor(duration / 3600)}h${Math.floor((duration % 3600) / 60)}m`}</p>
+          <p className={sectionLeftText}>
+            {
+              genre && genre.map((genreName) => {
+                return <span key={genreName}>{genreName}</span>
+              })
+            }
+          </p>
+          <p className={sectionLeftDuration}>
+            {releaseYear(releaseDate)}
+            <span>{suitableAge ? suitableAge : '13+'}</span>
+            {durationTime}
+          </p>
         </div>
       </div>
       <div className={contentOverviewSectionMiddle}>
         <div>
-          <h1 className={sectionMiddleTitle}>storyline</h1>
           <p className={sectionMiddleText}>{description}</p>
         </div>
       </div>
@@ -52,26 +89,26 @@ const Overview = ({ data }) => {
         <div>
           {typeof casts !== 'undefined' &&
             casts.length > 0 && (
-              <>
-                <h1 className={sectionRightTitle}>cast</h1>
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Cast: </p>
                 <p className={sectionRightText}>{casts}</p>
-              </>
+              </div>
             )}
 
           {typeof directors !== 'undefined' &&
             directors.length > 0 && (
-              <>
-                <h2 className={sectionRightTitle}>director</h2>
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Director: </p>
                 <p className={sectionRightText}>{directors}</p>
-              </>
+              </div>
             )}
 
           {typeof writers !== 'undefined' &&
             writers.length > 0 && (
-              <>
-                <h2 className={sectionRightTitle}>writer</h2>
+              <div className={peopleWrapper}>
+                <p className={sectionRightTitle}>Writer: </p>
                 <p className={sectionRightText}>{writers}</p>
-              </>
+              </div>
             )}
         </div>
       </div>

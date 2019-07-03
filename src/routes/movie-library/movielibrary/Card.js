@@ -5,7 +5,7 @@ import s from './Card.css'
 import Link from '@components/Link'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 
-import defaultImagePortrait from '../assets/default-img-mola_library-01.jpg'
+// import defaultImagePortrait from '../assets/default-img-mola_library-01.jpg'
 import { setMultilineEllipsis } from './util'
 
 class CardLibrary extends Component {
@@ -35,6 +35,7 @@ class CardLibrary extends Component {
     const { id, thumbnail, title, description, quotes, isDark = 0, active } = this.props
     return (
       <Link to={`/movie-detail/${id}`} className={s.card}>
+        {/* <div> */}
         {!this.state.show && (
           <div
             ref={node => {
@@ -50,7 +51,10 @@ class CardLibrary extends Component {
           onClick={e => this.props.onClick(undefined, e.target)}
           className={`${isDark ? s.cross_icon_black : s.cross_icon_white} ${s.card__detail} ${active ? s.close_right : s.close_left}`}
         />
+        {/* <Link to={`/movie-detail/${id}`}> */}
         <Lazyload src={thumbnail} handleCallback={this.handleTitleShow} />
+        {/* </Link> */}
+        {/* </div> */}
       </Link>
     )
   }

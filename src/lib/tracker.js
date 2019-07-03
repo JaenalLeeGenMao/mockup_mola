@@ -9,17 +9,21 @@ const TOKEN_ENDPOINT = production ? 'https://mola.tv/api/v2/videos/_/pubsub' : '
 const PUBSUB_ENDPOINT = production
   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
   : 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/ds-feeder-guardian:publish'
+
+// const PUBSUB_ENDPOINT_PILOT = 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/dataflow-pilot:publish'
+
 class Tracker {
   static sessionId = () => {
     let sessionId = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
-        return item.indexOf('__sessId=') >= 0
+      .filter(function (item) {
+        return item.indexOf('__sessionId=') >= 0
       })
 
-    if (sessionId && sessionId.length) {
+    if (sessionId && sessionId.length > 0) {
       sessionId = sessionId[0].split('=')[1]
+      document.cookie = `__sessionId=${sessionId}; max-age=${30 * 60}; path=/;`
     } else {
       sessionId =
         Math.random()
@@ -31,9 +35,74 @@ class Tracker {
         Math.random()
           .toString(36)
           .substring(2, 15)
-      document.cookie = `__sessId=${sessionId}; max-age=${60 * 60 * 24}; path=/;`
+      document.cookie = `__sessionId=${sessionId}; max-age=${30 * 60}; path=/;`
     }
     return sessionId
+  }
+
+  static clientId = () => {
+    let clientId = _get(document, 'cookie', '')
+      .trim()
+      .split(';')
+      .filter(function (item) {
+        return item.indexOf('__clientId=') >= 0
+      })
+
+    if (clientId && clientId.length > 0) {
+      clientId = clientId[0].split('=')[1]
+    } else {
+      clientId =
+        Math.random()
+          .toString(36)
+          .substring(2, 15) +
+        Math.random()
+          .toString(36)
+          .substring(2, 15) +
+        Math.random()
+          .toString(36)
+          .substring(2, 15)
+      document.cookie = `__clientId=${clientId}; max-age=${60 * 60 * 24 * 365 * 2}; path=/;`
+    }
+    return clientId
+  }
+
+  static getLangLat = () => {
+    let latitude = '',
+      longitude = ''
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    }
+    let location = _get(document, 'cookie', '')
+      .trim()
+      .split(';')
+      .filter(function (item) {
+        return item.indexOf('__loc=') >= 0
+      })
+    if (location && location.length > 0) {
+      location = location[0].split('=')[1]
+    } else {
+      location = localStorage.getItem('user-location')
+      if (window.navigator.geolocation) {
+        // console.log("MASUK SINI?")
+        window.navigator.geolocation.getCurrentPosition(
+          function (position) {
+            latitude = position.coords.latitude
+            longitude = position.coords.longitude
+            location = `${latitude},${longitude}`
+            // console.log(latitude);
+            // console.log(longitude);
+            document.cookie = `__loc=${location}; max-age=${60 * 60}; path=/;`
+            localStorage.setItem('user-location', location)
+          },
+          function () { },
+          options
+        )
+      }
+    }
+    // console.log("location", location)
+    return location
   }
 
   static getOrCreateToken = async () => {
@@ -41,7 +110,7 @@ class Tracker {
     let token = _get(document, 'cookie')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf(`${cookieName}=`) >= 0
       })
     if (token.length > 0) {
@@ -91,7 +160,20 @@ class Tracker {
       data: JSON.stringify(reqBody),
       url: PUBSUB_ENDPOINT,
     }
-    return axios(options).catch(() => {})
+
+    // const options2 = {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   data: JSON.stringify(reqBody),
+    //   url: PUBSUB_ENDPOINT_PILOT,
+    // }
+    axios(options).catch(() => { })
+    // axios(options2).catch(() => {})
+
+    return true
   }
 }
 

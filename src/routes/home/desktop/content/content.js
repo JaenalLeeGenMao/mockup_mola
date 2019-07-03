@@ -34,17 +34,13 @@ class Content extends Component {
       >
         {this.props.videos.map(video => {
           const { id, isDark, background } = video
-          return index != 0 ? (
+          return (
             <div key={id} className="grid-slick" isdark={isDark}>
               <picture>
                 <source srcSet={background.landscapeWebp} type="image/webp" />
                 <source srcSet={background.landscape} type="image/jpeg" />
                 <img src={background.landscape} />
               </picture>
-            </div>
-          ) : (
-            <div key={id} className="grid-slick" isdark={isDark}>
-              <img src={background.landscape} />
             </div>
           )
         })}

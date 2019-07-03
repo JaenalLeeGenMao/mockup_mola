@@ -10,6 +10,11 @@ export const customTheoplayer = css`
       float: left;
     }
 
+    &.theoplayer-skin:not(.theo-seekbar-inside-controls) .theo-button-tooltip {
+      left: auto!important;
+      right: 0!important;
+    }
+
     &.video-container .theo-primary-color {
       color: #fff !important;
     }
@@ -28,14 +33,15 @@ export const customTheoplayer = css`
     }
 
     &.video-container .vjs-big-play-button {
-      width: 6% !important;
+      width: 10% !important;
       background: none !important;
       background-color: transparent !important;
+      display: none!important;
     }
 
     &.video-container .vjs-big-play-button::after {
       margin-top: 117% !important;
-      height: 30% !important;
+      height: 50% !important;
     }
 
     .video-container.video-js.theoplayer-skin {

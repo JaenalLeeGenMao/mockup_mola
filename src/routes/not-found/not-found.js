@@ -19,13 +19,14 @@ import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 import HomeError from '@components/common/error'
 import styles from './not-found.css'
+import { unavailableImg } from '@global/imageUrl'
 
 const RelatedVideos = ({ style = {}, containerClassName = '', className = '', detailClassName = '', videos = [] }) => {
   const VideoThumbnail = getComponent('video-thumbnail')
   return (
     <div className={containerClassName} style={style}>
       {videos.map(({ id, background }) => {
-        const imageSource = background.landscape || require('@global/style/icons/unavailable-image.png')
+        const imageSource = background.landscape || unavailableImg
         return (
           <Link to={`/movie-detail/${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={detailClassName}>

@@ -1,3 +1,5 @@
 {
-  "view_movie": "Live Now"
+  "view_movie": "View Movie",
+  "live_now": "Live Now",
+  "upcoming": "Upcoming"
 }

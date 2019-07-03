@@ -1,0 +1,31 @@
+.dropdown_container {
+  color: white;
+  font-size: 12px;
+  width: auto;
+}
+
+.select_icon {
+  color: white;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+.dropdown_menu_container {
+  display: none;
+}
+
+.dropdown_menu_open {
+  display: inline-block;
+  background-color: black;
+  padding: 10px;
+  width: auto;
+  border-radius: 3px;
+  margin-top: 7px;
+  position: absolute;
+}
+
+.dropdown_list_item {
+  padding: 7px 0;
+}
