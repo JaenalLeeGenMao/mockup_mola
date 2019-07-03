@@ -62,10 +62,12 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      data.name = `${data.first_name || ''} ${data.last_name || ''}`
+      //data.name = `${data.first_name || ''} ${data.last_name || ''}`
       // data.name = data.first_name.trim()
       // data.name = data.first_name.replace(/ /g, '')
-      if (data.name == null) {
+      if (data.first_name) {
+        data.name = `${data.first_name ? data.first_name + ' ' : ''}${data.last_name || ''}`
+      } else {
         data.name = ''
       }
 
@@ -81,10 +83,12 @@ export function fetchProfile() {
     }
     // ini dummy ya
     // let data = {
-    //   // name: 'ashiaap',
+    //   // name: 'nama fjdkfj',
     //   birthdate: '2019-06-05',
     //   first_name: 'fisrname',
-    //   last_name: 'lastname',
+    //   last_name: 'lastname ayu jelek',
+    //   // firstName: 'hola',
+    //   // lastName: 'oi oi',
     //   email: 'gantengaja@gmail.com',
     //   // lastName: '',
     //   gender: 'f',
@@ -92,12 +96,14 @@ export function fetchProfile() {
     //   location: 'Andorra',
     //   phone: '08211881818181',
     // }
-    // data.name = `${data.first_name || ''} ${data.last_name || ''}`
-    // // data.name = data.first_name.trim()
-    // // data.name = data.first_name.replace(/ /g, '')
-    // if (data.name == null) {
-    //   data.name = 'kosong'
+
+    // if (data.first_name) {
+    //   data.name = `${data.first_name ? data.first_name + ' ' : ''}${data.last_name || ''}`
+    // } else {
+    //   data.name = ''
     // }
+
+    // console.log('NAMEEE', data.name)
 
     // if (data.last_name == null) {
     //   data.last_name = ''
