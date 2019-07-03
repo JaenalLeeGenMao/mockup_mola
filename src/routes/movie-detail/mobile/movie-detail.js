@@ -116,6 +116,15 @@ class MovieDetail extends Component {
     return myTheoPlayer
   }
 
+  disableAds = (status, videoSettings) => {
+    status === 'success' && (videoSettings.adsBannerOptions.ipaEnabled = false)
+    status === 'success' && (videoSettings.adsBannerOptions.araEnabled = false)
+    status === 'success' && (videoSettings.adsSource = '')
+    status === 'success' && (videoSettings.adsBannerUrl = '')
+
+    return videoSettings
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -171,14 +180,16 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user, notFound } = this.props
+    const { user, notFound, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
+    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
+    const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
+
     const videoSettings = {
-      ...defaultVidSetting,
-      // getUrlResponse: this.getUrlResponse
+      ...checkAdsSettings,
     }
 
     let drmStreamUrl = '',
