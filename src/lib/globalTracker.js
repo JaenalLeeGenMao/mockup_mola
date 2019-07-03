@@ -88,8 +88,8 @@ export const globalTracker = async data => {
   const token = await tracker.getOrCreateToken()
   // console.log('PAYLOAD', payload, 'token', token)
   // Post to ds-feeder if there's token && not in search page
-  // return tracker.sendPubSub(payload, token)
-  return
+  return tracker.sendPubSub(payload, token)
+
   // const paths = pathname.split('/')
   // const lastPathIndex = paths.length - 1
 
