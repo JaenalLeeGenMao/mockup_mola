@@ -504,7 +504,7 @@ class Home extends Component {
         className: styles.home__slick_slider_fade,
         onInit: node => {
           this.activeSlider = sliderRefs[0]
-          this.handleColorChange()
+          this.handleColorChange(0)
         },
         beforeChange: (currentIndex, nextIndex) => {
           this.activeSlider = sliderRefs[nextIndex]
@@ -556,7 +556,7 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                {scrollIndex != 0 && <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />}
+                <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
