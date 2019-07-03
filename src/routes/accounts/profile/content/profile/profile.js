@@ -98,7 +98,6 @@ class Profile extends React.Component {
     this.setState({
       isToggled: false,
       name: data.name,
-      // name: data.first_name || '',
       email: data.email || '',
       phoneNumber: data.phone || '',
       photo: data.photo || '',
@@ -131,11 +130,12 @@ class Profile extends React.Component {
     const update = await Auth.updateProfile(payload)
     // const update = this.props.updateProfile(payload)
     if (update.meta.status === 'success') {
-      this.props.updateProfile(payload)
+      // this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
     } else {
       toastr.warning('Notification', 'Update profile failed!')
+      this.props.updateProfile(payload)
     }
   }
 

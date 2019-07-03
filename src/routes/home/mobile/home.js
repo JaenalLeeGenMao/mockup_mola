@@ -352,7 +352,7 @@ class Home extends Component {
         className: styles.home__slick_slider_fade,
         onInit: node => {
           this.activeSlider = sliderRefs[0]
-          this.handleColorChange()
+          this.handleColorChange(0)
         },
         beforeChange: (currentIndex, nextIndex) => {
           activePlaylist = playlists.data[nextIndex]

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import Slider from 'react-slick'
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
+// import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import Joyride from 'react-joyride'
@@ -8,11 +8,11 @@ import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _get from 'lodash/get'
+// import _get from 'lodash/get'
 
 import homeActions from '@actions/home'
 
-import { swipeGestureListener, getErrorCode } from '@routes/home/util'
+import { getErrorCode } from '@routes/home/util'
 import { getLocale } from '@routes/home/locale'
 
 import Header from '@components/Header'
@@ -21,24 +21,22 @@ import Link from '@components/Link'
 
 import HomeError from '@components/common/error'
 import HomePlaceholder from './placeholder'
-import HomeArrow from '../arrow'
+// import HomeArrow from '../arrow'
 import HomeContent from './content'
 import HomeMenu from './menu'
 
 import styles from './home.css'
 import contentStyles from './content/content.css'
-import { filterString, setMultilineEllipsis } from './util'
+import { filterString } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
-let ticking = false,
-  activePlaylist,
-  scrollIndex = 0,
-  flag = false,
-  timerSwipe
+let activePlaylist,
+  flag = false
+
 const customTourStyle = {
   buttonNext: {
     backgroundColor: '#2C56FF',
@@ -115,7 +113,7 @@ class Home extends Component {
   sliderMovements = 0
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos } } = nextProps
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
@@ -314,7 +312,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
 
@@ -338,26 +336,38 @@ class Home extends Component {
     document.onkeyup = event => {
       ticking = false
 
-      const { activeSlide } = this.state
-      const that = this
+      const { activeSlide, playlists, scrollIndex } = this.state
+
       switch (event.which || event.keyCode) {
         case 37 /* left */:
           this.handleSwipeDirection(this.activeSlider, 0, 1000)
           return event.preventDefault()
         case 38 /* up */:
-          this.handleScrollToIndex(this.state.scrollIndex - 1)
+          this.handleScrollToIndex(scrollIndex - 1)
           break
         case 39 /* right */:
           this.handleSwipeDirection(this.activeSlider, 1000, 0)
           return event.preventDefault()
         case 40 /* down */:
-          this.handleScrollToIndex(this.state.scrollIndex + 1)
+          this.handleScrollToIndex(scrollIndex + 1)
           break
         case 13 /* enter */:
-          window.location.href = `/movie-detail/${activeSlide.id}`
+          if (activeSlide.id) {
+            window.location.href = `/movie-detail/${activeSlide.id}`
+          } else if (scrollIndex > 0) {
+            const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+            const libraryId = playlistId.replace('f-', '')
+            window.location.href = `/movie-library/${libraryId}`
+          }
           break
         case 32 /* space */:
-          window.location.href = `/movie-detail/${activeSlide.id}`
+          if (activeSlide.id) {
+            window.location.href = `/movie-detail/${activeSlide.id}`
+          } else if (scrollIndex > 0) {
+            const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+            const libraryId = playlistId.replace('f-', '')
+            window.location.href = `/movie-library/${libraryId}`
+          }
           break
         default:
           event.preventDefault()
@@ -418,7 +428,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -481,7 +491,7 @@ class Home extends Component {
   }
 
   render() {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+    const
       {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
@@ -494,7 +504,7 @@ class Home extends Component {
         className: styles.home__slick_slider_fade,
         onInit: node => {
           this.activeSlider = sliderRefs[0]
-          this.handleColorChange()
+          this.handleColorChange(0)
         },
         beforeChange: (currentIndex, nextIndex) => {
           this.activeSlider = sliderRefs[nextIndex]
@@ -546,7 +556,7 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                {scrollIndex != 0 && <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />}
+                <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>

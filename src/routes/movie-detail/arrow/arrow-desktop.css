@@ -29,11 +29,16 @@
 
 .home__arrow_next::before,
 .home__arrow_prev::before {
-  font-size: 1.2rem;
+  font-size: 3rem;
   line-height: 2;
-  opacity: 0.75;
+  opacity: 0.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.home__arrow_next:hover::before,
+.home__arrow_prev:hover::before {
+  opacity: 0.8;
 }
 
 .home__arrow_next,
@@ -55,15 +60,17 @@
 }
 
 .home__arrow_next {
-  right: 34vw;
+  right: 5vw;
+  top: 40%;
+  transform: translateY(-40%);
   border-width: 0.2rem;
   border-radius: 50%;
-
-  /* border-style: solid; */
 }
 
 .home__arrow_prev {
-  right: 36vw;
+  left: 5vw;
+  top: 40%;
+  transform: translateY(-40%);
   border-width: 0.2rem;
   border-radius: 50%;
 
