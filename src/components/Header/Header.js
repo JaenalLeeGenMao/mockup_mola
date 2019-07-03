@@ -16,8 +16,8 @@ import LazyLoad from '@components/common/Lazyload'
 // const LazyLoad = getComponent('LazyLoad')
 
 import history from '../../history'
-import logoBlue from '@global/style/icons/mola-blue.svg'
-import logoMobile from '@global/assets-global/images/mola-logo-mobile.svg'
+
+import { logoBlue, logoMobile } from '@global/imageUrl'
 
 import Link from '../Link'
 
@@ -60,12 +60,11 @@ class Header extends Component {
   }
 
   renderHeaderLibrary() {
-    const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId } = this.props
+    const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId, cardTitle } = this.props
 
     const { genre: { data: genreDt } } = this.state
     const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId))
     const color = isDark ? 'black' : 'white'
-
     return (
       isLibraryCopy && (
         <div className={styles.header__copy_library}>
@@ -76,7 +75,7 @@ class Header extends Component {
               </Link> */}
               {genreDt.length <= 0 ? null : (
                 <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-                  {genreId ? currentGenre.title : genreDt[0].title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
+                  {currentGenre.title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
                 </button>
               )}
             </div>
@@ -101,16 +100,19 @@ class Header extends Component {
       profileOff = false,
       backButtonOn = false,
       shareButtonOn = false,
-      isMovie = false,
+      greyBackground,
+      isLandscape = false
     } = this.props
-
     const color = isDark ? 'black' : 'white'
-    const typeHeader = stickyOff ? styles.header__container + ' ' + styles.header__notsticky : styles.header__container
-
+    const headerStyle = isMobile ? styles.header__container_m : styles.header__container
+    const typeHeader = stickyOff ? headerStyle + ' ' + styles.header__notsticky : headerStyle
+    const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
     return (
-      <div className={typeHeader}>
-        {isMobile && <div className={styles.header__shadow} />}
-        <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : { left: '2.5%', width: '4rem' }}>
+      <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
+        {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} />}
+        {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} />}
+        {!isMobile && <div className={styles.header__shadow_desktop} />}
+        <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : logoWrapper}>
           {!logoOff && (
             <LazyLoad>
               <Link to="/">

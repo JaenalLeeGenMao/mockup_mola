@@ -88,6 +88,12 @@ class Forgot extends React.Component {
     })
     if (result.meta.status === 'success') {
       window.location.href = `${config.endpoints.domain}/accounts/resetPassword`
+    } else if (result.meta.status === 'error') {
+      this.setState({
+        isError: true,
+        errMsg: result.meta.error.error_description,
+        errCode: result.meta.error.error_code,
+      })
     }
   }
 

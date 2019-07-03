@@ -5,43 +5,12 @@ dotenv.config()
 const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
 // const env = 'development'
 
-const oauth = {
-  endpoint: env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
-  appKey: 'wIHGzJhset',
-  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-  scope: [
-    'https://internal.supersoccer.tv/users/users.profile.read',
-    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/orders/orders.create',
-    'https://api.supersoccer.tv/videos/videos.read',
-    'https://api.supersoccer.tv/orders/orders.read',
-    'paymentmethods:read.internal',
-    'payments:payment.dopay',
-  ].join(' '),
-}
-
 const serverApi = {
   VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://10.0.3.10', //'https://stag.mola.tv/api/v2/videos',
   AUTH_API_URL: env === 'staging' ? 'http://accounts-api.global' : 'http://10.0.6.5', //'https://stag.mola.tv/accounts',
   SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://10.0.3.26', //'https://stag.mola.tv/api/v2/subscriptions',
   appId: 'molatv',
   xAppId: 2,
-}
-
-const oauthApp = {
-  appKey: 'LDZJgphCc7',
-  appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
-  scope: [
-    'https://internal.supersoccer.tv/users/users.profile.read',
-    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/orders/orders.create',
-    'https://api.supersoccer.tv/videos/videos.read',
-    'https://api.supersoccer.tv/orders/orders.read',
-    'paymentmethods:read.internal',
-    'payments:payment.dopay',
-  ].join(' '),
 }
 
 const uploader = {
@@ -72,7 +41,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: 'https://stag.mola.tv/api/v2',
+      api: 'https://stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
@@ -111,11 +80,10 @@ const config = baseConfig.default[env]
 
 module.exports = {
   // Node.js app
+  env,
   ...config,
   serverApi,
   trustProxy: process.env.TRUST_PROXY || 'loopback',
   port: process.env.PORT || 3000,
-  oauth,
-  oauthApp,
   uploader,
 }

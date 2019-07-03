@@ -39,6 +39,38 @@ import { setRuntimeVariable } from './actions/runtime'
 import config from './config'
 import Axios from 'axios'
 import Crypto from 'crypto.js'
+import _get from 'lodash/get'
+
+const oauth = {
+  endpoint: config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
+  appKey: 'wIHGzJhset',
+  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
+  ].join(' '),
+}
+
+const oauthApp = {
+  appKey: 'LDZJgphCc7',
+  appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
+  ].join(' '),
+}
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -75,6 +107,15 @@ app.get('/ping', (req, res) => {
 // )
 
 // app.use(
+//   '/api',
+//   proxy('https://stag.mola.tv/api/', {
+//     proxyReqPathResolver: (req, res) => {
+//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+//     },
+//   })
+// )
+
+// app.use(
 //   '/accounts/_',
 //   proxy(`${config.endpoints.domain}/accounts/_/`, {
 //     proxyReqPathResolver: (req, res) => {
@@ -99,7 +140,9 @@ app.use(
 )
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain }, oauth: { appKey, appSecret, endpoint: oauthEndpoint } } = config
+const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain } } = config
+
+const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 
 // let count = 0
 // var inboxInterval;
@@ -125,7 +168,6 @@ const extendToken = async token => {
       }),
     })
     const content = await rawResponse.json()
-    console.log('contenttt', content)
     return content
   } catch (err) {
     console.error('error extend token:', err)
@@ -269,14 +311,14 @@ app.use('*', async (req, res, next) => {
       httpOnly: true,
     })
   }
-  if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
-    const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
-    res.cookie('__deviceId', deviceId, {
-      path: '/',
-      maxAge: 30 * 24 * 3600 * 1000,
-      httpOnly: true,
-    })
-  }
+  // if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
+  //   const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
+  //   res.cookie('__deviceId', deviceId, {
+  //     path: '/',
+  //     maxAge: 30 * 24 * 3600 * 1000,
+  //     httpOnly: true,
+  //   })
+  // }
   next() // <-- important!
 })
 
@@ -495,7 +537,7 @@ app.get('*', async (req, res, next) => {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
         sid: req.cookies.SID === 'undefined' ? '' : req.cookies.SID,
-        sessionId: req.cookies.__sessId || '',
+        sessionId: req.cookies.__sessionId || '',
         firstName: userInfo ? userInfo.first_name : '',
         lastName: userInfo ? userInfo.last_name : '',
         email: userInfo ? userInfo.email : '',
@@ -516,7 +558,7 @@ app.get('*', async (req, res, next) => {
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
         // vuid: req.cookies.VUID === 'undefined' ? '' : req.cookies.VUID,
-        deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
+        // deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         debugError: {
           subs: userSubsError,
           userInfo: userInfoError,
@@ -568,8 +610,16 @@ app.get('*', async (req, res, next) => {
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
-    if (firstPath === 'movie-detail') {
-      const videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+    if (firstPath === 'movie-detail' || firstPath === 'watch') {
+      let videoId = '',
+        appLink = ''
+      if (firstPath === 'movie-detail') {
+        videoId = pathSplit.length > 2 ? pathSplit[2] : ''
+        appLink = 'movie-detail/' + videoId
+      } else {
+        videoId = req.query.v
+        appLink = 'watch?v=' + videoId
+      }
       if (videoId) {
         const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id=${appId}`, {
           timeout: 5000,
@@ -587,10 +637,11 @@ app.get('*', async (req, res, next) => {
           })
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
-        data.image = response ? response[0].attributes.images.cover.background.landscape : ''
+        const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
+        data.image = response ? background.landscape : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
-        data.appLinkUrl = 'movie-detail/' + videoId
+        data.appLinkUrl = appLink
       }
     }
 

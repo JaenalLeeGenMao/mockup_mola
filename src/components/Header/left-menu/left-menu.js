@@ -1,53 +1,108 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import $ from 'jquery'
+// import $ from 'jquery'
 
-import Auth from '@api/auth'
+// import Auth from '@api/auth'
 
 import LazyLoad from '@components/common/Lazyload'
-import Footer from '@components/Footer'
+// import Footer from '@components/Footer'
 import Link from '@components/Link'
 
 import { getLocale } from '../locale'
 
 import styles from './left-menu.css'
-import { IoIosArrowDown } from 'react-icons/io'
+import history from '@source/history'
+// import { IoIosArrowDown } from 'react-icons/io'
+import DropdownList from '@components/DropdownList'
 
+let menu = []
 class LeftMenu extends Component {
   state = {
-    link: '',
-    toggle: false /* Toggle profile */,
     locale: getLocale(),
+    activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
   }
 
   componentDidMount() {
-    this.setState({ link: window.location.href })
+    const { activePlaylist, activeMenu, isMobile } = this.props;
+    menu = [
+      { id: 'movie', title: 'Movie', linkUrl: '/' },
+      // { id: 'sport', title: 'Sport', linkUrl: '/sport' },
+      // { id: 'channels', title: 'Channels', linkUrl: '/channels' },
+    ]
+
+    const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
+    if (showLibrary) {
+      const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+      menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
+    }
+  }
+
+  handleNavigation = id => {
+    const filteredMenu = menu.filter((dt) => {
+      return dt.id == id
+    })
+    history.push(filteredMenu.length > 0 && filteredMenu[0].linkUrl)
   }
 
   render() {
-    const { toggle } = this.state
-    const { color, leftMenuOff, isMenuToggled = false, isMovie } = this.props
+    const { color, leftMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape } = this.props
 
+    let activeMenuDropdown = ''
+    if (activeMenu === 'library') {
+      activeMenuDropdown = 'movie'
+    } else if (activeMenu === 'matches') {
+      activeMenuDropdown = 'sport'
+    } else {
+      activeMenuDropdown = activeMenu
+    }
+
+    let libraryUrl = ''
+    const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels'
+    if (showLibrary) {
+      libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    }
     return (
       <>
         <div className={styles.left__menu}>
           {!leftMenuOff && (
-            <span className={styles.left__menu_wrapper}>
+            <span>
               <LazyLoad className={styles.left__menu_icon_wrapper}>
                 <div className={styles.left_menu_outer}>
-                  <div className={styles.left_menu_item_inner}>
-                    <button className={styles.left_menu_button}>
-                      {/*comment sementara <a href="/switch-channels">{isMovie ? 'Movie' : 'Sport'}</a> */}
-                      <a href="/">Movie</a>
-                      {/* <IoIosArrowDown className={color === 'black' ? styles.left_menu__action_dropdown : styles.left_menu__action_dropdown} size={32} /> */}
-                    </button>
-                  </div>
-                  <a href="/movie-library" className={styles.left_menu_lib}>
-                    Library
-                  </a>
-                  {/*comment sementara <div className={styles.left_menu_guide}>Guide</div> */}
+                  {!isMobile && (
+                    <>
+                      {menu.map((dt) => {
+                        return (
+                          <Link key={dt.id} className={activeMenu === dt.id ? styles.left_menu__active : ''} to={dt.linkUrl}>
+                            {dt.title}
+                          </Link>
+                        )
+                      })
+                      }
+                    </>
+                  )}
+                  {isMobile && (
+                    <div className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''}`}>
+                      {/* <DropdownList
+                        className={styles.left_menu_dropdown_container}
+                        dataList={menu}
+                        activeId={activeMenuDropdown}
+                        onClick={this.handleNavigation} /> */}
+                      <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to={'/'}>
+                        Movie
+                      </Link>
+                      {showLibrary &&
+                        <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>
+                          Library
+                      </Link>
+                      }
+                      {/* {(activeMenu === 'sport' || activeMenu === 'matches') &&
+                        <Link className={activeMenu === 'matches' ? styles.left_menu__active : ''} to={'/matches'}>
+                          Matches
+                        </Link>
+                      } */}
+                    </div>
+                  )}
                 </div>
-                {/* <Link className={color === 'black' ? styles.right__menu_search_black : styles.right__menu_search_white} /> */}
               </LazyLoad>
             </span>
           )}

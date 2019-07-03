@@ -19,9 +19,30 @@
   flex-direction: row;
   text-decoration: none;
   position: absolute;
-  left: 18rem;
+  left: 12.5%;
   justify-content: flex-end;
   font-weight: 500;
+}
+
+.left__menu a {
+  color: #808080;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  font-family: 'Open Sans', sans-serif;
+  width: auto;
+  height: 20px;
+  display: inline-block;
+  cursor: pointer;
+  margin: 0 12px 0 0;
+  border: none;
+  outline: 0;
+  position: relative;
+}
+
+.left__menu a.left_menu__active {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
 }
 
 .left__menu a:hover {
@@ -32,17 +53,6 @@
 .left__menu_icon_wrapper {
   width: 2.8rem;
   height: 2.8rem;
-}
-
-.left_menu_lib {
-  color: #808080;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  font-family: 'Open Sans', sans-serif;
-  width: 25%;
-  height: 20px;
-  display: inline-block;
-  cursor: pointer;
 }
 
 .left_menu_guide {
@@ -66,70 +76,58 @@
   color: white;
 }
 
-.left_menu_button {
-  font-size: 1.2rem;
-  background: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-top: 0;
-  border: none;
-  position: relative;
-  cursor: pointer;
-  color: white;
-  font-family: 'Open Sans', sans-serif;
-}
-
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .left__menu {
     left: 81px;
+    top: 30px;
   }
 
-  .left_menu_item_inner {
-    width: 18%;
-  }
-
-  .left_menu_lib {
-    color: #b5b5b5;
-    font-size: 12px;
+  .left_menu_dropdown_container {
+    font-weight: bold;
     text-transform: uppercase;
-    font-family: 'Open Sans', sans-serif;
-    width: 25%;
-    height: 20px;
     display: inline-block;
   }
 
-  .left_menu_guide {
-    color: #b5b5b5;
+  .left__menu_wrapper_m {
+    display: flex;
+  }
+
+  .left__menu_wrapper_m a {
+    color: white;
     font-size: 12px;
+    font-weight: bold;
     text-transform: uppercase;
-    font-family: 'Open Sans', sans-serif;
-    width: 25%;
-    height: 20px;
+    margin-left: 15px;
+  }
+}
+
+@media screen and (min-width: 299px) and (max-width: 1024px) and (orientation: landscape){
+  .left__menu {
+    left: 81px;
+    top: 30px;
+  }
+
+  .left_menu_dropdown_container {
+    font-weight: bold;
+    text-transform: uppercase;
     display: inline-block;
   }
 
-  .left_menu__action_dropdown {
-    width: 1rem;
-    height: 1.5rem;
-    position: absolute;
-    right: -1.1rem;
-    top: 50%;
-    transform: translateY(-45%);
-    color: white;
+  .left__menu_wrapper_m {
+    display: flex;
   }
 
-  .left_menu_button {
-    font-size: 12px;
-    background: none;
-    font-weight: none;
-    text-transform: uppercase;
-    margin-top: 0;
-    border: none;
-    position: relative;
-    cursor: pointer;
+  .left__menu_wrapper_m a {
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 15px;
+  }
+
+  .left_menu_select_wrapper__ls {
+    padding: 8px;
   }
 }
 

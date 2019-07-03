@@ -1,6 +1,10 @@
 import types from '../constants'
 import { findIndexByKeyValue } from './util'
 
+Array.prototype.insert = function (index, item) {
+  this.splice(index, 0, item)
+}
+
 const initialState = {
   playlists: {
     meta: {
@@ -28,19 +32,16 @@ export default function sport(state = initialState, action) {
         playlists: { ...action.payload },
       }
     case types.GET_SPORT_VIDEO:
-      // console.log('KE SINI??', state)
-      let result = [...state.videos.data],
-        status
-      // console.log('reducer sport checking result', result)
-
+      let result = [...state.videos.data]
+      let status
+      const currentVideosLength = state.videos.data.length
+      const currentPLaylistLength = state.playlists.data.length
       const index = findIndexByKeyValue(result, 'id', action.payload.meta.id),
         filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
 
-      // console.log('checking index', index)
-
       if (filteredStatus) {
         status = 'error'
-      } else if (state.videos.data.length < state.playlists.data.length - 1) {
+      } else if (currentVideosLength < currentPLaylistLength - 1) {
         status = 'loading'
       } else {
         status = 'success'

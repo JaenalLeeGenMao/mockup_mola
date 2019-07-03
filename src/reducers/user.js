@@ -5,12 +5,14 @@ const initialState = {
   sid: '',
   firstName: '',
   lastName: '',
+  name: '',
   email: '',
   birthdate: '',
   gender: '',
   location: '',
   token: '',
   refreshToken: '',
+  phone: '',
   expire: '',
   type: '',
   isLoading: false,
@@ -70,9 +72,29 @@ export default function runtime(state = initialState, action) {
       }
 
     case types.FETCH_PROFILE_USER:
+      const { name, birthdate, email, gender, location, phone, uid } = action.payload
+      const splitName = name.split(' ')
+      const firstName = splitName[0]
+      let lastName = ''
+      if (splitName.length > 2) {
+        for (var i = 1; i < splitName.length; i++) {
+          lastName += splitName[i] + ' '
+        }
+      } else {
+        lastName = splitName[splitName.length - 1]
+      }
+      lastName = lastName.trim()
       return {
         ...state,
-        ...action.payload,
+        firstName,
+        lastName,
+        name,
+        birthdate,
+        email,
+        gender,
+        location,
+        phone,
+        uid,
         isLoading: false,
       }
 

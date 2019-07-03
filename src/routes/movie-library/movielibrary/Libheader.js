@@ -77,23 +77,38 @@ class Libheader extends Component {
   }
 
   render() {
-    const { cardTitle } = this.props
+    const { cardTitle, isMobile } = this.props
     return (
       <div className={s.header}>
-        <Header
-          isDark={0}
-          logoOff
-          libraryOff
-          backButtonOn
-          title={cardTitle}
-          isLibrary
-          isLibraryCopy
-          leftMenuOff
-          stickyOff
-          {...this.props}
-          handleMenuToggleClick={this.handleMenuToggleClick}
-          isMenuToggled={this.state.isMenuToggled}
-        />
+        {isMobile ? (
+          <Header
+            isDark={0}
+            activeMenu="library"
+            libraryOff
+            logoOff
+            backButtonOn
+            leftMenuOff
+            title={cardTitle}
+            isLibrary
+            isLibraryCopy
+            {...this.props}
+            handleMenuToggleClick={this.handleMenuToggleClick}
+            isMenuToggled={this.state.isMenuToggled}
+          />
+        ) : (
+            <Header
+              isDark={0}
+              activeMenu="library"
+              libraryOff
+              title={cardTitle}
+              isLibrary
+              isLibraryCopy
+              shadowDesktop
+              {...this.props}
+              handleMenuToggleClick={this.handleMenuToggleClick}
+              isMenuToggled={this.state.isMenuToggled}
+            />
+          )}
 
         {this.state.isMenuToggled ? this.renderMenu() : null}
       </div>

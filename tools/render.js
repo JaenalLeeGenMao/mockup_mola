@@ -30,6 +30,7 @@ const routes = [
   '/accounts/setting',
   '/accounts/history',
   '/accounts/register',
+  '/accounts/thankyou',
   '/movie-detail',
   '/movie-library',
   '/search',

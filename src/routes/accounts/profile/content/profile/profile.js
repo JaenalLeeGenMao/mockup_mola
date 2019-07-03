@@ -7,6 +7,8 @@ import { updatePassword } from '@actions/resetPassword'
 import Auth from '@api/auth'
 import Uploader from '@api/uploader'
 
+import { updateProfile, fetchProfile } from '@actions/user'
+
 import LazyLoad from '@components/common/Lazyload'
 
 import { genderOptions, countryOptions } from './const'
@@ -73,13 +75,15 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
 
-    const { uid, firstName, lastName, email, phoneNumber, photo, birthdate, gender, location, subscriptions } = props.user
+    const { uid, firstName, lastName, email, phone, photo, birthdate, gender, location, subscriptions } = props.user
+    // this.propsName = `${firstName} ${lastName}`
 
     this.state = {
       isToggled: false,
-      name: `${firstName} ${lastName}`,
+      name: `${firstName} ${lastName}` || '',
+      // name: firstName || '',
       email: email || '',
-      phoneNumber: phoneNumber || '',
+      phoneNumber: phone || '',
       photo: photo || '',
       birthdate: birthdate || '',
       gender: gender || '',
@@ -90,8 +94,26 @@ class Profile extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  setData = data => {
+    this.setState({
+      isToggled: false,
+      name: data.name,
+      email: data.email || '',
+      phoneNumber: data.phone || '',
+      photo: data.photo || '',
+      birthdate: data.birthdate || '',
+      gender: data.gender || '',
+      location: data.location || '',
+    })
+  }
+
+  async componentDidMount() {
+    let data = await this.props.fetchProfile()
+    this.setData(data)
+  }
+
   handleSubmit = async e => {
-    const { name = '', email = '', birthdate = '', photo = '', gender = '', location = '', phoneNumber = '', uploadStatus } = this.state
+    const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
     const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
@@ -106,11 +128,14 @@ class Profile extends React.Component {
     }
 
     const update = await Auth.updateProfile(payload)
+    // const update = this.props.updateProfile(payload)
     if (update.meta.status === 'success') {
+      // this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
     } else {
       toastr.warning('Notification', 'Update profile failed!')
+      this.props.updateProfile(payload)
     }
   }
 
@@ -245,12 +270,12 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changeName" label="Nama Pengguna" value={name} />
-            <FormPlaceholder id="changeEmail" label="Email" value={email} />
-            <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={phoneNumber} />
-            <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={birthdate} />
-            <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={gender} />
-            <FormPlaceholder id="changeLocation" label="Lokasi" value={location} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.name} />
+            <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
+            <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phone} />
+            <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
+            <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={user.gender} />
+            <FormPlaceholder id="changeLocation" label="Lokasi" value={user.location} />
             <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleClick}>
@@ -274,6 +299,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
+    updateProfile: data => dispatch(updateProfile(data)),
+    fetchProfile: () => dispatch(fetchProfile()),
   }
 }
 

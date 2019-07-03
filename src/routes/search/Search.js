@@ -62,7 +62,7 @@ class Search extends React.Component {
           .where('createdDate')
           .belowOrEqual(expiredDate)
           .delete()
-          .then(function(deleteCount) {})
+          .then(function () { })
       })
     }
 
@@ -144,7 +144,7 @@ class Search extends React.Component {
       firstMatch = movieSuggestion[0].title
       this.textSuggestionType = 'movie'
     } else if (castSuggestion.length) {
-      firstMatch = castSuggestion[0].name
+      firstMatch = castSuggestion[0].title
       this.textSuggestionType = 'cast'
     } else {
       firstMatch = ''
@@ -161,12 +161,14 @@ class Search extends React.Component {
   }
 
   parseCastSuggestion = (result, val) => {
-    const matchCastArr = result.data.filter(function(dt) {
+    const matchCastArr = result.data.filter(function (dt) {
       return dt.type == 'casts'
     })
 
-    const firstMatchCastArr = matchCastArr.filter(function(dt) {
-      return dt.name.toLowerCase().indexOf(val.toLowerCase()) === 0
+    const firstMatchCastArr = matchCastArr.filter(function (dt) {
+      if (dt.title) {
+        return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
+      }
     })
 
     this.searchedCast = matchCastArr
@@ -175,12 +177,14 @@ class Search extends React.Component {
   }
 
   parseMovieSuggestion = (result, val) => {
-    const matchMovieArr = result.data.filter(function(dt) {
+    const matchMovieArr = result.data.filter(function (dt) {
       return dt.type == 'videos'
     })
 
-    const firstMatchMovieArr = matchMovieArr.filter(function(dt) {
-      return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
+    const firstMatchMovieArr = matchMovieArr.filter(function (dt) {
+      if (dt.title) {
+        return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
+      }
     })
 
     this.searchedMovie = matchMovieArr
@@ -225,7 +229,9 @@ class Search extends React.Component {
   showRecentSearchByInput = val => {
     if (this.allRecentSearch && this.allRecentSearch.length > 0) {
       this.recentSearchData = this.allRecentSearch.filter(dt => {
-        return dt.keyword.toLowerCase().indexOf(val.toLowerCase()) > -1
+        if (dt.keyword) {
+          return dt.keyword.toLowerCase().indexOf(val.toLowerCase()) > -1
+        }
       })
     }
   }
@@ -334,7 +340,7 @@ class Search extends React.Component {
     return (
       <Fragment>
         <div className={s.headerContainer}>
-          <Header stickyOff isDark={isDark} logoOff libraryOff backButtonOn leftMenuOff searchOff {...this.props} />
+          <Header libraryOff activeMenu="movie" isDark={isDark} searchOff {...this.props} />
         </div>
         <div className={s.root}>
           <div className={s.containerBg} />

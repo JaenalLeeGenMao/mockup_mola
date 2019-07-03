@@ -1,0 +1,43 @@
+.schedule_container {
+  padding-bottom: 20px;
+  color: #fff;
+}
+
+.schedule_card {
+  background-color: #171717;
+  margin: 0 20px 5px 20px;
+  padding: 10px;
+}
+
+.schedule_isLive {
+  border-bottom: 2px solid #2c56ff;
+}
+
+.schedule_card:first-child {
+  margin-top: 15px;
+}
+
+.schedule_card:last-child {
+  margin-bottom: 15px;
+}
+
+.schedule_name {
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1.36;
+}
+
+.schedule_time {
+  font-size: 16px;
+  font-weight: 600;
+  color: #808080;
+  line-height: 1.375;
+}
+
+.schedule_label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4e72ff;
+  line-height: 1.35;
+}
