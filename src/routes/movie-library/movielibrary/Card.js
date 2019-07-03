@@ -37,14 +37,14 @@ class CardLibrary extends Component {
       <Link to={`/movie-detail/${id}`} className={s.card}>
         {/* <div> */}
         {!this.state.show && (
-          <h1
+          <div
             ref={node => {
               this.titleRef = node
             }}
             className={s.card__title}
           >
             {title}
-          </h1>
+          </div>
         )}
         <span
           id={`close-${id}`}

@@ -8,7 +8,7 @@ import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-// import _get from 'lodash/get'
+import _get from 'lodash/get'
 
 import homeActions from '@actions/home'
 
@@ -34,7 +34,8 @@ import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
-let activePlaylist,
+let ticking = false,
+  activePlaylist,
   flag = false
 
 const customTourStyle = {
@@ -312,7 +313,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function () {
+      setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
 
@@ -428,7 +429,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -491,8 +492,7 @@ class Home extends Component {
   }
 
   render() {
-    const
-      {
+    const {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
