@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
+import _get from 'lodash/get'
+
 import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
@@ -175,6 +177,15 @@ class MovieDetail extends Component {
     return myTheoPlayer
   }
 
+  disableAds = (status, videoSettings) => {
+    status === 'success' && (videoSettings.adsBannerOptions.ipaEnabled = false)
+    status === 'success' && (videoSettings.adsBannerOptions.araEnabled = false)
+    status === 'success' && (videoSettings.adsSource = '')
+    status === 'success' && (videoSettings.adsBannerUrl = '')
+
+    return videoSettings
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -225,13 +236,15 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user } = this.props
+    const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-
+    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
+    const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
+
     const videoSettings = {
-      ...defaultVidSetting,
+      ...checkAdsSettings,
     }
 
     let drmStreamUrl = '',
