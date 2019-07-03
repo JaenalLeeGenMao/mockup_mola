@@ -17,22 +17,21 @@ class Cast extends React.Component {
         <div className={s.resultTitle}>Cast</div>
         <div className={s.resultContent}>
           {data.map(cast => {
-            const castNameRes = getMatchWordSearch(cast.name, searchText);
-
+            const castNameRes = getMatchWordSearch(cast.title, searchText);
             return (
               <div className={s.castBox} key={cast.id}>
                 <img className={s.castImg} src={cast.imageUrl} />
-                {castNameRes[3] ? (
+                {castNameRes && castNameRes[3] ? (
                   <div>
                     <span>{castNameRes[0]}</span>
                     <span className={s.castNameResult}>{castNameRes[1]}</span>
                     <span>{castNameRes[2]}</span>
                   </div>
                 ) : (
-                  <div>
-                    <span>{cast.name}</span>
-                  </div>
-                )}
+                    <div>
+                      <span>{cast.name}</span>
+                    </div>
+                  )}
               </div>
             );
           })}

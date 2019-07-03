@@ -83,9 +83,10 @@ export const reviewSliderProfile = css`
   width: 8rem;
   height: 8rem;
   display: inline-block;
-  border: 0.2rem solid #fff;
-  outline: 0.2rem solid #fff;
   vertical-align: middle;
+  border-radius: 100%;
+  border: 0;
+  outline: 0;
 
   /* Big TV Styles */
   @media screen and (min-height: 1801px) {
@@ -94,10 +95,31 @@ export const reviewSliderProfile = css`
   }
 `
 
+export const reviewAuthor = css`
+  font-style: italic;
+  color: #A7A7A7;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: #A7A7A7;
+    width: 14px;
+    height: 1px;
+    top: 50%;
+    left: 0;
+  }
+
+  span {
+    margin-left: 20px;
+  }
+`
+
 export const reviewSliderQuotes = css`
   display: inline-block;
-  width: 30vw;
-  font-size: 1.2rem;
+  width: 60vw;
+  line-height: 1.5;
+  font-size: 1.4rem;
   text-align: left;
   margin-left: 2rem;
   vertical-align: middle;
@@ -107,6 +129,6 @@ export const reviewSliderQuotes = css`
   }
 
   p {
-    color: #ababab;
+    color: #FFFFFF;
   }
 `
