@@ -71,7 +71,7 @@ class Html extends React.Component {
           <meta name="referrer" content="origin-when-cross-origin" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
-          <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
+          {/* <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
           <script
             dangerouslySetInnerHTML={{
               __html:
@@ -82,7 +82,7 @@ class Html extends React.Component {
                 '});' +
                 '});',
             }}
-          />
+          /> */}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />
