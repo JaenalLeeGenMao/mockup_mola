@@ -1,7 +1,7 @@
 import types from '../constants'
 import { findIndexByKeyValue } from './util'
 
-Array.prototype.insert = function(index, item) {
+Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item)
 }
 
@@ -47,16 +47,6 @@ export default function sport(state = initialState, action) {
         status = 'success'
       }
 
-      // const resultId = action.payload.meta.id
-      // const playlistIndex = state.playlists.data
-      //   .map(function (e) {
-      //     return e.id
-      //   })
-      //   .indexOf(resultId)
-
-      // result.splice(playlistIndex, 0, { ...action.payload })
-
-      // console.log("playlistIndex", playlistIndex, "result", result)
       if (index === -1) {
         result.push({ ...action.payload })
         result = result.sort((a, b) => a.meta.sortOrder - b.meta.sortOrder)

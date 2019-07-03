@@ -26,42 +26,25 @@ import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
-const VideoThumbnail = getComponent('video-thumbnail')
 
-const Controller = ({ isActive = 'overview', onClick }) => {
+const Controller = ({ isActive = 'overview', onClick, hiddenController }) => {
+  const controllerList = ['overview', 'trailers', 'review', 'suggestions']
+
   return (
     <div className={controllerContainer}>
-      <div className={isActive === 'overview' ? 'active' : ''} onClick={() => onClick('overview')}>
-        overview
-      </div>
-      <div className={isActive === 'trailers' ? 'active' : ''} onClick={() => onClick('trailers')}>
-        trailers
-      </div>
-      <div className={isActive === 'review' ? 'active' : ''} onClick={() => onClick('review')}>
-        review
-      </div>
-      <div className={isActive === 'suggestions' ? 'active' : ''} onClick={() => onClick('suggestions')}>
-        suggestions
-      </div>
+      {controllerList.map(ctrl => {
+        if (!hiddenController.includes(ctrl)) {
+          return (
+            <div className={isActive === ctrl ? 'active' : ''} onClick={() => onClick(ctrl)}>
+              {ctrl}
+            </div>
+          )
+        }
+      })}
     </div>
   )
 }
 
-// const RelatedVideos = ({ style = {}, containerClassName, className = '', videos = [] }) => {
-//   return (
-//     <div className={containerClassName} style={style}>
-//       {videos.map(({ id, background }) => {
-//         const imageSource = background.landscape || unavailableImg
-//         return (
-//           <Link to={`/movie-detail/${id}`} key={id} className={className}>
-//             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={videoSuggestionPlayerDetail}>
-//               <div className={playButton} />
-//             </VideoThumbnail>
-//           </Link>
-//         )
-//       })}
-//     </div>
-//   )
 // }
 
 class MovieDetail extends Component {
@@ -273,7 +256,12 @@ class MovieDetail extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
+    let hiddenController = []
+    if (dataFetched && dataFetched.trailers.length === 0) {
+      hiddenController.push('trailers')
+    }
 
+    const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
     return (
       <>
         {dataFetched && (
@@ -306,11 +294,16 @@ class MovieDetail extends Component {
               </div>
             </div>
             <div className={movieDetailBottom}>
-              {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
-              {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched} />}
-              {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
-              {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
-              <Controller isActive={isControllerActive} onClick={this.handleControllerClick} />
+              {isTrailer && <ContentOverview data={dataFetched} />}
+              {!isTrailer && (
+                <>
+                  {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
+                  {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched.trailers} />}
+                  {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
+                  {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
+                  <Controller isActive={isControllerActive} onClick={this.handleControllerClick} hiddenController={hiddenController} />
+                </>
+              )}
             </div>
           </div>
         )}

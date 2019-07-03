@@ -1,17 +1,17 @@
 import { css } from 'react-emotion'
 
-export const videoSuggestionContainer = css`
+export const trailerContainer = css`
   position: relative;
   height: 12rem;
   background: transparent;
   border-radius: 0.25rem;
   width: calc(100% - 40px);
-  margin: 0 20px 80px 20px;
+  margin: 0 20px;
   overflow: hidden;
 }
 `
 
-export const videoSuggestionWrapper = css`
+export const trailerWrapper = css`
   bottom: 0;
   width: 100%;
   height: calc(100% + 20px);
@@ -21,7 +21,7 @@ export const videoSuggestionWrapper = css`
   overflow-y: hidden;
 `
 
-export const videoSuggestionPlayer = css`
+export const trailerPlayer = css`
   display: inline-block;
   width: 200px;
   min-width: 200px;
@@ -30,7 +30,7 @@ export const videoSuggestionPlayer = css`
 }
 `
 
-export const videoSuggestionPlayerDetail = css`
+export const trailerPlayerDetail = css`
   display: inline-block;
   margin-right: 14px;
   width: 200px;
@@ -53,7 +53,7 @@ export const titleWrapper = css`
   height: 11rem;
 `
 
-export const titleSuggestions = css`
+export const titleTrailer = css`
   overflow: hidden;
   color: #f5f5f5;
   line-height: 1.7;
@@ -73,7 +73,7 @@ export const titleSuggestions = css`
   -webkit-line-clamp: 2;
 `
 
-export const videoSuggestionTitle = css`
+export const trailerTitle = css`
   padding: 0px 15px;
   font-size: 14px;
   font-weight: bold;
@@ -84,7 +84,7 @@ export const videoSuggestionTitle = css`
   padding-bottom: 13px;
 `
 
-export const videoSuggestionIcon = css`
+export const trailerIcon = css`
   display: inline-block;
   width: 1rem;
   height: 1rem;

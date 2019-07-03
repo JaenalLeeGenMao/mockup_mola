@@ -75,14 +75,15 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
 
-    const { uid, first_name, last_name, email, phoneNumber, photo, birthdate, gender, location, subscriptions } = props.user
+    const { uid, firstName, lastName, email, phone, photo, birthdate, gender, location, subscriptions } = props.user
     // this.propsName = `${firstName} ${lastName}`
 
     this.state = {
       isToggled: false,
-      name: `${first_name} ${last_name}` || '',
+      name: `${firstName} ${lastName}` || '',
+      // name: firstName || '',
       email: email || '',
-      phoneNumber: phoneNumber || '',
+      phoneNumber: phone || '',
       photo: photo || '',
       birthdate: birthdate || '',
       gender: gender || '',
@@ -96,9 +97,10 @@ class Profile extends React.Component {
   setData = data => {
     this.setState({
       isToggled: false,
-      name: data.first_name + ' ' + data.last_name,
+      name: data.name,
+      // name: data.first_name || '',
       email: data.email || '',
-      phoneNumber: data.phoneNumber || '',
+      phoneNumber: data.phone || '',
       photo: data.photo || '',
       birthdate: data.birthdate || '',
       gender: data.gender || '',
@@ -115,7 +117,7 @@ class Profile extends React.Component {
     const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
-    const payload = { first_name: name, csrf, birthdate, gender, location, token, phone: phoneNumber }
+    const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
     if (uploadStatus && uploadStatus.success) {
       // success upload button nyalain
@@ -127,8 +129,9 @@ class Profile extends React.Component {
     }
 
     const update = await Auth.updateProfile(payload)
+    // const update = this.props.updateProfile(payload)
     if (update.meta.status === 'success') {
-      // this.props.updateProfile(payload)
+      this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
     } else {
@@ -267,9 +270,9 @@ class Profile extends React.Component {
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
             </div>
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
-            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.first_name + ' ' + user.last_name} />
+            <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.name} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
-            <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phoneNumber} />
+            <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phone} />
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
             <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={user.gender} />
             <FormPlaceholder id="changeLocation" label="Lokasi" value={user.location} />

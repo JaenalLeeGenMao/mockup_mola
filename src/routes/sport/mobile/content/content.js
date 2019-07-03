@@ -23,8 +23,7 @@ class Content extends Component {
       draggable: true,
       fade: false,
       beforeChange: (currentIndex, nextIndex) => {
-        location.href = '/matches';
-        // updateColorChange(index, nextIndex);
+        updateColorChange(index, nextIndex);
       },
     };
 

@@ -35,7 +35,7 @@ export const updateProfile = params => {
     }
 
     const update = await Auth.updateProfile({
-      name: params.first_name + ' ' + params.last_name,
+      name: params.first_name,
       csrf: csrf,
       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
       gender: params.gender,
@@ -50,7 +50,7 @@ export const updateProfile = params => {
     }
 
     toastr.success('Notification', 'Update profile is success')
-    // dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
+    dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
     return null
   }
 }
@@ -62,8 +62,12 @@ export function fetchProfile() {
     const profile = await Auth.fetchProfile({ csrf: csrf })
     if (profile.meta.status === 'success') {
       let data = profile.data
-      data.name = `${data.first_name || ''} ${data.last_name || ''}`.trim()
-      data.phoneNumber = data.phone
+      data.name = `${data.first_name || ''} ${data.last_name || ''}`
+      // data.name = data.first_name.trim()
+      // data.name = data.first_name.replace(/ /g, '')
+      if (data.name == null) {
+        data.name = ''
+      }
 
       if (data.birthdate == null) {
         data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
@@ -75,16 +79,36 @@ export function fetchProfile() {
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
       return data
     }
+    // ini dummy ya
     // let data = {
+    //   // name: 'ashiaap',
     //   birthdate: '2019-06-05',
-    //   first_name: '',
-    //   last_name: null,
-    //   lastName: '',
+    //   first_name: 'fisrname',
+    //   last_name: 'lastname',
+    //   email: 'gantengaja@gmail.com',
+    //   // lastName: '',
     //   gender: 'f',
-    //   id: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
-    //   last_name: '',
+    //   uid: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
     //   location: 'Andorra',
-    //   phone: null,
+    //   phone: '08211881818181',
+    // }
+    // data.name = `${data.first_name || ''} ${data.last_name || ''}`
+    // // data.name = data.first_name.trim()
+    // // data.name = data.first_name.replace(/ /g, '')
+    // if (data.name == null) {
+    //   data.name = 'kosong'
+    // }
+
+    // if (data.last_name == null) {
+    //   data.last_name = ''
+    // }
+
+    // if (data.birthdate == null) {
+    //   data.birthdate = dateFormat(new Date(), 'yyyy-mm-dd')
+    // }
+
+    // if (data.gender == null) {
+    //   data.gender = 'lain'
     // }
     // dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
     // return data
