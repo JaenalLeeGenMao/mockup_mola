@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
-import _get from 'lodash/get'
-
-import { notificationBarBackground, logoLandscapeBlue, unavailableImg } from '@global/imageUrl'
+import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
@@ -15,7 +13,7 @@ import notFoundActions from '@actions/not-found'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import MovieDetailError from '@components/common/error'
-import Link from '@components/Link'
+// import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
 import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom } from './style'
@@ -55,7 +53,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -261,6 +259,10 @@ class MovieDetail extends Component {
       hiddenController.push('trailers')
     }
 
+    if (dataFetched && dataFetched.quotes.length === 0) {
+      hiddenController.push('review')
+    }
+
     const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
     return (
       <>
@@ -289,8 +291,8 @@ class MovieDetail extends Component {
                     showBackBtn
                   />
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
             </div>
             <div className={movieDetailBottom}>
