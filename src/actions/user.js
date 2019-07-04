@@ -23,36 +23,40 @@ export const updateSetting = params => {
   }
 }
 
+// export const updateProfile = params => {
+//   return async (dispatch, getState) => {
+//     const { token } = getState().user
+//     const { csrf } = getState().runtime
+//     const splitDate = params.birthdate.split('/')
+//     let date = params.birthdate
+
+//     if (splitDate.length > 2) {
+//       date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0])
+//     }
+
+//     const update = await Auth.updateProfile({
+//       name: params.first_name,
+//       csrf: csrf,
+//       birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
+//       gender: params.gender,
+//       location: params.location,
+//       token: token,
+//       phone: params.phoneNumber,
+//     })
+
+//     if (update.meta.status !== 'success') {
+//       toastr.warning('Notification', 'Update profile is failed')
+//       return null
+//     }
+
+//     toastr.success('Notification', 'Update profile is success')
+//     dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
+//     return null
+//   }
+// }
+
 export const updateProfile = params => {
-  return async (dispatch, getState) => {
-    const { token } = getState().user
-    const { csrf } = getState().runtime
-    const splitDate = params.birthdate.split('/')
-    let date = params.birthdate
-
-    if (splitDate.length > 2) {
-      date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0])
-    }
-
-    const update = await Auth.updateProfile({
-      name: params.first_name,
-      csrf: csrf,
-      birthdate: dateFormat(date, 'yyyy-mm-dd hh:MM:ss'),
-      gender: params.gender,
-      location: params.location,
-      token: token,
-      phone: params.phoneNumber,
-    })
-
-    if (update.meta.status !== 'success') {
-      toastr.warning('Notification', 'Update profile is failed')
-      return null
-    }
-
-    toastr.success('Notification', 'Update profile is success')
-    dispatch({ type: types.UPDATE_PROFILE_SUCCESS, payload: params })
-    return null
-  }
+  return { type: types.UPDATE_PROFILE_SUCCESS, payload: params }
 }
 
 export function fetchProfile() {
@@ -76,7 +80,7 @@ export function fetchProfile() {
       }
 
       if (data.gender == null) {
-        data.gender = 'lain'
+        data.gender = ''
       }
       dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
       return data
@@ -91,7 +95,7 @@ export function fetchProfile() {
     //   // lastName: 'oi oi',
     //   email: 'gantengaja@gmail.com',
     //   // lastName: '',
-    //   gender: 'f',
+    //   gender: null,
     //   uid: 'Fbulm80CnjrOpMcwjyaRjcenIJCOcC',
     //   location: 'Andorra',
     //   phone: '08211881818181',
@@ -114,7 +118,7 @@ export function fetchProfile() {
     // }
 
     // if (data.gender == null) {
-    //   data.gender = 'lain'
+    //   data.gender = ''
     // }
     // dispatch({ type: types.FETCH_PROFILE_USER, payload: data })
     // return data
