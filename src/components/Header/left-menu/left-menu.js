@@ -23,12 +23,8 @@ class LeftMenu extends Component {
   }
 
   componentDidMount() {
-    const { activePlaylist, activeMenu, isMobile } = this.props;
-    menu = [
-      { id: 'movie', title: 'Movie', linkUrl: '/' },
-      // { id: 'sport', title: 'Sport', linkUrl: '/sport' },
-      // { id: 'channels', title: 'Channels', linkUrl: '/channels' },
-    ]
+    const { activePlaylist, activeMenu, isMobile } = this.props
+    menu = [{ id: 'movie', title: 'Movie', linkUrl: '/' }, { id: 'sport', title: 'Sport', linkUrl: '/sport' }, { id: 'channels', title: 'Channels', linkUrl: '/channels' }]
 
     const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
     if (showLibrary) {
@@ -38,7 +34,7 @@ class LeftMenu extends Component {
   }
 
   handleNavigation = id => {
-    const filteredMenu = menu.filter((dt) => {
+    const filteredMenu = menu.filter(dt => {
       return dt.id == id
     })
     history.push(filteredMenu.length > 0 && filteredMenu[0].linkUrl)
@@ -70,36 +66,28 @@ class LeftMenu extends Component {
                 <div className={styles.left_menu_outer}>
                   {!isMobile && (
                     <>
-                      {menu.map((dt) => {
+                      {menu.map(dt => {
                         return (
                           <Link key={dt.id} className={activeMenu === dt.id ? styles.left_menu__active : ''} to={dt.linkUrl}>
                             {dt.title}
                           </Link>
                         )
-                      })
-                      }
+                      })}
                     </>
                   )}
                   {isMobile && (
                     <div className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''}`}>
-                      {/* <DropdownList
-                        className={styles.left_menu_dropdown_container}
-                        dataList={menu}
-                        activeId={activeMenuDropdown}
-                        onClick={this.handleNavigation} /> */}
-                      <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to={'/'}>
-                        Movie
-                      </Link>
-                      {showLibrary &&
+                      <DropdownList className={styles.left_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
+                      {showLibrary && (
                         <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>
                           Library
-                      </Link>
-                      }
-                      {/* {(activeMenu === 'sport' || activeMenu === 'matches') &&
+                        </Link>
+                      )}
+                      {(activeMenu === 'sport' || activeMenu === 'matches') && (
                         <Link className={activeMenu === 'matches' ? styles.left_menu__active : ''} to={'/matches'}>
                           Matches
                         </Link>
-                      } */}
+                      )}
                     </div>
                   )}
                 </div>
