@@ -141,7 +141,7 @@ const normalizeHomeVideo = response => {
             const coverBGColor = _get(images, 'cover.backgroundColor', ''),
               dummyQuote = {
                 attributes: {
-                  author: 'Comming Soon',
+                  author: 'Coming Soon',
                   imageUrl: '',
                   role: 'Media',
                   text: title,
@@ -219,8 +219,6 @@ const normalizeSearchResult = response => {
           year,
           // thumbnail,
           coverUrl,
-          name,
-          imageUrl,
         },
       } = result
 
@@ -236,8 +234,8 @@ const normalizeSearchResult = response => {
         return {
           id,
           type,
-          name,
-          imageUrl,
+          title,
+          coverUrl,
         }
       }
     })

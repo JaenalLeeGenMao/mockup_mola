@@ -21,8 +21,10 @@ const Overview = ({ data }) => {
       return item.attributes.peopleTypeName === type
     })
 
-  const casts = filterPeople('cast').map(cast => {
-    return <span key={cast.name}>{cast.attributes.name}</span>
+  const casts = filterPeople('cast').map((cast, index) => {
+    if (index < 10) {
+      return <span key={cast.name}>{cast.attributes.name}</span>
+    }
   })
 
   const directors = filterPeople('director').map(cast => {
@@ -34,21 +36,25 @@ const Overview = ({ data }) => {
   })
 
   const releaseYear = (releaseDate) => {
-    let releaseYearArr = null;
-    let releaseYear = '';
-    releaseDate.map((data) => {
-      if (data.country == '') {
-        if (!releaseYearArr) {
-          releaseYearArr = { ...data }
-        }
-      } else if (data.country == 'ID') {
-        releaseYearArr = { ...data }
-      }
-    })
-    if (releaseYearArr) {
-      const dateTime = new Date(releaseYearArr.date)
+    // let releaseYearArr = null;
+    let releaseYear = releaseDate && releaseDate.length > 0 && releaseDate[0].date
+    if (releaseYear) {
+      const dateTime = new Date(releaseYear)
       releaseYear = dateTime.getFullYear()
     }
+    // releaseDate.map((data) => {
+    //   if (data.country == '') {
+    //     if (!releaseYearArr) {
+    //       releaseYearArr = { ...data }
+    //     }
+    //   } else if (data.country == 'ID') {
+    //     releaseYearArr = { ...data }
+    //   }
+    // })
+    // if (releaseYearArr) {
+    //   const dateTime = new Date(releaseYearArr.date)
+    //   releaseYear = dateTime.getFullYear()
+    // }
     return releaseYear
   }
 
