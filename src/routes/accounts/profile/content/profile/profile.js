@@ -86,7 +86,7 @@ class Profile extends React.Component {
       phoneNumber: phone || '',
       photo: photo || '',
       birthdate: birthdate || '',
-      gender: gender || '',
+      gender: gender || 'm',
       location: location || '',
     }
 
@@ -103,7 +103,7 @@ class Profile extends React.Component {
       phoneNumber: data.phone || '',
       photo: data.photo || '',
       birthdate: data.birthdate || '',
-      gender: data.gender || '',
+      gender: data.gender || 'm',
       location: data.location || '',
     })
   }
@@ -137,15 +137,13 @@ class Profile extends React.Component {
     }
 
     const update = await Auth.updateProfile(payload)
-    // const update = this.props.updateProfile(payload)
     if (update.meta.status === 'success') {
-      // this.props.updateProfile(payload)
+      this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
       this.setData(payload)
     } else {
       toastr.warning('Notification', 'Update profile failed!')
-      // this.props.updateProfile(payload)
     }
   }
 
@@ -176,7 +174,7 @@ class Profile extends React.Component {
       case 'f':
         return 'Wanita'
       default:
-        return 'Lain'
+        return 'Pria'
     }
   }
 

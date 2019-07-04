@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Slider from 'react-slick'
-
 import styles from './content.css'
 
 class Content extends Component {
@@ -36,7 +35,7 @@ class Content extends Component {
         {...settings}
       >
         {this.props.videos.map(video => {
-          const { id, isDark, background, link } = video
+          const { id, isDark, background } = video
           return index != 0 ? (
             <>
               <picture>
@@ -47,15 +46,13 @@ class Content extends Component {
               <div className={styles.content__gradient} />
             </>
           ) : (
-              <a href={link} key={id} className="grid-slick" isdark={isDark}>
-                <div key={id} className="grid-slick" isdark={isDark}>
-                  <picture>
-                    <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
-                    <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
-                    <img src={isLandscape ? background.landscape : background.portrait} />
-                  </picture>
-                </div>
-              </a>
+              <div key={id} className="grid-slick" isdark={isDark}>
+                <picture>
+                  <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
+                  <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
+                  <img src={isLandscape ? background.landscape : background.portrait} />
+                </picture>
+              </div>
             )
         })}
       </Slider>

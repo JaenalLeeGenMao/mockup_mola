@@ -10,14 +10,14 @@ const PUBSUB_ENDPOINT = production
   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
   : 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/ds-feeder-guardian:publish'
 
-const PUBSUB_ENDPOINT_PILOT = 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/dataflow-pilot:publish'
+// const PUBSUB_ENDPOINT_PILOT = 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/dataflow-pilot:publish'
 
 class Tracker {
   static sessionId = () => {
     let sessionId = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf('__sessionId=') >= 0
       })
 
@@ -44,7 +44,7 @@ class Tracker {
     let clientId = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf('__clientId=') >= 0
       })
 
@@ -77,7 +77,7 @@ class Tracker {
     let location = _get(document, 'cookie', '')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf('__loc=') >= 0
       })
     if (location && location.length > 0) {
@@ -87,7 +87,7 @@ class Tracker {
       if (window.navigator.geolocation) {
         // console.log("MASUK SINI?")
         window.navigator.geolocation.getCurrentPosition(
-          function(position) {
+          function (position) {
             latitude = position.coords.latitude
             longitude = position.coords.longitude
             location = `${latitude},${longitude}`
@@ -96,7 +96,7 @@ class Tracker {
             document.cookie = `__loc=${location}; max-age=${60 * 60}; path=/;`
             localStorage.setItem('user-location', location)
           },
-          function() {},
+          function () { },
           options
         )
       }
@@ -110,7 +110,7 @@ class Tracker {
     let token = _get(document, 'cookie')
       .trim()
       .split(';')
-      .filter(function(item) {
+      .filter(function (item) {
         return item.indexOf(`${cookieName}=`) >= 0
       })
     if (token.length > 0) {
@@ -161,17 +161,17 @@ class Tracker {
       url: PUBSUB_ENDPOINT,
     }
 
-    const options2 = {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify(reqBody),
-      url: PUBSUB_ENDPOINT_PILOT,
-    }
-    axios(options).catch(() => {})
-    axios(options2).catch(() => {})
+    // const options2 = {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   data: JSON.stringify(reqBody),
+    //   url: PUBSUB_ENDPOINT_PILOT,
+    // }
+    axios(options).catch(() => { })
+    // axios(options2).catch(() => {})
 
     return true
   }

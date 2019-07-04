@@ -26,8 +26,8 @@ class LeftMenu extends Component {
     const { activePlaylist, activeMenu, isMobile } = this.props;
     menu = [
       { id: 'movie', title: 'Movie', linkUrl: '/' },
-      { id: 'sport', title: 'Sport', linkUrl: '/sport' },
-      { id: 'channels', title: 'Channels', linkUrl: '/channels' },
+      // { id: 'sport', title: 'Sport', linkUrl: '/sport' },
+      // { id: 'channels', title: 'Channels', linkUrl: '/channels' },
     ]
 
     const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
@@ -82,21 +82,24 @@ class LeftMenu extends Component {
                   )}
                   {isMobile && (
                     <div className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''}`}>
-                      <DropdownList
+                      {/* <DropdownList
                         className={styles.left_menu_dropdown_container}
                         dataList={menu}
                         activeId={activeMenuDropdown}
-                        onClick={this.handleNavigation} />
+                        onClick={this.handleNavigation} /> */}
+                      <Link className={activeMenu === 'movie' ? styles.left_menu__active : ''} to={'/'}>
+                        Movie
+                      </Link>
                       {showLibrary &&
                         <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>
                           Library
                       </Link>
                       }
-                      {(activeMenu === 'sport' || activeMenu === 'matches') &&
+                      {/* {(activeMenu === 'sport' || activeMenu === 'matches') &&
                         <Link className={activeMenu === 'matches' ? styles.left_menu__active : ''} to={'/matches'}>
                           Matches
                         </Link>
-                      }
+                      } */}
                     </div>
                   )}
                 </div>

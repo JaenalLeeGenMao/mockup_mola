@@ -62,7 +62,7 @@ class Html extends React.Component {
           <meta property="og:url" content={url} data-react-helmet="true" />
           <meta property="og:type" content={type} data-react-helmet="true" />
 
-          <meta name="twitter:text:title" content={title} data-react-helmet="true" />
+          <meta property="twitter:text:title" content={title} data-react-helmet="true" />
           <meta name="twitter:description" content={description} data-react-helmet="true" />
           <meta name="twitter:image:src" content={image} data-react-helmet="true" />
           <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" />
@@ -71,7 +71,7 @@ class Html extends React.Component {
           <meta name="referrer" content="origin-when-cross-origin" />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
-          <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
+          {/* <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
           <script
             dangerouslySetInnerHTML={{
               __html:
@@ -82,7 +82,7 @@ class Html extends React.Component {
                 '});' +
                 '});',
             }}
-          />
+          /> */}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />

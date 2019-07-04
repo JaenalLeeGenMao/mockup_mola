@@ -11,7 +11,7 @@ import DRMConfig from '@source/lib/DRMConfig'
 import * as movieDetailActions from '@actions/movie-detail'
 import notFoundActions from '@actions/not-found'
 import { getVUID, getVUID_retry } from '@actions/vuid'
-
+import _get from 'lodash/get'
 import MovieDetailError from '@components/common/error'
 // import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
@@ -262,6 +262,9 @@ class MovieDetail extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
+
+    //on prod until suggestion done
+    hiddenController.push('suggestions')
 
     const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
     return (

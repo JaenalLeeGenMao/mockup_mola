@@ -31,7 +31,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -116,6 +116,15 @@ class MovieDetail extends Component {
     return myTheoPlayer
   }
 
+  disableAds = (status, videoSettings) => {
+    status === 'success' && (videoSettings.adsBannerOptions.ipaEnabled = false)
+    status === 'success' && (videoSettings.adsBannerOptions.araEnabled = false)
+    status === 'success' && (videoSettings.adsSource = '')
+    status === 'success' && (videoSettings.adsBannerUrl = '')
+
+    return videoSettings
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -171,14 +180,16 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user, notFound } = this.props
+    const { user, notFound, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
+    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
+    const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
+
     const videoSettings = {
-      ...defaultVidSetting,
-      // getUrlResponse: this.getUrlResponse
+      ...checkAdsSettings,
     }
 
     let drmStreamUrl = '',
@@ -218,14 +229,14 @@ class MovieDetail extends Component {
                     isMobile
                   />
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
               <ContentSynopsis content={dataFetched.description} />
               {dataFetched.people && dataFetched.people.length > 0 && <ContentCreator people={dataFetched.people} />}
-              {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}
+              {/* prod only {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />} */}
             </div>
             <div className={playMovieButton} onClick={this.handlePlayMovie}>
               <div className={playMovieIcon} />
