@@ -11,9 +11,12 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import matchListActions from '@actions/matches'
 import s from './matches.css'
 import LoaderComp from './loaderComp'
-import { isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
+import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive, addDateTime, isSameDay } from '@source/lib/dateTimeUtil'
 import moment from 'moment'
 import _unionBy from 'lodash/unionBy'
+import loaderComp from './loaderComp'
+import { IoIosReturnLeft } from 'react-icons/io'
+import { match } from 'tcomb'
 
 class Matches extends React.Component {
   constructor(props) {
@@ -26,9 +29,13 @@ class Matches extends React.Component {
     resultShowData: 1,
     initialized: false,
     matches: [],
-    // isScrolling: false, // recognize loading dot
+    isScrolling: false,
     modalActive: false,
-    selectedLeague: [],
+    selectedLeagueData: [],
+    showResultThisWeek: true,
+    filterByDates: [],
+    filterByType: [],
+    filterByLeague: [],
   }
 
   fetchMoreData = () => {
@@ -57,29 +64,13 @@ class Matches extends React.Component {
     this.setState({ modalActive: false })
   }
 
-  handleCloseModalAfterSubmit = () => {
-    this.closeModal()
-    this.handleSubmit()
-  }
-
   componentDidMount() {
     this.props.getMatches()
-    // window.addEventListener('scroll', this.onScroll) // test hide and show LoaderComp
-    // this.handleCheckbox()
+    // document.getElementById('scrollingLoader').addEventListener('scroll', this.handleUserScroll, false)
   }
 
   componentWillMount() {
     // window.addEventListener('scroll', this.onScroll)
-  }
-
-  onScroll = () => {
-    this.setState({ isScrolling: true })
-
-    clearTimeout(this.timeout)
-
-    this.timeout = setTimeout(() => {
-      this.ShowMatchCard.setState({ isScrolling: false })
-    }, 2000)
   }
 
   componentDidUpdate(prevProps) {
@@ -88,155 +79,628 @@ class Matches extends React.Component {
     }
   }
 
-  filterAllLeague = leagueId => {
-    const { data: matches } = this.props.matches
-    const AllLeagueData = []
+  // getSelectedCategory(){
+  // }
 
-    matches.forEach(dt => {
-      if (dt.league != null) {
-        if (dt.league.id == leagueId) {
-          AllLeagueData.push(dt)
+  //start
+  handleCategoryFilter = (category, value) => {
+    let selectedCategoryData = []
+    const { filterByDates, filterByLeague, filterByType } = this.state
+
+    if (category == 'ThisWeek') {
+      // validation for ThisWeek
+      //TODAY
+      if (value == 'today') {
+        const { data } = this.props.matches
+
+        const TodayData = []
+
+        data.forEach(el => {
+          if (el.homeTeam && el.awayTeam && isToday(el.startTime, el.endTime)) {
+            TodayData.push(el)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, TodayData, 'id')
+      }
+      //Tomorrow
+      if (value == 'tomorrow') {
+        const { data } = this.props.matches
+
+        const tomorrowData = []
+
+        data.forEach(el => {
+          if (el.homeTeam && el.awayTeam && isTomorrow(el.startTime, el.endTime)) {
+            tomorrowData.push(el)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, tomorrowData, 'id')
+      }
+      // Filter By Date This week
+      if (value == value) {
+        const { data } = this.props.matches
+        const sameDateData = []
+        data.forEach(dt => {
+          if (dt.startTime != null) {
+            const isSame = isSameDay(value, dt.startTime)
+            if (isSame) {
+              sameDateData.push(dt)
+            }
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, sameDateData, 'id')
+      }
+
+      if (value == 'lastWeek') {
+        // validation lastweek
+        const { data } = this.props.matches
+        let thisWeek = moment()
+          .isoWeekday(1)
+          .week() // now
+        let lastWeek = thisWeek === 1 ? 52 : thisWeek - 1
+        let getLastWeekData = []
+
+        for (let i = 0; i < data.length; i++) {
+          let getDataLastWeek = moment.unix(data[i].startTime)
+          let weekValidate = moment(getDataLastWeek)
+            .isoWeekday(1)
+            .week()
+
+          if (lastWeek === weekValidate) {
+            getLastWeekData.push(data[i])
+          }
+        }
+        selectedCategoryData = _unionBy(selectedCategoryData, getLastWeekData, 'id')
+      }
+      if (value == 'nextWeek') {
+        // validation nextWeek
+        const { data } = this.props.matches
+
+        let thisWeek = moment()
+          .isoWeekday(1)
+          .week()
+        let nextWeek = thisWeek === 52 ? 1 : thisWeek + 1
+        let dataNextWeek = []
+
+        for (let i = 0; i < data.length; i++) {
+          let getDataNextWeek = moment.unix(data[i].startTime)
+          let weekValidate = moment(getDataNextWeek)
+            .isoWeekday(1)
+            .week()
+
+          if (nextWeek === weekValidate) {
+            dataNextWeek.push(data[i])
+          }
+        }
+        selectedCategoryData = _unionBy(selectedCategoryData, dataNextWeek, 'id')
+      }
+
+      this.setState({ filterByDates: value })
+    } else if (!filterByDates) {
+      if (filterByDates == 'today') {
+        const { data } = this.props.matches
+
+        const TodayData = []
+
+        data.forEach(el => {
+          if (el.homeTeam && el.awayTeam && isToday(el.startTime, el.endTime)) {
+            TodayData.push(el)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, TodayData, 'id')
+      }
+      //Tomorrow
+      if (filterByDates == 'tomorrow') {
+        const { data } = this.props.matches
+
+        const tomorrowData = []
+
+        data.forEach(el => {
+          if (el.homeTeam && el.awayTeam && isTomorrow(el.startTime, el.endTime)) {
+            tomorrowData.push(el)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, tomorrowData, 'id')
+      }
+      // Filter By Date This week
+      if (filterByDates == value) {
+        const { data } = this.props.matches
+        const sameDateData = []
+        data.forEach(dt => {
+          if (dt.startTime != null) {
+            const isSame = isSameDay(value, dt.startTime)
+            if (isSame) {
+              sameDateData.push(dt)
+            }
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, sameDateData, 'id')
+      }
+      if (value == 'lastWeek') {
+        // validation lastweek
+        const { data } = this.props.matches
+        let thisWeek = moment()
+          .isoWeekday(1)
+          .week() // now
+        let lastWeek = thisWeek === 1 ? 52 : thisWeek - 1
+        let getLastWeekData = []
+
+        for (let i = 0; i < data.length; i++) {
+          let getDataLastWeek = moment.unix(data[i].startTime)
+          let weekValidate = moment(getDataLastWeek)
+            .isoWeekday(1)
+            .week()
+
+          if (lastWeek === weekValidate) {
+            getLastWeekData.push(data[i])
+          }
+        }
+        selectedCategoryData = _unionBy(selectedCategoryData, getLastWeekData, 'id')
+      }
+      if (value == 'nextWeek') {
+        // validation nextWeek
+        const { data } = this.props.matches
+
+        let thisWeek = moment()
+          .isoWeekday(1)
+          .week()
+        let nextWeek = thisWeek === 52 ? 1 : thisWeek + 1
+        let dataNextWeek = []
+
+        for (let i = 0; i < data.length; i++) {
+          let getDataNextWeek = moment.unix(data[i].startTime)
+          let weekValidate = moment(getDataNextWeek)
+            .isoWeekday(1)
+            .week()
+
+          if (nextWeek === weekValidate) {
+            dataNextWeek.push(data[i])
+          }
+        }
+        selectedCategoryData = _unionBy(selectedCategoryData, dataNextWeek, 'id')
+      }
+    }
+
+    if (category == 'VideoType') {
+      // Validation For Video Type
+      // Live
+      if (value == 'live') {
+        const { data } = this.props.matches
+
+        const LiveData = []
+
+        data.forEach(el => {
+          if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
+            LiveData.push(el)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, LiveData, 'id')
+      }
+      //Full Replay Match
+      if (value == 'frm') {
+        const { data } = this.props.matches
+        const fullReplayMatch = []
+
+        data.forEach(index => {
+          if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
+            fullReplayMatch.push(index)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, fullReplayMatch, 'id')
+      }
+      //HighLight Replay
+      if (value == 'highlightReplay') {
+        const { data } = this.props.matches
+
+        const hightlightData = []
+        data.forEach(dt => {
+          if (dt.isHighlight > 0) {
+            hightlightData.push(dt)
+          }
+        })
+
+        selectedCategoryData = _unionBy(selectedCategoryData, hightlightData, 'id')
+      }
+
+      this.setState({ filterByLeague: value })
+    } else if (!filterByLeague) {
+      if (filterByLeague == 'live') {
+        const { data } = this.props.matches
+
+        const LiveData = []
+
+        data.forEach(el => {
+          if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
+            LiveData.push(el)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, LiveData, 'id')
+      }
+      //Full Replay Match
+      if (filterByLeague == 'frm') {
+        const { data } = this.props.matches
+        const fullReplayMatch = []
+
+        data.forEach(index => {
+          if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
+            fullReplayMatch.push(index)
+          }
+        })
+        selectedCategoryData = _unionBy(selectedCategoryData, fullReplayMatch, 'id')
+      }
+      //HighLight Replay
+      if (filterByLeague == 'highlightReplay') {
+        const { data } = this.props.matches
+
+        const hightlightData = []
+        data.forEach(dt => {
+          if (dt.isHighlight > 0) {
+            hightlightData.push(dt)
+          }
+        })
+
+        selectedCategoryData = _unionBy(selectedCategoryData, hightlightData, 'id')
+      }
+    }
+
+    //League
+    if (category == 'League') {
+      // leagueId
+      let selLeague = []
+      let limitSelected = 1
+
+      const { data: matches } = this.props.matches
+      const allLeagueData = []
+
+      selLeague = selLeague.concat(this.state.selectedLeagueData)
+
+      if (!selLeague.includes(value)) {
+        selLeague.push(value)
+      } else {
+        var index = selLeague.indexOf(value)
+        if (index > -1) {
+          selLeague.splice(index, 1)
         }
       }
+      if (selLeague.length > limitSelected) {
+        this.setState({ selectedLeagueData: selLeague })
+      }
+      if (selLeague == value) {
+        matches.forEach(dt => {
+          if (dt.league != null) {
+            if (dt.league.id == value) {
+              allLeagueData.push(dt)
+              selLeague.push(dt)
+            }
+          }
+        })
+      }
+      selectedCategoryData = _unionBy(selectedCategoryData, allLeagueData, 'id')
+
+      this.setState({ filterByType: value })
+    } else if (!filterByType) {
+      // leagueId
+      let selLeague = []
+      let limitSelected = 1
+
+      const { data: matches } = this.props.matches
+      const allLeagueData = []
+
+      selLeague = selLeague.concat(this.state.selectedLeagueData)
+
+      if (!selLeague.includes(filterByType)) {
+        selLeague.push(filterByType)
+      } else {
+        var index = selLeague.indexOf(filterByType)
+        if (index > -1) {
+          selLeague.splice(index, 1)
+        }
+      }
+      if (selLeague.length > limitSelected) {
+        this.setState({ selectedLeagueData: selLeague })
+      }
+      if (selLeague == filterByType) {
+        matches.forEach(dt => {
+          if (dt.league != null) {
+            if (dt.league.id == filterByType) {
+              allLeagueData.push(dt)
+              selLeague.push(dt)
+            }
+          }
+        })
+      }
+      selectedCategoryData = _unionBy(selectedCategoryData, allLeagueData, 'id')
+    }
+
+    this.setState({ matches: selectedCategoryData })
+    // console.log('result terakhir', selectedCategoryData)
+  }
+  //end
+
+  // handleCategoryFilter = value => {
+  //   const limitCategory = 1
+  //   let selectedCategoryData = []
+  //   const { filterByDates, filterByLeague, filterByType } = this.state
+
+  //   // validation for ThisWeek
+  //   //TODAY
+  //   if (value == 'today') {
+  //     const { data } = this.props.matches
+
+  //     const TodayData = []
+
+  //     data.forEach(el => {
+  //       if (el.homeTeam && el.awayTeam && isToday(el.startTime, el.endTime)) {
+  //         TodayData.push(el)
+  //       }
+  //     })
+  //     selectedCategoryData = _unionBy(selectedCategoryData, TodayData, 'id')
+  //   }
+
+  //   //Tomorrow
+  //   if (value == 'tomorrow') {
+  //     const { data } = this.props.matches
+
+  //     const tomorrowData = []
+
+  //     data.forEach(el => {
+  //       if (el.homeTeam && el.awayTeam && isTomorrow(el.startTime, el.endTime)) {
+  //         tomorrowData.push(el)
+  //       }
+  //     })
+  //     selectedCategoryData = _unionBy(selectedCategoryData, tomorrowData, 'id')
+  //   }
+
+  //   // Filter By Date This week
+  //   if (value == value) {
+  //     const { data } = this.props.matches
+  //     const sameDateData = []
+  //     data.forEach(dt => {
+  //       if (dt.startTime != null) {
+  //         const isSame = isSameDay(value, dt.startTime)
+  //         if (isSame) {
+  //           sameDateData.push(dt)
+  //         }
+  //       }
+  //     })
+  //     selectedCategoryData = _unionBy(selectedCategoryData, sameDateData, 'id')
+  //   }
+
+  //   // Validation For Video Type
+  //   // Live
+  //   if (value == 'live') {
+  //     const { data } = this.props.matches
+
+  //     const LiveData = []
+
+  //     data.forEach(el => {
+  //       if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
+  //         LiveData.push(el)
+  //       }
+  //     })
+  //     selectedCategoryData = _unionBy(selectedCategoryData, LiveData, 'id')
+  //   }
+
+  //   //Full Replay Match
+  //   if (value == 'frm') {
+  //     const { data } = this.props.matches
+  //     const fullReplayMatch = []
+
+  //     data.forEach(index => {
+  //       if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
+  //         fullReplayMatch.push(index)
+  //       }
+  //     })
+  //     selectedCategoryData = _unionBy(selectedCategoryData, fullReplayMatch, 'id')
+  //   }
+
+  //   //HighLight Replay
+  //   if (value == 'highlightReplay') {
+  //     const { data } = this.props.matches
+
+  //     const hightlightData = []
+  //     data.forEach(dt => {
+  //       if (dt.isHighlight > 0) {
+  //         hightlightData.push(dt)
+  //       }
+  //     })
+
+  //     selectedCategoryData = _unionBy(selectedCategoryData, hightlightData, 'id')
+  //   }
+
+  //   //League
+  //   if (value == value) {
+  //     // leagueId
+  //     let selLeague = []
+  //     let limitSelected = 1
+
+  //     const { data: matches } = this.props.matches
+  //     const allLeagueData = []
+
+  //     selLeague = selLeague.concat(this.state.selectedLeagueData)
+
+  //     if (!selLeague.includes(value)) {
+  //       selLeague.push(value)
+  //     } else {
+  //       var index = selLeague.indexOf(value)
+  //       if (index > -1) {
+  //         selLeague.splice(index, 1)
+  //       }
+  //     }
+  //     if (selLeague.length > limitSelected) {
+  //       this.setState({ selectedLeagueData: selLeague })
+  //     }
+  //     if (selLeague == value) {
+  //       matches.forEach(dt => {
+  //         if (dt.league != null) {
+  //           if (dt.league.id == value) {
+  //             allLeagueData.push(dt)
+  //             selLeague.push(dt)
+  //           }
+  //         }
+  //       })
+  //     }
+  //     selectedCategoryData = _unionBy(selectedCategoryData, allLeagueData, 'id')
+  //   }
+
+  //   this.setState({ matches: selectedCategoryData })
+  //   console.log('result terakhir', selectedCategoryData)
+  // }
+
+  handleUserScroll = () => {
+    window.addEventListener('scroll', function(evt) {
+      if (evt.deltaY > 0) {
+      }
+      bisatapii
+      return <loaderComp />
     })
-
-    return AllLeagueData
   }
 
-  getSelectedLeague = leagueId => {
-    let selLeague = []
-    selLeague = selLeague.concat(this.state.selectedLeague)
+  handleExapandCategory = () => {
+    this.handleCloseTab()
+    this.handleExapand()
+  }
 
-    if (!selLeague.includes(leagueId)) {
-      selLeague.push(leagueId)
-    } else {
-      var index = selLeague.indexOf(leagueId)
-      if (index > -1) {
-        selLeague.splice(index, 1)
+  handleCloseTab = () => {
+    this.setState({ showResultThisWeek: true })
+  }
+
+  handleExapand = () => {
+    this.setState({ showResultThisWeek: false })
+  }
+
+  renderMatchInfo = () => {
+    const { data } = this.props.matches
+    let thisWeek = moment()
+      .isoWeekday(1)
+      .week()
+
+    let dataThisWeek = []
+
+    let text = ''
+    let time = ''
+    let className = ''
+    let todayMatchTemp = []
+    let tomorrowMatchTemp = []
+    let allMatchThisWeekTemp = []
+
+    for (let j = 0; j < data.length; j++) {
+      const todayMatch = isToday(data[j].startTime)
+      const tomorrowMatch = isTomorrow(data[j].startTime)
+      const allMatchThisWeek = moment.unix(data[j].startTime)
+      const dateFormatted = formatDateTime(data[j].startTime, 'dddd, D MMM')
+
+      let getDataThisWeek = moment.unix(data[j].startTime)
+      let weekValidate = moment(getDataThisWeek)
+        .isoWeekday(1)
+        .week()
+
+      if (todayMatch != false) {
+        if (isMatchLive(data[j].startTime, data[j].endTime)) {
+          text = 'LIVE NOW'
+          className = s.btnLiveNow
+        } else {
+          text = 'Today'
+          className = s.btnToday
+          time = dateFormatted
+        }
+        todayMatchTemp.push(todayMatch)
       }
-    }
-    this.setState({ selectedLeague: selLeague })
-  }
+      if (tomorrowMatch != false) {
+        text = dateFormatted
+        className = s.btnDate
+        time = dateFormatted
+        tomorrowMatchTemp.push(tomorrowMatch)
+      }
 
-  handleSubmit = () => {
-    let matchesTemp = []
-
-    const filterCheckbox = document.getElementsByClassName('myCheckboxFilter')
-
-    for (let i = 0; i < filterCheckbox.length; i++) {
-      if (filterCheckbox[i].checked) {
-        if (filterCheckbox[i].value == 'thisWeek') {
-          const { data } = this.props.matches
-          let thisWeek = moment()
-            .isoWeekday(1)
-            .week()
-
-          let dataThisWeek = []
-
-          for (let i = 0; i < data.length; i++) {
-            let getDataThisWeek = moment.unix(data[i].startTime)
-            let weekValidate = moment(getDataThisWeek)
-              .isoWeekday(1)
-              .week()
-
-            if (thisWeek === weekValidate) {
-              dataThisWeek.push(data[i])
-            }
-          }
-          matchesTemp = _unionBy(matchesTemp, dataThisWeek, 'id')
-        }
-        if (filterCheckbox[i].value == 'lastWeek') {
-          const { data } = this.props.matches
-          let thisWeek = moment()
-            .isoWeekday(1)
-            .week() // now
-          let lastWeek = thisWeek === 1 ? 52 : thisWeek - 1
-          let getLastWeekData = []
-
-          for (let i = 0; i < data.length; i++) {
-            let getDataLastWeek = moment.unix(data[i].startTime)
-            let weekValidate = moment(getDataLastWeek)
-              .isoWeekday(1)
-              .week()
-
-            if (lastWeek === weekValidate) {
-              getLastWeekData.push(data[i])
-            }
-          }
-          matchesTemp = _unionBy(matchesTemp, getLastWeekData, 'id')
-        }
-        if (filterCheckbox[i].value == 'nextWeek') {
-          const { data } = this.props.matches
-
-          let thisWeek = moment()
-            .isoWeekday(1)
-            .week()
-          let nextWeek = thisWeek === 52 ? 1 : thisWeek + 1
-          let dataNextWeek = []
-
-          for (let i = 0; i < data.length; i++) {
-            let getDataNextWeek = moment.unix(data[i].startTime)
-            let weekValidate = moment(getDataNextWeek)
-              .isoWeekday(1)
-              .week()
-
-            if (nextWeek === weekValidate) {
-              dataNextWeek.push(data[i])
-            }
-          }
-          matchesTemp = _unionBy(matchesTemp, dataNextWeek, 'id')
-        }
-        if (filterCheckbox[i].value == 'live') {
-          const { data } = this.props.matches
-
-          const getLiveData = []
-
-          data.forEach(el => {
-            if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
-              getLiveData.push(el)
-            }
-          })
-
-          matchesTemp = _unionBy(matchesTemp, getLiveData, 'id')
-        }
-        if (filterCheckbox[i].value == 'frm') {
-          const { data } = this.props.matches
-          const getFullReplayMatch = []
-
-          data.forEach(index => {
-            if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
-              getFullReplayMatch.push(index)
-            }
-          })
-          matchesTemp = _unionBy(matchesTemp, getFullReplayMatch, 'id')
-        }
-        if (filterCheckbox[i].value == 'highlightReplay') {
-          const { data } = this.props.matches
-
-          const getHightlightData = []
-
-          data.forEach(dt => {
-            if (dt.isHighlight > 0) {
-              getHightlightData.push(dt)
-            }
-          })
-
-          matchesTemp = _unionBy(matchesTemp, getHightlightData, 'id')
-        }
+      if (thisWeek === weekValidate) {
+        time = dateFormatted
+        allMatchThisWeekTemp.push(allMatchThisWeek)
+        dataThisWeek.push(data[j])
       }
     }
 
-    const { selectedLeague } = this.state
+    //Validate This week, now +7 days
+    let tempMatchList = []
 
-    for (let i = 0; i < selectedLeague.length; i++) {
-      const ref = this.filterAllLeague(selectedLeague[i])
-      matchesTemp = _unionBy(matchesTemp, ref, 'id')
+    for (var i = 0; i < 5; i++) {
+      const date = new Date(addDateTime(null, i + 2, 'days'))
+      const dtTimestamp = date.getTime()
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'ddd, DD MMM')
+
+      //date string to int selectedMatch
+      const dateStringtoInt = new Date(moment(formattedDateTime, 'ddd, DD MMM'))
+      const strTimestamp = dateStringtoInt.getTime() / 1000
+
+      tempMatchList.push({ title: formattedDateTime, selectedMatchesStartTime: strTimestamp })
     }
-    this.setState({ matches: matchesTemp })
+
+    return (
+      <>
+        {tomorrowMatchTemp ? ( // ini juga ganti validasinya
+          <div
+            value="lastWeek"
+            onClick={() => {
+              this.handleCategoryFilter('ThisWeek', 'lastWeek')
+            }}
+            className={s.tomorrowLabel}
+          >
+            Last Week
+          </div>
+        ) : null}
+        {todayMatchTemp ? (
+          <div
+            value="today"
+            onClick={() => {
+              this.handleCategoryFilter('ThisWeek', 'today')
+            }}
+            className={s.todayLabel}
+          >
+            Today
+          </div>
+        ) : null}
+        {tomorrowMatchTemp ? (
+          <div
+            value="tomorrow"
+            onClick={() => {
+              this.handleCategoryFilter('ThisWeek', 'tomorrow')
+            }}
+            className={s.tomorrowLabel}
+          >
+            Tomorow
+          </div>
+        ) : null}
+        {tempMatchList.map(dt => {
+          return (
+            <div
+              className={s.labelThisWeekTime}
+              key={dt.id}
+              matchData={dt}
+              onClick={() => {
+                this.handleCategoryFilter('ThisWeek', dt.selectedMatchesStartTime)
+              }}
+            >
+              {/* {console.log('result startime ONCLICK', dt.startTime)} */}
+              {dt.title}
+            </div>
+          )
+        })}
+        {tomorrowMatchTemp ? ( //ini nanti ganti validasinya
+          <div
+            value="nextWeek"
+            onClick={() => {
+              this.handleCategoryFilter('ThisWeek', 'nextWeek')
+            }}
+            className={s.tomorrowLabel}
+          >
+            Next Week
+          </div>
+        ) : null}
+      </>
+    )
   }
 
-  showFilterChanging = () => {
-    const { selectedLeague } = this.state
+  categoryFilter = () => {
+    const { selectedLeagueData } = this.state
 
     const getDataFilterLeagueId = this.props.matches.data
     const leagueList = []
@@ -251,55 +715,92 @@ class Matches extends React.Component {
         }
       }
     })
+    // const { showResultThisWeek } = this.state
 
     return (
-      <LazyLoad>
-        <div>
-          <button onClick={this.openModal} className={s.labelfilter}>
-            Filter
-          </button>
-          {this.state.modalActive && (
-            <div className={s.modalDialog}>
-              <span>League</span>
-              <>
-                {/* <LazyLoad> */}
-                <div div className={s.contentFilterLeague}>
-                  {leagueList.map(league => {
-                    return (
-                      <div key={league.id}>
-                        <img className={s.filterimg} src={league.iconUrl} onClick={() => this.getSelectedLeague(league.id)} />
-                        {selectedLeague.includes(league.id) ? <span className={s.checklistBtnLeague} /> : null}
-                        <span value={league.id} className={s.nameleague} onClick={() => this.getSelectedLeague(league.id)}>
-                          {league.name}
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-                {/* </LazyLoad> */}
-              </>
-              <div className={s.contentFilterVideoType}>
-                <span>Video Type</span>
-                <>{this.showCheckBoxVideoType()}</>
-              </div>
-              <div className={s.contentFilterWeek}>
-                <span>Week</span>
-                <>{this.showCheckBoxWeek()}</>
-              </div>
-              <div className={s.positionSubmitBtn}>
-                <button
-                  className={s.submitBtn}
-                  onClick={() => {
-                    this.handleCloseModalAfterSubmit()
-                  }}
-                >
-                  OK
-                </button>
-              </div>
-            </div>
-          )}
+      <div>
+        <div className={s.labelFilterThisWeek}>
+          <span>This week</span>
+          <span
+            className={s.arrowDownBtnThisWeek}
+            onClick={() => {
+              this.handleExapandCategory()
+            }}
+          />
         </div>
-      </LazyLoad>
+        {this.state.showResultThisWeek ? (
+          <div className={s.containerThisWeek}>
+            <span>{this.renderMatchInfo()}</span>
+          </div>
+        ) : null}
+        <div className={s.labelFilterVideoType}>
+          <span>Video Type</span>
+          <span className={s.arrowDownBtnVideoType} />
+        </div>
+        <div className={s.contentVideoType}>
+          <div className={s.labelVideoType}>
+            <div
+              className={s.btnFilter}
+              onClick={() => {
+                this.handleCategoryFilter('VideoType', 'live')
+              }}
+              value="live"
+            >
+              Live
+            </div>
+          </div>
+          <div className={s.labelVideoType}>
+            <div
+              className={s.btnFilter}
+              onClick={() => {
+                this.handleCategoryFilter('VideoType', 'frm')
+              }}
+              value="frm"
+            >
+              Full Replay Match
+            </div>
+          </div>
+          <div className={s.labelVideoType}>
+            <div
+              className={s.btnFilter}
+              onClick={() => {
+                this.handleCategoryFilter('VideoType', 'highlightReplay')
+              }}
+              value="highlightReplay"
+            >
+              Hightlight Match
+            </div>
+          </div>
+        </div>
+        <div className={s.labelFilterLeague}>
+          <span>League</span>
+          <span className={s.arrowDownBtnLeague} />
+        </div>
+        <div className={s.contentLeagueCs}>
+          {leagueList.map(league => {
+            return (
+              <div className={s.contentLeague} key={league.id}>
+                <div key={league.id} className={s.contentLogoAndName}>
+                  <>
+                    <img className={s.filterimg} src={league.iconUrl} onClick={() => this.handleCategoryFilter('League', league.id)} />
+                  </>
+                  <>
+                    {selectedLeagueData ? (
+                      <span value={league.id} className={s.nameleague} onClick={() => this.handleCategoryFilter('League', league.id)}>
+                        {league.name}
+                      </span>
+                    ) : (
+                      <span value={league.id} className={s.selectednameleague} onClick={() => this.handleCategoryFilter('League', league.id)}>
+                        {league.name}
+                      </span>
+                    )}
+                  </>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
     )
   }
 
@@ -344,21 +845,26 @@ class Matches extends React.Component {
   ShowMatchCard = () => {
     const { matches } = this.state
 
-    return (
-      <LazyLoad containerClassName={s.matchesCardList__container}>
-        {matches.map((matchDt, index) => {
-          if (index < this.state.limit.length) {
-            return <MatchCard key={matchDt.id} matchData={matchDt} />
-          }
-        })}
-      </LazyLoad>
-    )
+    if (matches == '') {
+      return <div className={s.noMatchContent}>Tidak Ada Pertandingan</div>
+    } else {
+      return (
+        <LazyLoad containerClassName={s.matchesCardList__container}>
+          {matches.map((matchDt, index) => {
+            if (index < this.state.limit.length) {
+              return <MatchCard key={matchDt.id} matchData={matchDt} />
+            }
+          })}
+        </LazyLoad>
+      )
+    }
   }
 
   render() {
     const matchesList = this.props.matches
     const matchCardData = this.props.matches.data
     const matches = this.state
+    const { isScrolling } = this.state
 
     let sortedByStartDate = matches
     if (matches.length > 0) {
@@ -372,9 +878,7 @@ class Matches extends React.Component {
           <Header stickyOff searchOff isDark={isDark} activeMenu="sport" libraryOff {...this.props} />
         </div>
 
-        {matchesList.meta.status === 'loading' && (
-          <Placeholder />
-        )}
+        {matchesList.meta.status === 'loading' && <Placeholder />}
         {matchesList.meta.status === 'success' && (
           <>
             <div className={s.root}>
@@ -385,37 +889,31 @@ class Matches extends React.Component {
                   hasMore={this.state.hasMore}
                   loader={
                     <div className={s.labelLoadMore}>
-                      <LoaderComp />
+                      <> {this.handleUserScroll()}</>
                       Load more
                       <span className={s.loadmore} />
                     </div>
                   }
                   height={750}
-                  endMessage={
-                    <div className={s.labelAllItemSeen}>
-                      <span>Semua Jadwal Matches Sudah dilihat</span>
-                    </div>
-                  }
                 >
-                  <div className={s.matchlist_wrappergrid}>
+                  <div className={s.matchlist_wrapper}>
                     <div className={s.matches_grid}>
-                      <div className={s.matchlist_wrappercontent_center}>
-                        <div className={s.matchlist_Pagetitle}>
-                          {matchCardData.length != null && this.state.limit != null ? (
-                            <>
-                              {this.showFilterChanging()}
-                              {this.ShowMatchCard(sortedByStartDate)}
-                            </>
-                          ) : (
+                      <span />
+                      <span>
+                        <div className={s.matchlist_wrappercontent_center}>
+                          <div className={s.matchlist_Pagetitle}>
+                            {matchCardData.length != null && this.state.limit != null ? (
+                              <>
+                                {/* {this.showFilterChanging()} */}
+                                {this.ShowMatchCard()}
+                              </>
+                            ) : (
                               <div>Tidak Ada Jadwal Matches</div>
                             )}
+                          </div>
                         </div>
-                      </div>
-                      <div className={s.matchlist_gridcontainer}>
-                        <LazyLoad containerClassName={s.matchlist_valuelistitem}>
-                          <div className={s.wrapperData} />
-                        </LazyLoad>
-                      </div>
+                      </span>
+                      <span>{this.categoryFilter()}</span>
                     </div>
                   </div>
                 </InfiniteScroll>
