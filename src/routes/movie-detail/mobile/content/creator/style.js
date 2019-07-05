@@ -5,7 +5,7 @@ export const creatorContainer = css`
   font-size: 1rem;
   line-height: 1.6rem;
   text-transform: capitalize;
-  padding: 15px;
+  padding: 0 15px;
 
   div {
     padding-bottom: 1rem;

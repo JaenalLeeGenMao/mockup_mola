@@ -32,9 +32,9 @@ class CardLibrary extends Component {
   }
 
   render() {
-    const { id, thumbnail, title, description, quotes, isDark = 0, active } = this.props
+    const { id, thumbnail, title, isDark = 0, active } = this.props
     return (
-      <Link to={`/movie-detail/${id}`} className={s.card}>
+      <Link to={`/movie-detail/${id}`} className={`${s.card} ${this.state.show ? '' : s.card__unload}`}>
         {/* <div> */}
         {!this.state.show && (
           <div
