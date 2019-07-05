@@ -149,6 +149,7 @@ const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 // set a cookie
 const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+let userinfo = ''
 
 const extendToken = async token => {
   try {
@@ -224,6 +225,7 @@ const getUserInfo = async sid => {
     })
 
     const content = await rawResponse.json()
+    userinfo = content
     return content.data
   } catch (err) {
     console.error('error get user info:', err)
@@ -562,7 +564,7 @@ app.get('*', async (req, res, next) => {
         debugError: {
           subs: userSubsError,
           userInfoErr: userInfoError,
-          userInfo: userInfo,
+          userInfo: userinfo,
           token: errorToken,
           gtoken: errorGtoken,
         },
