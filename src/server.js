@@ -561,7 +561,8 @@ app.get('*', async (req, res, next) => {
         // deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         debugError: {
           subs: userSubsError,
-          userInfo: userInfoError,
+          userInfoErr: userInfoError,
+          userInfo: userInfo,
           token: errorToken,
           gtoken: errorGtoken,
         },
