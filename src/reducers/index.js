@@ -13,6 +13,8 @@ import { reducer as toastr } from 'react-redux-toastr'
 import sport from './sport'
 import matches from './matches'
 import vuid from './vuid'
+import channelsPlaylist from './channels-playlist'
+import programmeGuides from './program-guides'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -32,4 +34,6 @@ export default combineReducers({
   sport,
   matches,
   vuid,
+  channelsPlaylist,
+  programmeGuides
 })

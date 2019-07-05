@@ -11,6 +11,7 @@ import * as subscribe from './subscribe'
 import * as sport from './sport'
 import * as matches from './matches'
 import * as vuid from './vuid'
+import * as channels from './channels'
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE'
 export default {
@@ -27,4 +28,5 @@ export default {
   ...sport,
   ...matches,
   ...vuid,
+  ...channels,
 }

@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react'
-import { toastr } from 'react-redux-toastr'
-import { connect } from 'react-redux'
-import moment from 'moment'
+import React, { Component, Fragment } from 'react';
+import { toastr } from 'react-redux-toastr';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
@@ -112,7 +112,7 @@ class Subscription extends Component {
               <LazyLoad
                 key={sub.id}
                 containerClassName={s.sideCenter}
-                // containerStyle={{ display: isToggled ? 'none' : 'block' }}
+              // containerStyle={{ display: isToggled ? 'none' : 'block' }}
               >
                 <div className={s.subscription__wrapper}>
                   <div className={s.subscription__section_left}>

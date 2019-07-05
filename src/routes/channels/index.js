@@ -5,7 +5,12 @@ import MolaLayout from '@components/Molalayout'
 import ChannelsDesktop from './desktop'
 import ChannelsMobile from './mobile'
 
-async function action({ isMobile }) {
+async function action({ isMobile, pathname }) {
+  const pathnameArr = pathname.split('/');
+  const movieId = pathnameArr.length === 3 ? pathnameArr[pathnameArr.length - 1] : 'mola-1';
+  // const today = moment().format('YYYYMMDD')
+  // await store.dispatch(fetchChannelPlaylists()).then(() => store.dispatch(fetchChannelSchedule(today)))
+
   return {
     chunks: ['channels'],
     title: '',
@@ -14,13 +19,13 @@ async function action({ isMobile }) {
     url: '',
     component: isMobile ? (
       <MolaLayout>
-        <ChannelsMobile />
+        <ChannelsMobile movieId={movieId} />
       </MolaLayout>
     ) : (
-      <MolaLayout>
-        <ChannelsDesktop />
-      </MolaLayout>
-    ),
+        <MolaLayout>
+          <ChannelsDesktop movieId={movieId} />
+        </MolaLayout>
+      ),
   }
 }
 

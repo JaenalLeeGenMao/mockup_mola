@@ -152,6 +152,11 @@ const routes = {
     {
       path: '/channels',
       load: () => import(/* webpackChunkName: 'channels' */ './channels'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
