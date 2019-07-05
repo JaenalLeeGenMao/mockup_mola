@@ -153,12 +153,22 @@
   background-size: contain;
 }
 
+@media screen and (max-width: 400px) {
+  .card__unload {
+    max-height: 50vh;
+  }
+}
+
 @media screen and (max-width: 640px) {
   .card {
     width: calc(50% - 10px);
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;
     min-height: 280px;
+  }
+
+  .card__unload {
+    max-height: 60vh;
   }
 
   .card img {

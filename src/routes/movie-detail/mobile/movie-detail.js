@@ -16,7 +16,7 @@ import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
-import { Synopsis as ContentSynopsis, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
+import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
 import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerContainer, videoTitle, playMovieButton, playMovieIcon } from './style'
 import styles from '@global/style/css/grainBackground.css'
@@ -236,6 +236,7 @@ class MovieDetail extends Component {
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
               <ContentSynopsis content={dataFetched.description} />
               {dataFetched.people && dataFetched.people.length > 0 && <ContentCreator people={dataFetched.people} />}
+              <ContentReview review={dataFetched} />
               {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}
             </div>
             <div className={playMovieButton} onClick={this.handlePlayMovie}>
