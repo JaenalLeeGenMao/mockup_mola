@@ -86,12 +86,13 @@ class Profile extends React.Component {
       phoneNumber: phone || '',
       photo: photo || '',
       birthdate: birthdate || '',
-      gender: gender || '',
+      gender: gender || 'm',
       location: location || '',
     }
 
     this.onChangeInput = this.onChangeInput.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClickCancel = this.handleClickCancel.bind(this)
   }
 
   setData = data => {
@@ -102,7 +103,7 @@ class Profile extends React.Component {
       phoneNumber: data.phone || '',
       photo: data.photo || '',
       birthdate: data.birthdate || '',
-      gender: data.gender || '',
+      gender: data.gender || 'm',
       location: data.location || '',
     })
   }
@@ -110,6 +111,14 @@ class Profile extends React.Component {
   async componentDidMount() {
     let data = await this.props.fetchProfile()
     this.setData(data)
+  }
+
+  handleClickCancel = () => {
+    const { name, birthdate, gender, location, phoneNumber } = this.props.user
+    const payload = { name, birthdate, gender, location, phone: phoneNumber }
+
+    this.setData(payload)
+    this.handleClick()
   }
 
   handleSubmit = async e => {
@@ -128,14 +137,13 @@ class Profile extends React.Component {
     }
 
     const update = await Auth.updateProfile(payload)
-    // const update = this.props.updateProfile(payload)
     if (update.meta.status === 'success') {
-      // this.props.updateProfile(payload)
+      this.props.updateProfile(payload)
       this.handleClick()
       toastr.success('Notification', 'Update profile success!')
+      this.setData(payload)
     } else {
       toastr.warning('Notification', 'Update profile failed!')
-      this.props.updateProfile(payload)
     }
   }
 
@@ -166,7 +174,7 @@ class Profile extends React.Component {
       case 'f':
         return 'Wanita'
       default:
-        return 'Lain'
+        return 'Pria'
     }
   }
 
@@ -260,7 +268,7 @@ class Profile extends React.Component {
               <button className={s.profile_button_active} onClick={this.handleSubmit}>
                 Simpan
               </button>
-              <button className={s.profile_button} onClick={this.handleClick}>
+              <button className={s.profile_button} onClick={this.handleClickCancel}>
                 Batal
               </button>
             </div>

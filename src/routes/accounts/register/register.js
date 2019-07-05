@@ -58,32 +58,36 @@ class Register extends Component {
     const { email, password, confirmPassword, locale } = this.state,
       { runtime: { csrf } } = this.props
 
-    this.setState({
-      error: password != confirmPassword ? locale['error_input'] : '',
-    })
-
-    const result = await Auth.createNewUser({
-      email,
-      password,
-      csrf,
-    })
-
-    if (result.meta.status === 'success') {
+    if (password != confirmPassword) {
       this.setState({
-        error: '',
-        isInVerified: true,
+        error: locale['error_input'],
       })
     } else {
-      if (result.meta.error && result.meta.error.error_description) {
-        if (result.meta.error.error === 'account_not_verified') {
-          this.setState({
-            error: '',
-            isInVerified: true,
-          })
-        } else {
-          this.setState({
-            error: result.meta.error.error_description,
-          })
+      this.setState({
+        error: '',
+      })
+      const result = await Auth.createNewUser({
+        email,
+        password,
+        csrf,
+      })
+      if (result.meta.status === 'success') {
+        this.setState({
+          error: '',
+          isInVerified: true,
+        })
+      } else {
+        if (result.meta.error && result.meta.error.error_description) {
+          if (result.meta.error.error === 'account_not_verified') {
+            this.setState({
+              error: '',
+              isInVerified: true,
+            })
+          } else {
+            this.setState({
+              error: result.meta.error.error_description,
+            })
+          }
         }
       }
     }
