@@ -5,14 +5,13 @@ export const tourSteps = {
   id: [
     {
       target: '.tourCategory',
-      title: 'Kategori Film',
+      title: 'Genre Film',
       content: (
         <div>
-          Untuk bernavigasi di sekitar kategori film yang berbeda, Anda cukup mengklik tombol navigasi atau geser <span className={styles.swipeUpIcon} /> atas dan ke bawah pada keyboard Anda yang luar
-          biasa
+          Untuk bernavigasi di sekitar genre film yang berbeda, Anda cukup mengklik tombol navigasi atau geser <span className={styles.swipeUpIcon} /> atas dan ke bawah pada keyboard Anda.
         </div>
       ),
-      // placement: 'right',
+      placement: 'right',
       disableBeacon: true,
       styles: {
         tooltip: {
@@ -22,23 +21,36 @@ export const tourSteps = {
     },
     {
       target: '.tourSlide',
-      title: 'Film Menarik',
+      title: 'Film Pilihan',
       content: (
         <div>
           {' '}
-          Anda dapat menelusuri film-film top kami di setiap kategori dengan klik lembut pada tombol panah atau menggunakan keyboard dan geser <span className={styles.swipeNextIcon} /> kanan dan kiri
+          Anda dapat menelusuri film-film pilihan Mola di setiap genre dengan klik  tombol panah atau geser <span className={styles.swipeNextIcon} /> kanan dan kiri menggunakan keyboard.
         </div>
       ),
       placement: 'top',
       disableBeacon: true,
     },
     {
-      target: '.tourLibrary',
-      title: 'Perpustakaan Film',
-      content: 'Anda dapat menekan ikon ini untuk melihat semua daftar film per kategori',
-      placement: 'bottom',
+      target: '.tourOtherCategory',
+      title: 'Telusuri Kategori lain',
+      content: (
+        <div>
+          {' '}
+          Ingin menonton pertandingan Olahraga. atau saluran TV lainnya? Telusuri pada pilihan kategori di atas ini.
+        </div>
+      ),
+      placement: 'left',
       disableBeacon: true,
-    },
+      locale: { last: 'Finish' }
+    }
+    // {
+    //   target: '.tourLibrary',
+    //   title: 'Perpustakaan Film',
+    //   content: 'Anda dapat menekan ikon ini untuk melihat semua daftar film per kategori',
+    //   placement: 'bottom',
+    //   disableBeacon: true,
+    // },
     // {
     //   target: '.tourMovieDiscover',
     //   title: 'Temukan Film Kami',
@@ -46,14 +58,14 @@ export const tourSteps = {
     //   placement: 'top',
     //   disableBeacon: true,
     // },
-    {
-      target: '.tourMovieDetail',
-      title: 'Lihat Detail Film',
-      content: 'Klik tombol ini untuk menonton film dan melihat detail film: sinopsis, testimonial, pemeran, dan cuplikan',
-      placement: 'top',
-      disableBeacon: true,
-      locale: { last: 'Selesai' },
-    },
+    // {
+    //   target: '.tourMovieDetail',
+    //   title: 'Lihat Detail Film',
+    //   content: 'Klik tombol ini untuk menonton film dan melihat detail film: sinopsis, testimonial, pemeran, dan cuplikan',
+    //   placement: 'top',
+    //   disableBeacon: true,
+    //   locale: { last: 'Selesai' },
+    // },
   ],
   en: [
     {
@@ -61,10 +73,10 @@ export const tourSteps = {
       title: 'Movie Category',
       content: (
         <div>
-          To navigate around different movie categories, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} /> up and down on your awesome keyboard
+          To navigate around different movie genres, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} />  up and down on your keyboard.
         </div>
       ),
-      // placement: 'right',
+      placement: 'right',
       disableBeacon: true,
       styles: {
         tooltip: {
@@ -78,19 +90,32 @@ export const tourSteps = {
       content: (
         <div>
           {' '}
-          You can browse through our top movies in each category with gentle click on the arrow buttons or using keyboards and swipe <span className={styles.swipeNextIcon} /> right and left
+          You can browse through our top movies in each genre by clicking on the arrow button or swipe <span className={styles.swipeNextIcon} /> right and left on your keyboard.
         </div>
       ),
       placement: 'top',
       disableBeacon: true,
     },
     {
-      target: '.tourLibrary',
-      title: 'Movie Library',
-      content: 'You can click this icon to view all movie list per category',
+      target: '.tourOtherCategory',
+      title: 'Navigate Other Categories',
+      content: (
+        <div>
+          {' '}
+          Do you want to watch sports matches, or other TV channels? Navigate using the options available here.
+        </div>
+      ),
       placement: 'bottom',
       disableBeacon: true,
-    },
+      locale: { last: 'Finish' }
+    }
+    // {
+    //   target: '.tourLibrary',
+    //   title: 'Movie Library',
+    //   content: 'You can click this icon to view all movie list per category',
+    //   placement: 'bottom',
+    //   disableBeacon: true,
+    // },
     // {
     //   target: '.tourMovieDiscover',
     //   title: 'Discover Our Movie',
@@ -98,13 +123,13 @@ export const tourSteps = {
     //   placement: 'top',
     //   disableBeacon: true,
     // },
-    {
-      target: '.tourMovieDetail',
-      title: 'View Movie Detail',
-      content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
-      placement: 'top',
-      disableBeacon: true,
-      locale: { last: 'Finish' },
-    },
+    // {
+    //   target: '.tourMovieDetail',
+    //   title: 'View Movie Detail',
+    //   content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
+    //   placement: 'top',
+    //   disableBeacon: true,
+    //   locale: { last: 'Finish' },
+    // },
   ],
 }

@@ -31,6 +31,7 @@ import { filterString } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
+import { globalTracker } from '../../../lib/globalTracker';
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -172,6 +173,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    const __this = this
     const { playlists, videos } = this.props.home
 
     /* set the default active playlist onload */
@@ -198,11 +200,38 @@ class Home extends Component {
       this.prevTouchY = event.screenY
     }
 
+    var handleClick = function (e) {
+      var target = e.target
+      var isPlaylist = target.parentElement.getElementsByClassName('is-home-playlist').length
+
+      if (isPlaylist <= 0 && target.classList.contains('is-home-gradient')) {
+        __this.state.activeSlide.link ? window.open(__this.state.activeSlide.link, '_blank') : null
+      }
+
+      const payload = {
+        window,
+        user: __this.props.user,
+        linkRedirectUrl: __this.state.activeSlide.link,
+        event: 'event_pages',
+      }
+      globalTracker(payload)
+    }
+
     document.onmouseup = event => {
       this.nextTouchX = event.screenX
       this.nextTouchY = event.screenY
 
       const distance = Math.abs(this.prevTouchY - this.nextTouchY)
+
+      let distanceY = distance
+      let distanceX = Math.abs(this.prevTouchX - this.nextTouchX)
+
+      if (distanceX === 0 && distanceY === 0) {
+        document.getElementsByClassName('is-home-gradient')[0].addEventListener('click', handleClick)
+      } else {
+        document.getElementsByClassName('is-home-gradient')[0].removeEventListener('click', handleClick);
+      }
+
       if (distance <= 20) {
         /* if distance less than 20 scroll horizontally */
         this.handleSwipeDirection(this.activeSlider, this.prevTouchX, this.nextTouchX)
@@ -556,7 +585,7 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={styles.home__gradient} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />
+                <div className={`is-home-gradient ${styles.home__gradient}`} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />
                 <div className={styles.home__sidebar}>
                   <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
@@ -564,7 +593,7 @@ class Home extends Component {
                   activeSlide &&
                   activeSlide.id && (
                     <>
-                      <LazyLoad containerClassName={styles.header__playlist_title}>
+                      <LazyLoad containerClassName={`is-home-playlist ${styles.header__playlist_title}`}>
                         <div>{this.state.playlists.data[scrollIndex].title}</div>
                       </LazyLoad>
                       <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
