@@ -83,6 +83,10 @@
     top: 30px;
   }
 
+  .left_menu_outer {
+    width: auto;
+  }
+
   .left_menu_dropdown_container {
     font-weight: bold;
     text-transform: uppercase;
@@ -106,6 +110,10 @@
   .left__menu {
     left: 81px;
     top: 30px;
+  }
+
+  .left_menu_outer {
+    width: auto;
   }
 
   .left_menu_dropdown_container {
