@@ -1,7 +1,5 @@
 export const getChannelProgrammeGuides = state => {
   const { programmeGuides } = state;
-  const date = new Date();
-  const today = new Date(date).getDate();
 
   if (!programmeGuides.loading && programmeGuides.data) {
     let mergedSchedules = [];
@@ -27,16 +25,16 @@ export const getChannelProgrammeGuides = state => {
 
       const sortSchedule = filteredSchedule.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 
-      const todaySchedule = sortSchedule.filter(schedule => new Date(schedule.start).getDate() === today)
+      // const todaySchedule = sortSchedule.filter(schedule => new Date(schedule.start).getDate() === today)
 
       const playlist = {
         id: playlistId,
         title: programmeGuides.data[playlistId].playlistTitle,
-        videos: todaySchedule
+        videos: sortSchedule
       }
       mergedSchedules.push(playlist)
-
     });
+
     return mergedSchedules;
   }
   return [];

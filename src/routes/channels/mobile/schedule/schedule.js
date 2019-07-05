@@ -1,30 +1,21 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import styles from './schedule.css'
+import moment from 'moment'
 
+import styles from './schedule.css'
 import { formatDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
 
 class Schedule extends Component {
-  state = {
-    selectedSchedule: [],
-    activeChannelId: this.props.activeChannelId ? this.props.activeChannelId : ''
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.selectedSchedule.length === 0 || prevState.activeChannelId !== nextProps.activeChannelId) {
-      const schedule = nextProps.channelSchedule.find(item => item.id == nextProps.activeChannelId)
-
-      if (schedule) {
-        const activeChannelId = schedule.id || ''
-        const selectedSchedule = schedule.videos || []
-        nextProps.handleSelectChannel(activeChannelId)
-        return { ...prevState, selectedSchedule, activeChannelId }
-      }
-    }
-    return { ...prevState }
-  }
   render() {
-    const schedule = this.state.selectedSchedule
+    const { scheduleList, activeDate } = this.props
+    const schedule = scheduleList.filter(
+      list => {
+        return (
+          Number(moment(list.start).format('DD')) === Number(moment(activeDate).format('DD'))
+        );
+      }
+    );
+
     return (
       <div className={styles.schedule_container}>
         {schedule.length > 0 &&

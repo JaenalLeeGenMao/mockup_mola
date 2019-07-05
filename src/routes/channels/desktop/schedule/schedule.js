@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import styles from './schedule.css'
+import moment from 'moment'
 
+import styles from './schedule.css'
 import { formatDateTime } from '@source/lib/dateTimeUtil'
 
 var interval = 1000 / 60;
@@ -12,7 +13,7 @@ var reqAnimation;
 
 class Schedule extends Component {
   state = {
-    activeChannel: this.props.scheduleList.length > 0 && (!this.props.pathId ? this.props.channelsPlaylist.data[0].id : this.props.pathId),
+    activeChannel: this.props.scheduleList.length > 0 && (!this.props.movieId ? this.props.channelsPlaylist.data[0].id : this.props.movieId),
     scrollWidth: '3360px',
   }
 
@@ -119,7 +120,7 @@ class Schedule extends Component {
                     <a key={dt.id}
                       className={`${activeChannel === dt.id ? styles.schedule_active_channel : ''} ${styles.schedule_line_container}`}
                       onClick={() => this.clickChannel(dt.id)}>
-                      {dt.videos && dt.videos.map((item, index) => {
+                      {dt.videos && dt.videos.filter(list => Number(moment(list.start).format('DD')) === Number(moment().format('DD'))).map((item, index) => {
 
                         //get endtime from next video starttime
                         const endTime = index + 1 == dt.videos.length ? item.endTime : dt.videos[index + 1].startTime
@@ -146,7 +147,7 @@ class Schedule extends Component {
                                 <div className={styles.schedule_item_title}>{item.title}</div>
                                 <div className={styles.schedule_item_time}>
                                   {formatDateTime(item.startTime, 'HH:mm')} -
-                                    {formatDateTime(endTime, 'HH:mm')}
+                                    {formatDateTime(item.endTime, 'HH:mm')}
                                 </div>
                               </div>
                             </>

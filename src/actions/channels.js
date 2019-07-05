@@ -35,6 +35,7 @@ const getProgrammeGuides = (selectedDate) => async (dispatch, getState) => {
   let yesterdayDate = new Date();
   yesterdayDate = moment(selectedDate.fullDate).subtract(1, 'days');
   yesterdayDate = moment(yesterdayDate).format('YYYYMMDD');
+
   dispatch({
     type: types.GET_PROGRAMME_GUIDES_LOADING,
     payload: {
