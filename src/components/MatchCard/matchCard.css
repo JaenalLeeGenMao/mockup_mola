@@ -126,7 +126,7 @@
 .matchCard__liga_type_img {
   width: 4rem;
   height: 4rem;
-  padding: 0 1rem 0 0;
+  padding: 0;
   object-position: center;
   object-fit: contain;
 }

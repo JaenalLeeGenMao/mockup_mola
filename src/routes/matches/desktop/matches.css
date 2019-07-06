@@ -204,11 +204,12 @@ body {
 }
 
 .filterimg {
-  object-position:  center;
-  object-fit:  cover;
+  object-position: center;
+  object-fit: contain;
   cursor: pointer;
   width: 6rem;
-  height: auto;
+  height: 6rem;
+  padding-right: 1rem;
 }
 
 .selectednameleague {
@@ -235,12 +236,24 @@ body {
   cursor: pointer;
 }
 
-.tomorrowLabel {
+.filterLabel {
   font-size: 1.5rem;
   color: #a7a7a7;
   margin: 1rem 0 1rem 0;
   text-align: right;
   cursor: pointer;
+}
+
+
+.btnFilter {
+  border: none;
+  color: #a7a7a7;
+  text-align: right;
+  cursor: pointer;
+}
+
+.selectedFilter {
+  color: #fff;
 }
 
 .label_text {
@@ -340,17 +353,11 @@ body {
   margin: 1rem 0 1rem 0;
 }
 
-.btnFilter {
-  border: none;
-  color: #a7a7a7;
-  text-align: right;
-  cursor: pointer;
-}
-
 .contentLogoAndName {
-  display: grid;
-  margin: 1rem 0 1rem 0;
-  grid-template-columns: 1.3fr 3.9fr;
+  display: flex;
+  margin: 1rem 5rem 1rem 0;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .labelThisWeekTime {
