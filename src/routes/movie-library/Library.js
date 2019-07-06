@@ -49,7 +49,17 @@ class MovieLibrary extends Component {
         active: event.x > halfScreenWidth /* to left side */,
       })
     }
+
+    // window.addEventListener('scroll', this.onScroll)
   }
+
+  // onScroll = () => {
+  //   clearTimeout(this.timeout)
+  //   console.log("KE SINI GAA")
+  //   this.timeout = setTimeout(() => {
+  //     console.log("MASUK SCROLL")
+  //   }, 2000)
+  // }
 
   componentDidUpdate(prevProps) {
     const { getMovieLibrary, genreId, movieLibrary: { meta: { status: libraryStatus } }, search: { genre: { meta: { status: genreStatus }, data: genreData } } } = this.props

@@ -121,3 +121,55 @@ export const isSameDay = (selectedDateTime, compareDateTime) => {
   }
   return false
 }
+
+export const isLastWeek = startTime => {
+  let thisWeek = moment()
+    .isoWeekday(1)
+    .week() // now
+
+  let lastWeek = thisWeek === 1 ? 52 : thisWeek - 1
+
+  let strTime = moment.unix(startTime)
+  let weekValidate = moment(strTime)
+    .isoWeekday(1)
+    .week()
+
+  if (lastWeek === weekValidate) {
+    return true
+  }
+  return false
+}
+
+export const isThisWeek = startTime => {
+  let thisWeek = moment()
+    .isoWeekday(1)
+    .week() // now
+
+  let strTime = moment.unix(startTime)
+  let weekValidate = moment(strTime)
+    .isoWeekday(1)
+    .week()
+
+  if (thisWeek === weekValidate) {
+    return true
+  }
+  return false
+}
+
+export const isNextWeek = startTime => {
+  let thisWeek = moment()
+    .isoWeekday(1)
+    .week() // now
+
+  let nextWeek = thisWeek === 52 ? 1 : thisWeek + 1
+
+  let strTime = moment.unix(startTime)
+  let weekValidate = moment(strTime)
+    .isoWeekday(1)
+    .week()
+
+  if (nextWeek === weekValidate) {
+    return true
+  }
+  return false
+}
