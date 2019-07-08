@@ -125,14 +125,11 @@ class Matches extends React.Component {
     }
   }
 
-  handleSortMatches = (matches) => {
+  handleSortMatches = matches => {
     const groupByDate = _groupBy(matches, match => {
-      if (isToday(match.startTime))
-        return 'isToday'
-      else if (isThisWeek(match.startTime))
-        return 'isThisWeek'
-      else if (isNextWeek(match.startTime))
-        return 'isNextWeek'
+      if (isToday(match.startTime)) return 'isToday'
+      else if (isThisWeek(match.startTime)) return 'isThisWeek'
+      else if (isNextWeek(match.startTime)) return 'isNextWeek'
       else return 'isLastWeek'
     })
 
@@ -251,7 +248,7 @@ class Matches extends React.Component {
 
     if (category == 'ThisWeek' || category == 'ByDate') {
       if (filterByDates == value) {
-        selectedVal = ""
+        selectedVal = ''
       }
       filterResult = this.handleFilterByDate(selectedVal, this.props.matches.data)
       filterResult = this.handleFilterByType(filterByType, filterResult)
@@ -263,7 +260,7 @@ class Matches extends React.Component {
     if (category == 'VideoType') {
       filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
       if (filterByType == value) {
-        selectedVal = ""
+        selectedVal = ''
       }
       filterResult = this.handleFilterByType(selectedVal, filterResult)
       filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
@@ -396,11 +393,11 @@ class Matches extends React.Component {
           <span>This week</span>
           <span className={s.arrowDownBtnThisWeek} />
         </div>
-        {this.state.expandThisWeek &&
+        {this.state.expandThisWeek && (
           <div className={s.filterContent_container}>
             <span>{this.renderFilterByDate()}</span>
           </div>
-        }
+        )}
         <div
           className={s.filterTitle_label}
           onClick={() => {
@@ -410,11 +407,11 @@ class Matches extends React.Component {
           <span>Video Type</span>
           <span className={s.arrowDownBtnVideoType} />
         </div>
-        {this.state.expandVideoType &&
+        {this.state.expandVideoType && (
           <div className={s.filterContent_container}>
             <span>{this.renderFilterByType()}</span>
           </div>
-        }
+        )}
         <div
           className={s.filterTitle_label}
           onClick={() => {
@@ -518,8 +515,8 @@ class Matches extends React.Component {
                                 {this.ShowMatchCard()}
                               </>
                             ) : (
-                                <div>Tidak Ada Jadwal Matches</div>
-                              )}
+                              <div>Tidak Ada Jadwal Matches</div>
+                            )}
                           </div>
                         </div>
                       </span>
@@ -542,7 +539,7 @@ function mapStateToProps(state) {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getMatches: (id) => dispatch(matchListActions.getAllMatches(id)),
+  getMatches: id => dispatch(matchListActions.getAllMatches(id)),
 })
 
 export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)
