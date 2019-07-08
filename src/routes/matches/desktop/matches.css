@@ -69,7 +69,7 @@ body {
 .labelLoadMore {
   color: #fff;
   font-size: 1.5rem;
-  width: 109rem;
+  width: 117rem;
   text-align: center;
   position: absolute;
   bottom: 0.5rem;
@@ -84,7 +84,7 @@ body {
   display: block;
   background-repeat: no-repeat;
   background-size: contain;
-  margin: 0 53.5rem 0 53.5rem;
+  margin: 0 57.5rem 0 57.5rem;
 }
 
 .labelAllItemSeen > span {
@@ -244,7 +244,6 @@ body {
   cursor: pointer;
 }
 
-
 .btnFilter {
   border: none;
   color: #a7a7a7;
@@ -371,6 +370,8 @@ body {
 .noMatchContent {
   font-size: 1.5rem;
   font-weight: normal;
+  text-align: center;
+  margin-top: 30rem;
 }
 
 .testAccordion {

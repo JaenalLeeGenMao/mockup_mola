@@ -10,11 +10,9 @@ import Placeholder from './placeholder'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import matchListActions from '@actions/matches'
 import s from './matches.css'
-// import LoaderComp from './loaderComp'
+import LoaderComp from './loaderComp'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive, addDateTime, isSameDay, isLastWeek, isNextWeek, isThisWeek } from '@source/lib/dateTimeUtil'
 import moment from 'moment'
-// import _unionBy from 'lodash/unionBy'
-import loaderComp from './loaderComp'
 // import { IoIosReturnLeft } from 'react-icons/io'
 
 class Matches extends React.Component {
@@ -23,7 +21,7 @@ class Matches extends React.Component {
   }
 
   state = {
-    limit: Array.from({ length: 12 }),
+    limit: Array.from({ length: 10 }),
     hasMore: true,
     resultShowData: 1,
     initialized: false,
@@ -31,7 +29,9 @@ class Matches extends React.Component {
     isScrolling: false,
     modalActive: false,
     selectedLeagueData: [],
-    showResultThisWeek: true,
+    expandThisWeek: true,
+    expandVideoType: true,
+    expandLeague: true,
     filterByDates: 'today',
     filterByType: 'live',
     filterByLeague: 0,
@@ -50,7 +50,7 @@ class Matches extends React.Component {
       // 16 more records in 2 secs
       setTimeout(() => {
         this.setState({
-          limit: this.state.limit.concat(Array.from({ length: 12 })),
+          limit: this.state.limit.concat(Array.from({ length: 10 })),
         })
       }, 2000)
     }
@@ -66,7 +66,6 @@ class Matches extends React.Component {
 
   componentDidMount() {
     this.props.getMatches()
-    // document.getElementById('scrollingLoader').addEventListener('scroll', this.handleUserScroll, false)
   }
 
   componentWillMount() {
@@ -280,26 +279,57 @@ class Matches extends React.Component {
     }
   }
 
-  handleUserScroll = () => {
-    window.addEventListener('scroll', function(evt) {
-      if (evt.deltaY > 0) {
-      }
-      bisatapii
-      return <loaderComp />
-    })
+  //expand This Week
+  handleExapandCategoryThisWeek = () => {
+    if (this.state.expandThisWeek == true) {
+      this.handleExapandThisWeek()
+    } else {
+      this.handleCloseTabThisWeek()
+    }
   }
 
-  handleExapandCategory = () => {
-    this.handleCloseTab()
-    this.handleExapand()
+  handleCloseTabThisWeek = () => {
+    this.setState({ expandThisWeek: true })
   }
 
-  handleCloseTab = () => {
-    this.setState({ showResultThisWeek: true })
+  handleExapandThisWeek = () => {
+    this.setState({ expandThisWeek: false })
   }
 
-  handleExapand = () => {
-    this.setState({ showResultThisWeek: false })
+  //expand Video Type
+
+  handleExapandCategoryVideoType = () => {
+    if (this.state.expandVideoType == true) {
+      this.handleExapandVideoType()
+    } else {
+      this.handleCloseVideoType()
+    }
+  }
+
+  handleExapandVideoType = () => {
+    this.setState({ expandVideoType: false })
+  }
+
+  handleCloseVideoType = () => {
+    this.setState({ expandVideoType: true })
+  }
+
+  //expand League
+
+  handleExapandCategoryLeague = () => {
+    if (this.state.expandLeague == true) {
+      this.handleExapandLeague()
+    } else {
+      this.handleCloseLeague()
+    }
+  }
+
+  handleExapandLeague = () => {
+    this.setState({ expandLeague: false })
+  }
+
+  handleCloseLeague = () => {
+    this.setState({ expandLeague: true })
   }
 
   renderFilterByDate = () => {
@@ -390,45 +420,62 @@ class Matches extends React.Component {
 
     return (
       <div>
-        <div className={s.labelFilterThisWeek}>
+        <div
+          className={s.labelFilterThisWeek}
+          onClick={() => {
+            this.handleExapandCategoryThisWeek()
+          }}
+        >
           <span>This week</span>
-          <span
-            className={s.arrowDownBtnThisWeek}
-            onClick={() => {
-              this.handleExapandCategory()
-            }}
-          />
+          <span className={s.arrowDownBtnThisWeek} />
         </div>
-        {this.state.showResultThisWeek ? (
+        {this.state.expandThisWeek ? (
           <div className={s.containerThisWeek}>
             <span>{this.renderFilterByDate()}</span>
           </div>
         ) : null}
-        <div className={s.labelFilterVideoType}>
+        <div
+          className={s.labelFilterVideoType}
+          onClick={() => {
+            this.handleExapandCategoryVideoType()
+          }}
+        >
           <span>Video Type</span>
           <span className={s.arrowDownBtnVideoType} />
         </div>
-        <div className={s.contentVideoType}>{this.renderFilterByType()}</div>
-        <div className={s.labelFilterLeague}>
+        {this.state.expandVideoType ? (
+          <div className={s.contentVideoType}>
+            <span>{this.renderFilterByType()}</span>
+          </div>
+        ) : null}
+        <div
+          className={s.labelFilterLeague}
+          onClick={() => {
+            this.handleExapandCategoryLeague()
+          }}
+        >
           <span>League</span>
           <span className={s.arrowDownBtnLeague} />
         </div>
         <div className={s.contentLeagueCs}>
           {leagueList.map(league => {
             return (
-              <div
-                key={league.id}
-                className={s.contentLogoAndName}
-                onClick={() => {
-                  this.handleCategoryFilter('League', league.id)
-                }}
-              >
-                <img className={s.filterimg} src={league.iconUrl} />
-                <span value={league.id} className={filterByLeague == league.id ? s.selectednameleague : s.nameleague}>
-                  {league.name}
-                </span>
-              </div>
-              // </div>
+              <>
+                {this.state.expandLeague ? (
+                  <div
+                    key={league.id}
+                    className={s.contentLogoAndName}
+                    onClick={() => {
+                      this.handleCategoryFilter('League', league.id)
+                    }}
+                  >
+                    <img className={s.filterimg} src={league.iconUrl} />
+                    <span value={league.id} className={filterByLeague == league.id ? s.selectednameleague : s.nameleague}>
+                      {league.name}
+                    </span>
+                  </div>
+                ) : null}
+              </>
             )
           })}
         </div>
@@ -440,7 +487,11 @@ class Matches extends React.Component {
     const { matches } = this.state
 
     if (matches == '') {
-      return <div className={s.noMatchContent}>Tidak Ada Pertandingan</div>
+      return (
+        <>
+          <div className={s.noMatchContent}>Tidak Ada Pertandingan</div>
+        </>
+      )
     } else {
       return (
         <LazyLoad containerClassName={s.matchesCardList__container}>
@@ -476,11 +527,15 @@ class Matches extends React.Component {
                   next={this.fetchMoreData}
                   hasMore={this.state.hasMore}
                   loader={
-                    <div className={s.labelLoadMore}>
-                      <> {this.handleUserScroll()}</>
-                      Load more
-                      <span className={s.loadmore} />
-                    </div>
+                    <>
+                      {this.state.matches.length != 0 && this.state.matches.length >= 9 ? (
+                        <div className={s.labelLoadMore}>
+                          <LoaderComp />
+                          Load more
+                          <span className={s.loadmore} />
+                        </div>
+                      ) : null}
+                    </>
                   }
                   height={750}
                 >
