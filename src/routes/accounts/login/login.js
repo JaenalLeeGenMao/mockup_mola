@@ -68,8 +68,8 @@ class Login extends Component {
 
         let paramsQuery = {}
         let haveQuery = false
+        const uriSearch = location.search
         if (!_isUndefined(uriSearch) && uriSearch !== '') {
-          const uriSearch = location.search
           const urlParams = new URLSearchParams(uriSearch)
           haveQuery = true
 
@@ -84,17 +84,17 @@ class Login extends Component {
           }
 
           const responseType = urlParams.get('response_type')
-          if (!_isUndefined(redirectURL)) {
+          if (!_isUndefined(responseType)) {
             paramsQuery['response_type'] = responseType
           }
 
           const state = urlParams.get('state')
-          if (!_isUndefined(redirectURL)) {
+          if (!_isUndefined(state)) {
             paramsQuery['state'] = state
           }
 
           const scope = urlParams.get('scope')
-          if (!_isUndefined(redirectURL)) {
+          if (!_isUndefined(scope)) {
             paramsQuery['scope'] = scope
           }
         }
