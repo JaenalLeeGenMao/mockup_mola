@@ -6,7 +6,9 @@ import MatchesMobile from './mobile';
 const title = 'Match List Page';
 const description = 'Choose your favourite Matches via Mola';
 
-function action({ isMobile, store }) {
+function action({ isMobile, store, pathname }) {
+  const pathnameArr = pathname.split('/');
+  const playlistId = pathnameArr.length === 3 ? pathnameArr[pathnameArr.length - 1] : '';
   return {
     chunks: ['matches'],
     title,
@@ -17,7 +19,7 @@ function action({ isMobile, store }) {
       </MolaLayout>
     ) : (
         <MolaLayout>
-          <MatchesDesktop title={title} />
+          <MatchesDesktop playlistId={playlistId} title={title} />
         </MolaLayout>
       ),
   };

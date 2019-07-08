@@ -13,6 +13,8 @@ import s from './matches.css'
 import LoaderComp from './loaderComp'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive, addDateTime, isSameDay, isLastWeek, isNextWeek, isThisWeek } from '@source/lib/dateTimeUtil'
 import moment from 'moment'
+// import _unionBy from 'lodash/unionBy'
+import _groupBy from 'lodash/groupBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
 
 class Matches extends React.Component {
@@ -21,7 +23,7 @@ class Matches extends React.Component {
   }
 
   state = {
-    limit: Array.from({ length: 10 }),
+    limit: Array.from({ length: 12 }),
     hasMore: true,
     resultShowData: 1,
     initialized: false,
@@ -32,8 +34,8 @@ class Matches extends React.Component {
     expandThisWeek: true,
     expandVideoType: true,
     expandLeague: true,
-    filterByDates: 'today',
-    filterByType: 'live',
+    filterByDates: '',
+    filterByType: '',
     filterByLeague: 0,
     leagueList: [],
   }
@@ -50,7 +52,7 @@ class Matches extends React.Component {
       // 16 more records in 2 secs
       setTimeout(() => {
         this.setState({
-          limit: this.state.limit.concat(Array.from({ length: 10 })),
+          limit: this.state.limit.concat(Array.from({ length: 12 })),
         })
       }, 2000)
     }
@@ -65,7 +67,9 @@ class Matches extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getMatches()
+    const { playlistId } = this.props
+    playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
+    // document.getElementById('scrollingLoader').addEventListener('scroll', this.handleUserScroll, false)
   }
 
   componentWillMount() {
@@ -91,32 +95,52 @@ class Matches extends React.Component {
 
       leagueList = leagueList.sort((a, b) => {
         const leagueName = a.name
-        if (leagueName.indexOf('English') > 0 || leagueName.indexOf('Inggris') > 0) {
+        if (leagueName.indexOf('Premiere') > 0 || leagueName.indexOf('Premier') > 0) {
           return -1
-        } else if (leagueName.indexOf('English') < 0 && leagueName.indexOf('Inggris') < 0) {
+        } else if (leagueName.indexOf('Premiere') < 0 && leagueName.indexOf('Premier') < 0) {
           return 1
         }
         return 0
       })
 
-      const { filterByDates, filterByType } = this.state
-      let filterResult = []
+      // const { filterByDates, filterByType } = this.state
+      // let filterResult = []
 
-      filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
+      // filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
 
-      const filterResultByType = this.handleFilterByType(filterByType, filterResult)
-      /** NOTE **/
-      //cuma update result kalau filter di filter type ini ada result
-      //kalau gada result yang ditampilkan hanyalah hasil dari filter by date + league
-      if (filterResultByType.length > 0) {
-        filterResult = filterResultByType
-      }
-      const defaultLeagueId = leagueList.length > 0 ? leagueList[0].id : 0
-      filterResult = this.handleFilterByLeague(defaultLeagueId, filterResult)
-      //dapat hasil dari default filter
-      filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
-      this.setState({ matches: filterResult, filterByLeague: defaultLeagueId, leagueList: leagueList })
+      // const filterResultByType = this.handleFilterByType(filterByType, filterResult)
+      // /** NOTE **/
+      // //cuma update result kalau filter di filter type ini ada result
+      // //kalau gada result yang ditampilkan hanyalah hasil dari filter by date + league
+      // if (filterResultByType.length > 0) {
+      //   filterResult = filterResultByType
+      // }
+      // const defaultLeagueId = leagueList.length > 0 ? leagueList[0].id : 0
+      // filterResult = this.handleFilterByLeague(defaultLeagueId, filterResult)
+      // //dapat hasil dari default filter
+      // filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
+      // const filterResult = this.props.matches.data.sort((a, b) => b.startTime - a.startTime)
+      const filterResult = this.handleSortMatches(this.props.matches.data)
+      this.setState({ matches: filterResult, leagueList: leagueList })
     }
+  }
+
+  handleSortMatches = (matches) => {
+    const groupByDate = _groupBy(matches, match => {
+      if (isToday(match.startTime))
+        return 'isToday'
+      else if (isThisWeek(match.startTime))
+        return 'isThisWeek'
+      else if (isNextWeek(match.startTime))
+        return 'isNextWeek'
+      else return 'isLastWeek'
+    })
+
+    const todayMatches = groupByDate.isToday ? groupByDate.isToday.sort((a, b) => a.startTime - b.startTime) : []
+    const thisWeekMatches = groupByDate.isThisWeek ? groupByDate.isThisWeek.sort((a, b) => a.startTime - b.startTime) : []
+    const nextWeekMatches = groupByDate.isNextWeek ? groupByDate.isNextWeek.sort((a, b) => a.startTime - b.startTime) : []
+    const lastWeekMatches = groupByDate.isLastWeek ? groupByDate.isLastWeek.sort((a, b) => b.startTime - a.startTime) : []
+    return todayMatches.concat(thisWeekMatches, nextWeekMatches, lastWeekMatches)
   }
 
   handleFilterByDate = (value, matches) => {
@@ -154,7 +178,7 @@ class Matches extends React.Component {
           filterResult.push(el)
         }
       })
-    } else {
+    } else if (value !== '') {
       //by Date
       matches.forEach(dt => {
         if (dt.startTime != null) {
@@ -164,36 +188,39 @@ class Matches extends React.Component {
           }
         }
       })
+    } else if (value === '') {
+      return matches
     }
+
     return filterResult
   }
 
   handleFilterByType = (value, matches) => {
     let filterResult = []
     // Validation For Video Type
-    // Live
-    if (value == 'live') {
+    if (value === 'live') {
+      // Live
       matches.forEach(el => {
         if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
           filterResult.push(el)
         }
       })
-    }
-    //Full Replay Match
-    if (value == 'frm') {
+    } else if (value === 'frm') {
+      //Full Replay Match
       matches.forEach(index => {
         if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
           filterResult.push(index)
         }
       })
-    }
-    //HighLight Replay
-    if (value == 'highlightReplay') {
+    } else if (value === 'highlightReplay') {
+      //HighLight Replay
       matches.forEach(dt => {
         if (dt.isHighlight > 0) {
           filterResult.push(dt)
         }
       })
+    } else if (value === '') {
+      return matches
     }
 
     return filterResult
@@ -201,13 +228,17 @@ class Matches extends React.Component {
 
   handleFilterByLeague = (value, matches) => {
     let filterResult = []
-    matches.forEach(dt => {
-      if (dt.league != null) {
-        if (dt.league.id == value) {
-          filterResult.push(dt)
+    if (value !== 0) {
+      matches.forEach(dt => {
+        if (dt.league != null) {
+          if (dt.league.id == value) {
+            filterResult.push(dt)
+          }
         }
-      }
-    })
+      })
+    } else {
+      return matches
+    }
 
     return filterResult
   }
@@ -215,121 +246,57 @@ class Matches extends React.Component {
   //start
   handleCategoryFilter = (category, value) => {
     let filterResult = []
+    let selectedVal = value
     const { filterByDates, filterByType, filterByLeague } = this.state
+
     if (category == 'ThisWeek' || category == 'ByDate') {
-      filterResult = this.handleFilterByDate(value, this.props.matches.data)
-
-      const filterResultByType = this.handleFilterByType(filterByType, filterResult)
-      /** NOTE **/
-      //cuma update result kalau filter di filter type ini ada result
-      //kalau gada result yang ditampilkan hanyalah hasil dari filter by date + league
-      if (filterResultByType.length > 0) {
-        filterResult = filterResultByType
+      if (filterByDates == value) {
+        selectedVal = ""
       }
-
+      filterResult = this.handleFilterByDate(selectedVal, this.props.matches.data)
+      filterResult = this.handleFilterByType(filterByType, filterResult)
       filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
-      filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
-      // filterResult = filterResult.sort((a, b) => {
-      //   console.log("A", a, "B", b)
-      //   if (isToday(a.startTime, a.endTime)) {
-      //     console.log("msuk istoday", a.title, a.startTime)
-      //     return -1
-      //   } else if (!isToday(a.startTime, a.endTime)) {
-      //     if (a.startTime < b.startTime) return -1
-      //     else if (b.startTime < a.startTime) return 1
-      //     else return 0
-      //   }
-      //   console.log("not today", a.title, a.startTime)
-      //   return 0
-      // })
-      this.setState({ matches: filterResult, filterByDates: value })
+      filterResult = this.handleSortMatches(filterResult)
+      this.setState({ matches: filterResult, filterByDates: selectedVal })
     }
 
     if (category == 'VideoType') {
       filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
-
-      const filterResultByType = this.handleFilterByType(value, filterResult)
-      /** NOTE **/
-      //cuma update result kalau filter di filter type ini ada result
-      //kalau gada result yang ditampilkan hanyalah hasil dari filter by date + league
-      if (filterResultByType.length > 0) {
-        filterResult = filterResultByType
+      if (filterByType == value) {
+        selectedVal = ""
       }
-
+      filterResult = this.handleFilterByType(selectedVal, filterResult)
       filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
-      filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
-      this.setState({ matches: filterResult, filterByType: value })
+      filterResult = this.handleSortMatches(filterResult)
+      this.setState({ matches: filterResult, filterByType: selectedVal })
     }
 
     //League
     if (category == 'League') {
       filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
-
-      const filterResultByType = this.handleFilterByType(filterByType, filterResult)
-      /** NOTE **/
-      //cuma update result kalau filter di filter type ini ada result
-      //kalau gada result yang ditampilkan hanyalah hasil dari filter by date + league
-      if (filterResultByType.length > 0) {
-        filterResult = filterResultByType
+      filterResult = this.handleFilterByType(filterByType, filterResult)
+      if (filterByLeague == value) {
+        selectedVal = 0
       }
-
-      filterResult = this.handleFilterByLeague(value, filterResult)
-      filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
-      this.setState({ matches: filterResult, filterByLeague: value })
+      filterResult = this.handleFilterByLeague(selectedVal, filterResult)
+      filterResult = this.handleSortMatches(filterResult)
+      this.setState({ matches: filterResult, filterByLeague: selectedVal })
     }
   }
 
   //expand This Week
-  handleExapandCategoryThisWeek = () => {
-    if (this.state.expandThisWeek == true) {
-      this.handleExapandThisWeek()
-    } else {
-      this.handleCloseTabThisWeek()
-    }
-  }
-
-  handleCloseTabThisWeek = () => {
-    this.setState({ expandThisWeek: true })
-  }
-
-  handleExapandThisWeek = () => {
-    this.setState({ expandThisWeek: false })
+  handleExpandCategoryThisWeek = () => {
+    this.setState({ expandThisWeek: !this.state.expandThisWeek })
   }
 
   //expand Video Type
-
-  handleExapandCategoryVideoType = () => {
-    if (this.state.expandVideoType == true) {
-      this.handleExapandVideoType()
-    } else {
-      this.handleCloseVideoType()
-    }
-  }
-
-  handleExapandVideoType = () => {
-    this.setState({ expandVideoType: false })
-  }
-
-  handleCloseVideoType = () => {
-    this.setState({ expandVideoType: true })
+  handleExpandCategoryVideoType = () => {
+    this.setState({ expandVideoType: !this.state.expandVideoType })
   }
 
   //expand League
-
-  handleExapandCategoryLeague = () => {
-    if (this.state.expandLeague == true) {
-      this.handleExapandLeague()
-    } else {
-      this.handleCloseLeague()
-    }
-  }
-
-  handleExapandLeague = () => {
-    this.setState({ expandLeague: false })
-  }
-
-  handleCloseLeague = () => {
-    this.setState({ expandLeague: true })
+  handleExpandCategoryLeague = () => {
+    this.setState({ expandLeague: !this.state.expandLeague })
   }
 
   renderFilterByDate = () => {
@@ -421,37 +388,37 @@ class Matches extends React.Component {
     return (
       <div>
         <div
-          className={s.labelFilterThisWeek}
+          className={s.filterTitle_label}
           onClick={() => {
-            this.handleExapandCategoryThisWeek()
+            this.handleExpandCategoryThisWeek()
           }}
         >
           <span>This week</span>
           <span className={s.arrowDownBtnThisWeek} />
         </div>
-        {this.state.expandThisWeek ? (
-          <div className={s.containerThisWeek}>
+        {this.state.expandThisWeek &&
+          <div className={s.filterContent_container}>
             <span>{this.renderFilterByDate()}</span>
           </div>
-        ) : null}
+        }
         <div
-          className={s.labelFilterVideoType}
+          className={s.filterTitle_label}
           onClick={() => {
-            this.handleExapandCategoryVideoType()
+            this.handleExpandCategoryVideoType()
           }}
         >
           <span>Video Type</span>
           <span className={s.arrowDownBtnVideoType} />
         </div>
-        {this.state.expandVideoType ? (
-          <div className={s.contentVideoType}>
+        {this.state.expandVideoType &&
+          <div className={s.filterContent_container}>
             <span>{this.renderFilterByType()}</span>
           </div>
-        ) : null}
+        }
         <div
-          className={s.labelFilterLeague}
+          className={s.filterTitle_label}
           onClick={() => {
-            this.handleExapandCategoryLeague()
+            this.handleExpandCategoryLeague()
           }}
         >
           <span>League</span>
@@ -551,8 +518,8 @@ class Matches extends React.Component {
                                 {this.ShowMatchCard()}
                               </>
                             ) : (
-                              <div>Tidak Ada Jadwal Matches</div>
-                            )}
+                                <div>Tidak Ada Jadwal Matches</div>
+                              )}
                           </div>
                         </div>
                       </span>
@@ -575,7 +542,7 @@ function mapStateToProps(state) {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getMatches: () => dispatch(matchListActions.getAllMatches()),
+  getMatches: (id) => dispatch(matchListActions.getAllMatches(id)),
 })
 
 export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)
