@@ -7,15 +7,15 @@ const initialState = {
   data: [],
 }
 
-export default function notfound(state = initialState, action) {
+export default function recommendation(state = initialState, action) {
   switch (action.type) {
-    case types.GET_HOT_PLAYLIST_LOADING:
+    case types.GET_RECOMMENDATION_PLAYLIST_LOADING:
       // console.log('loading', action.payload)
       return { ...state, ...action.payload }
-    case types.GET_HOT_PLAYLIST_ERROR:
+    case types.GET_RECOMMENDATION_PLAYLIST_ERROR:
       // console.log('sukses', action.payload)
       return { ...state, ...action.payload }
-    case types.GET_HOT_PLAYLIST_SUCCESS:
+    case types.GET_RECOMMENDATION_PLAYLIST_SUCCESS:
       // console.log('error', action.payload)
       return { ...state, ...action.payload }
     default:

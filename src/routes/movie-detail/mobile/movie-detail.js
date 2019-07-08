@@ -11,7 +11,7 @@ import { updateCustomMeta } from '@source/DOMUtils'
 import DRMConfig from '@source/lib/DRMConfig'
 
 import * as movieDetailActions from '@actions/movie-detail'
-import notFoundActions from '@actions/not-found'
+import recommendationActions from '@actions/recommendation'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import Header from '@components/Header'
@@ -111,13 +111,13 @@ class MovieDetail extends Component {
     const {
       getMovieDetail,
       movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
+      fetchRecommendation,
       user,
       getVUID,
     } = this.props
 
     getMovieDetail(movieId)
-    onHandleHotPlaylist()
+    fetchRecommendation(movieId)
 
     // this.updateEncryption()
 
@@ -130,12 +130,12 @@ class MovieDetail extends Component {
       getMovieDetail,
       movieDetail,
       movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
+      fetchRecommendation,
     } = this.props
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       getMovieDetail(movieId)
-      onHandleHotPlaylist()
+      fetchRecommendation(movieId)
       this.setState({
         toggleSuggestion: false,
       })
@@ -162,7 +162,7 @@ class MovieDetail extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user, notFound, movieDetail: { data: movieDetailData } } = this.props
+    const { user, recommendation, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
@@ -219,7 +219,7 @@ class MovieDetail extends Component {
               <ContentSynopsis content={dataFetched.description} />
               {dataFetched.people && dataFetched.people.length > 0 && <ContentCreator people={dataFetched.people} />}
               {dataFetched.quotes && dataFetched.quotes.length > 0 && <ContentReview review={dataFetched} />}
-              {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}
+              {recommendation.meta.status === 'success' && <ContentSuggestions videos={recommendation.data} />}
             </div>
             <div className={playMovieButton} onClick={this.handlePlayMovie}>
               <div className={playMovieIcon} />
@@ -241,7 +241,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
-  onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })

@@ -12,11 +12,12 @@ import {
   CAMPAIGN_ENDPOINT,
   CHANNELS_PLAYLIST_ENDPOINT,
   PROGRAMME_GUIDES,
+  RECOMMENDATION,
 } from './endpoints'
 import utils from './util'
+import dummy from './test'
 
 import { endpoints } from '@source/config'
-import { resolve } from 'q'
 
 const getHomePlaylist = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
@@ -536,18 +537,19 @@ const getMovieLibrary = id => {
     })
 }
 
-const getHotPlaylist = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
+const getRecommendation = id => {
+  return get(`${RECOMMENDATION}/${id}`, {
+    // return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
     ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomeVideo(response)
+      const result = utils.normalizeRecommendation(response)
       return {
         meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: [...result] || [],
       }
     })
     .catch(error => {
@@ -737,7 +739,7 @@ const getChannelsList = (id = 'channels-m') => {
         data: [],
       }
     })
-};
+}
 
 const getProgrammeGuides = (date, playlistId) => {
   return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}`, {
@@ -745,27 +747,26 @@ const getProgrammeGuides = (date, playlistId) => {
     // headers: token && { Authorization: `Bearer ${token}` }
   })
     .then(response => {
-      const result = utils.normalizeProgrammeGuides(response);
-
+      const result = utils.normalizeProgrammeGuides(response)
       return {
         meta: {
           status: 'success',
-          error: ''
+          error: '',
         },
         data: result,
-      };
+      }
     })
     .catch(error => {
       return {
         meta: {
           status: 'error',
-          error: `${error} - Mola programme Guides`
+          error: `${error} - Mola programme Guides`,
         },
         data: [],
         // playlistId: 'err',
-      };
-    });
-};
+      }
+    })
+}
 
 export default {
   getHomePlaylist,
@@ -781,7 +782,7 @@ export default {
   getMovieDetail,
   getMovieLibrary,
   getMovieLibraryList,
-  getHotPlaylist,
+  getRecommendation,
   getAllSubscriptions,
   createOrder,
   createMidtransPayment,

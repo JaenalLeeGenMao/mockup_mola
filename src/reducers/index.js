@@ -7,7 +7,7 @@ import search from './search'
 import movieDetail from './movie-detail'
 import movieLibrary from './movie-library'
 import movieStream from './movie-stream'
-import notFound from './not-found'
+import recommendation from './recommendation'
 import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
 import sport from './sport'
@@ -29,11 +29,11 @@ export default combineReducers({
   movieDetail,
   toastr,
   movieStream,
-  notFound,
+  recommendation,
   subscribe,
   sport,
   matches,
   vuid,
   channelsPlaylist,
-  programmeGuides
+  programmeGuides,
 })
