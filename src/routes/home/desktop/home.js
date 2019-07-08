@@ -548,7 +548,12 @@ class Home extends Component {
     let filteredQuote = ''
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.shortDescription, 36)
-      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
+      if (scrollIndex !== 0) {
+        filteredQuote = activeSlide.quotes ?
+          `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
+          :
+          `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
+      }
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''

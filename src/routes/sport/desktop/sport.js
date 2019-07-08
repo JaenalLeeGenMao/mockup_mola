@@ -511,7 +511,8 @@ class Sport extends Component {
       filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
     const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists
-
+    const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+    const matchPlaylistId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
     return (
       <Fragment>
         {/* <Joyride
@@ -579,9 +580,9 @@ class Sport extends Component {
                   </LazyLoad>
                 )}
                 <div className={styles.sport_schedule_container} style={{ bottom: '0' }}>
-                  {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} />}
+                  {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} playlistId={matchPlaylistId} />}
                 </div>
-                <a href="/matches" className={styles.sport_schedule_link}>
+                <a href={`/matches${matchPlaylistId ? '/' + matchPlaylistId : ''}`} className={styles.sport_schedule_link}>
                   {matchesList &&
                     matchesList.meta.status === 'success' &&
                     matchesList.data && (

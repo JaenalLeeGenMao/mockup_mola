@@ -139,17 +139,17 @@ const normalizeHomeVideo = response => {
           videos.map(video => {
             const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime } } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
-            const coverBGColor = _get(images, 'cover.backgroundColor', ''),
-              dummyQuote = {
-                attributes: {
-                  author: 'Coming Soon',
-                  imageUrl: '',
-                  role: 'Media',
-                  text: title,
-                },
-                id: 1,
-                type: 'quotes',
-              }
+            const coverBGColor = _get(images, 'cover.backgroundColor', '')
+            // dummyQuote = {
+            //   attributes: {
+            //     author: 'Coming Soon',
+            //     imageUrl: '',
+            //     role: 'Media',
+            //     text: title,
+            //   },
+            //   id: 1,
+            //   type: 'quotes',
+            // }
             return {
               id,
               title,
@@ -164,7 +164,7 @@ const normalizeHomeVideo = response => {
               isDark: isDark || 0,
               startTime,
               endTime,
-              quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
+              quotes: quoteLists.length > 0 ? quoteLists[0] : null,
               type,
             }
           })

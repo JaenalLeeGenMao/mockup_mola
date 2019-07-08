@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getAllMatches = () => dispatch => {
+const getAllMatches = (id) => dispatch => {
   dispatch({
     type: types.GET_MATCHES_PLAYLIST_LOADING,
     payload: {
@@ -13,7 +13,7 @@ const getAllMatches = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getMatchesList('mola-soc').then(async result => {
+  return Mola.getMatchesList(id).then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MATCHES_PLAYLIST_ERROR,
