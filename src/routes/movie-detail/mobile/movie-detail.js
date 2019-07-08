@@ -218,7 +218,7 @@ class MovieDetail extends Component {
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
               <ContentSynopsis content={dataFetched.description} />
               {dataFetched.people && dataFetched.people.length > 0 && <ContentCreator people={dataFetched.people} />}
-              <ContentReview review={dataFetched} />
+              {dataFetched.quotes && dataFetched.quotes.length > 0 && <ContentReview review={dataFetched} />}
               {notFound.meta.status === 'success' && <ContentSuggestions videos={notFound.data} />}
             </div>
             <div className={playMovieButton} onClick={this.handlePlayMovie}>

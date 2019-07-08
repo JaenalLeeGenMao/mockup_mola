@@ -144,6 +144,11 @@ const routes = {
     {
       path: '/matches',
       load: () => import(/* webpackChunkName: 'matches' */ './matches'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
     },
     {
       path: '/watch',
@@ -189,9 +194,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function(t) {
+      timer = setTimeout(function (t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)

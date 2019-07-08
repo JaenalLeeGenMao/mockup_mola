@@ -159,7 +159,7 @@ const getSportList = (id = 'mola-sport') => {
       }
     })
 }
-const getMatchesList = id => {
+const getMatchesList = (id = 'mola-soc') => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
