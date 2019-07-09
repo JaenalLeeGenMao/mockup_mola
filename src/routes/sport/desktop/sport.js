@@ -538,7 +538,7 @@ class Sport extends Component {
               <>
                 <div className={styles.sport__gradient} />
                 <div className={styles.sport__sidebar}>
-                  <SportMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  <SportMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={0} onClick={this.handleScrollToIndex} />
                 </div>
                 <LazyLoad containerClassName={styles.sport_header__playlist_title}>
                   <div>{this.state.playlists.data[scrollIndex].title}</div>
@@ -596,7 +596,7 @@ class Sport extends Component {
                     )}
                 </a>
                 <div className={`${styles.sport__swipe_slider} tourSlide`}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <SportMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
+                  {activeSlideDots && activeSlideDots.length > 1 && <SportMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
                 </div>
                 <Slider
                   {...settings}

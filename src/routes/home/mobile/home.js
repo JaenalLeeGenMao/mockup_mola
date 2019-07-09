@@ -463,7 +463,7 @@ class Home extends Component {
               <>
                 {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
+                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={isDark} className="tourCategory" />
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide &&
@@ -515,7 +515,7 @@ class Home extends Component {
                     </LazyLoad>
                   )}
                 <div className={styles.header__library_link_wrapper}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
+                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
                 <Slider
                   {...settings}
