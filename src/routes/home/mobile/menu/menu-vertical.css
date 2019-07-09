@@ -30,6 +30,11 @@
   color: white;
 }
 
+.menu__dots.gray {
+  background: #cbcbcb;
+  color: #cbcbcb;
+}
+
 .menu__dots.menu__active {
   margin-bottom: 5px;
   opacity: 1;

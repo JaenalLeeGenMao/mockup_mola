@@ -121,6 +121,7 @@
 .matchCard__liga_type_title {
   font-size: 1rem;
   font-weight: normal;
+  padding-left: 0.5rem;
 }
 
 .matchCard__liga_type_img {
