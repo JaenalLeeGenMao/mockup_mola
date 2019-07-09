@@ -7,6 +7,8 @@ import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
+import Tracker from '@source/lib/tracker'
+import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
@@ -50,6 +52,7 @@ class MovieDetail extends Component {
     toggleSuggestion: false,
     movieDetail: [],
     isControllerActive: 'overview',
+    loc: '',
   }
 
   uuidADS = () => {
@@ -166,6 +169,20 @@ class MovieDetail extends Component {
     return videoSettings
   }
 
+  getLoc = async () => {
+    const geolocation = Tracker.getLangLat()
+    const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+
+    const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
+
+    const loc = locationPayload.data.data.loc
+
+    this.setState({
+      loc: loc,
+    })
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -175,6 +192,7 @@ class MovieDetail extends Component {
       getVUID,
     } = this.props
 
+    this.getLoc()
     getMovieDetail(movieId)
     fetchRecommendation(movieId)
 
@@ -192,6 +210,7 @@ class MovieDetail extends Component {
     } = this.props
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+      this.getLoc()
       getMovieDetail(movieId)
       fetchRecommendation(movieId)
       this.setState({
@@ -210,7 +229,7 @@ class MovieDetail extends Component {
   }
 
   render() {
-    const { isControllerActive, toggleSuggestion } = this.state
+    const { isControllerActive, toggleSuggestion, loc } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -219,6 +238,7 @@ class MovieDetail extends Component {
     const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
     const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
+    user.loc = loc
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
