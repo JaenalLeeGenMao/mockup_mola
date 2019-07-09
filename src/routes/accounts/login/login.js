@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import querystring from 'query-string'
+import _forEach from 'lodash/forEach'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
@@ -100,7 +100,16 @@ class Login extends Component {
         }
 
         if (haveQuery) {
-          accountURL += `?${paramsQuery}`
+          let index = 0
+          _forEach(paramsQuery, (value, key) => {
+            if (index === 0) {
+              accountURL += '?'
+            } else {
+              accountURL += '&'
+            }
+            accountURL += `${key}=${value}`
+            index++
+          })
         }
 
         window.location.href = accountURL
