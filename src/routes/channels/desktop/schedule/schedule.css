@@ -46,6 +46,7 @@
   flex-direction: column;
   justify-content: center;
   padding-left: 1.5rem;
+
   /* width: 30rem; */
   box-sizing: border-box;
 }
@@ -55,6 +56,9 @@
   line-height: 1.35;
   font-weight: bold;
   color: #a7a7a7;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .schedule_item_time {

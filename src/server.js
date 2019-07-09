@@ -313,6 +313,7 @@ const requestCode = async (req, res) => {
   }
 
   const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
+  console.log('oAuth==>', oAuthAuthorizationEndpoint)
 
   return oAuthAuthorizationEndpoint
 }

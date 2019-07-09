@@ -6,7 +6,7 @@ import * as user from './user'
 import * as movieDetail from './movie-detail'
 import * as movieLibrary from './movie-library'
 import * as movieStream from './movie-stream'
-import * as notFound from './not-found'
+import * as recommendation from './recommendation'
 import * as subscribe from './subscribe'
 import * as sport from './sport'
 import * as matches from './matches'
@@ -23,7 +23,7 @@ export default {
   ...movieDetail,
   ...movieLibrary,
   ...movieStream,
-  ...notFound,
+  ...recommendation,
   ...subscribe,
   ...sport,
   ...matches,

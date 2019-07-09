@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import notFoundActions from '@actions/not-found'
+import recommendationActions from '@actions/recommendation'
 
 import { getComponent } from '@supersoccer/gandalf'
 import LazyLoad from '@components/common/Lazyload'
@@ -41,9 +41,9 @@ const RelatedVideos = ({ style = {}, containerClassName = '', className = '', de
 
 class NotFound extends React.Component {
   componentWillMount() {
-    const { notFound: { meta, data }, onHandleHotPlaylist } = this.props
+    const { recommendation: { meta, data }, fetchRecommendation } = this.props
     if (meta.status === 'loading') {
-      onHandleHotPlaylist()
+      fetchRecommendation()
     }
   }
 
@@ -51,9 +51,9 @@ class NotFound extends React.Component {
     return (
       <Fragment>
         <HomeError status={400} message={'Sorry, the page you were trying to view does not exist.'} />
-        {this.props.notFound.meta.status === 'success' && (
+        {this.props.recommendation.meta.status === 'success' && (
           <LazyLoad>
-            <RelatedVideos videos={this.props.notFound.data} containerClassName={styles.video_container} className={styles.video_wrapper} detailClassName={styles.video_detail_wrapper} />
+            <RelatedVideos videos={this.props.recommendation.data} containerClassName={styles.video_container} className={styles.video_wrapper} detailClassName={styles.video_detail_wrapper} />
           </LazyLoad>
         )}
       </Fragment>
@@ -68,7 +68,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  fetchRecommendation: () => dispatch(recommendationActions.getRecommendation()),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(NotFound)
