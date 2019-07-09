@@ -113,25 +113,12 @@ const routes = {
       load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },
     {
-      path: '/subscribe',
-      load: () => import(/* webpackChunkName: 'subscribe' */ './subscribe'),
-    },
-    {
       path: '/history-transactions',
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
       path: '/history-transactions/:id',
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
-    {
-      path: '/subscribe-detail',
-      load: () => import(/* webpackChunkName: 'subscribe-detail' */ './subscribe-detail'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
     },
     {
       path: '/sport',
@@ -194,9 +181,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function (t) {
+      timer = setTimeout(function(t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)
