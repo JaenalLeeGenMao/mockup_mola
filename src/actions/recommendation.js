@@ -2,9 +2,9 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getHotPlaylist = () => dispatch => {
+const getRecommendation = (id = 'cSz5OZmGKS') => dispatch => {
   dispatch({
-    type: types.GET_HOT_PLAYLIST_LOADING,
+    type: types.GET_RECOMMENDATION_PLAYLIST_LOADING,
     payload: {
       meta: {
         status: 'loading',
@@ -13,15 +13,15 @@ const getHotPlaylist = () => dispatch => {
       data: [],
     },
   })
-  return Mola.getHotPlaylist().then(result => {
+  return Mola.getRecommendation(id).then(result => {
     if (result.meta.status === 'error') {
       dispatch({
-        type: types.GET_HOT_PLAYLIST_ERROR,
+        type: types.GET_RECOMMENDATION_PLAYLIST_ERROR,
         payload: result,
       })
     } else {
       dispatch({
-        type: types.GET_HOT_PLAYLIST_SUCCESS,
+        type: types.GET_RECOMMENDATION_PLAYLIST_SUCCESS,
         payload: result,
       })
     }
@@ -29,5 +29,5 @@ const getHotPlaylist = () => dispatch => {
 }
 
 export default {
-  getHotPlaylist,
+  getRecommendation,
 }
