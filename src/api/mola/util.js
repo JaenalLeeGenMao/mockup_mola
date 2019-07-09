@@ -1,4 +1,5 @@
 import _get from 'lodash/get'
+import moment from 'moment'
 
 const normalizeHomePlaylist = response => {
   const { data } = response.data
@@ -116,10 +117,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-            id: league.id,
-            name: league.attributes.name,
-            iconUrl: league.attributes.iconUrl,
-          }
+              id: league.id,
+              name: league.attributes.name,
+              iconUrl: league.attributes.iconUrl,
+            }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -138,17 +139,17 @@ const normalizeHomeVideo = response => {
           videos.map(video => {
             const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime } } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
-            const coverBGColor = _get(images, 'cover.backgroundColor', ''),
-              dummyQuote = {
-                attributes: {
-                  author: 'Coming Soon',
-                  imageUrl: '',
-                  role: 'Media',
-                  text: title,
-                },
-                id: 1,
-                type: 'quotes',
-              }
+            const coverBGColor = _get(images, 'cover.backgroundColor', '')
+            // dummyQuote = {
+            //   attributes: {
+            //     author: 'Coming Soon',
+            //     imageUrl: '',
+            //     role: 'Media',
+            //     text: title,
+            //   },
+            //   id: 1,
+            //   type: 'quotes',
+            // }
             return {
               id,
               title,
@@ -163,15 +164,14 @@ const normalizeHomeVideo = response => {
               isDark: isDark || 0,
               startTime,
               endTime,
-              quotes: quoteLists.length > 0 ? quoteLists[0] : dummyQuote,
+              quotes: quoteLists.length > 0 ? quoteLists[0] : null,
               type,
             }
           })
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) {
-    }
+    } catch (err) {}
   }
   return []
 }
@@ -280,7 +280,27 @@ const normalizeVideoDetail = response => {
     return data.map(result => {
       const {
         id,
-        attributes: { title, images, quotes, drm, trailers, description, source, streamSourceUrl, suitableAge, releaseDate, subtitles, people, genre, isDark, year, duration, startTime, endTime, contentType },
+        attributes: {
+          title,
+          images,
+          quotes,
+          drm,
+          trailers,
+          description,
+          source,
+          streamSourceUrl,
+          suitableAge,
+          releaseDate,
+          subtitles,
+          people,
+          genre,
+          isDark,
+          year,
+          duration,
+          startTime,
+          endTime,
+          contentType,
+        },
       } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
@@ -401,6 +421,138 @@ const normalizeFeatureBanner = response => {
   return []
 }
 
+const normalizeChannelPlaylist = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(
+      ({ attributes: { playlists } }) =>
+        playlists &&
+        playlists.map((playlist, index) => {
+          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
+          const background = _get(images, 'cover', { portrait: null, landscape: null })
+          const coverBGColor = _get(images, 'cover.backgroundColor', '')
+          return {
+            id,
+            title,
+            visibility,
+            sortOrder: index + 1,
+            startTime,
+            endTime,
+            description,
+            shortDescription: shortDescription || '',
+            iconUrl: iconUrl || '',
+            // coverTitle: coverTitle,
+            background,
+            backgroundColor: coverBGColor || '#000622',
+            isDark: isDark || 0,
+            isActive: false,
+            type,
+          }
+        })
+      // .sort((a, b) => a.sortOrder - b.sortOrder)
+    )
+  }
+  return []
+}
+
+const normalizeProgrammeGuides = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(result => {
+      const {
+        id,
+        attributes: {
+          start,
+          end,
+          title,
+          description,
+          playlist: { id: playlistId, attributes: { parentId, images: playlistImages, isFree, country, sortOrder, visibility, seo: playlistSeo } },
+          video: { id: videoId, attributes: { drm, images: videoImage, title: videoTtile, subtitles, displayOrder, seo: videoSeo, endTime, startTime } },
+        },
+        type,
+      } = result
+
+      return {
+        id,
+        start: moment(start)
+          .utcOffset(7)
+          .format(), // parse to WIB
+        end: moment(end)
+          .utcOffset(7)
+          .format(), // parse to WIB
+        startTime: moment(start)
+          .utcOffset(7)
+          .unix(), // parse to WIB
+        endTime: moment(end)
+          .utcOffset(7)
+          .unix(), // parse to WIB
+        href: `/movie-detail/${videoId}`,
+        title,
+        description,
+        playlist: {
+          id: playlistId,
+          attributes: {
+            parentId,
+            images: playlistImages,
+            isFree,
+            country,
+            sortOrder,
+            visibility,
+            seo: playlistSeo,
+          },
+        },
+        video: {
+          id: videoId,
+          attributes: {
+            drm,
+            images: videoImage,
+            title: videoTtile,
+            subtitles,
+            displayOrder,
+            seo: videoSeo,
+            endTime,
+            startTime,
+          },
+        },
+        type,
+      }
+    })
+  }
+  return []
+}
+
+const normalizeRecommendation = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(list => {
+      const { id, type, attributes: { playlists, title, description, shortDescription, images, isDark, streamSourceUrl, year, ads } } = list
+      const background = _get(images, 'cover.background', { portrait: null, landscape: null })
+      const coverBGColor = _get(images, 'cover.backgroundColor', '')
+      return {
+        id,
+        title,
+        // visibility,
+        ads,
+        description,
+        shortDescription: shortDescription || '',
+        // images,
+        // iconUrl: iconUrl || '',
+        // coverTitle: coverTitle,
+        background,
+        backgroundColor: coverBGColor || '#000622',
+        isDark: isDark || 0,
+        isActive: false,
+        type,
+        playlists,
+        streamSourceUrl,
+        year,
+      }
+    })
+    // .sort((a, b) => a.sortOrder - b.sortOrder)
+  }
+  return []
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
@@ -414,4 +566,7 @@ export default {
   normalizeFeatureBanner,
   normalizeMatchesList,
   normalizeMatchDetail,
+  normalizeChannelPlaylist,
+  normalizeProgrammeGuides,
+  normalizeRecommendation,
 }

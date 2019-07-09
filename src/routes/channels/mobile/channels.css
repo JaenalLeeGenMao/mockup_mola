@@ -45,7 +45,7 @@ body {
   float: left;
 }
 
-/* 
+/*
 .channels_list_wrapper select {
   font-size: 12px;
   width: auto;
@@ -95,4 +95,24 @@ body {
   pointer-events: none;
   position: relative;
   display: inline-block;
+}
+
+@media screen and (max-width: 380px) {
+  .schedule_date_wrapper {
+    margin: 15px;
+  }
+
+  .channels_list_wrapper {
+    margin: 15px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .schedule_date_wrapper {
+    margin: 15px 5px;
+  }
+
+  .channels_list_wrapper {
+    margin: 15px 5px;
+  }
 }

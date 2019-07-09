@@ -124,11 +124,11 @@
 }
 
 .matchCard__liga_type_img {
-  width: 5rem;
-  height: 2rem;
-  padding: 0 1rem 0 0;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
   object-position: center;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .matchCard__matchInfo {

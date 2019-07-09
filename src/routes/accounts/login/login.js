@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import _forEach from 'lodash/forEach'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
@@ -15,6 +16,7 @@ import Link from '@components/Link'
 
 import { getLocale } from './locale'
 import styles from './login.css'
+import _isUndefined from 'lodash/isUndefined'
 
 const { getComponent } = require('@supersoccer/gandalf')
 const TextInput = getComponent('text-input')
@@ -62,7 +64,55 @@ class Login extends Component {
       })
 
       if (result.meta.status === 'success') {
-        window.location.href = '/accounts/signin'
+        let accountURL = '/accounts/signin'
+
+        let paramsQuery = {}
+        let haveQuery = false
+        const uriSearch = location.search
+        if (!_isUndefined(uriSearch) && uriSearch !== '') {
+          const urlParams = new URLSearchParams(uriSearch)
+          haveQuery = true
+
+          const appKey = urlParams.get('app_key')
+          if (!_isUndefined(appKey)) {
+            paramsQuery['app_key'] = appKey
+          }
+
+          const redirectURL = urlParams.get('redirect_uri')
+          if (!_isUndefined(redirectURL)) {
+            paramsQuery['redirect_uri'] = redirectURL
+          }
+
+          const responseType = urlParams.get('response_type')
+          if (!_isUndefined(responseType)) {
+            paramsQuery['response_type'] = responseType
+          }
+
+          const state = urlParams.get('state')
+          if (!_isUndefined(state)) {
+            paramsQuery['state'] = state
+          }
+
+          const scope = urlParams.get('scope')
+          if (!_isUndefined(scope)) {
+            paramsQuery['scope'] = scope
+          }
+        }
+
+        if (haveQuery) {
+          let index = 0
+          _forEach(paramsQuery, (value, key) => {
+            if (index === 0) {
+              accountURL += '?'
+            } else {
+              accountURL += '&'
+            }
+            accountURL += `${key}=${value}`
+            index++
+          })
+        }
+
+        window.location.href = accountURL
       } else {
         if (result.meta.error && result.meta.error.error_description) {
           if (result.meta.error.error === 'account_not_verified') {

@@ -6,7 +6,7 @@ import history from '@source/history'
 import dateFormat from 'dateformat'
 
 export const globalTracker = async data => {
-  const { user, heartbeat, window: clientWindow, event, referrer, video_quality, bitrate, client_bandwidth, videoId } = data
+  const { user, heartbeat, window: clientWindow, event, referrer, video_quality, bitrate, client_bandwidth, videoId, linkRedirectUrl } = data
 
   // console.log('user', user)
   let currentLocation = history.location
@@ -37,7 +37,7 @@ export const globalTracker = async data => {
       project_id: 'molatv',
       referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
       host: `${window.location.host}`,
-      path: `${window.location.host}${location.pathname}${location.search}`,
+      path: linkRedirectUrl ? linkRedirectUrl : `${window.location.host}${location.pathname}${location.search}`,
       session_id: tracker.sessionId(), // Try get+set session_id
       client_id: tracker.clientId(),
       video_id: videoId,

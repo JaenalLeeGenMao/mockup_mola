@@ -10,11 +10,14 @@ import {
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
   CAMPAIGN_ENDPOINT,
+  CHANNELS_PLAYLIST_ENDPOINT,
+  PROGRAMME_GUIDES,
+  RECOMMENDATION,
 } from './endpoints'
 import utils from './util'
+import dummy from './test'
 
 import { endpoints } from '@source/config'
-import { resolve } from 'q'
 
 const getHomePlaylist = () => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
@@ -157,7 +160,7 @@ const getSportList = (id = 'mola-sport') => {
       }
     })
 }
-const getMatchesList = id => {
+const getMatchesList = (id = 'mola-soc') => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
@@ -534,18 +537,19 @@ const getMovieLibrary = id => {
     })
 }
 
-const getHotPlaylist = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
+const getRecommendation = id => {
+  return get(`${RECOMMENDATION}/${id}`, {
+    // return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
     ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomeVideo(response)
+      const result = utils.normalizeRecommendation(response)
       return {
         meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: [...result] || [],
       }
     })
     .catch(error => {
@@ -711,6 +715,59 @@ const getOrderHistoryTransactions = ({ uid, token }) => {
     })
 }
 
+const getChannelsList = (id = 'channels-m') => {
+  return get(`${CHANNELS_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeChannelPlaylist(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Playlist Channels')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getProgrammeGuides = (date, playlistId) => {
+  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}`, {
+    ...endpoints.setting,
+    // headers: token && { Authorization: `Bearer ${token}` }
+  })
+    .then(response => {
+      const result = utils.normalizeProgrammeGuides(response)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: result,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: `${error} - Mola programme Guides`,
+        },
+        data: [],
+        // playlistId: 'err',
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getFeatureBanner,
@@ -725,7 +782,7 @@ export default {
   getMovieDetail,
   getMovieLibrary,
   getMovieLibraryList,
-  getHotPlaylist,
+  getRecommendation,
   getAllSubscriptions,
   createOrder,
   createMidtransPayment,
@@ -734,4 +791,6 @@ export default {
   getSportVideo,
   getMatchesList,
   getMatchDetail,
+  getChannelsList,
+  getProgrammeGuides,
 }

@@ -9,7 +9,7 @@ import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
 
 import * as movieDetailActions from '@actions/movie-detail'
-import notFoundActions from '@actions/not-found'
+import recommendationActions from '@actions/recommendation'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 import _get from 'lodash/get'
 import MovieDetailError from '@components/common/error'
@@ -58,24 +58,6 @@ class MovieDetail extends Component {
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
     })
-  }
-
-  /* eslint-disable */
-  updateEncryption() {
-    const { clientIp, uid, sessionId } = this.props.user
-    const { data } = this.props.movieDetail
-
-    /* eslint-disable */
-    const payload = {
-      project_id: '2',
-      video_id: this.props.movieId,
-      app_id: 'sent_ads',
-      session_id: sessionId,
-      client_ip: clientIp,
-      uuid: this.uuidADS(),
-    }
-
-    this.encryptPayload = window.btoa(JSON.stringify(payload))
   }
 
   updateMetaTag() {
@@ -188,15 +170,15 @@ class MovieDetail extends Component {
     const {
       getMovieDetail,
       movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
+      fetchRecommendation,
       user,
       getVUID,
     } = this.props
 
     getMovieDetail(movieId)
-    onHandleHotPlaylist()
+    fetchRecommendation(movieId)
 
-    this.updateEncryption()
+    // this.updateEncryption()
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
   }
@@ -206,12 +188,12 @@ class MovieDetail extends Component {
       getMovieDetail,
       movieDetail,
       movieId, //passed as props from index.js,
-      onHandleHotPlaylist,
+      fetchRecommendation,
     } = this.props
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       getMovieDetail(movieId)
-      onHandleHotPlaylist()
+      fetchRecommendation(movieId)
       this.setState({
         toggleSuggestion: false,
       })
@@ -302,7 +284,7 @@ class MovieDetail extends Component {
                   {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
                   {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched.trailers} />}
                   {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
-                  {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.notFound.data} />}
+                  {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.recommendation.data} />}
                   <Controller isActive={isControllerActive} onClick={this.handleControllerClick} hiddenController={hiddenController} />
                 </>
               )}
@@ -323,7 +305,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: movieId => dispatch(movieDetailActions.getMovieDetail(movieId)),
-  onHandleHotPlaylist: () => dispatch(notFoundActions.getHotPlaylist()),
+  fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })

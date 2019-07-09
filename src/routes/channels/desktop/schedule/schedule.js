@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import styles from './schedule.css'
+import moment from 'moment'
 
+import styles from './schedule.css'
 import { formatDateTime } from '@source/lib/dateTimeUtil'
 
 var interval = 1000 / 60;
 var now;
 var then = Date.now();
 var delta;
+var reqAnimation;
 
 class Schedule extends Component {
   state = {
-    activeChannel: this.props.scheduleList.length > 0 && this.props.scheduleList[0].id,
-    scrollWidth: '3360px'
+    activeChannel: this.props.scheduleList.length > 0 && (!this.props.movieId ? this.props.channelsPlaylist.data[0].id : this.props.movieId),
+    scrollWidth: '3360px',
   }
 
   clickChannel = (channelId) => {
@@ -24,7 +26,7 @@ class Schedule extends Component {
 
   //animation untuk current time marker yg warna biru
   timeIncrement = (timestamp) => {
-    window.requestAnimationFrame(this.timeIncrement);
+    reqAnimation = window.requestAnimationFrame(this.timeIncrement);
     now = Date.now();
     delta = now - then;
     if (delta > interval) {
@@ -47,11 +49,16 @@ class Schedule extends Component {
     if (process.env.BROWSER) {
       //safari need to specify scroll width biar bisa di scroll
       this.setState({
-        scrollWidth: `${window.innerWidth - 200}px`
+        scrollWidth: `${window.innerWidth - 200}px`,
       })
     }
 
-    window.requestAnimationFrame(this.timeIncrement);
+    reqAnimation = window.requestAnimationFrame(this.timeIncrement);
+  }
+
+  componentWillUnmount() {
+    const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+    cancelAnimationFrame(reqAnimation);
   }
 
   render() {
@@ -90,7 +97,7 @@ class Schedule extends Component {
             {schedule && schedule.map((dt) => {
               return (
                 <>
-                  <div className={`${styles.schedule_header_name} ${activeChannel === dt.id ? styles.schedule_active_channel_name : ''}`}>{dt.title}</div>
+                  <div className={`${styles.schedule_header_name} ${activeChannel === dt.id ? styles.schedule_active_channel_name : ''}`} onClick={() => this.clickChannel(dt.id)}>{dt.title}</div>
                 </>
               )
             })}
@@ -113,7 +120,7 @@ class Schedule extends Component {
                     <a key={dt.id}
                       className={`${activeChannel === dt.id ? styles.schedule_active_channel : ''} ${styles.schedule_line_container}`}
                       onClick={() => this.clickChannel(dt.id)}>
-                      {dt.videos && dt.videos.map((item, index) => {
+                      {dt.videos && dt.videos.filter(list => Number(moment(list.start).format('DD')) === Number(moment().format('DD'))).map((item, index) => {
 
                         //get endtime from next video starttime
                         const endTime = index + 1 == dt.videos.length ? item.endTime : dt.videos[index + 1].startTime
@@ -140,7 +147,7 @@ class Schedule extends Component {
                                 <div className={styles.schedule_item_title}>{item.title}</div>
                                 <div className={styles.schedule_item_time}>
                                   {formatDateTime(item.startTime, 'HH:mm')} -
-                                    {formatDateTime(endTime, 'HH:mm')}
+                                    {formatDateTime(item.endTime, 'HH:mm')}
                                 </div>
                               </div>
                             </>

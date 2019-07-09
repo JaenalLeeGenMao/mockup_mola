@@ -418,7 +418,12 @@ class Home extends Component {
     let filteredQuote = ''
     if (activeSlide) {
       filteredDesc = activeSlide.shortDescription
-      filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+      if (scrollIndex !== 0) {
+        filteredQuote = activeSlide.quotes ?
+          `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+          :
+          `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
+      }
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -521,7 +526,7 @@ class Home extends Component {
                 >
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
-                    return <HomeMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                    return <HomeMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} user={this.props.user} />
                   })}
                 </Slider>
               </>

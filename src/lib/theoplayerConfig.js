@@ -5,7 +5,7 @@ import { get } from 'axios'
 
 let ticker = []
 var videoData, userData
-const handleOnTimePerMinute = ({ action, heartbeat, player, bitrate, video_quality, client_bandwidth }) => {
+const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandwidth }) => {
   const { clientIp, uid, referrer } = userData
   // const currentDuration = player ? player.currentTime : '';
   // const totalDuration = player ? player.duration : '';

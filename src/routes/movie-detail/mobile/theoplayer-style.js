@@ -29,7 +29,11 @@ export const customTheoplayer = css`
     }
 
     .vjs-menu-item.vjs-selected {
-      color: #0070b2 !important;
+      color: #FFFFFF !important;
+    }
+
+    .vjs-selected .theo-text-track-menu-item-toggle {
+      background-color: #0070b2 !important;
     }
 
     &.video-container .vjs-big-play-button {

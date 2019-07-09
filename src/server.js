@@ -40,6 +40,8 @@ import config from './config'
 import Axios from 'axios'
 import Crypto from 'crypto.js'
 import _get from 'lodash/get'
+import _isUndefined from 'lodash/isUndefined'
+import _forEach from 'lodash/forEach'
 
 const oauth = {
   endpoint: config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
@@ -149,6 +151,7 @@ const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 // set a cookie
 const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+let userinfo = ''
 
 app.get('/sign-location', async (req, res) => {
   const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
@@ -241,6 +244,7 @@ const getUserInfo = async sid => {
     })
 
     const content = await rawResponse.json()
+    userinfo = content
     return content.data
   } catch (err) {
     console.error('error get user info:', err)
@@ -294,25 +298,39 @@ const requestCode = async (req, res) => {
     maxAge: 86400 * 1000,
     httpOnly: true,
   })
+
   /* ini link ke web */
-  const qs = querystring.stringify({
-    app_key: appKey,
-    response_type: 'code',
-    redirect_uri: `${domain}/oauth/callback`,
-    scope: [
-      'https://internal.supersoccer.tv/users/users.profile.read',
-      'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-      'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-      'https://api.supersoccer.tv/orders/orders.create',
-      'https://api.supersoccer.tv/videos/videos.read',
-      'https://api.supersoccer.tv/orders/orders.read',
-      'paymentmethods:read.internal',
-      'payments:payment.dopay',
-    ].join(' '),
-    state: randomState,
-  })
+  let qs
+  if (!_isUndefined(req.query) && !_isUndefined(req.query.app_key)) {
+    let params = {}
+    let queryParams = req.query
+
+    _forEach(queryParams, (value, key) => {
+      params[key] = value
+    })
+
+    qs = querystring.stringify(params)
+  } else {
+    qs = querystring.stringify({
+      app_key: appKey,
+      response_type: 'code',
+      redirect_uri: `${domain}/oauth/callback`,
+      scope: [
+        'https://internal.supersoccer.tv/users/users.profile.read',
+        'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+        'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+        'https://api.supersoccer.tv/orders/orders.create',
+        'https://api.supersoccer.tv/videos/videos.read',
+        'https://api.supersoccer.tv/orders/orders.read',
+        'paymentmethods:read.internal',
+        'payments:payment.dopay',
+      ].join(' '),
+      state: randomState,
+    })
+  }
 
   const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
+  console.log('oAuth==>', oAuthAuthorizationEndpoint)
 
   return oAuthAuthorizationEndpoint
 }
@@ -578,7 +596,8 @@ app.get('*', async (req, res, next) => {
         // deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         debugError: {
           subs: userSubsError,
-          userInfo: userInfoError,
+          userInfoErr: userInfoError,
+          userInfo: userinfo,
           token: errorToken,
           gtoken: errorGtoken,
         },

@@ -14,14 +14,14 @@ class MatchesList extends Component {
       return match.endTime * 1000 >= Date.now()
     })
     matchFeatured = matchFiltered.slice(0, 4)
-
+    const matchPlaylistId = this.props.playlistId
     return (
       <Fragment>
         <LazyLoad containerClassName={styles.matchesList_schedule_wrapper}>
           <div className={styles.matchesList_grid_label}>
-            <span className={styles.matchesList_label}>Live now and upcoming</span>
+            <span className={styles.matchesList_label}>Live Now and Upcoming</span>
             <span className={styles.matchesList_viewall}>
-              <a href="/matches">View all</a>
+              <a href={`/matches${matchPlaylistId ? '/' + matchPlaylistId : ''}`}>View All</a>
             </span>
           </div>
           <div className={styles.matchesList_grid}>
