@@ -76,6 +76,15 @@ body {
   font-weight: 600;
 }
 
+.labelLoaderIcon {
+  color: #fff;
+  font-size: 1.5rem;
+  width: 117rem;
+  text-align: center;
+  position: absolute;
+  bottom: 4.5rem;
+}
+
 .loadmore {
   font-size: 1rem;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAB7gAAAe4BoWPTtwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABySURBVEiJ7ZBLDoAgDAXhYh5IDyDhBC5Z+rmr40ISCSEgpombzpK+dsgzRlGUfwEGiUxpyQIHN76S8zGzA7ZXsMXlExgLmSnOANYuQSIJPLhk5pL3petwQzKLHc8kaV3fa2lIgujPKxL545lEphZFec0FhgvHaFm/1ocAAAAASUVORK5CYII=);
@@ -103,12 +112,15 @@ body {
   column-gap: 1.5rem;
   grid-template-columns: repeat(3, 300px);
   grid-template-rows: repeat(3, 0.73fr);
+  justify-content: center;
 }
 
 .matches_grid {
   display: grid;
   grid-template-columns: 0.2fr 2.5fr 0.8fr;
   grid-column-gap: 3rem;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .filterContent_container {
