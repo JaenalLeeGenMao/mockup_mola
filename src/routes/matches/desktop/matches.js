@@ -28,7 +28,6 @@ class Matches extends React.Component {
     resultShowData: 1,
     initialized: false,
     matches: [],
-    isScrolling: false,
     modalActive: false,
     selectedLeagueData: [],
     expandThisWeek: true,
@@ -328,7 +327,7 @@ class Matches extends React.Component {
             </div>
           )
         })}
-        {dateList.map(dt => {
+        {/* {dateList.map(dt => {
           return (
             <div
               className={`${s.filterLabel} ${dt.strTimestamp == filterByDates ? s.selectedFilter : ''}`}
@@ -340,14 +339,14 @@ class Matches extends React.Component {
               {dt.title}
             </div>
           )
-        })}
+        })} */}
       </>
     )
   }
 
   renderFilterByType = () => {
     const { filterByType } = this.state
-    const typeList = [{ id: 'live', title: 'Live' }, { id: 'frm', title: 'Full Replay Match' }, { id: 'highlightReplay', title: 'Highlight Match' }]
+    const typeList = [{ id: 'live', title: 'Live' }, { id: 'frm', title: 'Replay Match' }, { id: 'highlightReplay', title: 'Highlight Match' }]
 
     return (
       <>
@@ -375,7 +374,7 @@ class Matches extends React.Component {
 
     return (
       <div>
-        <div
+        {/* <div
           className={s.filterTitle_label}
           onClick={() => {
             this.handleExpandCategoryThisWeek()
@@ -383,7 +382,7 @@ class Matches extends React.Component {
         >
           <span>This week</span>
           <span className={this.state.expandThisWeek == true ? s.arrowDownBtn : s.arrowUpBtn} />
-        </div>
+        </div> */}
         {this.state.expandThisWeek && (
           <div className={s.filterContent_container}>
             <span>{this.renderFilterByDate()}</span>
@@ -463,7 +462,6 @@ class Matches extends React.Component {
   render() {
     const matchesList = this.props.matches
     const matchCardData = this.props.matches.data
-    // const { isScrolling } = this.state
 
     const isDark = false
     return (
