@@ -14,6 +14,9 @@ import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 
+import Tracker from '@source/lib/tracker'
+import { get } from 'axios'
+
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
@@ -31,7 +34,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -107,6 +110,20 @@ class MovieDetail extends Component {
     return videoSettings
   }
 
+  getLoc = async () => {
+    const geolocation = Tracker.getLangLat()
+    const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+
+    const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
+
+    const loc = locationPayload.data.data.loc
+
+    this.setState({
+      loc: loc,
+    })
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -116,6 +133,7 @@ class MovieDetail extends Component {
       getVUID,
     } = this.props
 
+    this.getLoc()
     getMovieDetail(movieId)
     fetchRecommendation(movieId)
 
@@ -134,6 +152,7 @@ class MovieDetail extends Component {
     } = this.props
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+      this.getLoc()
       getMovieDetail(movieId)
       fetchRecommendation(movieId)
       this.setState({
@@ -156,7 +175,7 @@ class MovieDetail extends Component {
   }
 
   render() {
-    const { toggleSuggestion } = this.state
+    const { toggleSuggestion, loc } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -164,7 +183,7 @@ class MovieDetail extends Component {
 
     const { user, recommendation, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-
+    user.loc = loc
     const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
     const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
@@ -211,8 +230,8 @@ class MovieDetail extends Component {
                     isMobile
                   />
                 ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
