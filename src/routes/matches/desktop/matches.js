@@ -58,14 +58,6 @@ class Matches extends React.Component {
     }
   }
 
-  // openModal = () => {
-  //   this.setState({ modalActive: true })
-  // }
-
-  // closeModal = () => {
-  //   this.setState({ modalActive: false })
-  // }
-
   componentDidMount() {
     const { playlistId } = this.props
     playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
