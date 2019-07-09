@@ -483,16 +483,16 @@ class Matches extends React.Component {
                   hasMore={this.state.hasMore}
                   loader={
                     <>
-                      {this.state.matches.length != 0 && this.state.matches.length > 9 ? (
-                        <div className={s.labelLoadMore}>
-                          <LoaderComp />
-                          Load more
-                          <span className={s.loadmore} />
-                        </div>
-                      ) : null}
+                      {this.state.matches.length != 0 &&
+                        this.state.matches.length > 9 && (
+                          <div className={s.labelLoadMore}>
+                            <LoaderComp />
+                            Load more
+                            <span className={s.loadmore} />
+                          </div>
+                        )}
                     </>
                   }
-                  endMessage={<p>done</p>}
                   height={750}
                 >
                   <div className={s.matchlist_wrapper}>
