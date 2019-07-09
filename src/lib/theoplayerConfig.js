@@ -1,6 +1,7 @@
 import { handleTracker } from './videoTracker'
 import { endpoints } from '@source/config'
 import Tracker from '@source/lib/tracker'
+import { get } from 'axios'
 
 let ticker = []
 var videoData, userData
@@ -102,7 +103,7 @@ const uuidADS = () => {
   })
 }
 
-export const defaultVideoSetting = (user, videoDt, vuid) => {
+export const defaultVideoSetting = async (user, videoDt, vuid) => {
   const baseUrl = endpoints.ads
   videoData = videoDt
   userData = user
@@ -130,6 +131,18 @@ export const defaultVideoSetting = (user, videoDt, vuid) => {
   //Get Status Subscribe Type from User
   // const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
 
+  const getLoc = async () => {
+    const geolocation = Tracker.getLangLat()
+    const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+
+    const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
+
+    const loc = locationPayload.data.data.loc
+
+    return loc
+  }
+
   if (resultCompareDate > 0) {
     return {
       showBackBtn: false,
@@ -148,6 +161,7 @@ export const defaultVideoSetting = (user, videoDt, vuid) => {
     session_id: Tracker.sessionId(window),
     client_ip: user.clientIp,
     uuid: uuidADS(),
+    loc: await getLoc(),
   }
 
   if (user.uid) {
