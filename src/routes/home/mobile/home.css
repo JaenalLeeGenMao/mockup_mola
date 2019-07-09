@@ -325,6 +325,20 @@ body {
   }
 }
 
+@media screen and (max-height: 500px) {
+  .home__detail_button {
+    left: 25px;
+  }
+
+  .header__detail_container_ls {
+    margin: 0 20px 100px 81px;
+  }
+
+  .header__detail_container_ls .home__detail_button {
+    left: 0;
+  }
+}
+
 @keyframes fadeAnimation {
   0% {
     opacity: 0;

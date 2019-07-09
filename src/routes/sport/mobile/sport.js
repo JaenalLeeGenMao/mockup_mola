@@ -314,7 +314,7 @@ class Sport extends Component {
     return (
       <Fragment>
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={0} activePlaylist={activePlaylist} isMobile {...this.props} />}
+          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={0} isLandscape={isLandscape} activePlaylist={activePlaylist} isMobile {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -340,7 +340,7 @@ class Sport extends Component {
                           {
                             activeSlide.contentType === 1 && (
                               <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
-                                <p>{locale['view_movie']}</p>
+                                <span className={styles.icon__view_movie} />
                               </Link>
                             )
                           }

@@ -580,7 +580,11 @@ class Sport extends Component {
                   </LazyLoad>
                 )}
                 <div className={styles.sport_schedule_container} style={{ bottom: '0' }}>
-                  {matchesList && matchesList.meta.status === 'success' && matchesList.data && <MatchesList matchesList={matchesList.data} playlistId={matchPlaylistId} />}
+                  {matchesList
+                    && matchesList.meta.status === 'success'
+                    && matchesList.data
+                    && matchesList.data.length > 0
+                    && <MatchesList matchesList={matchesList.data} playlistId={matchPlaylistId} />}
                 </div>
                 <a href={`/matches${matchPlaylistId ? '/' + matchPlaylistId : ''}`} className={styles.sport_schedule_link}>
                   {matchesList &&

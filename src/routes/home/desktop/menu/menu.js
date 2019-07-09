@@ -8,13 +8,14 @@ import verticalStyles from './menu-vertical.css'
 
 const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', onClick }) => {
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles
+  const isGray = activeIndex == 0 //only for featured banner
   return (
     <LazyLoad containerClassName={[styles.menu, 'tourCategory'].join(' ')}>
       {playlists.map(({ id }, index) => (
         <>
           <div
             key={id}
-            className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${index === activeIndex ? styles.menu__active : ''}`}
+            className={`${styles.menu__dots} ${isGray ? styles.gray : ''} ${isDark ? styles.black : styles.white} ${index === activeIndex ? styles.menu__active : ''}`}
             onClick={e => {
               onClick(index)
             }}

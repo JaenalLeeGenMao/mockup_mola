@@ -469,27 +469,24 @@ class Matches extends React.Component {
         <div className={s.headerContainer}>
           <Header stickyOff searchOff isDark={isDark} activeMenu="sport" libraryOff {...this.props} />
         </div>
-
         {matchesList.meta.status === 'loading' && <Placeholder />}
         {matchesList.meta.status === 'success' && (
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
+                <div className={s.labelLoadMore}>
+                  Load more
+                    <span className={s.loadmore} />
+                </div>
                 <InfiniteScroll
                   dataLength={this.state.limit.length}
                   next={this.fetchMoreData}
                   hasMore={this.state.hasMore}
+                  hasChildren={true}
                   loader={
-                    <>
-                      {this.state.matches.length != 0 &&
-                        this.state.matches.length > 9 && (
-                          <div className={s.labelLoadMore}>
-                            <LoaderComp />
-                            Load more
-                            <span className={s.loadmore} />
-                          </div>
-                        )}
-                    </>
+                    <div className={s.labelLoaderIcon}>
+                      <LoaderComp />
+                    </div>
                   }
                   height={750}
                 >
@@ -501,12 +498,11 @@ class Matches extends React.Component {
                           <div className={s.matchlist_Pagetitle}>
                             {matchCardData.length != null && this.state.limit != null ? (
                               <>
-                                {/* {this.showFilterChanging()} */}
                                 {this.ShowMatchCard()}
                               </>
                             ) : (
-                              <div>Tidak Ada Jadwal Matches</div>
-                            )}
+                                <div>Tidak Ada Jadwal Matches</div>
+                              )}
                           </div>
                         </div>
                       </span>

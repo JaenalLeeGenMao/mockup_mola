@@ -91,6 +91,11 @@
     height: 66px;
     width: 66px;
   }
+
+  .castImg_dummy {
+    height: 66px;
+    width: 66px;
+  }
 }
 
 @media screen and (max-width: 960px) {
@@ -106,12 +111,6 @@
   .castBox div {
     padding: 0 10px;
   }
-
-  .castBox > img,
-  .castImgLoading {
-    height: 55px;
-    width: 55px;
-  }
 }
 
 @media screen and (max-width: 640px) {
@@ -125,18 +124,19 @@
   }
 
   .castBox {
-    width: calc(100% / 5);
+    width: calc(100% / 2);
     line-height: 1;
     font-size: 12px;
+    padding-bottom: 30px;
   }
 
   .castBox div {
     padding: 0;
-    width: 100%;
     word-wrap: break-word;
   }
 
-  .castBox > img {
+  .castBox > img,
+  .castImg_dummy {
     height: 50px;
     width: 50px;
   }
@@ -160,18 +160,6 @@
   .resultContent {
     padding: 0;
     margin: 0;
-  }
-
-  .castBox {
-    width: calc(100% / 5);
-    line-height: 1;
-    font-size: 12px;
-  }
-
-  .castBox div {
-    padding: 0;
-    width: 100%;
-    word-wrap: break-word;
   }
 
   .castBox > img {
