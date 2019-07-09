@@ -150,6 +150,23 @@ const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 
+app.get('/sign-location', async (req, res) => {
+  const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+  const lat = req.query.lat
+  const long = req.query.long
+
+  if (typeof lat !== 'undefined' && typeof long !== 'undefined') {
+    const body = {
+      lat: parseFloat(lat),
+      long: parseFloat(long),
+    }
+
+    let locationPayload = await Axios.post(locationUrl, body)
+
+    res.send(locationPayload.data)
+  }
+})
+
 const extendToken = async token => {
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {
@@ -561,8 +578,7 @@ app.get('*', async (req, res, next) => {
         // deviceId: req.cookies.__deviceId === 'undefined' ? '' : req.cookies.__deviceId,
         debugError: {
           subs: userSubsError,
-          userInfoErr: userInfoError,
-          userInfo: userInfo,
+          userInfo: userInfoError,
           token: errorToken,
           gtoken: errorGtoken,
         },

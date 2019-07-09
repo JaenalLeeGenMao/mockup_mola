@@ -204,7 +204,7 @@
     "deploy": "babel-node tools/run deploy",
     "render": "babel-node tools/run render",
     "serve": "babel-node tools/run runServer",
-    "start": "babel-node tools/run start",
+    "start": "set PORT=8080 && babel-node tools/run start",
     "dev": "REACT_APP_ENV=development BABEL_ENV=development yarn start",
     "stag": "REACT_APP_ENV=staging BABEL_ENV=staging yarn start",
     "prod": "REACT_APP_ENV=production BABEL_ENV=production yarn start"
