@@ -38,3 +38,4 @@ push_docker_production:
     CDN_PATH: https://mola01.koicdn.com
   only:
     - master@apps/mola/mola-web
+    - master-v2@apps/mola/mola-web
