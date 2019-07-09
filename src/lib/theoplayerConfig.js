@@ -103,7 +103,7 @@ const uuidADS = () => {
   })
 }
 
-export const defaultVideoSetting = async (user, videoDt, vuid) => {
+export const defaultVideoSetting = (user, videoDt, vuid) => {
   const baseUrl = endpoints.ads
   videoData = videoDt
   userData = user
@@ -131,18 +131,6 @@ export const defaultVideoSetting = async (user, videoDt, vuid) => {
   //Get Status Subscribe Type from User
   // const getSubscribeType = Object.keys(setSubscribe).map(key => setSubscribe[key].attributes.subscriptions[key].type)
 
-  const getLoc = async () => {
-    const geolocation = Tracker.getLangLat()
-    const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
-    const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
-
-    const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
-
-    const loc = locationPayload.data.data.loc
-
-    return loc
-  }
-
   if (resultCompareDate > 0) {
     return {
       showBackBtn: false,
@@ -154,6 +142,8 @@ export const defaultVideoSetting = async (user, videoDt, vuid) => {
     }
   }
 
+  //console.log(`THEOCINFLOCATION+++++`, user.loc)
+
   const payload = {
     project_id: '2',
     video_id: videoData.id,
@@ -161,7 +151,7 @@ export const defaultVideoSetting = async (user, videoDt, vuid) => {
     session_id: Tracker.sessionId(window),
     client_ip: user.clientIp,
     uuid: uuidADS(),
-    loc: await getLoc(),
+    loc: user.loc,
   }
 
   if (user.uid) {
