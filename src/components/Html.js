@@ -88,6 +88,19 @@ class Html extends React.Component {
           <link rel="icon" type="image/png/ico" href="/mola.png" />
           {type != 'video.other' && <link rel="canonical" href="https://www.mola.tv" />}
           {styles.map(style => <style key={style.id} id={style.id} dangerouslySetInnerHTML={{ __html: style.cssText }} />)}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+             .embeddedServiceHelpButton .helpButton button.uiButton {
+              background-color: #005290;
+              font-family: "Arial", sans-serif;
+            }
+            .embeddedServiceHelpButton .helpButton button.uiButton:focus {
+              outline: 1px solid #005290;
+            }
+             `,
+            }}
+          />
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
@@ -100,6 +113,61 @@ class Html extends React.Component {
                 `ga('create',${config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"},'auto');ga('send','pageview')`,
             }}
           />
+          <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `var initESW = function(gslbBaseURL) {
+                  embedded_svc.settings.displayHelpButton = true; //Or false
+                  embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+              
+                  //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+                  //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+              
+                  //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+                  //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+              
+                  // Settings for Chat
+                  //embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+                    // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+                    // Returns a valid button ID.
+                  //};
+                  //embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+                  //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+                  //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+              
+                  embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+                  embedded_svc.settings.entryFeature = 'LiveAgent';
+              
+                  embedded_svc.init(
+                    'https://phincondemo.my.salesforce.com',
+                    'https://sdodemo-main-166ce2cf6b6-16894304ae5.force.com/supersoccertv',
+                    gslbBaseURL,
+                    '00D1U000000xVg4',
+                    'Mola_TV',
+                    {
+                      baseLiveAgentContentURL: 'https://c.la2-c1-ph2.salesforceliveagent.com/content',
+                      deploymentId: '5721U000000hjYx',
+                      buttonId: '5731U000000hm2Z',
+                      baseLiveAgentURL: 'https://d.la2-c1-ph2.salesforceliveagent.com/chat',
+                      eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I1U000000g4ioUAA_16bc1149300',
+                      isOfflineSupportEnabled: false
+                    }
+                  );
+                };
+              
+                if (!window.embedded_svc) {
+                  var s = document.createElement('script');
+                  s.setAttribute('src', 'https://phincondemo.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+                  s.onload = function() {
+                    initESW(null);
+                  };
+                  document.body.appendChild(s);
+                } else {
+                  initESW('https://service.force.com');
+                }`,
+            }}
+          />
+
           <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
         </body>
       </html>
