@@ -54,22 +54,13 @@ class Matches extends React.Component {
         this.setState({
           limit: this.state.limit.concat(Array.from({ length: 12 })),
         })
-      }, 2000)
+      }, 1500) //2000
     }
-  }
-
-  openModal = () => {
-    this.setState({ modalActive: true })
-  }
-
-  closeModal = () => {
-    this.setState({ modalActive: false })
   }
 
   componentDidMount() {
     const { playlistId } = this.props
     playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
-    // document.getElementById('scrollingLoader').addEventListener('scroll', this.handleUserScroll, false)
   }
 
   componentWillMount() {
@@ -391,7 +382,7 @@ class Matches extends React.Component {
           }}
         >
           <span>This week</span>
-          <span className={s.arrowDownBtnThisWeek} />
+          <span className={this.state.expandThisWeek == true ? s.arrowDownBtn : s.arrowUpBtn} />
         </div>
         {this.state.expandThisWeek && (
           <div className={s.filterContent_container}>
@@ -405,7 +396,7 @@ class Matches extends React.Component {
           }}
         >
           <span>Video Type</span>
-          <span className={s.arrowDownBtnVideoType} />
+          <span className={this.state.expandVideoType == true ? s.arrowDownBtn : s.arrowUpBtn} />
         </div>
         {this.state.expandVideoType && (
           <div className={s.filterContent_container}>
@@ -419,13 +410,13 @@ class Matches extends React.Component {
           }}
         >
           <span>League</span>
-          <span className={s.arrowDownBtnLeague} />
+          <span className={this.state.expandLeague == true ? s.arrowDownBtn : s.arrowUpBtn} />
         </div>
-        <div className={s.contentLeagueCs}>
+        <>
           {leagueList.map(league => {
             return (
               <>
-                {this.state.expandLeague ? (
+                {this.state.expandLeague && (
                   <div
                     key={league.id}
                     className={s.contentLogoAndName}
@@ -438,11 +429,11 @@ class Matches extends React.Component {
                       {league.name}
                     </span>
                   </div>
-                ) : null}
+                )}
               </>
             )
           })}
-        </div>
+        </>
       </div>
     )
   }
@@ -492,13 +483,14 @@ class Matches extends React.Component {
                   hasMore={this.state.hasMore}
                   loader={
                     <>
-                      {this.state.matches.length != 0 && this.state.matches.length >= 9 ? (
-                        <div className={s.labelLoadMore}>
-                          <LoaderComp />
-                          Load more
-                          <span className={s.loadmore} />
-                        </div>
-                      ) : null}
+                      {this.state.matches.length != 0 &&
+                        this.state.matches.length > 9 && (
+                          <div className={s.labelLoadMore}>
+                            <LoaderComp />
+                            Load more
+                            <span className={s.loadmore} />
+                          </div>
+                        )}
                     </>
                   }
                   height={750}
