@@ -6,9 +6,8 @@ import LazyLoad from '@components/common/Lazyload'
 import horizontalStyles from './menu-horizontal.css'
 import verticalStyles from './menu-vertical.css'
 
-const HomeMenu = ({ className = '', playlists, activeIndex = 0, isDark = 0, type = 'vertical' }) => {
+const HomeMenu = ({ className = '', playlists, activeIndex = 0, isGray = false, isDark = 0, type = 'vertical' }) => {
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles
-  const isGray = activeIndex == 0 //only for featured banner
   return (
     <LazyLoad containerClassName={[styles.menu, className].join(' ')}>
       {playlists.map(({ id }, index) => (

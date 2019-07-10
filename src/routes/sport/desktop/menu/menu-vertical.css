@@ -30,6 +30,11 @@
   color: white;
 }
 
+.menu__dots.gray {
+  background: #cbcbcb;
+  color: #cbcbcb;
+}
+
 .menu__dots.menu__active {
   opacity: 1;
   width: 1.5rem;

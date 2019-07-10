@@ -13,7 +13,7 @@ export const contentNoTrailer = css`
 `
 
 export const trailerContainer = css`
-  height: calc(100% - 30px);
+  height: 100%;
   display: block;
   overflow: hidden;
 `
@@ -23,7 +23,7 @@ export const trailerWrapper = css`
   bottom: 0;
   width: 100vw;
   height: calc(100% + 30px);
-  padding: 1.5rem 0 0;
+  padding: 0;
   color: #fff;
   white-space: nowrap;
   overflow-x: auto;
