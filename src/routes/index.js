@@ -101,6 +101,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
     },
     {
+      path: '/accounts/consent',
+      load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
+    },
+    {
       path: '/system-info',
       load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
     },
