@@ -323,7 +323,7 @@ class Sport extends Component {
             videos.data.length === playlists.data.length && (
               <>
                 <div className={styles.sport__sidebar}>
-                  <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
+                  <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={isDark} className="tourCategory" />
                 </div>
                 {activeSlide && (
                   <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
@@ -373,7 +373,7 @@ class Sport extends Component {
                   </LazyLoad>
                 )}
                 <div className={styles.header__library_link_wrapper}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />}
+                  {activeSlideDots && activeSlideDots.length > 1 && <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
                 <Slider
                   {...settings}
