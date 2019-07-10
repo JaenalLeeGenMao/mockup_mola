@@ -3,7 +3,6 @@ import { css } from 'react-emotion'
 export const contentOverviewContainer = css`
   display: flex;
   min-height: 20vh;
-  padding-top: 1.5%;
 `
 
 export const contentOverviewSectionLeft = css`
@@ -74,6 +73,9 @@ export const sectionLeftText = css`
   font-size: 1.4rem;
   margin-bottom: 1.2rem;
   color: #ababab;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 
   span:after {
     content: ',';

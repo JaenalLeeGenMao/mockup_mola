@@ -325,7 +325,7 @@ body {
   }
 }
 
-@media screen and (max-height: 500px) {
+@media screen and (max-height: 600px) {
   .home__detail_button {
     left: 25px;
   }

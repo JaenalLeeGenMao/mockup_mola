@@ -21,10 +21,8 @@ const Overview = ({ data }) => {
       return item.attributes.peopleTypeName === type
     })
 
-  const casts = filterPeople('cast').map((cast, index) => {
-    if (index < 10) {
-      return <span key={cast.name}>{cast.attributes.name}</span>
-    }
+  const casts = filterPeople('cast').map(cast => {
+    return <span key={cast.name}>{cast.attributes.name}</span>
   })
 
   const directors = filterPeople('director').map(cast => {
@@ -35,7 +33,7 @@ const Overview = ({ data }) => {
     return <span key={cast.name}>{cast.attributes.name}</span>
   })
 
-  const releaseYear = (releaseDate) => {
+  const releaseYear = releaseDate => {
     // let releaseYearArr = null;
     let releaseYear = releaseDate && releaseDate.length > 0 && releaseDate[0].date
     if (releaseYear) {
@@ -67,11 +65,10 @@ const Overview = ({ data }) => {
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
           <p className={sectionLeftText}>
-            {
-              genre && genre.map((genreName) => {
+            {genre &&
+              genre.map(genreName => {
                 return <span key={genreName}>{genreName}</span>
-              })
-            }
+              })}
           </p>
           <p className={sectionLeftDuration}>
             {releaseYear(releaseDate)}
