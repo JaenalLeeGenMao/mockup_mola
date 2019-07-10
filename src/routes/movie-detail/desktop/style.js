@@ -29,7 +29,10 @@ export const movieDetailContainer = css`
 
 export const movieDetailBottom = css`
   height: 100%;
-`;
+  overflow: auto;
+  max-height: calc(26vh - 70px);
+  margin-top: 1.5%;
+`
 
 export const movieDetailNotAvailableContainer = css`
   width: 100%;
