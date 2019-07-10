@@ -173,10 +173,12 @@ class MovieDetail extends Component {
     const geolocation = Tracker.getLangLat()
     const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    let loc = ''
 
-    const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
-
-    const loc = locationPayload.data.data.loc
+    if (typeof latitude !== 'undefined' && typeof longitude !== 'undefined' && latitude !== '' && longitude !== '') {
+      const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
+      loc = typeof locationPayload.data.data.loc !== 'undefined' ? locationPayload.data.data.loc : ''
+    }
 
     this.setState({
       loc: loc,
