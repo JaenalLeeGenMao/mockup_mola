@@ -435,11 +435,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
-  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions', '/accounts/consent']
-
-  if (req.url === '' && !_isUndefined(req.query) && !_isUndefined(req.query.app_key)) {
-    whitelisted.push('/accounts/signin')
-  }
+  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
 
   try {
     // global.clearInterval(inboxInterval);
@@ -501,9 +497,11 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          res.clearCookie('_at')
-          res.clearCookie('SID')
-          return res.redirect('/accounts/login')
+          if (req.url !== '/accounts/consent') {
+            res.clearCookie('_at')
+            res.clearCookie('SID')
+            return res.redirect('/accounts/login')
+          }
         }
       }
     } else {
