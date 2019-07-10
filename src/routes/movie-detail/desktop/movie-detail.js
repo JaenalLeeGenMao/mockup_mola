@@ -177,7 +177,7 @@ class MovieDetail extends Component {
 
     if (typeof latitude !== 'undefined' && typeof longitude !== 'undefined' && latitude !== '' && longitude !== '') {
       const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
-      loc = locationPayload.data.data.loc
+      loc = typeof locationPayload.data.data.loc !== 'undefined' ? locationPayload.data.data.loc : ''
     }
 
     this.setState({
