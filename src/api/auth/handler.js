@@ -328,6 +328,54 @@ const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', loca
 //     })
 // }
 
+const fetchConsentList = ({ csrf = '' }) => {
+  return new Promise((resolve, reject) => {
+    get(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent`, {
+      headers: {
+        'x-csrf-token': csrf,
+      },
+    })
+      .then(response => {
+        return resolve(response.data)
+      })
+      .catch(error => {
+        return resolve(null)
+      })
+  })
+}
+
+const authorizeConsent = ({ csrf = '' }) => {
+  return new Promise((resolve, reject) => {
+    post(
+      `${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/authorize`,
+      { _csrf: csrf },
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    )
+      .then(response => {
+        return resolve(response.data)
+      })
+      .catch(error => {
+        return resolve(null)
+      })
+  })
+}
+
+const denyConsent = ({ csrf = '' }) => {
+  return new Promise((resolve, reject) => {
+    post(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/deny`, { _csrf: csrf }, { headers: { 'content-type': 'application/json' } })
+  })
+    .then(response => {
+      return resolve(response.data)
+    })
+    .catch(error => {
+      return resolve(null)
+    })
+}
+
 import { getApi } from '@supersoccer/gandalf'
 const Auth = getApi('auth/handler')
 
@@ -343,6 +391,8 @@ export default {
   updateNewPassword: Auth.updateNewPassword,
   fetchProfile: Auth.fetchProfile,
   updateProfile,
+  fetchConsentList,
+  authorizeConsent,
   // updateProfile: Auth.updateProfile,
   // requestGuestToken,
   // requestCode,
