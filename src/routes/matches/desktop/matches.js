@@ -464,6 +464,7 @@ class Matches extends React.Component {
     const matchCardData = this.props.matches.data
 
     const isDark = false
+
     return (
       <>
         <div className={s.headerContainer}>
@@ -474,19 +475,23 @@ class Matches extends React.Component {
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
-                <div className={s.labelLoadMore}>
-                  Load more
+                {matchesList.data.length > 9 && (
+                  <div className={s.labelLoadMore}>
+                    Load more
                     <span className={s.loadmore} />
-                </div>
+                  </div>
+                )}
                 <InfiniteScroll
                   dataLength={this.state.limit.length}
                   next={this.fetchMoreData}
                   hasMore={this.state.hasMore}
                   hasChildren={true}
                   loader={
-                    <div className={s.labelLoaderIcon}>
-                      <LoaderComp />
-                    </div>
+                    matchesList.data.length > 9 && (
+                      <div className={s.labelLoaderIcon}>
+                        <LoaderComp />
+                      </div>
+                    )
                   }
                   height={750}
                 >
@@ -495,15 +500,7 @@ class Matches extends React.Component {
                       <span />
                       <span>
                         <div className={s.matchlist_wrappercontent_center}>
-                          <div className={s.matchlist_Pagetitle}>
-                            {matchCardData.length != null && this.state.limit != null ? (
-                              <>
-                                {this.ShowMatchCard()}
-                              </>
-                            ) : (
-                                <div>Tidak Ada Jadwal Matches</div>
-                              )}
-                          </div>
+                          <div className={s.matchlist_Pagetitle}>{matchCardData.length != null && this.state.limit != null ? <>{this.ShowMatchCard()}</> : <div>Tidak Ada Jadwal Matches</div>}</div>
                         </div>
                       </span>
                       <span>{this.categoryFilter()}</span>
