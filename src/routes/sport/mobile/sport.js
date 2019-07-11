@@ -325,53 +325,54 @@ class Sport extends Component {
                 <div className={styles.sport__sidebar}>
                   <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={isDark} className="tourCategory" />
                 </div>
-                {activeSlide && (
-                  <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
-                    {/* {!activeSlide.buttonText &&
+                {scrollIndex != 0 &&
+                  activeSlide && (
+                    <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                      {/* {!activeSlide.buttonText &&
                       scrollIndex != 0 && (
                         <Link to={'/watch?v=' + activeSlide.id} className={`${styles.sport__button_livenow}`}>
                           <span className={styles.play_icon} />
                           <p>{locale['view_movie']}</p>
                         </Link>
                       )} */}
-                    {!activeSlide.buttonText &&
-                      scrollIndex != 0 && (
-                        <>
-                          {
-                            activeSlide.contentType === 1 && (
-                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
-                                <span className={styles.icon__view_movie} />
+                      {!activeSlide.buttonText &&
+                        scrollIndex != 0 && (
+                          <>
+                            {
+                              activeSlide.contentType === 1 && (
+                                <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
+                                  <span className={styles.icon__view_movie} />
+                                </Link>
+                              )
+                            }
+                            {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
+                                <span className={styles.play_icon} />
+                                <p>{locale['live_now']}</p>
                               </Link>
-                            )
-                          }
-                          {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
-                            <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
-                              <span className={styles.play_icon} />
-                              <p>{locale['live_now']}</p>
-                            </Link>
-                          )}
-                          {activeSlide.startTime > Date.now() / 1000 && (
-                            <div className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
-                              <p>{locale['upcoming']}</p>
-                            </div>
-                          )}
-                        </>
+                            )}
+                            {activeSlide.startTime > Date.now() / 1000 && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                                <p>{locale['upcoming']}</p>
+                              </Link>
+                            )}
+                          </>
+                        )}
+
+                      {activeSlide.buttonText && (
+                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                        </a>
                       )}
 
-                    {activeSlide.buttonText && (
-                      <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                        <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                      </a>
-                    )}
-
-                    <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
-                    <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                    <p className="filteredText">{filteredQuote}</p>
-                    <p className="filteredText">{filteredDesc}</p>
-                    <p className="filteredText">{filteredQuote}</p>
-                    <p className="filteredText">{filteredDesc}</p>
-                  </LazyLoad>
-                )}
+                      <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
+                      <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
+                      <p className="filteredText">{filteredQuote}</p>
+                      <p className="filteredText">{filteredDesc}</p>
+                      <p className="filteredText">{filteredQuote}</p>
+                      <p className="filteredText">{filteredDesc}</p>
+                    </LazyLoad>
+                  )}
                 <div className={styles.header__library_link_wrapper}>
                   {activeSlideDots && activeSlideDots.length > 1 && <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} type="horizontal" className="tourSlide" />}
                 </div>
