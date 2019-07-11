@@ -5,42 +5,42 @@ import moment from 'moment'
 import styles from './schedule.css'
 import { formatDateTime } from '@source/lib/dateTimeUtil'
 
-var interval = 1000 / 60;
-var now;
-var then = Date.now();
-var delta;
-var reqAnimation;
+var interval = 1000 / 60
+var now
+var then = Date.now()
+var delta
+var reqAnimation
 
 class Schedule extends Component {
   state = {
-    activeChannel: this.props.scheduleList.length > 0 && (!this.props.movieId ? this.props.channelsPlaylist.data[0].id : this.props.movieId),
+    activeChannel: this.props.scheduleList.length > 0 && (!this.props.activeChannelId ? this.props.channelsPlaylist.data[0].id : this.props.activeChannelId),
     scrollWidth: '3360px',
   }
 
-  clickChannel = (channelId) => {
+  clickChannel = channelId => {
     this.setState({
-      activeChannel: channelId
+      activeChannel: channelId,
     })
-    this.props.clickChannel && this.props.clickChannel(channelId);
+    this.props.handleSelectChannel && this.props.handleSelectChannel(channelId)
   }
 
   //animation untuk current time marker yg warna biru
-  timeIncrement = (timestamp) => {
-    reqAnimation = window.requestAnimationFrame(this.timeIncrement);
-    now = Date.now();
-    delta = now - then;
+  timeIncrement = timestamp => {
+    reqAnimation = window.requestAnimationFrame(this.timeIncrement)
+    now = Date.now()
+    delta = now - then
     if (delta > interval) {
-      then = now - (delta % interval);
+      then = now - delta % interval
 
       const currentTs = Math.floor(now / 1000)
       const currentMin = formatDateTime(currentTs, 'm')
-      const startMin = currentMin > 30 ? 30 : 0;
+      const startMin = currentMin > 30 ? 30 : 0
       const startHour = formatDateTime(currentTs, 'H')
-      const d = new Date();
-      d.setHours(startHour, startMin, 0, 0);
-      const tsStartMarkTime = Math.floor(d / 1000);
+      const d = new Date()
+      d.setHours(startHour, startMin, 0, 0)
+      const tsStartMarkTime = Math.floor(d / 1000)
 
-      const diff = (now / 1000) - tsStartMarkTime;
+      const diff = now / 1000 - tsStartMarkTime
       this.timeMarker.style.left = `${diff * 14 / 60}px` //add px per second
     }
   }
@@ -53,12 +53,12 @@ class Schedule extends Component {
       })
     }
 
-    reqAnimation = window.requestAnimationFrame(this.timeIncrement);
+    reqAnimation = window.requestAnimationFrame(this.timeIncrement)
   }
 
   componentWillUnmount() {
-    const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
-    cancelAnimationFrame(reqAnimation);
+    const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame
+    cancelAnimationFrame(reqAnimation)
   }
 
   render() {
@@ -68,23 +68,23 @@ class Schedule extends Component {
 
     const currentTs = Math.floor(Date.now() / 1000)
     const currentMin = formatDateTime(currentTs, 'm')
-    const startMin = currentMin > 30 ? 30 : 0;
+    const startMin = currentMin > 30 ? 30 : 0
     const startHour = formatDateTime(currentTs, 'H')
     //startHour dan startMin = pembulatan kebawah untuk current time dg kelipatan 30menit
     //misal sekarang jam 9.45, maka startHour = jam 9, startMin = menit ke 30
 
-    const d = new Date();
-    d.setHours(startHour, startMin, 0, 0);
-    const tsStartMarkTime = Math.floor(d / 1000);
+    const d = new Date()
+    d.setHours(startHour, startMin, 0, 0)
+    const tsStartMarkTime = Math.floor(d / 1000)
     //tsStartMarkTime = startHour dan startMin dalam timestamp eg: 1560394560
 
-    let timeMark = [];
-    let tsTimeInc = tsStartMarkTime;
+    let timeMark = []
+    let tsTimeInc = tsStartMarkTime
 
     for (var i = 0; i < 8; i++) {
       const formattedTime = formatDateTime(tsTimeInc, 'HH:mm')
       timeMark.push(`${formattedTime}`)
-      tsTimeInc = tsTimeInc + (30 * 60)
+      tsTimeInc = tsTimeInc + 30 * 60
     }
 
     let totalTimeWidth = 0
@@ -94,69 +94,79 @@ class Schedule extends Component {
         <div className={styles.schedule_wrapper}>
           <div className={styles.schedule_name_list}>
             <div className={styles.schedule_header_left} />
-            {schedule && schedule.map((dt) => {
-              return (
-                <>
-                  <div className={`${styles.schedule_header_name} ${activeChannel === dt.id ? styles.schedule_active_channel_name : ''}`} onClick={() => this.clickChannel(dt.id)}>{dt.title}</div>
-                </>
-              )
-            })}
+            {schedule &&
+              schedule.map(dt => {
+                return (
+                  <>
+                    <div key={dt.id} className={`${styles.schedule_header_name} ${activeChannel === dt.id ? styles.schedule_active_channel_name : ''}`} onClick={() => this.clickChannel(dt.id)}>
+                      {dt.title}
+                    </div>
+                  </>
+                )
+              })}
           </div>
           <div className={styles.schedule_panel_wrapper}>
             <div className={styles.schedule_header_shadow} />
             <div className={styles.schedule_scroll_container} style={{ width: scrollWidth }}>
-              <div ref={node => { this.timeMarker = node }} className={styles.schedule_current_time_marker} />
+              <div
+                ref={node => {
+                  this.timeMarker = node
+                }}
+                className={styles.schedule_current_time_marker}
+              />
               <div className={styles.schedule_content_container}>
                 <div className={styles.schedule_time_container}>
-                  {timeMark && timeMark.map((time) => {
+                  {timeMark &&
+                    timeMark.map((time, i) => {
+                      return (
+                        <div key={`${time} - ${i}`} className={styles.schedule_time}>
+                          {time}
+                        </div>
+                      )
+                    })}
+                </div>
+                {schedule &&
+                  schedule.map(dt => {
+                    totalTimeWidth = 0
                     return (
-                      <div className={styles.schedule_time}>{time}</div>
+                      <a key={dt.id} className={`${activeChannel === dt.id ? styles.schedule_active_channel : ''} ${styles.schedule_line_container}`} onClick={() => this.clickChannel(dt.id)}>
+                        {dt.videos &&
+                          dt.videos.filter(list => Number(moment(list.start).format('DD')) === Number(moment().format('DD'))).map((item, index) => {
+                            //get endtime from next video starttime
+                            const endTime = index + 1 == dt.videos.length ? item.endTime : dt.videos[index + 1].startTime
+
+                            //only display video yg belum selesai tayang
+                            if (endTime > tsStartMarkTime) {
+                              const pxPerMin = 14
+                              let width = (endTime - item.startTime) / 60 * pxPerMin
+
+                              if (item.startTime < tsStartMarkTime) {
+                                width = (endTime - tsStartMarkTime) / 60 * pxPerMin
+                              }
+
+                              totalTimeWidth = width + totalTimeWidth
+                              const totalContainerWidth = pxPerMin * 60 * 4
+
+                              //only display per 4 hour schedule for now
+                              if (totalTimeWidth > totalContainerWidth) {
+                                width = totalContainerWidth - totalTimeWidth - width
+                              }
+                              return (
+                                <>
+                                  <div key={item.id} className={styles.schedule_item} style={{ width: width }}>
+                                    <div className={styles.schedule_item_title}>{item.title}</div>
+                                    <div className={styles.schedule_item_time}>
+                                      {formatDateTime(item.startTime, 'HH:mm')} -
+                                      {formatDateTime(item.endTime, 'HH:mm')}
+                                    </div>
+                                  </div>
+                                </>
+                              )
+                            }
+                          })}
+                      </a>
                     )
                   })}
-                </div>
-                {schedule && schedule.map((dt) => {
-                  totalTimeWidth = 0
-                  return (
-                    <a key={dt.id}
-                      className={`${activeChannel === dt.id ? styles.schedule_active_channel : ''} ${styles.schedule_line_container}`}
-                      onClick={() => this.clickChannel(dt.id)}>
-                      {dt.videos && dt.videos.filter(list => Number(moment(list.start).format('DD')) === Number(moment().format('DD'))).map((item, index) => {
-
-                        //get endtime from next video starttime
-                        const endTime = index + 1 == dt.videos.length ? item.endTime : dt.videos[index + 1].startTime
-
-                        //only display video yg belum selesai tayang
-                        if (endTime > tsStartMarkTime) {
-                          const pxPerMin = 14
-                          let width = (endTime - item.startTime) / 60 * pxPerMin
-
-                          if (item.startTime < tsStartMarkTime) {
-                            width = (endTime - tsStartMarkTime) / 60 * pxPerMin
-                          }
-
-                          totalTimeWidth = width + totalTimeWidth
-                          const totalContainerWidth = pxPerMin * 60 * 4
-
-                          //only display per 4 hour schedule for now
-                          if (totalTimeWidth > totalContainerWidth) {
-                            width = totalContainerWidth - totalTimeWidth - width
-                          }
-                          return (
-                            <>
-                              <div key={item.id} className={styles.schedule_item} style={{ width: width }}>
-                                <div className={styles.schedule_item_title}>{item.title}</div>
-                                <div className={styles.schedule_item_time}>
-                                  {formatDateTime(item.startTime, 'HH:mm')} -
-                                    {formatDateTime(item.endTime, 'HH:mm')}
-                                </div>
-                              </div>
-                            </>
-                          )
-                        }
-                      })}
-                    </a>
-                  )
-                })}
               </div>
             </div>
           </div>

@@ -37,29 +37,22 @@ class Channels extends Component {
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
     }
-    const {
-      fetchChannelSchedule,
-      fetchChannelsPlaylist,
-      user,
-      fetchVideoByid,
-      movieId,
-    } = this.props
-    fetchChannelsPlaylist()
-      .then(() => fetchChannelSchedule(selectedDate))
+    const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId } = this.props
+    fetchChannelsPlaylist().then(() => fetchChannelSchedule(selectedDate))
 
     fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
-  };
+  }
 
   componentDidUpdate(prevProps, prevState) {
-    const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props;
+    const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
     if (channelsPlaylist.meta.status === 'success' && channelsPlaylist.data.length > 0 && !prevState.activeChannel && !prevState.activeChannelId) {
       this.setState({
         activeChannel: this.props.channelsPlaylist.data[0].title,
         activeChannelId: this.props.channelsPlaylist.data[0].id,
-      });
-    };
+      })
+    }
 
     if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
       this.handleSelectChannel(this.state.activeChannelId)
@@ -68,26 +61,25 @@ class Channels extends Component {
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       fetchVideoByid(movieId)
     }
-  };
+  }
 
   handleSelectDate = date => {
     // const value = e.target.options[e.target.options.selectedIndex].innerText
     const selectedDate = {
       fullDate: moment(date).format('YYYYMMDD'),
     }
-    this.props.fetchChannelSchedule(selectedDate)
-      .then(() => {
-        const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
-        this.setState({
-          activeDate: date,
-          scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
-        })
-      });
+    this.props.fetchChannelSchedule(selectedDate).then(() => {
+      const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
+      this.setState({
+        activeDate: date,
+        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
+      })
+    })
   }
 
-  handleSelectChannel = (id) => {
+  handleSelectChannel = id => {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
-    if (filteredSchedule) {
+    if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
       const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
 
       this.setState({
@@ -96,7 +88,7 @@ class Channels extends Component {
         activeDate: formatDateTime(time, 'ddd, DD MMM YYYY'),
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
-      history.push(`/channels/${id}`);
+      history.push(`/channels/${id}`)
     }
   }
 
@@ -168,49 +160,32 @@ class Channels extends Component {
           {channelsPlaylist.meta.status === 'success' && (
             <>
               <div className={styles.channels_top_wrapper}>
-                {programmeGuides.data && channelSchedule && activeChannel && activeChannelId && (
-                  <>
-                    <div className={styles.channels_list_wrapper}>
-                      <DropdownList
-                        className={styles.channels_dropdown_container}
-                        dataList={channelSchedule}
-                        activeId={activeChannelId}
-                        onClick={this.handleSelectChannel} />
-                    </div>
+                {programmeGuides.data &&
+                  channelSchedule &&
+                  activeChannel &&
+                  activeChannelId && (
+                    <>
+                      <div className={styles.channels_list_wrapper}>
+                        <DropdownList className={styles.channels_dropdown_container} dataList={channelSchedule} activeId={activeChannelId} onClick={this.handleSelectChannel} />
+                      </div>
 
-                    <div className={styles.schedule_date_wrapper}>
-                      <DropdownList
-                        className={styles.channels_dropdown_container}
-                        dataList={this.getCalendar()}
-                        activeId={activeDate}
-                        onClick={this.handleSelectDate} />
-                    </div>
-                  </>
-                )}
+                      <div className={styles.schedule_date_wrapper}>
+                        <DropdownList className={styles.channels_dropdown_container} dataList={this.getCalendar()} activeId={activeDate} onClick={this.handleSelectDate} />
+                      </div>
+                    </>
+                  )}
               </div>
               <div className={styles.video_container}>
                 {loadPlayer ? (
-                  <Theoplayer
-                    className={customTheoplayer}
-                    showBackBtn={false}
-                    subtitles={this.subtitles()}
-                    handleOnVideoLoad={this.handleOnVideoLoad}
-                    poster={poster}
-                    {...videoSettings}
-                  />
+                  <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
                 ) : (
-                    <div>Video Not Available</div> // styling later
-                  )}
+                  <div>Video Not Available</div> // styling later
+                )}
               </div>
-              {programmeGuides.data && scheduleList.length > 0 && (
-                <Schedule
-                  scheduleList={scheduleList}
-                  activeDate={activeDate}
-                  activeChannelId={activeChannelId}
-                  handleSelectChannel={this.handleSelectChannel}
-                  {...this.props}
-                />
-              )}
+              {programmeGuides.data &&
+                scheduleList.length > 0 && (
+                  <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                )}
             </>
           )}
         </div>
@@ -219,14 +194,14 @@ class Channels extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   channelSchedule: getChannelProgrammeGuides(state),
-  ...state
-});
+  ...state,
+})
 
 const mapDispatchToProps = dispatch => ({
   fetchChannelsPlaylist: () => dispatch(channelActions.getChannelsPlaylist()),
-  fetchChannelSchedule: (date) => dispatch(channelActions.getProgrammeGuides(date)),
+  fetchChannelSchedule: date => dispatch(channelActions.getProgrammeGuides(date)),
   fetchVideoByid: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
