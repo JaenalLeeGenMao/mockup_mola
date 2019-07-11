@@ -110,8 +110,7 @@ body {
 }
 
 .sport__detail_upc_btn:hover {
-  cursor: default;
-  box-shadow: none;
+  box-shadow: 0 0 1rem 0 #808080;
 }
 
 .sport__detail_vod_btn {

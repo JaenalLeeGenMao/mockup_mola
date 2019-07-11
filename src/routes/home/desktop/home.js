@@ -9,6 +9,7 @@ import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
+import _isUndefined from 'lodash/isUndefined'
 
 import homeActions from '@actions/home'
 
@@ -227,9 +228,13 @@ class Home extends Component {
       let distanceX = Math.abs(this.prevTouchX - this.nextTouchX)
 
       if (distanceX === 0 && distanceY === 0) {
-        document.getElementsByClassName('is-home-gradient')[0].addEventListener('click', handleClick)
+        if (!_isUndefined(document.getElementsByClassName('is-home-gradient')[0])) {
+          document.getElementsByClassName('is-home-gradient')[0].addEventListener('click', handleClick)
+        }
       } else {
-        document.getElementsByClassName('is-home-gradient')[0].removeEventListener('click', handleClick);
+        if (!_isUndefined(document.getElementsByClassName('is-home-gradient')[0])) {
+          document.getElementsByClassName('is-home-gradient')[0].removeEventListener('click', handleClick)
+        }
       }
 
       if (distance <= 20) {
@@ -649,6 +654,7 @@ class Home extends Component {
                         key={id}
                         videos={video.data}
                         index={index}
+                        scrollIndex={scrollIndex}
                         updateSlider={ref => {
                           const { sliderRefs } = this.state
                           if (index < playlists.data.length - 1 && !sliderRefs[index]) sliderRefs[index] = ref

@@ -9,6 +9,7 @@ import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
 import Tracker from '@source/lib/tracker'
 import { get } from 'axios'
+import history from '@source/history'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
@@ -56,7 +57,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -196,7 +197,7 @@ class MovieDetail extends Component {
 
     this.getLoc()
     getMovieDetail(movieId)
-    fetchRecommendation(movieId)
+    // fetchRecommendation(movieId)
 
     // this.updateEncryption()
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -214,7 +215,7 @@ class MovieDetail extends Component {
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       this.getLoc()
       getMovieDetail(movieId)
-      fetchRecommendation(movieId)
+      // fetchRecommendation(movieId)
       this.setState({
         toggleSuggestion: false,
       })
@@ -266,7 +267,11 @@ class MovieDetail extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
-
+    if (process.env.BROWSER) {
+      if (dataFetched && dataFetched.homeTeam && dataFetched.awayTeam && dataFetched.homeTeam.length > 0 && dataFetched.awayTeam.length > 0) {
+        history.push(`/watch?v=${dataFetched.id}`)
+      }
+    }
     const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
     return (
       <>
@@ -295,8 +300,8 @@ class MovieDetail extends Component {
                     showBackBtn
                   />
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
             </div>
             <div className={movieDetailBottom}>
