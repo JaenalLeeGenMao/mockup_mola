@@ -22,10 +22,10 @@ async function action({ isMobile, pathname }) {
         <ChannelsMobile movieId={movieId} />
       </MolaLayout>
     ) : (
-      <MolaLayout>
-        <ChannelsDesktop movieId={movieId} />
-      </MolaLayout>
-    ),
+        <MolaLayout>
+          <ChannelsDesktop movieId={movieId} />
+        </MolaLayout>
+      ),
   }
 }
 
