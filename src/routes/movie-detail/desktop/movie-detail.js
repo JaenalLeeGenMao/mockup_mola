@@ -204,7 +204,7 @@ class MovieDetail extends Component {
     getVUID(deviceId)
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const {
       getMovieDetail,
       movieDetail,
@@ -221,6 +221,11 @@ class MovieDetail extends Component {
       })
     }
 
+    if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
+      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].homeTeam && movieDetail.data[0].awayTeam && movieDetail.data[0].homeTeam.length > 0 && movieDetail.data[0].awayTeam.length > 0) {
+        history.push(`/watch?v=${movieDetail.data[0].id}`)
+      }
+    }
     this.updateMetaTag()
   }
 
@@ -266,10 +271,6 @@ class MovieDetail extends Component {
 
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
-    }
-
-    if (dataFetched && dataFetched.homeTeam && dataFetched.awayTeam && dataFetched.homeTeam.length > 0 && dataFetched.awayTeam.length > 0) {
-      history.push(`/watch?v=${dataFetched.id}`)
     }
     const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
     return (
