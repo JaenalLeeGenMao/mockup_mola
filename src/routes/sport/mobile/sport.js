@@ -406,7 +406,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: () => dispatch(sportActions.getSportList()),
-  onHandleVideo: playlist => dispatch(sportActions.getSportVideo(playlist)),
+  onHandleVideo: playlist => dispatch(sportActions.getSportVideo(playlist, true)),
   onUpdatePlaylist: id => dispatch(sportActions.updateActivePlaylist(id)),
 })
 
