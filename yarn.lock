@@ -855,10 +855,9 @@
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
 
-"@supersoccer/gandalf@^1.0.42":
-  version "1.0.42"
-  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.42.tgz#306ca58ee8eb6c99736cb57e8b77f89cc54b2779"
-  integrity sha512-qgsFbzuDG8MqVtxcCfSZUkqQ1rq3wfD+4r6gAyHKqZ31SEqkmBifENz0I8ZvVk9mdylRAEZ/gePVsiG8Klji5g==
+"@supersoccer/gandalf@^1.0.43":
+  version "1.0.43"
+  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.43.tgz#94fbc0028b93a96ceb953040944912d33903492d"
   dependencies:
     axios "^0.18.0"
     babel-loader "^8.0.4"
@@ -9673,8 +9672,8 @@ redux@3.7.2:
     symbol-observable "^1.0.3"
 
 redux@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.4.tgz#4ee1aeb164b63d6a1bcc57ae4aa0b6e6fa7a3796"
   dependencies:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"

@@ -147,7 +147,7 @@ class MovieDetail extends Component {
   }
 
   renderVideo = () => {
-    const { user, getMovieDetail, videoId } = this.props
+    const { user, getMovieDetail, videoId, isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
 
     if (status === 'success' && data.length > 0) {
@@ -163,7 +163,7 @@ class MovieDetail extends Component {
       // console.log("aaaa", this.state.countDownStatus, dataFetched.contentType, dataFetched.startTime * 1000, Date.now())
       // console.log("dataFetched.streamSourceUrl", dataFetched.streamSourceUrl)
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
-        return <CountDown hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} />
+        return <CountDown hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
       } else if (data[0].streamSourceUrl) {
         return (
           <Theoplayer
