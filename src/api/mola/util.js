@@ -137,7 +137,7 @@ const normalizeHomeVideo = response => {
       const result = data.map(
         ({ attributes: { videos } }) =>
           videos.map(video => {
-            const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime } } = video
+            const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime, homeTeamId, awayTeamId } } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', '')
             // dummyQuote = {
@@ -166,6 +166,8 @@ const normalizeHomeVideo = response => {
               endTime,
               quotes: quoteLists.length > 0 ? quoteLists[0] : null,
               type,
+              homeTeamId,
+              awayTeamId
             }
           })
         // .sort((a, b) => a.displayOrder - b.displayOrder)

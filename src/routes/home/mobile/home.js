@@ -416,6 +416,7 @@ class Home extends Component {
 
     let filteredDesc = ''
     let filteredQuote = ''
+    let watchUrl = ''
     if (activeSlide) {
       filteredDesc = activeSlide.shortDescription
       if (scrollIndex !== 0) {
@@ -424,6 +425,8 @@ class Home extends Component {
           :
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
+
+      watchUrl = activeSlide.homeTeamId ? '/watch?v=' : '/movie-detail/'
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -471,13 +474,21 @@ class Home extends Component {
                     <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      <p className="filteredText">{filteredDesc}</p>
-                      <p className="filteredText">{filteredQuote}</p>
-                      <p className="filteredText">{filteredDesc}</p>
-                      <p className="filteredText">{filteredQuote}</p>
+                      {activeSlide.homeTeamId ?
+                        <p className={`${styles.home_desc} filteredText`}>
+                          {filteredDesc}
+                        </p>
+                        :
+                        <>
+                          <p className={`${styles.home_desc__animation} filteredText`}>{filteredDesc}</p>
+                          <p className={`${styles.home_desc__animation} filteredText`}>{filteredQuote}</p>
+                          <p className={`${styles.home_desc__animation} filteredText`}>{filteredDesc}</p>
+                          <p className={`${styles.home_desc__animation} filteredText`}>{filteredQuote}</p>
+                        </>
+                      }
                       {!activeSlide.buttonText &&
                         scrollIndex != 0 && (
-                          <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
                             <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                           </Link>
                         )}
@@ -488,18 +499,6 @@ class Home extends Component {
                       )}
                     </LazyLoad>
                   )}
-
-                {/* <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
-                  <div className={styles.header__playlist_title}>Dokumenter</div>
-                  <h1 className={'small'}>Free Money</h1>
-                  <p className="filteredText">Setelah membunuh salah satu penghuni penjara yang mencoba kabur, Swede (Marlon Brando) harus berhadapan dengan seorang agen FBI yang terus mengikuti dirinya. Seolah masalahnya masih belum cukup banyak, keluarganya kembali hadir dan memberikan dirinya sakit kepala baru...</p>
-                  <p className="filteredText">aaa</p>
-                  <p className="filteredText">Setelah membunuh salah satu penghuni penjara yang mencoba kabur, Swede (Marlon Brando) harus berhadapan dengan seorang agen FBI yang terus mengikuti dirinya. Seolah masalahnya masih belum cukup banyak, keluarganya kembali hadir dan memberikan dirinya sakit kepala baru...</p>
-                  <p className="filteredText">aaa</p>
-                  <Link to={`/movie-detail/`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                    <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
-                  </Link>
-                </LazyLoad> */}
                 {scrollIndex != 0 &&
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>

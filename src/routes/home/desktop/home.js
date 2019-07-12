@@ -388,7 +388,11 @@ class Home extends Component {
           break
         case 13 /* enter */:
           if (activeSlide.id) {
-            window.location.href = `/movie-detail/${activeSlide.id}`
+            if (activeSlide.homeTeamId) {
+              window.location.href = `/watch?v=${activeSlide.id}`
+            } else {
+              window.location.href = `/movie-detail/${activeSlide.id}`
+            }
           } else if (scrollIndex > 0) {
             const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
             const libraryId = playlistId.replace('f-', '')
@@ -397,7 +401,11 @@ class Home extends Component {
           break
         case 32 /* space */:
           if (activeSlide.id) {
-            window.location.href = `/movie-detail/${activeSlide.id}`
+            if (activeSlide.homeTeamId) {
+              window.location.href = `/watch?v=${activeSlide.id}`
+            } else {
+              window.location.href = `/movie-detail/${activeSlide.id}`
+            }
           } else if (scrollIndex > 0) {
             const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
             const libraryId = playlistId.replace('f-', '')
@@ -551,6 +559,8 @@ class Home extends Component {
 
     let filteredDesc = ''
     let filteredQuote = ''
+    let watchUrl = '/movie-detail/'
+    let buttonText = 'view_movie'
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.shortDescription, 36)
       if (scrollIndex !== 0) {
@@ -559,9 +569,12 @@ class Home extends Component {
           :
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
+      watchUrl = activeSlide.homeTeamId ? '/watch?v=' : '/movie-detail/'
+      buttonText = activeSlide.homeTeamId ? 'view_match' : 'view_movie'
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
+
     return (
       <Fragment>
         {/* <Joyride
@@ -609,11 +622,11 @@ class Home extends Component {
                       <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                         <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
                         <p>{filteredDesc}</p>
-                        {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
+                        {filteredQuote && !activeSlide.homeTeamId && <p className={styles.quote}>{filteredQuote}</p>}
                         {!activeSlide.buttonText &&
                           scrollIndex != 0 && (
-                            <Link to={`/movie-detail/${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                              <p>{activeSlide.buttonText ? activeSlide.buttonText : locale['view_movie']}</p>
+                            <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                              <p>{activeSlide.buttonText ? activeSlide.buttonText : locale[`${buttonText}`]}</p>
                             </Link>
                           )}
                         {activeSlide.buttonText && (

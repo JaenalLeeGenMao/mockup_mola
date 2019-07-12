@@ -88,7 +88,7 @@ body {
   text-transform: uppercase;
 }
 
-.header__detail_container > p {
+.header__detail_container > p.home_desc__animation {
   max-width: 80vw;
   opacity: 0;
   height: 80px;
@@ -98,6 +98,15 @@ body {
   overflow: hidden;
   -webkit-backface-visibility: hidden;
   animation: fadeAnimation 40s linear infinite 0s;
+}
+
+.home_desc {
+  height: 80px;
+  font-weight: 400;
+  font-size: 14px;
+  max-width: 80vw;
+  overflow: hidden;
+  position: absolute;
 }
 
 .header__detail_container > p:nth-child(3) {
@@ -231,7 +240,7 @@ body {
   top: -52px;
 }
 
-.home__detail_button_text p {
+.home__detail_button_text > p {
   display: inline-block;
   vertical-align: middle;
 }

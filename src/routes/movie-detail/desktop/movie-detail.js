@@ -267,10 +267,9 @@ class MovieDetail extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
-    if (process.env.BROWSER) {
-      if (dataFetched && dataFetched.homeTeam && dataFetched.awayTeam && dataFetched.homeTeam.length > 0 && dataFetched.awayTeam.length > 0) {
-        history.push(`/watch?v=${dataFetched.id}`)
-      }
+
+    if (dataFetched && dataFetched.homeTeam && dataFetched.awayTeam && dataFetched.homeTeam.length > 0 && dataFetched.awayTeam.length > 0) {
+      history.push(`/watch?v=${dataFetched.id}`)
     }
     const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
     return (
