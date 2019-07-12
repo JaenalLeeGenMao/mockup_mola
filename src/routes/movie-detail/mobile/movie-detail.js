@@ -25,8 +25,8 @@ import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerCont
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
-const { getComponent } = require('../../../../../gandalf')
-// const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../gandalf')
+const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 class MovieDetail extends Component {
   state = {
