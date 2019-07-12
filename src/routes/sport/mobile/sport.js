@@ -387,7 +387,7 @@ class Sport extends Component {
                     videos.data.length > 0 &&
                     videos.data.map((video, index) => {
                       const { id } = video.meta
-                      return <SportMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} />
+                      return <SportMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} user={this.props.user} />
                     })}
                 </Slider>
               </>

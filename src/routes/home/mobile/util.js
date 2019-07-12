@@ -22,8 +22,8 @@
   <MovieTitle className={'multilineEllipsis'}>{`This is example of long long text`}</ThumbnailTitle>
  */
 export const setMultilineEllipsis = className => {
-  const dataArray = document.getElementsByClassName(className)
-  ;[].forEach.call(dataArray, function(el) {
+  const dataArray = document.getElementsByClassName(className);
+  [].forEach.call(dataArray, function (el) {
     let wordArray = el.innerHTML.split(' ')
     while (el.scrollHeight > el.offsetHeight) {
       if (wordArray.length > 1) {
