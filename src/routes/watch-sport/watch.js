@@ -173,8 +173,8 @@ class MovieDetail extends Component {
             handleOnVideoLoad={this.handleOnVideoLoad}
             // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
             // isDRM={true}
-            showBackBtn
             {...videoSettings}
+            showBackBtn
           />
         )
       }
