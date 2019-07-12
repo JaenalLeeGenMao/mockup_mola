@@ -34,8 +34,8 @@ body {
   z-index: 1;
   color: white;
   bottom: 0;
-  width: calc(100% - 40px);
-  margin: 0 20px 39%;
+  width: 100%;
+  padding: 0 20px 39% 45px;
 }
 
 .header__detail_container_ls {
@@ -66,7 +66,7 @@ body {
 }
 
 .header__detail_container > p {
-  max-width: 80vw;
+  width: 80vw;
   opacity: 0;
   height: 80px;
   font-weight: 400;
@@ -319,10 +319,10 @@ body {
 }
 
 @media screen and (max-height: 500px) {
-  .sport__detail_button {
+  /* .sport__detail_button {
     left: 40px;
     top: -3px;
-  }
+  } */
 
   .header__detail_container_ls {
     margin: 0 20px 100px 81px;
