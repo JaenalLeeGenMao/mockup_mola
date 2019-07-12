@@ -38,7 +38,8 @@
   position: absolute;
   right: 10px;
   bottom: 10px;
-  width: 3.2rem;
+  width: 2rem;
+  opacity: 0.45;
 }
 
 .card__club {

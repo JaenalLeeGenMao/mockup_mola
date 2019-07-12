@@ -125,15 +125,11 @@
 }
 
 .matchCard__liga_type_img {
-  width: 4rem;
-  height: 4rem;
+  width: auto;
+  height: 2.5rem;
   padding: 0;
   object-position: center;
-  object-fit: contain;
-}
-
-.matchCard__matchInfo {
-  /* test */
+  object-fit: cover;
 }
 
 @media screen and (max-width: 1366px) and (max-height: 657px) {

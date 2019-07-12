@@ -219,8 +219,8 @@ body {
   object-position: center;
   object-fit: cover;
   cursor: pointer;
-  width: 6rem;
-  height: 6rem;
+  width: auto;
+  height: 3.5rem;
   padding-right: 0.5rem;
 }
 
@@ -235,7 +235,7 @@ body {
   font-size: 1.5rem;
   color: #a7a7a7;
   text-align: right;
-  padding: 2rem 0 2rem 0;
+  padding: 0;
 }
 
 .todayLabel {
