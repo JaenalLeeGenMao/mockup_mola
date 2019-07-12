@@ -475,7 +475,7 @@ class Matches extends React.Component {
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
-                {matchesList.data.length > 9 && (
+                {this.state.matches.length > 9 && (
                   <div className={s.labelLoadMore}>
                     Load more
                     <span className={s.loadmore} />
@@ -487,7 +487,7 @@ class Matches extends React.Component {
                   hasMore={this.state.hasMore}
                   hasChildren={true}
                   loader={
-                    matchesList.data.length > 9 && (
+                    this.state.matches.length > 9 && (
                       <div className={s.labelLoaderIcon}>
                         <LoaderComp />
                       </div>
