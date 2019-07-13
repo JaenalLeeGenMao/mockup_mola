@@ -9,6 +9,7 @@ import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
 import DRMConfig from '@source/lib/DRMConfig'
+import history from '@source/history'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
@@ -166,6 +167,10 @@ class MovieDetail extends Component {
 
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
       if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].homeTeam && movieDetail.data[0].awayTeam && movieDetail.data[0].homeTeam.length > 0 && movieDetail.data[0].awayTeam.length > 0) {
+        history.push(`/watch?v=${movieDetail.data[0].id}`)
+      }
+
+      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].startTime) {
         history.push(`/watch?v=${movieDetail.data[0].id}`)
       }
     }

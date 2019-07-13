@@ -225,6 +225,10 @@ class MovieDetail extends Component {
       if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].homeTeam && movieDetail.data[0].awayTeam && movieDetail.data[0].homeTeam.length > 0 && movieDetail.data[0].awayTeam.length > 0) {
         history.push(`/watch?v=${movieDetail.data[0].id}`)
       }
+
+      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].startTime) {
+        history.push(`/watch?v=${movieDetail.data[0].id}`)
+      }
     }
     this.updateMetaTag()
   }

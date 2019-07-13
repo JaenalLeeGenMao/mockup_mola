@@ -388,7 +388,7 @@ class Home extends Component {
           break
         case 13 /* enter */:
           if (activeSlide.id) {
-            if (activeSlide.homeTeamId) {
+            if (activeSlide.homeTeamId || activeSlide.startTime) {
               window.location.href = `/watch?v=${activeSlide.id}`
             } else {
               window.location.href = `/movie-detail/${activeSlide.id}`
@@ -401,7 +401,7 @@ class Home extends Component {
           break
         case 32 /* space */:
           if (activeSlide.id) {
-            if (activeSlide.homeTeamId) {
+            if (activeSlide.homeTeamId || activeSlide.startTime) {
               window.location.href = `/watch?v=${activeSlide.id}`
             } else {
               window.location.href = `/movie-detail/${activeSlide.id}`
@@ -569,8 +569,8 @@ class Home extends Component {
           :
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
-      watchUrl = activeSlide.homeTeamId ? '/watch?v=' : '/movie-detail/'
-      buttonText = activeSlide.homeTeamId ? 'view_match' : 'view_movie'
+      watchUrl = activeSlide.homeTeamId || activeSlide.startTime ? '/watch?v=' : '/movie-detail/'
+      buttonText = activeSlide.homeTeamId || activeSlide.startTime ? 'view_match' : 'view_movie'
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -622,7 +622,7 @@ class Home extends Component {
                       <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                         <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
                         <p>{filteredDesc}</p>
-                        {filteredQuote && !activeSlide.homeTeamId && <p className={styles.quote}>{filteredQuote}</p>}
+                        {filteredQuote && !activeSlide.homeTeamId && !activeSlide.startTime && <p className={styles.quote}>{filteredQuote}</p>}
                         {!activeSlide.buttonText &&
                           scrollIndex != 0 && (
                             <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
