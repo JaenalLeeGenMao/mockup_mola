@@ -61,10 +61,11 @@ export const isMatchPassed = endTime => {
 
 //nanti ganti penamaan jadi isLive aja biar lebih global
 export const isMatchLive = (startTime, endTime) => {
-  let endDateTime = formatDateTime(endTime, 'HH:mm')
-  let startDateTime = formatDateTime(startTime, 'HH:mm')
-  let currentTime = moment().format('HH:mm')
-  if (isToday(startTime) && currentTime >= startDateTime && currentTime <= endDateTime) {
+  // let endDateTime = formatDateTime(endTime, 'HH:mm')
+  // let startDateTime = formatDateTime(startTime, 'HH:mm')
+  // let currentTime = moment().format('HH:mm')
+  let currentTime = Date.now() / 1000
+  if (isToday(startTime) && currentTime >= startTime && currentTime <= endTime) {
     return true
   }
   return false
