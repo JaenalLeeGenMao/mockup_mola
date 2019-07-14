@@ -404,6 +404,46 @@ app.get('/oauth/callback', async (req, res) => {
   return res.redirect(domain || 'https://stag.mola.tv')
 })
 
+app.get('/oauth/app-callback', async (req, res) => {
+  const code = req.query.code
+  const state = req.query.state
+  // const storedState = req.cookies.wstate
+  const sid = req.cookies.SID
+
+  if (code && state) {
+    let _at = await new Promise(resolve => {
+      request.post(
+        {
+          ...config.endpoints.setting,
+          url: `${oauthEndpoint}/token`,
+          timeout: 5000,
+          headers: {
+            Cookie: `SID=${sid}`,
+          },
+          json: {
+            app_key: 'LDZJgphCc7',
+            app_secret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+            grant_type: 'authorization_code',
+            redirect_uri: `${domain}/oauth/app-callback`,
+            code,
+          },
+        },
+        (error, response, body) => {
+          if (error || response.statusCode !== 200) {
+            console.error(error, response.statusCode, body)
+            return reject({ error, statusCode: response.statusCode, body })
+          }
+          res.header('_at', body.access_token)
+          return resolve(response)
+        }
+      )
+    })
+    return res.json(_at)
+  } else {
+    return res.status(401)
+  }
+})
+
 app.get('/accounts/signin', async (req, res) => {
   const storedState = Math.random()
     .toString()
