@@ -32,7 +32,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
-import { isMatchLive } from '@source/lib/dateTimeUtil'
+import { isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
 
 let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -354,6 +354,11 @@ class Sport extends Component {
                             {activeSlide.startTime > Date.now() / 1000 && (
                               <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
                                 <p>{locale['upcoming']}</p>
+                              </Link>
+                            )}
+                            {isMatchPassed(activeSlide.endTime) && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                                <p>{locale['replay']}</p>
                               </Link>
                             )}
                           </>

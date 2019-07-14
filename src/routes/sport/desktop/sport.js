@@ -32,7 +32,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
-import { isMatchLive } from '@source/lib/dateTimeUtil'
+import { isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
 import { globalTracker } from '@source/lib/globalTracker';
 
 // let activePlaylist
@@ -546,6 +546,7 @@ class Sport extends Component {
     const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const matchPlaylistId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
+
     return (
       <Fragment>
         {/* <Joyride
@@ -602,6 +603,11 @@ class Sport extends Component {
                               {activeSlide.startTime > Date.now() / 1000 && (
                                 <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
                                   <p>{locale['upcoming']}</p>
+                                </Link>
+                              )}
+                              {isMatchPassed(activeSlide.endTime) && (
+                                <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                                  <p>{locale['replay']}</p>
                                 </Link>
                               )}
                             </>
