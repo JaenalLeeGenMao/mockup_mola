@@ -204,6 +204,10 @@ class Watch extends Component {
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
     const { toggleInfoBar } = this.state
+    let isMatchPassed = false
+    if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
+      isMatchPassed = true
+    }
     return (
       <>
         {dataFetched && (
@@ -211,16 +215,17 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {toggleInfoBar && (
-              <div className={styles.info_bar}>
-                <div className={styles.info_bar__container}>
-                  <div className={styles.info_bar__text}>Ini adalah siaran percobaan.</div>
-                  <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
-                    <span />
+            {toggleInfoBar &&
+              !isMatchPassed && (
+                <div className={styles.info_bar}>
+                  <div className={styles.info_bar__container}>
+                    <div className={styles.info_bar__text}>Siaran Percobaan</div>
+                    <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
+                      <span />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
             {loadPlayer && this.renderVideo()}
           </>
         )}

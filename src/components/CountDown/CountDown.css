@@ -2,7 +2,7 @@
 
 .countDown__wrapper {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 38px);
 
   /* max-height: calc(100vh - 15rem); */
   background-color: black;
@@ -34,7 +34,6 @@
 @media (max-width: 640px) {
   .countDown__wrapper {
     position: relative;
-    height: 100vh;
     max-height: 100vh;
     background-color: black;
     color: white;
