@@ -24,7 +24,7 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
   return (
     <LazyLoad containerClassName={styles.popup__menu_container}>
       <div className={styles.popup__menu_header}>
-        <span className={styles.popup__menu_close} onClick={onClick} />
+        <div className={styles.popup__menu_close} onClick={onClick} />
       </div>
       <div className={styles.popup__menu_content}>
         {isLogin && (
@@ -92,10 +92,12 @@ class RightMenu extends Component {
   }
 
   handleToggle = () => {
+    console.log('MASUK')
     const { user: { uid = '', sid = '' } } = this.props
     const isLogin = uid || sid
     if (isLogin) {
       const { toggle } = this.state
+      console.log('toggle', toggle)
       this.setState({ toggle: !toggle })
     } else {
       window.location.href = '/accounts/login'
