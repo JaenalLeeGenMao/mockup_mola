@@ -92,12 +92,10 @@ class RightMenu extends Component {
   }
 
   handleToggle = () => {
-    console.log('MASUK')
     const { user: { uid = '', sid = '' } } = this.props
     const isLogin = uid || sid
     if (isLogin) {
       const { toggle } = this.state
-      console.log('toggle', toggle)
       this.setState({ toggle: !toggle })
     } else {
       window.location.href = '/accounts/login'

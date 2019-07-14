@@ -37,7 +37,6 @@ class Content extends Component {
       draggable: true,
       fade: false,
       beforeChange: (currentIndex, nextIndex) => {
-        console.log('weeeeh')
         updateColorChange(index, nextIndex);
       },
     };
