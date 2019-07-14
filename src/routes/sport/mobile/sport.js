@@ -32,7 +32,7 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
-import { isMatchLive } from '@source/lib/dateTimeUtil'
+import { isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
 
 let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -356,6 +356,11 @@ class Sport extends Component {
                                 <p>{locale['upcoming']}</p>
                               </Link>
                             )}
+                            {isMatchPassed(activeSlide.endTime) && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn}`}>
+                                <p>{locale['replay']}</p>
+                              </Link>
+                            )}
                           </>
                         )}
 
@@ -367,10 +372,7 @@ class Sport extends Component {
 
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      <p className="filteredText">{filteredQuote}</p>
-                      <p className="filteredText">{filteredDesc}</p>
-                      <p className="filteredText">{filteredQuote}</p>
-                      <p className="filteredText">{filteredDesc}</p>
+                      {filteredDesc && <p className="filteredText">{filteredDesc}</p>}
                     </LazyLoad>
                   )}
                 <div className={styles.header__library_link_wrapper}>

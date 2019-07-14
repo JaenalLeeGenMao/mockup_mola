@@ -426,7 +426,7 @@ class Home extends Component {
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
 
-      watchUrl = activeSlide.homeTeamId ? '/watch?v=' : '/movie-detail/'
+      watchUrl = activeSlide.homeTeamId || activeSlide.startTime ? '/watch?v=' : '/movie-detail/'
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -474,10 +474,14 @@ class Home extends Component {
                     <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      {activeSlide.homeTeamId ?
-                        <p className={`${styles.home_desc} filteredText`}>
-                          {filteredDesc}
-                        </p>
+                      {activeSlide.startTime || activeSlide.homeTeamId ?
+                        <>
+                          {filteredDesc &&
+                            <p className={`${styles.home_desc} filteredText`}>
+                              {filteredDesc}
+                            </p>
+                          }
+                        </>
                         :
                         <>
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredDesc}</p>

@@ -34,9 +34,13 @@ const tomorrowMidnight = moment(
     .format('YYYY-MM-DD 23:59:00')
 )
 
-export const isToday = startTime => {
-  let matchTime = startTime && moment.unix(startTime).utcOffset(0)
-  if (moment(matchTime).isAfter(prevmidnight) && moment(matchTime).isBefore(midnight)) {
+export const isToday = (startTime, endTime) => {
+  let matchStartTime = startTime && moment.unix(startTime).utcOffset(0)
+  let matchEndTime = endTime && moment.unix(endTime).utcOffset(0)
+  const startTimeToday = moment(matchStartTime).isAfter(prevmidnight) && moment(matchStartTime).isBefore(midnight)
+  const endTimeToday = moment(matchEndTime).isAfter(prevmidnight) && moment(matchEndTime).isBefore(midnight)
+
+  if (startTimeToday || endTimeToday) {
     return true
   }
   return false
@@ -61,10 +65,11 @@ export const isMatchPassed = endTime => {
 
 //nanti ganti penamaan jadi isLive aja biar lebih global
 export const isMatchLive = (startTime, endTime) => {
-  let endDateTime = formatDateTime(endTime, 'HH:mm')
-  let startDateTime = formatDateTime(startTime, 'HH:mm')
-  let currentTime = moment().format('HH:mm')
-  if (isToday(startTime) && currentTime >= startDateTime && currentTime <= endDateTime) {
+  // let endDateTime = formatDateTime(endTime, 'HH:mm')
+  // let startDateTime = formatDateTime(startTime, 'HH:mm')
+  // let currentTime = moment().format('HH:mm')
+  let currentTime = Date.now() / 1000
+  if (currentTime >= startTime && currentTime <= endTime) {
     return true
   }
   return false
@@ -78,32 +83,32 @@ export const addDateTime = (dateTime, duration, type) => {
 const selectedMidnight = compareDateTime => {
   const result = compareDateTime
     ? moment(
-        moment(compareDateTime)
-          .utcOffset(7)
-          .format('YYYY-MM-DD 23:59:00')
-      )
+      moment(compareDateTime)
+        .utcOffset(7)
+        .format('YYYY-MM-DD 23:59:00')
+    )
     : moment(
-        moment()
-          .utcOffset(7)
-          .format('YYYY-MM-DD 23:59:00')
-      )
+      moment()
+        .utcOffset(7)
+        .format('YYYY-MM-DD 23:59:00')
+    )
   return result
 }
 
 const selectedPrevmidnight = compareDateTime => {
   const result = compareDateTime
     ? moment(
-        moment(compareDateTime)
-          .utcOffset(7)
-          .subtract(1, 'd')
-          .format('YYYY-MM-DD 23:59:00')
-      )
+      moment(compareDateTime)
+        .utcOffset(7)
+        .subtract(1, 'd')
+        .format('YYYY-MM-DD 23:59:00')
+    )
     : moment(
-        moment()
-          .utcOffset(7)
-          .subtract(1, 'd')
-          .format('YYYY-MM-DD 23:59:00')
-      )
+      moment()
+        .utcOffset(7)
+        .subtract(1, 'd')
+        .format('YYYY-MM-DD 23:59:00')
+    )
   return result
 }
 

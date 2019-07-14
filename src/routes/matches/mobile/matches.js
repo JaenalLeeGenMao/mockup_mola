@@ -100,11 +100,11 @@ class Matches extends Component {
     }
   }
 
-  matchesDateFormat = startTime => {
+  matchesDateFormat = (startTime, endTime) => {
     let text = formatDateTime(startTime, 'ddd, D MMM YYYY')
-    if (isToday(startTime)) {
+    if (isToday(startTime, endTime)) {
       text = 'Today'
-    } else if (isTomorrow(startTime)) {
+    } else if (isTomorrow(startTime, endTime)) {
       text = 'Tomorrow'
     }
 
@@ -128,7 +128,7 @@ class Matches extends Component {
       if (isDifferent) {
         return (
           <div className={styles.matches__date}>
-            <p> {this.matchesDateFormat(data.startTime)}</p>
+            <p> {this.matchesDateFormat(data.startTime, data.endTime)}</p>
           </div>
         )
       } else {
@@ -137,7 +137,7 @@ class Matches extends Component {
     } else {
       return (
         <div className={styles.matches__date}>
-          <p> {this.matchesDateFormat(data.startTime)}</p>
+          <p> {this.matchesDateFormat(data.startTime, data.endTime)}</p>
         </div>
       )
     }

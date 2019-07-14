@@ -53,7 +53,7 @@ class Content extends Component {
         {this.props.videos.map(video => {
           const { id, isDark, background, link } = video;
           const imgBackground = background.portrait ? background.portrait : background.landscape;
-
+          // console.log("imgBackground", imgBackground, video)
           return index != 0 ?
             (
               <div key={id} className="grid-slick" isdark={isDark}>

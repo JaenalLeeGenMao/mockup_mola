@@ -19,7 +19,7 @@ class MatchCard extends React.Component {
       text = 'Replay Match'
       className = styles.btnReplay
       replaytime = dateFormatted
-    } else if (isToday(startTime)) {
+    } else if (isToday(startTime, endTime)) {
       if (isMatchLive(startTime, endTime)) {
         text = 'LIVE NOW'
         className = styles.btnLiveNow

@@ -8,7 +8,7 @@ import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
 import * as movieDetailActions from '@actions/movie-detail'
-import styles from '@global/style/css/grainBackground.css'
+import styles from './watch.css'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import CountDown from '@components/CountDown'
@@ -17,10 +17,11 @@ import { customTheoplayer } from './theoplayer-style'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
-class MovieDetail extends Component {
+class Watch extends Component {
   state = {
     movieDetail: [],
     countDownStatus: true,
+    toggleInfoBar: true,
   }
 
   uuidADS = () => {
@@ -173,12 +174,18 @@ class MovieDetail extends Component {
             handleOnVideoLoad={this.handleOnVideoLoad}
             // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
             // isDRM={true}
-            showBackBtn
             {...videoSettings}
+            showBackBtn
           />
         )
       }
     }
+  }
+
+  handleCloseInfoBar = () => {
+    this.setState({
+      toggleInfoBar: false,
+    })
   }
 
   render() {
@@ -196,6 +203,11 @@ class MovieDetail extends Component {
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
+    const { toggleInfoBar } = this.state
+    let isMatchPassed = false
+    if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
+      isMatchPassed = true
+    }
     return (
       <>
         {dataFetched && (
@@ -203,17 +215,18 @@ class MovieDetail extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
+            {toggleInfoBar &&
+              !isMatchPassed && (
+                <div className={styles.info_bar}>
+                  <div className={styles.info_bar__container}>
+                    <div className={styles.info_bar__text}>Siaran Percobaan</div>
+                    <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
+                      <span />
+                    </div>
+                  </div>
+                </div>
+              )}
             {loadPlayer && this.renderVideo()}
-            {/* <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
-              handleOnVideoLoad={this.handleOnVideoLoad}
-              // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
-              // isDRM={true}
-              showBackBtn
-              {...videoSettings}
-            /> */}
           </>
         )}
       </>
@@ -233,4 +246,4 @@ const mapDispatchToProps = dispatch => ({
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
-export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MovieDetail)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Watch)

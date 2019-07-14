@@ -14,7 +14,7 @@ class Card extends Component {
     let text = '';
     text = formatDateTime(startTime, 'ddd, HH.mm');
 
-    if (isToday(startTime)) {
+    if (isToday(startTime, endTime)) {
       let endDateTime = formatDateTime(endTime, 'HH:mm');
       let startDateTime = formatDateTime(startTime, 'HH:mm');
       let currentTime = moment().format('HH:mm')

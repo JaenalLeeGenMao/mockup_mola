@@ -5,7 +5,7 @@ export const customTheoplayer = css`
     &.video-container,
     &.video-container.video-js.vjs-fluid {
       width: 100vw;
-      height: 100vh;
+      height: calc(100vh - 38px);
       padding: 0;
       float: left;
     }
@@ -50,7 +50,7 @@ export const customTheoplayer = css`
     @media (max-width: 640px) {
       &.video-container,
       &.video-container.video-js.vjs-fluid {
-        height: 90vh !important;
+        height: calc(90vh - 38px) !important;
         width: 100vw;
       }
 

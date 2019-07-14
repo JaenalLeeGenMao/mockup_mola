@@ -24,7 +24,7 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
   return (
     <LazyLoad containerClassName={styles.popup__menu_container}>
       <div className={styles.popup__menu_header}>
-        <span className={styles.popup__menu_close} onClick={onClick} />
+        <div className={styles.popup__menu_close} onClick={onClick} />
       </div>
       <div className={styles.popup__menu_content}>
         {isLogin && (
