@@ -79,6 +79,10 @@ body {
   left: -20px;
 }
 
+.header__detail_container a {
+  pointer-events: auto;
+}
+
 .header__detail_container > p.quote {
   height: 34px;
   top: 0;

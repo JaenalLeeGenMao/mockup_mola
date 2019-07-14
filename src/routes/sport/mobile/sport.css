@@ -49,6 +49,10 @@ body {
   pointer-events: none;
 }
 
+.header__detail_container a {
+  pointer-events: auto;
+}
+
 .header__detail_container.black {
   color: black;
 }
