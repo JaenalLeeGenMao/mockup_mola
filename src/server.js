@@ -479,6 +479,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
+  console.log('Server URL', req.url)
   var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
 
   try {
@@ -570,7 +571,9 @@ app.get('*', async (req, res, next) => {
 
       /* Must login before accessing these features */
       if (!__DEV__ && whitelisted.includes(req.url)) {
-        return res.redirect('/accounts/login')
+        if (req.url !== '/accounts/consent') {
+          return res.redirect('/accounts/login')
+        }
       }
 
       const decodedGuestToken = guestToken && jwt.decode(guestToken)
