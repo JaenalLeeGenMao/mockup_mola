@@ -44,7 +44,7 @@ class Home extends Component {
     isDark: 1,
     isLandscape: false,
     activeSlide: undefined,
-    activeSlideDots: undefined,
+    activeSlideDots: [],
     scrollIndex: 0 /* vertical menu */,
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
@@ -338,6 +338,14 @@ class Home extends Component {
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
   }
 
+  renderMenuBanner = (activeSlide, playlistData, directionIndex, className, type) => {
+    if (activeSlide.isDark > 0) {
+      return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} type={type} className={className} />
+    } else {
+      return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} type={type} className={className} />
+    }
+  }
+
   render() {
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
       {
@@ -432,7 +440,7 @@ class Home extends Component {
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
     return (
       <Fragment>
-        {/* <Joyride
+        <Joyride
           disableOverlayClose={true} //
           stepIndex={stepIndex} //
           continuous // ?
@@ -442,7 +450,7 @@ class Home extends Component {
           styles={customTourStyle} //uk
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        /> */}
+        />
 
         <div>
           {playlistStatus !== 'error' && (
@@ -466,7 +474,12 @@ class Home extends Component {
               <>
                 {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
-                  <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={isDark} className="tourCategory" />
+                  {/* <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" /> */}
+                  {
+                    activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length > 1 ? this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourCategory')
+                      :
+                      <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
+                  }
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide &&
@@ -518,7 +531,12 @@ class Home extends Component {
                     </LazyLoad>
                   )}
                 <div className={styles.header__library_link_wrapper}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} type="horizontal" className="tourSlide" />}
+                  {/* {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />} */}
+                  {
+                    activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
+                      :
+                      <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />
+                  }
                 </div>
                 <Slider
                   {...settings}
@@ -529,6 +547,11 @@ class Home extends Component {
                 >
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
+
+                    if (video.data <= 0) {
+                      return;
+                    }
+
                     return <HomeMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} user={this.props.user} />
                   })}
                 </Slider>

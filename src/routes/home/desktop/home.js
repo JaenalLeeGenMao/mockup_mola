@@ -71,10 +71,10 @@ const customTourStyle = {
   },
   tooltipContent: {
     fontSize: '1.06rem',
-    padding: '0 0 20px',
+    padding: '0',
     textAlign: 'left',
     color: '#858585',
-    lineHeight: '1.3',
+    lineHeight: '2',
     letterSpacing: '0.5px',
   },
   tooltipTitle: {
@@ -101,7 +101,7 @@ class Home extends Component {
     locale: getLocale(),
     isDark: undefined,
     activeSlide: undefined,
-    activeSlideDots: undefined,
+    activeSlideDots: [],
     scrollIndex: 0 /* vertical menu */,
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
@@ -533,6 +533,14 @@ class Home extends Component {
     })
   }
 
+  renderMenuBanner = (activeSlide, playlistData, directionIndex, handleDirection, type) => {
+    if (activeSlide.isDark > 0) {
+      return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} onClick={handleDirection} type={type} />
+    } else {
+      return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} onClick={handleDirection} type={type} />
+    }
+  }
+
   render() {
     const {
       playlists,
@@ -577,7 +585,7 @@ class Home extends Component {
 
     return (
       <Fragment>
-        {/* <Joyride
+        <Joyride
           disableOverlayClose={true}
           stepIndex={stepIndex}
           continuous
@@ -587,7 +595,7 @@ class Home extends Component {
           styles={customTourStyle}
           floaterProps={{ disableAnimation: true }}
           callback={this.handleTourCallback}
-        /> */}
+        />
 
         <div>
           {playlistStatus !== 'error' && (
@@ -608,9 +616,14 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={`is-home-gradient ${styles.home__gradient}`} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease' }} />
+                <div className={`is-home-gradient ${styles.home__gradient}`} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }} />
                 <div className={styles.home__sidebar}>
-                  <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={0} onClick={this.handleScrollToIndex} />
+                  {/* <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} /> */}
+                  {
+                    scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
+                      :
+                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  }
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide &&
@@ -651,8 +664,16 @@ class Home extends Component {
                       </a>
                     </LazyLoad>
                   )}
-                <div className={`${styles.header__movie_slider} tourSlide`}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />}
+                <div className={styles.home__bottombar}>
+                  <div className={`${styles.header__movie_slider} tourSlide`}>
+                    {/* {activeSlideDots && activeSlideDots.length > 1 && 
+                    <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />} */}
+                    {
+                      scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
+                        :
+                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
+                    }
+                  </div>
                 </div>
                 <Slider
                   {...settings}
@@ -662,6 +683,11 @@ class Home extends Component {
                 >
                   {videos.data.map((video, index) => {
                     const { id, sortOrder } = video.meta
+
+                    if (video.data <= 0) {
+                      return;
+                    }
+
                     return (
                       <HomeContent
                         key={id}

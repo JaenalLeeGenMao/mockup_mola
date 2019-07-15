@@ -212,6 +212,16 @@ body {
   z-index: 1;
 }
 
+.home__bottombar {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+  cursor: default;
+  height: 7%;
+}
+
 .play_icon {
   width: 2rem;
   height: 2rem;

@@ -5,10 +5,11 @@ export const tourSteps = {
   id: [
     {
       target: '.tourCategory',
-      title: 'Genre Film',
+      title: 'Kategori konten',
       content: (
         <div>
-          Untuk bernavigasi di sekitar genre film yang berbeda, Anda cukup mengklik tombol navigasi atau geser <span className={styles.swipeUpIcon} /> atas dan ke bawah pada keyboard Anda.
+          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard,
+          atau geser <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar sentuh/trackpad Anda.
         </div>
       ),
       placement: 'right',
@@ -21,11 +22,12 @@ export const tourSteps = {
     },
     {
       target: '.tourSlide',
-      title: 'Film Pilihan',
+      title: 'Konten Pilihan',
       content: (
         <div>
           {' '}
-          Anda dapat menelusuri film-film pilihan Mola di setiap genre dengan klik  tombol panah atau geser <span className={styles.swipeNextIcon} /> kanan dan kiri menggunakan keyboard.
+          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard,
+          atau geser <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan layar sentuh/trackpad Anda.
         </div>
       ),
       placement: 'top',
@@ -33,11 +35,11 @@ export const tourSteps = {
     },
     {
       target: '.tourOtherCategory',
-      title: 'Telusuri Kategori lain',
+      title: 'Telusuri Channel lain',
       content: (
         <div>
           {' '}
-          Ingin menonton pertandingan Olahraga. atau saluran TV lainnya? Telusuri pada pilihan kategori di atas ini.
+          Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di atas ini.
         </div>
       ),
       placement: 'left',
@@ -70,10 +72,11 @@ export const tourSteps = {
   en: [
     {
       target: '.tourCategory',
-      title: 'Movie Category',
+      title: 'Content Categories',
       content: (
         <div>
-          To navigate around different movie genres, you can simply click the navigation button or swipe <span className={styles.swipeUpIcon} />  up and down on your keyboard.
+          To navigate around different content categories, you can simply click the up and down buttons on your keyboard,
+          or swipe <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
         </div>
       ),
       placement: 'right',
@@ -86,11 +89,12 @@ export const tourSteps = {
     },
     {
       target: '.tourSlide',
-      title: 'Highlighted Movies',
+      title: 'Highlighted Contents',
       content: (
         <div>
           {' '}
-          You can browse through our top movies in each genre by clicking on the arrow button or swipe <span className={styles.swipeNextIcon} /> right and left on your keyboard.
+          You can browse {'Mola\'s'} selected contents in each category by clicking on the left and right arrow buttons on the keyboard,
+          or swipe <span className={styles.swipeNextIcon} /> left and right using your touch screen / trackpad.
         </div>
       ),
       placement: 'top',
@@ -98,11 +102,11 @@ export const tourSteps = {
     },
     {
       target: '.tourOtherCategory',
-      title: 'Navigate Other Categories',
+      title: 'Navigate Other Channels',
       content: (
         <div>
           {' '}
-          Do you want to watch sports matches, or other TV channels? Navigate using the options available here.
+          Do you want to watch sports, or other TV channels? Navigate using the Channel options available here.
         </div>
       ),
       placement: 'bottom',
