@@ -6,7 +6,7 @@ import LazyLoad from '@components/common/Lazyload'
 import horizontalStyles from './menu-horizontal.css'
 import verticalStyles from './menu-vertical.css'
 
-const HomeMenu = ({ playlists, activeIndex = 0, isGray = false, isDark = 0, type = 'vertical', onClick }) => {
+const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', onClick, isGray = 0 }) => {
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles
 
   return (
@@ -15,7 +15,7 @@ const HomeMenu = ({ playlists, activeIndex = 0, isGray = false, isDark = 0, type
         <>
           <div
             key={id}
-            className={`${styles.menu__dots} ${isGray ? styles.gray : ''} ${isDark ? styles.black : styles.white} ${index === activeIndex ? styles.menu__active : ''}`}
+            className={`${styles.menu__dots} ${isDark ? styles.black : styles.white} ${isGray && styles.gray} ${index === activeIndex ? styles.menu__active : ''}`}
             onClick={e => {
               onClick(index)
             }}
