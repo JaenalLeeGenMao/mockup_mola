@@ -293,7 +293,7 @@ class Home extends Component {
 
   handleColorChange = () => {
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       const activeSlick = document.querySelector('.active .slick-active .grid-slick')
       let isDark = 1
       if (activeSlick) {
@@ -334,7 +334,7 @@ class Home extends Component {
   handleMouseClick = () => {
     /** handle mouse click */
     const that = this
-    ;(this.prevMouseDownY = 0), (this.currentMouseDownY = 0)
+      ; (this.prevMouseDownY = 0), (this.currentMouseDownY = 0)
     document.onmousedown = event => {
       ticking = false
       that.prevMouseDownY = event.y
@@ -362,7 +362,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -392,14 +392,16 @@ class Home extends Component {
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
-          console.log('LEFT: ', this.sliderRefs[scrollIndex].slickPrev())
+          this.sliderRefs[scrollIndex].slickPrev()
+          // console.log('LEFT: ', )
           return event.preventDefault()
         case 38 /* up */:
           scrollIndex -= 1
           this.handleKeyPress()
           break
         case 39 /* right */:
-          console.log('RIGHT: ', this.sliderRefs[scrollIndex].slickNext())
+          this.sliderRefs[scrollIndex].slickNext()
+          // console.log('RIGHT: ', this.sliderRefs[scrollIndex].slickNext())
           return event.preventDefault()
         case 40 /* down */:
           scrollIndex += 1

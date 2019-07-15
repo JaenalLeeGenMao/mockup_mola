@@ -15,7 +15,7 @@ class CountDown extends React.Component {
   }
 
   render() {
-    const { startTime, hideCountDown, getMovieDetail, videoId, isMobile } = this.props
+    const { startTime, hideCountDown, getMovieDetail, videoId, isMobile, className } = this.props
     const renderer = ({ days, hours, minutes, seconds, completed }) => {
       if (completed) {
         getMovieDetail(videoId)
@@ -25,16 +25,16 @@ class CountDown extends React.Component {
       // Render a countdown
 
       return (
-        <div className={s.countDown__wrapper}>
+        <div className={`${s.countDown__wrapper} ${className}`}>
           {isMobile ? (
             <div className={s.header__back_button} onClick={this.handleGoBack}>
               <button className={s.header__back_arrow} />
             </div>
           ) : (
-            <div className={s.arrowContainer} onClick={this.handleGoBack}>
-              <span className={s.arrowIcon} />
-            </div>
-          )}
+              <div className={s.arrowContainer} onClick={this.handleGoBack}>
+                <span className={s.arrowIcon} />
+              </div>
+            )}
           <div className={s.countDown}>
             <div className={s.startText}>Tayangan akan dimulai dalam: </div>
             {days > 0 ? `${days} hari ` : ''}
