@@ -13,6 +13,8 @@ import * as movieDetailActions from '@actions/movie-detail'
 import styles from './watch.css'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 import Synopsis from './synopsis'
+
+import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import { customTheoplayer, noInfoBar } from './theoplayer-style'
 //const { getComponent } = require('../../../../../gandalf')
@@ -197,6 +199,7 @@ class Watch extends Component {
   }
 
   render() {
+    const { isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const { isMobile } = this.props
     const apiFetched = status === 'success' && data.length > 0
@@ -224,6 +227,9 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
+            {isMobile && (
+              <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff opacity={0} {...this.props} />
+            )}
             <div className={isMobile ? styles.container__mobile : styles.container}>
               <div className={isMobile ? styles.player__container__mobile : styles.player__container}>
                 {toggleInfoBar &&
