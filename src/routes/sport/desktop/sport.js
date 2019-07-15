@@ -540,7 +540,7 @@ class Sport extends Component {
     let filteredDesc = ''
     let filteredQuote = ''
     if (activeSlide) {
-      filteredDesc = filterString(activeSlide.description, 36)
+      filteredDesc = filterString(activeSlide.shortDescription, 36)
       filteredQuote = activeSlide.quotes && `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
     }
     const matchesList = playlistStatus === 'success' && playlists.data[scrollIndex].playlists

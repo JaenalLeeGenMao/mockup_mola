@@ -195,7 +195,6 @@ export const controllerContainer = css`
 `
 
 export const videoPlayerContainer = css`
-  @import '../../../../global/style/css/grainBackground.css';
   height: 74vh;
   width: 100vw;
   margin: auto;

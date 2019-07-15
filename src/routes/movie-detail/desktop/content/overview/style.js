@@ -22,7 +22,7 @@ export const contentOverviewSectionMiddle = css`
   width: 45%;
   vertical-align: top;
   margin-top: 1rem;
-  colro: #fff;
+  color: #fff;
   font-size: 1.6rem;
 
   div {

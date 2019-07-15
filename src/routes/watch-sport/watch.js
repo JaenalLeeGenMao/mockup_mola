@@ -12,7 +12,7 @@ import styles from './watch.css'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 
 import CountDown from '@components/CountDown'
-import { customTheoplayer } from './theoplayer-style'
+import { customTheoplayer, noInfoBar } from './theoplayer-style'
 //const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
@@ -25,7 +25,7 @@ class Watch extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -161,14 +161,20 @@ class Watch extends Component {
         // getUrlResponse: this.getUrlResponse
       }
 
-      // console.log("aaaa", this.state.countDownStatus, dataFetched.contentType, dataFetched.startTime * 1000, Date.now())
-      // console.log("dataFetched.streamSourceUrl", dataFetched.streamSourceUrl)
+      const { toggleInfoBar } = this.state
+      let isMatchPassed = false
+      if (data[0].endTime < Date.now() / 1000) {
+        isMatchPassed = true
+      }
+
+      const playerClass = toggleInfoBar && !isMatchPassed ? '' : noInfoBar
+      const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
-        return <CountDown hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
+        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
       } else if (data[0].streamSourceUrl) {
         return (
           <Theoplayer
-            className={customTheoplayer}
+            className={`${customTheoplayer} ${playerClass}`}
             subtitles={this.subtitles()}
             // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
             handleOnVideoLoad={this.handleOnVideoLoad}
@@ -215,18 +221,34 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {toggleInfoBar &&
-              !isMatchPassed && (
-                <div className={styles.info_bar}>
-                  <div className={styles.info_bar__container}>
-                    <div className={styles.info_bar__text}>Siaran Percobaan</div>
-                    <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
-                      <span />
+            <div className={styles.container}>
+              <div className={styles.player__container}>
+                {toggleInfoBar &&
+                  !isMatchPassed && (
+                    <div className={styles.info_bar}>
+                      <div className={styles.info_bar__container}>
+                        <div className={styles.info_bar__text}>Siaran Percobaan</div>
+                        <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
+                          <span />
+                        </div>
+                      </div>
                     </div>
+                  )}
+                {loadPlayer && this.renderVideo()}
+              </div>
+              <div className={styles.detail__container}>
+                <div className={styles.detail__left}>
+                  <div>
+                    <h1 className={styles.detail__left_title}>{dataFetched.title}</h1>
                   </div>
                 </div>
-              )}
-            {loadPlayer && this.renderVideo()}
+                <div className={styles.detail__right}>
+                  <div>
+                    <p className={styles.detail__right_text}>{dataFetched.description}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </>
