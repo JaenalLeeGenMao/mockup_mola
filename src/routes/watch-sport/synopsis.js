@@ -37,15 +37,25 @@ class Synopsis extends Component {
             <div className={styles.inner_box_header}>
               <span>info</span>
             </div>
-            <p className={`synopsis__info_content ${show ? styles.show : ''}`}>{content}</p>
-            {!show && (
-              <button className={styles.synopsis__info_read_more} onClick={this.handleClick}>
-                Read More <div className={styles.expand_collapse} />
-              </button>
+            {content && (
+              <>
+                <p className={`synopsis__info_content ${show ? styles.show : ''}`}>{content}</p>
+                {!show && (
+                  <button className={styles.synopsis__info_read_more} onClick={this.handleClick}>
+                    Read More <div className={styles.expand_collapse} />
+                  </button>
+                )}
+              </>
             )}
+            {!content && <div>Tidak Ada Deskripsi</div>}
           </div>
         )}
-        {!isMobile && <p className={`synopsis__info_desc ${styles.detail__right_text}`}>{content}</p>}
+        {!isMobile && (
+          <>
+            {content && <p className={`synopsis__info_desc ${styles.detail__right_text}`}>{content}</p>}
+            {!content && <div>Tidak Ada Deskripsi</div>}
+          </>
+        )}
       </>
     )
   }

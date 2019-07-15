@@ -79,7 +79,8 @@ const Overview = ({ data }) => {
       </div>
       <div className={contentOverviewSectionMiddle}>
         <div>
-          <p className={sectionMiddleText}>{description}</p>
+          {description && <p className={sectionMiddleText}>{description}</p>}
+          {!description && <div>Tidak Ada Deskripsi</div>}
         </div>
       </div>
       <div className={contentOverviewSectionRight}>
