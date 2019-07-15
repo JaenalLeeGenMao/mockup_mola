@@ -35,14 +35,20 @@ class Synopsis extends Component {
             <div className={s.synopsis__info_icon} />
             <span>info</span>
           </div>
-          <p className={`synopsis__info_content ${show ? s.show : ''}`}>
-            <ReactMarkdown source={content} />
-          </p>
-          {!show && (
-            <button className={s.synopsis__info_read_more} onClick={this.handleClick}>
-              Read More <div className={s.expand_collapse} />
-            </button>
+          {content && (
+            <>
+              <p className={`synopsis__info_content ${show ? s.show : ''}`}>
+                <ReactMarkdown source={content} />
+              </p>
+              {!show && (
+                <button className={s.synopsis__info_read_more} onClick={this.handleClick}>
+                  Read More <div className={s.expand_collapse} />
+                </button>
+              )}
+            </>
           )}
+
+          {!content && <div>Tidak Ada Deskripsi</div>}
         </div>
       </LazyLoad>
     )
