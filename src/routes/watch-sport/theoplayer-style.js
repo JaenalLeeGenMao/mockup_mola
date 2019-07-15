@@ -50,7 +50,7 @@ export const customTheoplayer = css`
     @media (max-width: 640px) {
       &.video-container,
       &.video-container.video-js.vjs-fluid {
-        height: calc(90vh - 38px) !important;
+        height: 18rem !important;
         width: 100vw;
       }
 

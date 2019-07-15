@@ -10,7 +10,7 @@ import DRMConfig from '@source/lib/DRMConfig'
 import * as movieDetailActions from '@actions/movie-detail'
 import styles from './watch.css'
 import { getVUID, getVUID_retry } from '@actions/vuid'
-
+import Synopsis from './synopsis'
 import CountDown from '@components/CountDown'
 import { customTheoplayer, noInfoBar } from './theoplayer-style'
 //const { getComponent } = require('../../../../../gandalf')
@@ -25,7 +25,7 @@ class Watch extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -196,6 +196,7 @@ class Watch extends Component {
 
   render() {
     const { meta: { status, error }, data } = this.props.movieDetail
+    const { isMobile } = this.props
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -221,8 +222,8 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            <div className={styles.container}>
-              <div className={styles.player__container}>
+            <div className={isMobile ? styles.container__mobile : styles.container}>
+              <div className={isMobile ? styles.player__container__mobile : styles.player__container}>
                 {toggleInfoBar &&
                   !isMatchPassed && (
                     <div className={styles.info_bar}>
@@ -236,18 +237,35 @@ class Watch extends Component {
                   )}
                 {loadPlayer && this.renderVideo()}
               </div>
-              <div className={styles.detail__container}>
-                <div className={styles.detail__left}>
-                  <div>
-                    <h1 className={styles.detail__left_title}>{dataFetched.title}</h1>
+              {!isMobile && (
+                <>
+                  <div className={styles.detail__container}>
+                    <div className={styles.detail__left}>
+                      <div>
+                        <h1 className={styles.detail__left_title}>{dataFetched.title}</h1>
+                      </div>
+                    </div>
+                    <div className={styles.detail__right}>
+                      <div>
+                        <Synopsis content={dataFetched.description} />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className={styles.detail__right}>
-                  <div>
-                    <p className={styles.detail__right_text}>{dataFetched.description}</p>
+                </>
+              )}
+
+              {isMobile && (
+                <>
+                  <div className={styles.detail__container__mobile}>
+                    <div className={styles.detail__title}>
+                      <h1 className={styles.detail__title__text}>{dataFetched.title}</h1>
+                    </div>
+                    <div className={styles.detail__desc}>
+                      <Synopsis content={dataFetched.description} isMobile />
+                    </div>
                   </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           </>
         )}
