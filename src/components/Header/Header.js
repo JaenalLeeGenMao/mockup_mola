@@ -21,8 +21,9 @@ import { logoBlue, logoMobile } from '@global/imageUrl'
 
 import Link from '../Link'
 
-import RightMenu from './right-menu'
-import LeftMenu from './left-menu'
+// import RightMenu from './right-menu'
+// import LeftMenu from './left-menu'
+import HeaderMenu from './header-menu'
 import styles from './Header.css'
 
 class Header extends Component {
@@ -92,8 +93,9 @@ class Header extends Component {
       isDark = 1,
       logoOff = false,
       libraryOff = false,
-      rightMenuOff = false,
-      leftMenuOff = false,
+      // rightMenuOff = false,
+      // leftMenuOff = false,
+      headerMenuOff = false,
       searchOff = false,
       isMobile = false,
       stickyOff = false,
@@ -139,8 +141,9 @@ class Header extends Component {
           </LazyLoad>
         )}
         {this.renderHeaderLibrary()}
-        {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} {/*tambahan left menu nampung sport(design baru)*/}
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
+        {!headerMenuOff && <HeaderMenu color={color} headerMenuOff={headerMenuOff} {...this.props} />}
+        {/* {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} tambahan left menu nampung sport(design baru) */}
+        {/* {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />} */}
       </div>
     )
   }

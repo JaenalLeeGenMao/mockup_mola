@@ -162,19 +162,15 @@ app.get('/sign-location', async (req, res) => {
   const lat = req.query.lat
   const long = req.query.long
 
-  if (typeof lat !== 'undefined' && typeof long !== 'undefined' && lat !== '' && long !== '') {
+  if (typeof lat !== 'undefined' && typeof long !== 'undefined') {
     const body = {
       lat: parseFloat(lat),
       long: parseFloat(long),
     }
 
-    Axios.post(locationUrl, body)
-      .then(locationPayload => {
-        res.send(locationPayload.data)
-      })
-      .catch(err => {
-        res.send(err.message)
-      })
+    let locationPayload = await Axios.post(locationUrl, body)
+
+    res.send(locationPayload.data)
   }
 })
 
@@ -489,7 +485,6 @@ app.get('/signout', (req, res) => {
 app.get('*', async (req, res, next) => {
   console.log('Server URL', req.path)
   var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
-
   try {
     // global.clearInterval(inboxInterval);
 

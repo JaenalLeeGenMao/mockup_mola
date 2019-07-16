@@ -13,6 +13,7 @@ import {
   CHANNELS_PLAYLIST_ENDPOINT,
   PROGRAMME_GUIDES,
   RECOMMENDATION,
+  HEADERMENU,
 } from './endpoints'
 import utils from './util'
 import dummy from './test'
@@ -124,6 +125,32 @@ const getFeatureBanner = (isMobile = false, isSport = false) => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getGenreMatches = (id = 'genre-spo') => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeHomePlaylist(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sport')
       return {
         meta: {
           status: 'error',
@@ -768,6 +795,30 @@ const getProgrammeGuides = (date, playlistId) => {
     })
 }
 
+const getHeaderMenu = () => {
+  return get(`${HEADERMENU}/menu.json`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('response', response)
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getFeatureBanner,
@@ -789,8 +840,10 @@ export default {
   getOrderHistoryTransactions,
   getSportList,
   getSportVideo,
+  getGenreMatches,
   getMatchesList,
   getMatchDetail,
   getChannelsList,
   getProgrammeGuides,
+  getHeaderMenu,
 }
