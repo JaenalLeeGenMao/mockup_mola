@@ -196,7 +196,7 @@
 
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header__back_button {
-    top: 0;
+    top: -5px;
     left: -6px;
   }
 

@@ -9,8 +9,7 @@ class Content extends Component {
   componentDidMount() {
     this.props.updateSlider(this.wrapperSlider)
   }
-  handleClickMobile = (link) => {
-
+  handleClickMobile = link => {
     link ? window.open(link, '_blank') : false
 
     const payload = {
@@ -51,25 +50,25 @@ class Content extends Component {
         {this.props.videos.map(video => {
           const { id, isDark, background, link } = video
           return index != 0 ? (
-            <>
+            <div key={id} className={styles.img__wrapper}>
               <picture>
                 <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
                 <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
                 <img src={isLandscape ? background.landscape : background.portrait} />
               </picture>
               <div className={styles.content__gradient} />
-            </>
+            </div>
           ) : (
-              <a href="javascript:void(0)" onClick={() => this.handleClickMobile(link)}>
-                <div key={id} className="grid-slick" isdark={isDark}>
-                  <picture>
-                    <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
-                    <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
-                    <img src={isLandscape ? background.landscape : background.portrait} />
-                  </picture>
-                </div>
-              </a>
-            )
+            <a href="javascript:void(0)" onClick={() => this.handleClickMobile(link)}>
+              <div key={id} className="grid-slick" isdark={isDark}>
+                <picture>
+                  <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
+                  <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
+                  <img src={isLandscape ? background.landscape : background.portrait} />
+                </picture>
+              </div>
+            </a>
+          )
         })}
       </Slider>
     )
