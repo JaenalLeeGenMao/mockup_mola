@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import _get from 'lodash/get'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
+import { get } from 'axios'
 
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
@@ -11,12 +12,12 @@ import { updateCustomMeta } from '@source/DOMUtils'
 import DRMConfig from '@source/lib/DRMConfig'
 import history from '@source/history'
 
+import Tracker from '@source/lib/tracker'
+import { isMovie } from '@source/lib/globalUtil'
+
 import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
 import { getVUID, getVUID_retry } from '@actions/vuid'
-
-import Tracker from '@source/lib/tracker'
-import { get } from 'axios'
 
 import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
@@ -35,7 +36,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -166,11 +167,7 @@ class MovieDetail extends Component {
     }
 
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
-      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].homeTeam && movieDetail.data[0].awayTeam && movieDetail.data[0].homeTeam.length > 0 && movieDetail.data[0].awayTeam.length > 0) {
-        history.push(`/watch?v=${movieDetail.data[0].id}`)
-      }
-
-      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].startTime) {
+      if (!isMovie(movieDetail.data[0].contentType)) {
         history.push(`/watch?v=${movieDetail.data[0].id}`)
       }
     }
@@ -246,8 +243,8 @@ class MovieDetail extends Component {
                     isMobile
                   />
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}

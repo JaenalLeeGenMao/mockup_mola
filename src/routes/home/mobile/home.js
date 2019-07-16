@@ -10,6 +10,8 @@ import $ from 'jquery'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 
+import { isMovie } from '@source/lib/globalUtil'
+
 import homeActions from '@actions/home'
 
 import { logoLandscapeBlue } from '@global/imageUrl'
@@ -434,7 +436,7 @@ class Home extends Component {
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
 
-      watchUrl = activeSlide.homeTeamId || activeSlide.startTime ? '/watch?v=' : '/movie-detail/'
+      watchUrl = isMovie(activeSlide.contentType) ? '/movie-detail/' : '/watch?v='
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''

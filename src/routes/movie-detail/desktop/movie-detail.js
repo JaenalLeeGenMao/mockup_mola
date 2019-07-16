@@ -3,18 +3,21 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
+import _get from 'lodash/get'
+import { get } from 'axios'
+
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
 import Tracker from '@source/lib/tracker'
-import { get } from 'axios'
+import { isMovie } from '@source/lib/globalUtil'
 import history from '@source/history'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
 import { getVUID, getVUID_retry } from '@actions/vuid'
-import _get from 'lodash/get'
+
 import MovieDetailError from '@components/common/error'
 // import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
@@ -22,7 +25,6 @@ import { Overview as ContentOverview, Review as ContentReview, Trailer as Conten
 import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom } from './style'
 
 import styles from '@global/style/css/grainBackground.css'
-
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
@@ -222,11 +224,7 @@ class MovieDetail extends Component {
     }
 
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
-      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].homeTeam && movieDetail.data[0].awayTeam && movieDetail.data[0].homeTeam.length > 0 && movieDetail.data[0].awayTeam.length > 0) {
-        history.push(`/watch?v=${movieDetail.data[0].id}`)
-      }
-
-      if (movieDetail.data && movieDetail.data.length > 0 && movieDetail.data[0].startTime) {
+      if (!isMovie(movieDetail.data[0].contentType)) {
         history.push(`/watch?v=${movieDetail.data[0].id}`)
       }
     }

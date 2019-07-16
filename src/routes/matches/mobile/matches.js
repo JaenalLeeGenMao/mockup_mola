@@ -28,7 +28,8 @@ class Matches extends Component {
 
   componentDidMount() {
     /* set the default active playlist onload */
-    this.props.getMatches()
+    const { playlistId } = this.props
+    playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -52,7 +53,7 @@ class Matches extends Component {
     const filteredMatch = []
 
     data.forEach(el => {
-      if (el.homeTeam && el.awayTeam && !isMatchPassed(el.endTime)) {
+      if (!isMatchPassed(el.endTime)) {
         filteredMatch.push(el)
       }
     })
@@ -65,7 +66,7 @@ class Matches extends Component {
     const filteredMatch = []
 
     data.forEach(el => {
-      if (el.homeTeam && el.awayTeam && isMatchPassed(el.endTime)) {
+      if (isMatchPassed(el.endTime)) {
         filteredMatch.push(el)
       }
     })
@@ -76,9 +77,8 @@ class Matches extends Component {
   highlightFilter = () => {
     const { data } = this.props.matches
     const filteredMatch = []
-
     data.forEach(el => {
-      if (!el.homeTeam || !el.awayTeam) {
+      if (el.isHighlight) {
         filteredMatch.push(el)
       }
     })
@@ -86,7 +86,7 @@ class Matches extends Component {
     this.setState({ matches: filteredMatch })
   }
 
-  filterChange = (filterId) => {
+  filterChange = filterId => {
     if (filterId == 0) {
       this.liveUpcomingFilter()
     }
@@ -146,35 +146,25 @@ class Matches extends Component {
   renderMatchesList(matchesList) {
     return (
       <LazyLoad containerClassName={styles.matches__container}>
-        {matchesList.length > 0 && matchesList.map((data, index) => (
-          <>
-            {this.renderDate(data, index, matchesList)}
-            <Link to={'/watch?v=' + data.id}>
-              <MatchCard data={data} index={index} matchesList={matchesList} />
-            </Link>
-          </>
-        ))}
-        {
-          matchesList.length === 0 &&
-          <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>
-        }
+        {matchesList.length > 0 &&
+          matchesList.map((data, index) => (
+            <>
+              {this.renderDate(data, index, matchesList)}
+              <Link to={'/watch?v=' + data.id}>
+                <MatchCard data={data} index={index} matchesList={matchesList} />
+              </Link>
+            </>
+          ))}
+        {matchesList.length === 0 && <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>}
       </LazyLoad>
     )
   }
 
   renderFilter() {
-    const filterList = [
-      { id: 0, title: 'Live and Upcoming' },
-      { id: 1, title: 'Last Matches' },
-      { id: 2, title: 'Highlight' }
-    ]
+    const filterList = [{ id: 0, title: 'Live and Upcoming' }, { id: 1, title: 'Last Matches' }, { id: 2, title: 'Highlight' }]
     return (
       <LazyLoad containerClassName={styles.matches__filter}>
-        <DropdownList
-          className={styles.matches_dropdown_container}
-          dataList={filterList}
-          activeId={this.state.filter}
-          onClick={this.filterChange} />
+        <DropdownList className={styles.matches_dropdown_container} dataList={filterList} activeId={this.state.filter} onClick={this.filterChange} />
       </LazyLoad>
     )
   }
@@ -210,7 +200,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMatches: () => dispatch(matchListActions.getAllMatches()),
+  getMatches: id => dispatch(matchListActions.getAllMatches(id)),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Matches)

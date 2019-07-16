@@ -12,7 +12,7 @@
   background-color: #000;
   height: 16rem;
   width: 30rem;
-  opacity: 0.7;
+  opacity: 0.85;
   border-radius: 8px;
   transition: transform 0.3s, -webkit-transform 0.3s;
 }
@@ -43,6 +43,21 @@
   margin: 1.5rem 2rem;
   align-items: center;
   height: 94px;
+}
+
+.matchCard__schedule_single_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 94px;
+  margin: 1.5rem 2rem;
+  text-align: center;
+  flex-direction: column;
+}
+
+.matchCard__single_title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 .matchCard__team_logo {

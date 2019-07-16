@@ -19,6 +19,7 @@ export const movieDetailContainer = css`
   background: #000311;
   width: 100vw;
   min-height: 100vh;
+  margin-bottom: 80px;
 `
 
 export const movieDetailNotAvailableContainer = css`

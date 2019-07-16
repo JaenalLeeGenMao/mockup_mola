@@ -10,18 +10,17 @@ import { defaultImgClub } from '@global/imageUrl'
 
 class Card extends Component {
   cardDateFormat = (startTime, endTime) => {
-
-    let text = '';
-    text = formatDateTime(startTime, 'ddd, HH.mm');
+    let text = ''
+    text = formatDateTime(startTime, 'ddd, HH.mm')
 
     if (isToday(startTime, endTime)) {
-      let endDateTime = formatDateTime(endTime, 'HH:mm');
-      let startDateTime = formatDateTime(startTime, 'HH:mm');
+      let endDateTime = formatDateTime(endTime, 'HH:mm')
+      let startDateTime = formatDateTime(startTime, 'HH:mm')
       let currentTime = moment().format('HH:mm')
       if (currentTime >= startDateTime && currentTime <= endDateTime) {
-        text = 'LIVE ' + formatDateTime(startTime, 'HH.mm');
+        text = 'LIVE ' + formatDateTime(startTime, 'HH.mm')
       } else if (!isMatchPassed(endTime)) {
-        text = 'Next ' + formatDateTime(startTime, 'HH.mm');
+        text = 'Next ' + formatDateTime(startTime, 'HH.mm')
       }
     }
 
@@ -34,15 +33,21 @@ class Card extends Component {
       return (
         <div className={styles.card__matches}>
           <div className={styles.card__club}>
-            <img src={homeTeam.logo} onError={e => {
-              e.target.src = defaultImgClub;
-            }} />
+            <img
+              src={homeTeam.logo}
+              onError={e => {
+                e.target.src = defaultImgClub
+              }}
+            />
             <span>{homeTeam.name}</span>
           </div>
           <div className={styles.card__club}>
-            <img src={awayTeam.logo} onError={e => {
-              e.target.src = defaultImgClub;
-            }} />
+            <img
+              src={awayTeam.logo}
+              onError={e => {
+                e.target.src = defaultImgClub
+              }}
+            />
             <span>{awayTeam.name}</span>
           </div>
           {league ? <img className={styles.card__league_logo} src={league.iconUrl} /> : ''}
@@ -51,7 +56,7 @@ class Card extends Component {
     } else {
       return (
         <div className={styles.card__matches}>
-          <div className={styles.card__club}>
+          <div className={styles.card__single_title}>
             <span>{title}</span>
           </div>
         </div>
