@@ -7,6 +7,7 @@ import Link from '@components/Link'
 import styles from './matchCard.css'
 import { defaultImgClub } from '@global/imageUrl'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
+
 class MatchCard extends React.Component {
   handleMatchesInfo = (startTime, endTime) => {
     let text = 'UPCOMING'
@@ -65,7 +66,7 @@ class MatchCard extends React.Component {
     const matchesDt = this.handleMatchesInfo(startTime, endTime)
     return (
       <div className={styles.matchCard__info_label}>
-        <div>{matchesDt.replaytime}</div>
+        {matchesDt.replaytime && <div>{matchesDt.replaytime}</div>}
         <div className={`${styles.matchCard__matchInfo} ${matchesDt.className}`}>{matchesDt.text}</div>
         <div>{matchesDt.time}</div>
       </div>
@@ -73,45 +74,54 @@ class MatchCard extends React.Component {
   }
 
   render() {
-    const { id, homeTeam, awayTeam, league, startTime, endTime } = this.props.matchData
+    const { id, homeTeam, awayTeam, league, startTime, endTime, title } = this.props.matchData
     const showScore = Date.now() > endTime * 1000
     const isLive = isMatchLive(startTime, endTime)
+    const showSingleTitle = homeTeam && awayTeam ? false : true
     return (
       <Link to={`/watch?v=${id}`} key={id} className={styles.matchCard__schedule}>
         {isLive && <span className={styles.matchCard__icon_play} />}
-        <div className={styles.matchCard__schedule_item}>
-          {homeTeam && (
-            <div className={styles.matchCard__team_logo}>
-              {this.handleClubImage(homeTeam.logo)}
-              <span className={styles.matchCard_team_name}>{homeTeam.name}</span>
+        {!showSingleTitle && (
+          <div className={styles.matchCard__schedule_item}>
+            {homeTeam && (
+              <div className={styles.matchCard__team_logo}>
+                {this.handleClubImage(homeTeam.logo)}
+                <span className={styles.matchCard_team_name}>{homeTeam.name}</span>
+              </div>
+            )}
+            <div className={styles.matchCard__middlecontent}>
+              {this.renderMatchInfo(startTime, endTime)}
+              {homeTeam &&
+                awayTeam && (
+                  <div className={styles.matchCard__scoring}>
+                    <span>
+                      {' '}
+                      {showScore &&
+                        homeTeam.score &&
+                        awayTeam.score && (
+                          <>
+                            {homeTeam.score} - {awayTeam.score}
+                          </>
+                        )}
+                    </span>
+                  </div>
+                )}
+              {/* <span className={styles.matchCards__pen}>Pen. (3-4)</span> note: pen & agg di hide dulu */}
             </div>
-          )}
-          <div className={styles.matchCard__middlecontent}>
-            {this.renderMatchInfo(startTime, endTime)}
-            {homeTeam &&
-              awayTeam && (
-                <div className={styles.matchCard__scoring}>
-                  <span>
-                    {' '}
-                    {showScore &&
-                      homeTeam.score &&
-                      awayTeam.score && (
-                        <>
-                          {homeTeam.score} - {awayTeam.score}
-                        </>
-                      )}
-                  </span>
-                </div>
-              )}
-            {/* <span className={styles.matchCards__pen}>Pen. (3-4)</span> note: pen & agg di hide dulu */}
+            {awayTeam && (
+              <div className={styles.matchCard__team_logo}>
+                {this.handleClubImage(awayTeam.logo)}
+                <span className={styles.matchCard_team_name}>{awayTeam.name}</span>
+              </div>
+            )}
           </div>
-          {awayTeam && (
-            <div className={styles.matchCard__team_logo}>
-              {this.handleClubImage(awayTeam.logo)}
-              <span className={styles.matchCard_team_name}>{awayTeam.name}</span>
-            </div>
-          )}
-        </div>
+        )}
+        {showSingleTitle && (
+          <div className={styles.matchCard__schedule_single_item}>
+            <div className={styles.matchCard__single_title}>{title}</div>
+            <div className={styles.matchCard__middlecontent}>{this.renderMatchInfo(startTime, endTime)}</div>
+          </div>
+        )}
         <div className={styles.matchCard__liga_type}>
           {league ? (
             <>

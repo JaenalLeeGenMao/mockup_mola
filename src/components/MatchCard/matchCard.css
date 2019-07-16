@@ -45,6 +45,21 @@
   height: 94px;
 }
 
+.matchCard__schedule_single_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 94px;
+  margin: 1.5rem 2rem;
+  text-align: center;
+  flex-direction: column;
+}
+
+.matchCard__single_title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
 .matchCard__team_logo {
   text-align: center;
 }

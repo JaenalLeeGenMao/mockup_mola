@@ -135,33 +135,33 @@ class Matches extends React.Component {
     let filterResult = []
     if (value == 'lastWeek') {
       matches.forEach(el => {
-        if (el.homeTeam && el.awayTeam && isLastWeek(el.startTime)) {
+        if (isLastWeek(el.startTime)) {
           filterResult.push(el)
         }
       })
     } else if (value == 'thisWeek') {
       matches.forEach(el => {
-        if (el.homeTeam && el.awayTeam && isThisWeek(el.startTime)) {
+        if (isThisWeek(el.startTime)) {
           filterResult.push(el)
         }
       })
     } else if (value == 'nextWeek') {
       matches.forEach(el => {
-        if (el.homeTeam && el.awayTeam && isNextWeek(el.startTime)) {
+        if (isNextWeek(el.startTime)) {
           filterResult.push(el)
         }
       })
     } else if (value == 'today') {
       //TODAY
       matches.forEach(el => {
-        if (el.homeTeam && el.awayTeam && isToday(el.startTime, el.endTime)) {
+        if (isToday(el.startTime, el.endTime)) {
           filterResult.push(el)
         }
       })
     } else if (value == 'tomorrow') {
       //Tomorrow
       matches.forEach(el => {
-        if (el.homeTeam && el.awayTeam && isTomorrow(el.startTime, el.endTime)) {
+        if (isTomorrow(el.startTime, el.endTime)) {
           filterResult.push(el)
         }
       })
@@ -188,15 +188,15 @@ class Matches extends React.Component {
     if (value === 'live') {
       // Live
       matches.forEach(el => {
-        if (el.homeTeam && el.awayTeam && isMatchLive(el.startTime, el.endTime)) {
+        if (isMatchLive(el.startTime, el.endTime)) {
           filterResult.push(el)
         }
       })
     } else if (value === 'frm') {
       //Full Replay Match
-      matches.forEach(index => {
-        if (index.homeTeam && index.awayTeam && isMatchPassed(index.endTime)) {
-          filterResult.push(index)
+      matches.forEach(el => {
+        if (isMatchPassed(el.endTime)) {
+          filterResult.push(el)
         }
       })
     } else if (value === 'highlightReplay') {
