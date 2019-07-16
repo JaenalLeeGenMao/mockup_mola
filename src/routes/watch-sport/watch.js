@@ -29,7 +29,7 @@ class Watch extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -201,7 +201,6 @@ class Watch extends Component {
   render() {
     const { isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
-    const { isMobile } = this.props
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -220,6 +219,7 @@ class Watch extends Component {
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
     }
+
     return (
       <>
         {dataFetched && (
@@ -227,9 +227,7 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {isMobile && (
-              <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff opacity={0} {...this.props} />
-            )}
+            {isMobile && <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff opacity={0} containerWidth={'80px'} {...this.props} />}
             <div className={isMobile ? styles.container__mobile : styles.container}>
               <div className={isMobile ? styles.player__container__mobile : styles.player__container}>
                 {toggleInfoBar &&

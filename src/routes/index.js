@@ -125,7 +125,7 @@ const routes = {
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
-      path: '/sport',
+      path: '/sports',
       load: () => import(/* webpackChunkName: 'sport' */ './sport'),
     },
     {

@@ -24,9 +24,35 @@ class LeftMenu extends Component {
 
   componentDidMount() {
     const { activePlaylist, activeMenu, isMobile } = this.props
-    menu = [{ id: 'movie', title: 'Movie', linkUrl: '/' }, { id: 'sport', title: 'Sport', linkUrl: '/sport' }, { id: 'channels', title: 'Channels', linkUrl: '/channels' }]
+    menu = [
+      {
+        id: 'movie',
+        title: 'Movie',
+        linkUrl: '/',
+      },
+      {
+        id: 'sport',
+        title: 'Sports',
+        linkUrl: '/sports',
+      },
+      {
+        id: 'channels',
+        title: 'Channels',
+        linkUrl: '/channels',
+      },
+      {
+        id: 'matches',
+        title: 'matches',
+        linkUrl: 'matches',
+      },
+      {
+        id: 'library',
+        title: 'library',
+        linkUrl: `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
+      },
+    ]
 
-    const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
+    const showLibrary = !isMobile
     if (showLibrary) {
       const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
       menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
@@ -44,16 +70,17 @@ class LeftMenu extends Component {
     const { color, leftMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape } = this.props
 
     let activeMenuDropdown = ''
-    if (activeMenu === 'library') {
-      activeMenuDropdown = 'movie'
-    } else if (activeMenu === 'matches') {
-      activeMenuDropdown = 'sport'
-    } else {
-      activeMenuDropdown = activeMenu
-    }
+    // if (activeMenu === 'library') {
+    //   activeMenuDropdown = 'movie'
+    // } else if (activeMenu === 'matches') {
+    //   activeMenuDropdown = 'sport'
+    // } else {
+    //   activeMenuDropdown = activeMenu
+    // }
 
+    activeMenuDropdown = activeMenu
     let libraryUrl = ''
-    const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels'
+    const showLibrary = true
     if (showLibrary) {
       libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
     }
@@ -78,16 +105,16 @@ class LeftMenu extends Component {
                   {isMobile && (
                     <div className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''} tourOtherCategory`}>
                       <DropdownList className={styles.left_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
-                      {showLibrary && (
+                      {/* {showLibrary && (
                         <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>
                           Library
                         </Link>
-                      )}
-                      {(activeMenu === 'sport' || activeMenu === 'matches') && (
+                      )} */}
+                      {/* {(activeMenu === 'sport' || activeMenu === 'matches') && (
                         <Link className={activeMenu === 'matches' ? styles.left_menu__active : ''} to={'/matches'}>
                           Matches
                         </Link>
-                      )}
+                      )} */}
                     </div>
                   )}
                 </div>

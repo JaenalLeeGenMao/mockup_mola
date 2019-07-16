@@ -102,7 +102,8 @@ class Header extends Component {
       shareButtonOn = false,
       greyBackground,
       isLandscape = false,
-      opacity = ''
+      opacity = '',
+      containerWidth = '100%',
     } = this.props
     const color = isDark ? 'black' : 'white'
     const headerStyle = isMobile ? styles.header__container_m : styles.header__container
@@ -110,7 +111,7 @@ class Header extends Component {
     const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
 
     return (
-      <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
+      <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
         {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
         {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
         {!isMobile && <div className={styles.header__shadow_desktop} />}
