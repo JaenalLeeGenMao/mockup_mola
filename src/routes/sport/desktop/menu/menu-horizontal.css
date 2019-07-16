@@ -15,6 +15,11 @@
   opacity: 1;
 }
 
+.menu__dots:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
 .menu__dots.black {
   background: black;
   color: black;
