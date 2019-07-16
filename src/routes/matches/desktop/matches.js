@@ -468,7 +468,7 @@ class Matches extends React.Component {
     return (
       <>
         <div className={s.headerContainer}>
-          <Header stickyOff searchOff isDark={isDark} activeMenu="sport" libraryOff {...this.props} />
+          <Header stickyOff searchOff isDark={isDark} activeMenu="matches" libraryOff {...this.props} />
         </div>
         {matchesList.meta.status === 'loading' && <Placeholder />}
         {matchesList.meta.status === 'success' && (
