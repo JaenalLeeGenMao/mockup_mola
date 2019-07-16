@@ -11,6 +11,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 
+import { isMovie } from '@source/lib/globalUtil'
+
 import homeActions from '@actions/home'
 
 import { getErrorCode } from '@routes/home/util'
@@ -388,10 +390,10 @@ class Home extends Component {
           break
         case 13 /* enter */:
           if (activeSlide.id) {
-            if (activeSlide.homeTeamId || activeSlide.startTime) {
-              window.location.href = `/watch?v=${activeSlide.id}`
-            } else {
+            if (isMovie(activeSlide.contentType)) {
               window.location.href = `/movie-detail/${activeSlide.id}`
+            } else {
+              window.location.href = `/watch?v=${activeSlide.id}`
             }
           } else if (scrollIndex > 0) {
             const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
@@ -401,10 +403,10 @@ class Home extends Component {
           break
         case 32 /* space */:
           if (activeSlide.id) {
-            if (activeSlide.homeTeamId || activeSlide.startTime) {
-              window.location.href = `/watch?v=${activeSlide.id}`
-            } else {
+            if (isMovie(activeSlide.contentType)) {
               window.location.href = `/movie-detail/${activeSlide.id}`
+            } else {
+              window.location.href = `/watch?v=${activeSlide.id}`
             }
           } else if (scrollIndex > 0) {
             const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
@@ -577,8 +579,8 @@ class Home extends Component {
           :
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
-      watchUrl = activeSlide.homeTeamId || activeSlide.startTime ? '/watch?v=' : '/movie-detail/'
-      buttonText = activeSlide.homeTeamId || activeSlide.startTime ? 'view_match' : 'view_movie'
+      watchUrl = isMovie(activeSlide.contentType) ? '/movie-detail/' : '/watch?v='
+      buttonText = isMovie(activeSlide.contentType) ? 'view_movie' : 'view_match'
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''

@@ -89,6 +89,7 @@
   font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
+  margin-left: 8rem;
 }
 
 .matchesList_viewall > a {
@@ -96,8 +97,7 @@
 }
 
 .matchesList_grid_label {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   margin: 2rem 0 2rem 0;
 }
 

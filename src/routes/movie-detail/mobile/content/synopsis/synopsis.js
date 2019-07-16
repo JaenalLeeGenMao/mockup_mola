@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import ReactMarkdown from 'react-markdown'
+
 import LazyLoad from '@components/common/Lazyload'
 
-import { setMultilineEllipsis, unsetMultilineEllipsis } from '@routes/movie-detail/util'
+import { setMultilineEllipsis, unsetMultilineEllipsis } from '@source/lib/globalUtil'
 
 import s from './synopsis.css'
 
@@ -38,7 +38,7 @@ class Synopsis extends Component {
           {content && (
             <>
               <p className={`synopsis__info_content ${show ? s.show : ''}`}>
-                <ReactMarkdown source={content} />
+                {content}
               </p>
               {!show && (
                 <button className={s.synopsis__info_read_more} onClick={this.handleClick}>

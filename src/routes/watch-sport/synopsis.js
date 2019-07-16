@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import ReactMarkdown from 'react-markdown'
-import LazyLoad from '@components/common/Lazyload'
 
-import { setMultilineEllipsis, unsetMultilineEllipsis } from '@routes/movie-detail/util'
+import { setMultilineEllipsis, unsetMultilineEllipsis } from '@source/lib/globalUtil'
 
 import styles from './watch.css'
 
