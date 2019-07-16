@@ -1,0 +1,103 @@
+.matchList__container {
+  color: white;
+  font-weight: bold;
+  display: flex;
+  flex-wrap: nowrap;
+
+  /* height: 123px; */
+  height: 17rem;
+  width: 82rem;
+  justify-content: flex-start;
+  margin-top: 10px;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+
+.matchList__date {
+  /* flex: 0.3; */
+  font-size: 1.3rem;
+  line-height: 1.6rem;
+  padding: 5px;
+  width: 110px;
+  background-color: #2c2c2c;
+}
+
+.matchList__live_now {
+  background-color: #1011ee;
+}
+
+.matchList__matches {
+  /* flex: 0.7; */
+  display: flex;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+  flex-direction: column;
+  background: #000;
+}
+
+.matchList__container:hover {
+  /* transform: translateY(-10px); */
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  transform: scale(1.1);
+  opacity: 0.9;
+  cursor: pointer;
+
+  /* width: 74rem; */
+}
+
+.matchList__league_logo {
+  /* align-self: flex-end; */
+
+  /* position: absolute; */
+  right: 10px;
+  bottom: 10px;
+  width: 3.2rem;
+}
+
+.matchList__club {
+  height: 6rem;
+  margin-bottom: 15px;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 0.2fr 1fr 1fr;
+}
+
+.matchList__club img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+.matchList__club span {
+  align-self: center;
+  padding-left: 10px;
+  font-size: 1.6rem;
+}
+
+.matchList__scoring {
+  text-align: right;
+  font-size: 1.5rem;
+  margin: 1.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+.matchList__leagueImg {
+  margin-top: 9.5rem;
+}
+
+.matchList__labelDate {
+  padding-right: 20px;
+  padding-left: 20px;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.matchList__NoHomeAwayTeam {
+  display: flex;
+  height: 6rem;
+  margin: 3rem 1rem 3rem 1rem;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 1.6rem;
+}

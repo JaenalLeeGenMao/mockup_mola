@@ -6,48 +6,27 @@ import styles from './placeholder.css'
 const Placeholder = () => {
   return (
     <div className={styles.placeholder__container}>
-      <div />
+      {/* <div /> */}
+      <div className={styles.placeholder__filter}>
+        <div className={`${styles.placeholder__header} ${styles.placeholder__line}`} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+      </div>
       <div className={styles.placeholder__content}>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
-        <div className={styles.placeholder__box}>
-        </div>
+        <div className={styles.placeholder__box} />
+        <div className={styles.placeholder__box} />
+        <div className={styles.placeholder__box} />
+        <div className={styles.placeholder__box} />
       </div>
       <div className={styles.placeholder__filter}>
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={`${styles.placeholder__header} ${styles.placeholder__line}`} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={`${styles.placeholder__header} ${styles.placeholder__line}`} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
+        <div className={`${styles.placeholder__header} ${styles.placeholder__line_right}`} />
+        <div className={`${styles.placeholder__line_right}`} />
+        <div className={`${styles.placeholder__line_right}`} />
+        <div className={`${styles.placeholder__line_right}`} />
+        <div className={`${styles.placeholder__line_right}`} />
+        <div className={`${styles.placeholder__line_right}`} />
+        <div className={`${styles.placeholder__line_right}`} />
       </div>
     </div>
   )
