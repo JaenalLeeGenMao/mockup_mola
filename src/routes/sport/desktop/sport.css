@@ -42,9 +42,12 @@ body {
   position: fixed;
   z-index: 1;
   color: white;
-  margin: 0 47.5% 0 12.5%;
-  top: 50%;
-  transform: translateY(-50%);
+  margin: 0 47.5% 25rem 12.5%;
+  bottom: 0;
+
+  /* top: 50%; */
+
+  /* transform: translateY(-50%); */
 }
 
 .header__detail_container.black {
