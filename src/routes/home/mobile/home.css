@@ -36,6 +36,7 @@ body {
   bottom: 0;
   width: 100%;
   padding: 0 20px 39% 45px;
+  pointer-events: none;
 }
 
 .header__detail_container.black {
@@ -52,7 +53,13 @@ body {
 }
 
 .header__detail_container_ls {
-  margin: 0 20px 10%;
+  position: fixed;
+  z-index: 1;
+  color: white;
+  bottom: 0;
+  width: 100%;
+  padding: 0 20px 10%;
+  pointer-events: none;
 }
 
 .header__playlist_title {
@@ -335,12 +342,8 @@ body {
 }
 
 @media screen and (max-height: 600px) {
-  /* .home__detail_button {
-    left: 25px;
-  } */
-
   .header__detail_container_ls {
-    margin: 0 20px 100px 81px;
+    padding: 0 20px 100px 81px;
   }
 
   .header__detail_container_ls .home__detail_button {

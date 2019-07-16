@@ -367,10 +367,7 @@ class Sport extends Component {
 
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      <p className="filteredText">{filteredQuote}</p>
-                      <p className="filteredText">{filteredDesc}</p>
-                      <p className="filteredText">{filteredQuote}</p>
-                      <p className="filteredText">{filteredDesc}</p>
+                      {filteredDesc && <p className="filteredText">{filteredDesc}</p>}
                     </LazyLoad>
                   )}
                 <div className={styles.header__library_link_wrapper}>

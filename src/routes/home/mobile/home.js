@@ -475,9 +475,13 @@ class Home extends Component {
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
                       {activeSlide.startTime || activeSlide.homeTeamId ?
-                        <p className={`${styles.home_desc} filteredText`}>
-                          {filteredDesc}
-                        </p>
+                        <>
+                          {filteredDesc &&
+                            <p className={`${styles.home_desc} filteredText`}>
+                              {filteredDesc}
+                            </p>
+                          }
+                        </>
                         :
                         <>
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredDesc}</p>

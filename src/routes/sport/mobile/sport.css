@@ -36,10 +36,17 @@ body {
   bottom: 0;
   width: 100%;
   padding: 0 20px 39% 45px;
+  pointer-events: none;
 }
 
 .header__detail_container_ls {
-  margin: 0 20px 10%;
+  position: fixed;
+  z-index: 1;
+  color: white;
+  bottom: 0;
+  width: 100%;
+  padding: 0 20px 10%;
+  pointer-events: none;
 }
 
 .header__detail_container.black {
@@ -73,8 +80,6 @@ body {
   font-size: 14px;
   position: absolute;
   overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  animation: fadeAnimation 40s linear infinite 0s;
 }
 
 .sport__button_livenow p {
@@ -319,13 +324,12 @@ body {
 }
 
 @media screen and (max-height: 500px) {
-  /* .sport__detail_button {
-    left: 40px;
-    top: -3px;
-  } */
+  .header__detail_container {
+    padding: 0 20px 10% 45px;
+  }
 
   .header__detail_container_ls {
-    margin: 0 20px 100px 81px;
+    padding: 0 20px 100px 81px;
   }
 
   .header__detail_container_ls .sport__detail_button {
@@ -336,37 +340,8 @@ body {
     transform: translateX(-25.5%) translateY(-52.5%);
   }
 
-  .sport__button_livenow {
-    left: 40px;
-    top: -3px;
-  }
-
   .header__detail_container_ls .sport__button_livenow {
     left: 0;
     top: 0;
-  }
-}
-
-@keyframes fadeAnimation {
-  0% {
-    opacity: 0;
-    animation-timing-function: ease-in;
-  }
-
-  1% {
-    opacity: 1;
-    animation-timing-function: ease-out;
-  }
-
-  24% {
-    opacity: 1;
-  }
-
-  27% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 0;
   }
 }

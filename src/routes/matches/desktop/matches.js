@@ -117,7 +117,7 @@ class Matches extends React.Component {
 
   handleSortMatches = matches => {
     const groupByDate = _groupBy(matches, match => {
-      if (isToday(match.startTime)) return 'isToday'
+      if (isToday(match.startTime, match.endTime)) return 'isToday'
       else if (isThisWeek(match.startTime)) return 'isThisWeek'
       else if (isNextWeek(match.startTime)) return 'isNextWeek'
       else return 'isLastWeek'
