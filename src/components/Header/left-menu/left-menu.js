@@ -52,11 +52,11 @@ class LeftMenu extends Component {
       },
     ]
 
-    const showLibrary = !isMobile
-    if (showLibrary) {
-      const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
-      menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
-    }
+    // const showLibrary = !isMobile
+    // if (showLibrary) {
+    //   const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    //   menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
+    // }
   }
 
   handleNavigation = id => {
@@ -79,11 +79,11 @@ class LeftMenu extends Component {
     // }
 
     activeMenuDropdown = activeMenu
-    let libraryUrl = ''
-    const showLibrary = true
-    if (showLibrary) {
-      libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
-    }
+    // let libraryUrl = ''
+    // const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels'
+    // if (showLibrary) {
+    //   libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    // }
     return (
       <>
         <div className={`${styles.left__menu} tourOtherCategory`}>
