@@ -317,6 +317,23 @@ body {
   }
 }
 
+@media screen and (min-width: 600px) and (max-width: 768px) {
+  .header__detail_container {
+    margin: 0 12.5% 0 12.5%;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .header__detail_container > p {
+    max-width: 45vw;
+  }
+
+  .header__detail_container > h1 {
+    max-width: 45vw;
+  }
+}
+
 @keyframes fadeAnimation {
   0% {
     opacity: 0;
