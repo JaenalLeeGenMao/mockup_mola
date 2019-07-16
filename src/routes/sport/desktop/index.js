@@ -1,3 +1,3 @@
-import SportMobile from './sport'
+import SportDesktop from './sport'
 
-export default SportMobile
+export default SportDesktop

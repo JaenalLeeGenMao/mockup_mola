@@ -13,6 +13,8 @@ import * as movieDetailActions from '@actions/movie-detail'
 import styles from './watch.css'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 import Synopsis from './synopsis'
+
+import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import { customTheoplayer, noInfoBar } from './theoplayer-style'
 //const { getComponent } = require('../../../../../gandalf')
@@ -27,7 +29,7 @@ class Watch extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -197,8 +199,8 @@ class Watch extends Component {
   }
 
   render() {
-    const { meta: { status, error }, data } = this.props.movieDetail
     const { isMobile } = this.props
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -217,6 +219,7 @@ class Watch extends Component {
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
     }
+
     return (
       <>
         {dataFetched && (
@@ -224,6 +227,7 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
+            {isMobile && <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff opacity={0} containerWidth={'80px'} {...this.props} />}
             <div className={isMobile ? styles.container__mobile : styles.container}>
               <div className={isMobile ? styles.player__container__mobile : styles.player__container}>
                 {toggleInfoBar &&

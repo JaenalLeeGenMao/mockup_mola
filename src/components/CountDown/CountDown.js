@@ -3,6 +3,7 @@
 import React from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Countdown from 'react-countdown-now'
+
 import history from '../../history'
 import s from './CountDown.css'
 
@@ -26,15 +27,11 @@ class CountDown extends React.Component {
 
       return (
         <div className={`${s.countDown__wrapper} ${className}`}>
-          {isMobile ? (
-            <div className={s.header__back_button} onClick={this.handleGoBack}>
-              <button className={s.header__back_arrow} />
+          {!isMobile && (
+            <div className={s.arrow__container} onClick={this.handleGoBack}>
+              <span className={s.arrow__icon} />
             </div>
-          ) : (
-              <div className={s.arrowContainer} onClick={this.handleGoBack}>
-                <span className={s.arrowIcon} />
-              </div>
-            )}
+          )}
           <div className={s.countDown}>
             <div className={s.startText}>Tayangan akan dimulai dalam: </div>
             {days > 0 ? `${days} hari ` : ''}
