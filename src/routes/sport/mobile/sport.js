@@ -43,7 +43,7 @@ class Sport extends Component {
     isLandscape: false,
     isDark: undefined,
     activeSlide: undefined,
-    activeSlideDots: undefined,
+    activeSlideDots: [],
     scrollIndex: 0 /* vertical menu */,
     swipeIndex: 0 /* horizontal menu */,
     playlists: [],
@@ -90,27 +90,31 @@ class Sport extends Component {
     } else {
       isLandscapeVar = true
     }
-    var resizeTimer;
+    var resizeTimer
     const that = this
-    window.addEventListener('resize', function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () {
-        if (window.innerHeight > window.innerWidth) {
-          isLandscapeVar = false
-        } else {
-          isLandscapeVar = true
-        }
-        if (that.state.isLandscape != isLandscapeVar) {
-          that.setState({
-            isLandscape: isLandscapeVar
-          })
-        }
-      }, 300);
-    }, false);
+    window.addEventListener(
+      'resize',
+      function() {
+        clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(function() {
+          if (window.innerHeight > window.innerWidth) {
+            isLandscapeVar = false
+          } else {
+            isLandscapeVar = true
+          }
+          if (that.state.isLandscape != isLandscapeVar) {
+            that.setState({
+              isLandscape: isLandscapeVar,
+            })
+          }
+        }, 300)
+      },
+      false
+    )
 
     if (this.state.isLandscape != isLandscapeVar) {
       this.setState({
-        isLandscape: isLandscapeVar
+        isLandscape: isLandscapeVar,
       })
     }
     document.body.addEventListener('touchmove', this.preventDefault, {
@@ -193,7 +197,7 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       if (activePlaylist) {
         that.props.onUpdatePlaylist(activePlaylist.id)
       }
@@ -223,6 +227,14 @@ class Sport extends Component {
       sliderRefs.push(refs)
     }
     sliderRefs.sort((a, b) => a.props.id - b.props.id)
+  }
+
+  renderMenuBanner = (activeSlide, playlistData, directionIndex, className, type) => {
+    if (activeSlide.isDark > 0) {
+      return <SportMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} type={type} className={className} />
+    } else {
+      return <SportMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} type={type} className={className} />
+    }
   }
 
   render() {
@@ -314,7 +326,9 @@ class Sport extends Component {
     return (
       <Fragment>
         <div>
-          {playlistStatus !== 'error' && <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={0} isLandscape={isLandscape} activePlaylist={activePlaylist} isMobile {...this.props} />}
+          {playlistStatus !== 'error' && (
+            <Header libraryOff activeMenu="sport" className={styles.placeholder__header} isDark={0} isLandscape={isLandscape} activePlaylist={activePlaylist} isMobile {...this.props} />
+          )}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <SportPlaceholder />}
           {playlistStatus === 'error' && <SportError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
           {videoStatus === 'error' && <SportError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />}
@@ -323,7 +337,12 @@ class Sport extends Component {
             videos.data.length === playlists.data.length && (
               <>
                 <div className={styles.sport__sidebar}>
-                  <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={isDark} className="tourCategory" />
+                  {/* <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isGray={scrollIndex == 0} isDark={isDark} className="tourCategory" /> */}
+                  {activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length > 1 ? (
+                    this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourCategory')
+                  ) : (
+                    <SportMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
+                  )}
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide && (
@@ -338,13 +357,11 @@ class Sport extends Component {
                       {!activeSlide.buttonText &&
                         scrollIndex != 0 && (
                           <>
-                            {
-                              activeSlide.contentType === 1 && (
-                                <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
-                                  <span className={styles.icon__view_movie} />
-                                </Link>
-                              )
-                            }
+                            {activeSlide.contentType === 1 && (
+                              <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button}`}>
+                                <span className={styles.icon__view_movie} />
+                              </Link>
+                            )}
                             {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
                               <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
                                 <span className={styles.play_icon} />
@@ -365,7 +382,10 @@ class Sport extends Component {
                         )}
 
                       {activeSlide.buttonText && (
-                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <a
+                          href={`${activeSlide.link ? activeSlide.link : ''}`}
+                          className={`${styles.sport__detail_button} ${styles.featured_button} ${0 ? styles.black : styles.white} tourMovieDetail`}
+                        >
                           <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
                         </a>
                       )}
@@ -376,7 +396,11 @@ class Sport extends Component {
                     </LazyLoad>
                   )}
                 <div className={styles.header__library_link_wrapper}>
-                  {activeSlideDots && activeSlideDots.length > 1 && <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={scrollIndex == 0} isDark={0} type="horizontal" className="tourSlide" />}
+                  {activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
+                    this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
+                  ) : (
+                    <SportMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />
+                  )}
                 </div>
                 <Slider
                   {...settings}
@@ -389,7 +413,17 @@ class Sport extends Component {
                     videos.data.length > 0 &&
                     videos.data.map((video, index) => {
                       const { id } = video.meta
-                      return <SportMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} user={this.props.user} />
+                      return (
+                        <SportMobileContent
+                          key={id}
+                          videos={video.data}
+                          index={index}
+                          isLandscape={isLandscape}
+                          updateSlider={this.handleUpdateSlider}
+                          updateColorChange={this.handleColorChange}
+                          user={this.props.user}
+                        />
+                      )
                     })}
                 </Slider>
               </>

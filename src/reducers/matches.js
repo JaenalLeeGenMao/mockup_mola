@@ -6,6 +6,12 @@ const initialState = {
     status: 'loading',
   },
   data: [],
+  genreSpo: {
+    meta: {
+      status: 'loading',
+    },
+    data: [],
+  },
 }
 
 export default function matches(state = initialState, action) {
@@ -21,6 +27,14 @@ export default function matches(state = initialState, action) {
         ...state,
         ...action.payload,
       }
+
+    case types.GET_MATCHES_GENRESPO_LOADING:
+      return { ...state, genreSpo: { ...action.payload } }
+    case types.GET_MATCHES_GENRESPO_SUCCESS:
+      return { ...state, genreSpo: { ...action.payload } }
+    case types.GET_MATCHES_GENRESPO_ERROR:
+      return { ...state, genreSpo: { ...action.payload } }
+
     case types.UPDATE_ACTIVE_MATCHES_PLAYLIST:
       return { ...state, ...action.payload }
     default:

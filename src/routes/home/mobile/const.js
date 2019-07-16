@@ -8,8 +8,8 @@ export const tourSteps = {
       title: 'Kategori konten',
       content: (
         <div>
-          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard,
-          atau geser <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar sentuh/trackpad Anda.
+          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard, atau geser <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar
+          sentuh/trackpad Anda.
         </div>
       ),
       placement: 'right',
@@ -26,8 +26,8 @@ export const tourSteps = {
       content: (
         <div>
           {' '}
-          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard,
-          atau geser <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan layar sentuh/trackpad Anda.
+          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard, atau geser <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan
+          layar sentuh/trackpad Anda.
         </div>
       ),
       placement: 'top',
@@ -36,16 +36,11 @@ export const tourSteps = {
     {
       target: '.tourOtherCategory',
       title: 'Telusuri Channel lain',
-      content: (
-        <div>
-          {' '}
-          Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di atas ini.
-        </div>
-      ),
+      content: <div> Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di atas ini.</div>,
       placement: 'left',
       disableBeacon: true,
-      locale: { last: 'Finish' }
-    }
+      locale: { last: 'Finish' },
+    },
     // {
     //   target: '.tourLibrary',
     //   title: 'Perpustakaan Film',
@@ -75,8 +70,8 @@ export const tourSteps = {
       title: 'Content Categories',
       content: (
         <div>
-          To navigate around different content categories, you can simply click the up and down buttons on your keyboard,
-          or swipe <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
+          To navigate around different content categories, you can simply click the up and down buttons on your keyboard, or swipe <span className={styles.swipeUpIcon} /> up and down on your
+          touchscreen/trackpad.
         </div>
       ),
       placement: 'right',
@@ -93,8 +88,8 @@ export const tourSteps = {
       content: (
         <div>
           {' '}
-          You can browse {'Mola\'s'} selected contents in each category by clicking on the left and right arrow buttons on the keyboard,
-          or swipe <span className={styles.swipeNextIcon} /> left and right using your touch screen / trackpad.
+          You can browse {"Mola's"} selected contents in each category by clicking on the left and right arrow buttons on the keyboard, or swipe <span className={styles.swipeNextIcon} /> left and
+          right using your touch screen / trackpad.
         </div>
       ),
       placement: 'top',
@@ -102,17 +97,12 @@ export const tourSteps = {
     },
     {
       target: '.tourOtherCategory',
-      title: 'Navigate Other Channels',
-      content: (
-        <div>
-          {' '}
-          Do you want to watch sports, or other TV channels? Navigate using the Channel options available here.
-        </div>
-      ),
+      title: 'Navigate to Other Channels',
+      content: <div> Do you want to watch sports, or other TV channels? Navigate using the Channel options available here.</div>,
       placement: 'bottom',
       disableBeacon: true,
-      locale: { last: 'Finish' }
-    }
+      locale: { last: 'Finish' },
+    },
     // {
     //   target: '.tourLibrary',
     //   title: 'Movie Library',

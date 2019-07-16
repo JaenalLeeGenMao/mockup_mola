@@ -10,6 +10,7 @@ const normalizeHomePlaylist = response => {
         playlists.map((playlist, index) => {
           const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
+          const thumbnailImg = _get(images, 'thumbnails.cover', '')
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
             id,
@@ -23,6 +24,7 @@ const normalizeHomePlaylist = response => {
             iconUrl: iconUrl || '',
             // coverTitle: coverTitle,
             background,
+            thumbnailImg,
             backgroundColor: coverBGColor || '#000622',
             isDark: isDark || 0,
             isActive: false,
@@ -117,10 +119,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-            id: league.id,
-            name: league.attributes.name,
-            iconUrl: league.attributes.iconUrl,
-          }
+              id: league.id,
+              name: league.attributes.name,
+              iconUrl: league.attributes.iconUrl,
+            }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -137,7 +139,11 @@ const normalizeHomeVideo = response => {
       const result = data.map(
         ({ attributes: { videos } }) =>
           videos.map(video => {
-            const { id, type, attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime, homeTeamId, awayTeamId } } = video
+            const {
+              id,
+              type,
+              attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime, homeTeamId, awayTeamId },
+            } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', '')
             // dummyQuote = {
@@ -167,13 +173,13 @@ const normalizeHomeVideo = response => {
               quotes: quoteLists.length > 0 ? quoteLists[0] : null,
               type,
               homeTeamId,
-              awayTeamId
+              awayTeamId,
             }
           })
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) { }
+    } catch (err) {}
   }
   return []
 }

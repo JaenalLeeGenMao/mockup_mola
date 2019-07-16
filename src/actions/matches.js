@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getAllMatches = (id) => dispatch => {
+const getAllMatches = id => dispatch => {
   dispatch({
     type: types.GET_MATCHES_PLAYLIST_LOADING,
     payload: {
@@ -41,6 +41,38 @@ const getAllMatches = (id) => dispatch => {
     }
   })
 }
+
+const getAllGenreSpo = id => dispatch => {
+  dispatch({
+    type: types.GET_MATCHES_GENRESPO_LOADING,
+    payload: {
+      meta: {
+        status: 'loading',
+        error: '',
+      },
+      data: [],
+    },
+  })
+
+  return Mola.getGenreMatches(id).then(result => {
+    if (result.meta.status === 'error') {
+      dispatch({
+        type: types.GET_MATCHES_GENRESPO_ERROR,
+        payload: result,
+      })
+    } else {
+      result.data = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
+      dispatch({
+        type: types.GET_MATCHES_GENRESPO_SUCCESS,
+        payload: result,
+      })
+    }
+  })
+}
+
 export default {
   getAllMatches,
+  getAllGenreSpo,
 }

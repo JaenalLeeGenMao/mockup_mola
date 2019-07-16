@@ -261,6 +261,17 @@ body {
   top: 0;
 }
 
+.sport__bottombar {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+  cursor: default;
+  height: 7%;
+}
+
+
 .sport__swipe_slider {
   position: fixed;
   display: flex;

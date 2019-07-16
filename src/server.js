@@ -158,19 +158,15 @@ app.get('/sign-location', async (req, res) => {
   const lat = req.query.lat
   const long = req.query.long
 
-  if (typeof lat !== 'undefined' && typeof long !== 'undefined' && lat !== '' && long !== '') {
+  if (typeof lat !== 'undefined' && typeof long !== 'undefined') {
     const body = {
       lat: parseFloat(lat),
       long: parseFloat(long),
     }
 
-    Axios.post(locationUrl, body)
-      .then(locationPayload => {
-        res.send(locationPayload.data)
-      })
-      .catch(err => {
-        res.send(err.message)
-      })
+    let locationPayload = await Axios.post(locationUrl, body)
+
+    res.send(locationPayload.data)
   }
 })
 
@@ -481,7 +477,6 @@ app.get('/signout', (req, res) => {
 app.get('*', async (req, res, next) => {
   console.log('Server URL', req.url)
   var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
-
   try {
     // global.clearInterval(inboxInterval);
 
@@ -542,11 +537,9 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          if (req.url !== '/accounts/consent') {
-            res.clearCookie('_at')
-            res.clearCookie('SID')
-            return res.redirect('/accounts/login')
-          }
+          res.clearCookie('_at')
+          res.clearCookie('SID')
+          return res.redirect('/accounts/login')
         }
       }
     } else {

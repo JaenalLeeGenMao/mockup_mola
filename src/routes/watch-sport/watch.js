@@ -185,7 +185,7 @@ class Watch extends Component {
             // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
             // isDRM={true}
             {...videoSettings}
-            showBackBtn
+            showBackBtn={!isMobile}
           />
         )
       }
