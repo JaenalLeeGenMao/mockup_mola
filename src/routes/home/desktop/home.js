@@ -34,7 +34,7 @@ import { filterString } from './util'
 import { SETTINGS_VERTICAL } from '../const'
 import { tourSteps } from './const'
 import { viewAllMovieImg, viewAllMovieImgWebp } from '@global/imageUrl'
-import { globalTracker } from '../../../lib/globalTracker';
+import { globalTracker } from '../../../lib/globalTracker'
 
 // let activePlaylist
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -203,7 +203,7 @@ class Home extends Component {
       this.prevTouchY = event.screenY
     }
 
-    var handleClick = function (e) {
+    var handleClick = function(e) {
       var target = e.target
       var isPlaylist = target.parentElement.getElementsByClassName('is-home-playlist').length
 
@@ -349,7 +349,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function () {
+      setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
 
@@ -473,7 +473,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -545,11 +545,11 @@ class Home extends Component {
 
   render() {
     const {
-      playlists,
-      playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
-      videos,
-      videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
-    } = this.props.home,
+        playlists,
+        playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
+        videos,
+        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
+      } = this.props.home,
       { locale, isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
         ...SETTINGS_VERTICAL,
@@ -574,10 +574,7 @@ class Home extends Component {
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.shortDescription, 36)
       if (scrollIndex !== 0) {
-        filteredQuote = activeSlide.quotes ?
-          `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}`
-          :
-          `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
+        filteredQuote = activeSlide.quotes ? `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}` : ''
       }
       watchUrl = isMovie(activeSlide.contentType) ? '/movie-detail/' : '/watch?v='
       buttonText = isMovie(activeSlide.contentType) ? 'view_movie' : 'view_match'
@@ -618,14 +615,17 @@ class Home extends Component {
             videos.data.length > 0 &&
             videos.data.length === playlists.data.length && (
               <>
-                <div className={`is-home-gradient ${styles.home__gradient}`} style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }} />
+                <div
+                  className={`is-home-gradient ${styles.home__gradient}`}
+                  style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }}
+                />
                 <div className={styles.home__sidebar}>
                   {/* <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} /> */}
-                  {
-                    scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
-                      :
-                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
-                  }
+                  {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
+                    this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
+                  ) : (
+                    <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                  )}
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide &&
@@ -637,7 +637,7 @@ class Home extends Component {
                       <LazyLoad containerClassName={`${styles.header__detail_container} ${0 ? styles.black : styles.white}`}>
                         <h1 className={styles[activeSlide.title.length > 23 ? 'small' : 'big']}>{activeSlide.title}</h1>
                         <p>{filteredDesc}</p>
-                        {filteredQuote && !activeSlide.homeTeamId && !activeSlide.startTime && <p className={styles.quote}>{filteredQuote}</p>}
+                        {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
                         {!activeSlide.buttonText &&
                           scrollIndex != 0 && (
                             <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
@@ -670,11 +670,11 @@ class Home extends Component {
                   <div className={`${styles.header__movie_slider} tourSlide`}>
                     {/* {activeSlideDots && activeSlideDots.length > 1 && 
                     <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />} */}
-                    {
-                      scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
-                        :
-                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
-                    }
+                    {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
+                      this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
+                    ) : (
+                      <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
+                    )}
                   </div>
                 </div>
                 <Slider
@@ -687,7 +687,7 @@ class Home extends Component {
                     const { id, sortOrder } = video.meta
 
                     if (video.data <= 0) {
-                      return;
+                      return
                     }
 
                     return (
