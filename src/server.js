@@ -224,6 +224,8 @@ const requestGuestToken = async res => {
           'https://api.supersoccer.tv/videos/videos.read',
           'paymentmethods:read.internal',
           'payments:payment.dopay',
+          'userdata:preference.read',
+          'userdata:preference.insert',
         ].join(' '),
       },
     })
