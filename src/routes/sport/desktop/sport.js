@@ -369,7 +369,7 @@ class Sport extends Component {
     document.onkeyup = event => {
       ticking = false
 
-      const { activeSlide } = this.state
+      const { activeSlide, scrollIndex } = this.state
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
@@ -385,10 +385,18 @@ class Sport extends Component {
           this.handleScrollToIndex(this.state.scrollIndex + 1)
           break
         case 13 /* enter */:
-          window.location.href = `/watch?v=${activeSlide.id}`
+          if (scrollIndex == 0) {
+            window.location.href = activeSlide.link
+          } else {
+            window.location.href = `/watch?v=${activeSlide.id}`
+          }
           break
         case 32 /* space */:
-          window.location.href = `/watch?v=${activeSlide.id}`
+          if (scrollIndex == 0) {
+            window.location.href = activeSlide.link
+          } else {
+            window.location.href = `/watch?v=${activeSlide.id}`
+          }
           break
         default:
           event.preventDefault()
