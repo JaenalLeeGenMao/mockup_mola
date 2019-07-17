@@ -1,13 +1,15 @@
 import { css } from 'react-emotion'
 
+export const container = css`
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1280px;
+`
+
 export const bannerContainer = css`
   position: relative;
   border-radius: .25rem;
-
-  .bannerImageWrapper {
-    margin: 0 5%;
-    background: grey;
-  }
 }
 `
 export const carouselMargin = css`

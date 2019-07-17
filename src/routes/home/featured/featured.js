@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import LazyLoad from '@components/common/Lazyload'
 import Carousel from '@components/carousel'
-import MatchCard from '@components/playlist-card'
-import { bannerContainer, carouselMargin } from './style'
+import PlaylistCard from '@components/playlist-card'
+import { container, bannerContainer, carouselMargin } from './style'
 
 const banners = [
   {
@@ -120,31 +120,22 @@ class Featured extends Component {
   render() {
     const isMobile = Boolean(this.state.viewportWidth <= 800)
     return (
-      <LazyLoad
-        containerStyle={{
-          display: 'block',
-          width: '100%',
-          margin: '0 auto',
-          maxWidth: '1280px',
-        }}
-      >
-        <Carousel ref={node => this.carouselRef} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
-          {banners.map(obj => (
-            <LazyLoad key={obj.id} onClick={() => (window.location.href = obj.link)} containerClassName={bannerContainer} className="bannerImageWrapper" alt={obj.name} src={obj.imageUrl} />
-          ))}
+      <LazyLoad containerClassName={container}>
+        <Carousel wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
+          {banners.map(obj => <PlaylistCard key={obj.id} onClick={() => (window.location.href = obj.link)} containerClassName={bannerContainer} alt={obj.name} src={obj.imageUrl} />)}
         </Carousel>
 
         {/* <div>
           <h2>Match cards</h2> */}
-        <Carousel className={carouselMargin} wrap={false} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={isMobile ? 3 : 4} transitionMode={'scroll'}>
-          {banners.map(obj => <MatchCard key={obj.id} onClick={() => (window.location.href = obj.link)} alt={obj.name} src={obj.imageUrl} description={obj.description} />)}
+        <Carousel className={carouselMargin} wrap={false} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={isMobile ? 3 : 4} transitionMode={'scroll'} slidesToScroll={3}>
+          {banners.map(obj => <PlaylistCard key={obj.id} onClick={() => (window.location.href = obj.link)} alt={obj.name} src={obj.imageUrl} description={obj.description} />)}
         </Carousel>
         {/* </div>
 
         <div>
           <h2>category cards</h2> */}
         <Carousel className={carouselMargin} wrap={false} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={isMobile ? 3 : 5} transitionMode={'scroll'}>
-          {banners.map(obj => <MatchCard key={obj.id} onClick={() => (window.location.href = obj.link)} alt={obj.name} src={obj.imageUrl} description={obj.description} />)}
+          {banners.map(obj => <PlaylistCard key={obj.id} onClick={() => (window.location.href = obj.link)} alt={obj.name} src={obj.imageUrl} description={obj.description} />)}
         </Carousel>
         {/* </div> */}
       </LazyLoad>
