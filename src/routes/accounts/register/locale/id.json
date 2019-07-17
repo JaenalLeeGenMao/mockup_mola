@@ -12,7 +12,7 @@
   "sign_up": "DAFTAR",
   "error_input": "Periksa kembali input anda",
   "error_input_email": "Email tidak boleh kosong",
-  "error_email_valid": "Email tidak tersedia",
+  "error_valid_email": "Email tidak tersedia",
   "error_gender": "Mohon di isi jenis kelamin anda",
   "error_date": "Mohon di isi tanggal lahir anda"
 }
