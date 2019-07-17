@@ -91,6 +91,9 @@ class Html extends React.Component {
           <style
             dangerouslySetInnerHTML={{
               __html: `
+            .embeddedServiceHelpButton {
+              visibility: hidden;
+            }
             .embeddedServiceHelpButton .helpButton {
               position: fixed;
               bottom: 4rem !important;  
