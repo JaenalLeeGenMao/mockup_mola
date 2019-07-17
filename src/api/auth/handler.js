@@ -2,31 +2,31 @@ import { post, patch, get } from 'axios'
 import { AUTH_BASE_ENDPOINT } from './endpoints'
 import config from '@source/config'
 
-// const createNewUser = ({ email = '', password = '', csrf = '' }) => {
-//   const body = { email, password }
-//   return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, body, {
-//     headers: {
-//       'x-csrf-token': csrf,
-//     },
-//   })
-//     .then(response => {
-//       return {
-//         meta: {
-//           status: 'success',
-//         },
-//         data: response.data,
-//       }
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error,
-//         },
-//         data: {},
-//       }
-//     })
-// }
+const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', gender = '', phone = '' }) => {
+  const body = { email, password, birthdate, gender, phone }
+  return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, body, {
+    headers: {
+      'x-csrf-token': csrf,
+    },
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response.data,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
 
 // const verifyUserToken = ({ token = '', email = '', csrf = '' }) => {
 //   const body = { token, email }
@@ -380,7 +380,8 @@ import { getApi } from '@supersoccer/gandalf'
 const Auth = getApi('auth/handler')
 
 export default {
-  createNewUser: Auth.createNewUser,
+  createNewUser,
+  // createNewUser: Auth.createNewUser,
   verifyUserToken: Auth.verifyUserToken,
   resendUserToken: Auth.resendUserToken,
   requestLogin: Auth.requestLogin,

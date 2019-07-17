@@ -260,7 +260,7 @@ class Profile extends React.Component {
             </div>
             <FormContent type="text" id="name" label="Ubah nama" value={name} onChange={this.onChangeInput} />
             <FormContent type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} disabled />
-            <FormContent type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} disabled />
+            <FormContent type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} />
             <FormContent type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} />
             <FormContent type="select" id="gender" label="Ubah jenis kelamin" value={{ label: this.getGenderText(gender), value: gender }} onChange={this.onChangeSelect} options={genderOptions} />
             <FormContent type="select" id="location" label="Ubah lokasi" value={{ label: location, value: location }} onChange={this.onChangeSelect} options={countryOptions} />
