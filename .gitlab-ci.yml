@@ -25,6 +25,7 @@ push_docker_staging:
     CDN_PATH: https://cdn.stag.supersoccer.tv/mola
   only:
     - develop@apps/mola/mola-web
+    - new-design-dev@apps/mola/mola-web
 
 push_docker_production:
   stage: push_docker
