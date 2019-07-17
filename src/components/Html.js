@@ -96,7 +96,7 @@ class Html extends React.Component {
             }
             .embeddedServiceHelpButton .helpButton {
               position: fixed;
-              bottom: 4rem !important;  
+              bottom: 3rem !important;  
               right: 6rem !important;
             }
             .embeddedServiceHelpButton .helpButton button.uiButton {
@@ -186,7 +186,7 @@ class Html extends React.Component {
             @media (min-width: 320px) and (max-width: 480px) {
               .embeddedServiceHelpButton .helpButton {
                 position: fixed;
-                bottom: 2.5rem !important;  
+                bottom: 1.5rem !important;  
                 right: 2rem !important;
               }
               .embeddedServiceHelpButton .helpButton button.uiButton {
