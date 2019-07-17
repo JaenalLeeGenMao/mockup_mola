@@ -112,6 +112,16 @@
   text-align: justify;
 }
 
+.player__video {
+  height: calc(100% - 38px);
+  width: 100%;
+}
+
+.player__video_nobar {
+  height: 100%;
+  width: 100%;
+}
+
 @media screen and (max-width: 640px) {
   .container__mobile {
     background: #000311;
@@ -127,9 +137,13 @@
   }
 
   .player__container__mobile {
-    height: calc(18rem + 38px);
+    height: 18rem;
     width: 100vw;
     margin: auto;
+  }
+
+  .player__video {
+    height: 100%;
   }
 
   .detail__title {

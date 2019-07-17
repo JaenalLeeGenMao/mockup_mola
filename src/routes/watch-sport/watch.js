@@ -171,14 +171,13 @@ class Watch extends Component {
         isMatchPassed = true
       }
 
-      const playerClass = toggleInfoBar && !isMatchPassed ? '' : noInfoBar
       const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
       } else if (data[0].streamSourceUrl) {
         return (
           <Theoplayer
-            className={`${customTheoplayer} ${playerClass}`}
+            className={customTheoplayer}
             subtitles={this.subtitles()}
             // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
             handleOnVideoLoad={this.handleOnVideoLoad}
@@ -220,6 +219,8 @@ class Watch extends Component {
       isMatchPassed = true
     }
 
+    const playerClass = toggleInfoBar && !isMatchPassed ? styles.player__video : styles.player__video_nobar
+
     return (
       <>
         {dataFetched && (
@@ -241,7 +242,7 @@ class Watch extends Component {
                       </div>
                     </div>
                   )}
-                {loadPlayer && this.renderVideo()}
+                <div className={playerClass}>{loadPlayer && this.renderVideo()}</div>
               </div>
               {!isMobile && (
                 <>
