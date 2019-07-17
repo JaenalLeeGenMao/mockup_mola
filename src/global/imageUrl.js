@@ -46,11 +46,12 @@ export const google = `${imgBaseUrl}/google.png`
 export const defaultImgClub = `${imgBaseUrl}/defaultImage.svg`
 
 export const viewAllMovieBg = `${imgBaseUrl}/background_darker.png`
-export const viewAllMovieImg = `${imgBaseUrl}/viewallmovie.png`
 export const viewAllMovieBgWebp = `${imgBaseUrl}/background_darker.webp`
-export const viewAllMovieImgWebp = `${imgBaseUrl}/viewallmovie.webp`
 export const viewAllMovieMobileBg = `${imgBaseUrl}/background_darker_mobile.png`
 export const viewAllMovieMobileBgWebp = `${imgBaseUrl}/background_darker_mobile.webp`
 
 export const placeholderCardLandscape = `${imgBaseUrl}/placeholder-card-landscape.png`
 export const placeholderCardPortrait = `${imgBaseUrl}/placeholder-card-portrait.png`
+
+export const viewAllMovieImg = 'https://cdn01.sent.tv/BCSaWm1FQBSnozrmH74m_sent_1563354762.png'
+export const viewAllMovieImgWebp = 'https://cdn01.sent.tv/tEiP59aSTAek9XzGLM04_sent_1563354795.webp'

@@ -522,12 +522,25 @@ class Home extends Component {
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>
                       <picture>
-                        <source srcSet={viewAllMovieImgWebp} type="image/webp" />
-                        <source srcSet={viewAllMovieImg} type="image/jpeg" />
-                        <img src={viewAllMovieImg} />
+                        {this.state.playlists.data[scrollIndex].iconUrl ?
+                          <>
+                            <source srcSet={this.state.playlists.data[scrollIndex].iconWebp} type="image/webp" />
+                            <source srcSet={this.state.playlists.data[scrollIndex].iconUrl} type="image/jpeg" />
+                            <img src={this.state.playlists.data[scrollIndex].iconUrl} />
+                          </>
+                          :
+                          <>
+                            <source srcSet={viewAllMovieImgWebp} type="image/webp" />
+                            <source srcSet={viewAllMovieImg} type="image/jpeg" />
+                            <img src={viewAllMovieImg} />
+                          </>
+                        }
                       </picture>
                       <a href={`/movie-library/${libraryId}`}>
-                        <span>{locale['view_all_movie']}</span>
+                        <span>
+                          {locale['view_all_movie']}
+                          <br /> {this.state.playlists.data[scrollIndex].title.toUpperCase() + ' '}
+                          {locale['other']}</span>
                         <i />
                       </a>
                     </LazyLoad>
