@@ -91,12 +91,99 @@ class Html extends React.Component {
           <style
             dangerouslySetInnerHTML={{
               __html: `
-             .embeddedServiceHelpButton .helpButton button.uiButton {
+            .embeddedServiceHelpButton .helpButton {
+              position: fixed;
+              bottom: 4rem !important;  
+              right: 6rem !important;
+            }
+            .embeddedServiceHelpButton .helpButton button.uiButton {
+              background-color: #005290;
+              font-family: "Arial", sans-serif;
+              min-width: 0;
+              border-radius: .5rem;
+              width: 5rem;
+              background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAg1JREFUaAXtmr8vBEEUx7+7NISSQkNHULpaT6FBJ0HHX6AQLv6I012DiuIUaE9LS3K6U9wV6AiF4uzX2MxJbi87s7vZt8m85DaT+fHufea7s/fmdrxOYAjs/hE4vgAaTeD9kzVybXQYmJkCdlaB0pyK0yNI5VxByA09OjLC7K4B3t1Dp7N9FN2xCC3VA2Dge6xcbr8VIdzoGFsvgP/0HN2hKC1k8KUv7DiTSQY/Tsci9HEg0lRyijhFMpqBQRu/pdn/eY6Nj15jmOfV6sDZTa/W/nXGIISoHvZ3atvKRHBvM8ibPOD02syLMQgTNNrlLbBfUeU0rsxoN5aV0iuL5iDGT62FQBFamhD0x1/nkyuWVIquSvGvxiDxXZv3TJIuiQIxR9cjHIieCxklp4gMHXQUThE9FzJKThEZOugonCJ6LmSUnCJZ6DA9qbzaJI/G+5FeANxLhEH0ao9TNzEe7EeWVE++GTC1xCCE4I6Ru7s0jGqY7g75vYlAuiHarwA/ttb6G1+r2/mxBumG4J/IW+V8XxBZP7XC20kCBO8CaxCuCSkQiUAkQRDEeI0QgJb3mlBR6Ks3v67e6uqqYpas14g0XAfiFMloBtytldHEWrv1R4asx4oZSAY/rfQ7Tyoy+OGLmzwDSfrdZPB53olHhYpq4Zmt3/NahOD2kue2Gk3g40s2FtcEbycqER48+wE1BIDq4/BS4AAAAABJRU5ErkJggg==);
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: cover;
+            }
+            .embeddedServiceHelpButton .helpButton button.uiButton:focus {
+              /*outline: 1px solid #005290;*/
+              outline: none;
+            }
+            .embeddedServiceHelpButton .helpButton .message {
               background-color: #005290;
               font-family: "Arial", sans-serif;
             }
-            .embeddedServiceHelpButton .helpButton button.uiButton:focus {
-              outline: 1px solid #005290;
+            .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+              display: none !important;
+            }
+            .embeddedServiceHelpButton .uiButton .helpButtonLabel {
+              display: none !important;
+            }
+            .embeddedServiceSidebarHeader .shortHeader {
+              background-color: #2D56FF;
+            }
+            .embeddedServiceSidebarForm.formContent {
+              background-color: #212121 !important;
+            }
+            .embeddedServiceSidebarFormField .uiInput .uiLabel-left {
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select {
+              color: #fff !important;
+              background-color: #333333 !important;
+              border: none !important;
+            }
+            input:-internal-autofill-selected {
+              -webkit-text-fill-color: #fff !important;
+              -webkit-box-shadow: 0 0 0 100px #333333 inset !important;
+            }
+            input:-internal-autofill-selected:focus {
+              -webkit-text-fill-color: #fff !important;
+              -webkit-box-shadow: 0 0 0 100px black inset;
+              caret-color: white;
+            }
+
+            input:-webkit-autofill {
+              caret-color: white;
+            }
+            
+            .embeddedServiceSidebarForm.buttonWrapper {
+              background: #212121 !important;
+            }
+            .embeddedServiceSidebarButton {
+              background-color: #2D56FF !important;
+            }
+            .embeddedServiceSidebar.loading .sidebarLoadingIndicator {
+              background-color: #212121;
+            }
+            .embeddedServiceLoadingBalls .loadingBall {
+              background-color: #fff !important;
+            }
+            .embeddedServiceLiveAgentStateWaiting .waitingStateContainer {
+              background: #212121;
+            }
+            .embeddedServiceSidebarDialogState .dialogState {
+              background: #212121;
+            }
+              
+            /*landscape*/
+            @media (min-width: 481px) and (max-width: 767px) {
+              .embeddedServiceHelpButton .helpButton {
+                position: fixed;
+                bottom: 2rem !important;  
+                right: 2rem !important;
+              }
+            }
+            /*potrait*/
+            @media (min-width: 320px) and (max-width: 480px) {
+              .embeddedServiceHelpButton .helpButton {
+                position: fixed;
+                bottom: 2.5rem !important;  
+                right: 2rem !important;
+                width: 4rem;
+              }
             }
              `,
             }}

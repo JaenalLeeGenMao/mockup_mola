@@ -169,7 +169,18 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-
+    if (typeof document !== 'undefined') {
+      const pathRoute = route.chunks[0]
+      if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
+        if (pathRoute === 'home' || pathRoute === 'sport' || pathRoute === 'channels' || pathRoute === 'movie-library') {
+          console.log(document.getElementsByClassName('embeddedServiceHelpButton')[0].style, route.chunks[0], 'masuk if')
+          document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+        } else {
+          console.log(document.getElementsByClassName('embeddedServiceHelpButton')[0].style, 'jalaaannn')
+          document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+        }
+      }
+    }
     // Provide default values for title, description etc.
     route.title = `${route.title || 'Untitled Page'}`
     route.description = route.description || ''
