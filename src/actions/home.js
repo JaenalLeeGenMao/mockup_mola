@@ -59,10 +59,10 @@ const getHomeVideo = (playlist, isMobile) => dispatch => {
     return Mola.getHomeVideo({ id: playlist.id }).then(result => {
       const viewAllSection = {
         background: {
-          landscape: viewAllMovieBg,
-          landscapeWebp: viewAllMovieBgWebp,
-          portrait: viewAllMovieMobileBg,
-          portraitWebp: viewAllMovieMobileBgWebp,
+          landscape: playlist.viewMoreLandscape || viewAllMovieBg,
+          landscapeWebp: playlist.viewMoreLandscapeWebp || viewAllMovieBgWebp,
+          portrait: playlist.viewMorePortrait || viewAllMovieMobileBg,
+          portraitWebp: playlist.viewMorePortraitWebp || viewAllMovieMobileBgWebp,
         },
         isDark: 0,
       }

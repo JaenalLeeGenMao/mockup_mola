@@ -8,7 +8,7 @@ const normalizeHomePlaylist = response => {
       ({ attributes: { playlists } }) =>
         playlists &&
         playlists.map((playlist, index) => {
-          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
+          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images, iconWebp, viewMorePortrait, viewMoreLandscape, viewMorePortraitWebp, viewMoreLandscapeWebp } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
@@ -21,6 +21,11 @@ const normalizeHomePlaylist = response => {
             description,
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
+            iconWebp: iconWebp || '',
+            viewMorePortrait: viewMorePortrait || '',
+            viewMoreLandscape: viewMoreLandscape || '',
+            viewMorePortraitWebp: viewMorePortraitWebp || '',
+            viewMoreLandscapeWebp: viewMoreLandscapeWebp || '',
             // coverTitle: coverTitle,
             background,
             backgroundColor: coverBGColor || '#000622',
