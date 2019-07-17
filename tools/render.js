@@ -23,6 +23,7 @@ import runServer from './runServer'
 // ];
 const routes = [
   '/',
+  '/:id',
   '/accounts',
   '/accounts/login',
   '/accounts/profile',

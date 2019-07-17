@@ -28,25 +28,21 @@ const routes = {
 
   // Keep in mind, routes are evaluated in order
   children: [
-    {
-      path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
-    },
-    {
-      path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    // Movie details
-    {
-      path: '/movie-detail',
-      load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    // Movie Library
+    // {
+    //   path: '/privacy',
+    //   load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+    // },
+    // // Movie details
+    // {
+    //   path: '/movie-detail',
+    //   load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // // Movie Library
     {
       path: '/movie-library',
       load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
@@ -145,9 +141,18 @@ const routes = {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
     },
+    // {
+    //   path: '/channels',
+    //   load: () => import(/* webpackChunkName: 'channels' */ './channels'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
     {
-      path: '/channels',
-      load: () => import(/* webpackChunkName: 'channels' */ './channels'),
+      path: '',
+      load: () => import(/* webpackChunkName: 'home' */ './home'),
       children: [
         {
           path: '/:id',
