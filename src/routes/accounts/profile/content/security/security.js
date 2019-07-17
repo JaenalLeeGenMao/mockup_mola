@@ -21,7 +21,6 @@ class Security extends React.Component {
       newPassword: '',
       confirmNewPassword: '',
     }
-
     this.onChangeInput = this.onChangeInput.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -35,8 +34,8 @@ class Security extends React.Component {
           newPassword: '',
           confirmNewPassword: '',
         })
-
-        this.props.onClick()
+        this.handleClick()
+        // this.props.onClick()
       }
     })
   }
