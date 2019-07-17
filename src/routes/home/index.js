@@ -11,24 +11,34 @@ import React from 'react'
 import HomeDesktop from './desktop'
 import HomeMobile from './mobile'
 import MolaLayout from '@components/Molalayout'
+import Featured from './featured'
+import _ from 'lodash'
 
 const title = 'Homepage'
 const description = 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
 
-async function action({ isMobile, store }) {
+async function action({ isMobile, store, pathname }) {
+  const featuredId = _.get(pathname.split('/'), '[1]', '')
   return {
     title,
     description,
     chunks: ['home'],
-    component: isMobile ? (
-      <MolaLayout>
-        <HomeMobile {...store} />
-      </MolaLayout>
-    ) : (
-      <MolaLayout>
-        <HomeDesktop {...store} />
-      </MolaLayout>
-    ),
+    component:
+      featuredId === '' ? (
+        isMobile ? (
+          <MolaLayout>
+            <HomeMobile {...store} />
+          </MolaLayout>
+        ) : (
+          <MolaLayout>
+            <HomeDesktop {...store} />
+          </MolaLayout>
+        )
+      ) : (
+        <MolaLayout>
+          <Featured {...store} id={featuredId} isMobile={isMobile} />
+        </MolaLayout>
+      ),
   }
 }
 
