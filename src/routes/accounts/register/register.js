@@ -122,7 +122,7 @@ class Register extends Component {
       })
     } else if (email && !this.validateEmail(email)) {
       this.setState({
-        error: locale['error_email_valid'],
+        error: locale['error_valid_email'],
       })
     } else if (password != confirmPassword) {
       this.setState({
