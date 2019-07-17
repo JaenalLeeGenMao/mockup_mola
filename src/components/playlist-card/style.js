@@ -38,6 +38,11 @@ export const playlistContainer = css`
 
   .bannerImage {
     position: relative;
+    z-index: 1;
+  }
+
+  .bannerImage.hide {
+    position: absolute;
     z-index: 0;
   }
 }
