@@ -51,3 +51,6 @@ export const viewAllMovieBgWebp = `${imgBaseUrl}/background_darker.webp`
 export const viewAllMovieImgWebp = `${imgBaseUrl}/viewallmovie.webp`
 export const viewAllMovieMobileBg = `${imgBaseUrl}/background_darker_mobile.png`
 export const viewAllMovieMobileBgWebp = `${imgBaseUrl}/background_darker_mobile.webp`
+
+export const placeholderCardLandscape = `${imgBaseUrl}/placeholder-card-landscape.png`
+export const placeholderCardPortrait = `${imgBaseUrl}/placeholder-card-portrait.png`
