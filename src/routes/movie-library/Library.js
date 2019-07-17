@@ -29,9 +29,9 @@ class MovieLibrary extends Component {
     const { getMovieLibrary, getSearchGenre, genreId } = this.props
 
     getSearchGenre()
-    if (genreId) {
-      getMovieLibrary(genreId)
-    }
+    // if (genreId) {
+    //   getMovieLibrary(genreId)
+    // }
 
     document.ontouchend = event => {
       const halfScreenWidth = window.innerWidth * 0.5
@@ -63,12 +63,28 @@ class MovieLibrary extends Component {
 
   componentDidUpdate(prevProps) {
     const { getMovieLibrary, genreId, movieLibrary: { meta: { status: libraryStatus } }, search: { genre: { meta: { status: genreStatus }, data: genreData } } } = this.props
-
     //if no genre ('movie-library/') then pick the first genre and show list of relevant movie
-    if (!genreId && prevProps.search.genre.meta.status != genreStatus && genreStatus === 'success') {
-      const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
-      if (firstGenre) {
-        getMovieLibrary(firstGenre)
+    if (prevProps.search.genre.meta.status != genreStatus && genreStatus === 'success') {
+      if (!genreId) {
+        const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
+        if (firstGenre) {
+          getMovieLibrary(firstGenre)
+        }
+      } else {
+        const genreExist =
+          genreData &&
+          genreData.filter(genre => {
+            return genre.id == genreId
+          })
+
+        if (genreExist.length > 0) {
+          getMovieLibrary(genreId)
+        } else {
+          const firstGenre = genreData && genreData.length > 0 ? genreData[0].id : null
+          if (firstGenre) {
+            getMovieLibrary(firstGenre)
+          }
+        }
       }
     } else if (genreId !== prevProps.genreId) {
       //if change genre from genre list
