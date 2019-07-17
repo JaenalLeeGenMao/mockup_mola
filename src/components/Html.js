@@ -175,6 +175,9 @@ class Html extends React.Component {
                 bottom: 2rem !important;  
                 right: 2rem !important;
               }
+              .embeddedServiceHelpButton .helpButton button.uiButton {
+                width: 4rem !important;
+              }
             }
             /*potrait*/
             @media (min-width: 320px) and (max-width: 480px) {
@@ -182,7 +185,9 @@ class Html extends React.Component {
                 position: fixed;
                 bottom: 2.5rem !important;  
                 right: 2rem !important;
-                width: 4rem;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton {
+                width: 4rem !important;
               }
             }
              `,
