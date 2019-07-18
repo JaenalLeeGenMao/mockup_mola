@@ -1,3 +1,3 @@
-import Verticalcalendar from './Verticalcalendar'
+import Verticalcalendar from './VerticalCalendar'
 
-export default Verticalcalendar
+export default VerticalCalendar
