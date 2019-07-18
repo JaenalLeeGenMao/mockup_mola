@@ -230,7 +230,7 @@ class MovieDetail extends Component {
             return key + '=' + urlParams[key]
           })
           .join('&')
-        history.push(`/watch?v=${movieDetail.data[0].id}&${params}`)
+        window.location.href = `/watch?v=${movieDetail.data[0].id}&${params}`
       }
     }
     this.updateMetaTag()
