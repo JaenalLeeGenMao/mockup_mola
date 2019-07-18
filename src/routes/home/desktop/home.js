@@ -636,7 +636,11 @@ class Home extends Component {
               <>
                 <div
                   className={`is-home-gradient ${styles.home__gradient}`}
-                  style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }}
+                  style={{
+                    opacity: scrollIndex !== 0 ? 1 : 0,
+                    transition: '.5s all ease',
+                    cursor: activeSlide && !activeSlide.link ? 'default' : 'pointer',
+                  }}
                 />
                 <div className={styles.home__sidebar}>
                   {/* <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} /> */}
