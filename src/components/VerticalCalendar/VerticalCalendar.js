@@ -32,7 +32,7 @@ class VerticalCalendar extends Component {
   }
 
   render() {
-    const { handleCategoryFilter, filterByDates } = this.props
+    const { handleCategoryFilter, filterByDates, categoryFilterType = 'ByDate' } = this.props
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
@@ -43,7 +43,7 @@ class VerticalCalendar extends Component {
                   className={`${s.filterLabelByDay} ${dt.strTimestamp == filterByDates ? s.selectedFilter : ''}`}
                   key={dt.strTimestamp}
                   onClick={() => {
-                    handleCategoryFilter('ByDate', dt.strTimestamp)
+                    handleCategoryFilter(categoryFilterType, dt.strTimestamp)
                   }}
                 >
                   {dt.title}

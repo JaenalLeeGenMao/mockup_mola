@@ -15,7 +15,7 @@ class HorizontalPlaylist extends Component {
   }
 
   categoryFilterLigaType = () => {
-    const { filterByLeague, genreSpoCategory, handleCategoryFilter, expandLeague } = this.props
+    const { filterByLeague, genreSpoCategory, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
     return (
       <>
         {genreSpoCategory.map(genre => {
@@ -26,7 +26,7 @@ class HorizontalPlaylist extends Component {
                   className={s.contentLogoAndName}
                   key={genre.id}
                   onClick={() => {
-                    handleCategoryFilter('League', genre.id)
+                    handleCategoryFilter(categoryFilterType, genre.id)
                   }}
                 >
                   <span className={s.imgContainer__PL}>{genre.thumbnailImg && <img className={s.filterimg__PremierLeague} src={genre.thumbnailImg} />}</span>

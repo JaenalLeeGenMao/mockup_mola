@@ -479,7 +479,6 @@ class Matches extends React.Component {
     const allLeagueList = [{ id: 'all', title: 'all' }]
 
     const isDark = false
-
     return (
       <>
         <div className={s.headerContainer}>
@@ -509,16 +508,17 @@ class Matches extends React.Component {
                       genreSpoCategory={this.props.matches.genreSpo.data}
                       filterByLeague={this.state.filterByLeague}
                       expandLeague={this.state.expandLeague}
+                      categoryFilterType={'League'}
                       allButtonOn
                     />
                     <div className={s.matches_grid}>
                       <span>{this.categoryFilter()}</span>
                       <span>
                         <div className={s.matchlist_wrappercontent_center}>
-                          <div className={s.matchlist_Pagetitle}>{matchCardData.length != null && this.state.limit != null ? <>{this.ShowMatchCard()}</> : <div>Tidak Ada Jadwal Matches</div>}</div>
+                          <div className={s.matchlist_Pagetitle}>{matchCardData.length > 0 && this.state.limit != null ? <>{this.ShowMatchCard()}</> : <div>Tidak Ada Jadwal Matches</div>}</div>
                         </div>
                       </span>
-                      <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} filterByDates={this.state.filterByDates} />
+                      <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} filterByDates={this.state.filterByDates} categoryFilterType={'ByDate'} />
                     </div>
                   </div>
                 </InfiniteScroll>
