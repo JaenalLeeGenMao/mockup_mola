@@ -607,7 +607,11 @@ class Sport extends Component {
                 </div> */}
                 <div
                   className={`is-home-gradient ${styles.sport__gradient}`}
-                  style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }}
+                  style={{
+                    opacity: scrollIndex !== 0 ? 1 : 0,
+                    transition: '.5s all ease',
+                    cursor: activeSlide && !activeSlide.link ? 'default' : 'pointer',
+                  }}
                 />
                 <div className={styles.sport__sidebar}>
                   {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
