@@ -3,7 +3,10 @@ import { AUTH_BASE_ENDPOINT } from './endpoints'
 import config from '@source/config'
 
 const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', gender = '', phone = '' }) => {
-  const body = { email, password, birthdate, gender, phone }
+  const body = { email, password, birthdate, gender }
+  if (phone) {
+    body.phone = phone
+  }
   return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, body, {
     headers: {
       'x-csrf-token': csrf,

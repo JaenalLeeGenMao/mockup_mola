@@ -12,6 +12,7 @@ import { updateProfile, fetchProfile } from '@actions/user'
 import LazyLoad from '@components/common/Lazyload'
 
 import { genderOptions, countryOptions } from './const'
+import { getLocale } from '../../../register/locale'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './profile.css'
@@ -88,6 +89,8 @@ class Profile extends React.Component {
       birthdate: birthdate || '',
       gender: gender || 'm',
       location: location || '',
+      error: '',
+      locale: getLocale(),
     }
 
     this.onChangeInput = this.onChangeInput.bind(this)
@@ -121,29 +124,56 @@ class Profile extends React.Component {
     this.handleClick()
   }
 
+  validatePhone = phoneNumber => {
+    var pe = /^62[0-9]{6,16}$/
+    return pe.test(phoneNumber)
+  }
+
   handleSubmit = async e => {
-    const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus } = this.state
+    const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus, error, locale } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
     const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
 
-    if (uploadStatus && uploadStatus.success) {
-      // success upload button nyalain
-      const image = await Uploader.getImageCDN(uploadStatus.path, uploadStatus.token)
-
-      if (image.data.done && image.data.success) {
-        payload.photo = image.data.url
-      }
-    }
-
-    const update = await Auth.updateProfile(payload)
-    if (update.meta.status === 'success') {
-      this.props.updateProfile(payload)
-      this.handleClick()
-      toastr.success('Notification', 'Update profile success!')
-      this.setData(payload)
+    if (!name) {
+      this.setState({
+        error: locale['error_name'],
+      })
+    } else if (!phoneNumber) {
+      this.setState({
+        error: locale['error_phones'],
+      })
+    } else if (phoneNumber && !this.validatePhone(phoneNumber)) {
+      this.setState({
+        phoneNumber: phoneNumber.replace(/^(\+?628|08)/, '628'),
+        error: locale['error_phone'],
+      })
+    } else if (!birthdate) {
+      this.setState({
+        error: locale['error_date'],
+      })
+    } else if (!location) {
+      this.setState({
+        error: locale['error_location'],
+      })
     } else {
-      toastr.warning('Notification', 'Update profile failed!')
+      if (uploadStatus && uploadStatus.success) {
+        // success upload button nyalain
+        const image = await Uploader.getImageCDN(uploadStatus.path, uploadStatus.token)
+
+        if (image.data.done && image.data.success) {
+          payload.photo = image.data.url
+        }
+      }
+      const update = await Auth.updateProfile(payload)
+      if (update.meta.status === 'success') {
+        this.props.updateProfile(payload)
+        this.handleClick()
+        toastr.success('Notification', 'Update profile success!')
+        this.setData(payload)
+      } else {
+        toastr.warning('Notification', 'Update profile failed!')
+      }
     }
   }
 
@@ -244,12 +274,15 @@ class Profile extends React.Component {
 
   render() {
     const { isMobile, onClick, user } = this.props
+    const errClass = `${s.errorClass}`
     const { uid, subscriptions } = user
-    const { isToggled, name, email, phoneNumber, photo, birthdate, gender, location } = this.state
+    const { isToggled, name, email, phoneNumber, photo, birthdate, gender, location, error, locale, isError } = this.state
 
     return (
       <div>
-        <div className={s.profile__container}>
+        <div>{error && <p className={s.profile_from_input_wrapper_error}>{error}</p>}</div>
+        <div className={`${s.profile__container} ${isError ? errClass : ''}`}>
+          <div className={s.register__content_title} />
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
             <div style={{ position: 'relative' }}>
               <div onClick={this.handleProfileClick} className={s.profile_image_wrapper}>
@@ -258,12 +291,20 @@ class Profile extends React.Component {
               </div>
               <input id="file" className={s.profile_image_input} type="file" accept="image/*" onChange={this.handleFileSelect} />
             </div>
-            <FormContent type="text" id="name" label="Ubah nama" value={name} onChange={this.onChangeInput} />
-            <FormContent type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} disabled />
-            <FormContent type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} />
-            <FormContent type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} />
-            <FormContent type="select" id="gender" label="Ubah jenis kelamin" value={{ label: this.getGenderText(gender), value: gender }} onChange={this.onChangeSelect} options={genderOptions} />
-            <FormContent type="select" id="location" label="Ubah lokasi" value={{ label: location, value: location }} onChange={this.onChangeSelect} options={countryOptions} />
+            <FormContent isError={error !== ''} type="text" id="name" label="Ubah nama" value={name} onChange={this.onChangeInput} />
+            <FormContent isError={error !== ''} type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} disabled />
+            <FormContent isError={error !== ''} type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} />
+            <FormContent isError={error !== ''} type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} />
+            <FormContent
+              isError={error !== ''}
+              type="select"
+              id="gender"
+              label="Ubah jenis kelamin"
+              value={{ label: this.getGenderText(gender), value: gender }}
+              onChange={this.onChangeSelect}
+              options={genderOptions}
+            />
+            <FormContent isError={error !== ''} type="select" id="location" label="Ubah lokasi" value={{ label: location, value: location }} onChange={this.onChangeSelect} options={countryOptions} />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleSubmit}>
                 Simpan

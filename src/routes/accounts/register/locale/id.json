@@ -10,9 +10,14 @@
   "or": "Atau",
   "confirm": "Konfirmasi",
   "sign_up": "DAFTAR",
-  "error_input": "Periksa kembali input anda",
+  "error_input": "Periksa kembali input password anda",
+  "error_input_password": "Password tidak boleh kosong",
   "error_input_email": "Email tidak boleh kosong",
   "error_valid_email": "Email tidak tersedia",
   "error_gender": "Mohon di isi jenis kelamin anda",
-  "error_date": "Mohon di isi tanggal lahir anda"
+  "error_date": "Mohon di isi tanggal lahir anda",
+  "error_phone": "Periksa kembali no handphone anda, contoh 08XXXXXXXXXX",
+  "error_name": "nama tidak boleh kosong",
+  "error_location": "lokasi tidak boleh kosong",
+  "error_phones": "nomor telepon tidak boleh kosong"
 }

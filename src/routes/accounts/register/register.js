@@ -25,7 +25,7 @@ import s from '../profile/content/profile/profile.css'
 
 const countDownTime = 60
 
-const FormContent = ({ id, label, value, type = 'password', disabled, onChange, options }) => {
+const FormContent = ({ id, label, value, type = 'password', disabled, onChange, options, error }) => {
   const colourStyles = {
     control: (base, state) => ({
       ...base,
@@ -65,7 +65,18 @@ const FormContent = ({ id, label, value, type = 'password', disabled, onChange, 
         <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
       ) : (
         <div className={`${s.profile_form_input_wrapper} ${disabled ? s.disabled : ''}`}>
-          <input type={type} id={id} onChange={onChange} onClick={e => e.target.focus()} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
+          <div>{error && <p className={s.profile_form_input_wrapper_error}>{error}</p>}</div>
+          <input
+            errorClassName={s.profile_form_input_wrapper_error}
+            isError={error !== ''}
+            type={type}
+            id={id}
+            onChange={onChange}
+            onClick={e => e.target.focus()}
+            value={value}
+            className={disabled ? s.disabled : ''}
+            disabled={disabled}
+          />
         </div>
       )}
     </div>
@@ -102,14 +113,26 @@ class Register extends Component {
   handleInputChange = e => {
     const target = e.target
     const { id, value } = target
-    this.setState({
-      [id]: value,
-    })
+
+    if (id === 'phone') {
+      this.setState({
+        [id]: value.replace(/^(\+?628|08)/, '628'),
+      })
+    } else {
+      this.setState({
+        [id]: value,
+      })
+    }
   }
 
   validateEmail = email => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(String(email).toLowerCase())
+  }
+
+  validatePhone = phone => {
+    var pe = /^62[0-9]{6,16}$/
+    return pe.test(phone)
   }
 
   handleRegister = async () => {
@@ -130,7 +153,7 @@ class Register extends Component {
       })
     } else if (password == '' || !password) {
       this.setState({
-        error: locale['error_input'],
+        error: locale['error_input_password'],
       })
     } else if (gender === '') {
       this.setState({
@@ -140,18 +163,24 @@ class Register extends Component {
       this.setState({
         error: locale['error_date'],
       })
+    } else if (phone && !this.validatePhone(phone)) {
+      this.setState({
+        // phone: phone.replace(/^(\+?628|08)/, '628'),
+        error: locale['error_phone'],
+      })
     } else {
       this.setState({
         error: '',
       })
-      const result = await Auth.createNewUser({
+      const payload = {
         email,
         password,
         birthdate,
         gender,
         phone,
         csrf,
-      })
+      }
+      const result = await Auth.createNewUser(payload)
       // console.log('ini user', result)
       if (result.meta.status === 'success') {
         this.setState({
@@ -164,6 +193,10 @@ class Register extends Component {
             this.setState({
               error: '',
               isInVerified: true,
+            })
+          } else if (result.meta.error.error === 'account_registered') {
+            this.setState({
+              error: 'email has been registered',
             })
           } else {
             this.setState({
@@ -354,7 +387,15 @@ class Register extends Component {
           type="password"
           onKeyUp={this.handleKeyUp}
         />
-        <FormContent type="select" id="gender" value={{ label: this.getGenderText(gender), value: gender }} onChange={this.onChangeSelect} options={genderOptions} />
+        <FormContent
+          errorClassName={styles.register__content_input_error}
+          type="select"
+          id="gender"
+          isError={error !== ''}
+          value={{ label: this.getGenderText(gender), value: gender }}
+          onChange={this.onChangeSelect}
+          options={genderOptions}
+        />
         <TextInput
           id="birthdate"
           name="birthdate"
