@@ -138,6 +138,15 @@ const routes = {
       ],
     },
     {
+      path: '/playlist',
+      load: () => import(/* webpackChunkName: 'playlist' */ './playlist'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
+    },
+    {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
     },
