@@ -5,7 +5,7 @@ import Carousel from 'nuka-carousel'
 
 import LazyLoad from '@components/common/Lazyload'
 
-import { carouselContainer, arrowButtons, hiddenButtons, destroyButtons, chevronLeft, chevronRight } from './style'
+import { carouselContainer, arrowButtons, hiddenButtons, destroyButtons, chevronLeft, chevronRight } from './carouselStyle'
 
 class BannerCarousel extends Component {
   constructor(props) {
@@ -52,7 +52,8 @@ class BannerCarousel extends Component {
         className={`${carouselContainer} ${this.props.className}`}
         slideWidth={this.props.slideWidth}
         wrapAround={this.props.wrap}
-        frameOverflow={this.props.frameOverflow}
+        cellAlign={this.props.cellAlign}
+        slidesToScroll={3}
         slidesToShow={this.props.slidesToShow}
         dragging={this.props.dragging}
         cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
@@ -60,7 +61,6 @@ class BannerCarousel extends Component {
         disableEdgeSwiping={true}
         opacityScale={this.props.opacityScale || 0.65}
         zoomScale={this.props.zoomScale || 0.85}
-        slidesToScroll={this.props.slidesToScroll}
         renderBottomCenterControls={() => {
           return false
         }}
