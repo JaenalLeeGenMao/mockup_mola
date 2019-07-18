@@ -34,19 +34,38 @@ class HeaderMenu extends Component {
     const { activePlaylist, activeMenu, isMobile } = this.props
     const { headerMenuList } = this.state
     menu = [
-      { id: 'movie', title: 'Movie', linkUrl: '/' },
-      { id: 'sport', title: 'Sport', linkUrl: '/sport' },
-      { id: 'channels', title: 'Channels', linkUrl: '/channels' },
-      { id: 'search', title: 'Search', linkUrl: '/search' },
-      { id: 'profile', title: 'Profile', linkUrl: '/accounts/profile' },
-      // { id: 'signout', title: 'Sign Out', linkUrl: '/signout' },
+      {
+        id: 'movie',
+        title: 'Movie',
+        linkUrl: '/',
+      },
+      {
+        id: 'sport',
+        title: 'Sports',
+        linkUrl: '/sports',
+      },
+      {
+        id: 'channels',
+        title: 'Channels',
+        linkUrl: '/channels',
+      },
+      {
+        id: 'matches',
+        title: 'matches',
+        linkUrl: 'matches',
+      },
+      // {
+      //   id: 'library',
+      //   title: 'library',
+      //   linkUrl: `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
+      // },
     ]
 
-    const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
-    if (showLibrary) {
-      const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
-      menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
-    }
+    // const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
+    // if (showLibrary) {
+    //   const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    //   menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
+    // }
 
     // this.getHeaderMenu()
   }
@@ -70,20 +89,20 @@ class HeaderMenu extends Component {
     // console.log('inside', headerMenuList)
 
     let activeMenuDropdown = ''
-    if (activeMenu === 'library') {
-      activeMenuDropdown = 'movie'
-    } else if (activeMenu === 'matches') {
-      activeMenuDropdown = 'sport'
-    } else {
-      activeMenuDropdown = activeMenu
-    }
-
-    let libraryUrl = ''
-    const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels' || activeMenu === 'search' || activeMenu === 'profile'
+    activeMenuDropdown = activeMenu
+    // if (activeMenu === 'library') {
+    //   activeMenuDropdown = 'movie'
+    // } else if (activeMenu === 'matches') {
+    //   activeMenuDropdown = 'sport'
+    // } else {
+    //   activeMenuDropdown = activeMenu
+    // }
+    // let libraryUrl = ''
+    // const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels' || activeMenu === 'search' || activeMenu === 'profile'
     //  activeMenu === 'signout'
-    if (showLibrary) {
-      libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
-    }
+    // if (showLibrary) {
+    //   libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
+    // }
     return (
       <>
         <div className={styles.header__menu}>
@@ -105,7 +124,7 @@ class HeaderMenu extends Component {
                   {isMobile && (
                     <div className={`${styles.header__menu_wrapper_m} ${isLandscape ? styles.header_menu_select_wrapper__ls : ''}`}>
                       <DropdownList className={styles.header_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
-                      {showLibrary && (
+                      {/* {showLibrary && (
                         <Link className={activeMenu === 'library' ? styles.header_menu__active : ''} to={libraryUrl}>
                           Library
                         </Link>
@@ -114,7 +133,7 @@ class HeaderMenu extends Component {
                         <Link className={activeMenu === 'matches' ? styles.header_menu__active : ''} to={'/matches'}>
                           Matches
                         </Link>
-                      )}
+                      )} */}
                     </div>
                   )}
                 </div>

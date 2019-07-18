@@ -3,19 +3,25 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _groupBy from 'lodash/groupBy'
+import moment from 'moment'
+import InfiniteScroll from 'react-infinite-scroll-component'
+
+import matchListActions from '@actions/matches'
+
+import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive, addDateTime, isSameDay, isLastWeek, isNextWeek, isThisWeek } from '@source/lib/dateTimeUtil'
+
 import Header from '@components/Header'
 import MatchCard from '@components/MatchCard'
 import MatchList from '@components/MatchList'
 import LazyLoad from '@components/common/Lazyload'
+import VerticalCalendar from '@components/VerticalCalendar'
+import HorizontalPlaylist from '@components/HorizontalPlaylist'
+
 import Placeholder from './placeholder'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import matchListActions from '@actions/matches'
 import s from './matches.css'
 import LoaderComp from './loaderComp'
-import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive, addDateTime, isSameDay, isLastWeek, isNextWeek, isThisWeek } from '@source/lib/dateTimeUtil'
-import moment from 'moment'
 // import _unionBy from 'lodash/unionBy'
-import _groupBy from 'lodash/groupBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
 
 class Matches extends React.Component {
@@ -372,97 +378,6 @@ class Matches extends React.Component {
     )
   }
 
-  renderFilterbyDay = () => {
-    const { filterByDates } = this.state
-
-    //Validate This week, now +7 days
-    let dateList = []
-
-    for (var i = 0; i < 7; i++) {
-      const date = new Date(addDateTime(null, i, 'days'))
-      const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMM')
-
-      //date string to int selectedMatch
-      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMM'))
-      const strTimestamp = dateStringtoInt.getTime() / 1000
-
-      dateList.push({ title: formattedDateTime, strTimestamp: strTimestamp })
-    }
-    return (
-      <>
-        {dateList.map(dt => {
-          return (
-            <div
-              className={`${s.filterLabelByDay} ${dt.strTimestamp == filterByDates ? s.selectedFilter : ''}`}
-              key={dt.strTimestamp}
-              onClick={() => {
-                this.handleCategoryFilter('ByDate', dt.strTimestamp)
-              }}
-            >
-              {dt.title}
-            </div>
-          )
-        })}
-      </>
-    )
-  }
-
-  renderCategoryfilterDay = () => {
-    return (
-      <>
-        {this.state.expandThisWeek && (
-          <div className={s.filterContentfilterByDay_container}>
-            <span>{this.renderFilterbyDay()}</span>
-          </div>
-        )}
-      </>
-    )
-  }
-
-  categoryFilterLigaType = () => {
-    const { filterByLeague, leagueList } = this.state
-    const genreSpoCategory = this.props.matches.genreSpo.data
-    const seeProps = this.props
-
-    return (
-      <>
-        {/* <div
-          className={s.filterTitle_label}
-          onClick={() => {
-            this.handleExpandCategoryLeague()
-          }}
-        >
-          <span>League</span>
-          <span className={this.state.expandLeague == true ? s.arrowDownBtn : s.arrowUpBtn} />
-        </div> */}
-        <>
-          {genreSpoCategory.map(genre => {
-            // console.log('category data', genre)
-            return (
-              <>
-                {this.state.expandLeague && (
-                  <div
-                    className={s.contentLogoAndName}
-                    key={genre.id}
-                    onClick={() => {
-                      this.handleCategoryFilter('League', genre.id)
-                    }}
-                  >
-                    <span className={s.imgContainer__PL}>{genre.thumbnailImg && <img className={s.filterimg__PremierLeague} src={genre.thumbnailImg} />}</span>
-                    <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
-                      {genre.title}
-                    </span>
-                  </div>
-                )}
-              </>
-            )
-          })}
-        </>
-      </>
-    )
-  }
-
   categoryFilter = () => {
     const { filterByLeague, leagueList } = this.state
 
@@ -562,8 +477,6 @@ class Matches extends React.Component {
     const matchesList = this.props.matches
     const matchCardData = this.props.matches.data
     const allLeagueList = [{ id: 'all', title: 'all' }]
-    // const testProps = this.props.matches.genreSpo
-    // console.log('testProps ind', testProps)
 
     const isDark = false
 
@@ -597,19 +510,14 @@ class Matches extends React.Component {
                   height={800}
                 >
                   <div className={s.matchlist_wrapper}>
-                    <div className={s.match_ligaType}>
-                      <span
-                        // className={`${s.filterLabel} ${dt.id == filterByType ? s.selectedFilter : ''}`}
-                        className={s.allFilterLabel}
-                        onClick={() => {
-                          this.handleFilterAllLeague()
-                        }}
-                      >
-                        All
-                      </span>
-                      <span className={s.filLeague}>{this.categoryFilterLigaType()}</span>
-                      <span />
-                    </div>
+                    <HorizontalPlaylist
+                      handleCategoryFilter={this.handleCategoryFilter}
+                      handleFilterAllLeague={this.handleFilterAllLeague}
+                      genreSpoCategory={this.props.matches.genreSpo.data}
+                      filterByLeague={this.state.filterByLeague}
+                      expandLeague={this.state.expandLeague}
+                      allButtonOn
+                    />
                     <div className={s.matches_grid}>
                       <span>{this.categoryFilter()}</span>
                       <span>
@@ -617,7 +525,7 @@ class Matches extends React.Component {
                           <div className={s.matchlist_Pagetitle}>{matchCardData.length != null && this.state.limit != null ? <>{this.ShowMatchCard()}</> : <div>Tidak Ada Jadwal Matches</div>}</div>
                         </div>
                       </span>
-                      <span>{this.renderCategoryfilterDay()}</span>
+                      <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} filterByDates={this.state.filterByDates} />
                     </div>
                   </div>
                 </InfiniteScroll>
