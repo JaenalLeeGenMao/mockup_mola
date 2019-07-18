@@ -212,6 +212,7 @@ class MovieDetail extends Component {
       movieDetail,
       movieId, //passed as props from index.js,
       fetchRecommendation,
+      urlParams,
     } = this.props
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
@@ -222,10 +223,14 @@ class MovieDetail extends Component {
         toggleSuggestion: false,
       })
     }
-
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
       if (!isMovie(movieDetail.data[0].contentType)) {
-        history.push(`/watch?v=${movieDetail.data[0].id}`)
+        const params = Object.keys(urlParams)
+          .map(function(key) {
+            return key + '=' + urlParams[key]
+          })
+          .join('&')
+        history.push(`/watch?v=${movieDetail.data[0].id}&${params}`)
       }
     }
     this.updateMetaTag()

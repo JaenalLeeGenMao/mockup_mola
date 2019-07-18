@@ -2,5 +2,8 @@
   "view_movie": "View Movie",
   "view_match": "View Match",
   "view_all_movie": "Click here to browse other",
-  "other": "movies"
+  "other": "movies",
+  "live_now": "Live Now",
+  "upcoming": "Upcoming",
+  "replay": "View Replay"
 }
