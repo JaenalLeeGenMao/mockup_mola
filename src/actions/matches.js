@@ -53,21 +53,41 @@ const getAllGenreSpo = id => dispatch => {
       data: [],
     },
   })
-
-  return Mola.getGenreMatches(id).then(result => {
+  return Mola.getAllGenreSpo(id).then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MATCHES_GENRESPO_ERROR,
         payload: result,
       })
     } else {
+      let genrePlaylistId = []
       result.data = result.data.filter(dt => {
+        genrePlaylistId.push(dt.id)
         return dt.visibility === 1
       })
-      dispatch({
-        type: types.GET_MATCHES_GENRESPO_SUCCESS,
-        payload: result,
-      })
+      // console.log('genrePlaylistId', genrePlaylistId)
+      const genreSportList = {
+        genreSpo: result.data,
+      }
+      // console.log('genre', genreSportList)
+      let matchesPlaylists = []
+      matchesPlaylists = await Mola.getMatchesPlaylists(genrePlaylistId)
+      // console.log('see matchesPlaylist', matchesPlaylists)
+      const matchesList = {
+        matchesPlaylists,
+      }
+      // console.log('see matchesList', matchesList)
+      if (matchesPlaylists.meta.status === 'success') {
+        dispatch({
+          type: types.GET_MATCHES_GENRESPO_SUCCESS,
+          payload: { ...genreSportList, ...matchesList },
+        })
+      } else {
+        dispatch({
+          type: types.GET_MATCHES_GENRESPO_ERROR,
+          payload: { ...genreSportList, ...matchesList },
+        })
+      }
     }
   })
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 
@@ -23,6 +23,7 @@ import s from './matches.css'
 import LoaderComp from './loaderComp'
 // import _unionBy from 'lodash/unionBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
+import useInfiniteScroll from './useInfiniteScroll'
 
 class Matches extends React.Component {
   constructor(props) {
@@ -65,10 +66,15 @@ class Matches extends React.Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { getMatches, matches: { matchesList, matchesPlaylists, genreSpo } } = nextProps
+    return { ...prevState, matchesList, matchesPlaylists, genreSpo }
+  }
+
   componentDidMount() {
     const { playlistId } = this.props
     playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
-    this.props.getGenreMatches()
+    this.props.getAllGenreSpo()
   }
 
   componentWillMount() {
@@ -239,18 +245,23 @@ class Matches extends React.Component {
   }
 
   //validation allleague
-  handleFilterAllLeague = () => {
+  handleFilterAllLeague = (value, matches) => {
     const { data } = this.props.matches
 
-    let filterAllLeague = []
-    data.forEach(dt => {
-      if (dt.league) {
-        filterAllLeague.push(dt)
-      }
-    })
-    this.setState({ matches: filterAllLeague })
+    let filterResult = []
+    if (value !== 0) {
+      data.forEach(dt => {
+        // console.log('checking data all')
+        if (dt.league) {
+          filterResult.push(dt)
+        }
+      })
+    } else {
+      return matches
+    }
+    // console.log('filterAllLeague', filterResult)
 
-    return filterAllLeague
+    return filterResult
   }
 
   //start
@@ -266,6 +277,7 @@ class Matches extends React.Component {
       filterResult = this.handleFilterByDate(selectedVal, this.props.matches.data)
       filterResult = this.handleFilterByType(filterByType, filterResult)
       filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
+      filterResult = this.handleFilterAllLeague(filterAllLeague, filterResult)
       filterResult = this.handleSortMatches(filterResult)
       this.setState({ matches: filterResult, filterByDates: selectedVal })
     }
@@ -292,6 +304,21 @@ class Matches extends React.Component {
       filterResult = this.handleSortMatches(filterResult)
       this.setState({ matches: filterResult, filterByLeague: selectedVal })
     }
+
+    // all
+    if (category == 'All') {
+      if (filterAllLeague == value) {
+        selectedVal = 0
+      }
+      filterResult = this.handleFilterAllLeague(selectedVal, filterResult)
+      filterResult = this.handleSortMatches(filterResult)
+      // console.log('filterResult', filterResult) //all data here
+      // console.log('filterAllLeague', filterAllLeague)
+      // console.log('selectedVal', selectedVal)
+      this.setState({ matches: filterResult, filterAllLeague: selectedVal })
+    }
+
+    //by7days
   }
 
   //expand This Week
@@ -318,20 +345,6 @@ class Matches extends React.Component {
       { id: 'nextWeek', title: 'Next Week' },
       // { id: 'tomorrow', title: 'Tomorrow' },
     ]
-    //Validate This week, now +7 days
-    // let dateList = []
-
-    // for (var i = 0; i < 5; i++) {
-    //   const date = new Date(addDateTime(null, i + 2, 'days'))
-    //   const dtTimestamp = date.getTime()
-    //   const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'ddd, DD MMM')
-
-    //   //date string to int selectedMatch
-    //   const dateStringtoInt = new Date(moment(formattedDateTime, 'ddd, DD MMM'))
-    //   const strTimestamp = dateStringtoInt.getTime() / 1000
-
-    //   dateList.push({ title: formattedDateTime, strTimestamp: strTimestamp })
-    // }
 
     return (
       <>
@@ -383,65 +396,33 @@ class Matches extends React.Component {
 
     return (
       <>
-        {/* <div
-          className={s.filterTitle_label}
-          onClick={() => {
-            this.handleExpandCategoryThisWeek()
-          }}
-        >
-          <span>This week</span>
-          <span className={this.state.expandThisWeek == true ? s.arrowDownBtn : s.arrowUpBtn} />
-        </div> */}
+        {/* this week left menu */}
         {this.state.expandThisWeek && (
           <div className={s.filterContent_container}>
             <span>{this.renderFilterByDate()}</span>
           </div>
         )}
-        {/* <div
-          className={s.filterTitle_label}
-          onClick={() => {
-            this.handleExpandCategoryVideoType()
-          }}
-        >
-          <span>Video Type</span>
-          <span className={this.state.expandVideoType == true ? s.arrowDownBtn : s.arrowUpBtn} />
-        </div> */}
-        {/* {this.state.expandVideoType && (
-          <div className={s.filterContent_container}>
-            <span>{this.renderFilterByType()}</span>
+      </>
+    )
+  }
+
+  //byday
+  categoryFilterDay = () => {
+    return (
+      <>
+        {this.state.expandThisWeek && (
+          <div className={s.filterContentfilterByDay_container}>
+            <span>{this.renderFilterbyDay()}</span>
           </div>
-        )} */}
-        {/* <div
-          className={s.filterTitle_label}
-          onClick={() => {
-            this.handleExpandCategoryLeague()
-          }}
-        >
-          <span>League</span>
-          <span className={this.state.expandLeague == true ? s.arrowDownBtn : s.arrowUpBtn} />
-        </div> */}
-        {/* <>
-          {leagueList.map(league => {
-            return (
-              <>
-                {this.state.expandLeague && (
-                  <div
-                    key={league.id}
-                    className={s.contentLogoAndName}
-                    onClick={() => {
-                      this.handleCategoryFilter('League', league.id)
-                    }}
-                  >
-                    <img className={s.filterimg} src={league.iconUrl} />
-                    <span value={league.id} className={filterByLeague == league.id ? s.selectednameleague : s.nameleague}>
-                      {league.name}
-                    </span>
-                  </div>
-                )}
-              </>
-            )
-          })}
-        </> */}
+        )}
+      </>
+    )
+  }
+
+  categoryFilterAll = () => {
+    return (
+      <>
+        <span>{this.renderFilterAll()}</span>
       </>
     )
   }
@@ -476,7 +457,8 @@ class Matches extends React.Component {
   render() {
     const matchesList = this.props.matches
     const matchCardData = this.props.matches.data
-    const allLeagueList = [{ id: 'all', title: 'all' }]
+    // const testProps = this.props.matches.genreSpo
+    // console.log('testProps ind', testProps)
 
     const isDark = false
     return (
@@ -498,9 +480,10 @@ class Matches extends React.Component {
                   next={this.fetchMoreData}
                   hasMore={this.state.hasMore}
                   hasChildren={true}
-                  loader={<div className={s.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
+                  loader={<div className={s.labelLoaderIcon}>{/*<LoaderComp /> */}</div>}
                   height={800}
                 >
+                  {/* start data infinite scroll*/}
                   <div className={s.matchlist_wrapper}>
                     <HorizontalPlaylist
                       handleCategoryFilter={this.handleCategoryFilter}
@@ -521,6 +504,7 @@ class Matches extends React.Component {
                       <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} filterByDates={this.state.filterByDates} categoryFilterType={'ByDate'} />
                     </div>
                   </div>
+                  {/* end data infinite scroll */}
                 </InfiniteScroll>
               </div>
             </div>
@@ -538,7 +522,7 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
   getMatches: id => dispatch(matchListActions.getAllMatches(id)),
-  getGenreMatches: id => dispatch(matchListActions.getAllGenreSpo(id)),
+  getAllGenreSpo: id => dispatch(matchListActions.getAllGenreSpo(id)),
 })
 
 export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)

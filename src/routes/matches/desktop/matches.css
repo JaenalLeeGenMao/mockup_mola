@@ -280,6 +280,11 @@ body {
   font-size: 1.8rem;
 }
 
+.selectedFilterAll {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
 .label_text {
   cursor: pointer;
   margin: 0 2rem 0 0;
