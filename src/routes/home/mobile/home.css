@@ -69,7 +69,7 @@ body {
   position: relative;
 }
 
-.header__playlist_title:before {
+.header__playlist_title::before {
   content: '';
   position: absolute;
   background-color: white;
@@ -120,15 +120,15 @@ body {
   position: absolute;
 }
 
-.header__detail_container > p:nth-child(3) {
+.header__detail_container > p.home_desc__animation:nth-child(5) {
   animation-delay: 10s;
 }
 
-.header__detail_container > p:nth-child(4) {
+.header__detail_container > p.home_desc__animation:nth-child(6) {
   animation-delay: 20s;
 }
 
-.header__detail_container > p:nth-child(5) {
+.header__detail_container > p.home_desc__animation:nth-child(7) {
   animation-delay: 30s;
 }
 
@@ -137,6 +137,45 @@ body {
   border-radius: 50%;
   position: absolute;
   top: -45px;
+}
+
+.sport__detail_button {
+  display: inline-block;
+  padding: 10px;
+  font-weight: 600;
+  width: auto;
+  margin: auto;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  color: #000;
+}
+
+.sport__detail_upc_btn {
+  background-color: #808080;
+  color: #fff;
+  height: 42px;
+}
+
+.sport__detail_button p {
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.sport__button_livenow {
+  display: inline-block;
+  padding: 10px;
+  font-weight: 600;
+  width: auto;
+  height: 42px;
+  margin: auto;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 0.5rem;
+  background-color: #466bff;
+  color: #fff;
 }
 
 .header__library_link_wrapper {

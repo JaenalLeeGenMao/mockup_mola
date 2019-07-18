@@ -146,6 +146,33 @@ body {
   box-shadow: 0 0 1rem 0 white;
 }
 
+.sport__detail_button {
+  display: inline-block;
+  padding: 1.3rem 2.5rem;
+  font-weight: bold;
+  width: auto;
+  height: 5rem;
+  margin: auto;
+  text-align: center;
+  font-size: 1.8rem;
+  border-radius: 0.5rem;
+  background-color: #466bff;
+  color: #fff;
+}
+
+.sport__detail_button:hover {
+  box-shadow: 0 0 1rem 0 #466bff;
+}
+
+.sport__detail_upc_btn {
+  background-color: #808080;
+  color: #fff;
+}
+
+.sport__detail_upc_btn:hover {
+  box-shadow: 0 0 1rem 0 #808080;
+}
+
 .home__custom_arrow {
   border-radius: 50%;
   width: 3.6rem;

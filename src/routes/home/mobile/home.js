@@ -10,13 +10,13 @@ import $ from 'jquery'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
 
-import { isMovie } from '@source/lib/globalUtil'
+import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
+import { isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
 
 import homeActions from '@actions/home'
 
-import { logoLandscapeBlue } from '@global/imageUrl'
 import { getLocale } from '@routes/home/locale'
-import { swipeGestureListener, getErrorCode } from '@routes/home/util'
+import { getErrorCode } from '@routes/home/util'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -34,7 +34,6 @@ import contentStyles from './content/content.css'
 import { filterString, setMultilineEllipsis } from './util'
 import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
-import history from '@source/history'
 
 let activePlaylist
 let deferredPrompt
@@ -487,9 +486,44 @@ class Home extends Component {
                   activeSlide &&
                   activeSlide.id && (
                     <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                      {!activeSlide.buttonText &&
+                        scrollIndex != 0 && (
+                          <>
+                            {(isMovie(activeSlide.contentType) || getContentTypeName(activeSlide.contentType) == 'vod') && (
+                              <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                                <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
+                              </Link>
+                            )}
+                            {!isMovie(activeSlide.contentType) &&
+                              <>
+                                {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} tourMovieDetail`}>
+                                    <span className={styles.play_icon} />
+                                    <p>{locale['live_now']}</p>
+                                  </Link>
+                                )}
+                                {activeSlide.startTime > Date.now() / 1000 && (
+                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                    <p>{locale['upcoming']}</p>
+                                  </Link>
+                                )}
+                                {isMatchPassed(activeSlide.endTime) && (
+                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                    <p>{locale['replay']}</p>
+                                  </Link>
+                                )}
+                              </>
+                            }
+                          </>
+                        )}
+                      {activeSlide.buttonText && (
+                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                          <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
+                        </a>
+                      )}
                       <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      {activeSlide.startTime || activeSlide.homeTeamId ?
+                      {!isMovie(activeSlide.contentType) ?
                         <>
                           {filteredDesc &&
                             <p className={`${styles.home_desc} filteredText`}>
@@ -505,17 +539,7 @@ class Home extends Component {
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredQuote}</p>
                         </>
                       }
-                      {!activeSlide.buttonText &&
-                        scrollIndex != 0 && (
-                          <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                            <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
-                          </Link>
-                        )}
-                      {activeSlide.buttonText && (
-                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                          <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
-                        </a>
-                      )}
+
                     </LazyLoad>
                   )}
                 {scrollIndex != 0 &&
