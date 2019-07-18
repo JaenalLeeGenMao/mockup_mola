@@ -369,6 +369,7 @@ class Home extends Component {
   }
 
   handleKeyboardEvent = () => {
+    const __this = this
     /** handle keyboard pressed */
     document.onkeyup = event => {
       ticking = false
@@ -390,7 +391,14 @@ class Home extends Component {
           break
         case 13 /* enter */:
           if (scrollIndex == 0) {
-            window.location.href = activeSlide.link
+            activeSlide.link && window.open(activeSlide.link)
+            const payload = {
+              window,
+              user: __this.props.user,
+              linkRedirectUrl: __this.state.activeSlide.link,
+              event: 'event_pages',
+            }
+            globalTracker(payload)
           } else if (activeSlide.id) {
             if (isMovie(activeSlide.contentType)) {
               window.location.href = `/movie-detail/${activeSlide.id}`
@@ -405,7 +413,14 @@ class Home extends Component {
           break
         case 32 /* space */:
           if (scrollIndex == 0) {
-            window.location.href = activeSlide.link
+            activeSlide.link && window.open(activeSlide.link)
+            const payload = {
+              window,
+              user: __this.props.user,
+              linkRedirectUrl: __this.state.activeSlide.link,
+              event: 'event_pages',
+            }
+            globalTracker(payload)
           } else if (activeSlide.id) {
             if (isMovie(activeSlide.contentType)) {
               window.location.href = `/movie-detail/${activeSlide.id}`

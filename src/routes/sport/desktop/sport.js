@@ -365,6 +365,7 @@ class Sport extends Component {
   }
 
   handleKeyboardEvent = () => {
+    const __this = this
     /** handle keyboard pressed */
     document.onkeyup = event => {
       ticking = false
@@ -386,14 +387,28 @@ class Sport extends Component {
           break
         case 13 /* enter */:
           if (scrollIndex == 0) {
-            window.location.href = activeSlide.link
+            activeSlide.link && window.open(activeSlide.link)
+            const payload = {
+              window,
+              user: __this.props.user,
+              linkRedirectUrl: __this.state.activeSlide.link,
+              event: 'event_pages',
+            }
+            globalTracker(payload)
           } else {
             window.location.href = `/watch?v=${activeSlide.id}`
           }
           break
         case 32 /* space */:
           if (scrollIndex == 0) {
-            window.location.href = activeSlide.link
+            activeSlide.link && window.open(activeSlide.link)
+            const payload = {
+              window,
+              user: __this.props.user,
+              linkRedirectUrl: __this.state.activeSlide.link,
+              event: 'event_pages',
+            }
+            globalTracker(payload)
           } else {
             window.location.href = `/watch?v=${activeSlide.id}`
           }
