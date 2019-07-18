@@ -15,7 +15,7 @@ class HorizontalPlaylist extends Component {
   }
 
   categoryFilterLigaType = () => {
-    const { filterByLeague, genreSpoCategory, handleCategoryFilter, expandLeague, categoryFilterType } = this.props
+    const { filterByLeague, genreSpoCategory, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
     return (
       <>
         {genreSpoCategory.map(genre => {

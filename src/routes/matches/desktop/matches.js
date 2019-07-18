@@ -479,7 +479,6 @@ class Matches extends React.Component {
     const allLeagueList = [{ id: 'all', title: 'all' }]
 
     const isDark = false
-    console.log('this.state limit', this.state.limit)
     return (
       <>
         <div className={s.headerContainer}>
