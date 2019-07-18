@@ -51,8 +51,8 @@ class HeaderMenu extends Component {
       },
       {
         id: 'matches',
-        title: 'matches',
-        linkUrl: 'matches',
+        title: 'Matches',
+        linkUrl: '/matches',
       },
       // {
       //   id: 'library',
