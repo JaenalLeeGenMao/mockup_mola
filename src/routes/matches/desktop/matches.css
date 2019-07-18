@@ -110,7 +110,7 @@ body {
   display: grid;
   grid-gap: 3rem;
   column-gap: 1.5rem;
-  grid-template-columns: repeat(3, 300px);
+  grid-template-columns: repeat(3, 30rem);
   grid-template-rows: repeat(3, 0.73fr);
   justify-content: center;
 }
@@ -121,6 +121,11 @@ body {
   grid-column-gap: 3rem;
   margin: 0 auto;
   width: 100%;
+}
+
+.filter_wrapper {
+  position: fixed;
+  right: 0;
 }
 
 .filterContent_container {
@@ -354,6 +359,12 @@ body {
 
 .testAccordion {
   text-align: right;
+}
+
+@media screen and (max-width: 1200px) {
+  .filter_wrapper {
+    position: relative;
+  }
 }
 
 @media screen and (max-width: 1366px) and (max-height: 657px) {

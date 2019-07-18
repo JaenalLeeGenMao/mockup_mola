@@ -373,7 +373,7 @@ class Matches extends React.Component {
     const { filterByLeague, leagueList } = this.state
 
     return (
-      <div>
+      <div className={s.filter_wrapper}>
         {/* <div
           className={s.filterTitle_label}
           onClick={() => {
@@ -493,7 +493,7 @@ class Matches extends React.Component {
                       </div>
                     )
                   }
-                  height={750}
+                  height={'calc(100vh - 10rem)'}
                 >
                   <div className={s.matchlist_wrapper}>
                     <div className={s.matches_grid}>
