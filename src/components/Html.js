@@ -138,17 +138,17 @@ class Html extends React.Component {
               background-color: #333333 !important;
               border: none !important;
             }
-            input:-internal-autofill-selected {
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select input:-internal-autofill-selected {
               -webkit-text-fill-color: #fff !important;
               -webkit-box-shadow: 0 0 0 100px #333333 inset !important;
             }
-            input:-internal-autofill-selected:focus {
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select input:-internal-autofill-selected:focus {
               -webkit-text-fill-color: #fff !important;
               -webkit-box-shadow: 0 0 0 100px black inset;
               caret-color: white;
             }
 
-            input:-webkit-autofill {
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select input:-webkit-autofill {
               caret-color: white;
             }
             
