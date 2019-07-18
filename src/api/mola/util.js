@@ -76,6 +76,60 @@ const normalizeMatchesList = response => {
   }
   return []
 }
+const normalizeMatchPlaylists = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    let videoData = []
+    const playlistData = data.map(({ id, attributes: { title, videos } }) => {
+      videoData =
+        videos &&
+        videos.map(video => {
+          const { id, attributes: { title, type, description, streamSourceUrl, shortDescription, isDark, iconUrl, sortOrder }, images } = video
+          return {
+            id,
+            type,
+            title,
+            description,
+            streamSourceUrl,
+            shortDescription: shortDescription || '',
+            sortOrder,
+            iconUrl: iconUrl || '',
+            isDark: isDark || 0,
+            isActive: false,
+            images,
+            videos,
+          }
+        })
+
+      // const showData = videoData.filter(Boolean)
+      // const filterUndefined = videoData.filter(val => val !== undefined && val !== null)
+      // console.log('liat hasil filter', filterUndefined)
+      //pake typeof not working
+      // if (typeof videoData.length !== undefined) {
+      //undefined
+      // videoData = videoData.filter(function(e) {
+      //   console.log('return e', videoData)
+      //   return e
+      // })
+
+      // var result = videoData.filter(x => x).join(', ')
+      // console.log('result all videodata', result)
+
+      if (videoData && videoData.length > 0) {
+        // console.log('videoData', videoData)
+        // console.log('videoData.length', videoData.length)
+        return {
+          id,
+          title,
+          videos: videoData,
+        }
+      }
+    })
+    // console.log('playlistData', playlistData)
+    return playlistData
+  }
+  return []
+}
 
 const normalizeMatchDetail = response => {
   const { data } = response.data
@@ -588,4 +642,5 @@ export default {
   normalizeChannelPlaylist,
   normalizeProgrammeGuides,
   normalizeRecommendation,
+  normalizeMatchPlaylists,
 }
