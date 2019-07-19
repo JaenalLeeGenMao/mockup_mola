@@ -5,7 +5,7 @@ import Carousel from 'nuka-carousel'
 
 import LazyLoad from '@components/common/Lazyload'
 
-import { carouselContainer, arrowButtons, hiddenButtons, destroyButtons, chevronLeft, chevronRight } from './style'
+import { carouselContainer, arrowButtons, hiddenButtons, destroyButtons, chevronLeft, chevronRight } from './carouselStyle'
 
 class BannerCarousel extends Component {
   constructor(props) {
@@ -42,13 +42,7 @@ class BannerCarousel extends Component {
     const isMobile = Boolean(this.state.viewportWidth <= 800)
     return (
       <Carousel
-        ref={c => {
-          if (c !== null) {
-            this.props.refs.push(c)
-          }
-        }}
         autoplayInterval={5000}
-        heightMode={this.props.heightMode}
         initialSlideHeight={this.props.initialSlideHeight}
         initialSlideWidth={this.props.initialSlideWidth}
         slideOffset={this.props.slideOffset}
@@ -58,8 +52,8 @@ class BannerCarousel extends Component {
         className={`${carouselContainer} ${this.props.className}`}
         slideWidth={this.props.slideWidth}
         wrapAround={this.props.wrap}
-        frameOverflow={this.props.frameOverflow}
-        framePadding={this.props.framePadding}
+        cellAlign={this.props.cellAlign}
+        slidesToScroll={3}
         slidesToShow={this.props.slidesToShow}
         dragging={this.props.dragging}
         cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
@@ -67,14 +61,13 @@ class BannerCarousel extends Component {
         disableEdgeSwiping={true}
         opacityScale={this.props.opacityScale || 0.65}
         zoomScale={this.props.zoomScale || 0.85}
-        slidesToScroll={this.props.slidesToScroll}
         renderBottomCenterControls={() => {
           return false
         }}
         renderCenterLeftControls={({ previousSlide, currentSlide }) => {
           return (
             <LazyLoad>
-              <button onClick={previousSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === 0 ? destroyButtons : `${arrowButtons} default`}>
+              <button onClick={previousSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === 0 ? destroyButtons : arrowButtons}>
                 {this.props.transitionMode !== 'scroll3d' && <span className={chevronLeft} />}
               </button>
             </LazyLoad>
@@ -84,7 +77,7 @@ class BannerCarousel extends Component {
           const newVal = slideCount - (this.props.slidesToShow || 1)
           return (
             <LazyLoad>
-              <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>
+              <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : arrowButtons}>
                 {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
               </button>
             </LazyLoad>
