@@ -370,7 +370,7 @@ app.get('/oauth/callback', async (req, res) => {
   const sid = req.cookies.SID
 
   if (code && state && storedState && state === storedState) {
-    await new Promise(resolve => {
+    await new Promise((resolve, reject) => {
       request.post(
         {
           ...config.endpoints.setting,
@@ -481,7 +481,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
-  console.log('Server URL', req.url)
+  console.log('Server URL', req.path)
   var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
 
   try {
@@ -544,7 +544,7 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          if (req.url !== '/accounts/consent') {
+          if (req.path !== '/accounts/consent') {
             res.clearCookie('_at')
             res.clearCookie('SID')
             return res.redirect('/accounts/login')
@@ -573,7 +573,7 @@ app.get('*', async (req, res, next) => {
 
       /* Must login before accessing these features */
       if (!__DEV__ && whitelisted.includes(req.url)) {
-        if (req.url !== '/accounts/consent') {
+        if (req.path !== '/accounts/consent') {
           return res.redirect('/accounts/login')
         }
       }
