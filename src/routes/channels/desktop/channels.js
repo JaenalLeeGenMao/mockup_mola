@@ -173,19 +173,25 @@ class Channels extends Component {
 
     return (
       <>
-        <div>
-          <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
-        </div>
-        <div className={styles.channels_container}>
-          <div className={styles.video_container}>
-            {loadPlayer && <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />}
-          </div>
-          {channelsPlaylist.meta.status === 'success' &&
-            programmeGuides.data &&
-            channelSchedule.length > 0 && <Schedule scheduleList={channelSchedule} handleSelectChannel={this.handleSelectChannel} activeChannelId={this.state.activeChannelId} {...this.props} />}
-          {/* {programmeGuides.error && !programmeGuides.data && <div> terjadi kesalahan </div>} */}
-        </div>
-        {/* {!dataFetched && status === 'error' && <MovieDetailError message={error} />} */}
+        {dataFetched && (
+          <>
+            <div>
+              <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
+            </div>
+            <div className={styles.channels_container}>
+              <div className={styles.video_container}>
+                {loadPlayer && (
+                  <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
+                )}
+              </div>
+              {channelsPlaylist.meta.status === 'success' &&
+                programmeGuides.data &&
+                channelSchedule.length > 0 && <Schedule scheduleList={channelSchedule} handleSelectChannel={this.handleSelectChannel} activeChannelId={this.state.activeChannelId} {...this.props} />}
+              {/* {programmeGuides.error && !programmeGuides.data && <div> terjadi kesalahan </div>} */}
+            </div>
+          </>
+        )}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }
