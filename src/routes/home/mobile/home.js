@@ -1,14 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import Slider from 'react-slick'
-import { Link as RSLink, Element, Events, scroller } from 'react-scroll'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import Joyride from 'react-joyride'
 import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
-import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _get from 'lodash/get'
 
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import { isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
@@ -24,7 +21,6 @@ import Link from '@components/Link'
 
 import HomeError from '@components/common/error'
 import HomePlaceholder from './placeholder'
-import HomeArrow from '../arrow'
 import HomeMobileContent from './content'
 import HomeMobileMenu from './menu'
 
@@ -36,7 +32,6 @@ import { SETTINGS_MOBILE } from '../const'
 import { tourSteps } from './const'
 
 let activePlaylist
-let deferredPrompt
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
 class Home extends Component {
@@ -59,7 +54,7 @@ class Home extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos }, runtime } = nextProps
+    const { onUpdatePlaylist, onHandlePlaylist, onHandleVideo, home: { playlists, videos } } = nextProps
 
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
@@ -194,43 +189,6 @@ class Home extends Component {
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
       }
     }
-
-    // // Prompt user to f AddToHomeScreen
-    // window.addEventListener('beforeinstallprompt', e => {
-    //   // Prevent Chrome 67 and earlier from automatically showing the prompt
-    //   // e.preventDefault()
-    //   // Stash the event so it can be triggered later.
-    //   deferredPrompt = e
-
-    //   const a2hsInstalled = localStorage.getItem('a2hs')
-    //   if (!a2hsInstalled) {
-    //     // Update UI notify the user they can add to home screen
-    //     this.a2hsContainer.style.display = 'flex'
-    //   }
-    // })
-
-    // this.btnAdd.addEventListener('click', e => {
-    //   // hide our user interface that shows our A2HS button
-    //   this.a2hsContainer.style.display = 'none'
-    //   // Show the prompt
-    //   deferredPrompt.prompt()
-    //   // Wait for the user to respond to the prompt
-    //   deferredPrompt.userChoice.then(choiceResult => {
-    //     if (choiceResult.outcome === 'accepted') {
-    //       console.log('User accepted the A2HS prompt')
-    //       localStorage.setItem('a2hs', true)
-    //     } else {
-    //       console.log('User dismissed the A2HS prompt')
-    //       localStorage.setItem('a2hs', false)
-    //     }
-    //     deferredPrompt = null
-    //   })
-    // })
-
-    // window.addEventListener('appinstalled', evt => {
-    //   app.logEvent('a2hs', 'installed')
-    //   localStorage.setItem('a2hs', true)
-    // })
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
@@ -248,10 +206,9 @@ class Home extends Component {
           this.rootSlider.slickNext()
         } else {
           this.rootSlider.slickPrev()
-        }
+        } videoErrorCode
       }
     } else {
-      const { playlists: { data: playlistDt }, videos: { data: videoDt } } = this.props.home
       if (slider) {
         if (slider.innerSlider === null) {
           return false
@@ -348,7 +305,7 @@ class Home extends Component {
   }
 
   render() {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent),
+    const
       {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
@@ -368,8 +325,8 @@ class Home extends Component {
           this.handleColorChange(nextIndex)
         },
       },
-      playlistErrorCode = getErrorCode(playlistError),
-      videoErrorCode = getErrorCode(videoError)
+      playlistErrorCode = getErrorCode(playlistError)
+    // videoErrorCode = getErrorCode(videoError)
 
     const customTourStyle = {
       buttonNext: {
@@ -497,8 +454,8 @@ class Home extends Component {
                             {!isMovie(activeSlide.contentType) &&
                               <>
                                 {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
-                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} tourMovieDetail`}>
-                                    <span className={styles.play_icon} />
+                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
+                                    <span className={styles.play_icon_sport} />
                                     <p>{locale['live_now']}</p>
                                   </Link>
                                 )}
@@ -585,7 +542,7 @@ class Home extends Component {
                   }}
                 >
                   {videos.data.map((video, index) => {
-                    const { id, sortOrder } = video.meta
+                    const { id } = video.meta
 
                     if (video.data <= 0) {
                       return;
