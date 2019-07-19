@@ -43,104 +43,104 @@ const routes = {
     //   ],
     // },
     // // Movie Library
-    {
-      path: '/movie-library',
-      load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    {
-      path: '/search',
-      load: () => import(/* webpackChunkName: 'search' */ './search'),
-    },
-    {
-      path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
-    },
-    {
-      path: '/accounts/inbox',
-      load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
-    },
-    {
-      path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
-    },
-    {
-      path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
-    },
-    {
-      path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
-    },
-    {
-      path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
-    },
-    {
-      path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
-    },
-    {
-      path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
-    },
-    {
-      path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
-    },
-    {
-      path: '/accounts/thankyou',
-      load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
-    },
-    {
-      path: '/accounts/consent',
-      load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
-    },
-    {
-      path: '/system-info',
-      load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
-    },
-    {
-      path: '/terms',
-      load: () => import(/* webpackChunkName: 'terms' */ './terms'),
-    },
-    {
-      path: '/conditions',
-      load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
-    },
-    {
-      path: '/history-transactions',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
-    {
-      path: '/history-transactions/:id',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
-    {
-      path: '/sports',
-      load: () => import(/* webpackChunkName: 'sport' */ './sport'),
-    },
-    {
-      path: '/switch-channels',
-      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
-    },
-    {
-      path: '/matches',
-      load: () => import(/* webpackChunkName: 'matches' */ './matches'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    {
-      path: '/watch',
-      load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
-    },
+    // {
+    //   path: '/movie-library',
+    //   load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/search',
+    //   load: () => import(/* webpackChunkName: 'search' */ './search'),
+    // },
+    // {
+    //   path: '/accounts/history',
+    //   load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
+    // },
+    // {
+    //   path: '/accounts/inbox',
+    //   load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
+    // },
+    // {
+    //   path: '/accounts/login',
+    //   load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
+    // },
+    // {
+    //   path: '/accounts/register',
+    //   load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
+    // },
+    // {
+    //   path: '/accounts/profile',
+    //   load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
+    // },
+    // {
+    //   path: '/accounts/forgotPassword',
+    //   load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
+    // },
+    // {
+    //   path: '/accounts/resetPassword',
+    //   load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
+    // },
+    // {
+    //   path: '/accounts/security',
+    //   load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
+    // },
+    // {
+    //   path: '/accounts/setting',
+    //   load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
+    // },
+    // {
+    //   path: '/accounts/thankyou',
+    //   load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
+    // },
+    // {
+    //   path: '/accounts/consent',
+    //   load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
+    // },
+    // {
+    //   path: '/system-info',
+    //   load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
+    // },
+    // {
+    //   path: '/terms',
+    //   load: () => import(/* webpackChunkName: 'terms' */ './terms'),
+    // },
+    // {
+    //   path: '/conditions',
+    //   load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
+    // },
+    // {
+    //   path: '/history-transactions',
+    //   load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+    // },
+    // {
+    //   path: '/history-transactions/:id',
+    //   load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+    // },
+    // {
+    //   path: '/sports',
+    //   load: () => import(/* webpackChunkName: 'sport' */ './sport'),
+    // },
+    // {
+    //   path: '/switch-channels',
+    //   load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    // },
+    // {
+    //   path: '/matches',
+    //   load: () => import(/* webpackChunkName: 'matches' */ './matches'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/watch',
+    //   load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
+    // },
     // {
     //   path: '/channels',
     //   load: () => import(/* webpackChunkName: 'channels' */ './channels'),

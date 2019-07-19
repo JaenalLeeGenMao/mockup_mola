@@ -1,4 +1,5 @@
 import { get, post, delete as axiosDelete } from 'axios'
+import _ from 'lodash'
 import {
   VIDEOS_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT,
@@ -36,6 +37,43 @@ const getHomePlaylist = () => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getFeaturePlaylist = id => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const data = _.get(response, 'data.data', []),
+        id = _.get(data, '[0].id', ''),
+        type = _.get(data, '[0].type', ''),
+        title = _.get(data, '[0].attributes.title', ''),
+        visibility = _.get(data, '[0].attributes.visibility', 0),
+        playlists = _.get(data, '[0].attributes.playlists', [])
+
+      const playlistsFiltered = playlists.length > 0 && playlists.filter(playlist => playlist.attributes.visibility === 1)
+      return {
+        meta: {
+          status: data.length > 0 ? 'success' : 'no_result',
+          error: '',
+          id,
+          title,
+          type,
+          visibility,
+        },
+        data: playlistsFiltered,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Feature playlist')
       return {
         meta: {
           status: 'error',
@@ -821,6 +859,7 @@ const getHeaderMenu = () => {
 
 export default {
   getHomePlaylist,
+  getFeaturePlaylist,
   getFeatureBanner,
   getHomeVideo,
   getAllHistory,

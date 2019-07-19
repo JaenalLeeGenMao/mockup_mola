@@ -12,6 +12,7 @@ import * as sport from './sport'
 import * as matches from './matches'
 import * as vuid from './vuid'
 import * as channels from './channels'
+import * as feature from './feature'
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE'
 export default {
@@ -29,4 +30,5 @@ export default {
   ...matches,
   ...vuid,
   ...channels,
+  ...feature,
 }

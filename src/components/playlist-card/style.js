@@ -45,5 +45,16 @@ export const playlistContainer = css`
     position: absolute;
     z-index: 0;
   }
+
+  .bannerImage3d {
+    position: relative;
+    z-index: 1;
+    width: 45vw;
+  }
+
+  .bannerImage3d.hide {
+    position: absolute;
+    z-index: 0;
+  }
 }
 `
