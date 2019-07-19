@@ -40,7 +40,7 @@ class Channels extends Component {
   }
 
   componentDidMount() {
-    const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user } = this.props
+    const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user, getVUID } = this.props
 
     fetchChannelsPlaylist().then(() => {
       fetchChannelSchedule(this.state.selectedDate)
@@ -149,6 +149,7 @@ class Channels extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
+
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
     const { user } = this.props
@@ -177,16 +178,12 @@ class Channels extends Component {
         </div>
         <div className={styles.channels_container}>
           <div className={styles.video_container}>
-            {loadPlayer ? (
-              <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
-            ) : (
-              <div>Video Not Available</div> // styling later
-            )}
+            {loadPlayer && <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />}
           </div>
           {channelsPlaylist.meta.status === 'success' &&
             programmeGuides.data &&
             channelSchedule.length > 0 && <Schedule scheduleList={channelSchedule} handleSelectChannel={this.handleSelectChannel} activeChannelId={this.state.activeChannelId} {...this.props} />}
-          {programmeGuides.error && !programmeGuides.data && <div> terjadi kesalahan </div>}
+          {/* {programmeGuides.error && !programmeGuides.data && <div> terjadi kesalahan </div>} */}
         </div>
         {/* {!dataFetched && status === 'error' && <MovieDetailError message={error} />} */}
       </>

@@ -37,7 +37,7 @@ class Channels extends Component {
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
     }
-    const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId } = this.props
+    const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     fetchChannelsPlaylist().then(() => fetchChannelSchedule(selectedDate))
 
     fetchVideoByid(movieId)
