@@ -81,7 +81,6 @@ class BannerCarousel extends Component {
         }}
         renderCenterRightControls={({ nextSlide, slideCount, currentSlide }) => {
           const newVal = slideCount - (this.props.slidesToScroll || 1)
-          console.log(slideCount, newVal)
           return (
             <LazyLoad>
               <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>

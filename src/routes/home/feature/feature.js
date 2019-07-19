@@ -20,7 +20,6 @@ class Feature extends Component {
     this.state = {
       viewportWidth: 0,
       carouselRefs: [],
-      carouselRefsCounter: 0 /* carouselRefsCounter is a flag to prevent resizing upon initializing carousel */,
     }
   }
 
@@ -32,8 +31,8 @@ class Feature extends Component {
         const id = this.props.id || window.location.pathname.replace('/', '')
 
         this.props.onHandlePlaylist(id)
+        window.addEventListener('resize', this.updateWindowDimensions)
       }
-      window.addEventListener('resize', this.updateWindowDimensions)
     }
   }
 
@@ -56,20 +55,15 @@ class Feature extends Component {
 
   /* Dynamically re-adjust carousel */
   updateOnImageLoad = () => {
-    const { carouselRefs, carouselRefsCounter } = this.state
+    const { carouselRefs } = this.state
 
-    if (carouselRefsCounter > carouselRefs.length) {
+    if (carouselRefs.length > 0) {
       carouselRefs.map(ref => {
         if (ref && ref.onResize) {
           ref.onResize()
         }
       })
     }
-
-    /* magic happens to prevent resizing upon initialising carousel */
-    this.setState({
-      carouselRefsCounter: carouselRefsCounter + 1,
-    })
   }
 
   render() {
