@@ -641,6 +641,8 @@ app.get('*', async (req, res, next) => {
         clientIp: ip,
       },
       runtime: {
+        appUrl: 'molaapp://mola.tv/watch',
+        appPackage: config.env == 'staging' ? 'com.molademo' : 'tv.mola.app',
         gt: guestToken,
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
