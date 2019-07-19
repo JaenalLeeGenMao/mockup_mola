@@ -9,7 +9,7 @@ export const videoContainer = css`
   :hover {
     pointer-events: auto;
     cursor: pointer;
-    transform: scaleY(1.05);
+    transform: scale(1.05);
   }
 
   p {
@@ -38,13 +38,23 @@ export const videoContainer = css`
 
   .bannerImage {
     position: relative;
+    z-index: 1;
+  }
+
+  .bannerImage.hide {
+    position: absolute;
+    z-index: 0;
+  }
+
+  .bannerImage3d {
+    position: relative;
+    z-index: 1;
+    width: 45vw;
+  }
+
+  .bannerImage3d.hide {
+    position: absolute;
     z-index: 0;
   }
 }
-`
-export const imageStyle = css`
-  width: 16rem;
-  @media screen and (min-width: 1900px) {
-    width: 14.5rem;
-  }
 `
