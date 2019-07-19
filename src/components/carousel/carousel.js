@@ -42,7 +42,13 @@ class BannerCarousel extends Component {
     const isMobile = Boolean(this.state.viewportWidth <= 800)
     return (
       <Carousel
+        ref={c => {
+          if (c !== null) {
+            this.props.refs.push(c)
+          }
+        }}
         autoplayInterval={5000}
+        heightMode={this.props.heightMode}
         initialSlideHeight={this.props.initialSlideHeight}
         initialSlideWidth={this.props.initialSlideWidth}
         slideOffset={this.props.slideOffset}
@@ -53,6 +59,7 @@ class BannerCarousel extends Component {
         slideWidth={this.props.slideWidth}
         wrapAround={this.props.wrap}
         frameOverflow={this.props.frameOverflow}
+        framePadding={this.props.framePadding}
         slidesToShow={this.props.slidesToShow}
         dragging={this.props.dragging}
         cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
@@ -67,7 +74,7 @@ class BannerCarousel extends Component {
         renderCenterLeftControls={({ previousSlide, currentSlide }) => {
           return (
             <LazyLoad>
-              <button onClick={previousSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === 0 ? destroyButtons : arrowButtons}>
+              <button onClick={previousSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === 0 ? destroyButtons : `${arrowButtons} default`}>
                 {this.props.transitionMode !== 'scroll3d' && <span className={chevronLeft} />}
               </button>
             </LazyLoad>
@@ -77,7 +84,7 @@ class BannerCarousel extends Component {
           const newVal = slideCount - (this.props.slidesToShow || 1)
           return (
             <LazyLoad>
-              <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : arrowButtons}>
+              <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>
                 {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
               </button>
             </LazyLoad>

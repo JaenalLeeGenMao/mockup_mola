@@ -5,14 +5,14 @@ export const carouselContainer = css`
   display: inline-block;
   max-width: 100vw !important;
 
-  div.slider-control-centerleft,
-  div.slider-control-centerright {
+  & .slider-control-centerleft,
+  & .slider-control-centerright {
     height: 100% !important;
     display: flex;
     justify-content: center;
   }
 
-  div.slider-frame {
+  & .slider-frame {
     padding: 1rem 0 !important;
   }
 
@@ -30,7 +30,7 @@ export const carouselContainer = css`
   }
 
   @media screen and (max-width: 960px) {
-    :hover button {
+    :hover button.default {
       display: none;
     }
   }
@@ -56,7 +56,7 @@ export const arrowButtons = css`
   }
 
   @media screen and (max-width: 960px) {
-    display: none;
+    // display: none;
     padding: .5rem;
   }
 }
@@ -85,7 +85,7 @@ export const destroyButtons = css`
   padding: 1rem;
   opacity: 1;
   height: 100% !important;
-  width: 35vw;
+  width: 3vw;
   max-width: 370px;
   opacity: 0 !important; /* nanti di hilangin, tergantung kebutuhan */
   position: relative;

@@ -43,15 +43,15 @@ export const unsetMultilineEllipsis = (className, text) => {
     })
 }
 
-export const isMovie = (contentType) => {
+export const isMovie = contentType => {
   if (contentType == 7 || contentType == 8) {
-    return true;
+    return true
   }
 
-  return false;
+  return false
 }
 
-export const getContentTypeName = (contentTypeId) => {
+export const getContentTypeName = contentTypeId => {
   switch (contentTypeId) {
     case 1:
       return 'vod'
