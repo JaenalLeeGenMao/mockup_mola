@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import Mola from '@api/mola'
 import types from '../constants'
-import { viewAllMovieBg, viewAllMovieBgWebp, viewAllMovieMobileBg, viewAllMovieMobileBgWebp } from '@global/imageUrl'
 
 const getFeaturePlaylist = id => dispatch => {
   dispatch({
@@ -37,9 +36,9 @@ const getFeaturePlaylist = id => dispatch => {
 
 const getFeatureVideo = playlist => dispatch => {
   return Mola.getHomeVideo({ id: playlist.id }).then(result => {
-    // const filterVisibility = result.data.filter(dt => {
-    //   return dt.visibility === 1
-    // })
+    const filterVisibility = result.data.filter(dt => {
+      return dt.visibility === 1
+    })
 
     result = {
       meta: {
@@ -49,7 +48,7 @@ const getFeatureVideo = playlist => dispatch => {
         contentType: playlist.contentType || playlist.attributes.contentType,
         sortOrder: playlist.sortOrder,
       },
-      // data: filterVisibility,
+      data: filterVisibility,
       data: result.data,
     }
     dispatch({
