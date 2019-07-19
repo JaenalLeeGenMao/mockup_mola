@@ -5,6 +5,11 @@ export const container = css`
   width: 100%;
   margin: 0 auto;
   max-width: 1280px;
+
+  h3 {
+    color: #6f6f6f;
+    font-size: 1.42rem;
+  }
 `
 
 export const bannerContainer = css`

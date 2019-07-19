@@ -55,28 +55,20 @@ export const getContentTypeName = contentTypeId => {
   switch (contentTypeId) {
     case 1:
       return 'vod'
-      break
     case 2:
       return 'linear'
-      break
     case 3:
       return 'live'
-      break
     case 4:
       return 'replay'
-      break
     case 5:
       return 'mixed'
-      break
     case 7:
       return 'movie'
-      break
     case 9:
       return 'mola-featured'
-      break
     case 10:
       return 'mola-categories'
-      break
     default:
       return 'trailers'
   }

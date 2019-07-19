@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import Mola from '@api/mola'
 import types from '../constants'
-import { viewAllMovieBg, viewAllMovieBgWebp, viewAllMovieMobileBg, viewAllMovieMobileBgWebp } from '@global/imageUrl'
 
 const getFeaturePlaylist = id => dispatch => {
   dispatch({
@@ -45,10 +44,12 @@ const getFeatureVideo = playlist => dispatch => {
       meta: {
         status: result.meta.status,
         id: playlist.id,
+        title: playlist.attributes.title,
         contentType: playlist.contentType || playlist.attributes.contentType,
         sortOrder: playlist.sortOrder,
       },
       data: filterVisibility,
+      data: result.data,
     }
     dispatch({
       type: types.GET_FEATURE_VIDEO,
