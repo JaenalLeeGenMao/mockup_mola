@@ -142,6 +142,10 @@
     margin: auto;
   }
 
+  .player__blank {
+    height: 18rem;
+  }
+
   .player__video {
     height: 100%;
   }
@@ -169,6 +173,17 @@
     padding: 0;
     color: #fff;
     box-sizing: border-box;
+  }
+
+  .detail__desc a.btn_open_app {
+    background-color: #0862a6;
+    border-radius: 3px;
+    display: block;
+    width: 100px;
+    margin: 30px auto;
+    padding: 10px;
+    text-align: center;
+    line-height: 1.5;
   }
 
   .detail__desc__read_more {

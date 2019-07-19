@@ -10,7 +10,7 @@ import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
 import DRMConfig from '@source/lib/DRMConfig'
-import history from '@source/history'
+import config from '@source/config'
 
 import Tracker from '@source/lib/tracker'
 import { isMovie } from '@source/lib/globalUtil'
@@ -36,7 +36,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -81,6 +81,14 @@ class MovieDetail extends Component {
     // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
     this.isPlay = true
     this.setState({ toggleSuggestion: false })
+
+    const { movieId, runtime: { appPackage } } = this.props
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    if (!isSafari) {
+      const domain = config.endpoints.domain
+      const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+      document.location = `intent://scan/#Intent;scheme=molaapp;package=${appPackage};S.browser_fallback_url=${url};end`
+    }
   }
 
   handleOnVideoLoad = player => {
@@ -170,7 +178,7 @@ class MovieDetail extends Component {
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
       if (!isMovie(movieDetail.data[0].contentType)) {
         const params = Object.keys(urlParams)
-          .map(function(key) {
+          .map(function (key) {
             return key + '=' + urlParams[key]
           })
           .join('&')
@@ -249,8 +257,8 @@ class MovieDetail extends Component {
                     isMobile
                   />
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
