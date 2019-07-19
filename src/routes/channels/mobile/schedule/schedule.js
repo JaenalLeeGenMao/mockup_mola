@@ -8,13 +8,10 @@ import { formatDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
 class Schedule extends Component {
   render() {
     const { scheduleList, activeDate } = this.props
-    const schedule = scheduleList.filter(
-      list => {
-        return (
-          Number(moment(list.start).format('DD')) === Number(moment(activeDate).format('DD'))
-        );
-      }
-    );
+    const unixDate = Math.floor(new Date(activeDate).getTime() / 1000)
+    const schedule = scheduleList.filter(list => {
+      return Number(moment(list.start).format('DD')) === Number(moment(unixDate).format('DD'))
+    })
 
     return (
       <div className={styles.schedule_container}>

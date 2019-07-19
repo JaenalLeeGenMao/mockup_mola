@@ -39,7 +39,7 @@ class Channels extends Component {
       fullDate: moment().format('YYYYMMDD'),
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
-    fetchChannelsPlaylist().then(() => fetchChannelSchedule(selectedDate))
+    fetchChannelsPlaylist('channels-m').then(() => fetchChannelSchedule(selectedDate))
 
     fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -154,45 +154,48 @@ class Channels extends Component {
 
     return (
       <>
-        {' '}
-        {dataFetched && (
-          <>
-            <div className={styles.header_container}>
-              <Header shadowMobile libraryOff className={styles.placeholder__header} isDark={0} activeMenu="channels" isMobile {...this.props} />
-            </div>
-            <div className={styles.channels_container}>
-              {channelsPlaylist.meta.status === 'success' && (
-                <>
-                  <div className={styles.channels_top_wrapper}>
-                    {programmeGuides.data &&
-                      channelSchedule &&
-                      activeChannel &&
-                      activeChannelId && (
-                        <>
-                          <div className={styles.channels_list_wrapper}>
-                            <DropdownList className={styles.channels_dropdown_container} dataList={channelSchedule} activeId={activeChannelId} onClick={this.handleSelectChannel} />
-                          </div>
+        {
+          dataFetched && (
+            <>
+              <div className={styles.header_container}>
+                <Header shadowMobile libraryOff className={styles.placeholder__header} isDark={0} activeMenu="channels" isMobile {...this.props} />
+              </div>
+              <div className={styles.channels_container}>
+                {channelsPlaylist.meta.status === 'success' && (
+                  <>
+                    <div className={styles.channels_top_wrapper}>
+                      {programmeGuides.data &&
+                        channelSchedule &&
+                        activeChannel &&
+                        activeChannelId && (
+                          <>
+                            <div className={styles.channels_list_wrapper}>
+                              <DropdownList className={styles.channels_dropdown_container} dataList={channelSchedule} activeId={activeChannelId} onClick={this.handleSelectChannel} />
+                            </div>
 
-                          <div className={styles.schedule_date_wrapper}>
-                            <DropdownList className={styles.channels_dropdown_container} dataList={this.getCalendar()} activeId={activeDate} onClick={this.handleSelectDate} />
-                          </div>
-                        </>
+                            <div className={styles.schedule_date_wrapper}>
+                              <DropdownList className={styles.channels_dropdown_container} dataList={this.getCalendar()} activeId={activeDate} onClick={this.handleSelectDate} />
+                            </div>
+                          </>
+                        )}
+                    </div>
+                    <div className={styles.video_container}>
+                      {loadPlayer ? (
+                        <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
+                      ) : (
+                          <div>Video Not Available</div> // styling later
+                        )}
+                    </div>
+                    {programmeGuides.data &&
+                      scheduleList.length > 0 && (
+                        <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
                       )}
-                  </div>
-                  <div className={styles.video_container}>
-                    {loadPlayer && (
-                      <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
-                    )}
-                  </div>
-                  {programmeGuides.data &&
-                    scheduleList.length > 0 && (
-                      <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                    )}
-                </>
-              )}
-            </div>
-          </>
-        )}
+                  </>
+                )}
+              </div>
+            </>
+          )
+        }
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
@@ -205,7 +208,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchChannelsPlaylist: () => dispatch(channelActions.getChannelsPlaylist()),
+  fetchChannelsPlaylist: id => dispatch(channelActions.getChannelsPlaylist(id)),
   fetchChannelSchedule: date => dispatch(channelActions.getProgrammeGuides(date)),
   fetchVideoByid: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),

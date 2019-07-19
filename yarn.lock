@@ -854,16 +854,8 @@
     regenerator-runtime "^0.13.2"
 
 "@babel/runtime@^7.3.4":
-  version "7.5.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
-  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
-"@babel/runtime@^7.3.4":
-  version "7.5.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
-  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
+  version "7.5.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.4.tgz#cb7d1ad7c6d65676e66b47186577930465b5271b"
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -983,10 +975,9 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@supersoccer/gandalf@^1.0.44":
-  version "1.0.44"
-  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.44.tgz#afc17211eb4d288350c0652dd4d7c226d23eea82"
-  integrity sha512-pUUl/XXDjocqvn4XX8IrQuFK8J5uMiWUAQRJsvatdI4xzzquiBloKzUn42jeBaEDqEyVI2ACuCDwo2QGSGMpUA==
+"@supersoccer/gandalf@^1.0.45":
+  version "1.0.45"
+  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.45.tgz#fef14323e90401361511c21ee62cfff40ce53da0"
   dependencies:
     axios "^0.18.0"
     babel-loader "^8.0.4"
@@ -3443,7 +3434,6 @@ csstype@^2.6.3:
 csstype@^2.6.3:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.6.tgz#c34f8226a94bbb10c32cc0d714afdf942291fc41"
-  integrity sha512-RpFbQGUE74iyPgvr46U9t1xoQBM8T4BL8SxrN66Le2xYAPSaDJJKeztV3awugusb3g3G9iL8StmkBBXhcbbXhg==
 
 csurf@1.9.0:
   version "1.9.0"
@@ -3489,12 +3479,10 @@ d3-timer@^1.0.9:
 d3-ease@^1.0.3:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.5.tgz#8ce59276d81241b1b72042d6af2d40e76d936ffb"
-  integrity sha512-Ct1O//ly5y5lFM9YTdu+ygq7LleSgSE4oj7vUt9tPLHUi8VCV7QoizGpdWRWAwCO9LdYzIrQDg97+hGVdsSGPQ==
 
 d3-timer@^1.0.9:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-1.0.9.tgz#f7bb8c0d597d792ff7131e1c24a36dd471a471ba"
-  integrity sha512-rT34J5HnQUHhcLvhSB9GjCkN0Ddd5Y8nCwDBG2u6wQEeYxT/Lf51fTFFkldeib/sE/J0clIe0pnCfs6g/lRbyg==
 
 d@1:
   version "1.0.1"
@@ -7662,7 +7650,6 @@ jws@^3.2.2:
 kapellmeister@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/kapellmeister/-/kapellmeister-3.0.1.tgz#419b715cd221acda3db79892caedf63e1c9f7d25"
-  integrity sha512-S7+gYcziMREv8RxG46138mb1O4Xf9II/bCxEJPYkhlZ7PgGWTlicgsyNad/DGc5oEAlWGLXE5ExLbTDVvJmgDA==
   dependencies:
     d3-timer "^1.0.9"
 
@@ -8989,10 +8976,9 @@ nth-check@^1.0.2, nth-check@~1.0.1:
   dependencies:
     boolbase "~1.0.0"
 
-nuka-carousel@4.5.8:
-  version "4.5.8"
-  resolved "https://registry.yarnpkg.com/nuka-carousel/-/nuka-carousel-4.5.8.tgz#fbcf2a7597a23f94ad751f72a8841066c2634114"
-  integrity sha512-wMqAaasLmZXq/HRxmPXvCyJkvntkseoH/I/pCUlE/hyXBQWWlefhZYtNaqGJoXm670ICzF7yP0229j2p4Nf4pg==
+nuka-carousel@^4.5.9:
+  version "4.5.9"
+  resolved "https://registry.yarnpkg.com/nuka-carousel/-/nuka-carousel-4.5.9.tgz#a300fcc37fbe3e3a7f9fea8464af49158e78e379"
   dependencies:
     csstype "^2.6.3"
     d3-ease "^1.0.3"
@@ -10844,7 +10830,6 @@ react-minimalist-portal@^2.3.1:
 react-move@^5.0.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/react-move/-/react-move-5.2.1.tgz#2098cbb071538a487a815f54b73842c30aaa7628"
-  integrity sha512-2If8uw9jJUQC8KxT1V1bJJ9amDvbHM4zCT42UekmP9KKrkf6elbc1PsXmPprfMjd20PkejtKnvs9T/TTXmTymA==
   dependencies:
     "@babel/runtime" "^7.3.4"
     kapellmeister "^3.0.1"
