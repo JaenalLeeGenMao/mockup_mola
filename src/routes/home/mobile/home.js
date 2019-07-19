@@ -206,7 +206,7 @@ class Home extends Component {
           this.rootSlider.slickNext()
         } else {
           this.rootSlider.slickPrev()
-        } videoErrorCode
+        }
       }
     } else {
       if (slider) {

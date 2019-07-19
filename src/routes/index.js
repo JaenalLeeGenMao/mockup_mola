@@ -142,6 +142,15 @@ const routes = {
       ],
     },
     {
+      path: '/download-app',
+      load: () => import(/* webpackChunkName: 'download-app' */ './download-app'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
+    },
+    {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
     },
@@ -173,7 +182,7 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-    setTimeout(function() {
+    setTimeout(function () {
       if (typeof document !== 'undefined') {
         const pathRoute = route.chunks[0]
         if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
@@ -211,9 +220,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function(t) {
+      timer = setTimeout(function (t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)
