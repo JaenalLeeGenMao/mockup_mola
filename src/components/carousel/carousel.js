@@ -42,11 +42,12 @@ class BannerCarousel extends Component {
     const isMobile = Boolean(this.state.viewportWidth <= 800)
     return (
       <Carousel
-        ref={c => {
-          if (c !== null) {
-            this.props.refs.push(c)
-          }
-        }}
+        // ref={c => {
+        //   if (c !== null && this.props.refs) {
+        //     this.props.refs.push(c)
+        //   }
+        // }}
+        autoGenerateStyleTag={false} /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
         cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
@@ -80,7 +81,7 @@ class BannerCarousel extends Component {
           )
         }}
         renderCenterRightControls={({ nextSlide, slideCount, currentSlide }) => {
-          const newVal = slideCount - (this.props.slidesToScroll || 1)
+          const newVal = slideCount - (this.props.slidesToShow || 1)
           return (
             <LazyLoad>
               <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>

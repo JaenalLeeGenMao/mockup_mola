@@ -10,6 +10,7 @@ import featureActions from '@actions/feature'
 
 import { getContentTypeName } from '@source/lib/globalUtil'
 
+import Placeholder from './placeholder'
 import { contentTypeList, banners } from './const'
 
 import { container, bannerContainer, carouselMargin } from './style'
@@ -19,7 +20,7 @@ class Feature extends Component {
     super(props)
     this.state = {
       viewportWidth: 0,
-      carouselRefs: [],
+      // carouselRefs: [],
     }
   }
 
@@ -54,17 +55,16 @@ class Feature extends Component {
   }
 
   /* Dynamically re-adjust carousel */
-  updateOnImageLoad = () => {
-    const { carouselRefs } = this.state
-
-    if (carouselRefs.length > 0) {
-      carouselRefs.map(ref => {
-        if (ref && ref.onResize) {
-          ref.onResize()
-        }
-      })
-    }
-  }
+  // updateOnImageLoad = () => {
+  //   const { carouselRefs } = this.state
+  // if (carouselRefs.length > 0) {
+  //   carouselRefs.map(ref => {
+  //     if (ref && ref.onResize) {
+  //       ref.onResize()
+  //     }
+  //   })
+  // }
+  // }
 
   render() {
     const isMobile = this.state.viewportWidth <= 680,
@@ -73,72 +73,79 @@ class Feature extends Component {
 
     return (
       <>
-        <Carousel refs={carouselRefs} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
-          {banners.map(obj => (
-            <PlaylistCard
-              transitionMode={'scroll3d'}
-              key={obj.id}
-              onClick={() => (window.location.href = obj.link)}
-              alt={obj.name}
-              src={obj.imageUrl}
-              onLoad={this.updateOnImageLoad}
-              containerClassName={bannerContainer}
-            />
-          ))}
-        </Carousel>
-        <LazyLoad containerClassName={container}>
-          {playlists.meta.status === 'success' &&
-            videos.meta.status === 'success' &&
-            playlists.data.length > 0 &&
-            videos.data.length > 0 &&
-            playlists.data.length === videos.data.length &&
-            videos.data.map((video, carouselIndex) => {
-              const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].attributes.contentType`, ''))
-              return (
-                <div key={carouselIndex}>
-                  {video.data.length > 0 && <h3>{video.meta.title}</h3>}
-                  <Carousel
-                    refs={carouselRefs}
-                    className={carouselMargin}
-                    wrap={false}
-                    autoplay={false}
-                    sliderCoin={true}
-                    dragging={true}
-                    withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
-                    slideToScroll={isMobile ? 1 : contentTypeList[contentTypeName].slideToScroll}
-                    slidesToShow={isMobile ? 3 : contentTypeList[contentTypeName].slideToShow}
-                    transitionMode={'scroll'}
-                  >
-                    {video.data.length > 0 &&
-                      video.data.map(obj => {
-                        if (contentTypeName === 'movie') {
-                          return (
-                            <VideoCard
-                              key={obj.id}
-                              alt={obj.title}
-                              description={obj.title}
-                              src={obj.background.portrait}
-                              onLoad={this.updateOnImageLoad}
-                              onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
-                            />
-                          )
-                        }
-                        return (
-                          <PlaylistCard
-                            key={obj.id}
-                            alt={obj.title}
-                            description={obj.title}
-                            src={obj.background.landscape}
-                            onLoad={this.updateOnImageLoad}
-                            onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
-                          />
-                        )
-                      })}
-                  </Carousel>
-                </div>
-              )
-            })}
-        </LazyLoad>
+        {playlists.meta.status === 'loading' && <Placeholder isMobile={isMobile} />}
+        {playlists.meta.status === 'success' && (
+          <>
+            <Carousel refs={carouselRefs} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
+              {banners.map(obj => (
+                <PlaylistCard
+                  transitionMode={'scroll3d'}
+                  key={obj.id}
+                  onClick={() => (window.location.href = obj.link)}
+                  alt={obj.attributes.name}
+                  src={obj.attributes.imageUrl}
+                  // onLoad={this.updateOnImageLoad}
+                  containerClassName={bannerContainer}
+                />
+              ))}
+            </Carousel>
+            <LazyLoad containerClassName={container}>
+              {playlists.meta.status === 'success' &&
+                videos.meta.status === 'success' &&
+                playlists.data.length > 0 &&
+                videos.data.length > 0 &&
+                playlists.data.length === videos.data.length &&
+                videos.data.map((video, carouselIndex) => {
+                  const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].attributes.contentType`, ''))
+
+                  return (
+                    <div key={carouselIndex}>
+                      {video.data.length > 0 && <h3>{video.meta.title}</h3>}
+                      <Carousel
+                        // refs={carouselRefs}
+                        className={carouselMargin}
+                        wrap={false}
+                        autoplay={false}
+                        sliderCoin={true}
+                        dragging={true}
+                        withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
+                        slideToScroll={isMobile ? 1 : contentTypeList[contentTypeName].slideToScroll}
+                        slidesToShow={isMobile ? 3 : contentTypeList[contentTypeName].slideToShow}
+                        transitionMode={'scroll'}
+                      >
+                        {video.data.length > 0 &&
+                          video.data.map(obj => {
+                            if (contentTypeName === 'movie') {
+                              return (
+                                <VideoCard
+                                  key={obj.id}
+                                  alt={obj.title}
+                                  description={obj.title}
+                                  src={obj.background.portrait}
+                                  // onLoad={this.updateOnImageLoad}
+                                  onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
+                                />
+                              )
+                            } else {
+                              return (
+                                <PlaylistCard
+                                  key={obj.id}
+                                  alt={obj.title}
+                                  description={obj.title}
+                                  src={obj.background.landscape}
+                                  // onLoad={this.updateOnImageLoad}
+                                  onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
+                                />
+                              )
+                            }
+                          })}
+                      </Carousel>
+                    </div>
+                  )
+                })}
+            </LazyLoad>
+          </>
+        )}
       </>
     )
   }
