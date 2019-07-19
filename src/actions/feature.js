@@ -58,7 +58,42 @@ const getFeatureVideo = playlist => dispatch => {
   })
 }
 
+const getFeatureBanner = pathname => dispatch => {
+  const id = `landing-page-${pathname}` /* landing-page-epl */
+
+  dispatch({
+    type: types.GET_FEATURE_BANNER_LOADING,
+    payload: {
+      meta: {
+        status: 'loading',
+        error: '',
+      },
+      data: [],
+    },
+  })
+  return Mola.getFeatureBanner({ id }).then(result => {
+    if (result.meta.status === 'error') {
+      dispatch({
+        type: types.GET_FEATURE_BANNER_ERROR,
+        payload: {
+          meta: {
+            status: 'error',
+            error: 'Error: feature banner failed',
+          },
+          data: [],
+        },
+      })
+    } else {
+      dispatch({
+        type: types.GET_FEATURE_BANNER_SUCCESS,
+        payload: result,
+      })
+    }
+  })
+}
+
 export default {
   getFeaturePlaylist,
   getFeatureVideo,
+  getFeatureBanner,
 }

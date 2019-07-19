@@ -12,9 +12,9 @@ class PlaylistCard extends Component {
 
   handleTitleShow = (show = false) => {
     this.setState({ show: show === 'success' ? true : false })
-    if (this.props.onLoad) {
-      this.props.onLoad()
-    }
+    // if (this.props.onLoad) {
+    //   this.props.onLoad()
+    // }
   }
 
   render() {

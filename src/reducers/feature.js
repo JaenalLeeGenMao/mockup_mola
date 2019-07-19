@@ -14,6 +14,12 @@ const initialState = {
     },
     data: [],
   },
+  banners: {
+    meta: {
+      status: 'loading',
+    },
+    data: [],
+  },
 }
 
 export default function home(state = initialState, action) {
@@ -54,6 +60,12 @@ export default function home(state = initialState, action) {
           data: result,
         },
       }
+    case types.GET_FEATURE_BANNER_LOADING:
+      return { ...state, banners: { ...action.payload } }
+    case types.GET_FEATURE_BANNER_SUCCESS:
+      return { ...state, banners: { ...action.payload } }
+    case types.GET_FEATURE_BANNER_ERROR:
+      return { ...state, banners: { ...action.payload } }
     default:
       return {
         ...initialState,

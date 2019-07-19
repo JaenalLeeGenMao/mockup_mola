@@ -84,11 +84,9 @@ const getFeaturePlaylist = id => {
     })
 }
 
-const getFeatureBanner = (isMobile = false, isSport = false) => {
-  let url = isMobile ? 'mobile-featured' : 'desktop-featured'
-  if (isSport) {
-    url = isMobile ? 'mobile-sport-featured' : 'desktop-sport-featured'
-  }
+const getFeatureBanner = ({ id = '' }) => {
+  /* fid's are epl, sports, movies, kids */
+  const url = id /* mobile-featured, desktop-featured, mobile-sport-featured, desktop-sport-featured, landing-page-${fid} */
   return get(`${CAMPAIGN_ENDPOINT}/${url}?include=banners`, {
     ...endpoints.setting,
   })
