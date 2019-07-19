@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import LazyLoad from '@components/common/Lazyload'
@@ -8,101 +8,11 @@ import VideoCard from '@components/video-card'
 
 import featureActions from '@actions/feature'
 
-// import { getContentTypeName } from '@source/lib/globalUtil'
-import { getContentTypeName } from '../../../lib/globalUtil'
+import { getContentTypeName } from '@source/lib/globalUtil'
+
+import { contentTypeList, banners } from './const'
 
 import { container, bannerContainer, carouselMargin } from './style'
-
-const banners = [
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '01',
-    name: 'AC Milan vs Inter Milan',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '02',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '03',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '04',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '05',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '03',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '04',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-  {
-    imageUrl: 'https://cdn01.supersoccer.tv/images/96/f12105146129696d6a7e0ed521db2e48/original.jpg',
-    id: '05',
-    name: 'AC Milan vs JUVENTUS',
-    category: 'Club Rivalries',
-    description: 'WAKAWKAKAKAWKAKAW ASDSADOASDM SDADFASD ADSAFSF',
-    synopsis: `White paper, indicators empower communities, cultivate collaborate
-    entrepreneur. Move the needle, empathetic, inspirational,
-    changemaker.`,
-    link: '/test',
-  },
-]
 
 class Feature extends Component {
   constructor(props) {
@@ -167,18 +77,6 @@ class Feature extends Component {
       { carouselRefs } = this.state,
       { feature: { playlists, videos } } = this.props
 
-    const contentTypeList = {
-      vod: 4.5,
-      linear: 4.5,
-      live: 4.5,
-      replay: 4.5,
-      mixed: 4.5,
-      movie: 7.5,
-      'mola-featured': 4.5,
-      'mola-categories': 6.5,
-      trailers: 4.5,
-    }
-
     return (
       <>
         <Carousel refs={carouselRefs} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
@@ -212,8 +110,9 @@ class Feature extends Component {
                     autoplay={false}
                     sliderCoin={true}
                     dragging={true}
-                    framePadding={'0px 2rem'}
-                    slidesToShow={isMobile ? 3 : contentTypeList[contentTypeName]}
+                    withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
+                    slideToScroll={isMobile ? 1 : contentTypeList[contentTypeName].slideToScroll}
+                    slidesToShow={isMobile ? 3 : contentTypeList[contentTypeName].slideToShow}
                     transitionMode={'scroll'}
                   >
                     {video.data.length > 0 &&

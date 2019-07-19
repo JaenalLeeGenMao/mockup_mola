@@ -48,26 +48,25 @@ class BannerCarousel extends Component {
           }
         }}
         autoplayInterval={5000}
+        autoplay={this.props.autoplay}
+        cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
+        className={`${carouselContainer} ${this.props.className}`}
+        disableEdgeSwiping={true}
+        dragging={this.props.dragging}
+        frameOverflow={this.props.frameOverflow}
+        framePadding={this.props.framePadding}
         heightMode={this.props.heightMode}
         initialSlideHeight={this.props.initialSlideHeight}
         initialSlideWidth={this.props.initialSlideWidth}
-        slideOffset={this.props.slideOffset}
-        framePadding={this.props.framePadding}
-        heightMode={this.props.heightMode}
-        autoplay={this.props.autoplay}
-        className={`${carouselContainer} ${this.props.className}`}
-        slideWidth={this.props.slideWidth}
-        wrapAround={this.props.wrap}
-        frameOverflow={this.props.frameOverflow}
-        framePadding={this.props.framePadding}
-        slidesToShow={this.props.slidesToShow}
-        dragging={this.props.dragging}
-        cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
-        transitionMode={this.props.transitionMode}
-        disableEdgeSwiping={true}
         opacityScale={this.props.opacityScale || 0.65}
-        zoomScale={this.props.zoomScale || 0.85}
+        slideOffset={this.props.slideOffset}
+        slideWidth={this.props.slideWidth}
         slidesToScroll={this.props.slidesToScroll}
+        slidesToShow={this.props.slidesToShow}
+        transitionMode={this.props.transitionMode}
+        withoutControls={this.props.withoutControls}
+        wrapAround={this.props.wrap}
+        zoomScale={this.props.zoomScale || 0.85}
         renderBottomCenterControls={() => {
           return false
         }}
@@ -81,7 +80,8 @@ class BannerCarousel extends Component {
           )
         }}
         renderCenterRightControls={({ nextSlide, slideCount, currentSlide }) => {
-          const newVal = slideCount - (this.props.slidesToShow || 1)
+          const newVal = slideCount - (this.props.slidesToScroll || 1)
+          console.log(slideCount, newVal)
           return (
             <LazyLoad>
               <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>
