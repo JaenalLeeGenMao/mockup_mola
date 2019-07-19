@@ -10,6 +10,14 @@ export const container = css`
     color: #6f6f6f;
     font-size: 1.42rem;
   }
+
+  @media screen and (max-width: 960px) {
+    h3 {
+      color: #6f6f6f;
+      font-size: 15px;
+      margin: 0 1rem;
+    }
+  }
 `
 
 export const bannerContainer = css`
