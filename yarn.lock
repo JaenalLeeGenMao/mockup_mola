@@ -8140,6 +8140,13 @@ parse-entities@^1.0.2, parse-entities@^1.1.0:
     is-decimal "^1.0.0"
     is-hexadecimal "^1.0.0"
 
+parse-form@^2.0.3:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/parse-form/-/parse-form-2.1.0.tgz#c13b7975e5ebb2ac68de24b2918b0f328f89f543"
+  integrity sha1-wTt5deXrsqxo3iSykYsPMo+J9UM=
+  dependencies:
+    q-set "^1.4.4"
+
 parse-glob@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/parse-glob/-/parse-glob-3.0.4.tgz#b2c376cfb11f35513badd173ef0bb6e3a388391c"
@@ -9003,6 +9010,16 @@ punycode@^1.2.4, punycode@^1.4.1:
 punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
+
+q-flat@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/q-flat/-/q-flat-0.2.3.tgz#d963bdc2ade58663e6823af8659562ed519d68ae"
+  integrity sha1-2WO9wq3lhmPmgjr4ZZVi7VGdaK4=
+
+q-set@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/q-set/-/q-set-1.4.4.tgz#24fa6e152a4b12a54132844b9d63aae3bed911ee"
+  integrity sha1-JPpuFSpLEqVBMoRLnWOq477ZEe4=
 
 q@^1.1.2:
   version "1.5.1"
@@ -10967,6 +10984,14 @@ stylis-rule-sheet@^0.0.10:
 stylis@^3.5.0:
   version "3.5.4"
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
+
+submit-form@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/submit-form/-/submit-form-2.0.0.tgz#d962b16aeb5a67edde43c08554a1fbaeff822e3f"
+  integrity sha1-2WKxautaZ+3eQ8CFVKH7rv+CLj8=
+  dependencies:
+    parse-form "^2.0.3"
+    q-flat "^0.2.3"
 
 sugarss@^1.0.0:
   version "1.0.1"

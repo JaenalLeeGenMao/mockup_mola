@@ -1,5 +1,6 @@
 import { post, patch, get } from 'axios'
 import { AUTH_BASE_ENDPOINT } from './endpoints'
+import submitForm from 'submit-form'
 import config from '@source/config'
 
 const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', gender = '', phone = '' }) => {
@@ -348,35 +349,21 @@ const fetchConsentList = ({ csrf = '' }) => {
 }
 
 const authorizeConsent = ({ csrf = '' }) => {
-  return new Promise((resolve, reject) => {
-    post(
-      `${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/authorize`,
-      { _csrf: csrf },
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
-      .then(response => {
-        return resolve(response.data)
-      })
-      .catch(error => {
-        return resolve(null)
-      })
+  submitForm(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/authorize`, {
+    method: 'POST',
+    body: {
+      _csrf: csrf,
+    },
   })
 }
 
 const denyConsent = ({ csrf = '' }) => {
-  return new Promise((resolve, reject) => {
-    post(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/deny`, { _csrf: csrf }, { headers: { 'content-type': 'application/json' } })
+  submitForm(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/deny`, {
+    method: 'POST',
+    body: {
+      _csrf: csrf,
+    },
   })
-    .then(response => {
-      return resolve(response.data)
-    })
-    .catch(error => {
-      return resolve(null)
-    })
 }
 
 import { getApi } from '@supersoccer/gandalf'
@@ -397,6 +384,7 @@ export default {
   updateProfile,
   fetchConsentList,
   authorizeConsent,
+  denyConsent,
   // updateProfile: Auth.updateProfile,
   // requestGuestToken,
   // requestCode,
