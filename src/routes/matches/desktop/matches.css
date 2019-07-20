@@ -125,7 +125,8 @@ body {
   display: grid;
   grid-template-columns: 0.5fr 2fr 0.5fr;
   grid-column-gap: 3rem;
-  margin: 3rem 0 0 0;
+
+  /* margin: 3rem 0 0 0; */
 
   /* margin: 0 auto; */
   width: 100%;

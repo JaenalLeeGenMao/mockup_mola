@@ -10,12 +10,14 @@ class HorizontalPlaylist extends Component {
     handleFilterAllLeague: PropTypes.func.isRequired,
     genreSpoCategory: PropTypes.array,
     filterByLeague: PropTypes.string,
+    filterAllLeague: PropTypes.string,
     expandLeague: PropTypes.bool,
     allButtonOn: PropTypes.bool,
   }
 
   categoryFilterLigaType = () => {
-    const { filterByLeague, genreSpoCategory, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
+    const { filterByLeague, genreSpoCategory, matchesPlaylists, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
+
     return (
       <>
         {genreSpoCategory.map(genre => {
@@ -43,21 +45,24 @@ class HorizontalPlaylist extends Component {
   }
 
   render() {
-    const { handleFilterAllLeague, allButtonOn } = this.props
+    const { handleFilterAllLeague, allButtonOn, filterAllLeague } = this.props
+    const allCat = [{ id: 'All', title: 'All' }]
     return (
       <div className={s.match_ligaType}>
-        {allButtonOn ? (
-          <span
-            className={s.allFilterLabel}
-            onClick={() => {
-              handleFilterAllLeague()
-            }}
-          >
-            All
-          </span>
-        ) : (
-          <span />
-        )}
+        {allCat.map(dt => {
+          return (
+            <span
+              key={dt}
+              className={`${s.allFilterLabel} ${dt.id == filterAllLeague ? s.selectednameleague : s.nameleague}`}
+              // className={filterAllLeague == dt.id ? s.selectednameleague : s.nameleague}
+              onClick={() => {
+                handleFilterAllLeague('All', dt.id)
+              }}
+            >
+              All
+            </span>
+          )
+        })}
         <span className={s.filLeague}>{this.categoryFilterLigaType()}</span>
         <span />
       </div>

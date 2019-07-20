@@ -32,6 +32,7 @@ class MatchList extends React.Component {
 
   renderMatch() {
     const { homeTeam, awayTeam, title } = this.props.data
+
     if (homeTeam && awayTeam) {
       return (
         <div className={styles.matchList__matches}>
