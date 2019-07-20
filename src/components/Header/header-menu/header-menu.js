@@ -20,7 +20,7 @@ import { connect } from 'react-redux'
 
 // import { connect } from 'tls'
 
-import axios from 'axios'
+import { get } from 'axios'
 
 let menu = []
 class HeaderMenu extends Component {
@@ -32,7 +32,6 @@ class HeaderMenu extends Component {
 
   componentDidMount() {
     const { activePlaylist, activeMenu, isMobile } = this.props
-    const { headerMenuList } = this.state
     menu = [
       {
         id: 'movie',
@@ -67,13 +66,16 @@ class HeaderMenu extends Component {
     //   menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
     // }
 
-    // this.getHeaderMenu()
+    this.getHeaderMenus()
   }
 
-  // getHeaderMenus = async () => {
-  //   const headerMenu = await axios(`http://mola01.koicdn.com/dev/json/menu.json`)
-  //   console.log('headerMenu', headerMenu)
-  // }
+  getHeaderMenus = () => {
+    get('https://mola01.koicdn.com/dev/json/menu-stag.json').then(({ data }) => {
+      // link lama
+      // http://mola01.koicdn.com/dev/json/menu.json
+      this.setState({ headerMenuList: data ? data.data : [] })
+    })
+  }
 
   handleNavigation = id => {
     const filteredMenu = menu.filter(dt => {
@@ -85,8 +87,7 @@ class HeaderMenu extends Component {
   render() {
     const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape } = this.props
     const { uid, sid } = this.props.user
-    const { headerMenuList } = this.state
-    // console.log('inside', headerMenuList)
+    const menuTemp = this.state.headerMenuList
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
@@ -112,13 +113,20 @@ class HeaderMenu extends Component {
                 <div className={styles.header_menu_outer}>
                   {!isMobile && (
                     <>
-                      {menu.map(dt => {
+                      {menuTemp.map(dts => {
+                        return (
+                          <Link key={dts.id} className={activeMenu === dts.id ? styles.header_menu__active : ''} to={dts.attributes.url}>
+                            {dts.attributes.title.en}
+                          </Link>
+                        )
+                      })}
+                      {/* {menu.map(dt => {
                         return (
                           <Link key={dt.id} className={activeMenu === dt.id ? styles.header_menu__active : ''} to={dt.linkUrl}>
                             {dt.title}
                           </Link>
                         )
-                      })}
+                      })} */}
                     </>
                   )}
                   {isMobile && (
