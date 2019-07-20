@@ -36,6 +36,7 @@ class Matches extends React.Component {
     resultShowData: 1,
     initialized: false,
     matches: [],
+    resultPlaylists: [],
     modalActive: false,
     selectedLeagueData: [],
     expandThisWeek: true,
@@ -50,6 +51,9 @@ class Matches extends React.Component {
 
   fetchMoreData = () => {
     const matchCardData = this.props.matches.data
+    const matchPlaylists = this.props.matches.matchesPlaylists
+    // console.log('semua matches', matchCardData)
+    // console.log('semua matchplaylists', matchPlaylists)
     if (matchCardData.length != 0) {
       if (this.state.limit.length >= matchCardData.length) {
         this.setState({
@@ -126,11 +130,15 @@ class Matches extends React.Component {
       // filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
       // const filterResult = this.props.matches.data.sort((a, b) => b.startTime - a.startTime)
       const filterResult = this.handleSortMatches(this.props.matches.data)
-      this.setState({ matches: filterResult, leagueList: leagueList })
+      const filterResultPlaylist = this.handleSortMatches(this.props.matches.matchesPlaylists)
+      // console.log('filterResultPlaylist', filterResultPlaylist)
+      // console.log('filterResultPlaylist data', filterResultPlaylist.data)
+      this.setState({ matches: filterResult, leagueList: leagueList, resultPlaylists: filterResultPlaylist })
     }
   }
 
   handleSortMatches = matches => {
+    // console.log('matcheees', matches)
     const groupByDate = _groupBy(matches, match => {
       if (isToday(match.startTime, match.endTime)) return 'isToday'
       else if (isThisWeek(match.startTime)) return 'isThisWeek'
@@ -150,6 +158,7 @@ class Matches extends React.Component {
     let filterResult = []
     if (value == 'lastWeek') {
       matches.forEach(el => {
+        console.log('see el', el)
         if (isLastWeek(el.startTime)) {
           filterResult.push(el)
         }
@@ -229,18 +238,21 @@ class Matches extends React.Component {
   }
 
   handleFilterByLeague = (value, matches) => {
+    const { data } = this.props.matches.matchesPlaylists
+
     let filterResult = []
-    if (value !== 0) {
-      matches.forEach(dt => {
-        if (dt.league != null) {
-          if (dt.league.id == value) {
-            filterResult.push(dt)
-          }
+    data.forEach(dt => {
+      if (value === dt.id) {
+        const vidDt = dt.videos
+        for (let i = 0; i < vidDt.length; i++) {
+          // console.log('vidDt', vidDt[i].id)
+          filterResult.push(vidDt[i])
         }
-      })
-    } else {
-      return matches
-    }
+      } else {
+        return matches
+      }
+    })
+    console.log('vidDt', filterResult)
     return filterResult
   }
 
@@ -251,7 +263,6 @@ class Matches extends React.Component {
     let filterResult = []
     if (value !== 0) {
       data.forEach(dt => {
-        // console.log('checking data all')
         if (dt.league) {
           filterResult.push(dt)
         }
@@ -259,14 +270,14 @@ class Matches extends React.Component {
     } else {
       return matches
     }
-    // console.log('filterAllLeague', filterResult)
-
+    // console.log('checking data all', filterResult)
     return filterResult
   }
 
   //start
   handleCategoryFilter = (category, value) => {
     let filterResult = []
+    let filterResultPlaylist = []
     let selectedVal = value
     const { filterByDates, filterByType, filterByLeague, filterAllLeague } = this.state
 
@@ -275,6 +286,9 @@ class Matches extends React.Component {
         selectedVal = ''
       }
       filterResult = this.handleFilterByDate(selectedVal, this.props.matches.data)
+      filterResultPlaylist = this.handleFilterByDate(selectedVal, this.props.matches.matchesPlaylists.data)
+      console.log('ress filterResultPlaylist', filterResultPlaylist)
+
       filterResult = this.handleFilterByType(filterByType, filterResult)
       filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
       filterResult = this.handleFilterAllLeague(filterAllLeague, filterResult)
@@ -302,7 +316,7 @@ class Matches extends React.Component {
       }
       filterResult = this.handleFilterByLeague(selectedVal, filterResult)
       filterResult = this.handleSortMatches(filterResult)
-      this.setState({ matches: filterResult, filterByLeague: selectedVal })
+      this.setState({ matches: filterResult, filterByLeague: selectedVal, resultPlaylists: filterResult })
     }
 
     // all
@@ -312,9 +326,6 @@ class Matches extends React.Component {
       }
       filterResult = this.handleFilterAllLeague(selectedVal, filterResult)
       filterResult = this.handleSortMatches(filterResult)
-      // console.log('filterResult', filterResult) //all data here
-      // console.log('filterAllLeague', filterAllLeague)
-      // console.log('selectedVal', selectedVal)
       this.setState({ matches: filterResult, filterAllLeague: selectedVal })
     }
 
@@ -405,20 +416,6 @@ class Matches extends React.Component {
       </>
     )
   }
-
-  //byday
-  categoryFilterDay = () => {
-    return (
-      <>
-        {this.state.expandThisWeek && (
-          <div className={s.filterContentfilterByDay_container}>
-            <span>{this.renderFilterbyDay()}</span>
-          </div>
-        )}
-      </>
-    )
-  }
-
   categoryFilterAll = () => {
     return (
       <>
@@ -429,6 +426,12 @@ class Matches extends React.Component {
 
   ShowMatchCard = () => {
     const { matches } = this.state
+    const cobaData = this.props.matches
+    // const cobaData = this.props.matches
+    // const { matchesPlaylists } = this.state
+    // console.log('yaaa si matches ', matches)
+    // console.log('yaaa', cobaData)
+    // console.log('matchesPlaylists cobaaa', matchesPlaylists)
 
     if (matches == '') {
       return (
@@ -440,6 +443,7 @@ class Matches extends React.Component {
       return (
         <LazyLoad containerClassName={s.matchesCardList__container}>
           {matches.map((matchDt, index) => {
+            // console.log('matchDt', matchDt)
             if (index < this.state.limit.length) {
               return (
                 <>
@@ -488,12 +492,20 @@ class Matches extends React.Component {
                     <HorizontalPlaylist
                       handleCategoryFilter={this.handleCategoryFilter}
                       handleFilterAllLeague={this.handleFilterAllLeague}
-                      genreSpoCategory={this.props.matches.genreSpo.data}
+                      genreSpoCategory={this.props.matches.genreSpo}
+                      matchesPlaylists={this.props.matches.matchesPlaylists}
                       filterByLeague={this.state.filterByLeague}
+                      filterAllLeague={this.state.filterAllLeague}
                       expandLeague={this.state.expandLeague}
                       categoryFilterType={'League'}
                       allButtonOn
+                      allCat
                     />
+                    <div className={s.match_ligaType}>
+                      {/* <span className={s.allFilterLabel}>{this.categoryFilterAll()}</span>
+                      {/* <span className={s.filLeague}>{this.categoryFilterLigaType()}</span>
+        <span />*/}
+                    </div>
                     <div className={s.matches_grid}>
                       <span>{this.categoryFilter()}</span>
                       <span>
