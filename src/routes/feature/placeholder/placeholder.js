@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
+// import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Carousel from '@components/carousel'
 import { placeholderCardLandscape, placeholderCardPortrait } from '@global/imageUrl'
 import { banners } from '../const'
+import { container, fixedContainer, carouselMargin, DummyPlaceholder, DummyWithoutAnimationPlaceholder } from './style'
 
-import styles from './placeholder.css'
+// import styles from './placeholder.css'
 
 class Placeholder extends Component {
   constructor(props) {
@@ -47,81 +48,80 @@ class Placeholder extends Component {
     const { isMobile } = this.props
 
     return (
-      <div className={styles.placeholder__container}>
+      <div className={container}>
         <Carousel wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
-          {banners.map(obj => (
-            <div key={obj.id} className={styles.placeholder}>
+          {banners.map((_, bannerIndex) => (
+            <DummyWithoutAnimationPlaceholder key={bannerIndex} num={bannerIndex}>
               <img
-                className="bannerImage3d"
+                className="bannerImage"
                 src={placeholderCardLandscape}
                 // onLoad={this.updateOnImageLoad}
               />
-            </div>
+            </DummyWithoutAnimationPlaceholder>
           ))}
         </Carousel>
-        <div className={styles.placeholder__fixed_container}>
+        <div className={fixedContainer}>
           <Carousel
-            className={styles.placeholder__carousel_margin}
+            className={carouselMargin}
             wrap={false}
             autoplay={false}
             sliderCoin={true}
             dragging={true}
             withoutControls={false}
-            slideToScroll={4.5}
+            slideToScroll={isMobile ? 3 : 4}
             slidesToShow={isMobile ? 3 : 4.5}
             transitionMode={'scroll'}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map(obj => (
-              <div key={obj.id} className={styles.placeholder}>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((_, playlistIndex) => (
+              <DummyPlaceholder key={playlistIndex} num={playlistIndex}>
                 <img
                   className="bannerImage"
                   src={placeholderCardLandscape}
                   // onLoad={this.updateOnImageLoad}
                 />
-              </div>
+              </DummyPlaceholder>
             ))}
           </Carousel>
           <Carousel
-            className={styles.placeholder__carousel_margin}
+            className={carouselMargin}
             wrap={false}
             autoplay={false}
             sliderCoin={true}
             dragging={true}
             withoutControls={false}
-            slideToScroll={6.5}
+            slideToScroll={isMobile ? 3 : 6}
             slidesToShow={isMobile ? 3 : 6.5}
             transitionMode={'scroll'}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(obj => (
-              <div key={obj.id} className={styles.placeholder}>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((_, categoryIndex) => (
+              <DummyPlaceholder key={categoryIndex} num={categoryIndex}>
                 <img
                   className="bannerImage"
                   src={placeholderCardLandscape}
                   // onLoad={this.updateOnImageLoad}
                 />
-              </div>
+              </DummyPlaceholder>
             ))}
           </Carousel>
-
           <Carousel
-            className={styles.placeholder__carousel_margin}
+            className={carouselMargin}
             wrap={false}
             autoplay={false}
             sliderCoin={true}
             dragging={true}
             withoutControls={false}
-            slideToScroll={7.5}
+            slideToScroll={isMobile ? 3 : 7.5}
             slidesToShow={isMobile ? 3 : 7.5}
             transitionMode={'scroll'}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map(obj => (
-              <div key={obj.id} className={styles.placeholder}>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((_, movieIndex) => (
+              <DummyPlaceholder key={movieIndex} num={movieIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderCardPortrait}
+                  src={placeholderCardLandscape}
                   // onLoad={this.updateOnImageLoad}
                 />
-              </div>
+              </DummyPlaceholder>
             ))}
           </Carousel>
         </div>
@@ -130,4 +130,5 @@ class Placeholder extends Component {
   }
 }
 
-export default withStyles(styles)(Placeholder)
+// export default withStyles(styles)(Placeholder)
+export default Placeholder

@@ -2,16 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import LazyLoad from '@components/common/Lazyload'
+import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
 import VideoCard from '@components/video-card'
 
 import featureActions from '@actions/feature'
 
+import { getErrorCode } from '@routes/home/util'
+
 import { getContentTypeName } from '@source/lib/globalUtil'
 
 import Placeholder from './placeholder'
-import { contentTypeList, banners } from './const'
+import { contentTypeList } from './const'
 
 import { container, bannerContainer, carouselMargin } from './style'
 
@@ -25,15 +28,15 @@ class Feature extends Component {
   }
 
   componentDidMount() {
-    const { playlists } = this.props.feature
     if (window) {
       this.updateWindowDimensions()
-      if (playlists.meta.status !== 'success') {
-        const id = this.props.id || window.location.pathname.replace('/', '')
 
-        this.props.onHandlePlaylist(id)
-        window.addEventListener('resize', this.updateWindowDimensions)
-      }
+      const id = this.props.id || window.location.pathname.replace('/', '')
+
+      this.props.onHandlePlaylist(id)
+      this.props.onHandleBanner(id)
+
+      window.addEventListener('resize', this.updateWindowDimensions)
     }
   }
 
@@ -43,7 +46,7 @@ class Feature extends Component {
 
   componentDidUpdate() {
     const { playlists, videos } = this.props.feature
-    if (videos.meta.status !== 'success' && playlists.data.length > 0) {
+    if (playlists.meta.status === 'success' && playlists.data.length > 0 && playlists.data.length !== videos.data.length) {
       playlists.data.map(playlist => {
         this.props.onHandleVideo(playlist)
       })
@@ -69,34 +72,47 @@ class Feature extends Component {
   render() {
     const isMobile = this.state.viewportWidth <= 680,
       { carouselRefs } = this.state,
-      { feature: { playlists, videos } } = this.props
+      { feature: { playlists, videos, banners } } = this.props
+
+    const isLoading = playlists.meta.status === 'loading' || banners.meta.status === 'loading',
+      isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
+      isSuccess = playlists.meta.status === 'success' && banners.meta.status === 'success'
+
+    let error = { code: 0, description: '' }
+    if (banners.meta.error) {
+      errorCode = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
+    } else if (playlists.meta.error) {
+      errorCode = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
+    } else if (videos.meta.error) {
+      errorCode = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
+    }
 
     return (
       <>
-        {playlists.meta.status === 'loading' && <Placeholder isMobile={isMobile} />}
-        {playlists.meta.status === 'success' && (
-          <>
-            <Carousel refs={carouselRefs} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
-              {banners.map(obj => (
-                <PlaylistCard
-                  transitionMode={'scroll3d'}
-                  key={obj.id}
-                  onClick={() => (window.location.href = obj.link)}
-                  alt={obj.attributes.name}
-                  src={obj.attributes.imageUrl}
-                  // onLoad={this.updateOnImageLoad}
-                  containerClassName={bannerContainer}
-                />
-              ))}
-            </Carousel>
-            <LazyLoad containerClassName={container}>
-              {playlists.meta.status === 'success' &&
-                videos.meta.status === 'success' &&
-                playlists.data.length > 0 &&
-                videos.data.length > 0 &&
-                playlists.data.length === videos.data.length &&
-                videos.data.map((video, carouselIndex) => {
-                  const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].attributes.contentType`, ''))
+        {isLoading && <Placeholder isMobile={isMobile} />}
+        {isError && <FeatureError status={error.code} message={error.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />}
+        {isSuccess &&
+          playlists.data.length > 0 &&
+          videos.data.length > 0 &&
+          banners.data.length > 0 &&
+          playlists.data.length === videos.data.length && (
+            <>
+              <Carousel refs={carouselRefs} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
+                {banners.data.map(obj => (
+                  <PlaylistCard
+                    transitionMode={'scroll3d'}
+                    key={obj.id}
+                    onClick={() => (window.location.href = obj.link)}
+                    alt={obj.title}
+                    src={obj.background.landscape}
+                    // onLoad={this.updateOnImageLoad}
+                    containerClassName={bannerContainer}
+                  />
+                ))}
+              </Carousel>
+              <LazyLoad containerClassName={container}>
+                {videos.data.map((video, carouselIndex) => {
+                  const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].contentType`, ''))
 
                   return (
                     <div key={carouselIndex}>
@@ -132,7 +148,7 @@ class Feature extends Component {
                                   key={obj.id}
                                   alt={obj.title}
                                   description={obj.title}
-                                  src={obj.background.landscape}
+                                  src={obj.type === 'playlists' ? obj.images.cover.landscape : obj.background.landscape}
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
                                 />
@@ -143,9 +159,9 @@ class Feature extends Component {
                     </div>
                   )
                 })}
-            </LazyLoad>
-          </>
-        )}
+              </LazyLoad>
+            </>
+          )}
       </>
     )
   }
@@ -160,6 +176,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
   onHandleVideo: playlist => dispatch(featureActions.getFeatureVideo(playlist)),
+  onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feature)
