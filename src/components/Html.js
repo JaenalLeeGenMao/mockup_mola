@@ -96,20 +96,41 @@ class Html extends React.Component {
             }
             .embeddedServiceHelpButton .helpButton {
               position: fixed;
-              bottom: 3rem !important;  
+              padding-bottom: 8.5rem !important;  
               right: 6rem !important;
             }
             .embeddedServiceHelpButton .helpButton button.uiButton {
-              background-color: #005290;
+              display: -webkit-box;
+              background-color: #2D56FF;
               font-family: "Arial", sans-serif;
               min-width: 0;
               border-radius: .5rem;
-              width: 5rem;
-              background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAg1JREFUaAXtmr8vBEEUx7+7NISSQkNHULpaT6FBJ0HHX6AQLv6I012DiuIUaE9LS3K6U9wV6AiF4uzX2MxJbi87s7vZt8m85DaT+fHufea7s/fmdrxOYAjs/hE4vgAaTeD9kzVybXQYmJkCdlaB0pyK0yNI5VxByA09OjLC7K4B3t1Dp7N9FN2xCC3VA2Dge6xcbr8VIdzoGFsvgP/0HN2hKC1k8KUv7DiTSQY/Tsci9HEg0lRyijhFMpqBQRu/pdn/eY6Nj15jmOfV6sDZTa/W/nXGIISoHvZ3atvKRHBvM8ibPOD02syLMQgTNNrlLbBfUeU0rsxoN5aV0iuL5iDGT62FQBFamhD0x1/nkyuWVIquSvGvxiDxXZv3TJIuiQIxR9cjHIieCxklp4gMHXQUThE9FzJKThEZOugonCJ6LmSUnCJZ6DA9qbzaJI/G+5FeANxLhEH0ao9TNzEe7EeWVE++GTC1xCCE4I6Ru7s0jGqY7g75vYlAuiHarwA/ttb6G1+r2/mxBumG4J/IW+V8XxBZP7XC20kCBO8CaxCuCSkQiUAkQRDEeI0QgJb3mlBR6Ks3v67e6uqqYpas14g0XAfiFMloBtytldHEWrv1R4asx4oZSAY/rfQ7Tyoy+OGLmzwDSfrdZPB53olHhYpq4Zmt3/NahOD2kue2Gk3g40s2FtcEbycqER48+wE1BIDq4/BS4AAAAABJRU5ErkJggg==);
-              background-repeat: no-repeat;
-              background-position: center;
-              background-size: cover;
+              width: 6rem;
+              height: 6rem;
             }
+
+            .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+              display: inline-block !important;
+              background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAORJREFUSA3tVtERgjAMBc8BGMENdARGcBN1A0dhE9gAR8ARmKC+VxIPq5c7ufSvuQtpSfpe8z4IVQULIbTwHu5tIwAv5KixaBF7bjLajd0M0kbnSQTMBn4X7JFE0TxJFAvAJItG6QITNUwLPKPi7zxBLaxCZKlj5op0pjxWskhnqWPminSmPGkSH9STvJv3aZJ7FDQIx1+5P94dUHuV+uFrTAgJJ67eRmo3hxknzx8dJSRPFEyb4ZezPN9h1E3vCUsSOH8maA845fOzCLs88pHwuisiLv07UU1WRPlIpCMS5CUB0QupHg6T2Sh/jAAAAABJRU5ErkJggg==);
+              width: 3rem;
+              height: 3rem;
+              background-repeat: no-repeat;
+              background-size: contain;
+              margin-right: 0;
+              margin-top: .3rem;
+            }
+
+            .embeddedServiceHelpButton .embeddedServiceIcon::before {
+              display: none !important;
+            }
+
+            .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
+              background-color: transparent !important;
+              margin-top: .5rem;
+              font-family: 'Open Sans' !important;
+              font-weight: 600 !important;
+            }
+
             .embeddedServiceHelpButton .helpButton button.uiButton:focus {
               /*outline: 1px solid #005290;*/
               outline: none;
@@ -119,10 +140,10 @@ class Html extends React.Component {
               font-family: "Arial", sans-serif;
             }
             .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
-              display: none !important;
+              /*display: none !important;*/
             }
             .embeddedServiceHelpButton .uiButton .helpButtonLabel {
-              display: none !important;
+              /*display: none !important;*/
             }
             .embeddedServiceSidebarHeader .shortHeader {
               background-color: #2D56FF;
@@ -170,16 +191,43 @@ class Html extends React.Component {
             .embeddedServiceSidebarDialogState .dialogState {
               background: #212121;
             }
+            .embeddedServiceSidebarButton.uiButton--inverse .label {
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarDialogState #dialogTextTitle {
+              color: #fff !important;
+            }
+            .uiOutputRichText {
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarDialogState #dialogTextBody {
+              color: #fff !important;
+            }
               
             /*landscape*/
             @media (min-width: 481px) and (max-width: 767px) {
               .embeddedServiceHelpButton .helpButton {
                 position: fixed;
-                bottom: 2rem !important;  
+                bottom: 2.5rem !important;  
                 right: 2rem !important;
+                padding-bottom: 3rem !important;
               }
               .embeddedServiceHelpButton .helpButton button.uiButton {
                 width: 4rem !important;
+                height: 3.5rem !important;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                margin-top: 0 !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel {
+                overflow: visible !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
+                overflow: visible !important;
+                margin-top: .1rem !important;
+                font-size: 8px;
               }
             }
             /*potrait*/
@@ -188,9 +236,24 @@ class Html extends React.Component {
                 position: fixed;
                 bottom: 2.5rem !important;  
                 right: 2rem !important;
+                padding-bottom: 3rem !important;
               }
               .embeddedServiceHelpButton .helpButton button.uiButton {
                 width: 4rem !important;
+                height: 3.5rem !important;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                margin-top: 0 !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel {
+                overflow: visible !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
+                overflow: visible !important;
+                margin-top: .1rem !important;
+                font-size: 8px;
               }
             }
              `,
@@ -215,10 +278,10 @@ class Html extends React.Component {
                   embedded_svc.settings.displayHelpButton = true; //Or false
                   embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
               
-                  //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
-                  //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+                  embedded_svc.settings.defaultMinimizedText = 'Online'; //(Defaults to Chat with an Expert)
+                  embedded_svc.settings.disabledMinimizedText = 'Offline'; //(Defaults to Agent Offline)
               
-                  //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+                  embedded_svc.settings.loadingText = 'Loading'; //(Defaults to Loading)
                   //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
               
                   // Settings for Chat
