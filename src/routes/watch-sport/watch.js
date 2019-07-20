@@ -26,7 +26,7 @@ class Watch extends Component {
   state = {
     movieDetail: [],
     countDownStatus: true,
-    toggleInfoBar: true
+    toggleInfoBar: true,
   }
 
   updateMetaTag() {
@@ -125,14 +125,14 @@ class Watch extends Component {
     })
   }
 
-  handleOnVideoPlay = (payload = true, player) => {
+  handlePlayMovie = () => {
     const { isMobile, videoId, runtime: { appPackage } } = this.props
     if (isMobile) {
       const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
       if (!isSafari) {
         const domain = config.endpoints.domain
         const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
-        document.location = `intent://scan/#Intent;scheme=molaapp;package=${appPackage};S.browser_fallback_url=${url};end`
+        document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
       }
     }
   }
@@ -163,28 +163,13 @@ class Watch extends Component {
       } else if (data[0].streamSourceUrl) {
         if (isMobile) {
           return (
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              handleOnVideoLoad={this.handleOnVideoLoad}
-              {...videoSettings}
-              autoPlay={false}
-              handleOnVideoPlay={this.handleOnVideoPlay}
-              poster={poster}
-              showBackBtn={!isMobile}
-            />
+            <div className={styles.poster__wrapper}>
+              <img src={poster} />
+              <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+            </div>
           )
         } else {
-          return (
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              handleOnVideoLoad={this.handleOnVideoLoad}
-              {...videoSettings}
-              poster={poster}
-              showBackBtn={!isMobile}
-            />
-          )
+          return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
         }
       }
     }
@@ -230,7 +215,8 @@ class Watch extends Component {
             {isMobile && <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff opacity={0} containerWidth={'80px'} {...this.props} />}
             <div className={isMobile ? styles.container__mobile : styles.container}>
               <div className={isMobile ? styles.player__container__mobile : styles.player__container}>
-                {!isMobile && toggleInfoBar &&
+                {!isMobile &&
+                  toggleInfoBar &&
                   !isMatchPassed && (
                     <div className={styles.info_bar}>
                       <div className={styles.info_bar__container}>

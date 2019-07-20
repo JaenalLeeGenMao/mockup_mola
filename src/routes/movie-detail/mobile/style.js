@@ -171,7 +171,7 @@ export const videoTitle = css`
 `
 
 export const playMovieButton = css`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #414141;
   font-size: 14px;
   font-weight: bold;
@@ -201,4 +201,22 @@ export const playMovieIcon = css`
   border-width: 8px 0 8px 12px;
   vertical-align: middle;
   margin-right: 5px;
-`;
+`
+
+export const posterWrapper = css`
+  position: relative;
+`
+
+export const playIcon = css`
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MSIgaGVpZ2h0PSI1MSIgdmlld0JveD0iMCAwIDUxIDUxIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO30uYntmaWxsOiNmZmY7fTwvc3R5bGU+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC05OTkuNSAtOTEyLjUpIj48cGF0aCBjbGFzcz0iYSIgZD0iTTI1LDBBMjUsMjUsMCwxLDAsNTAsMjUsMjUsMjUsMCwwLDAsMjUsMFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMDAgOTEzKSIvPjxwYXRoIGNsYXNzPSJiIiBkPSJNNjAuNCw0Ny4wNzcsNDkuMzYyLDU1LjAxOGEuNzI5LjcyOSwwLDAsMS0xLjEyNS0uNjc4VjM4LjQ1OGEuNzI5LjcyOSwwLDAsMSwxLjEyNS0uNjc4TDYwLjQsNDUuNzIxQS44NTguODU4LDAsMCwxLDYwLjQsNDcuMDc3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTcxLjc2MyA4OTEuNjAxKSIvPjwvZz48L3N2Zz4=');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 1;
+  width: 40px;
+  height: 40px;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+`

@@ -23,7 +23,7 @@ import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
-import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerContainer, videoTitle, playMovieButton, playMovieIcon } from './style'
+import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerContainer, videoTitle, playMovieButton, playMovieIcon, posterWrapper, playIcon } from './style'
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -76,21 +76,20 @@ class MovieDetail extends Component {
     this.setState({ toggleSuggestion: true })
   }
 
-  handleOnVideoPlay = (payload = true, player) => {
-    // window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
-    this.isPlay = true
-    this.setState({ toggleSuggestion: false })
+  // handleOnVideoPlay = (payload = true, player) => {
+  //   // window.removeEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+  //   // window.addEventListener('beforeunload', () => this.handleOnTimePerMinute({ action: 'closed' }))
+  //   this.isPlay = true
+  //   this.setState({ toggleSuggestion: false })
 
-    const { movieId, runtime: { appPackage } } = this.props
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (!isSafari) {
-      const domain = config.endpoints.domain
-      console.log('appPackage', appPackage)
-      const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-      document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
-    }
-  }
+  //   const { movieId, runtime: { appPackage } } = this.props
+  //   const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+  //   if (!isSafari) {
+  //     const domain = config.endpoints.domain
+  //     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+  //     document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
+  //   }
+  // }
 
   handleOnVideoLoad = player => {
     this.player = player
@@ -198,7 +197,15 @@ class MovieDetail extends Component {
   }
 
   handlePlayMovie = () => {
-    this.player.play()
+    const { movieId, runtime: { appPackage } } = this.props
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    if (!isSafari) {
+      const domain = config.endpoints.domain
+      // console.log('appPackage', appPackage)
+      const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+      // document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
+      document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+    }
   }
 
   render() {
@@ -241,22 +248,26 @@ class MovieDetail extends Component {
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
                 {loadPlayer ? (
-                  <Theoplayer
-                    className={customTheoplayer}
-                    subtitles={this.subtitles()}
-                    poster={poster}
-                    autoPlay={false}
-                    // certificateUrl="test"
-                    handleOnVideoLoad={this.handleOnVideoLoad}
-                    handleOnVideoPause={this.handleOnVideoPause}
-                    handleOnVideoPlay={this.handleOnVideoPlay}
-                    handleOnLoadedData={this.handleOnLoadedData}
-                    handleOnReadyStateChange={this.handleOnReadyStateChange}
-                    showBackBtn={false}
-                    {...videoSettings}
-                    showChildren
-                    isMobile
-                  />
+                  // <Theoplayer
+                  //   className={customTheoplayer}
+                  //   subtitles={this.subtitles()}
+                  //   poster={poster}
+                  //   autoPlay={false}
+                  //   // certificateUrl="test"
+                  //   handleOnVideoLoad={this.handleOnVideoLoad}
+                  //   handleOnVideoPause={this.handleOnVideoPause}
+                  //   handleOnVideoPlay={this.handleOnVideoPlay}
+                  //   handleOnLoadedData={this.handleOnLoadedData}
+                  //   handleOnReadyStateChange={this.handleOnReadyStateChange}
+                  //   showBackBtn={false}
+                  //   {...videoSettings}
+                  //   showChildren
+                  //   isMobile
+                  // />
+                  <div className={posterWrapper}>
+                    <img src={poster} />
+                    <span className={playIcon} onClick={this.handlePlayMovie} />
+                  </div>
                 ) : (
                   <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                 )}
@@ -268,10 +279,10 @@ class MovieDetail extends Component {
               {dataFetched.quotes && dataFetched.quotes.length > 0 && <ContentReview review={dataFetched} />}
               {recommendation.meta.status === 'success' && <ContentSuggestions videos={recommendation.data} />}
             </div>
-            <div className={playMovieButton} onClick={this.handlePlayMovie}>
+            {/* <div className={playMovieButton} onClick={this.handlePlayMovie}>
               <div className={playMovieIcon} />
               <span>Play Movie</span>
-            </div>
+            </div> */}
           </>
         )}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
