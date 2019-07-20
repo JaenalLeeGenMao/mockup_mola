@@ -198,7 +198,16 @@ class MovieDetail extends Component {
   }
 
   handlePlayMovie = () => {
-    this.player.play()
+    // this.player.play()
+    const { movieId, runtime: { appPackage } } = this.props
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    if (!isSafari) {
+      const domain = config.endpoints.domain
+      // console.log('appPackage', appPackage)
+      const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+      // document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
+      document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+    }
   }
 
   render() {
@@ -241,22 +250,25 @@ class MovieDetail extends Component {
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>
                 {loadPlayer ? (
-                  <Theoplayer
-                    className={customTheoplayer}
-                    subtitles={this.subtitles()}
-                    poster={poster}
-                    autoPlay={false}
-                    // certificateUrl="test"
-                    handleOnVideoLoad={this.handleOnVideoLoad}
-                    handleOnVideoPause={this.handleOnVideoPause}
-                    handleOnVideoPlay={this.handleOnVideoPlay}
-                    handleOnLoadedData={this.handleOnLoadedData}
-                    handleOnReadyStateChange={this.handleOnReadyStateChange}
-                    showBackBtn={false}
-                    {...videoSettings}
-                    showChildren
-                    isMobile
-                  />
+                  // <Theoplayer
+                  //   className={customTheoplayer}
+                  //   subtitles={this.subtitles()}
+                  //   poster={poster}
+                  //   autoPlay={false}
+                  //   // certificateUrl="test"
+                  //   handleOnVideoLoad={this.handleOnVideoLoad}
+                  //   handleOnVideoPause={this.handleOnVideoPause}
+                  //   handleOnVideoPlay={this.handleOnVideoPlay}
+                  //   handleOnLoadedData={this.handleOnLoadedData}
+                  //   handleOnReadyStateChange={this.handleOnReadyStateChange}
+                  //   showBackBtn={false}
+                  //   {...videoSettings}
+                  //   showChildren
+                  //   isMobile
+                  // />
+                  <div>
+                    <img src={poster} />
+                  </div>
                 ) : (
                   <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                 )}
