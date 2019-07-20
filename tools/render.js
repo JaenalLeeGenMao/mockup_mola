@@ -23,7 +23,6 @@ import runServer from './runServer'
 // ];
 const routes = [
   '/',
-  '/:id',
   '/accounts',
   '/accounts/login',
   '/accounts/profile',
@@ -34,6 +33,8 @@ const routes = [
   '/accounts/thankyou',
   '/movie-detail',
   '/movie-library',
+  '/libraries',
+  '/playlists',
   '/search',
   '/privacy',
   '/system-info',

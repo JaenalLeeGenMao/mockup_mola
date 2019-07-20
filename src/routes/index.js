@@ -32,7 +32,7 @@ const routes = {
     //   path: '/privacy',
     //   load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
     // },
-    // // Movie details
+    // Movie details
     {
       path: '/movie-detail',
       load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
@@ -42,7 +42,7 @@ const routes = {
         },
       ],
     },
-    // // Movie Library
+    // Movie Library
     {
       path: '/movie-library',
       load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
@@ -138,8 +138,8 @@ const routes = {
       ],
     },
     {
-      path: '/playlist',
-      load: () => import(/* webpackChunkName: 'playlist' */ './playlist'),
+      path: '/playlists',
+      load: () => import(/* webpackChunkName: 'playlists' */ './playlist'),
       children: [
         {
           path: '/:id',
@@ -160,13 +160,17 @@ const routes = {
       ],
     },
     {
-      path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
+      path: '/libraries',
+      load: () => import(/* webpackChunkName: 'libraries' */ './feature'),
       children: [
         {
           path: '/:id',
         },
       ],
+    },
+    {
+      path: '',
+      load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
