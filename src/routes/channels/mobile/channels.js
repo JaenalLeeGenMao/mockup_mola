@@ -71,6 +71,7 @@ class Channels extends Component {
     }
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
+      console.log('this.props.filtered schedule', this.props.channelSchedule)
       this.setState({
         activeDate: date,
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import moment from 'moment'
 
 import styles from './schedule.css'
 import { formatDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
@@ -8,9 +7,8 @@ import { formatDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
 class Schedule extends Component {
   render() {
     const { scheduleList, activeDate } = this.props
-    const unixDate = Math.floor(new Date(activeDate).getTime() / 1000)
     const schedule = scheduleList.filter(list => {
-      return Number(moment(list.start).format('DD')) === Number(moment(unixDate).format('DD'))
+      return formatDateTime(list.start, 'DD MMM') === formatDateTime(activeDate, 'DD MMM')
     })
 
     return (
