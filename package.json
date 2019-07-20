@@ -73,6 +73,7 @@
     "serialize-javascript": "1.4.0",
     "source-map-support": "0.5.4",
     "styled-components": "^4.3.1",
+    "submit-form": "^2.0.0",
     "ua-parser-js": "0.7.19",
     "universal-router": "6.0.0",
     "url": "^0.11.0",

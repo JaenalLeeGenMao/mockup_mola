@@ -26,17 +26,11 @@ class Consent extends Component {
   }
 
   handleAllowAuthorize(e) {
-    authHandler.authorizeConsent({ csrf: this.props.runtime.csrf }).then(payload => {
-      if (_isNull(payload)) return
-      console.log('Payload [ALLOW] => ', payload)
-    })
+    authHandler.authorizeConsent({ csrf: this.props.runtime.csrf })
   }
 
   handleDenyAuthorize(e) {
-    authHandler.denyConsent({ csrf: this.props.runtime.csrf }).then(payload => {
-      if (_isNull(payload)) return
-      console.log('Payload [DENY] => ', payload)
-    })
+    authHandler.denyConsent({ csrf: this.props.runtime.csrf })
   }
 
   render() {
