@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
+import _ from 'lodash'
 import Mola from '@api/mola'
+import { getContentTypeName } from '@source/lib/globalUtil'
 import types from '../constants'
 
 const getFeaturePlaylist = id => dispatch => {
@@ -34,7 +36,30 @@ const getFeaturePlaylist = id => dispatch => {
   })
 }
 
-const getFeatureVideo = playlist => dispatch => {
+const getFeatureVideo = playlist => async dispatch => {
+  const contentTypeName = await getContentTypeName(_.get(playlist, 'contentType', ''))
+
+  if (contentTypeName === 'mola-categories') {
+    return Mola.getFeaturePlaylist(playlist.id).then(result => {
+      const filterVisibility = result.data.filter(dt => {
+        return dt.visibility === 1
+      })
+      result = {
+        meta: {
+          status: result.meta.status,
+          id: playlist.id,
+          title: playlist.title,
+          contentType: playlist.contentType,
+          sortOrder: playlist.sortOrder,
+        },
+        data: filterVisibility,
+      }
+      dispatch({
+        type: types.GET_FEATURE_VIDEO,
+        payload: result,
+      })
+    })
+  }
   return Mola.getHomeVideo({ id: playlist.id }).then(result => {
     const filterVisibility = result.data.filter(dt => {
       return dt.visibility === 1
@@ -44,12 +69,11 @@ const getFeatureVideo = playlist => dispatch => {
       meta: {
         status: result.meta.status,
         id: playlist.id,
-        title: playlist.attributes.title,
-        contentType: playlist.contentType || playlist.attributes.contentType,
+        title: playlist.title,
+        contentType: playlist.contentType,
         sortOrder: playlist.sortOrder,
       },
       data: filterVisibility,
-      data: result.data,
     }
     dispatch({
       type: types.GET_FEATURE_VIDEO,

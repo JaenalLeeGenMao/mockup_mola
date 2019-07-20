@@ -28,11 +28,15 @@ const routes = {
 
   // Keep in mind, routes are evaluated in order
   children: [
-    // {
-    //   path: '/privacy',
-    //   load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    // },
-    // // Movie details
+    {
+      path: '',
+      load: () => import(/* webpackChunkName: 'home' */ './home'),
+    },
+    {
+      path: '/privacy',
+      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+    },
+    // Movie details
     {
       path: '/movie-detail',
       load: () => import(/* webpackChunkName: 'movie-detail' */ './movie-detail'),
@@ -42,7 +46,7 @@ const routes = {
         },
       ],
     },
-    // // Movie Library
+    // Movie Library
     {
       path: '/movie-library',
       load: () => import(/* webpackChunkName: 'movie-library' */ './movie-library'),
@@ -169,8 +173,8 @@ const routes = {
       ],
     },
     {
-      path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
+      path: '/libraries',
+      load: () => import(/* webpackChunkName: 'libraries' */ './feature'),
       children: [
         {
           path: '/:id',

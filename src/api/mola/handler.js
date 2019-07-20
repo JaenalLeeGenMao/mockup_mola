@@ -59,7 +59,16 @@ const getFeaturePlaylist = id => {
         visibility = _.get(data, '[0].attributes.visibility', 0),
         playlists = _.get(data, '[0].attributes.playlists', [])
 
-      const playlistsFiltered = playlists.length > 0 && playlists.filter(playlist => playlist.attributes.visibility === 1)
+      const playlistsFiltered =
+        playlists.length > 0
+          ? playlists
+              .map(playlist => ({
+                id: playlist.id,
+                type: playlist.type,
+                ...playlist.attributes,
+              }))
+              .filter(playlist => playlist.visibility === 1)
+          : []
       return {
         meta: {
           status: data.length > 0 ? 'success' : 'no_result',
