@@ -1,0 +1,241 @@
+.info_bar {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 35px;
+  z-index: 88;
+  background-color: #0862a6;
+  display: inline-block;
+}
+
+.info_bar__close {
+  padding: 1rem;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.info_bar__close span {
+  width: 14px;
+  height: 14px;
+  background-image: url(data:image/svg+xml;charset=utf-8;base64,PCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIyLjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIg0KICAgICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczphPSJodHRwOi8vbnMuYWRvYmUuY29tL0Fkb2JlU1ZHVmlld2VyRXh0ZW5zaW9ucy8zLjAvIg0KICAgICB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMwcHgiIGhlaWdodD0iMzBweCIgdmlld0JveD0iMCAwIDMwIDMwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzMCAzMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCiAgICAuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGRlZnM+DQo8L2RlZnM+DQo8Zz4NCiAgICA8Zz4NCiAgICAgICAgPGc+DQogICAgICAgICAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjkuNiwwLjRjLTAuNS0wLjUtMS4yLTAuNS0xLjcsMEwwLjQsMjcuOWMtMC41LDAuNS0wLjUsMS4yLDAsMS43QzAuNiwyOS45LDAuOSwzMCwxLjIsMzBzMC42LTAuMSwwLjktMC40DQogICAgICAgICAgICAgICAgTDI5LjYsMi4xQzMwLjEsMS42LDMwLjEsMC44LDI5LjYsMC40eiIvPg0KICAgICAgICA8L2c+DQogICAgPC9nPg0KICAgIDxnPg0KICAgICAgICA8Zz4NCiAgICAgICAgICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yOS42LDI3LjlMMi4xLDAuNGMtMC41LTAuNS0xLjItMC41LTEuNywwYy0wLjUsMC41LTAuNSwxLjIsMCwxLjdsMjcuNiwyNy42YzAuMiwwLjIsMC41LDAuNCwwLjksMC40DQogICAgICAgICAgICAgICAgczAuNi0wLjEsMC45LTAuNEMzMC4xLDI5LjIsMzAuMSwyOC40LDI5LjYsMjcuOXoiLz4NCiAgICAgICAgPC9nPg0KICAgIDwvZz4NCjwvZz4NCjwvc3ZnPg==);
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+}
+
+.info_bar__container {
+  margin: 0 10rem;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.info_bar__text {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.countdown__winfobar {
+  height: calc(100% - 38px) !important;
+}
+
+.container {
+  background: #000311;
+  color: #fff;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  overflow: hidden;
+}
+
+.player__container {
+  height: 74vh;
+  width: 100vw;
+  margin: auto;
+}
+
+.detail__container {
+  height: 100%;
+  overflow: auto;
+  max-height: calc(26vh - 70px);
+  margin-top: 1.5%;
+}
+
+.detail__left {
+  display: inline-block;
+  width: 27.5%;
+  vertical-align: top;
+}
+
+.detail__left div {
+  width: 70%;
+  height: 100%;
+  margin: auto;
+}
+
+.detail__left_title {
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  font-size: 2.8rem;
+}
+
+.detail__right {
+  display: inline-block;
+  width: 40%;
+  vertical-align: top;
+  margin-top: 1rem;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+.detail__right div {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.detail__right_text {
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  line-height: 1.3;
+  text-align: justify;
+}
+
+@media screen and (max-width: 640px) {
+  .container__mobile {
+    background: #000311;
+    color: #fff;
+  }
+
+  .info_bar__container {
+    margin: 0 30px 0 40px;
+  }
+
+  .info_bar__text {
+    font-size: 16px;
+  }
+
+  .player__container__mobile {
+    height: calc(18rem + 38px);
+    width: 100vw;
+    margin: auto;
+  }
+
+  .detail__title {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+
+  .detail__title__text {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    color: #fff;
+    font-size: 28px;
+  }
+
+  .detail__desc {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    box-sizing: border-box;
+  }
+
+  .detail__desc__read_more {
+    font-size: 0.8rem;
+    vertical-align: sub;
+    letter-spacing: 0.05rem;
+    background: transparent;
+    border: none;
+    color: #b5b5b5;
+  }
+
+  .expand_collapse {
+    display: inline-block;
+    width: 0.6rem;
+    height: 0.6rem;
+    background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2YwZjsKICAgICAgICBvcGFjaXR5OiAwOwogICAgICB9CgogICAgICAuY2xzLTIgewogICAgICAgIGZpbGw6ICM3MDcwNzA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnIGlkPSJDaGV2cm9uIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4KSByb3RhdGUoOTApIj4KICAgIDxyZWN0IGlkPSJGcmFtZSIgY2xhc3M9ImNscy0xIiB3aWR0aD0iMTAiIGhlaWdodD0iNiIvPgogICAgPHBhdGggaWQ9IlNoYXBlIiBjbGFzcz0iY2xzLTIiIGQ9Ik0xMCwxQTEsMSwwLDAsMCw4LjI5My4yOTNMNSwzLjU4NiwxLjcwNy4yOTNBMSwxLDAsMSwwLC4yOTMsMS43MDdsNCw0YTEsMSwwLDAsMCwxLjQxNSwwbDQtNEExLDEsMCwwLDAsMTAsMVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIgOCkgcm90YXRlKC05MCkiLz4KICA8L2c+Cjwvc3ZnPgo=);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #fff;
+  }
+
+  .inner_box {
+    padding: 15px 15px 30px 15px;
+  }
+
+  .inner_box p {
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    height: 6rem;
+    text-align: left;
+  }
+
+  .inner_box p.show {
+    line-height: 1.4rem;
+    margin: 0;
+    padding: 0;
+    height: auto;
+  }
+
+  .inner_box_header {
+    height: 2.4rem;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .inner_box_header span {
+    display: inline-block;
+    transform: translate(0, -10%);
+    color: #969696;
+  }
+
+  .synopsis__info_read_more {
+    font-size: 0.8rem;
+    vertical-align: sub;
+    letter-spacing: 0.05rem;
+    background: transparent;
+    border: none;
+    color: #b5b5b5;
+  }
+
+  .synopsisPlaceholder {
+    margin-bottom: 1rem;
+  }
+
+  .synopsisPlaceholderDirector {
+    margin-bottom: 0;
+    display: inline-block;
+  }
+}
+
+@media screen and (min-height: 600px) and (max-height: 768px) {
+  .player__container {
+    height: 68vh;
+  }
+}

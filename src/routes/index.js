@@ -161,7 +161,7 @@ const routes = {
     },
     {
       path: '/watch',
-      load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
+      load: () => import(/* webpackChunkName: 'watch' */ './watch'),
     },
     {
       path: '/channels',
