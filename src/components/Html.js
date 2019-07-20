@@ -192,13 +192,16 @@ class Html extends React.Component {
               background: #212121;
             }
             .embeddedServiceSidebarButton.uiButton--inverse .label {
-              color: #fff;
+              color: #fff !important;
             }
             .embeddedServiceSidebarDialogState #dialogTextTitle {
-              color: #fff;
+              color: #fff !important;
             }
             .uiOutputRichText {
-              color: fff;
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarDialogState #dialogTextBody {
+              color: #fff !important;
             }
               
             /*landscape*/
