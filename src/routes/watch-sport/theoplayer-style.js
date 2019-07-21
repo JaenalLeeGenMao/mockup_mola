@@ -59,6 +59,10 @@ export const customTheoplayer = css`
         height: 3rem;
         border: 0.16rem solid white;
       }
+
+      &.video-container .vjs-big-play-button {
+        width: 10% !important;
+      }
     }
   }
 `
