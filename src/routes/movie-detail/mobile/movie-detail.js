@@ -209,7 +209,7 @@ class MovieDetail extends Component {
   }
 
   renderVideo = (poster, videoSettings) => {
-    const isApple = /.*AppleWebKit.*/.test(navigator.userAgent)
+    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
     if (isApple) {
       return (
         <Theoplayer
