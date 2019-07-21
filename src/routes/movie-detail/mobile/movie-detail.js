@@ -209,8 +209,8 @@ class MovieDetail extends Component {
   }
 
   renderVideo = (poster, videoSettings) => {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (isSafari) {
+    const isApple = /.*AppleWebKit.*/.test(navigator.userAgent)
+    if (isApple) {
       return (
         <Theoplayer
           className={customTheoplayer}
