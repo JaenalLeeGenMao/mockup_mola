@@ -157,13 +157,13 @@ class Watch extends Component {
         isMatchPassed = true
       }
 
-      const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+      const isApple = /.*AppleWebKit.*/.test(navigator.userAgent)
 
       const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
       } else if (data[0].streamSourceUrl) {
-        if (isMobile && !isSafari) {
+        if (isMobile && !isApple) {
           return (
             <div className={styles.poster__wrapper}>
               <img src={poster} />
@@ -217,8 +217,7 @@ class Watch extends Component {
             {isMobile && <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff opacity={0} containerWidth={'80px'} {...this.props} />}
             <div className={isMobile ? styles.container__mobile : styles.container}>
               <div className={isMobile ? styles.player__container__mobile : styles.player__container}>
-                {!isMobile &&
-                  toggleInfoBar &&
+                {toggleInfoBar &&
                   !isMatchPassed && (
                     <div className={styles.info_bar}>
                       <div className={styles.info_bar__container}>
