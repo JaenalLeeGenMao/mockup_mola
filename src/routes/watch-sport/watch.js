@@ -157,7 +157,7 @@ class Watch extends Component {
         isMatchPassed = true
       }
 
-      const isApple = /.*AppleWebKit.*/.test(navigator.userAgent)
+      const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
       const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
