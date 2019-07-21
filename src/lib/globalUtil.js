@@ -65,11 +65,13 @@ export const getContentTypeName = contentTypeId => {
       return 'mixed'
     case 7:
       return 'movie'
+    case 8:
+      return 'trailers'
     case 9:
       return 'mola-featured'
     case 10:
-      return 'mola-categories' /* playlists */
+      return 'mola-categories' /* always playlists */
     default:
-      return 'trailers'
+      return 'vod'
   }
 }

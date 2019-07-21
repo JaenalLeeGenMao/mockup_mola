@@ -57,6 +57,29 @@ class Feature extends Component {
     this.setState({ viewportWidth: window.innerWidth })
   }
 
+  handleOnClick = video => {
+    const obj = {
+      banners: () => (window.location.href = video.link),
+      playlists: () => (window.location.href = `/playlists/${video.id}`),
+      videos: () => {
+        const videoTypesRedirectUri = {
+          linear: `/channels/${video.id}`,
+          default: `/watch?v=${video.id}`,
+        }
+
+        const contentTypeName = getContentTypeName(_.get(video, 'contentType', 'default'))
+        window.location.href = videoTypesRedirectUri[contentTypeName] || videoTypesRedirectUri.default
+      },
+    }
+
+    if (video) {
+      /** only execute when a video object exist */
+      obj[video.type]()
+    } else {
+      alert(`Mola does NOT recognized this link \n${JSON.stringify(video)}`)
+    }
+  }
+
   /* Dynamically re-adjust carousel */
   // updateOnImageLoad = () => {
   //   const { carouselRefs } = this.state
@@ -78,19 +101,19 @@ class Feature extends Component {
       isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
       isSuccess = playlists.meta.status === 'success' && banners.meta.status === 'success'
 
-    let error = { code: 0, description: '' }
+    let errorObj = { code: 0, description: '' }
     if (banners.meta.error) {
-      errorCode = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
+      errorObj = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
     } else if (playlists.meta.error) {
-      errorCode = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
+      errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
     } else if (videos.meta.error) {
-      errorCode = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
+      errorObj = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
     }
 
     return (
       <>
         {isLoading && <Placeholder isMobile={isMobile} />}
-        {isError && <FeatureError status={error.code} message={error.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />}
+        {isError && <FeatureError status={errorObj.code} message={errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />}
         {isSuccess &&
           playlists.data.length > 0 &&
           videos.data.length > 0 &&
@@ -102,7 +125,7 @@ class Feature extends Component {
                   <PlaylistCard
                     transitionMode={'scroll3d'}
                     key={obj.id}
-                    onClick={() => (window.location.href = obj.link)}
+                    onClick={() => this.handleOnClick(obj)}
                     alt={obj.title}
                     src={obj.background.landscape}
                     // onLoad={this.updateOnImageLoad}
@@ -131,6 +154,7 @@ class Feature extends Component {
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {
+                            console.log(obj)
                             if (contentTypeName === 'movie') {
                               return (
                                 <VideoCard
@@ -139,7 +163,7 @@ class Feature extends Component {
                                   description={obj.title}
                                   src={obj.background.portrait}
                                   // onLoad={this.updateOnImageLoad}
-                                  onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
+                                  onClick={() => this.handleOnClick(obj)}
                                 />
                               )
                             } else {
@@ -150,7 +174,7 @@ class Feature extends Component {
                                   description={obj.title}
                                   src={obj.type === 'playlists' ? obj.images.cover.landscape : obj.background.landscape}
                                   // onLoad={this.updateOnImageLoad}
-                                  onClick={() => (window.location.href = `/${this.props.id}/${obj.id}`)}
+                                  onClick={() => this.handleOnClick(obj)}
                                 />
                               )
                             }
