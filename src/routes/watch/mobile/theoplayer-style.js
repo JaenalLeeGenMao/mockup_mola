@@ -5,9 +5,14 @@ export const customTheoplayer = css`
     &.video-container,
     &.video-container.video-js.vjs-fluid {
       width: 100%;
-      height: calc(100% - 38px);
+      height: 100%;
       padding: 0;
       float: left;
+    }
+
+    &.theoplayer-skin:not(.theo-seekbar-inside-controls) .theo-button-tooltip {
+      left: auto !important;
+      right: 0 !important;
     }
 
     &.video-container .theo-primary-color {
@@ -24,18 +29,22 @@ export const customTheoplayer = css`
     }
 
     .vjs-menu-item.vjs-selected {
-      color: #0070b2 !important;
+      color: #ffffff !important;
+    }
+
+    .vjs-selected .theo-text-track-menu-item-toggle {
+      background-color: #0070b2 !important;
     }
 
     &.video-container .vjs-big-play-button {
-      width: 6% !important;
+      width: 10% !important;
       background: none !important;
       background-color: transparent !important;
     }
 
     &.video-container .vjs-big-play-button::after {
       margin-top: 117% !important;
-      height: 30% !important;
+      height: 50% !important;
     }
 
     .video-container.video-js.theoplayer-skin {
@@ -47,12 +56,16 @@ export const customTheoplayer = css`
       background-color: #0070b2 !important;
     }
 
+    &.video-container .vjs-control-bar {
+      z-index: 1;
+    }
+
     @media (max-width: 640px) {
-      &.video-container,
-      &.video-container.video-js.vjs-fluid {
-        height: 18rem !important;
-        width: 100vw;
-      }
+      // &.video-container,
+      // &.video-container.video-js.vjs-fluid {
+      //   height: 16rem !important;
+      //   width: 100vw;
+      // }
 
       .arrow {
         width: 3rem;
@@ -61,12 +74,4 @@ export const customTheoplayer = css`
       }
     }
   }
-`
-export const noInfoBar = css`
-{
-  &.video-container,
-  &.video-container.video-js.vjs-fluid {
-    height: 100%;
-  }
-
 `

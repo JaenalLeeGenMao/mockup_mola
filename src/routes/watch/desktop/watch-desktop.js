@@ -17,7 +17,6 @@ import MovieDetailError from '@components/common/error'
 
 import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom } from './style'
 
-import styles from '@global/style/css/grainBackground.css'
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
@@ -128,30 +127,69 @@ class WatchDesktop extends Component {
     // getVUID(deviceId)
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const {
-  //     getMovieDetail,
-  //     movieDetail,
-  //     movieId, //passed as props from index.js,
-  //     fetchRecommendation,
-  //   } = this.props
+  renderVideo = (dataFetched, isMovie) => {
+    const { user, getMovieDetail, videoId, isMobile } = this.props
 
-  //   if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
-  //     this.getLoc()
-  //     getMovieDetail(movieId)
-  //     // fetchRecommendation(movieId)
-  //     this.setState({
-  //       toggleSuggestion: false,
-  //     })
-  //   }
+    if (dataFetched) {
+      const { loc } = this.state
+      const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-  //   if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
-  //     if (!isMovie(movieDetail.data[0].contentType)) {
-  //       history.push(`/watch?v=${movieDetail.data[0].id}`)
-  //     }
-  //   }
-  //   this.updateMetaTag()
-  // }
+      // const defaultVidSetting = dataFetched ? defaultVideoSetting(user, data[0], vuidStatus === 'success' ? vuid : '') : {}
+
+      // const videoSettings = {
+      //   ...defaultVidSetting,
+      //   // getUrlResponse: this.getUrlResponse
+      // }
+
+      const poster = dataFetched ? dataFetched.background.landscape : ''
+
+      const adsFlag = dataFetched ? _get(dataFetched, 'movieDetailData[0].ads', null) : null
+      user.loc = loc
+
+      const defaultVidSetting = dataFetched ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+
+      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds("success", defaultVidSetting) : defaultVidSetting
+
+      const videoSettings = {
+        ...checkAdsSettings,
+      }
+
+      if (isMovie) {
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            {...videoSettings}
+            showChildren
+            showBackBtn />
+        )
+      } else {
+        const { toggleInfoBar } = this.state
+        let isMatchPassed = false
+        if (dataFetched.endTime < Date.now() / 1000) {
+          isMatchPassed = true
+        }
+
+        const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
+        if (this.state.countDownStatus && dataFetched.contentType === 3 && dataFetched.startTime * 1000 > Date.now()) {
+          return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
+        } else if (dataFetched.streamSourceUrl) {
+          return (
+            <Theoplayer
+              className={customTheoplayer}
+              subtitles={this.subtitles()}
+              handleOnVideoLoad={this.handleOnVideoLoad}
+              {...videoSettings}
+              showBackBtn={!isMobile}
+            />
+          )
+        }
+      }
+    }
+  }
 
   render() {
     const { isControllerActive, loc } = this.state
@@ -160,17 +198,6 @@ class WatchDesktop extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const dataFetched = videoStatus === 'success' && data.length > 0 ? data[0] : undefined
-    const poster = dataFetched ? dataFetched.background.landscape : ''
-
-    const adsFlag = videoStatus === 'success' ? _get(dataFetched, 'movieDetailData[0].ads', null) : null
-    user.loc = loc
-    const defaultVidSetting = videoStatus === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
-
-    const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(videoStatus, defaultVidSetting) : defaultVidSetting
-
-    const videoSettings = {
-      ...checkAdsSettings,
-    }
 
     let drmStreamUrl = '',
       isDRM = false
@@ -189,7 +216,7 @@ class WatchDesktop extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
-    const isTrailer = dataFetched && dataFetched.contentType === 8 ? true : false
+    const isMovieBool = isMovie(dataFetched.contentType)
     return (
       <>
         {dataFetched && (
@@ -197,35 +224,17 @@ class WatchDesktop extends Component {
             <div style={{ width: '100vw', background: '#000' }}>
               <div className={videoPlayerContainer}>
                 {loadPlayer ? (
-                  <Theoplayer
-                    className={customTheoplayer}
-                    subtitles={this.subtitles()}
-                    poster={poster}
-                    autoPlay={false}
-                    handleOnVideoLoad={this.handleOnVideoLoad}
-                    {...videoSettings}
-                    showChildren
-                    showBackBtn
-                  />
+                  <>
+                    {this.renderVideo(dataFetched, isMovie)}
+                  </>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
             </div>
             <div className={movieDetailBottom}>
-              {isMovie(dataFetched.contentType) && <MovieContent dataFetched={dataFetched} />}
-
-              {!isMovie(dataFetched.contentType) && <SportContent dataFetched={dataFetched} />}
-              {/* {isTrailer && <ContentOverview data={dataFetched} />} */}
-              {/* {!isTrailer && (
-                <>
-                  {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
-                  {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched.trailers} />}
-                  {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
-                  {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.recommendation.data} />}
-                  <Controller isActive={isControllerActive} onClick={this.handleControllerClick} hiddenController={hiddenController} />
-                </>
-              )} */}
+              {isMovieBool && <MovieContent dataFetched={dataFetched} />}
+              {!isMovieBool && <SportContent dataFetched={dataFetched} />}
             </div>
           </div>
         )}
@@ -246,4 +255,4 @@ const mapDispatchToProps = dispatch => ({
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
-export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(WatchDesktop)
+export default connect(mapStateToProps, mapDispatchToProps)(WatchDesktop)

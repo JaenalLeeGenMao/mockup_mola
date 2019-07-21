@@ -13,6 +13,7 @@ import { updateCustomMeta } from '@source/DOMUtils'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
 import WatchDesktop from './desktop'
+import WatchMobile from './mobile'
 
 class Watch extends Component {
   componentDidMount() {
@@ -81,7 +82,7 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {isMobile && <>Watch Mobile dengan 1 component untuk base designnya</>}
+            {isMobile && <WatchMobile movieDetail={this.props.movieDetail} vuid={vuid} />}
             {!isMobile && <WatchDesktop movieDetail={this.props.movieDetail} vuid={vuid} />}
           </>
         )}
