@@ -4,7 +4,6 @@ import Watch from './watch'
 
 function action({ query, isMobile }) {
   const id = query.v
-  console.log('v', id)
   return {
     chunks: ['watch'],
     title: '',

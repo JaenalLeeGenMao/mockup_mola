@@ -6,13 +6,13 @@ import { Helmet } from 'react-helmet'
 import { getVUID } from '@actions/vuid'
 import * as movieDetailActions from '@actions/movie-detail'
 // import styles from './watch.css'
-import { isMovie } from '@source/lib/globalUtil'
+
 import DRMConfig from '@source/lib/DRMConfig'
 import { updateCustomMeta } from '@source/DOMUtils'
 
-import { notificationBarBackground } from '@global/imageUrl'
+import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
-import WatchSport from './sport'
+import WatchDesktop from './desktop'
 
 class Watch extends Component {
   componentDidMount() {
@@ -24,6 +24,12 @@ class Watch extends Component {
   }
 
   componentDidUpdate() {
+    const { getMovieDetail, movieDetail, videoId } = this.props
+
+    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
+      // this.getLoc()
+      getMovieDetail(movieId)
+    }
     this.updateMetaTag()
   }
 
@@ -55,6 +61,13 @@ class Watch extends Component {
     }
   }
 
+  componentWillUnmount() {
+    updateCustomMeta('og:title', 'Mola TV')
+    updateCustomMeta('og:image', logoLandscapeBlue)
+    updateCustomMeta('og:description', 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.')
+    updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
+  }
+
   render() {
     const { isMobile, vuid } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -68,11 +81,8 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {isMovie(dataFetched.contentType) && <>MOVIE</>}
-            {!isMovie(dataFetched.contentType) && (
-              // <>SPORTTT</>
-              <WatchSport dataFetched={dataFetched} isMobile={isMobile} vuid={vuid} />
-            )}
+            {isMobile && <>Watch Mobile dengan 1 component untuk base designnya</>}
+            {!isMobile && <WatchDesktop movieDetail={this.props.movieDetail} vuid={vuid} />}
           </>
         )}
       </>
