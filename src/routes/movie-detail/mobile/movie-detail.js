@@ -208,6 +208,35 @@ class MovieDetail extends Component {
     }
   }
 
+  renderVideo = (poster, videoSettings) => {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    if (isSafari) {
+      return (
+        <Theoplayer
+          className={customTheoplayer}
+          subtitles={this.subtitles()}
+          poster={poster}
+          autoPlay={false}
+          // certificateUrl="test"
+          handleOnVideoLoad={this.handleOnVideoLoad}
+          handleOnVideoPause={this.handleOnVideoPause}
+          handleOnLoadedData={this.handleOnLoadedData}
+          handleOnReadyStateChange={this.handleOnReadyStateChange}
+          showBackBtn={false}
+          {...videoSettings}
+          isMobile
+        />
+      )
+    } else {
+      return (
+        <div className={posterWrapper}>
+          <img src={poster} />
+          <span className={playIcon} onClick={this.handlePlayMovie} />
+        </div>
+      )
+    }
+  }
+
   render() {
     const { toggleSuggestion, loc } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -246,32 +275,7 @@ class MovieDetail extends Component {
             </Helmet>
             <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
-              <div className={videoPlayerContainer}>
-                {loadPlayer ? (
-                  // <Theoplayer
-                  //   className={customTheoplayer}
-                  //   subtitles={this.subtitles()}
-                  //   poster={poster}
-                  //   autoPlay={false}
-                  //   // certificateUrl="test"
-                  //   handleOnVideoLoad={this.handleOnVideoLoad}
-                  //   handleOnVideoPause={this.handleOnVideoPause}
-                  //   handleOnVideoPlay={this.handleOnVideoPlay}
-                  //   handleOnLoadedData={this.handleOnLoadedData}
-                  //   handleOnReadyStateChange={this.handleOnReadyStateChange}
-                  //   showBackBtn={false}
-                  //   {...videoSettings}
-                  //   showChildren
-                  //   isMobile
-                  // />
-                  <div className={posterWrapper}>
-                    <img src={poster} />
-                    <span className={playIcon} onClick={this.handlePlayMovie} />
-                  </div>
-                ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
-              </div>
+              <div className={videoPlayerContainer}>{loadPlayer ? <>{this.renderVideo(poster, videoSettings)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
               <ContentSynopsis content={dataFetched.description} />

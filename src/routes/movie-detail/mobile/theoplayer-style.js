@@ -11,8 +11,8 @@ export const customTheoplayer = css`
     }
 
     &.theoplayer-skin:not(.theo-seekbar-inside-controls) .theo-button-tooltip {
-      left: auto!important;
-      right: 0!important;
+      left: auto !important;
+      right: 0 !important;
     }
 
     &.video-container .theo-primary-color {
@@ -29,7 +29,7 @@ export const customTheoplayer = css`
     }
 
     .vjs-menu-item.vjs-selected {
-      color: #FFFFFF !important;
+      color: #ffffff !important;
     }
 
     .vjs-selected .theo-text-track-menu-item-toggle {
@@ -40,7 +40,6 @@ export const customTheoplayer = css`
       width: 10% !important;
       background: none !important;
       background-color: transparent !important;
-      display: none!important;
     }
 
     &.video-container .vjs-big-play-button::after {
