@@ -34,7 +34,7 @@ class MovieContent extends Component {
   render() {
     const { dataFetched } = this.props
     const { isControllerActive } = this.state
-    const isTrailer = dataFetched && getContentTypeName(dataFetched.contentType) === 'trailers' ? true : false
+    const isMovie = dataFetched && getContentTypeName(dataFetched.contentType) === 'movie' ? true : false
 
     let hiddenController = []
     if (dataFetched && dataFetched.trailers.length === 0) {
@@ -46,8 +46,8 @@ class MovieContent extends Component {
     }
     return (
       <>
-        {isTrailer && <ContentOverview data={dataFetched} />}
-        {!isTrailer && (
+        {!isMovie && <ContentOverview data={dataFetched} />}
+        {isMovie && (
           <>
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
             {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched.trailers} />}

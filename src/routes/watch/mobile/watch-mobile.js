@@ -1,24 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
 import _get from 'lodash/get'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { get } from 'axios'
 
-import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
-import { updateCustomMeta } from '@source/DOMUtils'
 import config from '@source/config'
 import Tracker from '@source/lib/tracker'
-import { isMovie } from '@source/lib/globalUtil'
+import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 
 import Header from '@components/Header'
+import CountDown from '@components/CountDown'
 import MovieDetailError from '@components/common/error'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
-import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerContainer, videoTitle, playMovieButton, playMovieIcon, posterWrapper, playIcon } from './style'
+import {
+  movieDetailContainer,
+  movieDetailNotAvailableContainer,
+  videoPlayerContainer,
+  videoTitle,
+  posterWrapper,
+  playIcon,
+  countdownWinfobar,
+  infoBar,
+  infoBarContainer,
+  infoBarClose,
+  infoBarText,
+} from './style'
 
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
@@ -31,6 +40,8 @@ import SportContent from './sport'
 class MovieDetail extends Component {
   state = {
     loc: '',
+    countDownStatus: true,
+    toggleInfoBar: true,
   }
   subtitles() {
     const { movieDetail } = this.props
@@ -88,33 +99,92 @@ class MovieDetail extends Component {
     }
   }
 
-  renderVideo = (poster, videoSettings) => {
-    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
-    if (isApple) {
-      return (
-        <Theoplayer
-          className={customTheoplayer}
-          subtitles={this.subtitles()}
-          poster={poster}
-          autoPlay={false}
-          // certificateUrl="test"
-          handleOnVideoLoad={this.handleOnVideoLoad}
-          handleOnVideoPause={this.handleOnVideoPause}
-          handleOnLoadedData={this.handleOnLoadedData}
-          handleOnReadyStateChange={this.handleOnReadyStateChange}
-          showBackBtn={false}
-          {...videoSettings}
-          isMobile
-        />
-      )
-    } else {
-      return (
-        <div className={posterWrapper}>
-          <img src={poster} />
-          <span className={playIcon} onClick={this.handlePlayMovie} />
-        </div>
-      )
+  renderVideo = dataFetched => {
+    const { user, getMovieDetail, videoId, isMobile } = this.props
+    if (dataFetched) {
+      const { loc } = this.state
+      const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+
+      const poster = dataFetched ? dataFetched.background.landscape : ''
+
+      const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
+      user.loc = loc
+
+      const defaultVidSetting = dataFetched ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+
+      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
+
+      const videoSettings = {
+        ...checkAdsSettings,
+      }
+
+      const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      // if (isMovie) {
+      //   return (
+      //     <Theoplayer
+      //       className={customTheoplayer}
+      //       subtitles={this.subtitles()}
+      //       poster={poster}
+      //       autoPlay={false}
+      //       handleOnVideoLoad={this.handleOnVideoLoad}
+      //       {...videoSettings}
+      //       showChildren
+      //       showBackBtn />
+      //   )
+      // } else {
+
+      // }
+
+      const { toggleInfoBar } = this.state
+      let isMatchPassed = false
+      if (dataFetched.endTime < Date.now() / 1000) {
+        isMatchPassed = true
+      }
+
+      console.log('MASUKKK ct st', this.state.countDownStatus, dataFetched.contentType, dataFetched.startTime * 1000 > Date.now())
+      const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
+      if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
+        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={true} />
+      } else {
+        if (isApple) {
+          return (
+            <Theoplayer
+              className={customTheoplayer}
+              subtitles={this.subtitles()}
+              poster={poster}
+              autoPlay={false}
+              // certificateUrl="test"
+              // handleOnVideoLoad={this.handleOnVideoLoad}
+              // handleOnVideoPause={this.handleOnVideoPause}
+              // handleOnLoadedData={this.handleOnLoadedData}
+              // handleOnReadyStateChange={this.handleOnReadyStateChange}
+              showBackBtn={false}
+              {...videoSettings}
+              isMobile
+            />
+          )
+        } else {
+          return (
+            <div className={posterWrapper}>
+              <img src={poster} />
+              <span className={playIcon} onClick={this.handlePlayMovie} />
+            </div>
+          )
+        }
+      }
     }
+  }
+
+  hideCountDown = () => {
+    this.setState({
+      countDownStatus: false,
+    })
+  }
+
+  handleCloseInfoBar = () => {
+    this.setState({
+      toggleInfoBar: false,
+    })
   }
 
   render() {
@@ -149,13 +219,31 @@ class MovieDetail extends Component {
     const contWidth = {
       containerWidth: isMovieBool ? undefined : '80px',
     }
+
+    const { toggleInfoBar } = this.state
+    let isMatchPassed = false
+    if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
+      isMatchPassed = true
+    }
+
     return (
       <>
         {dataFetched && (
           <>
             <Header logoOff stickyOff libraryOff isMobile isDark={0} backButtonOn headerMenuOff opacity={0} {...contWidth} {...this.props} />
             <div className={movieDetailContainer}>
-              <div className={videoPlayerContainer}>{loadPlayer ? <>{this.renderVideo(poster, videoSettings)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
+              {toggleInfoBar &&
+                !isMatchPassed && (
+                  <div className={infoBar}>
+                    <div className={infoBarContainer}>
+                      <div className={infoBarText}>Siaran Percobaan</div>
+                      <div className={infoBarClose} onClick={this.handleCloseInfoBar}>
+                        <span />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              <div className={videoPlayerContainer}>{loadPlayer ? <>{this.renderVideo(dataFetched)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {isMovieBool && <MovieContent dataFetched={dataFetched} />}
               {!isMovieBool && <SportContent dataFetched={dataFetched} />}

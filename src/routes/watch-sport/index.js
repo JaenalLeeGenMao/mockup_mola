@@ -5,7 +5,7 @@ import Watch from './watch'
 function action({ query, isMobile }) {
   const id = query.v
   return {
-    chunks: ['watch'],
+    chunks: ['watch-sport'],
     title: '',
     description: '',
     component: (

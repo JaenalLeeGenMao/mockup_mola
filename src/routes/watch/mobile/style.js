@@ -160,7 +160,7 @@ export const movieDetailNotAvailableContainer = css`
 `
 
 export const videoPlayerContainer = css`
-  height: 18rem;
+  height: 56.25vw;
 `
 
 export const videoTitle = css`
@@ -205,6 +205,7 @@ export const playMovieIcon = css`
 
 export const posterWrapper = css`
   position: relative;
+  height: 100%;
 `
 
 export const playIcon = css`
@@ -219,4 +220,50 @@ export const playIcon = css`
   left: 50%;
   transform: translate(-50%, -50%);
   position: absolute;
+`
+export const countdownWinfobar = css`
+  height: calc(100% - 38px) !important;
+`
+
+export const infoBar = css`
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 35px;
+  z-index: 88;
+  background-color: #0862a6;
+  display: inline-block;
+`
+
+export const infoBarClose = css`
+  padding: 1rem;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  span {
+    width: 14px;
+    height: 14px;
+    background-image: url(data:image/svg+xml;charset=utf-8;base64,PCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIyLjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIg0KICAgICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczphPSJodHRwOi8vbnMuYWRvYmUuY29tL0Fkb2JlU1ZHVmlld2VyRXh0ZW5zaW9ucy8zLjAvIg0KICAgICB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMwcHgiIGhlaWdodD0iMzBweCIgdmlld0JveD0iMCAwIDMwIDMwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzMCAzMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCiAgICAuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGRlZnM+DQo8L2RlZnM+DQo8Zz4NCiAgICA8Zz4NCiAgICAgICAgPGc+DQogICAgICAgICAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjkuNiwwLjRjLTAuNS0wLjUtMS4yLTAuNS0xLjcsMEwwLjQsMjcuOWMtMC41LDAuNS0wLjUsMS4yLDAsMS43QzAuNiwyOS45LDAuOSwzMCwxLjIsMzBzMC42LTAuMSwwLjktMC40DQogICAgICAgICAgICAgICAgTDI5LjYsMi4xQzMwLjEsMS42LDMwLjEsMC44LDI5LjYsMC40eiIvPg0KICAgICAgICA8L2c+DQogICAgPC9nPg0KICAgIDxnPg0KICAgICAgICA8Zz4NCiAgICAgICAgICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yOS42LDI3LjlMMi4xLDAuNGMtMC41LTAuNS0xLjItMC41LTEuNywwYy0wLjUsMC41LTAuNSwxLjIsMCwxLjdsMjcuNiwyNy42YzAuMiwwLjIsMC41LDAuNCwwLjksMC40DQogICAgICAgICAgICAgICAgczAuNi0wLjEsMC45LTAuNEMzMC4xLDI5LjIsMzAuMSwyOC40LDI5LjYsMjcuOXoiLz4NCiAgICAgICAgPC9nPg0KICAgIDwvZz4NCjwvZz4NCjwvc3ZnPg==);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+  }
+`
+
+export const infoBarContainer = css`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  margin: 0 30px 0 40px;
+`
+
+export const infoBarText = css`
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
 `

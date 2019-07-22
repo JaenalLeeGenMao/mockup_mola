@@ -6,16 +6,31 @@ import _get from 'lodash/get'
 import { get } from 'axios'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
-import { isMovie } from '@source/lib/globalUtil'
+import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 
+import Header from '@components/Header'
+import CountDown from '@components/CountDown'
 import MovieDetailError from '@components/common/error'
 // import Link from '@components/Link'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
-import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom } from './style'
+import {
+  headerContainer,
+  movieDetailContainer,
+  movieDetailNotAvailableContainer,
+  videoPlayerWrapper,
+  videoPlayerContainer,
+  videoPlayerContainer__nobar,
+  movieDetailBottom,
+  infoBar,
+  infoBarContainer,
+  infoBarText,
+  infoBarClose,
+  countdownWinfobar,
+} from './style'
 
 import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
@@ -29,6 +44,8 @@ class WatchDesktop extends Component {
   state = {
     movieDetail: [],
     loc: '',
+    toggleInfoBar: true,
+    countDownStatus: true,
   }
 
   handleOnVideoLoad = player => {
@@ -127,68 +144,50 @@ class WatchDesktop extends Component {
     // getVUID(deviceId)
   }
 
-  renderVideo = (dataFetched, isMovie) => {
+  renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId, isMobile } = this.props
 
     if (dataFetched) {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-      // const defaultVidSetting = dataFetched ? defaultVideoSetting(user, data[0], vuidStatus === 'success' ? vuid : '') : {}
-
-      // const videoSettings = {
-      //   ...defaultVidSetting,
-      //   // getUrlResponse: this.getUrlResponse
-      // }
-
       const poster = dataFetched ? dataFetched.background.landscape : ''
 
-      const adsFlag = dataFetched ? _get(dataFetched, 'movieDetailData[0].ads', null) : null
+      const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
       user.loc = loc
 
       const defaultVidSetting = dataFetched ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
-      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds("success", defaultVidSetting) : defaultVidSetting
+      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
         ...checkAdsSettings,
       }
 
-      if (isMovie) {
-        return (
-          <Theoplayer
-            className={customTheoplayer}
-            subtitles={this.subtitles()}
-            poster={poster}
-            autoPlay={false}
-            handleOnVideoLoad={this.handleOnVideoLoad}
-            {...videoSettings}
-            showChildren
-            showBackBtn />
-        )
-      } else {
-        const { toggleInfoBar } = this.state
-        let isMatchPassed = false
-        if (dataFetched.endTime < Date.now() / 1000) {
-          isMatchPassed = true
-        }
-
-        const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
-        if (this.state.countDownStatus && dataFetched.contentType === 3 && dataFetched.startTime * 1000 > Date.now()) {
-          return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
-        } else if (dataFetched.streamSourceUrl) {
-          return (
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              handleOnVideoLoad={this.handleOnVideoLoad}
-              {...videoSettings}
-              showBackBtn={!isMobile}
-            />
-          )
-        }
+      const { toggleInfoBar } = this.state
+      let isMatchPassed = false
+      if (dataFetched.endTime < Date.now() / 1000) {
+        isMatchPassed = true
+      }
+      const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
+      if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
+        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
+      } else if (dataFetched.streamSourceUrl) {
+        return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} poster={poster} autoPlay={false} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} showBackBtn />
       }
     }
+  }
+
+  hideCountDown = () => {
+    this.setState({
+      countDownStatus: false,
+    })
+  }
+
+  handleCloseInfoBar = () => {
+    this.setState({
+      toggleInfoBar: false,
+    })
   }
 
   render() {
@@ -217,26 +216,42 @@ class WatchDesktop extends Component {
       hiddenController.push('review')
     }
     const isMovieBool = isMovie(dataFetched.contentType)
+
+    const { toggleInfoBar } = this.state
+    let isMatchPassed = false
+    if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
+      isMatchPassed = true
+    }
+
+    const playerClass = toggleInfoBar && !isMatchPassed ? videoPlayerContainer : videoPlayerContainer__nobar
     return (
       <>
         {dataFetched && (
-          <div className={movieDetailContainer}>
-            <div style={{ width: '100vw', background: '#000' }}>
-              <div className={videoPlayerContainer}>
-                {loadPlayer ? (
-                  <>
-                    {this.renderVideo(dataFetched, isMovie)}
-                  </>
-                ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+          <>
+            <div className={headerContainer}>
+              <Header stickyOff libraryOff {...this.props} />
+            </div>
+            <div className={movieDetailContainer}>
+              <div className={videoPlayerWrapper}>
+                {toggleInfoBar &&
+                  !isMatchPassed && (
+                    <div className={infoBar}>
+                      <div className={infoBarContainer}>
+                        <div className={infoBarText}>Siaran Percobaan</div>
+                        <div className={infoBarClose} onClick={this.handleCloseInfoBar}>
+                          <span />
+                        </div>
+                      </div>
+                    </div>
                   )}
+                <div className={playerClass}>{loadPlayer ? <>{this.renderVideo(dataFetched)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
+              </div>
+              <div className={movieDetailBottom}>
+                {isMovieBool && <MovieContent dataFetched={dataFetched} />}
+                {!isMovieBool && <SportContent dataFetched={dataFetched} />}
               </div>
             </div>
-            <div className={movieDetailBottom}>
-              {isMovieBool && <MovieContent dataFetched={dataFetched} />}
-              {!isMovieBool && <SportContent dataFetched={dataFetched} />}
-            </div>
-          </div>
+          </>
         )}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
