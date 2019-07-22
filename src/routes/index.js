@@ -108,6 +108,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
     },
     {
+      path: '/error/smart',
+      load: () => import(/* webpackChunkName: 'smart' */ './error/smart'),
+    },
+    {
       path: '/matches',
       load: () => import(/* webpackChunkName: 'matches' */ './matches'),
       children: [
