@@ -5,6 +5,8 @@
   background-color: #313131;
   position: sticky;
   top: 6rem;
+
+  /* margin-bottom: 8rem; */
   z-index: 1;
   height: 5rem;
   margin-top: 3rem;
@@ -75,4 +77,12 @@
   margin: 1rem 1rem 1rem 1rem;
 
   /* padding: 2rem 0 2rem 0; */
+}
+
+.hidePlaylist {
+  opacity: 0;
+}
+
+.showPlaylist {
+  opacity: 1;
 }

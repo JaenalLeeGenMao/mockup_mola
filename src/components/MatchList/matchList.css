@@ -40,9 +40,14 @@
   transition: transform 0.3s, -webkit-transform 0.3s;
   transform: scale(1.1);
   opacity: 0.9;
-  cursor: pointer;
+
+  /* cursor: pointer; */
 
   /* width: 74rem; */
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .matchList__league_logo {

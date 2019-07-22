@@ -52,12 +52,6 @@ const getProgrammeGuides = selectedDate => async (dispatch, getState) => {
         const yesterdayProgramme = await Mola.getProgrammeGuides(yesterdayDate, playlist.id)
         const todayProgramme = await Mola.getProgrammeGuides(selectedDate.fullDate, playlist.id)
         if (yesterdayProgramme.meta.status === 'error' && todayProgramme.meta.status === 'error') {
-          // const result = {
-          //   meta: { ...yesterdayProgramme.meta } || { ...todayProgramme.meta },
-          //   data: [],
-          //   playlistId: todayProgramme.playlistId || yesterdayProgramme.playlistId
-          // };
-
           dispatch({
             type: types.GET_PROGRAMME_GUIDES_ERROR,
           })

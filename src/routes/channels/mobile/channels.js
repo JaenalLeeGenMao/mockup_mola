@@ -49,9 +49,10 @@ class Channels extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
     if (channelsPlaylist.meta.status === 'success' && channelsPlaylist.data.length > 0 && !prevState.activeChannel && !prevState.activeChannelId) {
+      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
       this.setState({
-        activeChannel: this.props.channelsPlaylist.data[0].title,
-        activeChannelId: this.props.channelsPlaylist.data[0].id,
+        activeChannel: selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
+        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
       })
     }
 

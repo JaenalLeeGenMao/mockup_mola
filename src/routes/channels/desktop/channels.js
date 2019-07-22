@@ -19,55 +19,50 @@ import { formatDateTime } from '@source/lib/dateTimeUtil'
 import MovieDetailError from '@components/common/error'
 import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
-import MatchList from '@components/MatchList'
-import LazyLoad from '@components/common/Lazyload'
 import VerticalCalendar from '@components/VerticalCalendar'
 
-import { getChannelProgrammeGuides } from '../selectors'
 import ScheduleCard from './scheduleCard'
+import ChannelList from './channelList'
+import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
 class Channels extends Component {
   state = {
-    selectedDate: {
-      fullDate: moment().format('YYYYMMDD'),
-      date: moment().format('DD'),
-      day: moment()
-        .format('ddd')
-        .toUpperCase(),
-    },
     activeChannel: '',
     activeChannelId: '',
     activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
-    scheduleDateList: [],
     scheduleList: [],
     expandLeague: true,
-    filterByLeague: 0,
-    filterByDates: '',
     limit: Array.from({ length: 12 }),
     hasMore: true,
     channelCategory: 'epg',
+    hidePlaylist: true,
   }
 
   componentDidMount() {
     const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user, getVUID } = this.props
-
+    const selectedDate = {
+      fullDate: moment().format('YYYYMMDD'),
+    }
     fetchChannelsPlaylist('channels-m').then(() => {
-      fetchChannelSchedule(this.state.selectedDate)
+      fetchChannelSchedule(selectedDate)
     })
     fetchVideoByid(movieId)
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
+
+    window.addEventListener('scroll', this.handleScroll)
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
     const { scheduleList, activeChannelId, channelCategory } = this.state
     if (channelsPlaylist.meta.status === 'success' && channelsPlaylist.data.length > 0 && !prevState.activeChannel && !prevState.activeChannelId) {
+      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
       this.setState({
-        activeChannel: channelsPlaylist.data[0].title,
-        activeChannelId: channelsPlaylist.data[0].id,
+        activeChannel: selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
+        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
       })
     }
 
@@ -77,6 +72,22 @@ class Channels extends Component {
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       fetchVideoByid(movieId)
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll = () => {
+    if (window.scrollY >= window.innerHeight - 85) {
+      this.setState({
+        hidePlaylist: false,
+      })
+    } else if (window.scrollY <= window.innerHeight - 130) {
+      this.setState({
+        hidePlaylist: true,
+      })
     }
   }
 
@@ -188,7 +199,7 @@ class Channels extends Component {
 
   render() {
     const { programmeGuides, channelSchedule, channelsPlaylist, movieId } = this.props
-    const { activeChannelId, scheduleList, channelCategory, expandLeague, limit, activeDate, hasMore } = this.state
+    const { activeChannelId, scheduleList, channelCategory, expandLeague, limit, activeDate, hasMore, hidePlaylist } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -215,66 +226,51 @@ class Channels extends Component {
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
     return (
       <>
-        {dataFetched && (
-          <>
-            <div>
-              <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
+        <div>
+          <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
+        </div>
+        <div className={styles.channels_container}>
+          <div className={styles.video_container}>
+            {loadPlayer ? (
+              <Theoplayer
+                className={customTheoplayer}
+                showBackBtn={false}
+                subtitles={this.subtitles()}
+                handleOnVideoLoad={this.handleOnVideoLoad}
+                // poster={poster}
+                {...videoSettings}
+              />
+            ) : (
+                <div>Video Not Available</div> // styling later
+              )}
+          </div>
+          <ChannelList handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} channelCategory={channelCategory} />
+          <div className={styles.epg__list__container}>
+            <HorizontalPlaylist
+              handleCategoryFilter={this.handleSelectChannel}
+              genreSpoCategory={channelsPlaylist.data}
+              filterByLeague={activeChannelId}
+              expandLeague={expandLeague}
+              categoryFilterType={channelCategory}
+              hidePlaylist={hidePlaylist}
+              noMargin
+            />
+            <div className={styles.epg__grid__container}>
+              <span />
+              <InfiniteScroll
+                dataLength={limit.length}
+                next={this.fetchMoreData}
+                hasMore={hasMore}
+                hasChildren={true}
+                loader={<div className={styles.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
+                height={800}
+              >
+                {programmeGuides.data && scheduleList.length > 0 && <ScheduleCard scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} limit={limit} />}
+              </InfiniteScroll>
+              <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} />
             </div>
-            <div className={styles.channels_container}>
-              <div className={styles.video_container}>
-                {loadPlayer ? (
-                  <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
-                ) : (
-                    <div>Video Not Available</div> // styling later
-                  )}
-              </div>
-              <div className={styles.epg__logo__container}>
-                {channelsPlaylist.meta.status === 'success' && (
-                  <>
-                    {channelsPlaylist.data.map(item => (
-                      <div
-                        key={item.id}
-                        className={styles.epg__logo__wrapper}
-                        onClick={() => {
-                          this.handleSelectChannel(channelCategory, item.id)
-                        }}
-                      >
-                        <img alt="" className={styles.epg__logo__img} src={item.thumbnailImg} />
-                      </div>
-                    ))}
-                  </>
-                )}
-              </div>
-              <div className={styles.see__detail__epg}>
-                <div className={styles.see__detail__text}> Scroll to see program guide </div>
-                <div className={styles.see__detail__arrow} />
-              </div>
-
-              <div className={styles.epg__list__container}>
-                <HorizontalPlaylist
-                  handleCategoryFilter={this.handleSelectChannel}
-                  genreSpoCategory={channelsPlaylist.data}
-                  filterByLeague={activeChannelId}
-                  expandLeague={expandLeague}
-                  categoryFilterType={channelCategory}
-                />
-                <div className={styles.epg__grid__container}>
-                  <span />
-                  <InfiniteScroll
-                    dataLength={limit.length}
-                    next={this.fetchMoreData}
-                    hasMore={hasMore}
-                    hasChildren={true}
-                    loader={<div className={styles.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
-                    height={800}
-                  >
-                    {programmeGuides.data && scheduleList.length > 0 && <ScheduleCard scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} limit={limit} />}
-                  </InfiniteScroll>
-                  <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} />
-                </div>
-              </div>
-            </div>
-          </>
+          </div>
+        </div>
         )}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
