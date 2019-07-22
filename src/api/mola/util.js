@@ -189,7 +189,7 @@ const normalizeHomeVideo = response => {
             const {
               id,
               type,
-              attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime, homeTeamId, awayTeamId },
+              attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime, homeTeamId, awayTeamId, seasonNumber },
             } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', '')
@@ -209,6 +209,7 @@ const normalizeHomeVideo = response => {
               displayOrder,
               description,
               visibility,
+              seasonNumber,
               contentType,
               shortDescription: shortDescription || description,
               // coverTitle: coverTitle,
