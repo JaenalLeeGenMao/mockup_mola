@@ -97,7 +97,7 @@ class Feature extends Component {
 
     const isLoading = playlists.meta.status === 'loading' || banners.meta.status === 'loading',
       isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
-      isSuccess = playlists.meta.status === 'success' && banners.meta.status === 'success'
+      isSuccess = playlists.meta.status === 'success'
 
     let errorObj = { code: 0, description: '' }
     if (banners.meta.error) {
