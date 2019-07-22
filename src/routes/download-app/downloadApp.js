@@ -29,21 +29,24 @@ class DownloadApp extends Component {
     return (
       <>
         <div className={styles.container__mobile} style={{ backgroundImage: `url(${portraitPoster})` }}>
-          {!portraitPoster &&
+          {!portraitPoster && (
             <div className={styles.player__container__mobile}>
-              <div className={styles.img__wrapper}><img src={logoMolaBig} /></div>
+              <div className={styles.img__wrapper}>
+                <img src={logoMolaBig} />
+              </div>
             </div>
-          }
+          )}
+          <div className={styles.gradient} />
           <div className={styles.detail__container__mobile}>
-            <div className={styles.detail__title}>
-              {dataFetched && <h1 className={styles.detail__title__text}>{dataFetched.title}</h1>}
-            </div>
+            <div className={styles.detail__title}>{dataFetched && <h1 className={styles.detail__title__text}>{dataFetched.title}</h1>}</div>
             <div className={styles.detail__desc}>
-              <div>Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app di</div>
-              <a className={styles.btn_open_app} href="">
+              <div className={styles.detail__desc__text}>Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app di</div>
+              <a className={styles.btn_open_app} href="https://play.google.com/store/apps/details?id=tv.mola.app">
                 <img src={badge} />
               </a>
-              <a className={styles.link_back} onClick={this.handleClose}>Back to Video Detail</a>
+              <a className={styles.link_back} onClick={this.handleClose}>
+                Back to Video Detail
+              </a>
             </div>
           </div>
         </div>
