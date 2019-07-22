@@ -6,10 +6,6 @@ import { setMultilineEllipsis, unsetMultilineEllipsis } from '@source/lib/global
 import styles from './sport.css'
 
 class Synopsis extends Component {
-  state = {
-    show: false,
-  }
-
   componentDidMount() {
     const { content } = this.props
     setMultilineEllipsis('synopsis__info_content')
@@ -21,12 +17,7 @@ class Synopsis extends Component {
   }
 
   render() {
-    const { content, isMobile } = this.props,
-      { show } = this.state
-
-    if (show && isMobile) {
-      unsetMultilineEllipsis('synopsis__info_content', content)
-    }
+    const { content } = this.props
 
     return (
       <>

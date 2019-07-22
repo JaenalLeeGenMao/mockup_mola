@@ -9,12 +9,12 @@ import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { updateCustomMeta } from '@source/DOMUtils'
 import config from '@source/config'
-
 import Tracker from '@source/lib/tracker'
 import { isMovie } from '@source/lib/globalUtil'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 
+import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
@@ -24,6 +24,10 @@ import { customTheoplayer } from './theoplayer-style'
 // const { getComponent } = require('../../../../../gandalf')
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
+
+import MovieContent from './movie'
+import SportContent from './sport'
+
 class MovieDetail extends Component {
   state = {
     loc: '',
@@ -68,28 +72,24 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
-    const {
-      fetchRecommendation,
-    } = this.props
+    const { fetchRecommendation } = this.props
 
     this.getLoc()
     // fetchRecommendation(movieId)
   }
 
   handlePlayMovie = () => {
-    const { movieId, runtime: { appPackage } } = this.props
+    const { movieId } = this.props
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     if (!isSafari) {
       const domain = config.endpoints.domain
-      // console.log('appPackage', appPackage)
       const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-      // document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
       document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
     }
   }
 
   renderVideo = (poster, videoSettings) => {
-    const isApple = /.*AppleWebKit.*/.test(navigator.userAgent)
+    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
     if (isApple) {
       return (
         <Theoplayer
@@ -146,18 +146,19 @@ class MovieDetail extends Component {
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
     const isMovieBool = isMovie(dataFetched.contentType)
+    const contWidth = {
+      containerWidth: isMovieBool ? undefined : '80px',
+    }
     return (
       <>
         {dataFetched && (
           <>
+            <Header logoOff stickyOff libraryOff isMobile isDark={0} backButtonOn headerMenuOff opacity={0} {...contWidth} {...this.props} />
             <div className={movieDetailContainer}>
               <div className={videoPlayerContainer}>{loadPlayer ? <>{this.renderVideo(poster, videoSettings)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
-              {/* {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
-              <ContentSynopsis content={dataFetched.description} />
-              {dataFetched.people && dataFetched.people.length > 0 && <ContentCreator people={dataFetched.people} />}
-              {dataFetched.quotes && dataFetched.quotes.length > 0 && <ContentReview review={dataFetched} />}
-              {recommendation.meta.status === 'success' && <ContentSuggestions videos={recommendation.data} />} */}
+              {isMovieBool && <MovieContent dataFetched={dataFetched} />}
+              {!isMovieBool && <SportContent dataFetched={dataFetched} />}
             </div>
           </>
         )}
