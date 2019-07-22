@@ -100,7 +100,6 @@ const normalizeMatchPlaylists = response => {
             images,
             startTime,
             endTime,
-            videos,
             homeTeam,
             awayTeam,
           }
@@ -114,11 +113,9 @@ const normalizeMatchPlaylists = response => {
         }
       }
     })
-    // console.log('playlistData', playlistData)
     for (let i = 0; i < playlistData.length; i++) {
       if (playlistData[i] !== undefined && playlistData[i] !== null) {
         let playlistsTemp = playlistData[i]
-        // console.log('playlistsTemp', playlistsTemp)
         Obj.push(playlistsTemp)
       }
     }

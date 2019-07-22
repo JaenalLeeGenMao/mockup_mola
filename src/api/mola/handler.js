@@ -180,7 +180,8 @@ const getFeatureBanner = ({ id = '' }) => {
     })
 }
 
-const getAllGenreSpo = (id = 'genre-spo') => {
+const getAllGenreSpo = (id = 'leagues') => {
+  // link lama: genre-spo change into leagues
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
@@ -303,9 +304,7 @@ const getMatchesPlaylists = id => {
     }
   )
     .then(response => {
-      // console.log('response', response)
       const result = utils.normalizeMatchPlaylists(response)
-      // console.log('result handler genre playlist', result)
       return {
         meta: {
           status: result.length > 0 ? 'success' : 'no_result',

@@ -36,7 +36,7 @@ class Matches extends React.Component {
     resultShowData: 1,
     initialized: false,
     matches: [],
-    resultPlaylists: [],
+    allMatches: [],
     modalActive: false,
     selectedLeagueData: [],
     expandThisWeek: true,
@@ -51,11 +51,20 @@ class Matches extends React.Component {
 
   fetchMoreData = () => {
     const matchCardData = this.props.matches.data
-    const matchPlaylists = this.props.matches.matchesPlaylists
-    // console.log('semua matches', matchCardData)
-    // console.log('semua matchplaylists', matchPlaylists)
-    if (matchCardData.length != 0) {
-      if (this.state.limit.length >= matchCardData.length) {
+    const { data } = this.props.matches.matchesPlaylists
+    let matchTemp = []
+
+    data.forEach(dt => {
+      if (dt.id) {
+        const vidDt = dt.videos
+        for (let i = 0; i < vidDt.length; i++) {
+          matchTemp.push(vidDt[i])
+        }
+      }
+    })
+
+    if (matchTemp.length != 0) {
+      if (this.state.limit.length >= matchTemp.length) {
         this.setState({
           hasMore: false,
         })
@@ -86,9 +95,21 @@ class Matches extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    //status successnya masi dari matches
     if (this.props.matches.meta.status != prevProps.matches.meta.status && this.props.matches.meta.status === 'success') {
+      let matchTemp = []
+      const { data } = this.props.matches.matchesPlaylists
+
+      data.forEach(dt => {
+        if (dt.id) {
+          const vidDt = dt.videos
+          for (let i = 0; i < vidDt.length; i++) {
+            matchTemp.push(vidDt[i])
+          }
+        }
+      })
       //filter matches berdasarkan default value
-      const getDataFilterLeagueId = this.props.matches.data
+      const getDataFilterLeagueId = matchTemp
       let leagueList = []
       getDataFilterLeagueId.map(matches => {
         const leagueData = matches.league
@@ -111,34 +132,16 @@ class Matches extends React.Component {
         }
         return 0
       })
+      // const filterResult = this.handleSortMatches(this.props.matches.data)
+      const filterResult = this.handleSortMatches(getDataFilterLeagueId)
 
-      // const { filterByDates, filterByType } = this.state
-      // let filterResult = []
-
-      // filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
-
-      // const filterResultByType = this.handleFilterByType(filterByType, filterResult)
-      // /** NOTE **/
-      // //cuma update result kalau filter di filter type ini ada result
-      // //kalau gada result yang ditampilkan hanyalah hasil dari filter by date + league
-      // if (filterResultByType.length > 0) {
-      //   filterResult = filterResultByType
-      // }
-      // const defaultLeagueId = leagueList.length > 0 ? leagueList[0].id : 0
-      // filterResult = this.handleFilterByLeague(defaultLeagueId, filterResult)
-      // //dapat hasil dari default filter
-      // filterResult = filterResult.sort((a, b) => b.startTime - a.startTime)
-      // const filterResult = this.props.matches.data.sort((a, b) => b.startTime - a.startTime)
-      const filterResult = this.handleSortMatches(this.props.matches.data)
-      const filterResultPlaylist = this.handleSortMatches(this.props.matches.matchesPlaylists)
-      // console.log('filterResultPlaylist', filterResultPlaylist)
-      // console.log('filterResultPlaylist data', filterResultPlaylist.data)
-      this.setState({ matches: filterResult, leagueList: leagueList, resultPlaylists: filterResultPlaylist })
+      // console.log('semua matchplaylists', filterResultPlaylist)
+      this.setState({ allMatches: filterResult, matches: filterResult, leagueList: leagueList })
     }
   }
 
   handleSortMatches = matches => {
-    // console.log('matcheees', matches)
+    // console.log('handleSortMatches : see sort macthes', matches)
     const groupByDate = _groupBy(matches, match => {
       if (isToday(match.startTime, match.endTime)) return 'isToday'
       else if (isThisWeek(match.startTime)) return 'isThisWeek'
@@ -158,21 +161,23 @@ class Matches extends React.Component {
     let filterResult = []
     if (value == 'lastWeek') {
       matches.forEach(el => {
-        console.log('see el', el)
         if (isLastWeek(el.startTime)) {
           filterResult.push(el)
+          // console.log('last week', filterResult)
         }
       })
     } else if (value == 'thisWeek') {
       matches.forEach(el => {
         if (isThisWeek(el.startTime)) {
           filterResult.push(el)
+          // console.log('this week', filterResult)
         }
       })
     } else if (value == 'nextWeek') {
       matches.forEach(el => {
         if (isNextWeek(el.startTime)) {
           filterResult.push(el)
+          // console.log('next week', filterResult)
         }
       })
     } else if (value == 'today') {
@@ -180,6 +185,7 @@ class Matches extends React.Component {
       matches.forEach(el => {
         if (isToday(el.startTime, el.endTime)) {
           filterResult.push(el)
+          // console.log('today', filterResult)
         }
       })
     } else if (value == 'tomorrow') {
@@ -187,6 +193,7 @@ class Matches extends React.Component {
       matches.forEach(el => {
         if (isTomorrow(el.startTime, el.endTime)) {
           filterResult.push(el)
+          // console.log('tomorrow', filterResult)
         }
       })
     } else if (value !== '') {
@@ -196,6 +203,7 @@ class Matches extends React.Component {
           const isSame = isSameDay(value, dt.startTime)
           if (isSame) {
             filterResult.push(dt)
+            // console.log('bydate', filterResult)
           }
         }
       })
@@ -252,84 +260,68 @@ class Matches extends React.Component {
         return matches
       }
     })
-    console.log('vidDt', filterResult)
+    // console.log('vidDt', filterResult)
     return filterResult
   }
-
-  //validation allleague
   handleFilterAllLeague = (value, matches) => {
-    const { data } = this.props.matches
-
+    const { data } = this.props.matches.matchesPlaylists
+    // for view all video from league
     let filterResult = []
     if (value !== 0) {
       data.forEach(dt => {
-        if (dt.league) {
-          filterResult.push(dt)
+        if (dt.id) {
+          const vidDt = dt.videos
+          for (let i = 0; i < vidDt.length; i++) {
+            filterResult.push(vidDt[i])
+          }
         }
       })
     } else {
       return matches
     }
-    // console.log('checking data all', filterResult)
     return filterResult
   }
 
   //start
   handleCategoryFilter = (category, value) => {
     let filterResult = []
-    let filterResultPlaylist = []
+    let filterLeagueRes = []
     let selectedVal = value
-    const { filterByDates, filterByType, filterByLeague, filterAllLeague } = this.state
+    const { filterByDates, filterByType, filterByLeague, filterAllLeague, allMatches } = this.state
 
     if (category == 'ThisWeek' || category == 'ByDate') {
       if (filterByDates == value) {
         selectedVal = ''
       }
-      filterResult = this.handleFilterByDate(selectedVal, this.props.matches.data)
-      filterResultPlaylist = this.handleFilterByDate(selectedVal, this.props.matches.matchesPlaylists.data)
-      console.log('ress filterResultPlaylist', filterResultPlaylist)
+      filterLeagueRes = this.handleFilterByLeague(filterByLeague, allMatches)
+      filterResult = this.handleFilterByDate(selectedVal, filterResult)
 
-      filterResult = this.handleFilterByType(filterByType, filterResult)
-      filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
-      filterResult = this.handleFilterAllLeague(filterAllLeague, filterResult)
+      // filterResult = this.handleFilterByType(filterByType, filterResult)
       filterResult = this.handleSortMatches(filterResult)
       this.setState({ matches: filterResult, filterByDates: selectedVal })
     }
 
-    if (category == 'VideoType') {
-      filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
-      if (filterByType == value) {
-        selectedVal = ''
-      }
-      filterResult = this.handleFilterByType(selectedVal, filterResult)
-      filterResult = this.handleFilterByLeague(filterByLeague, filterResult)
-      filterResult = this.handleSortMatches(filterResult)
-      this.setState({ matches: filterResult, filterByType: selectedVal })
-    }
-
     //League
     if (category == 'League') {
-      filterResult = this.handleFilterByDate(filterByDates, this.props.matches.data)
-      filterResult = this.handleFilterByType(filterByType, filterResult)
+      filterLeagueRes = this.handleFilterByLeague(selectedVal, allMatches)
+      filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
       if (filterByLeague == value) {
         selectedVal = 0
       }
-      filterResult = this.handleFilterByLeague(selectedVal, filterResult)
       filterResult = this.handleSortMatches(filterResult)
-      this.setState({ matches: filterResult, filterByLeague: selectedVal, resultPlaylists: filterResult })
+      this.setState({ allMatches: filterLeagueRes, matches: filterResult, filterByLeague: selectedVal })
     }
 
     // all
     if (category == 'All') {
+      filterLeagueRes = this.handleFilterAllLeague(selectedVal, allMatches)
+      filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
       if (filterAllLeague == value) {
         selectedVal = 0
       }
-      filterResult = this.handleFilterAllLeague(selectedVal, filterResult)
       filterResult = this.handleSortMatches(filterResult)
-      this.setState({ matches: filterResult, filterAllLeague: selectedVal })
+      this.setState({ allMatches: filterLeagueRes, matches: filterResult, filterAllLeague: selectedVal })
     }
-
-    //by7days
   }
 
   //expand This Week
@@ -349,6 +341,7 @@ class Matches extends React.Component {
 
   renderFilterByDate = () => {
     const { filterByDates } = this.state
+
     const weekList = [
       { id: 'lastWeek', title: 'Last Week' },
       { id: 'thisWeek', title: 'This Week' },
@@ -426,12 +419,6 @@ class Matches extends React.Component {
 
   ShowMatchCard = () => {
     const { matches } = this.state
-    const cobaData = this.props.matches
-    // const cobaData = this.props.matches
-    // const { matchesPlaylists } = this.state
-    // console.log('yaaa si matches ', matches)
-    // console.log('yaaa', cobaData)
-    // console.log('matchesPlaylists cobaaa', matchesPlaylists)
 
     if (matches == '') {
       return (
@@ -443,11 +430,9 @@ class Matches extends React.Component {
       return (
         <LazyLoad containerClassName={s.matchesCardList__container}>
           {matches.map((matchDt, index) => {
-            // console.log('matchDt', matchDt)
             if (index < this.state.limit.length) {
               return (
                 <>
-                  {/* <MatchCard key={matchDt.id} matchData={matchDt} /> */}
                   <MatchList key={matchDt.id} data={matchDt} />
                 </>
               )
@@ -461,8 +446,7 @@ class Matches extends React.Component {
   render() {
     const matchesList = this.props.matches
     const matchCardData = this.props.matches.data
-    // const testProps = this.props.matches.genreSpo
-    // console.log('testProps ind', testProps)
+    const matchPlaylists = this.props.matches.matchesPlaylists
 
     const isDark = false
     return (
@@ -501,11 +485,11 @@ class Matches extends React.Component {
                       allButtonOn
                       allCat
                     />
-                    <div className={s.match_ligaType}>
-                      {/* <span className={s.allFilterLabel}>{this.categoryFilterAll()}</span>
+                    {/* <div className={s.match_ligaType}> */}
+                    {/* <span className={s.allFilterLabel}>{this.categoryFilterAll()}</span>
                       {/* <span className={s.filLeague}>{this.categoryFilterLigaType()}</span>
         <span />*/}
-                    </div>
+                    {/* </div> */}
                     <div className={s.matches_grid}>
                       <span>{this.categoryFilter()}</span>
                       <span>
