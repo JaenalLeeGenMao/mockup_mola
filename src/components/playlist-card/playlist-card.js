@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 
+import { getContentTypeName } from '@source/lib/globalUtil'
+
 import { placeholderCardLandscape } from '@global/imageUrl'
 
-import { playlistContainer } from './style'
+import { playlistContainer, icons } from './style'
 
 class PlaylistCard extends Component {
   state = {
@@ -18,12 +20,31 @@ class PlaylistCard extends Component {
   }
 
   render() {
-    const { id, name, src, description, onClick = () => {}, containerClassName = '', className = '', transitionMode = 'scroll' } = this.props,
+    const { id, name, src, contentType = '', description, onClick = () => {}, containerClassName = '', className = '', transitionMode = 'scroll' } = this.props,
       { show } = this.state
+
+    const contentTypeName = getContentTypeName(contentType),
+      whitelistContentTypes = {
+        vod: 'VOD',
+        linear: 'TV',
+        live: 'LIVE',
+        replay: 'REPLAY',
+        trailers: 'TRAILERS',
+        'mola-featured': 'FEATURED',
+      }
+
     return (
       <div onClick={() => onClick()} className={`${playlistContainer} ${containerClassName}`}>
         <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardLandscape} />
-        <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
+        <div>
+          <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
+          {show &&
+            whitelistContentTypes[`${contentTypeName}`] && (
+              <div className={icons}>
+                <span className="playIcon">{/* {whitelistContentTypes[`${contentTypeName}`]} */}</span>
+              </div>
+            )}
+        </div>
         <p>{description}</p>
       </div>
     )
