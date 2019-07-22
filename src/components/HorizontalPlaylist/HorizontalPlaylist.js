@@ -51,20 +51,19 @@ class HorizontalPlaylist extends Component {
       <div className={s.match_ligaType}>
         {allCat.map(dt => {
           return (
-            <span
-              key={dt}
-              className={`${s.allFilterLabel} ${dt.id == filterAllLeague ? s.selectednameleague : s.nameleague}`}
-              // className={filterAllLeague == dt.id ? s.selectednameleague : s.nameleague}
-              onClick={() => {
-                handleFilterAllLeague('All', dt.id)
-              }}
-            >
-              All
+            <span className={s.filLeague} key={dt}>
+              <span
+                className={`${s.AllLeague} ${dt.id == filterAllLeague ? s.selectednameleague : s.nameleague}`}
+                onClick={() => {
+                  handleFilterAllLeague('All', dt.id)
+                }}
+              >
+                All
+              </span>
+              {this.categoryFilterLigaType()}
             </span>
           )
         })}
-        <span className={s.filLeague}>{this.categoryFilterLigaType()}</span>
-        <span />
       </div>
     )
   }
