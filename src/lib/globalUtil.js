@@ -72,6 +72,6 @@ export const getContentTypeName = contentTypeId => {
     case 10:
       return 'mola-categories' /* always playlists */
     default:
-      return 'vod'
+      return undefined
   }
 }
