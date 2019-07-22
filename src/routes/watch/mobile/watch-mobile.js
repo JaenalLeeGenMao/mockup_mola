@@ -141,7 +141,6 @@ class MovieDetail extends Component {
         isMatchPassed = true
       }
 
-      console.log('MASUKKK ct st', this.state.countDownStatus, dataFetched.contentType, dataFetched.startTime * 1000 > Date.now())
       const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
       if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={true} />

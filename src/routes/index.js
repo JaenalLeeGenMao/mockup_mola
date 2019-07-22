@@ -124,10 +124,10 @@ const routes = {
       path: '/history-transactions/:id',
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
-    {
-      path: '/sports',
-      load: () => import(/* webpackChunkName: 'sport' */ './sport'),
-    },
+    // {
+    //   path: '/sports',
+    //   load: () => import(/* webpackChunkName: 'sport' */ './sport'),
+    // },
     {
       path: '/switch-channels',
       load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
@@ -162,6 +162,10 @@ const routes = {
     {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch'),
+    },
+    {
+      path: '/watch-sport',
+      load: () => import(/* webpackChunkName: 'watch-sport' */ './watch-sport'),
     },
     {
       path: '/channels',
@@ -200,7 +204,7 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-    setTimeout(function () {
+    setTimeout(function() {
       if (typeof document !== 'undefined') {
         const pathRoute = route.chunks[0]
         if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
@@ -238,9 +242,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function (t) {
+      timer = setTimeout(function(t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)
@@ -335,20 +339,7 @@ const track = async store => {
     //tracker.sendPubSub(payload, token)
 
     const paths = pathname.split('/')
-    const lastPathIndex = paths.length - 1
-    if (pathname.includes('movie-detail')) {
-      // payload.data.video_id = paths[lastPathIndex]
-      // payload.table = 'event_videos'
-      if (token && !inSearchPage) {
-        const payload = {
-          window,
-          videoId: paths.length > 2 ? paths[2] : '',
-          user: user,
-          event: 'event_videos',
-        }
-        globalTracker(payload)
-      } //tracker.sendPubSub(payload, token)
-    } else if (pathname.includes('watch')) {
+    if (pathname.includes('watch')) {
       // payload.data.video_id = urlParams.v
       // payload.table = 'event_videos'
       if (token && !inSearchPage) {
