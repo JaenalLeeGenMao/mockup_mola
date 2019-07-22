@@ -132,7 +132,7 @@ class Watch extends Component {
       if (!isSafari) {
         const domain = config.endpoints.domain
         const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
-        document.location = `molaapp://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+        document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
       }
     }
   }
