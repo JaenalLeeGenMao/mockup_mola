@@ -42,11 +42,11 @@ class BannerCarousel extends Component {
     const isMobile = Boolean(this.state.viewportWidth <= 800)
     return (
       <Carousel
-        // ref={c => {
-        //   if (c !== null && this.props.refs) {
-        //     this.props.refs.push(c)
-        //   }
-        // }}
+        ref={c => {
+          if (c !== null && c.onResize) {
+            c.onResize()
+          }
+        }}
         autoGenerateStyleTag={false} /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
