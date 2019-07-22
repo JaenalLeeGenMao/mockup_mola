@@ -204,7 +204,7 @@ class MovieDetail extends Component {
       // console.log('appPackage', appPackage)
       const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
       // document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
-      document.location = `molaapp://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+      document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
     }
   }
 
