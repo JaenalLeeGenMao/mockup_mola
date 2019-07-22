@@ -1,7 +1,6 @@
 import React from 'react'
 import MolaLayout from '@components/Molalayout'
-import PlaylistDesktop from './desktop'
-import PlaylistMobile from './mobile'
+import PlaylistDesktop from './playlist'
 
 const title = 'Playlist Page'
 const description = 'This is playlist page'
@@ -13,11 +12,7 @@ function action({ isMobile, store, pathname }) {
     chunks: ['playlist'],
     title,
     description,
-    component: isMobile ? (
-      <MolaLayout>
-        <PlaylistMobile {...store} playlistId={playlistId} />
-      </MolaLayout>
-    ) : (
+    component: (
       <MolaLayout>
         <PlaylistDesktop playlistId={playlistId} title={title} />
       </MolaLayout>

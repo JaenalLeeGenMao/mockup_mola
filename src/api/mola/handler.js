@@ -352,6 +352,73 @@ const getHomeVideo = ({ id }) => {
     })
 }
 
+const getPlaylistVideo = ({ id }) => {
+  // console.log('ID', id)
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeHomeVideo(response)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Video')
+      return {
+        meta: {
+          status,
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getPlaylistPlaylists = id => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      console.log(response)
+      const result = utils.normalizeHomePlaylist(response)
+      let background = ''
+      let title = ''
+      let description = ''
+      try {
+        background = response.data.data[0].attributes.images.cover.background.landscape
+        title = response.data.data[0].attributes.title
+        description = response.data.data[0].attributes.description
+      } catch (error) {
+        console.log(error)
+      }
+      return {
+        background,
+        title,
+        description,
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 const getSportVideo = ({ id }) => {
   // console.log('id', id)
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
@@ -925,4 +992,6 @@ export default {
   getChannelsList,
   getProgrammeGuides,
   getHeaderMenu,
+  getPlaylistVideo,
+  getPlaylistPlaylists,
 }
