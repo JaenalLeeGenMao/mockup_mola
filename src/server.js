@@ -56,6 +56,8 @@ const oauth = {
     'https://api.supersoccer.tv/orders/orders.read',
     'paymentmethods:read.internal',
     'payments:payment.dopay',
+    'userdata:preference.read',
+    'userdata:preference.insert',
   ].join(' '),
 }
 
@@ -71,6 +73,8 @@ const oauthApp = {
     'https://api.supersoccer.tv/orders/orders.read',
     'paymentmethods:read.internal',
     'payments:payment.dopay',
+    'userdata:preference.read',
+    'userdata:preference.insert',
   ].join(' '),
 }
 
@@ -330,6 +334,8 @@ const requestCode = async (req, res) => {
         'https://api.supersoccer.tv/orders/orders.read',
         'paymentmethods:read.internal',
         'payments:payment.dopay',
+        'userdata:preference.read',
+        'userdata:preference.insert',
       ].join(' '),
       state: randomState,
     })
