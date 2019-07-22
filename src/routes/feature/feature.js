@@ -23,7 +23,6 @@ class Feature extends Component {
     super(props)
     this.state = {
       viewportWidth: 0,
-      // carouselRefs: [],
     }
   }
 
@@ -83,18 +82,17 @@ class Feature extends Component {
   /* Dynamically re-adjust carousel */
   // updateOnImageLoad = () => {
   //   const { carouselRefs } = this.state
-  // if (carouselRefs.length > 0) {
-  //   carouselRefs.map(ref => {
-  //     if (ref && ref.onResize) {
-  //       ref.onResize()
-  //     }
-  //   })
-  // }
+  //   if (carouselRefs.length > 0) {
+  //     carouselRefs.map(ref => {
+  //       if (ref && ref.onResize) {
+  //         ref.onResize()
+  //       }
+  //     })
+  //   }
   // }
 
   render() {
     const isMobile = this.state.viewportWidth <= 680,
-      { carouselRefs } = this.state,
       { feature: { playlists, videos, banners } } = this.props
 
     const isLoading = playlists.meta.status === 'loading' || banners.meta.status === 'loading',
@@ -114,13 +112,10 @@ class Feature extends Component {
       <>
         {isLoading && <Placeholder isMobile={isMobile} />}
         {isError && <FeatureError status={errorObj.code} message={errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />}
-        {isSuccess &&
-          playlists.data.length > 0 &&
-          videos.data.length > 0 &&
-          banners.data.length > 0 &&
-          playlists.data.length === videos.data.length && (
-            <>
-              <Carousel refs={carouselRefs} wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
+        {isSuccess && (
+          <>
+            {banners.data.length > 0 && (
+              <Carousel wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
                 {banners.data.map(obj => (
                   <PlaylistCard
                     transitionMode={'scroll3d'}
@@ -133,15 +128,18 @@ class Feature extends Component {
                   />
                 ))}
               </Carousel>
-              <LazyLoad containerClassName={container}>
-                {videos.data.map((video, carouselIndex) => {
+            )}
+            <LazyLoad containerClassName={container}>
+              {playlists.data.length > 0 &&
+                videos.data.length > 0 &&
+                playlists.data.length === videos.data.length &&
+                videos.data.map((video, carouselIndex) => {
                   const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].contentType`, ''))
 
                   return (
                     <div key={carouselIndex}>
                       {video.data.length > 0 && <h3>{video.meta.title}</h3>}
                       <Carousel
-                        // refs={carouselRefs}
                         className={carouselMargin}
                         wrap={false}
                         autoplay={false}
@@ -154,14 +152,13 @@ class Feature extends Component {
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {
-                            console.log(obj)
                             if (contentTypeName === 'movie') {
                               return (
                                 <VideoCard
                                   key={obj.id}
                                   alt={obj.title}
                                   description={obj.title}
-                                  src={obj.background.portrait}
+                                  src={obj.type === 'playlists' ? obj.images.cover.portrait : obj.background.portrait}
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => this.handleOnClick(obj)}
                                 />
@@ -183,9 +180,9 @@ class Feature extends Component {
                     </div>
                   )
                 })}
-              </LazyLoad>
-            </>
-          )}
+            </LazyLoad>
+          </>
+        )}
       </>
     )
   }

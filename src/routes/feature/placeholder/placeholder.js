@@ -12,7 +12,6 @@ class Placeholder extends Component {
     super(props)
     this.state = {
       viewportWidth: 0,
-      // carouselRefs: [],
     }
   }
 
