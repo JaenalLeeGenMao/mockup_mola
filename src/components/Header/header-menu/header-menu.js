@@ -70,9 +70,8 @@ class HeaderMenu extends Component {
   }
 
   getHeaderMenus = () => {
+    // link w/ libraries
     get('https://mola01.koicdn.com/dev/json/menu-stag.json').then(({ data }) => {
-      // link lama
-      // http://mola01.koicdn.com/dev/json/menu.json
       this.setState({ headerMenuList: data ? data.data : [] })
     })
   }

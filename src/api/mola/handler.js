@@ -180,7 +180,8 @@ const getFeatureBanner = ({ id = '' }) => {
     })
 }
 
-const getGenreMatches = (id = 'genre-spo') => {
+const getAllGenreSpo = (id = 'leagues') => {
+  // link lama: genre-spo change into leagues
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
   })
@@ -283,6 +284,37 @@ const getMatchDetail = id => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+const getMatchesPlaylists = id => {
+  return post(
+    `${HOME_PLAYLIST_ENDPOINT}`,
+    {
+      playlists: id,
+    },
+    {
+      ...endpoints.setting,
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeMatchPlaylists(response)
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: result || null,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error: Mola Genre Category')
       return {
         meta: {
           status: 'error',
@@ -886,7 +918,8 @@ export default {
   getOrderHistoryTransactions,
   getSportList,
   getSportVideo,
-  getGenreMatches,
+  getAllGenreSpo,
+  getMatchesPlaylists,
   getMatchesList,
   getMatchDetail,
   getChannelsList,

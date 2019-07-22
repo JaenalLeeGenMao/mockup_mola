@@ -71,6 +71,53 @@ const normalizeMatchesList = response => {
   }
   return []
 }
+const normalizeMatchPlaylists = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    let videoData = []
+    let Obj = []
+    const playlistData = data.map(({ id, attributes: { title, videos } }) => {
+      videoData =
+        videos &&
+        videos.map(video => {
+          const { id, attributes: { title, type, description, streamSourceUrl, shortDescription, isDark, iconUrl, sortOrder, startTime, endTime, homeTeam, awayTeam }, images } = video
+          return {
+            id,
+            type,
+            title,
+            description,
+            streamSourceUrl,
+            shortDescription: shortDescription || '',
+            sortOrder,
+            iconUrl: iconUrl || '',
+            isDark: isDark || 0,
+            isActive: false,
+            images,
+            startTime,
+            endTime,
+            homeTeam,
+            awayTeam,
+          }
+        })
+
+      if (videoData && videoData.length > 0) {
+        return {
+          id,
+          title,
+          videos: videoData,
+        }
+      }
+    })
+    for (let i = 0; i < playlistData.length; i++) {
+      if (playlistData[i] !== undefined && playlistData[i] !== null) {
+        let playlistsTemp = playlistData[i]
+        Obj.push(playlistsTemp)
+      }
+    }
+    return Obj
+  }
+  return []
+}
 
 const normalizeMatchDetail = response => {
   const { data } = response.data
@@ -583,4 +630,5 @@ export default {
   normalizeChannelPlaylist,
   normalizeProgrammeGuides,
   normalizeRecommendation,
+  normalizeMatchPlaylists,
 }
