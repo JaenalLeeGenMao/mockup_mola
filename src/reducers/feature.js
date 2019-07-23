@@ -20,6 +20,12 @@ const initialState = {
     },
     data: [],
   },
+  articles: {
+    meta: {
+      status: 'loading',
+    },
+    data: [],
+  },
 }
 
 export default function home(state = initialState, action) {
@@ -66,6 +72,12 @@ export default function home(state = initialState, action) {
       return { ...state, banners: { ...action.payload } }
     case types.GET_FEATURE_BANNER_ERROR:
       return { ...state, banners: { ...action.payload } }
+    case types.GET_FEATURE_ARTICLE_LOADING:
+      return { ...state, articles: { ...action.payload } }
+    case types.GET_FEATURE_ARTICLE_SUCCESS:
+      return { ...state, articles: { ...action.payload } }
+    case types.GET_FEATURE_ARTICLE_ERROR:
+      return { ...state, articles: { ...action.payload } }
     default:
       return {
         ...initialState,

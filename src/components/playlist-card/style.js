@@ -41,6 +41,10 @@ export const playlistContainer = css`
     z-index: 1;
   }
 
+  .imageWrapper {
+    position: relative;
+  }
+
   .bannerImage.hide {
     position: absolute;
     z-index: 0;

@@ -15,6 +15,7 @@ import {
   PROGRAMME_GUIDES,
   RECOMMENDATION,
   HEADERMENU,
+  ARTICLES_RECOMMENDED_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 import dummy from './test'
@@ -896,6 +897,45 @@ const getHeaderMenu = () => {
     })
 }
 
+const getRecommendedArticles = articlesId => {
+  return get(`${ARTICLES_RECOMMENDED_ENDPOINT}/${articlesId}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const data = _.get(response, 'data.data', {}),
+        title = _.get(data, 'attributes.title', ''),
+        articles = _.get(data, 'attributes.articles', [])
+
+      const articlesFiltered =
+        articles.length > 0
+          ? articles.map(article => ({
+              id: article.id,
+              type: article.type,
+              ...article.attributes,
+            }))
+          : []
+
+      return {
+        meta: {
+          status: articlesFiltered.length > 0 ? 'success' : 'no_result',
+          title,
+          error: '',
+        },
+        data: articlesFiltered,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Articles')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getFeaturePlaylist,
@@ -925,4 +965,5 @@ export default {
   getChannelsList,
   getProgrammeGuides,
   getHeaderMenu,
+  getRecommendedArticles,
 }

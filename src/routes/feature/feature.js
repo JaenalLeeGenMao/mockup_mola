@@ -34,6 +34,7 @@ class Feature extends Component {
 
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
+      this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -199,6 +200,7 @@ const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
   onHandleVideo: playlist => dispatch(featureActions.getFeatureVideo(playlist)),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
+  onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feature)
