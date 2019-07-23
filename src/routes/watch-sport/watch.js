@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
+import { get } from 'axios'
 
 import { notificationBarBackground } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
@@ -27,6 +28,8 @@ class Watch extends Component {
     movieDetail: [],
     countDownStatus: true,
     toggleInfoBar: true,
+    android_redirect_to_app: false,
+    ios_redirect_to_app: false,
   }
 
   updateMetaTag() {
@@ -106,10 +109,24 @@ class Watch extends Component {
     return myTheoPlayer
   }
 
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      console.log('result', result)
+      if (result.data) {
+        const { android_redirect_to_app, ios_redirect_to_app } = result.data.data.attributes
+        this.setState({
+          android_redirect_to_app: android_redirect_to_app,
+          ios_redirect_to_app: ios_redirect_to_app,
+        })
+      }
+    })
+  }
+
   componentDidMount() {
     const { getMovieDetail, videoId, getVUID, user } = this.props
 
     getMovieDetail(videoId)
+    this.getConfig()
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
@@ -140,6 +157,7 @@ class Watch extends Component {
   renderVideo = () => {
     const { user, getMovieDetail, videoId, isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
+    const { android_redirect_to_app, ios_redirect_to_app } = this.state
 
     if (status === 'success' && data.length > 0) {
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -163,13 +181,32 @@ class Watch extends Component {
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
       } else if (data[0].streamSourceUrl) {
-        if (isMobile && !isApple) {
-          return (
-            <div className={styles.poster__wrapper}>
-              <img src={poster} />
-              <span className={styles.play_icon} onClick={this.handlePlayMovie} />
-            </div>
-          )
+        if (isMobile) {
+          if (isApple) {
+            //ios
+            if (ios_redirect_to_app) {
+              return (
+                <div className={styles.poster__wrapper}>
+                  <img src={poster} />
+                  <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                </div>
+              )
+            } else {
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+            }
+          } else {
+            //android
+            if (android_redirect_to_app) {
+              return (
+                <div className={styles.poster__wrapper}>
+                  <img src={poster} />
+                  <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                </div>
+              )
+            } else {
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+            }
+          }
         } else {
           return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
         }
@@ -184,7 +221,7 @@ class Watch extends Component {
   }
 
   render() {
-    const { isMobile, runtime: { appUrl } } = this.props
+    const { isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
