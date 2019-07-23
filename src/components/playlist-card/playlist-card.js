@@ -25,18 +25,19 @@ class PlaylistCard extends Component {
 
     const contentTypeName = getContentTypeName(contentType),
       whitelistContentTypes = {
-        vod: 'VOD',
-        linear: 'TV',
-        live: 'LIVE',
-        replay: 'REPLAY',
-        trailers: 'TRAILERS',
-        'mola-featured': 'FEATURED',
+        vod: 'VOD' /** videos */,
+        linear: 'TV' /** channels */,
+        live: 'LIVE' /** matches */,
+        replay: 'REPLAY' /** matches */,
+        trailers: 'TRAILERS' /** videos */,
+        'mola-featured': 'FEATURED' /** videos */,
+        articles: 'ARTICLES' /** videos */,
       }
 
     return (
       <div onClick={() => onClick()} className={`${playlistContainer} ${containerClassName}`}>
         <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardLandscape} />
-        <div>
+        <div className="imageWrapper">
           <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
           {show &&
             whitelistContentTypes[`${contentTypeName}`] && (
