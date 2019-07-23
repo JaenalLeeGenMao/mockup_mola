@@ -30,6 +30,8 @@ class Watch extends Component {
     toggleInfoBar: true,
     android_redirect_to_app: false,
     ios_redirect_to_app: false,
+    notice_bar_enabled: true,
+    notice_bar_message: 'Siaran Percobaan',
   }
 
   updateMetaTag() {
@@ -113,10 +115,13 @@ class Watch extends Component {
     await get('/api/v2/config/app-params').then(result => {
       console.log('result', result)
       if (result.data) {
-        const { android_redirect_to_app, ios_redirect_to_app } = result.data.data.attributes
+        const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
         this.setState({
-          android_redirect_to_app: android_redirect_to_app,
-          ios_redirect_to_app: ios_redirect_to_app,
+          android_redirect_to_app,
+          ios_redirect_to_app,
+          notice_bar_enabled,
+          toggleInfoBar: notice_bar_enabled,
+          notice_bar_message,
         })
       }
     })
@@ -236,7 +241,7 @@ class Watch extends Component {
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
-    const { toggleInfoBar } = this.state
+    const { toggleInfoBar, notice_bar_message } = this.state
     let isMatchPassed = false
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
@@ -258,7 +263,7 @@ class Watch extends Component {
                   !isMatchPassed && (
                     <div className={styles.info_bar}>
                       <div className={styles.info_bar__container}>
-                        <div className={styles.info_bar__text}>Siaran Percobaan</div>
+                        <div className={styles.info_bar__text}>{notice_bar_message}</div>
                         <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
                           <span />
                         </div>
