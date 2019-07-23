@@ -116,8 +116,41 @@ const getFeatureBanner = pathname => dispatch => {
   })
 }
 
+const getFeatureArticle = id => dispatch => {
+  dispatch({
+    type: types.GET_FEATURE_ARTICLE_LOADING,
+    payload: {
+      meta: {
+        status: 'loading',
+        error: '',
+      },
+      data: [],
+    },
+  })
+  return Mola.getRecommendedArticles(id).then(result => {
+    if (result.meta.status === 'error') {
+      dispatch({
+        type: types.GET_FEATURE_ARTICLE_ERROR,
+        payload: {
+          meta: {
+            status: 'error',
+            error: 'Error: feature articles failed',
+          },
+          data: [],
+        },
+      })
+    } else {
+      dispatch({
+        type: types.GET_FEATURE_ARTICLE_SUCCESS,
+        payload: result,
+      })
+    }
+  })
+}
+
 export default {
   getFeaturePlaylist,
   getFeatureVideo,
   getFeatureBanner,
+  getFeatureArticle,
 }
