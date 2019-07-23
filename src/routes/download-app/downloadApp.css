@@ -1,7 +1,7 @@
 .container__mobile {
   background: #000311;
   color: #fff;
-  height: 100vh;
+  height: 90vh;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -54,7 +54,10 @@
   font-size: 28px;
   text-align: center;
   line-height: 1.35;
-  text-transform: uppercase;
+}
+
+.title__text__small {
+  font-size: 25px;
 }
 
 .detail__desc {
