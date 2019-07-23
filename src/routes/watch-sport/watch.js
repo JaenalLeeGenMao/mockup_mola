@@ -145,15 +145,20 @@ class Watch extends Component {
   }
 
   handlePlayMovie = () => {
-    const { isMobile, videoId, runtime: { appPackage } } = this.props
-    if (isMobile) {
-      const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-      if (!isSafari) {
-        const domain = config.endpoints.domain
-        const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
-        document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
-      }
-    }
+    const { videoId } = this.props
+    const domain = config.endpoints.domain
+    const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
+    document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+  }
+
+  handlePlayMovieApple = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    setTimeout(function() {
+      window.location.href = url
+    }, 250)
   }
 
   renderVideo = () => {
@@ -190,7 +195,7 @@ class Watch extends Component {
               return (
                 <div className={styles.poster__wrapper}>
                   <img src={poster} />
-                  <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                  <span className={styles.play_icon} onClick={this.handlePlayMovieApple} />
                 </div>
               )
             } else {

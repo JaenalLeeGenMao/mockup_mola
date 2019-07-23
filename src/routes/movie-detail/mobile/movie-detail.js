@@ -142,7 +142,6 @@ class MovieDetail extends Component {
 
   getConfig = async () => {
     await get('/api/v2/config/app-params').then(result => {
-      console.log('result', result)
       if (result.data) {
         const { android_redirect_to_app, ios_redirect_to_app } = result.data.data.attributes
         this.setState({
@@ -215,9 +214,18 @@ class MovieDetail extends Component {
   handlePlayMovie = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    // console.log('appPackage', appPackage)
     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
     document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+  }
+
+  handlePlayMovieApple = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    setTimeout(function() {
+      window.location.href = url
+    }, 250)
   }
 
   renderVideo = (poster, videoSettings) => {
@@ -229,7 +237,7 @@ class MovieDetail extends Component {
         return (
           <div className={posterWrapper}>
             <img src={poster} />
-            <span className={playIcon} onClick={this.handlePlayMovie} />
+            <span className={playIcon} onClick={this.handlePlayMovieApple} />
           </div>
         )
       } else {
