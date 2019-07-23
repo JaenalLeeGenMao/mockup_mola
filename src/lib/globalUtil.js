@@ -23,24 +23,24 @@
  */
 export const setMultilineEllipsis = className => {
   const dataArray = document.getElementsByClassName(className)
-    ;[].forEach.call(dataArray, function (el) {
-      let wordArray = el.innerHTML.split(' ')
-      while (el.scrollHeight > el.offsetHeight) {
-        if (wordArray.length > 1) {
-          wordArray.pop()
-        } else {
-          return
-        }
-        el.innerHTML = `${wordArray.join(' ')}...`
+  ;[].forEach.call(dataArray, function(el) {
+    let wordArray = el.innerHTML.split(' ')
+    while (el.scrollHeight > el.offsetHeight) {
+      if (wordArray.length > 1) {
+        wordArray.pop()
+      } else {
+        return
       }
-    })
+      el.innerHTML = `${wordArray.join(' ')}...`
+    }
+  })
 }
 
 export const unsetMultilineEllipsis = (className, text) => {
   const dataArray = document.getElementsByClassName(className)
-    ;[].forEach.call(dataArray, function (el) {
-      el.innerHTML = text
-    })
+  ;[].forEach.call(dataArray, function(el) {
+    el.innerHTML = text
+  })
 }
 
 export const isMovie = contentType => {
