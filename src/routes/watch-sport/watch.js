@@ -151,6 +151,16 @@ class Watch extends Component {
     document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
+  handlePlayMovieApple = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    setTimeout(function() {
+      window.location.href = url
+    }, 250)
+  }
+
   renderVideo = () => {
     const { user, getMovieDetail, videoId, isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -185,7 +195,7 @@ class Watch extends Component {
               return (
                 <div className={styles.poster__wrapper}>
                   <img src={poster} />
-                  <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                  <span className={styles.play_icon} onClick={this.handlePlayMovieApple} />
                 </div>
               )
             } else {
