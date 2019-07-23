@@ -16,6 +16,7 @@ import vuid from './vuid'
 import channelsPlaylist from './channels-playlist'
 import programmeGuides from './program-guides'
 import feature from './feature'
+import playlist from './playlist'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -38,4 +39,5 @@ export default combineReducers({
   channelsPlaylist,
   programmeGuides,
   feature,
+  playlist,
 })

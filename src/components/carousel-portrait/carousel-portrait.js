@@ -42,6 +42,12 @@ class BannerCarousel extends Component {
     const isMobile = Boolean(this.state.viewportWidth <= 800)
     return (
       <Carousel
+        ref={c => {
+          if (c !== null && c.onResize) {
+            c.onResize()
+          }
+        }}
+        autoGenerateStyleTag={false} /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         initialSlideHeight={this.props.initialSlideHeight}
         initialSlideWidth={this.props.initialSlideWidth}
@@ -53,7 +59,8 @@ class BannerCarousel extends Component {
         slideWidth={this.props.slideWidth}
         wrapAround={this.props.wrap}
         cellAlign={this.props.cellAlign}
-        slidesToScroll={3}
+        slidesToScroll={this.props.slidesToScroll}
+        withoutControls={this.props.withoutControls}
         slidesToShow={this.props.slidesToShow}
         dragging={this.props.dragging}
         cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
@@ -75,13 +82,17 @@ class BannerCarousel extends Component {
         }}
         renderCenterRightControls={({ nextSlide, slideCount, currentSlide }) => {
           const newVal = slideCount - (this.props.slidesToShow || 1)
-          return (
-            <LazyLoad>
-              <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : arrowButtons}>
-                {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
-              </button>
-            </LazyLoad>
-          )
+          if (this.props.hideNextIcon) {
+            return false
+          } else {
+            return (
+              <LazyLoad>
+                <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : arrowButtons}>
+                  {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
+                </button>
+              </LazyLoad>
+            )
+          }
         }}
       >
         {this.props.children}
