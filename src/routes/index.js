@@ -28,10 +28,14 @@ const routes = {
 
   // Keep in mind, routes are evaluated in order
   children: [
-    // {
-    //   path: '/privacy',
-    //   load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    // },
+    {
+      path: '',
+      load: () => import(/* webpackChunkName: 'home' */ './home'),
+    },
+    {
+      path: '/privacy',
+      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+    },
     // Movie details
     {
       path: '/movie-detail',
@@ -120,10 +124,10 @@ const routes = {
       path: '/history-transactions/:id',
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
-    {
-      path: '/sports',
-      load: () => import(/* webpackChunkName: 'sport' */ './sport'),
-    },
+    // {
+    //   path: '/sports',
+    //   load: () => import(/* webpackChunkName: 'sport' */ './sport'),
+    // },
     {
       path: '/switch-channels',
       load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
@@ -131,6 +135,15 @@ const routes = {
     {
       path: '/matches',
       load: () => import(/* webpackChunkName: 'matches' */ './matches'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
+    },
+    {
+      path: '/download-app',
+      load: () => import(/* webpackChunkName: 'download-app' */ './download-app'),
       children: [
         {
           path: '/:id',
@@ -148,7 +161,11 @@ const routes = {
     },
     {
       path: '/watch',
-      load: () => import(/* webpackChunkName: 'watch' */ './watch-sport'),
+      load: () => import(/* webpackChunkName: 'watch' */ './watch'),
+    },
+    {
+      path: '/watch-sport',
+      load: () => import(/* webpackChunkName: 'watch-sport' */ './watch-sport'),
     },
     {
       path: '/channels',
@@ -169,8 +186,8 @@ const routes = {
       ],
     },
     {
-      path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
+      path: '/live-support',
+      load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
@@ -187,7 +204,29 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-
+    setTimeout(function() {
+      if (typeof document !== 'undefined') {
+        const pathRoute = route.chunks[0]
+        if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
+          if (pathRoute === 'home' || pathRoute === 'sport') {
+            document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+          } else {
+            if (pathRoute === 'live-support') {
+              if (window.App.isMobile) {
+                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+                let _el = document.getElementsByClassName('helpButton')[0]
+                _el.style.left = '44.5vw'
+                _el.style.right = '-50vw'
+                _el.style.top = '50vh'
+                _el.style.visibility = 'visible'
+              }
+            } else {
+              document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+            }
+          }
+        }
+      }
+    }, 3000)
     // Provide default values for title, description etc.
     route.title = `${route.title || 'Untitled Page'}`
     route.description = route.description || ''
@@ -300,20 +339,7 @@ const track = async store => {
     //tracker.sendPubSub(payload, token)
 
     const paths = pathname.split('/')
-    const lastPathIndex = paths.length - 1
-    if (pathname.includes('movie-detail')) {
-      // payload.data.video_id = paths[lastPathIndex]
-      // payload.table = 'event_videos'
-      if (token && !inSearchPage) {
-        const payload = {
-          window,
-          videoId: paths.length > 2 ? paths[2] : '',
-          user: user,
-          event: 'event_videos',
-        }
-        globalTracker(payload)
-      } //tracker.sendPubSub(payload, token)
-    } else if (pathname.includes('watch')) {
+    if (pathname.includes('watch')) {
       // payload.data.video_id = urlParams.v
       // payload.table = 'event_videos'
       if (token && !inSearchPage) {

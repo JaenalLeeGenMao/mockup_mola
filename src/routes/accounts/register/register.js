@@ -19,13 +19,77 @@ import styles from './register.css'
 
 const { getComponent } = require('@supersoccer/gandalf')
 const TextInput = getComponent('text-input')
+import { genderOptions } from '../profile/content/profile/const'
+import Select from 'react-select'
+import s from '../profile/content/profile/profile.css'
 
 const countDownTime = 60
+
+const FormContent = ({ id, label, value, type = 'password', disabled, onChange, options, error }) => {
+  const colourStyles = {
+    control: (base, state) => ({
+      ...base,
+      padding: '0.25rem',
+      marginBottom: '1rem',
+      background: '#FFFFFF',
+      // match with the menu
+      borderRadius: '.4rem',
+      // Overwrittes the different states of border
+      borderColor: state.isFocused ? '#343434' : '#343434',
+      // Removes weird border around container
+      boxShadow: state.isFocused ? null : null,
+      '&:hover': {
+        // Overwrittes the different states of border
+        borderColor: state.isFocused ? '#343434' : '#343434',
+      },
+    }),
+    menu: base => ({
+      ...base,
+      marginTop: 0,
+      background: '#343434',
+    }),
+    menuList: base => ({
+      ...base,
+      // kill the white space on first and last option
+      fontSize: '1.2rem',
+      padding: 0,
+    }),
+    placeholder: styles => ({ ...styles, color: '#3333333' }),
+    singleValue: (styles, { data }) => ({ ...styles, color: '#333333' }),
+  }
+
+  return (
+    <div className={s.profile_form_wrapper}>
+      <label htmlFor={id}>{label}</label>
+      {type === 'select' ? (
+        <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
+      ) : (
+        <div className={`${s.profile_form_input_wrapper} ${disabled ? s.disabled : ''}`}>
+          <div>{error && <p className={s.profile_form_input_wrapper_error}>{error}</p>}</div>
+          <input
+            errorClassName={s.profile_form_input_wrapper_error}
+            isError={error !== ''}
+            type={type}
+            id={id}
+            onChange={onChange}
+            onClick={e => e.target.focus()}
+            value={value}
+            className={disabled ? s.disabled : ''}
+            disabled={disabled}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
 
 class Register extends Component {
   state = {
     username: '',
     email: '',
+    birthdate: '',
+    gender: '',
+    phone: '',
     password: '',
     confirmPassword: '',
     token: '',
@@ -49,28 +113,75 @@ class Register extends Component {
   handleInputChange = e => {
     const target = e.target
     const { id, value } = target
-    this.setState({
-      [id]: value,
-    })
+
+    if (id === 'phone') {
+      this.setState({
+        [id]: value.replace(/^(\+?628|08)/, '628'),
+      })
+    } else {
+      this.setState({
+        [id]: value,
+      })
+    }
+  }
+
+  validateEmail = email => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(email).toLowerCase())
+  }
+
+  validatePhone = phone => {
+    var pe = /^62[0-9]{6,16}$/
+    return pe.test(phone)
   }
 
   handleRegister = async () => {
-    const { email, password, confirmPassword, locale } = this.state,
+    const { email, password, confirmPassword, birthdate, gender, phone, locale } = this.state,
       { runtime: { csrf } } = this.props
 
-    if (password != confirmPassword) {
+    if (email == '') {
+      this.setState({
+        error: locale['error_input_email'],
+      })
+    } else if (email && !this.validateEmail(email)) {
+      this.setState({
+        error: locale['error_valid_email'],
+      })
+    } else if (password != confirmPassword) {
       this.setState({
         error: locale['error_input'],
+      })
+    } else if (password == '' || !password) {
+      this.setState({
+        error: locale['error_input_password'],
+      })
+    } else if (gender === '') {
+      this.setState({
+        error: locale['error_gender'],
+      })
+    } else if (birthdate == '' || !birthdate) {
+      this.setState({
+        error: locale['error_date'],
+      })
+    } else if (phone && !this.validatePhone(phone)) {
+      this.setState({
+        // phone: phone.replace(/^(\+?628|08)/, '628'),
+        error: locale['error_phone'],
       })
     } else {
       this.setState({
         error: '',
       })
-      const result = await Auth.createNewUser({
+      const payload = {
         email,
         password,
+        birthdate,
+        gender,
+        phone,
         csrf,
-      })
+      }
+      const result = await Auth.createNewUser(payload)
+      // console.log('ini user', result)
       if (result.meta.status === 'success') {
         this.setState({
           error: '',
@@ -82,6 +193,10 @@ class Register extends Component {
             this.setState({
               error: '',
               isInVerified: true,
+            })
+          } else if (result.meta.error.error === 'account_registered') {
+            this.setState({
+              error: 'email has been registered',
             })
           } else {
             this.setState({
@@ -201,8 +316,24 @@ class Register extends Component {
     )
   }
 
+  getGenderText = gender => {
+    switch (gender) {
+      case 'm':
+        return 'Pria'
+      case 'f':
+        return 'Wanita'
+      default:
+        return 'Jenis Kelamin'
+    }
+  }
+
+  onChangeSelect = selectedOption => {
+    this.setState({ [selectedOption.id]: selectedOption.value })
+    // console.log('Option selected:', selectedOption)
+  }
+
   renderRegistration() {
-    const { locale, username, email, password, confirmPassword, error } = this.state
+    const { locale, username, birthdate, gender, phone, email, password, confirmPassword, error } = this.state
 
     return (
       <div id="main_form" className={styles.register__content_form}>
@@ -254,6 +385,40 @@ class Register extends Component {
           errorClassName={styles.register__content_input_error}
           placeholder={`${locale['confirm']} Password`}
           type="password"
+          onKeyUp={this.handleKeyUp}
+        />
+        <FormContent
+          errorClassName={styles.register__content_input_error}
+          type="select"
+          id="gender"
+          isError={error !== ''}
+          value={{ label: this.getGenderText(gender), value: gender }}
+          onChange={this.onChangeSelect}
+          options={genderOptions}
+        />
+        <TextInput
+          id="birthdate"
+          name="birthdate"
+          onChange={this.handleInputChange}
+          value={birthdate}
+          className={styles.register__content_input}
+          isError={error !== ''}
+          errorClassName={styles.register__content_input_error}
+          placeholder="Tanggal Lahir"
+          label="Tanggal Lahir"
+          type="date"
+          onKeyUp={this.handleKeyUp}
+        />
+        <TextInput
+          id="phone"
+          name="phone"
+          onChange={this.handleInputChange}
+          value={phone}
+          className={styles.register__content_input}
+          isError={error !== ''}
+          errorClassName={styles.register__content_input_error}
+          placeholder="Nomor Telepon"
+          type="text"
           onKeyUp={this.handleKeyUp}
         />
         <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>

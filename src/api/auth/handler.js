@@ -1,32 +1,36 @@
 import { post, patch, get } from 'axios'
 import { AUTH_BASE_ENDPOINT } from './endpoints'
+import submitForm from 'submit-form'
 import config from '@source/config'
 
-// const createNewUser = ({ email = '', password = '', csrf = '' }) => {
-//   const body = { email, password }
-//   return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, body, {
-//     headers: {
-//       'x-csrf-token': csrf,
-//     },
-//   })
-//     .then(response => {
-//       return {
-//         meta: {
-//           status: 'success',
-//         },
-//         data: response.data,
-//       }
-//     })
-//     .catch(error => {
-//       return {
-//         meta: {
-//           status: 'error',
-//           error,
-//         },
-//         data: {},
-//       }
-//     })
-// }
+const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', gender = '', phone = '' }) => {
+  const body = { email, password, birthdate, gender }
+  if (phone) {
+    body.phone = phone
+  }
+  return post(`${AUTH_BASE_ENDPOINT}/v1/signup`, body, {
+    headers: {
+      'x-csrf-token': csrf,
+    },
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response.data,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
 
 // const verifyUserToken = ({ token = '', email = '', csrf = '' }) => {
 //   const body = { token, email }
@@ -345,42 +349,29 @@ const fetchConsentList = ({ csrf = '' }) => {
 }
 
 const authorizeConsent = ({ csrf = '' }) => {
-  return new Promise((resolve, reject) => {
-    post(
-      `${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/authorize`,
-      { _csrf: csrf },
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
-      .then(response => {
-        return resolve(response.data)
-      })
-      .catch(error => {
-        return resolve(null)
-      })
+  submitForm(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/authorize`, {
+    method: 'POST',
+    body: {
+      _csrf: csrf,
+    },
   })
 }
 
 const denyConsent = ({ csrf = '' }) => {
-  return new Promise((resolve, reject) => {
-    post(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/deny`, { _csrf: csrf }, { headers: { 'content-type': 'application/json' } })
+  submitForm(`${AUTH_BASE_ENDPOINT}/oauth2/v1/consent/deny`, {
+    method: 'POST',
+    body: {
+      _csrf: csrf,
+    },
   })
-    .then(response => {
-      return resolve(response.data)
-    })
-    .catch(error => {
-      return resolve(null)
-    })
 }
 
 import { getApi } from '@supersoccer/gandalf'
 const Auth = getApi('auth/handler')
 
 export default {
-  createNewUser: Auth.createNewUser,
+  createNewUser,
+  // createNewUser: Auth.createNewUser,
   verifyUserToken: Auth.verifyUserToken,
   resendUserToken: Auth.resendUserToken,
   requestLogin: Auth.requestLogin,
@@ -393,6 +384,7 @@ export default {
   updateProfile,
   fetchConsentList,
   authorizeConsent,
+  denyConsent,
   // updateProfile: Auth.updateProfile,
   // requestGuestToken,
   // requestCode,

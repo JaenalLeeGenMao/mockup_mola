@@ -201,7 +201,7 @@ class Sport extends Component {
       this.prevTouchY = event.screenY
     }
 
-    var handleClick = function(e) {
+    var handleClick = function (e) {
       var target = e.target
       var isPlaylist = target.parentElement.getElementsByClassName('is-home-playlist').length
 
@@ -346,7 +346,7 @@ class Sport extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -365,11 +365,12 @@ class Sport extends Component {
   }
 
   handleKeyboardEvent = () => {
+    const __this = this
     /** handle keyboard pressed */
     document.onkeyup = event => {
       ticking = false
 
-      const { activeSlide } = this.state
+      const { activeSlide, scrollIndex } = this.state
 
       switch (event.which || event.keyCode) {
         case 37 /* left */:
@@ -384,12 +385,20 @@ class Sport extends Component {
         case 40 /* down */:
           this.handleScrollToIndex(this.state.scrollIndex + 1)
           break
-        case 13 /* enter */:
-          window.location.href = `/watch?v=${activeSlide.id}`
-          break
-        case 32 /* space */:
-          window.location.href = `/watch?v=${activeSlide.id}`
-          break
+        // case 13 /* enter */:
+        //   if (scrollIndex == 0) {
+        //     window.location.href = activeSlide.link
+        //   } else {
+        //     window.location.href = `/watch?v=${activeSlide.id}`
+        //   }
+        //   break
+        // case 32 /* space */:
+        //   if (scrollIndex == 0) {
+        //     window.location.href = activeSlide.link
+        //   } else {
+        //     window.location.href = `/watch?v=${activeSlide.id}`
+        //   }
+        //   break
         default:
           event.preventDefault()
           break
@@ -449,7 +458,7 @@ class Sport extends Component {
 
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -584,14 +593,18 @@ class Sport extends Component {
                 </div> */}
                 <div
                   className={`is-home-gradient ${styles.sport__gradient}`}
-                  style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }}
+                  style={{
+                    opacity: scrollIndex !== 0 ? 1 : 0,
+                    transition: '.5s all ease',
+                    cursor: activeSlide && !activeSlide.link ? 'default' : 'pointer',
+                  }}
                 />
                 <div className={styles.sport__sidebar}>
                   {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
                     this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
                   ) : (
-                    <SportMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
-                  )}
+                      <SportMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                    )}
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide && (
@@ -663,8 +676,8 @@ class Sport extends Component {
                     {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
                       this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
                     ) : (
-                      <SportMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
-                    )}
+                        <SportMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
+                      )}
                   </div>
                 </div>
                 <Slider

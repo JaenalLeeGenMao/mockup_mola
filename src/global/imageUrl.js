@@ -46,9 +46,7 @@ export const google = `${imgBaseUrl}/google.png`
 export const defaultImgClub = `${imgBaseUrl}/defaultImage.svg`
 
 export const viewAllMovieBg = `${imgBaseUrl}/background_darker.png`
-export const viewAllMovieImg = `${imgBaseUrl}/viewallmovie.png`
 export const viewAllMovieBgWebp = `${imgBaseUrl}/background_darker.webp`
-export const viewAllMovieImgWebp = `${imgBaseUrl}/viewallmovie.webp`
 export const viewAllMovieMobileBg = `${imgBaseUrl}/background_darker_mobile.png`
 export const viewAllMovieMobileBgWebp = `${imgBaseUrl}/background_darker_mobile.webp`
 

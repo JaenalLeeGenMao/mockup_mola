@@ -1032,7 +1032,7 @@ export default {
   getChannelsList,
   getProgrammeGuides,
   getHeaderMenu,
-  getRecommendedArticles,
   getPlaylistVideo,
   getPlaylistPlaylists,
+  getRecommendedArticles,
 }

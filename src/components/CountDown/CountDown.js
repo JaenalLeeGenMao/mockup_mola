@@ -32,7 +32,7 @@ class CountDown extends React.Component {
               <span className={s.arrow__icon} />
             </div>
           )}
-          <div className={s.countDown}>
+          <div className={isMobile ? s.countDownMobile : s.countDown}>
             <div className={s.startText}>Tayangan akan dimulai dalam: </div>
             {days > 0 ? `${days} hari ` : ''}
             {hours < 10 ? `0${hours}` : hours}

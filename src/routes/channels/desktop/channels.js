@@ -191,7 +191,7 @@ class Channels extends Component {
   }
 
   componentDidMount() {
-    const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user } = this.props
+    const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user, getVUID } = this.props
 
     fetchChannelsPlaylist().then(() => {
       fetchChannelSchedule(this.state.selectedDate)
@@ -349,6 +349,7 @@ class Channels extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
+
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
     const { user } = this.props
@@ -389,8 +390,8 @@ class Channels extends Component {
             {loadPlayer ? (
               <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
             ) : (
-              <div>Video Not Available</div> // styling later
-            )}
+                <div>Video Not Available</div> // styling later
+              )}
           </div>
           {/* {channelsPlaylist.meta.status === 'success' &&
             programmeGuides.data &&

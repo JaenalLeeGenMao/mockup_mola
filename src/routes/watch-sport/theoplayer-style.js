@@ -5,7 +5,7 @@ export const customTheoplayer = css`
     &.video-container,
     &.video-container.video-js.vjs-fluid {
       width: 100%;
-      height: calc(100% - 38px);
+      height: 100%;
       padding: 0;
       float: left;
     }
@@ -59,14 +59,10 @@ export const customTheoplayer = css`
         height: 3rem;
         border: 0.16rem solid white;
       }
+
+      &.video-container .vjs-big-play-button {
+        width: 10% !important;
+      }
     }
   }
-`
-export const noInfoBar = css`
-{
-  &.video-container,
-  &.video-container.video-js.vjs-fluid {
-    height: 100%;
-  }
-
 `

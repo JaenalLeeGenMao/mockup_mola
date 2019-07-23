@@ -91,12 +91,170 @@ class Html extends React.Component {
           <style
             dangerouslySetInnerHTML={{
               __html: `
-             .embeddedServiceHelpButton .helpButton button.uiButton {
+            .embeddedServiceHelpButton {
+              visibility: hidden;
+            }
+            .embeddedServiceHelpButton .helpButton {
+              position: fixed;
+              padding-bottom: 8.5rem !important;  
+              right: 6rem !important;
+            }
+            .embeddedServiceHelpButton .helpButton button.uiButton {
+              display: -webkit-box;
+              background-color: #2D56FF;
+              font-family: "Arial", sans-serif;
+              min-width: 0;
+              border-radius: .5rem;
+              width: 6rem;
+              height: 6rem;
+            }
+
+            .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+              display: inline-block !important;
+              background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAORJREFUSA3tVtERgjAMBc8BGMENdARGcBN1A0dhE9gAR8ARmKC+VxIPq5c7ufSvuQtpSfpe8z4IVQULIbTwHu5tIwAv5KixaBF7bjLajd0M0kbnSQTMBn4X7JFE0TxJFAvAJItG6QITNUwLPKPi7zxBLaxCZKlj5op0pjxWskhnqWPminSmPGkSH9STvJv3aZJ7FDQIx1+5P94dUHuV+uFrTAgJJ67eRmo3hxknzx8dJSRPFEyb4ZezPN9h1E3vCUsSOH8maA845fOzCLs88pHwuisiLv07UU1WRPlIpCMS5CUB0QupHg6T2Sh/jAAAAABJRU5ErkJggg==);
+              width: 3rem;
+              height: 3rem;
+              background-repeat: no-repeat;
+              background-size: contain;
+              margin-right: 0;
+              margin-top: .3rem;
+            }
+
+            .embeddedServiceHelpButton .embeddedServiceIcon::before {
+              display: none !important;
+            }
+
+            .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
+              background-color: transparent !important;
+              margin-top: .5rem;
+              font-family: 'Open Sans' !important;
+              font-weight: 600 !important;
+            }
+
+            .embeddedServiceHelpButton .helpButton button.uiButton:focus {
+              /*outline: 1px solid #005290;*/
+              outline: none;
+            }
+            .embeddedServiceHelpButton .helpButton .message {
               background-color: #005290;
               font-family: "Arial", sans-serif;
             }
-            .embeddedServiceHelpButton .helpButton button.uiButton:focus {
-              outline: 1px solid #005290;
+            .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+              /*display: none !important;*/
+            }
+            .embeddedServiceHelpButton .uiButton .helpButtonLabel {
+              /*display: none !important;*/
+            }
+            .embeddedServiceSidebarHeader .shortHeader {
+              background-color: #2D56FF;
+            }
+            .embeddedServiceSidebarForm.formContent {
+              background-color: #212121 !important;
+            }
+            .embeddedServiceSidebarFormField .uiInput .uiLabel-left {
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select {
+              color: #fff !important;
+              background-color: #333333 !important;
+              border: none !important;
+            }
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select input:-internal-autofill-selected {
+              -webkit-text-fill-color: #fff !important;
+              -webkit-box-shadow: 0 0 0 100px #333333 inset !important;
+            }
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select input:-internal-autofill-selected:focus {
+              -webkit-text-fill-color: #fff !important;
+              -webkit-box-shadow: 0 0 0 100px black inset;
+              caret-color: white;
+            }
+
+            .embeddedServiceSidebarFormField .slds-style-inputtext, .embeddedServiceSidebarFormField .slds-style-select input:-webkit-autofill {
+              caret-color: white;
+            }
+            
+            .embeddedServiceSidebarForm.buttonWrapper {
+              background: #212121 !important;
+            }
+            .embeddedServiceSidebarButton {
+              background-color: #2D56FF !important;
+            }
+            .embeddedServiceSidebar.loading .sidebarLoadingIndicator {
+              background-color: #212121;
+            }
+            .embeddedServiceLoadingBalls .loadingBall {
+              background-color: #fff !important;
+            }
+            .embeddedServiceLiveAgentStateWaiting .waitingStateContainer {
+              background: #212121;
+            }
+            .embeddedServiceSidebarDialogState .dialogState {
+              background: #212121;
+            }
+            .embeddedServiceSidebarButton.uiButton--inverse .label {
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarDialogState #dialogTextTitle {
+              color: #fff !important;
+            }
+            .uiOutputRichText {
+              color: #fff !important;
+            }
+            .embeddedServiceSidebarDialogState #dialogTextBody {
+              color: #fff !important;
+            }
+              
+            /*landscape*/
+            @media (min-width: 481px) and (max-width: 767px) {
+              .embeddedServiceHelpButton .helpButton {
+                position: fixed;
+                bottom: 2.5rem !important;  
+                right: 2rem !important;
+                padding-bottom: 3rem !important;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton {
+                width: 4rem !important;
+                height: 3.5rem !important;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                margin-top: 0 !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel {
+                overflow: visible !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
+                overflow: visible !important;
+                margin-top: .1rem !important;
+                font-size: 8px;
+              }
+            }
+            /*potrait*/
+            @media (min-width: 320px) and (max-width: 480px) {
+              .embeddedServiceHelpButton .helpButton {
+                position: fixed;
+                bottom: 2.5rem !important;  
+                right: 2rem !important;
+                padding-bottom: 3rem !important;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton {
+                width: 4rem !important;
+                height: 3.5rem !important;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                margin-top: 0 !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel {
+                overflow: visible !important;
+              }
+              .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
+                overflow: visible !important;
+                margin-top: .1rem !important;
+                font-size: 8px;
+              }
             }
              `,
             }}
@@ -120,10 +278,10 @@ class Html extends React.Component {
                   embedded_svc.settings.displayHelpButton = true; //Or false
                   embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
               
-                  //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
-                  //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+                  embedded_svc.settings.defaultMinimizedText = 'Online'; //(Defaults to Chat with an Expert)
+                  embedded_svc.settings.disabledMinimizedText = 'Offline'; //(Defaults to Agent Offline)
               
-                  //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+                  embedded_svc.settings.loadingText = 'Loading'; //(Defaults to Loading)
                   //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
               
                   // Settings for Chat

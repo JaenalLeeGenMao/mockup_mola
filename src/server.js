@@ -56,6 +56,8 @@ const oauth = {
     'https://api.supersoccer.tv/orders/orders.read',
     'paymentmethods:read.internal',
     'payments:payment.dopay',
+    'userdata:preference.read',
+    'userdata:preference.insert',
   ].join(' '),
 }
 
@@ -71,6 +73,8 @@ const oauthApp = {
     'https://api.supersoccer.tv/orders/orders.read',
     'paymentmethods:read.internal',
     'payments:payment.dopay',
+    'userdata:preference.read',
+    'userdata:preference.insert',
   ].join(' '),
 }
 
@@ -93,20 +97,20 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
 })
 
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
+app.use(
+  '/api',
+  proxy(`${config.endpoints.domain}/api/`, {
+    proxyReqPathResolver: (req, res) => {
+      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+    },
+  })
+)
 
 // app.use(
 //   '/api',
@@ -220,6 +224,8 @@ const requestGuestToken = async res => {
           'https://api.supersoccer.tv/videos/videos.read',
           'paymentmethods:read.internal',
           'payments:payment.dopay',
+          'userdata:preference.read',
+          'userdata:preference.insert',
         ].join(' '),
       },
     })
@@ -324,6 +330,8 @@ const requestCode = async (req, res) => {
         'https://api.supersoccer.tv/orders/orders.read',
         'paymentmethods:read.internal',
         'payments:payment.dopay',
+        'userdata:preference.read',
+        'userdata:preference.insert',
       ].join(' '),
       state: randomState,
     })
@@ -364,7 +372,7 @@ app.get('/oauth/callback', async (req, res) => {
   const sid = req.cookies.SID
 
   if (code && state && storedState && state === storedState) {
-    await new Promise(resolve => {
+    await new Promise((resolve, reject) => {
       request.post(
         {
           ...config.endpoints.setting,
@@ -475,7 +483,7 @@ app.get('/signout', (req, res) => {
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
-  console.log('Server URL', req.url)
+  console.log('Server URL', req.path)
   var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
   try {
     // global.clearInterval(inboxInterval);
@@ -564,7 +572,7 @@ app.get('*', async (req, res, next) => {
 
       /* Must login before accessing these features */
       if (!__DEV__ && whitelisted.includes(req.url)) {
-        if (req.url !== '/accounts/consent') {
+        if (req.path !== '/accounts/consent') {
           return res.redirect('/accounts/login')
         }
       }
@@ -632,6 +640,8 @@ app.get('*', async (req, res, next) => {
         clientIp: ip,
       },
       runtime: {
+        appUrl: 'molaapp://mola.tv/watch',
+        appPackage: config.env == 'staging' ? 'com.molademo' : 'tv.mola.app',
         gt: guestToken,
         tokenExpired: expGToken,
         csrf: req.csrfToken(),
@@ -755,6 +765,12 @@ app.get('*', async (req, res, next) => {
       // inbox: {
       //   unread: count
       // }
+    }
+
+    let isSmartTV = /.*SMART-TV*./i.test(userAgent)
+
+    if (isSmartTV && req.url != '/404') {
+      return res.redirect(domain + '/404' || 'http://stag.mola.tv/404')
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)

@@ -1,0 +1,19 @@
+/* .help__text {
+  display: -webkit-inline-box;
+  position: absolute;
+  color: white;
+  left: 50%;
+  margin-left: -20%;
+  top: 50%;
+  margin-top: -20%;
+} */
+
+.help__text {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  margin-top: 43vh;
+  font-family: 'open sans', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+}

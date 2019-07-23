@@ -133,6 +133,11 @@ body {
   width: 100%;
 }
 
+.filter_wrapper {
+  position: fixed;
+  right: 0;
+}
+
 .filterContent_container {
   padding: 0 1rem 1rem 5rem;
   position: sticky;

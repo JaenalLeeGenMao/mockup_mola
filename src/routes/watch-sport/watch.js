@@ -8,6 +8,7 @@ import { notificationBarBackground } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
+import config from '@source/config'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import styles from './watch.css'
@@ -26,32 +27,6 @@ class Watch extends Component {
     movieDetail: [],
     countDownStatus: true,
     toggleInfoBar: true,
-  }
-
-  uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8
-      return v.toString(16)
-    })
-  }
-
-  /* eslint-disable */
-  updateEncryption() {
-    const { clientIp, uid, sessionId } = this.props.user
-    const { data } = this.props.movieDetail
-
-    /* eslint-disable */
-    const payload = {
-      project_id: '2',
-      video_id: this.props.movieId,
-      app_id: 'sent_ads',
-      session_id: sessionId,
-      client_ip: clientIp,
-      uuid: this.uuidADS(),
-    }
-
-    this.encryptPayload = window.btoa(JSON.stringify(payload))
   }
 
   updateMetaTag() {
@@ -135,7 +110,6 @@ class Watch extends Component {
     const { getMovieDetail, videoId, getVUID, user } = this.props
 
     getMovieDetail(videoId)
-    this.updateEncryption()
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
@@ -151,13 +125,25 @@ class Watch extends Component {
     })
   }
 
+  handlePlayMovie = () => {
+    const { isMobile, videoId, runtime: { appPackage } } = this.props
+    if (isMobile) {
+      const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+      if (!isSafari) {
+        const domain = config.endpoints.domain
+        const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
+        document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+      }
+    }
+  }
+
   renderVideo = () => {
     const { user, getMovieDetail, videoId, isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
 
     if (status === 'success' && data.length > 0) {
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-
+      const poster = data[0].background.landscape
       const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, data[0], vuidStatus === 'success' ? vuid : '') : {}
 
       const videoSettings = {
@@ -171,23 +157,22 @@ class Watch extends Component {
         isMatchPassed = true
       }
 
-      const playerClass = toggleInfoBar && !isMatchPassed ? '' : noInfoBar
+      const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+
       const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
       } else if (data[0].streamSourceUrl) {
-        return (
-          <Theoplayer
-            className={`${customTheoplayer} ${playerClass}`}
-            subtitles={this.subtitles()}
-            // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
-            handleOnVideoLoad={this.handleOnVideoLoad}
-            // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
-            // isDRM={true}
-            {...videoSettings}
-            showBackBtn={!isMobile}
-          />
-        )
+        if (isMobile && !isApple) {
+          return (
+            <div className={styles.poster__wrapper}>
+              <img src={poster} />
+              <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+            </div>
+          )
+        } else {
+          return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+        }
       }
     }
   }
@@ -199,7 +184,7 @@ class Watch extends Component {
   }
 
   render() {
-    const { isMobile } = this.props
+    const { isMobile, runtime: { appUrl } } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -219,6 +204,8 @@ class Watch extends Component {
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
     }
+
+    const playerClass = toggleInfoBar && !isMatchPassed ? styles.player__video : styles.player__video_nobar
 
     return (
       <>
@@ -241,7 +228,7 @@ class Watch extends Component {
                       </div>
                     </div>
                   )}
-                {loadPlayer && this.renderVideo()}
+                <div className={playerClass}>{loadPlayer && this.renderVideo()}</div>
               </div>
               {!isMobile && (
                 <>

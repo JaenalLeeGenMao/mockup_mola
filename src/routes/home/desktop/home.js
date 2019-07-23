@@ -8,10 +8,10 @@ import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
 import $ from 'jquery'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 
-import { isMovie } from '@source/lib/globalUtil'
+import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
+import { isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
 
 import homeActions from '@actions/home'
 
@@ -24,7 +24,6 @@ import Link from '@components/Link'
 
 import HomeError from '@components/common/error'
 import HomePlaceholder from './placeholder'
-// import HomeArrow from '../arrow'
 import HomeContent from './content'
 import HomeMenu from './menu'
 
@@ -123,6 +122,7 @@ class Home extends Component {
     if (playlists.meta.status === 'loading' && prevState.playlists.length <= 0) {
       onHandlePlaylist()
     } else {
+      console.log('here')
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
           trackedPlaylistIds.push(playlist.id)
@@ -203,7 +203,7 @@ class Home extends Component {
       this.prevTouchY = event.screenY
     }
 
-    var handleClick = function(e) {
+    var handleClick = function (e) {
       var target = e.target
       var isPlaylist = target.parentElement.getElementsByClassName('is-home-playlist').length
 
@@ -349,7 +349,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function() {
+      setTimeout(function () {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
 
@@ -388,32 +388,36 @@ class Home extends Component {
         case 40 /* down */:
           this.handleScrollToIndex(scrollIndex + 1)
           break
-        case 13 /* enter */:
-          if (activeSlide.id) {
-            if (isMovie(activeSlide.contentType)) {
-              window.location.href = `/movie-detail/${activeSlide.id}`
-            } else {
-              window.location.href = `/watch?v=${activeSlide.id}`
-            }
-          } else if (scrollIndex > 0) {
-            const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
-            const libraryId = playlistId.replace('f-', '')
-            window.location.href = `/movie-library/${libraryId}`
-          }
-          break
-        case 32 /* space */:
-          if (activeSlide.id) {
-            if (isMovie(activeSlide.contentType)) {
-              window.location.href = `/movie-detail/${activeSlide.id}`
-            } else {
-              window.location.href = `/watch?v=${activeSlide.id}`
-            }
-          } else if (scrollIndex > 0) {
-            const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
-            const libraryId = playlistId.replace('f-', '')
-            window.location.href = `/movie-library/${libraryId}`
-          }
-          break
+        // case 13 /* enter */:
+        //   if (scrollIndex == 0) {
+        //     window.location.href = activeSlide.link
+        //   } else if (activeSlide.id) {
+        //     if (isMovie(activeSlide.contentType)) {
+        //       window.location.href = `/movie-detail/${activeSlide.id}`
+        //     } else {
+        //       window.location.href = `/watch?v=${activeSlide.id}`
+        //     }
+        //   } else if (scrollIndex > 0) {
+        //     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+        //     const libraryId = playlistId.replace('f-', '')
+        //     window.location.href = `/movie-library/${libraryId}`
+        //   }
+        //   break
+        // case 32 /* space */:
+        //   if (scrollIndex == 0) {
+        //     window.location.href = activeSlide.link
+        //   } else if (activeSlide.id) {
+        //     if (isMovie(activeSlide.contentType)) {
+        //       window.location.href = `/movie-detail/${activeSlide.id}`
+        //     } else {
+        //       window.location.href = `/watch?v=${activeSlide.id}`
+        //     }
+        //   } else if (scrollIndex > 0) {
+        //     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
+        //     const libraryId = playlistId.replace('f-', '')
+        //     window.location.href = `/movie-library/${libraryId}`
+        //   }
+        //   break
         default:
           event.preventDefault()
           break
@@ -473,7 +477,7 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     // console.log('MASUK SINI swipeIndex????', swipeIndex)
     const that = this
-    setTimeout(function() {
+    setTimeout(function () {
       // that.props.onUpdatePlaylist(activePlaylist.id)
       const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
         { videos, sliderRefs } = that.state
@@ -545,12 +549,12 @@ class Home extends Component {
 
   render() {
     const {
-        playlists,
-        playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
-        videos,
-        videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
-      } = this.props.home,
-      { locale, isDark, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
+      playlists,
+      playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
+      videos,
+      videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
+    } = this.props.home,
+      { locale, isDark, startGuide, steps, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
       settings = {
         ...SETTINGS_VERTICAL,
         className: styles.home__slick_slider_fade,
@@ -564,20 +568,18 @@ class Home extends Component {
           this.handleColorChange(nextIndex)
         },
       },
-      playlistErrorCode = getErrorCode(playlistError),
-      videoErrorCode = getErrorCode(videoError)
+      playlistErrorCode = getErrorCode(playlistError)
 
     let filteredDesc = ''
     let filteredQuote = ''
     let watchUrl = '/movie-detail/'
-    let buttonText = 'view_movie'
+    // let buttonText = 'view_movie'
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.shortDescription, 36)
       if (scrollIndex !== 0) {
         filteredQuote = activeSlide.quotes ? `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}` : ''
       }
       watchUrl = isMovie(activeSlide.contentType) ? '/movie-detail/' : '/watch?v='
-      buttonText = isMovie(activeSlide.contentType) ? 'view_movie' : 'view_match'
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -617,15 +619,19 @@ class Home extends Component {
               <>
                 <div
                   className={`is-home-gradient ${styles.home__gradient}`}
-                  style={{ opacity: scrollIndex !== 0 ? 1 : 0, transition: '.5s all ease', cursor: scrollIndex !== 0 ? 'default' : 'pointer' }}
+                  style={{
+                    opacity: scrollIndex !== 0 ? 1 : 0,
+                    transition: '.5s all ease',
+                    cursor: activeSlide && !activeSlide.link ? 'default' : 'pointer',
+                  }}
                 />
                 <div className={styles.home__sidebar}>
                   {/* <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} /> */}
                   {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
                     this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
                   ) : (
-                    <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
-                  )}
+                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                    )}
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide &&
@@ -640,9 +646,33 @@ class Home extends Component {
                         {filteredQuote && <p className={styles.quote}>{filteredQuote}</p>}
                         {!activeSlide.buttonText &&
                           scrollIndex != 0 && (
-                            <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
-                              <p>{activeSlide.buttonText ? activeSlide.buttonText : locale[`${buttonText}`]}</p>
-                            </Link>
+                            <>
+                              {(isMovie(activeSlide.contentType) || getContentTypeName(activeSlide.contentType) == 'vod') && (
+                                <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                                  <p>{locale['view_movie']}</p>
+                                </Link>
+                              )}
+                              {!isMovie(activeSlide.contentType) && (
+                                <>
+                                  {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} tourMovieDetail`}>
+                                      <span className={styles.play_icon_sport} />
+                                      <p>{locale['live_now']}</p>
+                                    </Link>
+                                  )}
+                                  {activeSlide.startTime > Date.now() / 1000 && (
+                                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                      <p>{locale['upcoming']}</p>
+                                    </Link>
+                                  )}
+                                  {isMatchPassed(activeSlide.endTime) && (
+                                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                      <p>{locale['replay']}</p>
+                                    </Link>
+                                  )}
+                                </>
+                              )}
+                            </>
                           )}
                         {activeSlide.buttonText && (
                           <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
@@ -656,12 +686,26 @@ class Home extends Component {
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>
                       <picture>
-                        <source srcSet={viewAllMovieImgWebp} type="image/webp" />
-                        <source srcSet={viewAllMovieImg} type="image/jpeg" />
-                        <img src={viewAllMovieImg} />
+                        {this.state.playlists.data[scrollIndex].iconUrl ? (
+                          <>
+                            <source srcSet={this.state.playlists.data[scrollIndex].iconWebp} type="image/webp" />
+                            <source srcSet={this.state.playlists.data[scrollIndex].iconUrl} type="image/jpeg" />
+                            <img src={this.state.playlists.data[scrollIndex].iconUrl} />
+                          </>
+                        ) : (
+                            <>
+                              <source srcSet={viewAllMovieImgWebp} type="image/webp" />
+                              <source srcSet={viewAllMovieImg} type="image/jpeg" />
+                              <img src={viewAllMovieImg} />
+                            </>
+                          )}
                       </picture>
                       <a href={`/movie-library/${libraryId}`}>
-                        <span>{locale['view_all_movie']}</span>
+                        <span>
+                          {locale['view_all_movie']}
+                          <br /> {this.state.playlists.data[scrollIndex].title.toUpperCase() + ' '}
+                          {locale['other']}
+                        </span>
                         <i />
                       </a>
                     </LazyLoad>
@@ -673,8 +717,8 @@ class Home extends Component {
                     {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
                       this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
                     ) : (
-                      <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
-                    )}
+                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
+                      )}
                   </div>
                 </div>
                 <Slider
@@ -684,7 +728,7 @@ class Home extends Component {
                   }}
                 >
                   {videos.data.map((video, index) => {
-                    const { id, sortOrder } = video.meta
+                    const { id } = video.meta
 
                     if (video.data <= 0) {
                       return

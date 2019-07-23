@@ -43,12 +43,12 @@ class LeftMenu extends Component {
       {
         id: 'matches',
         title: 'matches',
-        linkUrl: 'matches',
+        linkUrl: '/matches',
       },
       {
         id: 'library',
         title: 'library',
-        linkUrl: `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
+        linkUrl: `/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
       },
     ]
 

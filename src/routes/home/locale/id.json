@@ -1,5 +1,9 @@
 {
   "view_movie": "View Movie",
   "view_match": "View Match",
-  "view_all_movie": "Lihat koleksi film lainnya"
+  "view_all_movie": "Klik untuk saksikan koleksi",
+  "other": "lainnya",
+  "live_now": "Live Now",
+  "upcoming": "Upcoming",
+  "replay": "View Replay"
 }

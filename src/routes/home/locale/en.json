@@ -1,5 +1,9 @@
 {
   "view_movie": "View Movie",
   "view_match": "View Match",
-  "view_all_movie": "View other movie collection"
+  "view_all_movie": "Click here to browse other",
+  "other": "movies",
+  "live_now": "Live Now",
+  "upcoming": "Upcoming",
+  "replay": "View Replay"
 }

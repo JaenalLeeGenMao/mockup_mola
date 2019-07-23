@@ -59,7 +59,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -212,6 +212,7 @@ class MovieDetail extends Component {
       movieDetail,
       movieId, //passed as props from index.js,
       fetchRecommendation,
+      urlParams,
     } = this.props
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
@@ -222,10 +223,14 @@ class MovieDetail extends Component {
         toggleSuggestion: false,
       })
     }
-
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
       if (!isMovie(movieDetail.data[0].contentType)) {
-        history.push(`/watch?v=${movieDetail.data[0].id}`)
+        const params = Object.keys(urlParams)
+          .map(function(key) {
+            return key + '=' + urlParams[key]
+          })
+          .join('&')
+        window.location.href = `/watch?v=${movieDetail.data[0].id}&${params}`
       }
     }
     this.updateMetaTag()
@@ -302,8 +307,8 @@ class MovieDetail extends Component {
                     showBackBtn
                   />
                 ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
               </div>
             </div>
             <div className={movieDetailBottom}>
