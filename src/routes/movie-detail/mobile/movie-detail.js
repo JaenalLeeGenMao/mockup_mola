@@ -32,7 +32,9 @@ const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 class MovieDetail extends Component {
   state = {
-    toggleSuggestion: false,
+    loc: '',
+    android_redirect_to_app: false,
+    ios_redirect_to_app: false,
   }
 
   uuidADS = () => {
@@ -138,6 +140,19 @@ class MovieDetail extends Component {
     })
   }
 
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      console.log('result', result)
+      if (result.data) {
+        const { android_redirect_to_app, ios_redirect_to_app } = result.data.data.attributes
+        this.setState({
+          android_redirect_to_app: android_redirect_to_app,
+          ios_redirect_to_app: ios_redirect_to_app,
+        })
+      }
+    })
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -148,6 +163,7 @@ class MovieDetail extends Component {
     } = this.props
 
     this.getLoc()
+    this.getConfig()
     getMovieDetail(movieId)
     fetchRecommendation(movieId)
 
@@ -197,48 +213,75 @@ class MovieDetail extends Component {
   }
 
   handlePlayMovie = () => {
-    const { movieId, runtime: { appPackage } } = this.props
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (!isSafari) {
-      const domain = config.endpoints.domain
-      // console.log('appPackage', appPackage)
-      const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-      // document.location = `intent://scan/#Intent;scheme=molaapp;package=com.molademo;S.browser_fallback_url=${url};end`
-      document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
-    }
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    // console.log('appPackage', appPackage)
+    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+    document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   renderVideo = (poster, videoSettings) => {
+    const { android_redirect_to_app, ios_redirect_to_app } = this.state
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
     if (isApple) {
-      return (
-        <Theoplayer
-          className={customTheoplayer}
-          subtitles={this.subtitles()}
-          poster={poster}
-          autoPlay={false}
-          // certificateUrl="test"
-          handleOnVideoLoad={this.handleOnVideoLoad}
-          handleOnVideoPause={this.handleOnVideoPause}
-          handleOnLoadedData={this.handleOnLoadedData}
-          handleOnReadyStateChange={this.handleOnReadyStateChange}
-          showBackBtn={false}
-          {...videoSettings}
-          isMobile
-        />
-      )
+      //ios
+      if (ios_redirect_to_app) {
+        return (
+          <div className={posterWrapper}>
+            <img src={poster} />
+            <span className={playIcon} onClick={this.handlePlayMovie} />
+          </div>
+        )
+      } else {
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            // certificateUrl="test"
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            handleOnVideoPause={this.handleOnVideoPause}
+            handleOnLoadedData={this.handleOnLoadedData}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
+            showBackBtn={false}
+            {...videoSettings}
+            isMobile
+          />
+        )
+      }
     } else {
-      return (
-        <div className={posterWrapper}>
-          <img src={poster} />
-          <span className={playIcon} onClick={this.handlePlayMovie} />
-        </div>
-      )
+      //android
+      if (android_redirect_to_app) {
+        return (
+          <div className={posterWrapper}>
+            <img src={poster} />
+            <span className={playIcon} onClick={this.handlePlayMovie} />
+          </div>
+        )
+      } else {
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            // certificateUrl="test"
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            handleOnVideoPause={this.handleOnVideoPause}
+            handleOnLoadedData={this.handleOnLoadedData}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
+            showBackBtn={false}
+            {...videoSettings}
+            isMobile
+          />
+        )
+      }
     }
   }
 
   render() {
-    const { toggleSuggestion, loc } = this.state
+    const { loc } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
