@@ -5,6 +5,7 @@ import LazyLoad from '@components/common/Lazyload'
 import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
+import ArticleCard from '@components/article-card'
 import VideoCard from '@components/video-card'
 
 import featureActions from '@actions/feature'
@@ -59,6 +60,7 @@ class Feature extends Component {
 
   handleOnClick = video => {
     const obj = {
+      articles: () => (window.location.href = `/articles/${video.id}`),
       banners: () => (window.location.href = video.link),
       playlists: () => (window.location.href = `/playlists/${video.id}`),
       videos: () => {
@@ -94,7 +96,7 @@ class Feature extends Component {
 
   render() {
     const isMobile = this.state.viewportWidth <= 680,
-      { feature: { playlists, videos, banners } } = this.props
+      { feature: { playlists, videos, banners, articles } } = this.props
 
     const isLoading = playlists.meta.status === 'loading' || banners.meta.status === 'loading',
       isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
@@ -116,7 +118,16 @@ class Feature extends Component {
         {isSuccess && (
           <>
             {banners.data.length > 0 && (
-              <Carousel wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
+              <Carousel
+                wrap={banners.length === 1 ? false : true}
+                autoplay={false}
+                sliderCoin={true}
+                dragging={true}
+                slidesToShow={isMobile ? 1 : 2}
+                transitionMode={isMobile ? 'scroll' : 'scroll3d'}
+                withoutControls={banners.data.length < contentTypeList['banners'].slideToShow}
+                framePadding={!isMobile ? '0rem' : '0rem 1rem'}
+              >
                 {banners.data.map(obj => (
                   <PlaylistCard
                     transitionMode={'scroll3d'}
@@ -129,6 +140,37 @@ class Feature extends Component {
                   />
                 ))}
               </Carousel>
+            )}
+            {articles.data.length > 0 && (
+              <LazyLoad containerClassName={container}>
+                <h3>{articles.meta.title}</h3>
+                <Carousel
+                  wrap={articles.length === 1 ? false : true}
+                  autoplay={false}
+                  sliderCoin={true}
+                  dragging={true}
+                  slidesToShow={isMobile ? 1 : 3.5}
+                  transitionMode={'scroll'}
+                  cellSpacing={isMobile ? 0 : 20}
+                  withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
+                  framePadding={!isMobile ? '0rem' : '0rem 1rem'}
+                >
+                  {articles.data.map(obj => (
+                    <ArticleCard
+                      key={obj.id}
+                      onClick={() => this.handleOnClick(obj)}
+                      alt={obj.title}
+                      src={obj.imageUrl}
+                      title={obj.title}
+                      contentType={obj.type}
+                      createdAt={obj.createdAt}
+                      description={obj.imageCaption}
+                      // onLoad={this.updateOnImageLoad}
+                      containerClassName={bannerContainer}
+                    />
+                  ))}
+                </Carousel>
+              </LazyLoad>
             )}
             <LazyLoad containerClassName={container}>
               {playlists.data.length > 0 &&
@@ -147,9 +189,10 @@ class Feature extends Component {
                         sliderCoin={true}
                         dragging={true}
                         withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
-                        slideToScroll={isMobile ? 1 : contentTypeList[contentTypeName].slideToScroll}
-                        slidesToShow={isMobile ? 3 : contentTypeList[contentTypeName].slideToShow}
+                        slidesToShow={isMobile ? contentTypeList[contentTypeName].slideToScroll : contentTypeList[contentTypeName].slideToShow}
                         transitionMode={'scroll'}
+                        cellSpacing={isMobile ? 5 : 20}
+                        framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {

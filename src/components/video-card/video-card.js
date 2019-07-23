@@ -3,7 +3,7 @@ import Lazyload from '@components/common/Lazyload/Lazyload'
 
 import { placeholderCardPortrait } from '@global/imageUrl'
 
-import { videoContainer } from './style'
+import { videoContainer, icons } from './style'
 
 class VideoCard extends Component {
   state = {
@@ -24,7 +24,14 @@ class VideoCard extends Component {
     return (
       <div onClick={() => onClick()} className={`${videoContainer} ${containerClassName}`}>
         <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardPortrait} />
-        <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
+        <div className="imageWrapper">
+          <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
+          {show && (
+            <div className={icons}>
+              <span className="playIcon" />
+            </div>
+          )}
+        </div>
         <p>{description}</p>
       </div>
     )
