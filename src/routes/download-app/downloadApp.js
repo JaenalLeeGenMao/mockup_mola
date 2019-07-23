@@ -50,8 +50,9 @@ class DownloadApp extends Component {
 
     const portraitPoster = dataFetched ? dataFetched.background.portrait : ''
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
-    const badge = isApple ? appStoreBadge : playStoreBadge
     const storeUrl = isApple ? ios_store_url : store_url
+
+    const titleClass = dataFetched && dataFetched.title.length > 35 ? styles.title__text__small : ''
     return (
       <>
         <div className={styles.container__mobile} style={{ backgroundImage: `url(${portraitPoster})` }}>
@@ -64,7 +65,7 @@ class DownloadApp extends Component {
           )}
           <div className={styles.gradient} />
           <div className={styles.detail__container__mobile}>
-            <div className={styles.detail__title}>{dataFetched && <h1 className={styles.detail__title__text}>{dataFetched.title}</h1>}</div>
+            <div className={styles.detail__title}>{dataFetched && <h1 className={`${styles.detail__title__text} ${titleClass}`}>{dataFetched.title}</h1>}</div>
             <div className={styles.detail__desc}>
               <div className={styles.detail__desc__text}>Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app di</div>
             </div>
