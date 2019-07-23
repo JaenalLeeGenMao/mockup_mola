@@ -9,7 +9,7 @@ function action({ isMobile, store, pathname }) {
   const pathnameArr = pathname.split('/')
   const playlistId = pathnameArr.length === 3 ? pathnameArr[pathnameArr.length - 1] : ''
   return {
-    chunks: ['playlist'],
+    chunks: ['playlists'],
     title,
     description,
     component: (
