@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import styles from './channelList.css'
+import styles from './primaryMenu.css'
 
-class ChannelList extends Component {
+class PrimaryMenu extends Component {
   render() {
     const { channelsPlaylist, handleSelectChannel, channelCategory } = this.props
     return (
@@ -34,4 +34,4 @@ class ChannelList extends Component {
   }
 }
 
-export default withStyles(styles)(ChannelList)
+export default withStyles(styles)(PrimaryMenu)

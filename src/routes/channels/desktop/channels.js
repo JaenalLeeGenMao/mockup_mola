@@ -22,7 +22,9 @@ import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
 
 import ScheduleCard from './scheduleCard'
-import ChannelList from './channelList'
+import PrimaryMenu from './primaryMenu'
+import SecondaryMenu from './secondaryMenu'
+import ChannelCalendar from './channelCalendar'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
@@ -244,9 +246,9 @@ class Channels extends Component {
                 <div>Video Not Available</div> // styling later
               )}
           </div>
-          <ChannelList handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} channelCategory={channelCategory} />
+          <PrimaryMenu handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} channelCategory={channelCategory} />
           <div className={styles.epg__list__container}>
-            <HorizontalPlaylist
+            <SecondaryMenu
               handleCategoryFilter={this.handleSelectChannel}
               genreSpoCategory={channelsPlaylist.data}
               filterByLeague={activeChannelId}
@@ -267,7 +269,7 @@ class Channels extends Component {
               >
                 {programmeGuides.data && scheduleList.length > 0 && <ScheduleCard scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} limit={limit} />}
               </InfiniteScroll>
-              <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} />
+              <ChannelCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} />
             </div>
           </div>
         </div>
