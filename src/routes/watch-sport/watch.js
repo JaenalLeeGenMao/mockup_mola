@@ -184,9 +184,18 @@ class Watch extends Component {
 
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-      const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
+      const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : styles.countdown__woinfobar
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
-        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
+        return (
+          <CountDown
+            className={isMobile ? countDownClass : ''}
+            hideCountDown={this.hideCountDown}
+            startTime={data[0].startTime}
+            videoId={videoId}
+            getMovieDetail={getMovieDetail}
+            isMobile={isMobile}
+          />
+        )
       } else if (data[0].streamSourceUrl) {
         if (isMobile) {
           if (isApple) {
