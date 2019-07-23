@@ -21,9 +21,13 @@ class Tracker {
         return item.indexOf('__sessionId=') >= 0
       })
 
-    const sesssionIdVal = sessionId[0].split('=')[1]
+    let sessionIdVal = ''
 
-    if (sessionId && sessionId.length > 0 && sesssionIdVal) {
+    if (sessionId[0]) {
+      sessionIdVal = sessionId[0].split('=')[1]
+    }
+
+    if (sessionId && sessionId.length > 0 && sessionIdVal) {
       sessionId = sessionId[0].split('=')[1]
       document.cookie = `__sessionId=${sessionId}; max-age=${30 * 60}; path=/;`
     } else {
