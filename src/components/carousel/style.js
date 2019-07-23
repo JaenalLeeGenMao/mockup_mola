@@ -14,6 +14,7 @@ export const carouselContainer = css`
 
   & .slider-frame {
     padding: 1rem 0 !important;
+    margin: 1rem 0 !important;
   }
 
   li.slide-current {
@@ -30,6 +31,7 @@ export const carouselContainer = css`
   }
 
   @media screen and (max-width: 960px) {
+    button,
     :hover button.default {
       display: none;
     }

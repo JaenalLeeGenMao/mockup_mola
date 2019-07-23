@@ -48,7 +48,15 @@ class Placeholder extends Component {
 
     return (
       <div className={container}>
-        <Carousel wrap={banners.length === 1 ? false : true} autoplay={false} sliderCoin={true} dragging={true} slidesToShow={2} transitionMode={'scroll3d'}>
+        <Carousel
+          wrap={banners.length === 1 ? false : true}
+          autoplay={false}
+          sliderCoin={true}
+          dragging={true}
+          slidesToShow={isMobile ? 1 : 2}
+          transitionMode={isMobile ? 'scroll' : 'scroll3d'}
+          framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
+        >
           {banners.map((_, bannerIndex) => (
             <DummyWithoutAnimationPlaceholder key={bannerIndex} num={bannerIndex}>
               <img
@@ -67,9 +75,10 @@ class Placeholder extends Component {
             sliderCoin={true}
             dragging={true}
             withoutControls={false}
-            slideToScroll={isMobile ? 3 : 4}
-            slidesToShow={isMobile ? 3 : 4.5}
+            slideToScroll={isMobile ? 1.3 : 4}
+            slidesToShow={isMobile ? 1.3 : 4.5}
             transitionMode={'scroll'}
+            framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
           >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((_, playlistIndex) => (
               <DummyPlaceholder key={playlistIndex} num={playlistIndex}>
@@ -88,9 +97,10 @@ class Placeholder extends Component {
             sliderCoin={true}
             dragging={true}
             withoutControls={false}
-            slideToScroll={isMobile ? 3 : 6}
-            slidesToShow={isMobile ? 3 : 6.5}
+            slideToScroll={isMobile ? 1.6 : 6}
+            slidesToShow={isMobile ? 1.6 : 6.5}
             transitionMode={'scroll'}
+            framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
           >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((_, categoryIndex) => (
               <DummyPlaceholder key={categoryIndex} num={categoryIndex}>
@@ -109,9 +119,10 @@ class Placeholder extends Component {
             sliderCoin={true}
             dragging={true}
             withoutControls={false}
-            slideToScroll={isMobile ? 3 : 7.5}
-            slidesToShow={isMobile ? 3 : 7.5}
+            slideToScroll={isMobile ? 2.8 : 7.5}
+            slidesToShow={isMobile ? 2.8 : 7.5}
             transitionMode={'scroll'}
+            framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
           >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((_, movieIndex) => (
               <DummyPlaceholder key={movieIndex} num={movieIndex}>

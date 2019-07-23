@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import Lazyload from '@components/common/Lazyload/Lazyload'
+import moment from 'moment'
 
-import { getContentTypeName } from '@source/lib/globalUtil'
+import { getContentTypeName, setMultilineEllipsis } from '@source/lib/globalUtil'
 
 import { placeholderCardLandscape } from '@global/imageUrl'
 
-import { playlistContainer, icons } from './style'
+import { articleContainer, icons } from './style'
 
-class PlaylistCard extends Component {
+class ArticleCard extends Component {
   state = {
     show: false,
   }
@@ -20,8 +21,9 @@ class PlaylistCard extends Component {
   }
 
   render() {
-    const { id, name, src, contentType = '', description, onClick = () => {}, containerClassName = '', className = '', transitionMode = 'scroll' } = this.props,
-      { show } = this.state
+    const { id, title, src, contentType = '', createdAt, description, onClick = () => {}, containerClassName = '', className = '', transitionMode = 'scroll' } = this.props,
+      { show } = this.state,
+      date = moment(createdAt).format('DD MMM YYYY')
 
     const contentTypeName = getContentTypeName(contentType),
       whitelistContentTypes = {
@@ -32,26 +34,29 @@ class PlaylistCard extends Component {
         replay: 'matchIcon' /** matches */,
         trailers: 'playIcon' /** videos */,
         'mola-featured': 'tvIcon' /** videos */,
-        'mola-categories': 'matchIcon' /** videos */,
         articles: 'articleIcon' /** videos */,
       }
 
+    // setMultilineEllipsis('info_content')
+
     return (
-      <div onClick={() => onClick()} className={`${playlistContainer} ${containerClassName}`}>
+      <div onClick={() => onClick()} className={`${articleContainer} ${containerClassName}`}>
         <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardLandscape} />
         <div className="imageWrapper">
           <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
-          {show &&
-            whitelistContentTypes[`${contentTypeName}`] && (
-              <div className={icons}>
-                <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
-              </div>
-            )}
         </div>
-        <p>{description}</p>
+        {show &&
+          whitelistContentTypes[`${contentTypeName}`] && (
+            <div className={icons}>
+              <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
+              <h3>{date}</h3>
+              <p className="info_content">{description}</p>
+            </div>
+          )}
+        <b />
       </div>
     )
   }
 }
 
-export default PlaylistCard
+export default ArticleCard

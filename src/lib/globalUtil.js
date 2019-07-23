@@ -71,6 +71,10 @@ export const getContentTypeName = contentTypeId => {
       return 'mola-featured'
     case 10:
       return 'mola-categories' /* always playlists */
+    case 'articles':
+      return 'articles'
+    case 'banners':
+      return 'banners'
     default:
       return undefined
   }

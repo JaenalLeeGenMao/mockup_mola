@@ -7,14 +7,33 @@ export const container = css`
   max-width: 1280px;
 
   h3 {
-    color: #6f6f6f;
-    font-size: 1.42rem;
+    color: #ffffff;
+    font-size: 1.28rem;
+    display: inline-block;
+    vertical-align: middle;
+    color: white;
+    font-weight: 400;
+  }
+
+  p {
+    color: #ffffff;
+    font-size: 1.28rem;
+    display: block;
+    vertical-align: middle;
+    color: white;
+    font-weight: 400;
   }
 
   @media screen and (max-width: 960px) {
     h3 {
-      color: #6f6f6f;
+      color: #ffffff;
       font-size: 15px;
+      margin: 0 1rem;
+    }
+
+    p {
+      color: #ffffff;
+      font-size: 11px;
       margin: 0 1rem;
     }
   }
@@ -26,13 +45,13 @@ export const bannerContainer = css`
 }
 `
 export const carouselMargin = css`
-  div.slider-frame {
-    margin: 0 !important;
-  }
+  // div.slider-frame {
+  //   margin: 0 !important;
+  // }
 
-  @media screen and (max-width: 960px) {
-    div.slider-frame {
-      margin: 0 1rem !important;
-    }
-  }
+  // @media screen and (max-width: 960px) {
+  //   div.slider-frame {
+  //     margin: 0 1rem !important;
+  //   }
+  // }
 `
