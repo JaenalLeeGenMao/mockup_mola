@@ -145,15 +145,10 @@ class Watch extends Component {
   }
 
   handlePlayMovie = () => {
-    const { isMobile, videoId, runtime: { appPackage } } = this.props
-    if (isMobile) {
-      const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-      if (!isSafari) {
-        const domain = config.endpoints.domain
-        const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
-        document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
-      }
-    }
+    const { videoId } = this.props
+    const domain = config.endpoints.domain
+    const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
+    document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   renderVideo = () => {

@@ -205,6 +205,7 @@ export const playMovieIcon = css`
 
 export const posterWrapper = css`
   position: relative;
+  min-height: 56.25vw;
 `
 
 export const playIcon = css`

@@ -263,6 +263,7 @@
 
   .poster__wrapper {
     position: relative;
+    min-height: 56.25vw;
   }
 
   .play_icon {
