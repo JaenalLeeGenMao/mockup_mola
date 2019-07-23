@@ -30,7 +30,6 @@ class Watch extends Component {
     toggleInfoBar: true,
     android_redirect_to_app: false,
     ios_redirect_to_app: false,
-    notice_bar_enabled: true,
     notice_bar_message: 'Siaran Percobaan',
   }
 
@@ -118,7 +117,6 @@ class Watch extends Component {
         this.setState({
           android_redirect_to_app,
           ios_redirect_to_app,
-          notice_bar_enabled,
           toggleInfoBar: notice_bar_enabled,
           notice_bar_message,
         })
