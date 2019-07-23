@@ -46,6 +46,7 @@ class WatchDesktop extends Component {
     loc: '',
     toggleInfoBar: true,
     countDownStatus: true,
+    notice_bar_message: 'Siaran Percobaan',
   }
 
   handleOnVideoLoad = player => {
@@ -126,6 +127,18 @@ class WatchDesktop extends Component {
     })
   }
 
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      if (result.data) {
+        const { notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        this.setState({
+          toggleInfoBar: notice_bar_enabled,
+          notice_bar_message,
+        })
+      }
+    })
+  }
+
   componentDidMount() {
     const {
       // getMovieDetail,
@@ -136,12 +149,6 @@ class WatchDesktop extends Component {
     } = this.props
 
     this.getLoc()
-    // getMovieDetail(movieId)
-    // fetchRecommendation(movieId)
-
-    // this.updateEncryption()
-    // const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
-    // getVUID(deviceId)
   }
 
   renderVideo = dataFetched => {
@@ -217,7 +224,7 @@ class WatchDesktop extends Component {
     }
     const isMovieBool = isMovie(dataFetched.contentType)
 
-    const { toggleInfoBar } = this.state
+    const { toggleInfoBar, notice_bar_message } = this.state
     let isMatchPassed = false
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
@@ -237,7 +244,7 @@ class WatchDesktop extends Component {
                   !isMatchPassed && (
                     <div className={infoBar}>
                       <div className={infoBarContainer}>
-                        <div className={infoBarText}>Siaran Percobaan</div>
+                        <div className={infoBarText}>{notice_bar_message}</div>
                         <div className={infoBarClose} onClick={this.handleCloseInfoBar}>
                           <span />
                         </div>

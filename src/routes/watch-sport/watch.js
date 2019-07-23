@@ -113,7 +113,6 @@ class Watch extends Component {
 
   getConfig = async () => {
     await get('/api/v2/config/app-params').then(result => {
-      console.log('result', result)
       if (result.data) {
         const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
         this.setState({
