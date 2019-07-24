@@ -14,6 +14,7 @@ import config from '@source/config'
 
 import Tracker from '@source/lib/tracker'
 import { isMovie } from '@source/lib/globalUtil'
+import watchPermission from '@source/lib/watchPermission'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import recommendationActions from '@actions/recommendation'
@@ -23,7 +24,7 @@ import Header from '@components/Header'
 import MovieDetailError from '@components/common/error'
 import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
-import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerContainer, videoTitle, playMovieButton, playMovieIcon, posterWrapper, playIcon } from './style'
+import { movieDetailContainer, movieDetailNotAvailableContainer, videoPlayerContainer, videoTitle, playMovieButton, playMovieIcon, posterWrapper, playIcon, movieDetailNotAllowed } from './style'
 import styles from '@global/style/css/grainBackground.css'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -228,9 +229,12 @@ class MovieDetail extends Component {
     }, 250)
   }
 
-  renderVideo = (poster, videoSettings) => {
+  renderVideo = (poster, videoSettings, permission) => {
     const { android_redirect_to_app, ios_redirect_to_app } = this.state
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const isAllowed = permission ? permission.isAllowed : true
+    let watchPermissionErrorCode = permission ? permission.errorCode : ''
+
     if (isApple) {
       //ios
       if (ios_redirect_to_app) {
@@ -241,6 +245,23 @@ class MovieDetail extends Component {
           </div>
         )
       } else {
+        if (!isAllowed) {
+          if (watchPermissionErrorCode == 'login_first') {
+            return (
+              <div className={movieDetailNotAllowed}>
+                <p>
+                  Silahkan{' '}
+                  <a style={{ color: '#005290' }} href="/accounts/login">
+                    {' '}
+                    login
+                  </a>{' '}
+                  untuk menyaksikan tayangan ini.
+                </p>
+              </div>
+            )
+          }
+        }
+
         return (
           <Theoplayer
             className={customTheoplayer}
@@ -268,6 +289,23 @@ class MovieDetail extends Component {
           </div>
         )
       } else {
+        if (!isAllowed) {
+          if (watchPermissionErrorCode == 'login_first') {
+            return (
+              <div className={movieDetailNotAllowed}>
+                <p>
+                  Silahkan{' '}
+                  <a style={{ color: '#005290' }} href="/accounts/login">
+                    {' '}
+                    login
+                  </a>{' '}
+                  untuk menyaksikan tayangan ini.
+                </p>
+              </div>
+            )
+          }
+        }
+
         return (
           <Theoplayer
             className={customTheoplayer}
@@ -294,6 +332,7 @@ class MovieDetail extends Component {
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
+    const permission = apiFetched ? watchPermission(dataFetched.permission, this.props.user.sid) : null
 
     const { user, recommendation, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -326,7 +365,9 @@ class MovieDetail extends Component {
             </Helmet>
             <Header logoOff stickyOff libraryOff searchOff profileOff isMobile isDark={0} backButtonOn leftMenuOff shareButtonOn {...this.props} />
             <div className={movieDetailContainer}>
-              <div className={videoPlayerContainer}>{loadPlayer ? <>{this.renderVideo(poster, videoSettings)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
+              <div className={videoPlayerContainer}>
+                {loadPlayer ? <>{this.renderVideo(poster, videoSettings, permission)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}
+              </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {dataFetched.trailers && dataFetched.trailers.length > 0 && <ContentTrailer videos={dataFetched.trailers} />}
               <ContentSynopsis content={dataFetched.description} />

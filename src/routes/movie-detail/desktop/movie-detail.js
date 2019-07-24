@@ -12,6 +12,7 @@ import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
 import Tracker from '@source/lib/tracker'
 import { isMovie } from '@source/lib/globalUtil'
+import watchPermission from '@source/lib/watchPermission'
 import history from '@source/history'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -22,7 +23,7 @@ import MovieDetailError from '@components/common/error'
 // import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
-import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom, arrowContainer, arrowIcon } from './style'
+import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom, arrowContainer, arrowIcon, movieDetailNotAllowed } from './style'
 
 import styles from '@global/style/css/grainBackground.css'
 import { customTheoplayer } from './theoplayer-style'
@@ -188,6 +189,10 @@ class MovieDetail extends Component {
     })
   }
 
+  handleGoBack = () => {
+    history.push('/')
+  }
+
   componentDidMount() {
     const {
       getMovieDetail,
@@ -243,16 +248,16 @@ class MovieDetail extends Component {
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
   }
 
-  handleGoBack = () => {
-    history.push('/')
-  }
+  renderVideo() {
+    const { loc } = this.state
 
-  render() {
-    const { isControllerActive, toggleSuggestion, loc } = this.state
-    const { meta: { status, error }, data } = this.props.movieDetail
+    const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
+    const permission = apiFetched ? watchPermission(dataFetched.permission, this.props.user.sid) : {}
+    const isAllowed = apiFetched ? permission.isAllowed : true
+    let watchPermissionErrorCode = apiFetched ? permission.errorCode : ''
 
     const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -266,8 +271,8 @@ class MovieDetail extends Component {
       ...checkAdsSettings,
     }
 
-    let drmStreamUrl = '',
-      isDRM = false
+    let drmStreamUrl = ''
+    let isDRM = false
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
       drmStreamUrl = isSafari ? dataFetched.drm.fairplay.streamUrl : dataFetched.drm.widevine.streamUrl
@@ -275,6 +280,59 @@ class MovieDetail extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
+
+    if (!isAllowed) {
+      if (watchPermissionErrorCode == 'login_first') {
+        return (
+          <div className={movieDetailNotAllowed}>
+            <p>
+              Silahkan{' '}
+              <a style={{ color: '#005290' }} href="/accounts/login">
+                {' '}
+                login
+              </a>{' '}
+              untuk menyaksikan tayangan ini.
+            </p>
+          </div>
+        )
+      }
+    }
+
+    return (
+      <>
+        <div className={arrowContainer} onClick={this.handleGoBack}>
+          <span className={arrowIcon} />
+        </div>
+        {loadPlayer ? (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            handleOnVideoPause={this.handleOnVideoPause}
+            handleOnVideoPlay={this.handleOnVideoPlay}
+            // handleVideoTimeUpdate={this.handleVideoTimeUpdate}
+            // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
+            // isDRM={true}
+            {...videoSettings}
+            showChildren
+            showBackBtn
+          />
+        ) : (
+          <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+        )}
+      </>
+    )
+  }
+
+  render() {
+    const { isControllerActive } = this.state
+    const { meta: { status, error }, data } = this.props.movieDetail
+    const apiFetched = status === 'success' && data.length > 0
+    const dataFetched = apiFetched ? data[0] : undefined
+
     let hiddenController = []
     if (dataFetched && dataFetched.trailers.length === 0) {
       hiddenController.push('trailers')
@@ -292,31 +350,7 @@ class MovieDetail extends Component {
               <title>{dataFetched.title}</title>
             </Helmet>
             <div style={{ width: '100vw', background: '#000' }}>
-              <div className={videoPlayerContainer}>
-                <div className={arrowContainer} onClick={this.handleGoBack}>
-                  <span className={arrowIcon} />
-                </div>
-                {loadPlayer ? (
-                  <Theoplayer
-                    className={customTheoplayer}
-                    subtitles={this.subtitles()}
-                    poster={poster}
-                    autoPlay={false}
-                    // certificateUrl="https://vmxapac.net:8063/?deviceId=Y2U1NmM3NzAtNmI4NS0zYjZjLTk4ZDMtOTFiN2FjMTZhYWUw"
-                    handleOnVideoLoad={this.handleOnVideoLoad}
-                    handleOnVideoPause={this.handleOnVideoPause}
-                    handleOnVideoPlay={this.handleOnVideoPlay}
-                    // handleVideoTimeUpdate={this.handleVideoTimeUpdate}
-                    // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
-                    // isDRM={true}
-                    {...videoSettings}
-                    showChildren
-                    showBackBtn={false}
-                  />
-                ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
-              </div>
+              <div className={videoPlayerContainer}>{this.renderVideo()}</div>
             </div>
             <div className={movieDetailBottom}>
               {isTrailer && <ContentOverview data={dataFetched} />}
