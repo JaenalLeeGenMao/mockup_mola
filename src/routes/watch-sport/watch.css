@@ -320,6 +320,15 @@
   }
 }
 
+.watchNotAllowed {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
 @media screen and (min-height: 600px) and (max-height: 768px) {
   .player__container {
     height: 68vh;

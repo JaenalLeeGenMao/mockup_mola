@@ -34,6 +34,17 @@ export const movieDetailBottom = css`
   margin-top: 1.5%;
 `
 
+export const movieDetailNotAllowed = css`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 2rem;
+`
+
 export const movieDetailNotAvailableContainer = css`
   width: 100%;
   height: 100%;

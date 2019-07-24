@@ -9,6 +9,7 @@ import { notificationBarBackground } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
+import watchPermission from '@source/lib/watchPermission'
 import config from '@source/config'
 import history from '@source/history'
 
@@ -162,10 +163,12 @@ class Watch extends Component {
     }, 250)
   }
 
-  renderVideo = () => {
+  renderVideo = permission => {
     const { user, getMovieDetail, videoId, isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const { android_redirect_to_app, ios_redirect_to_app } = this.state
+    const isAllowed = permission ? permission.isAllowed : true
+    let watchPermissionErrorCode = permission ? permission.errorCode : ''
 
     if (status === 'success' && data.length > 0) {
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -209,6 +212,22 @@ class Watch extends Component {
                 </div>
               )
             } else {
+              if (!isAllowed) {
+                if (watchPermissionErrorCode == 'login_first') {
+                  return (
+                    <div style={{ height: '230px' }} className={styles.watchNotAllowed}>
+                      <p>
+                        Silahkan{' '}
+                        <a style={{ color: '#005290' }} href="/accounts/login">
+                          {' '}
+                          login
+                        </a>{' '}
+                        untuk menyaksikan tayangan ini.
+                      </p>
+                    </div>
+                  )
+                }
+              }
               return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
             }
           } else {
@@ -221,10 +240,42 @@ class Watch extends Component {
                 </div>
               )
             } else {
+              if (!isAllowed) {
+                if (watchPermissionErrorCode == 'login_first') {
+                  return (
+                    <div style={{ height: '230px' }} className={styles.watchNotAllowed}>
+                      <p>
+                        Silahkan{' '}
+                        <a style={{ color: '#005290' }} href="/accounts/login">
+                          {' '}
+                          login
+                        </a>{' '}
+                        untuk menyaksikan tayangan ini.
+                      </p>
+                    </div>
+                  )
+                }
+              }
               return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
             }
           }
         } else {
+          if (!isAllowed) {
+            if (watchPermissionErrorCode == 'login_first') {
+              return (
+                <div style={{ 'font-size': '2rem', height: '100%' }} className={styles.watchNotAllowed}>
+                  <p>
+                    Silahkan{' '}
+                    <a style={{ color: '#005290' }} href="/accounts/login">
+                      {' '}
+                      login
+                    </a>{' '}
+                    untuk menyaksikan tayangan ini.
+                  </p>
+                </div>
+              )
+            }
+          }
           return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
         }
       }
@@ -246,6 +297,8 @@ class Watch extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
+    const permission = apiFetched ? watchPermission(dataFetched.permission, this.props.user.sid) : null
+
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
     let drmStreamUrl = '',
       isDRM = false
@@ -290,7 +343,7 @@ class Watch extends Component {
                   <div className={styles.arrow__container} onClick={this.handleGoBack}>
                     <span className={styles.arrow__icon} />
                   </div>
-                  {loadPlayer && this.renderVideo()}
+                  {loadPlayer && this.renderVideo(permission)}
                 </div>
               </div>
               {!isMobile && (
