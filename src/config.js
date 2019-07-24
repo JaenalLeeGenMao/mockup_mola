@@ -41,7 +41,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://new.stag.mola.tv',
-      api: '/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
+      api: 'https://new.stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
       auth: 'https://new.stag.mola.tv/accounts/_',
       domain: 'https://new.stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',

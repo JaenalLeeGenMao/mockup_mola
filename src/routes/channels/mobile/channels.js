@@ -6,12 +6,14 @@ import { IoIosArrowDown } from 'react-icons/io'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
+import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 import channelActions from '@actions/channels'
 
 import DRMConfig from '@source/lib/DRMConfig'
+import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import history from '@source/history'
 import { formatDateTime, addDateTime, isSameDay } from '@source/lib/dateTimeUtil'
@@ -19,6 +21,7 @@ import { formatDateTime, addDateTime, isSameDay } from '@source/lib/dateTimeUtil
 import Header from '@components/Header'
 import DropdownList from '@components/DropdownList'
 import MovieDetailError from '@components/common/error'
+import RedirectToApps from '@components/RedirectToApps'
 
 import Schedule from './schedule'
 import { getChannelProgrammeGuides } from '../selectors'
@@ -32,6 +35,8 @@ class Channels extends Component {
     activeDate: formatDateTime(Date.now() / 1000, 'ddd, DD MMM YYYY'),
     scheduleDateList: [],
     scheduleList: [],
+    android_redirect_to_app: false,
+    ios_redirect_to_app: false,
   }
 
   componentDidMount() {
@@ -39,6 +44,7 @@ class Channels extends Component {
       fullDate: moment().format('YYYYMMDD'),
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
+    this.getConfig()
     fetchChannelsPlaylist('channels-m').then(() => fetchChannelSchedule(selectedDate))
 
     fetchVideoByid(movieId)
@@ -65,6 +71,20 @@ class Channels extends Component {
     }
   }
 
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      if (result.data) {
+        const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        this.setState({
+          android_redirect_to_app,
+          ios_redirect_to_app,
+          // toggleInfoBar: notice_bar_enabled,
+          // notice_bar_message,
+        })
+      }
+    })
+  }
+
   handleSelectDate = date => {
     // const value = e.target.options[e.target.options.selectedIndex].innerText
     const selectedDate = {
@@ -72,7 +92,6 @@ class Channels extends Component {
     }
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
-      console.log('this.props.filtered schedule', this.props.channelSchedule)
       this.setState({
         activeDate: date,
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
@@ -123,12 +142,29 @@ class Channels extends Component {
     return myTheoPlayer
   }
 
+  handlePlayMovie = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+    document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+  }
+
+  handlePlayMovieApple = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    setTimeout(function() {
+      window.location.href = url
+    }, 250)
+  }
+
   handleOnVideoLoad = player => {
     this.player = player
   }
 
   render() {
-    const { scheduleList, activeDate, activeChannel, activeChannelId } = this.state
+    const { scheduleList, activeDate, activeChannel, activeChannelId, android_redirect_to_app, ios_redirect_to_app } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -156,48 +192,57 @@ class Channels extends Component {
 
     return (
       <>
-        {
-          dataFetched && (
-            <>
-              <div className={styles.header_container}>
-                <Header shadowMobile libraryOff className={styles.placeholder__header} isDark={0} activeMenu="channels" isMobile {...this.props} />
-              </div>
-              <div className={styles.channels_container}>
-                {channelsPlaylist.meta.status === 'success' && (
-                  <>
-                    <div className={styles.channels_top_wrapper}>
-                      {programmeGuides.data &&
-                        channelSchedule &&
-                        activeChannel &&
-                        activeChannelId && (
-                          <>
-                            <div className={styles.channels_list_wrapper}>
-                              <DropdownList className={styles.channels_dropdown_container} dataList={channelSchedule} activeId={activeChannelId} onClick={this.handleSelectChannel} />
-                            </div>
-
-                            <div className={styles.schedule_date_wrapper}>
-                              <DropdownList className={styles.channels_dropdown_container} dataList={this.getCalendar()} activeId={activeDate} onClick={this.handleSelectDate} />
-                            </div>
-                          </>
-                        )}
-                    </div>
-                    <div className={styles.video_container}>
-                      {loadPlayer ? (
-                        <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
-                      ) : (
-                          <div>Video Not Available</div> // styling later
-                        )}
-                    </div>
+        {dataFetched && (
+          <>
+            <div className={styles.header_container}>
+              <Header shadowMobile libraryOff className={styles.placeholder__header} isDark={0} activeMenu="channels" isMobile {...this.props} />
+            </div>
+            <div className={styles.channels_container}>
+              {channelsPlaylist.meta.status === 'success' && (
+                <>
+                  <div className={styles.channels_top_wrapper}>
                     {programmeGuides.data &&
-                      scheduleList.length > 0 && (
-                        <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                      channelSchedule &&
+                      activeChannel &&
+                      activeChannelId && (
+                        <>
+                          <div className={styles.channels_list_wrapper}>
+                            <DropdownList className={styles.channels_dropdown_container} dataList={channelSchedule} activeId={activeChannelId} onClick={this.handleSelectChannel} />
+                          </div>
+
+                          <div className={styles.schedule_date_wrapper}>
+                            <DropdownList className={styles.channels_dropdown_container} dataList={this.getCalendar()} activeId={activeDate} onClick={this.handleSelectDate} />
+                          </div>
+                        </>
                       )}
-                  </>
-                )}
-              </div>
-            </>
-          )
-        }
+                  </div>
+                  <div className={styles.video_container}>
+                    {loadPlayer ? (
+                      <RedirectToApps
+                        poster={poster}
+                        android_redirect_to_app={android_redirect_to_app}
+                        ios_redirect_to_app={ios_redirect_to_app}
+                        subtitles={this.subtitles()}
+                        handlePlayMovieApple={this.handlePlayMovieApple}
+                        handlePlayMovie={this.handlePlayMovie}
+                        handleOnVideoLoad={this.handleOnVideoLoad}
+                        videoSettings={videoSettings}
+                        customTheoplayer={customTheoplayer}
+                      />
+                    ) : (
+                      // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
+                      <div>Video Not Available</div> // styling later
+                    )}
+                  </div>
+                  {programmeGuides.data &&
+                    scheduleList.length > 0 && (
+                      <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                    )}
+                </>
+              )}
+            </div>
+          </>
+        )}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
