@@ -42,7 +42,11 @@ class MovieDetail extends Component {
     loc: '',
     countDownStatus: true,
     toggleInfoBar: true,
+    android_redirect_to_app: false,
+    ios_redirect_to_app: false,
+    notice_bar_message: 'Siaran Percobaan',
   }
+
   subtitles() {
     const { movieDetail } = this.props
     const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
@@ -82,10 +86,25 @@ class MovieDetail extends Component {
     })
   }
 
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      if (result.data) {
+        const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        this.setState({
+          android_redirect_to_app,
+          ios_redirect_to_app,
+          toggleInfoBar: notice_bar_enabled,
+          notice_bar_message,
+        })
+      }
+    })
+  }
+
   componentDidMount() {
     const { fetchRecommendation } = this.props
 
     this.getLoc()
+    this.getConfig()
     // fetchRecommendation(movieId)
   }
 
@@ -119,23 +138,8 @@ class MovieDetail extends Component {
       }
 
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
-      // if (isMovie) {
-      //   return (
-      //     <Theoplayer
-      //       className={customTheoplayer}
-      //       subtitles={this.subtitles()}
-      //       poster={poster}
-      //       autoPlay={false}
-      //       handleOnVideoLoad={this.handleOnVideoLoad}
-      //       {...videoSettings}
-      //       showChildren
-      //       showBackBtn />
-      //   )
-      // } else {
 
-      // }
-
-      const { toggleInfoBar } = this.state
+      const { toggleInfoBar, ios_redirect_to_app, android_redirect_to_app } = this.state
       let isMatchPassed = false
       if (dataFetched.endTime < Date.now() / 1000) {
         isMatchPassed = true
@@ -146,8 +150,43 @@ class MovieDetail extends Component {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={true} />
       } else {
         if (isApple) {
-          return (
-            <Theoplayer
+          //ios
+          if (ios_redirect_to_app) {
+            return (
+              <div className={styles.poster__wrapper}>
+                <img src={poster} />
+                <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+              </div>
+            )
+          } else {
+            return (
+              <Theoplayer
+                className={customTheoplayer}
+                subtitles={this.subtitles()}
+                poster={poster}
+                autoPlay={false}
+                // certificateUrl="test"
+                // handleOnVideoLoad={this.handleOnVideoLoad}
+                // handleOnVideoPause={this.handleOnVideoPause}
+                // handleOnLoadedData={this.handleOnLoadedData}
+                // handleOnReadyStateChange={this.handleOnReadyStateChange}
+                showBackBtn={false}
+                {...videoSettings}
+                isMobile
+              />
+            )
+          }
+        } else {
+          //android
+          if (android_redirect_to_app) {
+            return (
+              <div className={styles.poster__wrapper}>
+                <img src={poster} />
+                <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+              </div>
+            )
+          } else {
+            ;<Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
               poster={poster}
@@ -161,14 +200,7 @@ class MovieDetail extends Component {
               {...videoSettings}
               isMobile
             />
-          )
-        } else {
-          return (
-            <div className={posterWrapper}>
-              <img src={poster} />
-              <span className={playIcon} onClick={this.handlePlayMovie} />
-            </div>
-          )
+          }
         }
       }
     }
@@ -219,7 +251,7 @@ class MovieDetail extends Component {
       containerWidth: isMovieBool ? undefined : '80px',
     }
 
-    const { toggleInfoBar } = this.state
+    const { toggleInfoBar, notice_bar_message } = this.state
     let isMatchPassed = false
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
@@ -235,7 +267,7 @@ class MovieDetail extends Component {
                 !isMatchPassed && (
                   <div className={infoBar}>
                     <div className={infoBarContainer}>
-                      <div className={infoBarText}>Siaran Percobaan</div>
+                      <div className={infoBarText}>{notice_bar_message}</div>
                       <div className={infoBarClose} onClick={this.handleCloseInfoBar}>
                         <span />
                       </div>

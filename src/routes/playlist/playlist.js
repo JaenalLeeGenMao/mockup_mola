@@ -87,7 +87,6 @@ class Playlist extends React.Component {
       } else {
         this.props.getPlaylist(id)
       }
-      console.log(id)
       this.updateWindowDimensions()
       window.addEventListener('resize', this.updateWindowDimensions)
     }

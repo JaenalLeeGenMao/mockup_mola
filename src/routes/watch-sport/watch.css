@@ -42,7 +42,11 @@
 }
 
 .countdown__winfobar {
-  height: calc(100% - 38px) !important;
+  height: calc(56.25vw - 38px) !important;
+}
+
+.countdown__woinfobar {
+  height: 56.25vw !important;
 }
 
 .container {
@@ -263,6 +267,7 @@
 
   .poster__wrapper {
     position: relative;
+    min-height: 56.25vw;
   }
 
   .play_icon {

@@ -385,7 +385,6 @@ const getPlaylistPlaylists = id => {
     ...endpoints.setting,
   })
     .then(response => {
-      console.log(response)
       const result = utils.normalizeHomePlaylist(response)
       let background = ''
       let title = ''
@@ -394,9 +393,7 @@ const getPlaylistPlaylists = id => {
         background = response.data.data[0].attributes.images.cover.background.landscape
         title = response.data.data[0].attributes.title
         description = response.data.data[0].attributes.description
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error) {}
       return {
         background,
         title,

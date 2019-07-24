@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
+import { get } from 'axios'
 
 import { notificationBarBackground } from '@global/imageUrl'
 import { updateCustomMeta } from '@source/DOMUtils'
@@ -27,6 +28,9 @@ class Watch extends Component {
     movieDetail: [],
     countDownStatus: true,
     toggleInfoBar: true,
+    android_redirect_to_app: false,
+    ios_redirect_to_app: false,
+    notice_bar_message: 'Siaran Percobaan',
   }
 
   updateMetaTag() {
@@ -106,10 +110,25 @@ class Watch extends Component {
     return myTheoPlayer
   }
 
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      if (result.data) {
+        const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        this.setState({
+          android_redirect_to_app,
+          ios_redirect_to_app,
+          toggleInfoBar: notice_bar_enabled,
+          notice_bar_message,
+        })
+      }
+    })
+  }
+
   componentDidMount() {
     const { getMovieDetail, videoId, getVUID, user } = this.props
 
     getMovieDetail(videoId)
+    this.getConfig()
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
@@ -126,20 +145,26 @@ class Watch extends Component {
   }
 
   handlePlayMovie = () => {
-    const { isMobile, videoId, runtime: { appPackage } } = this.props
-    if (isMobile) {
-      const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-      if (!isSafari) {
-        const domain = config.endpoints.domain
-        const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
-        document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
-      }
-    }
+    const { videoId } = this.props
+    const domain = config.endpoints.domain
+    const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
+    document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+  }
+
+  handlePlayMovieApple = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    setTimeout(function() {
+      window.location.href = url
+    }, 250)
   }
 
   renderVideo = () => {
     const { user, getMovieDetail, videoId, isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
+    const { android_redirect_to_app, ios_redirect_to_app } = this.state
 
     if (status === 'success' && data.length > 0) {
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -159,17 +184,45 @@ class Watch extends Component {
 
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-      const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : ''
+      const countDownClass = toggleInfoBar && !isMatchPassed ? styles.countdown__winfobar : styles.countdown__woinfobar
       if (this.state.countDownStatus && data[0].contentType === 3 && data[0].startTime * 1000 > Date.now()) {
-        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={data[0].startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={isMobile} />
+        return (
+          <CountDown
+            className={isMobile ? countDownClass : ''}
+            hideCountDown={this.hideCountDown}
+            startTime={data[0].startTime}
+            videoId={videoId}
+            getMovieDetail={getMovieDetail}
+            isMobile={isMobile}
+          />
+        )
       } else if (data[0].streamSourceUrl) {
-        if (isMobile && !isApple) {
-          return (
-            <div className={styles.poster__wrapper}>
-              <img src={poster} />
-              <span className={styles.play_icon} onClick={this.handlePlayMovie} />
-            </div>
-          )
+        if (isMobile) {
+          if (isApple) {
+            //ios
+            if (ios_redirect_to_app) {
+              return (
+                <div className={styles.poster__wrapper}>
+                  <img src={poster} />
+                  <span className={styles.play_icon} onClick={this.handlePlayMovieApple} />
+                </div>
+              )
+            } else {
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+            }
+          } else {
+            //android
+            if (android_redirect_to_app) {
+              return (
+                <div className={styles.poster__wrapper}>
+                  <img src={poster} />
+                  <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                </div>
+              )
+            } else {
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+            }
+          }
         } else {
           return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
         }
@@ -184,7 +237,7 @@ class Watch extends Component {
   }
 
   render() {
-    const { isMobile, runtime: { appUrl } } = this.props
+    const { isMobile } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -199,7 +252,7 @@ class Watch extends Component {
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
-    const { toggleInfoBar } = this.state
+    const { toggleInfoBar, notice_bar_message } = this.state
     let isMatchPassed = false
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
@@ -221,7 +274,7 @@ class Watch extends Component {
                   !isMatchPassed && (
                     <div className={styles.info_bar}>
                       <div className={styles.info_bar__container}>
-                        <div className={styles.info_bar__text}>Siaran Percobaan</div>
+                        <div className={styles.info_bar__text}>{notice_bar_message}</div>
                         <div className={styles.info_bar__close} onClick={this.handleCloseInfoBar}>
                           <span />
                         </div>
