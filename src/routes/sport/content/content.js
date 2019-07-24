@@ -111,7 +111,7 @@ class Content extends Component {
               <div className={styles.content__grid_see_more_wrapper} style={isMobile ? moreStyles : null}>
                 {isMobile ? (
                   <Link
-                    to={`/movie-detail/${id}`}
+                    to={`/watch?v=${id}`}
                     className={`${styles.content__grid_see_more_mobile} ${styles.white} ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
                     onClick={type === 'playlists' && this.handleClick}
                   >
@@ -120,7 +120,7 @@ class Content extends Component {
                   </Link>
                 ) : (
                   <Link
-                    to={`/movie-detail/${id}`}
+                    to={`/watch?v=${id}`}
                     className={`${styles.content__grid_see_more_desktop} ${isDark ? styles.black : styles.white} ${type === 'playlists' ? 'tourMovieDiscover' : 'tourMovieDetail'}`}
                     onClick={type === 'playlists' && this.handleClick}
                   >

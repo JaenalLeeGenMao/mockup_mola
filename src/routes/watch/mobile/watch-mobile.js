@@ -26,6 +26,8 @@ import {
   infoBarContainer,
   infoBarClose,
   infoBarText,
+  posterWrapper,
+  playIcon,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -119,11 +121,10 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}`
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.href = url
     }, 250)
   }
-
 
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId } = this.props
@@ -160,9 +161,9 @@ class MovieDetail extends Component {
           //ios
           if (ios_redirect_to_app) {
             return (
-              <div className={styles.poster__wrapper}>
+              <div className={posterWrapper}>
                 <img src={poster} />
-                <span className={styles.play_icon} onClick={this.handlePlayMovieApple} />
+                <span className={playIcon} onClick={this.handlePlayMovieApple} />
               </div>
             )
           } else {
@@ -186,13 +187,13 @@ class MovieDetail extends Component {
           //android
           if (android_redirect_to_app) {
             return (
-              <div className={styles.poster__wrapper}>
+              <div className={posterWrapper}>
                 <img src={poster} />
-                <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                <span className={playIcon} onClick={this.handlePlayMovie} />
               </div>
             )
           } else {
-            <Theoplayer
+            ;<Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
               poster={poster}

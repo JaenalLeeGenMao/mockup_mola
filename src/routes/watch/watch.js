@@ -68,7 +68,7 @@ class Watch extends Component {
   }
 
   render() {
-    const { isMobile, vuid } = this.props
+    const { isMobile, vuid, videoId } = this.props
     const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -80,8 +80,8 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {isMobile && <WatchMobile movieDetail={this.props.movieDetail} vuid={vuid} />}
-            {!isMobile && <WatchDesktop movieDetail={this.props.movieDetail} vuid={vuid} />}
+            {isMobile && <WatchMobile videoId={videoId} movieDetail={this.props.movieDetail} vuid={vuid} />}
+            {!isMobile && <WatchDesktop videoId={videoId} movieDetail={this.props.movieDetail} vuid={vuid} />}
           </>
         )}
       </>

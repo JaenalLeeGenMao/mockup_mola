@@ -18,7 +18,7 @@ const Trailer = ({ style = {}, videos = [] }) => {
           {videos.map(trailerData => {
             const { id, attributes: { images: { thumbnails: { preview } }, title } } = trailerData
             return (
-              <Link to={`/movie-detail/${id}`} key={id}>
+              <Link to={`/watch?v=${id}`} key={id}>
                 <VideoThumbnail thumbnailUrl={preview} thumbnailPosition="top" className={trailerPlayerDetail}>
                   <div className={titleWrapper}>
                     <div className={titleTrailer}> {title} </div>

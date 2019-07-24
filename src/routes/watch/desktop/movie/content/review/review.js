@@ -1,6 +1,6 @@
 import React from 'react'
 import Slider from 'react-slick'
-import ReviewArrow from '@routes/movie-detail/arrow'
+import ReviewArrow from '../arrow'
 import { reviewSliderContainer, reviewSliderWrapper, reviewSliderDetail, reviewSliderProfile, reviewSliderQuotes, reviewAuthor } from './style'
 
 const Review = ({ data }) => {
