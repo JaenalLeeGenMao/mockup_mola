@@ -168,9 +168,11 @@ class Playlist extends React.Component {
             <>
               <div className={playlistContainer}>
                 {isMobile ? (
-                  <MobileBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
+                  // <MobileBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
+                  <MobileBackgroundStyle url={backgroundImage} />
                 ) : (
-                  <DesktopBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
+                  // <DesktopBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
+                  <DesktopBackgroundStyle url={backgroundImage} />
                 )}
                 <div style={{ position: 'relative' }}>
                   {this.renderTitle()}
