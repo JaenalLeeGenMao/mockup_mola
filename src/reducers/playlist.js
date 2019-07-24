@@ -3,10 +3,10 @@ import { findIndexByKeyValue } from './util'
 
 const initialState = {
   playlists: {
-    background: '',
-    description: '',
-    title: '',
     meta: {
+      background: '',
+      description: '',
+      title: '',
       status: 'loading',
     },
     data: [],

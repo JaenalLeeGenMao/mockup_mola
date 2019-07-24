@@ -1,56 +1,18 @@
 import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { css } from 'react-emotion'
 
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
-import Carousel from '@components/carousel-portrait'
+import Carousel from '@components/carousel'
 import VideoCard from '@components/video-card'
 import playlistAction from '@actions/playlist'
 import PlaylistError from '@components/common/error'
 
 import Placeholder from './placeholder'
-import s from './playlist.css'
-import moment from 'moment'
+import { playlistContainer, desktopBackgroundStyle, mobileBackgroundStyle, playlistHeadDesktop, playlistHeadMobile, playlistList } from './playlistStyle'
 
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
-
-const desktopBackgroundStyle = url => css`
-min-height: 100%;
-&::before {
-  content: '';
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: top;
-  background-image: url(${url});
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  -webkit-filter: blur(8px) brightness(0.8);
-  -moz-filter: blur(8px) brightness(0.8);
-  -ms-filter: blur(8px) brightness(0.8);
-  -o-filter: blur(8px) brightness(0.8);
-  filter: blur(8px) brightness(0.8);
-}
-}
-`
-const mobileBackgroundStyle = url => css`
-content: '';
-  background-repeat: no-repeat;
-  // background-attachment: fixed;
-  background-position: top;
-  background-image: url(${url});
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-`
 
 class Playlist extends React.Component {
   constructor(props) {
@@ -72,7 +34,7 @@ class Playlist extends React.Component {
       playlists.data.map((playlist, index) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
           trackedPlaylistIds.push(playlist.id)
-          getPlaylistVideo(playlist)
+          getPlaylistVideo(playlist, index)
         }
       })
     }
@@ -100,14 +62,34 @@ class Playlist extends React.Component {
     this.setState({ viewportWidth: window.innerWidth })
   }
 
-  renderPlaylistTitleDescription() {
-    const { title, description } = this.props.playlist.playlists
+  renderTitleDesktop() {
+    const { title, description } = this.props.playlist.playlists.meta
     return (
-      <div className={s.playlist_head}>
-        <h1> {title}</h1>
-        <p>{description}</p>
+      <div className={playlistHeadDesktop}>
+        <p className="title"> {title}</p>
+        <p className="description">{description}</p>
       </div>
     )
+  }
+
+  renderTitleMobile() {
+    const { title, description } = this.props.playlist.playlists.meta
+    return (
+      <div className={playlistHeadMobile}>
+        <div className="line" />
+        <p className="title"> {title}</p>
+        <p className="description">{description}</p>
+      </div>
+    )
+  }
+  renderTitle() {
+    const isMobile = this.state.viewportWidth <= 680
+
+    if (isMobile) {
+      return this.renderTitleMobile()
+    } else {
+      return this.renderTitleDesktop()
+    }
   }
 
   handleOnClick = id => {
@@ -129,14 +111,12 @@ class Playlist extends React.Component {
     const slideToScroll = isMobile ? carouselSetting.mobileScroll : carouselSetting.desktopScroll
     const hideNextIcon = length => length <= carouselSetting.desktopShow
 
-    // SEASON NUMBER USING SORTORDER IS JUST TEMPORARY SOLUTION
-
     return (
       <>
         {this.props.playlist.videos.data.map((element, i) => (
           <LazyLoad key={'playlist' + i}>
-            <div className={s.playlist_list}>
-              <p className={s.season_text}>{element.meta.sortOrder ? `Season ${element.meta.sortOrder}` : ''}</p>
+            <div className={playlistList}>
+              <p className="season_text">{element.meta.seasonNumber ? `Season ${element.meta.seasonNumber}` : ''}</p>
 
               <Carousel framePadding={'0px 2rem'} hideNextIcon={hideNextIcon(element.data.length)} slidesToScroll={slideToScroll} slidesToShow={slidesToShow} dragging={true}>
                 {element.data.map((video, idx) => (
@@ -157,16 +137,17 @@ class Playlist extends React.Component {
 
   renderHeader() {
     const isDark = false
+    const isMobile = this.state.viewportWidth <= 680
     return (
-      <div className={s.headerContainer}>
-        <Header libraryOff activeMenu="movie" isDark={isDark} {...this.props} />
+      <div className="header_container">
+        <Header blackBackground isMobile={isMobile} libraryOff activeMenu="movie" isDark={isDark} {...this.props} />
       </div>
     )
   }
 
   render() {
     const isMobile = this.state.viewportWidth <= 680
-    const { meta: { status: playlistStatus, error: playlistError } } = this.props.playlist.playlists
+    const { meta: { status: playlistStatus, error: playlistError, background: backgroundImage } } = this.props.playlist.playlists
     const { meta: { status: videoStatus, error: videoError } } = this.props.playlist.videos
     // const divStyle = {
     //   backgroundImage: `url(https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337)`,
@@ -175,9 +156,6 @@ class Playlist extends React.Component {
     //   'background-position': 'center',
     // }
     const { videos, playlists } = this.props.playlist
-
-    // const testProps = this.props.playlist.genreSpo
-    // console.log('testProps ind', testProps)
 
     return (
       <>
@@ -188,16 +166,9 @@ class Playlist extends React.Component {
           videos.data.length > 0 &&
           videos.data.length === playlists.data.length && (
             <>
-              <div
-                className={`${s.playlist_container} ${
-                  isMobile
-                    ? mobileBackgroundStyle('https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337')
-                    : desktopBackgroundStyle('https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337')
-                }`}
-                id="containercard"
-              >
+              <div className={`${playlistContainer} ${isMobile ? mobileBackgroundStyle('') : desktopBackgroundStyle('https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337')}`}>
                 <div style={{ position: 'relative' }}>
-                  {this.renderPlaylistTitleDescription()}
+                  {this.renderTitle()}
                   {this.renderPlaylist()}
                 </div>
               </div>
@@ -215,7 +186,7 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
   getPlaylist: id => dispatch(playlistAction.getPlaylist(id)),
-  getPlaylistVideo: id => dispatch(playlistAction.getPlaylistVideo(id)),
+  getPlaylistVideo: (video, index) => dispatch(playlistAction.getPlaylistVideo(video, index)),
 })
 
-export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Playlist)
+export default compose(connect(mapStateToProps, mapDispatchToProps))(Playlist)

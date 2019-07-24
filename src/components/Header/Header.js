@@ -103,6 +103,7 @@ class Header extends Component {
       backButtonOn = false,
       shareButtonOn = false,
       greyBackground,
+      blackBackground,
       isLandscape = false,
       opacity = '',
       containerWidth = '100%',
@@ -114,8 +115,10 @@ class Header extends Component {
 
     return (
       <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
-        {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
-        {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
+        {isMobile && !greyBackground && !blackBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
+        {isMobile && greyBackground && !blackBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
+        {isMobile && !greyBackground && blackBackground && <div className={`${styles.header__black_background}`} style={{ opacity: opacity }} />}
+
         {!isMobile && <div className={styles.header__shadow_desktop} />}
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : logoWrapper}>
           {!logoOff && (

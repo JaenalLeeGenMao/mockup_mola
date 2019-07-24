@@ -34,13 +34,14 @@ const getPlaylist = id => dispatch => {
   })
 }
 
-const getPlaylistVideo = playlist => dispatch => {
-  return Mola.getPlaylistVideo({ id: playlist.id }).then(result => {
+const getPlaylistVideo = (playlist, index) => dispatch => {
+  return Mola.getHomeVideo({ id: playlist.id }).then(result => {
     const results = {
       meta: {
         status: result.meta.status,
         id: playlist.id,
-        sortOrder: playlist.sortOrder,
+        sortOrder: index,
+        seasonNumber: playlist.seasonNumber ? playlist.seasonNumber : '',
       },
       data: result.data,
     }
