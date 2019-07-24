@@ -50,7 +50,7 @@ class BannerCarousel extends Component {
         autoGenerateStyleTag={false} /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
-        cellSpacing={this.props.cellSpacing || !isMobile ? 5 : 12}
+        cellSpacing={isMobile ? 5 : this.props.cellSpacing || 12}
         className={`${carouselContainer} ${this.props.className}`}
         disableEdgeSwiping={true}
         dragging={this.props.dragging}
@@ -65,9 +65,10 @@ class BannerCarousel extends Component {
         slidesToScroll={this.props.slidesToScroll}
         slidesToShow={this.props.slidesToShow}
         transitionMode={this.props.transitionMode}
+        width={this.props.width}
         withoutControls={this.props.withoutControls}
         wrapAround={this.props.wrap}
-        zoomScale={this.props.zoomScale || 0.85}
+        zoomScale={isMobile ? 0.95 : this.props.zoomScale || 0.85}
         renderBottomCenterControls={() => {
           return false
         }}

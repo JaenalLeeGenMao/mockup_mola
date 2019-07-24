@@ -7,11 +7,11 @@ export const container = css`
   max-width: 1280px;
 
   h3 {
-    color: #ffffff;
+    color: #6f6f6f;
     font-size: 1.28rem;
+    font-weight: 300;
     display: inline-block;
     vertical-align: middle;
-    color: white;
     font-weight: 400;
   }
 
@@ -20,13 +20,12 @@ export const container = css`
     font-size: 1.28rem;
     display: block;
     vertical-align: middle;
-    color: white;
     font-weight: 400;
   }
 
   @media screen and (max-width: 960px) {
     h3 {
-      color: #ffffff;
+      color: #6f6f6f;
       font-size: 15px;
       margin: 0 1rem;
     }
@@ -34,7 +33,6 @@ export const container = css`
     p {
       color: #ffffff;
       font-size: 11px;
-      margin: 0 1rem;
     }
   }
 `

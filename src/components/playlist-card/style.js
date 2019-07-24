@@ -1,9 +1,9 @@
-import { css } from 'react-emotion'
+import styled, { css } from 'react-emotion'
 
 export const playlistContainer = css`
   position: relative;
   display: inline-block;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   transition: all ease 500ms;
 
   :hover {
@@ -12,10 +12,14 @@ export const playlistContainer = css`
     transform: scale(1.05);
   }
 
+  :hover.hoverOff {
+    transform: scale(1);
+  }
+
   p {
     position: relative;
     height: 2.25rem !important;
-    font-size: .81rem !important;
+    font-size: 0.81rem !important;
     max-width: 100%;
     max-height: 2.25rem;
     text-overflow: clip;
@@ -28,7 +32,7 @@ export const playlistContainer = css`
     @media screen and (max-width: 960px) {
       opacity: 1;
       max-width: 100%;
-      margin: 0 .5rem;
+      margin: 0 0.5rem;
       font-size: 11px;
       max-height: 24px;
       text-overflow: clip;
@@ -59,7 +63,7 @@ export const playlistContainer = css`
     width: 45vw;
 
     @media screen and (max-width: 960px) {
-      width: 100%;
+      width: 80vw;
     }
   }
 
@@ -67,7 +71,6 @@ export const playlistContainer = css`
     position: absolute;
     z-index: 0;
   }
-}
 `
 
 export const icons = css`

@@ -53,8 +53,8 @@ class Placeholder extends Component {
           autoplay={false}
           sliderCoin={true}
           dragging={true}
-          slidesToShow={isMobile ? 1 : 2}
-          transitionMode={isMobile ? 'scroll' : 'scroll3d'}
+          slidesToShow={isMobile ? 1.25 : 2.25}
+          transitionMode={'scroll3d'}
           framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
         >
           {banners.map((_, bannerIndex) => (

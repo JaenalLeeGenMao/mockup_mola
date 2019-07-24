@@ -14,7 +14,7 @@ export const carouselContainer = css`
 
   & .slider-frame {
     padding: 1rem 0 !important;
-    margin: 1rem 0 !important;
+    // margin: 1rem 0 !important;
   }
 
   li.slide-current {
@@ -71,8 +71,8 @@ export const hiddenButtons = css`
   padding: 1rem;
   opacity: 1;
   height: 100% !important;
-  width: 35vw;
-  max-width: 370px;
+  width: 30vw;
+  // max-width: 370px;
   opacity: 0;
   position: relative;
   cursor: pointer;
@@ -88,7 +88,7 @@ export const destroyButtons = css`
   opacity: 1;
   height: 100% !important;
   width: 3vw;
-  max-width: 370px;
+  // max-width: 370px;
   opacity: 0 !important; /* nanti di hilangin, tergantung kebutuhan */
   position: relative;
   cursor: pointer;
