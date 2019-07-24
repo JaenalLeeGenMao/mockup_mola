@@ -222,7 +222,11 @@ export const playIcon = css`
   position: absolute;
 `
 export const countdownWinfobar = css`
-  height: calc(100% - 38px) !important;
+  height: calc(56.25vw - 38px) !important;
+`
+
+export const countdownWOinfobar = css`
+  height: 56.25vw !important;
 `
 
 export const infoBar = css`

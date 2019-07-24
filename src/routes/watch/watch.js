@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Helmet } from 'react-helmet'
 import { getVUID } from '@actions/vuid'
 import * as movieDetailActions from '@actions/movie-detail'
@@ -29,7 +27,7 @@ class Watch extends Component {
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
       // this.getLoc()
-      getMovieDetail(movieId)
+      getMovieDetail(videoId)
     }
     this.updateMetaTag()
   }
@@ -71,7 +69,7 @@ class Watch extends Component {
 
   render() {
     const { isMobile, vuid } = this.props
-    const { meta: { status, error }, data } = this.props.movieDetail
+    const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
 

@@ -38,7 +38,7 @@ class MovieDetail extends Component {
   }
 
   uuidADS = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -193,7 +193,7 @@ class MovieDetail extends Component {
     if (prevProps.movieDetail.meta.status !== movieDetail.meta.status && movieDetail.meta.status === 'success') {
       if (!isMovie(movieDetail.data[0].contentType)) {
         const params = Object.keys(urlParams)
-          .map(function(key) {
+          .map(function (key) {
             return key + '=' + urlParams[key]
           })
           .join('&')
@@ -223,7 +223,7 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/watch?v=${movieId}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -252,7 +252,6 @@ class MovieDetail extends Component {
             handleOnVideoPause={this.handleOnVideoPause}
             handleOnLoadedData={this.handleOnLoadedData}
             handleOnReadyStateChange={this.handleOnReadyStateChange}
-            showBackBtn={false}
             {...videoSettings}
             isMobile
           />
@@ -279,7 +278,6 @@ class MovieDetail extends Component {
             handleOnVideoPause={this.handleOnVideoPause}
             handleOnLoadedData={this.handleOnLoadedData}
             handleOnReadyStateChange={this.handleOnReadyStateChange}
-            showBackBtn={false}
             {...videoSettings}
             isMobile
           />

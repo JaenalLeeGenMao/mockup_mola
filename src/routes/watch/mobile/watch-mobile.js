@@ -20,9 +20,8 @@ import {
   movieDetailNotAvailableContainer,
   videoPlayerContainer,
   videoTitle,
-  posterWrapper,
-  playIcon,
   countdownWinfobar,
+  countdownWOinfobar,
   infoBar,
   infoBarContainer,
   infoBarClose,
@@ -101,7 +100,7 @@ class MovieDetail extends Component {
   }
 
   componentDidMount() {
-    const { fetchRecommendation } = this.props
+    // const { fetchRecommendation } = this.props
 
     this.getLoc()
     this.getConfig()
@@ -109,17 +108,25 @@ class MovieDetail extends Component {
   }
 
   handlePlayMovie = () => {
-    const { movieId } = this.props
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (!isSafari) {
-      const domain = config.endpoints.domain
-      const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-      document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
-    }
+    const { videoId } = this.props
+    const domain = config.endpoints.domain
+    const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
+    document.location = `intent://mola.tv/watch?v=${videoId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
+  handlePlayMovieApple = () => {
+    const { videoId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${videoId}`
+    document.location = `molaapp://mola.tv/watch?v=${videoId}`
+    setTimeout(function () {
+      window.location.href = url
+    }, 250)
+  }
+
+
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, isMobile } = this.props
+    const { user, getMovieDetail, videoId } = this.props
     if (dataFetched) {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -145,7 +152,7 @@ class MovieDetail extends Component {
         isMatchPassed = true
       }
 
-      const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
+      const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : countdownWOinfobar
       if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
         return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={true} />
       } else {
@@ -155,7 +162,7 @@ class MovieDetail extends Component {
             return (
               <div className={styles.poster__wrapper}>
                 <img src={poster} />
-                <span className={styles.play_icon} onClick={this.handlePlayMovie} />
+                <span className={styles.play_icon} onClick={this.handlePlayMovieApple} />
               </div>
             )
           } else {
@@ -170,7 +177,6 @@ class MovieDetail extends Component {
                 // handleOnVideoPause={this.handleOnVideoPause}
                 // handleOnLoadedData={this.handleOnLoadedData}
                 // handleOnReadyStateChange={this.handleOnReadyStateChange}
-                showBackBtn={false}
                 {...videoSettings}
                 isMobile
               />
@@ -186,7 +192,7 @@ class MovieDetail extends Component {
               </div>
             )
           } else {
-            ;<Theoplayer
+            <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
               poster={poster}
@@ -196,7 +202,6 @@ class MovieDetail extends Component {
               // handleOnVideoPause={this.handleOnVideoPause}
               // handleOnLoadedData={this.handleOnLoadedData}
               // handleOnReadyStateChange={this.handleOnReadyStateChange}
-              showBackBtn={false}
               {...videoSettings}
               isMobile
             />
@@ -223,9 +228,8 @@ class MovieDetail extends Component {
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-    const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    const { user, recommendation, movieDetail: { data: movieDetailData } } = this.props
+    const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
     user.loc = loc
     const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
@@ -233,9 +237,9 @@ class MovieDetail extends Component {
 
     const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
 
-    const videoSettings = {
-      ...checkAdsSettings,
-    }
+    // const videoSettings = {
+    //   ...checkAdsSettings,
+    // }
 
     let drmStreamUrl = '',
       isDRM = false

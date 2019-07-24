@@ -72,7 +72,7 @@ const Overview = ({ data }) => {
           </p>
           <p className={sectionLeftDuration}>
             {releaseYear(releaseDate)}
-            <span>{suitableAge ? suitableAge : '13+'}</span>
+            <span>{suitableAge ? `${suitableAge}+` : '13+'}</span>
             {durationTime}
           </p>
         </div>
