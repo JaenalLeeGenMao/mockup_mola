@@ -193,10 +193,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-              id: league.id,
-              name: league.attributes.name,
-              iconUrl: league.attributes.iconUrl,
-            }
+            id: league.id,
+            name: league.attributes.name,
+            iconUrl: league.attributes.iconUrl,
+          }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -271,7 +271,7 @@ const normalizeHomeVideo = response => {
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) {}
+    } catch (err) { }
   }
   return []
 }
@@ -393,6 +393,7 @@ const normalizeVideoDetail = response => {
           releaseDate,
           subtitles,
           people,
+          permission,
           genre,
           isDark,
           permission,
@@ -414,6 +415,7 @@ const normalizeVideoDetail = response => {
         trailers,
         description,
         source,
+        permission,
         streamSourceUrl,
         drm,
         suitableAge,
