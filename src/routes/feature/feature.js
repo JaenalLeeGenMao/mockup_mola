@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
@@ -48,8 +49,8 @@ class Feature extends Component {
   componentDidUpdate() {
     const { playlists, videos } = this.props.feature
     if (playlists.meta.status === 'success' && playlists.data.length > 0 && playlists.data.length !== videos.data.length) {
-      playlists.data.map(playlist => {
-        this.props.onHandleVideo(playlist)
+      playlists.data.map((playlist, playlistIndex) => {
+        this.props.onHandleVideo(playlist, playlistIndex)
       })
     }
   }
@@ -109,24 +110,28 @@ class Feature extends Component {
       errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
     } else if (videos.meta.error) {
       errorObj = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
+    } else if (articles.meta.error) {
+      errorObj = { code: getErrorCode(articles.meta.error), description: 'Video request failed' }
     }
 
     return (
       <>
+        {!isError && <Header libraryOff color={false} {...this.props} isMobile={isMobile} />}
         {isLoading && <Placeholder isMobile={isMobile} />}
         {isError && <FeatureError status={errorObj.code} message={errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />}
         {isSuccess && (
           <>
+            <div style={{ height: '8vh' }} />
             {banners.data.length > 0 && (
               <Carousel
                 wrap={banners.length === 1 ? false : true}
                 autoplay={false}
                 sliderCoin={true}
                 dragging={true}
-                slidesToShow={isMobile ? 1 : 2}
-                transitionMode={isMobile ? 'scroll' : 'scroll3d'}
+                slidesToShow={isMobile ? 1.25 : 2.25}
+                transitionMode={'scroll3d'}
                 withoutControls={banners.data.length < contentTypeList['banners'].slideToShow}
-                framePadding={!isMobile ? '0rem' : '0rem 1rem'}
+                framePadding="0rem"
               >
                 {banners.data.map(obj => (
                   <PlaylistCard
@@ -141,37 +146,6 @@ class Feature extends Component {
                 ))}
               </Carousel>
             )}
-            {articles.data.length > 0 && (
-              <LazyLoad containerClassName={container}>
-                <h3>{articles.meta.title}</h3>
-                <Carousel
-                  wrap={articles.length === 1 ? false : true}
-                  autoplay={false}
-                  sliderCoin={true}
-                  dragging={true}
-                  slidesToShow={isMobile ? 1 : 3.5}
-                  transitionMode={'scroll'}
-                  cellSpacing={isMobile ? 0 : 20}
-                  withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
-                  framePadding={!isMobile ? '0rem' : '0rem 1rem'}
-                >
-                  {articles.data.map(obj => (
-                    <ArticleCard
-                      key={obj.id}
-                      onClick={() => this.handleOnClick(obj)}
-                      alt={obj.title}
-                      src={obj.imageUrl}
-                      title={obj.title}
-                      contentType={obj.type}
-                      createdAt={obj.createdAt}
-                      description={obj.imageCaption}
-                      // onLoad={this.updateOnImageLoad}
-                      containerClassName={bannerContainer}
-                    />
-                  ))}
-                </Carousel>
-              </LazyLoad>
-            )}
             <LazyLoad containerClassName={container}>
               {playlists.data.length > 0 &&
                 videos.data.length > 0 &&
@@ -183,7 +157,6 @@ class Feature extends Component {
                     <div key={carouselIndex}>
                       {video.data.length > 0 && <h3>{video.meta.title}</h3>}
                       <Carousel
-                        className={carouselMargin}
                         wrap={false}
                         autoplay={false}
                         sliderCoin={true}
@@ -191,7 +164,7 @@ class Feature extends Component {
                         withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
                         slidesToShow={isMobile ? contentTypeList[contentTypeName].slideToScroll : contentTypeList[contentTypeName].slideToShow}
                         transitionMode={'scroll'}
-                        cellSpacing={isMobile ? 5 : 20}
+                        cellSpacing={12}
                         framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
                       >
                         {video.data.length > 0 &&
@@ -222,6 +195,38 @@ class Feature extends Component {
                             }
                           })}
                       </Carousel>
+                      {carouselIndex === 1 &&
+                        articles.data.length > 0 && (
+                          <div className={container}>
+                            <h3>Articles</h3>
+                            <Carousel
+                              wrap={articles.length === 1 ? false : true}
+                              autoplay={false}
+                              sliderCoin={true}
+                              dragging={true}
+                              slidesToShow={isMobile ? 1 : 3.5}
+                              transitionMode={'scroll'}
+                              cellSpacing={isMobile ? 0 : 20}
+                              withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
+                              framePadding={!isMobile ? '0rem' : '0rem 1rem'}
+                            >
+                              {articles.data.map(obj => (
+                                <ArticleCard
+                                  key={obj.id}
+                                  onClick={() => this.handleOnClick(obj)}
+                                  alt={obj.title}
+                                  src={obj.imageUrl}
+                                  title={obj.title}
+                                  contentType={obj.type}
+                                  createdAt={obj.createdAt}
+                                  description={obj.imageCaption}
+                                  // onLoad={this.updateOnImageLoad}
+                                  // containerClassName={bannerContainer}
+                                />
+                              ))}
+                            </Carousel>
+                          </div>
+                        )}
                     </div>
                   )
                 })}
@@ -241,7 +246,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
-  onHandleVideo: playlist => dispatch(featureActions.getFeatureVideo(playlist)),
+  onHandleVideo: (playlist, index) => dispatch(featureActions.getFeatureVideo(playlist, index)),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
   onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
 })

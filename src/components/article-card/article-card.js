@@ -6,7 +6,7 @@ import { getContentTypeName, setMultilineEllipsis } from '@source/lib/globalUtil
 
 import { placeholderCardLandscape } from '@global/imageUrl'
 
-import { articleContainer, icons } from './style'
+import { articleContainer, articleGradient, icons } from './style'
 
 class ArticleCard extends Component {
   state = {
@@ -47,13 +47,16 @@ class ArticleCard extends Component {
         </div>
         {show &&
           whitelistContentTypes[`${contentTypeName}`] && (
-            <div className={icons}>
-              <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
-              <h3>{date}</h3>
-              <p className="info_content">{description}</p>
-            </div>
+            <>
+              <div className={articleGradient} />
+              <div className={icons}>
+                <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
+                <h3>{date}</h3>
+                <p className="info_content">{description}</p>
+                <div />
+              </div>
+            </>
           )}
-        <b />
       </div>
     )
   }

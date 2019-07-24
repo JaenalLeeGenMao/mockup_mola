@@ -36,7 +36,7 @@ const getFeaturePlaylist = id => dispatch => {
   })
 }
 
-const getFeatureVideo = playlist => async dispatch => {
+const getFeatureVideo = (playlist, index = 0) => async dispatch => {
   const contentTypeName = await getContentTypeName(_.get(playlist, 'contentType', ''))
 
   if (contentTypeName === 'mola-categories') {
@@ -50,7 +50,7 @@ const getFeatureVideo = playlist => async dispatch => {
           id: playlist.id,
           title: playlist.title,
           contentType: playlist.contentType,
-          sortOrder: playlist.sortOrder,
+          sortOrder: index,
         },
         data: filterVisibility,
       }
@@ -71,7 +71,7 @@ const getFeatureVideo = playlist => async dispatch => {
         id: playlist.id,
         title: playlist.title,
         contentType: playlist.contentType,
-        sortOrder: playlist.sortOrder,
+        sortOrder: index,
       },
       data: filterVisibility,
     }

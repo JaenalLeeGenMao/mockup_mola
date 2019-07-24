@@ -32,12 +32,12 @@ class PlaylistCard extends Component {
         replay: 'matchIcon' /** matches */,
         trailers: 'playIcon' /** videos */,
         'mola-featured': 'tvIcon' /** videos */,
-        'mola-categories': 'matchIcon' /** videos */,
+        // 'mola-categories': 'matchIcon' /** videos */,
         articles: 'articleIcon' /** videos */,
       }
 
     return (
-      <div onClick={() => onClick()} className={`${playlistContainer} ${containerClassName}`}>
+      <div onClick={() => onClick()} className={`${playlistContainer} ${containerClassName} ${transitionMode === 'scroll' ? '' : 'hoverOff'}`}>
         <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardLandscape} />
         <div className="imageWrapper">
           <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />

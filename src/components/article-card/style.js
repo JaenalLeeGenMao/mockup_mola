@@ -5,7 +5,12 @@ export const articleContainer = css`
   display: inline-block;
   border-radius: .25rem;
   transition: all ease 500ms;
-  height: 15vh;
+  height: 12vh;
+  margin: 1rem auto;
+
+  @media screen and (max-width: 960px) {
+    height: 14.5vh;
+  }
 
   :hover {
     pointer-events: auto;
@@ -91,12 +96,22 @@ export const articleContainer = css`
     max-height: 100%;
     z-index: 0;
   }
+}
+`
+
+export const articleGradient = css`
+  display: block;
+  position: absolute;
+  bottom: 0;
+  height: 12vh;
+  width: 100%;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1.5) -20%, rgba(0, 0, 0, 0));
+  transform: scale(1.015);
 
   @media screen and (max-width: 960px) {
-    height: 30vh;
+    height: 14.5vh;
   }
-
-}
 `
 
 export const icons = css`
