@@ -83,13 +83,17 @@ class BannerCarousel extends Component {
         }}
         renderCenterRightControls={({ nextSlide, slideCount, currentSlide }) => {
           const newVal = slideCount - (this.props.slidesToShow || 1)
-          return (
-            <LazyLoad>
-              <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>
-                {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
-              </button>
-            </LazyLoad>
-          )
+          if (this.props.hideNextIcon) {
+            return false
+          } else {
+            return (
+              <LazyLoad>
+                <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>
+                  {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
+                </button>
+              </LazyLoad>
+            )
+          }
         }}
       >
         {this.props.children}
