@@ -149,10 +149,11 @@ class WatchDesktop extends Component {
     } = this.props
 
     this.getLoc()
+    this.getConfig()
   }
 
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, isMobile } = this.props
+    const { user, getMovieDetail, videoId } = this.props
 
     if (dataFetched) {
       const { loc } = this.state
@@ -176,11 +177,11 @@ class WatchDesktop extends Component {
       if (dataFetched.endTime < Date.now() / 1000) {
         isMatchPassed = true
       }
-      const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
+      // const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
       if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
-        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
+        return <CountDown hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
       } else if (dataFetched.streamSourceUrl) {
-        return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} poster={poster} autoPlay={false} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} showBackBtn />
+        return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} poster={poster} autoPlay={false} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
       }
     }
   }

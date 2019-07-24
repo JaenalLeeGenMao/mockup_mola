@@ -303,8 +303,6 @@ class MovieDetail extends Component {
                     // deviceId="NzhjYmY1NmEtODc3ZC0zM2UxLTkxODAtYTEwY2EzMjk3MTBj"
                     // isDRM={true}
                     {...videoSettings}
-                    showChildren
-                    showBackBtn
                   />
                 ) : (
                   <div className={movieDetailNotAvailableContainer}>Video Not Available</div>

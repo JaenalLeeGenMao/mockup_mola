@@ -156,7 +156,7 @@ class Watch extends Component {
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/watch?v=${movieId}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -208,7 +208,7 @@ class Watch extends Component {
                 </div>
               )
             } else {
-              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
             }
           } else {
             //android
@@ -220,11 +220,11 @@ class Watch extends Component {
                 </div>
               )
             } else {
-              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
             }
           }
         } else {
-          return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+          return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
         }
       }
     }

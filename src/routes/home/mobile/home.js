@@ -382,7 +382,7 @@ class Home extends Component {
 
     let filteredDesc = ''
     let filteredQuote = ''
-    let watchUrl = ''
+    const watchUrl = '/watch?v='
     if (activeSlide) {
       filteredDesc = activeSlide.shortDescription
       if (scrollIndex !== 0) {
@@ -391,8 +391,6 @@ class Home extends Component {
           :
           `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
-
-      watchUrl = isMovie(activeSlide.contentType) ? '/movie-detail/' : '/watch?v='
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -454,18 +452,18 @@ class Home extends Component {
                             {!isMovie(activeSlide.contentType) &&
                               <>
                                 {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
-                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
+                                  <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
                                     <span className={styles.play_icon_sport} />
                                     <p>{locale['live_now']}</p>
                                   </Link>
                                 )}
                                 {activeSlide.startTime > Date.now() / 1000 && (
-                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                  <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
                                     <p>{locale['upcoming']}</p>
                                   </Link>
                                 )}
                                 {isMatchPassed(activeSlide.endTime) && (
-                                  <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                  <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
                                     <p>{locale['replay']}</p>
                                   </Link>
                                 )}

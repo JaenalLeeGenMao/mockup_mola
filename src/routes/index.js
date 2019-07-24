@@ -10,7 +10,6 @@
 /* eslint-disable global-require */
 /* eslint-disable */
 
-import dateFormat from 'dateformat'
 import _get from 'lodash/get'
 import queryString from 'query-string'
 import UaParser from 'ua-parser-js'
@@ -204,7 +203,7 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-    setTimeout(function() {
+    setTimeout(function () {
       if (typeof document !== 'undefined') {
         const pathRoute = route.chunks[0]
         if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
@@ -242,9 +241,9 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
+    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function (e) {
       if (timer) clearTimeout(timer)
-      timer = setTimeout(function(t) {
+      timer = setTimeout(function (t) {
         // console.log("EVENT ALL")
         tracker.sessionId()
       }, 60000)
@@ -259,68 +258,6 @@ const track = async store => {
 
     // Try get user_id & subs
     const user = store.getState().user
-
-    let adjustedSubs = []
-    // if (userId !== null || userId !== undefined) {
-    //   adjustedSubs = await users.subscriptions.map(
-    //     subs => `${_get(subs, 'subscriptionId', null)}`,
-    //   );
-    // } else {
-    //   adjustedSubs = [null];
-    // }
-
-    // Try get platform and browser
-    // const platform = _get(UA.getDevice(), 'type', null)
-    // const osName = _get(UA.getOS(), 'name', null)
-    // const osVersion = _get(UA.getOS(), 'version', null)
-    // const os = osName !== null && osVersion !== null ? `${osName} ${osVersion}` : null
-    // const vendor = _get(UA.getDevice(), 'vendor', null)
-    // const device = vendor !== null ? `${vendor}` : null
-    // const browserName = _get(UA.getBrowser(), 'name', null)
-    // const browserVersion = _get(UA.getBrowser(), 'version', null)
-    // const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
-
-    // const geolocation = tracker.getLangLat() ? tracker.getLangLat() : ''
-    // const latitude = geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
-    // const longitude = geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
-
-    // // Initialize Payload
-    // const payload = {
-    //   data: {
-    //     project_id: 'molatv',
-    //     referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
-    //     host: `${window.location.host}`,
-    //     path: `${window.location.host}${location.pathname}${location.search}`,
-    //     session_id: tracker.sessionId(), // Try get+set session_id
-    //     client_id: tracker.clientId(),
-    //     page_content: document.title || null,
-    //     ip: user.clientIp,
-    //     platform,
-    //     os,
-    //     device,
-    //     app: browser,
-    //     client: 'mola-web',
-    //     screen_resolution: `${window.screen.width}x${window.screen.height}`,
-    //     current_subscription_id: adjustedSubs,
-    //     hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss'),
-    //     utm_source: urlParams.utm_source || undefined,
-    //     utm_medium: urlParams.utm_medium || undefined,
-    //     utm_campaign: urlParams.utm_campaign || undefined,
-    //     latitude,
-    //     longitude,
-    //   },
-    //   table: 'event_pages',
-    // }
-
-    // if (user.uid) {
-    //   payload.data.user_id = user.uid
-    // }
-
-    // if (firstRender) {
-    //   firstRender = false;
-    //   const referrer = _get(store.getState(), 'runtime.referer', null)
-    //   payload.data.referrer = referrer;
-    // }
 
     // Check if current path is in search page
     const inSearchPage = currentLocation.pathname === '/search'
@@ -338,10 +275,7 @@ const track = async store => {
     }
     //tracker.sendPubSub(payload, token)
 
-    const paths = pathname.split('/')
     if (pathname.includes('watch')) {
-      // payload.data.video_id = urlParams.v
-      // payload.table = 'event_videos'
       if (token && !inSearchPage) {
         const payload = {
           window,
