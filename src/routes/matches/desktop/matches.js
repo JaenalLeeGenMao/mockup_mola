@@ -47,6 +47,9 @@ class Matches extends React.Component {
     filterByLeague: 0,
     filterAllLeague: 0,
     leagueList: [],
+    selectedWeek: 2, //1 = last week, 2 = this week, 3 = next week,
+    selectedDate: null,
+    startWeekDate: null,
   }
 
   fetchMoreData = () => {
@@ -79,15 +82,21 @@ class Matches extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { getMatches, matches: { matchesList, matchesPlaylists, genreSpo } } = nextProps
-    return { ...prevState, matchesList, matchesPlaylists, genreSpo }
+  setDefaultDate = () => {
+    const startWeekDate = moment().startOf('isoWeek')
+    const date = new Date(moment().startOf('date'))
+    const swdTimestamp = date.getTime() / 1000
+    this.setState({
+      filterByDates: swdTimestamp,
+      startWeekDate: startWeekDate,
+    })
   }
 
   componentDidMount() {
     const { playlistId } = this.props
     playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
     this.props.getAllGenreSpo()
+    this.setDefaultDate()
   }
 
   componentWillMount() {
@@ -99,7 +108,7 @@ class Matches extends React.Component {
     if (this.props.matches.meta.status != prevProps.matches.meta.status && this.props.matches.meta.status === 'success') {
       let matchTemp = []
       const { data } = this.props.matches.matchesPlaylists
-
+      // console.log('data', data)
       data.forEach(dt => {
         if (dt.id) {
           const vidDt = dt.videos
@@ -132,6 +141,7 @@ class Matches extends React.Component {
         }
         return 0
       })
+      // console.log('masuk update')
       // const filterResult = this.handleSortMatches(this.props.matches.data)
       const filterResult = this.handleSortMatches(getDataFilterLeagueId)
 
@@ -157,18 +167,20 @@ class Matches extends React.Component {
   }
 
   handleFilterByDate = (value, matches) => {
+    // console.log('matcheeess', matches)
+    // console.log('valueeee', value)
     // validation for ThisWeek
     let filterResult = []
     if (value == 'lastWeek') {
       matches.forEach(el => {
         if (isLastWeek(el.startTime)) {
           filterResult.push(el)
-          // console.log('last week', filterResult)
         }
       })
     } else if (value == 'thisWeek') {
       matches.forEach(el => {
         if (isThisWeek(el.startTime)) {
+          selectedThisWeek = 1
           filterResult.push(el)
           // console.log('this week', filterResult)
         }
@@ -176,6 +188,7 @@ class Matches extends React.Component {
     } else if (value == 'nextWeek') {
       matches.forEach(el => {
         if (isNextWeek(el.startTime)) {
+          selectedNextWeek = 1
           filterResult.push(el)
           // console.log('next week', filterResult)
         }
@@ -253,7 +266,6 @@ class Matches extends React.Component {
       if (value === dt.id) {
         const vidDt = dt.videos
         for (let i = 0; i < vidDt.length; i++) {
-          // console.log('vidDt', vidDt[i].id)
           filterResult.push(vidDt[i])
         }
       } else {
@@ -263,6 +275,7 @@ class Matches extends React.Component {
     // console.log('vidDt', filterResult)
     return filterResult
   }
+
   handleFilterAllLeague = (value, matches) => {
     const { data } = this.props.matches.matchesPlaylists
     // for view all video from league
@@ -287,40 +300,36 @@ class Matches extends React.Component {
     let filterResult = []
     let filterLeagueRes = []
     let selectedVal = value
-    const { filterByDates, filterByType, filterByLeague, filterAllLeague, allMatches } = this.state
+    const { filterByDates, filterByType, filterByLeague, filterAllLeague, allMatches, selectedWeek } = this.state
 
-    if (category == 'ThisWeek' || category == 'ByDate') {
-      if (filterByDates == value) {
-        selectedVal = ''
-      }
-      filterLeagueRes = this.handleFilterByLeague(filterByLeague, allMatches)
-      filterResult = this.handleFilterByDate(selectedVal, filterResult)
+    // console.log('di handle handlecategory', filterByDates)
+    // console.log('di handle selectedweek', selectedWeek)
+    // console.log('selectedVal', selectedVal)
 
-      // filterResult = this.handleFilterByType(filterByType, filterResult)
-      filterResult = this.handleSortMatches(filterResult)
-      this.setState({ matches: filterResult, filterByDates: selectedVal })
+    if (category == 'ByDate') {
+      this.setState({ filterByDates: selectedVal })
     }
 
     //League
     if (category == 'League') {
       filterLeagueRes = this.handleFilterByLeague(selectedVal, allMatches)
-      filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
-      if (filterByLeague == value) {
-        selectedVal = 0
-      }
+      // filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
+      // if (filterByLeague == value) {
+      //   selectedVal = 0
+      // }
       filterResult = this.handleSortMatches(filterResult)
       this.setState({ allMatches: filterLeagueRes, matches: filterResult, filterByLeague: selectedVal })
     }
 
     // all
     if (category == 'All') {
-      filterLeagueRes = this.handleFilterAllLeague(selectedVal, allMatches)
-      filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
-      if (filterAllLeague == value) {
-        selectedVal = 0
-      }
+      // filterLeagueRes = this.handleFilterAllLeague(selectedVal, allMatches)
+      // filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
+      // if (filterAllLeague == value) {
+      //   selectedVal = 0
+      // }
       filterResult = this.handleSortMatches(filterResult)
-      this.setState({ allMatches: filterLeagueRes, matches: filterResult, filterAllLeague: selectedVal })
+      this.setState({ allMatches: ths, matches: filterResult, filterAllLeague: selectedVal })
     }
   }
 
@@ -339,15 +348,46 @@ class Matches extends React.Component {
     this.setState({ expandLeague: !this.state.expandLeague })
   }
 
-  renderFilterByDate = () => {
-    const { filterByDates } = this.state
+  handleWeekClick = value => {
+    let startWeekDate = ''
+    let swdTimestamp = ''
+    if (value == 1) {
+      //lastMonday
+      startWeekDate = moment().day(-6)
+      const date = new Date(moment(startWeekDate).startOf('date'))
+      swdTimestamp = date.getTime() / 1000
+    }
+    if (value == 2) {
+      //thisMonday
+      startWeekDate = moment().startOf('isoWeek')
+      const date = new Date(moment().startOf('date'))
+      swdTimestamp = date.getTime() / 1000
+    }
+    if (value == 3) {
+      //nextWeek
+      startWeekDate = moment().day(8)
+      const date = new Date(moment(startWeekDate).startOf('date'))
+      swdTimestamp = date.getTime() / 1000
+    }
+
+    this.setState({
+      selectedWeek: value,
+      filterByDates: swdTimestamp,
+      startWeekDate: startWeekDate,
+    })
+  }
+
+  renderWeek = () => {
+    const { selectedWeek } = this.state
+    // console.log('selectedweek render', selectedWeek)
+    // console.log('filterbydates render', filterByDates)
 
     const weekList = [
-      { id: 'lastWeek', title: 'Last Week' },
-      { id: 'thisWeek', title: 'This Week' },
-      { id: 'today', title: 'Today' },
-      { id: 'nextWeek', title: 'Next Week' },
-      // { id: 'tomorrow', title: 'Tomorrow' },
+      { id: 'lastweek', title: 'Last Week', value: '1' },
+      { id: 'thisweek', title: 'This Week', value: '2' },
+      { id: 'nextweek', title: 'Next Week', value: '3' },
+      // { id: 'today', title: 'Today' },
+      // { id: 'tomorrow', title: 'xTomorrow' },
     ]
 
     return (
@@ -358,9 +398,9 @@ class Matches extends React.Component {
               key={dt.id}
               value={dt.id}
               onClick={() => {
-                this.handleCategoryFilter('ThisWeek', dt.id)
+                this.handleWeekClick(dt.value)
               }}
-              className={`${s.filterLabel} ${dt.id == filterByDates ? s.selectedFilter : ''}`}
+              className={`${s.filterLabel} ${dt.value == selectedWeek ? s.selectedFilter : ''}`}
             >
               {dt.title}
             </div>
@@ -381,9 +421,9 @@ class Matches extends React.Component {
             <div className={s.labelVideoType} key={dt.id}>
               <div
                 className={`${s.filterLabel} ${dt.id == filterByType ? s.selectedFilter : ''}`}
-                onClick={() => {
-                  this.handleCategoryFilter('VideoType', dt.id)
-                }}
+                // onClick={() => {
+                //   this.handleCategoryFilter('VideoType', dt.id)
+                // }}
                 value={dt.id}
               >
                 {dt.title}
@@ -403,7 +443,7 @@ class Matches extends React.Component {
         {/* this week left menu */}
         {this.state.expandThisWeek && (
           <div className={s.filterContent_container}>
-            <span>{this.renderFilterByDate()}</span>
+            <span>{this.renderWeek()}</span>
           </div>
         )}
       </>
@@ -448,6 +488,8 @@ class Matches extends React.Component {
     const matchCardData = this.props.matches.data
     const matchPlaylists = this.props.matches.matchesPlaylists
 
+    const { filterByDates, startWeekDate } = this.state
+
     const isDark = false
     return (
       <>
@@ -459,10 +501,6 @@ class Matches extends React.Component {
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
-                <div className={s.labelLoadMore}>
-                  Load more
-                  <span className={s.loadmore} />
-                </div>
                 <InfiniteScroll
                   dataLength={this.state.limit.length}
                   next={this.fetchMoreData}
@@ -485,11 +523,6 @@ class Matches extends React.Component {
                       allButtonOn
                       allCat
                     />
-                    {/* <div className={s.match_ligaType}> */}
-                    {/* <span className={s.allFilterLabel}>{this.categoryFilterAll()}</span>
-                      {/* <span className={s.filLeague}>{this.categoryFilterLigaType()}</span>
-        <span />*/}
-                    {/* </div> */}
                     <div className={s.matches_grid}>
                       <span>{this.categoryFilter()}</span>
                       <span>
@@ -497,7 +530,7 @@ class Matches extends React.Component {
                           <div className={s.matchlist_Pagetitle}>{matchCardData.length > 0 && this.state.limit != null ? <>{this.ShowMatchCard()}</> : <div>Tidak Ada Jadwal Matches</div>}</div>
                         </div>
                       </span>
-                      <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} filterByDates={this.state.filterByDates} categoryFilterType={'ByDate'} />
+                      <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} categoryFilterType={'ByDate'} selectedDate={filterByDates} startOfWeek={startWeekDate} />
                     </div>
                   </div>
                   {/* end data infinite scroll */}

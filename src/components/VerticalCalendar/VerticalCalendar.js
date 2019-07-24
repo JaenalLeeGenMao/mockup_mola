@@ -2,52 +2,58 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
-import { formatDateTime, addDateTime } from '@source/lib/dateTimeUtil'
+import { formatDateTime, addDateTime, isLastWeek } from '@source/lib/dateTimeUtil'
 
 import s from './VerticalCalendar.css'
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants'
 
 class VerticalCalendar extends Component {
   static propTypes = {
     handleCategoryFilter: PropTypes.func.isRequired,
     filterByDates: PropTypes.string,
+    startOfWeek: PropTypes.bool,
+    selectedDate: PropTypes.string,
   }
 
-  getCalendar = () => {
-    //Validate This week, now +7 days
-    let dateList = []
+  getCalendar = startOfWeek => {
+    let resultDateList = []
 
+    //gettodayfordefault Value
     for (var i = 0; i < 7; i++) {
-      const date = new Date(addDateTime(null, i, 'days'))
+      const date = new Date(addDateTime(startOfWeek, i, 'days'))
       const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMM')
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
 
       //date string to int selectedMatch
-      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMM'))
+      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMMM'))
       const strTimestamp = dateStringtoInt.getTime() / 1000
 
-      dateList.push({ title: formattedDateTime, strTimestamp: strTimestamp })
+      resultDateList.push({ title: formattedDateTime, strTimestamp: strTimestamp })
     }
-
-    return dateList
+    return resultDateList
   }
 
   render() {
-    const { handleCategoryFilter, filterByDates, categoryFilterType = 'ByDate' } = this.props
+    const { handleCategoryFilter, categoryFilterType = 'ByDate', selectedDate, startOfWeek } = this.props
+
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
-            {this.getCalendar().map(dt => {
+            {this.getCalendar(startOfWeek).map(dt => {
               return (
-                <div
-                  className={`${s.filterLabelByDay} ${dt.strTimestamp == filterByDates ? s.selectedFilter : ''}`}
-                  key={dt.strTimestamp}
-                  onClick={() => {
-                    handleCategoryFilter(categoryFilterType, dt.strTimestamp)
-                  }}
-                >
-                  {dt.title}
-                </div>
+                <>
+                  {/* <div className={`${s.filterLabelByDay} ${dt.todayDate ? s.selectedFilter : ''}`}>{dt.todayDate}</div> */}
+                  <div
+                    className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate ? s.selectedFilter : ''}`}
+                    key={dt.strTimestamp}
+                    onClick={() => {
+                      handleCategoryFilter(categoryFilterType, dt.strTimestamp)
+                    }}
+                  >
+                    {dt.title}
+                  </div>
+                </>
               )
             })}
           </span>
