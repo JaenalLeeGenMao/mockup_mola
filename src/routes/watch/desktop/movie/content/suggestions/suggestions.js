@@ -15,7 +15,7 @@ const Suggestions = ({ style = {}, videos = [] }) => {
             {videos.map(({ id, background, title }) => {
               const imageSource = background.landscape
               return (
-                <Link to={`/movie-detail/${id}`} key={id} className={videoSuggestionPlayer}>
+                <Link to={`/watch?v=${id}`} key={id} className={videoSuggestionPlayer}>
                   <VideoThumbnail
                     thumbnailUrl={imageSource}
                     thumbnailPosition="wrap"

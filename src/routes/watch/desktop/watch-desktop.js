@@ -172,12 +172,6 @@ class WatchDesktop extends Component {
         ...checkAdsSettings,
       }
 
-      const { toggleInfoBar } = this.state
-      let isMatchPassed = false
-      if (dataFetched.endTime < Date.now() / 1000) {
-        isMatchPassed = true
-      }
-      // const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : ''
       if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
         return <CountDown hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
       } else if (dataFetched.streamSourceUrl) {
