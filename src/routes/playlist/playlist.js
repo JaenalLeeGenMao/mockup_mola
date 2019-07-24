@@ -10,7 +10,7 @@ import playlistAction from '@actions/playlist'
 import PlaylistError from '@components/common/error'
 
 import Placeholder from './placeholder'
-import { desktopBackgroundStyle, mobileBackgroundStyle, playlistContainer, playlistHeadDesktop, playlistList, playlistHeadMobile } from './playlistStyle.js'
+import { playlistContainer, desktopBackgroundStyle, mobileBackgroundStyle, playlistHeadDesktop, playlistHeadMobile, playlistList } from './playlistStyle'
 
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
@@ -166,7 +166,7 @@ class Playlist extends React.Component {
           videos.data.length > 0 &&
           videos.data.length === playlists.data.length && (
             <>
-              <div className={`${playlistContainer} ${isMobile ? mobileBackgroundStyle('') : desktopBackgroundStyle(backgroundImage)}`}>
+              <div className={`${playlistContainer} ${isMobile ? mobileBackgroundStyle('') : desktopBackgroundStyle('https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337')}`}>
                 <div style={{ position: 'relative' }}>
                   {this.renderTitle()}
                   {this.renderPlaylist()}
