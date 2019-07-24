@@ -10,6 +10,7 @@ import { updateCustomMeta } from '@source/DOMUtils'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import DRMConfig from '@source/lib/DRMConfig'
 import config from '@source/config'
+import history from '@source/history'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import styles from './watch.css'
@@ -208,7 +209,7 @@ class Watch extends Component {
                 </div>
               )
             } else {
-              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
             }
           } else {
             //android
@@ -220,11 +221,11 @@ class Watch extends Component {
                 </div>
               )
             } else {
-              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+              return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
             }
           }
         } else {
-          return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} showBackBtn={!isMobile} />
+          return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} poster={poster} />
         }
       }
     }
@@ -234,6 +235,10 @@ class Watch extends Component {
     this.setState({
       toggleInfoBar: false,
     })
+  }
+
+  handleGoBack = () => {
+    history.push('/')
   }
 
   render() {
@@ -281,7 +286,12 @@ class Watch extends Component {
                       </div>
                     </div>
                   )}
-                <div className={playerClass}>{loadPlayer && this.renderVideo()}</div>
+                <div className={playerClass}>
+                  <div className={styles.arrow__container} onClick={this.handleGoBack}>
+                    <span className={styles.arrow__icon} />
+                  </div>
+                  {loadPlayer && this.renderVideo()}
+                </div>
               </div>
               {!isMobile && (
                 <>

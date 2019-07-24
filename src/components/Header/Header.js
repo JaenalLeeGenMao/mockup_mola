@@ -31,10 +31,11 @@ class Header extends Component {
   }
 
   handleGoBack = () => {
-    const { goBack } = history
-    if (goBack) {
-      goBack()
-    }
+    // const { goBack } = history
+    // if (goBack) {
+    //   goBack()
+    // }
+    history.push('/')
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

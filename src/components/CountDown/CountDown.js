@@ -9,10 +9,7 @@ import s from './CountDown.css'
 
 class CountDown extends React.Component {
   handleGoBack = () => {
-    const { goBack } = history
-    if (goBack) {
-      goBack()
-    }
+    history.push('/')
   }
 
   render() {
