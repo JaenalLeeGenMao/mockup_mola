@@ -22,7 +22,7 @@ import MovieDetailError from '@components/common/error'
 // import Link from '@components/Link'
 import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
-import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom } from './style'
+import { movieDetailContainer, movieDetailNotAvailableContainer, controllerContainer, videoPlayerContainer, movieDetailBottom, arrowContainer, arrowIcon } from './style'
 
 import styles from '@global/style/css/grainBackground.css'
 import { customTheoplayer } from './theoplayer-style'
@@ -243,6 +243,10 @@ class MovieDetail extends Component {
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
   }
 
+  handleGoBack = () => {
+    history.push('/')
+  }
+
   render() {
     const { isControllerActive, toggleSuggestion, loc } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -289,6 +293,9 @@ class MovieDetail extends Component {
             </Helmet>
             <div style={{ width: '100vw', background: '#000' }}>
               <div className={videoPlayerContainer}>
+                <div className={arrowContainer} onClick={this.handleGoBack}>
+                  <span className={arrowIcon} />
+                </div>
                 {loadPlayer ? (
                   <Theoplayer
                     className={customTheoplayer}
@@ -304,7 +311,7 @@ class MovieDetail extends Component {
                     // isDRM={true}
                     {...videoSettings}
                     showChildren
-                    showBackBtn
+                    showBackBtn={false}
                   />
                 ) : (
                   <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
