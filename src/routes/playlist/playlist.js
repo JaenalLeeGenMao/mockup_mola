@@ -10,7 +10,7 @@ import playlistAction from '@actions/playlist'
 import PlaylistError from '@components/common/error'
 
 import Placeholder from './placeholder'
-import { playlistContainer, desktopBackgroundStyle, mobileBackgroundStyle, playlistHeadDesktop, playlistHeadMobile, playlistList } from './playlistStyle'
+import { playlistContainer, DesktopBackgroundStyle, MobileBackgroundStyle, playlistHeadDesktop, playlistHeadMobile, playlistList } from './playlistStyle'
 
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
@@ -76,7 +76,7 @@ class Playlist extends React.Component {
     const { title, description } = this.props.playlist.playlists.meta
     return (
       <div className={playlistHeadMobile}>
-        <div className="line" />
+        {/* <div className="line" /> */}
         <p className="title"> {title}</p>
         <p className="description">{description}</p>
       </div>
@@ -166,7 +166,12 @@ class Playlist extends React.Component {
           videos.data.length > 0 &&
           videos.data.length === playlists.data.length && (
             <>
-              <div className={`${playlistContainer} ${isMobile ? mobileBackgroundStyle('') : desktopBackgroundStyle('https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337')}`}>
+              <div className={playlistContainer}>
+                {isMobile ? (
+                  <MobileBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
+                ) : (
+                  <DesktopBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
+                )}
                 <div style={{ position: 'relative' }}>
                   {this.renderTitle()}
                   {this.renderPlaylist()}
