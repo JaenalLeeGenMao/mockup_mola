@@ -154,10 +154,10 @@ class Watch extends Component {
   }
 
   handlePlayMovieApple = () => {
-    const { movieId } = this.props
+    const { videoId } = this.props
     const domain = config.endpoints.domain
-    const url = `${domain}/download-app/${movieId}`
-    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    const url = `${domain}/download-app/${videoId}`
+    document.location = `molaapp://mola.tv/watch?v=${videoId}`
     setTimeout(function() {
       window.location.href = url
     }, 250)
@@ -340,9 +340,11 @@ class Watch extends Component {
                     </div>
                   )}
                 <div className={playerClass}>
-                  <div className={styles.arrow__container} onClick={this.handleGoBack}>
-                    <span className={styles.arrow__icon} />
-                  </div>
+                  {!isMobile && (
+                    <div className={styles.arrow__container} onClick={this.handleGoBack}>
+                      <span className={styles.arrow__icon} />
+                    </div>
+                  )}
                   {loadPlayer && this.renderVideo(permission)}
                 </div>
               </div>
