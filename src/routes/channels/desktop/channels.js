@@ -19,204 +19,77 @@ import { formatDateTime } from '@source/lib/dateTimeUtil'
 import MovieDetailError from '@components/common/error'
 import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
-import MatchList from '@components/MatchList'
-import LazyLoad from '@components/common/Lazyload'
 import VerticalCalendar from '@components/VerticalCalendar'
 
+import ScheduleCard from './scheduleCard'
+import PrimaryMenu from './primaryMenu'
+import SecondaryMenu from './secondaryMenu'
+import ChannelCalendar from './channelCalendar'
 import { getChannelProgrammeGuides } from '../selectors'
-import Schedule from './schedule'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
-
-const schedule = [
-  {
-    id: 'kids-channel',
-    title: 'KIDS C',
-    videos: [
-      { id: 1, title: 'The Rugrats', startTime: 1560387600, endTime: 1560391200 },
-      { id: 2, title: 'Spongebob SquarePants', startTime: 1560391200, endTime: 1560393000 },
-      { id: 3, title: 'Hey! Tayo', startTime: 1560393000, endTime: 1560394800 },
-      { id: 4, title: 'Coco Melon: The Wheels on The Bus', startTime: 1560394800, endTime: 1560399300 },
-      { id: 5, title: 'Coco Melon:  Johnny Yes Papa', startTime: 1560399300, endTime: 1560409300 },
-    ],
-  },
-  {
-    id: 'movie-channel',
-    title: 'MOVIE',
-    videos: [
-      { id: 6, title: 'Once Upon A Time', startTime: 1560388500, endTime: 1560391200 },
-      { id: 7, title: 'Letters to Juliet', startTime: 1560391200, endTime: 1560394800 },
-      { id: 8, title: 'Split', startTime: 1560394800, endTime: 1560396000 },
-      { id: 9, title: 'When The Night Comes', startTime: 1560396000, endTime: 1560400200 },
-      { id: 10, title: 'Gangnam Beauty', startTime: 1560400200, endTime: 1560403800 },
-      { id: 11, title: 'Oh My God', startTime: 1560403800, endTime: 1560407400 },
-    ],
-  },
-  {
-    id: 'kids-channel',
-    title: 'KIDS C',
-    videos: [
-      { id: 1, title: 'The Rugrats', startTime: 1560387600, endTime: 1560391200 },
-      { id: 2, title: 'Spongebob SquarePants', startTime: 1560391200, endTime: 1560393000 },
-      { id: 3, title: 'Hey! Tayo', startTime: 1560393000, endTime: 1560394800 },
-      { id: 4, title: 'Coco Melon: The Wheels on The Bus', startTime: 1560394800, endTime: 1560399300 },
-      { id: 5, title: 'Coco Melon:  Johnny Yes Papa', startTime: 1560399300, endTime: 1560409300 },
-    ],
-  },
-  {
-    id: 'movie-channel',
-    title: 'MOVIE',
-    videos: [
-      { id: 6, title: 'Once Upon A Time', startTime: 1560388500, endTime: 1560391200 },
-      { id: 7, title: 'Letters to Juliet', startTime: 1560391200, endTime: 1560394800 },
-      { id: 8, title: 'Split', startTime: 1560394800, endTime: 1560396000 },
-      { id: 9, title: 'When The Night Comes', startTime: 1560396000, endTime: 1560400200 },
-      { id: 10, title: 'Gangnam Beauty', startTime: 1560400200, endTime: 1560403800 },
-      { id: 11, title: 'Oh My God', startTime: 1560403800, endTime: 1560407400 },
-    ],
-  },
-  {
-    id: 'kids-channel',
-    title: 'KIDS C',
-    videos: [
-      { id: 1, title: 'The Rugrats', startTime: 1560387600, endTime: 1560391200 },
-      { id: 2, title: 'Spongebob SquarePants', startTime: 1560391200, endTime: 1560393000 },
-      { id: 3, title: 'Hey! Tayo', startTime: 1560393000, endTime: 1560394800 },
-      { id: 4, title: 'Coco Melon: The Wheels on The Bus', startTime: 1560394800, endTime: 1560399300 },
-      { id: 5, title: 'Coco Melon:  Johnny Yes Papa', startTime: 1560399300, endTime: 1560409300 },
-    ],
-  },
-  {
-    id: 'movie-channel',
-    title: 'MOVIE',
-    videos: [
-      { id: 6, title: 'Once Upon A Time', startTime: 1560388500, endTime: 1560391200 },
-      { id: 7, title: 'Letters to Juliet', startTime: 1560391200, endTime: 1560394800 },
-      { id: 8, title: 'Split', startTime: 1560394800, endTime: 1560396000 },
-      { id: 9, title: 'When The Night Comes', startTime: 1560396000, endTime: 1560400200 },
-      { id: 10, title: 'Gangnam Beauty', startTime: 1560400200, endTime: 1560403800 },
-      { id: 11, title: 'Oh My God', startTime: 1560403800, endTime: 1560407400 },
-    ],
-  },
-  {
-    id: 'kids-channel',
-    title: 'KIDS C',
-    videos: [
-      { id: 1, title: 'The Rugrats', startTime: 1560387600, endTime: 1560391200 },
-      { id: 2, title: 'Spongebob SquarePants', startTime: 1560391200, endTime: 1560393000 },
-      { id: 3, title: 'Hey! Tayo', startTime: 1560393000, endTime: 1560394800 },
-      { id: 4, title: 'Coco Melon: The Wheels on The Bus', startTime: 1560394800, endTime: 1560399300 },
-      { id: 5, title: 'Coco Melon:  Johnny Yes Papa', startTime: 1560399300, endTime: 1560409300 },
-    ],
-  },
-  {
-    id: 'movie-channel',
-    title: 'MOVIE',
-    videos: [
-      { id: 6, title: 'Once Upon A Time', startTime: 1560388500, endTime: 1560391200 },
-      { id: 7, title: 'Letters to Juliet', startTime: 1560391200, endTime: 1560394800 },
-      { id: 8, title: 'Split', startTime: 1560394800, endTime: 1560396000 },
-      { id: 9, title: 'When The Night Comes', startTime: 1560396000, endTime: 1560400200 },
-      { id: 10, title: 'Gangnam Beauty', startTime: 1560400200, endTime: 1560403800 },
-      { id: 11, title: 'Oh My God', startTime: 1560403800, endTime: 1560407400 },
-    ],
-  },
-  {
-    id: 'kids-channel',
-    title: 'KIDS C',
-    videos: [
-      { id: 1, title: 'The Rugrats', startTime: 1560387600, endTime: 1560391200 },
-      { id: 2, title: 'Spongebob SquarePants', startTime: 1560391200, endTime: 1560393000 },
-      { id: 3, title: 'Hey! Tayo', startTime: 1560393000, endTime: 1560394800 },
-      { id: 4, title: 'Coco Melon: The Wheels on The Bus', startTime: 1560394800, endTime: 1560399300 },
-      { id: 5, title: 'Coco Melon:  Johnny Yes Papa', startTime: 1560399300, endTime: 1560409300 },
-    ],
-  },
-  {
-    id: 'movie-channel',
-    title: 'MOVIE',
-    videos: [
-      { id: 6, title: 'Once Upon A Time', startTime: 1560388500, endTime: 1560391200 },
-      { id: 7, title: 'Letters to Juliet', startTime: 1560391200, endTime: 1560394800 },
-      { id: 8, title: 'Split', startTime: 1560394800, endTime: 1560396000 },
-      { id: 9, title: 'When The Night Comes', startTime: 1560396000, endTime: 1560400200 },
-      { id: 10, title: 'Gangnam Beauty', startTime: 1560400200, endTime: 1560403800 },
-      { id: 11, title: 'Oh My God', startTime: 1560403800, endTime: 1560407400 },
-    ],
-  },
-  {
-    id: 'kids-channel',
-    title: 'KIDS C',
-    videos: [
-      { id: 1, title: 'The Rugrats', startTime: 1560387600, endTime: 1560391200 },
-      { id: 2, title: 'Spongebob SquarePants', startTime: 1560391200, endTime: 1560393000 },
-      { id: 3, title: 'Hey! Tayo', startTime: 1560393000, endTime: 1560394800 },
-      { id: 4, title: 'Coco Melon: The Wheels on The Bus', startTime: 1560394800, endTime: 1560399300 },
-      { id: 5, title: 'Coco Melon:  Johnny Yes Papa', startTime: 1560399300, endTime: 1560409300 },
-    ],
-  },
-  {
-    id: 'movie-channel',
-    title: 'MOVIE',
-    videos: [
-      { id: 6, title: 'Once Upon A Time', startTime: 1560388500, endTime: 1560391200 },
-      { id: 7, title: 'Letters to Juliet', startTime: 1560391200, endTime: 1560394800 },
-      { id: 8, title: 'Split', startTime: 1560394800, endTime: 1560396000 },
-      { id: 9, title: 'When The Night Comes', startTime: 1560396000, endTime: 1560400200 },
-      { id: 10, title: 'Gangnam Beauty', startTime: 1560400200, endTime: 1560403800 },
-      { id: 11, title: 'Oh My God', startTime: 1560403800, endTime: 1560407400 },
-    ],
-  },
-]
-
 class Channels extends Component {
   state = {
-    selectedDate: {
-      fullDate: moment().format('YYYYMMDD'),
-      date: moment().format('DD'),
-      day: moment()
-        .format('ddd')
-        .toUpperCase(),
-    },
     activeChannel: '',
     activeChannelId: '',
-    activeDate: formatDateTime(Date.now() / 1000, 'ddd, DD MMM YYYY'),
-    scheduleDateList: [],
+    activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleList: [],
     expandLeague: true,
-    filterByLeague: 0,
-    filterByDates: '',
     limit: Array.from({ length: 12 }),
     hasMore: true,
+    channelCategory: 'epg',
+    hidePlaylist: true,
   }
 
   componentDidMount() {
     const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user, getVUID } = this.props
-
-    fetchChannelsPlaylist().then(() => {
-      fetchChannelSchedule(this.state.selectedDate)
+    const selectedDate = {
+      fullDate: moment().format('YYYYMMDD'),
+    }
+    fetchChannelsPlaylist('channels-m').then(() => {
+      fetchChannelSchedule(selectedDate)
     })
     fetchVideoByid(movieId)
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
+
+    window.addEventListener('scroll', this.handleScroll)
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
+    const { scheduleList, activeChannelId, channelCategory } = this.state
     if (channelsPlaylist.meta.status === 'success' && channelsPlaylist.data.length > 0 && !prevState.activeChannel && !prevState.activeChannelId) {
+      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
       this.setState({
-        activeChannel: this.props.channelsPlaylist.data[0].title,
-        activeChannelId: this.props.channelsPlaylist.data[0].id,
+        activeChannel: selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
+        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
       })
     }
 
-    if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
-      this.handleSelectChannel(this.state.activeChannelId)
+    if (scheduleList.length === 0 || prevState.activeChannelId !== activeChannelId) {
+      this.handleSelectChannel(channelCategory, activeChannelId)
     }
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       fetchVideoByid(movieId)
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll = () => {
+    if (window.scrollY >= window.innerHeight - 85) {
+      this.setState({
+        hidePlaylist: false,
+      })
+    } else if (window.scrollY <= window.innerHeight - 130) {
+      this.setState({
+        hidePlaylist: true,
+      })
     }
   }
 
@@ -273,36 +146,45 @@ class Channels extends Component {
     return myTheoPlayer
   }
 
-  handleSelectChannel = id => {
-    // const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
-    // if (filteredSchedule) {
-    //   const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
+  handleSelectChannel = (category = 'epg', id) => {
+    // console.log('masuk select channel', id)
+    const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
+    if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
+      const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
 
-    //   this.setState({
-    //     activeChannel: filteredSchedule.title,
-    //     activeChannelId: id,
-    //     activeDate: formatDateTime(time, 'ddd, DD MMM YYYY'),
-    // scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
-    //   })
-    //   history.push(`/channels/${id}`);
-    // }
-    if (this.props.channelSchedule.length > 0 && this.props.movieDetail.meta.status === 'success') {
       this.setState({
+        activeChannel: filteredSchedule.title,
         activeChannelId: id,
-        scheduleList: this.props.channelSchedule,
+        activeDate: formatDateTime(time, 'DD MMM'),
+        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
       history.push(`/channels/${id}`)
     }
   }
 
-  handleCategoryFilter = (category, value) => {
-    // console.log('value handle category filter', category, value)
+  handleSelectDate = (category = 'ByDate', date) => {
+    const strDate = new Date(date * 1000)
+    const selectedDate = {
+      fullDate: moment(strDate).format('YYYYMMDD'),
+      dayMonth: formatDateTime(date, 'DD MMM'),
+    }
+    this.setState({
+      activeDate: selectedDate.dayMonth,
+    })
+    this.props.fetchChannelSchedule(selectedDate).then(() => {
+      const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
+      this.setState({
+        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
+        // activeDate: selectedDate.dayMonth,
+      })
+    })
   }
 
   fetchMoreData = () => {
+    const { scheduleList, limit } = this.state
     // const matchCardData = this.props.matches.data
-    if (schedule.length > 0) {
-      if (this.state.limit.length >= schedule.length) {
+    if (scheduleList.length > 0) {
+      if (limit.length >= scheduleList.length) {
         this.setState({
           hasMore: false,
         })
@@ -311,41 +193,15 @@ class Channels extends Component {
       // 16 more records in 2 secs
       setTimeout(() => {
         this.setState({
-          limit: this.state.limit.concat(Array.from({ length: 12 })),
+          limit: limit.concat(Array.from({ length: 12 })),
         })
       }, 1500) //2000
     }
   }
 
-  ShowMatchCard = () => {
-    // const { scheduleList } = this.state
-
-    if (schedule.length > 0) {
-      return (
-        <LazyLoad containerClassName={styles.epgCardList__container}>
-          {schedule.map((matchDt, index) => {
-            if (index < this.state.limit.length) {
-              return (
-                <>
-                  {/* <MatchCard key={matchDt.id} matchData={matchDt} /> */}
-                  <MatchList key={matchDt.id} data={matchDt} />
-                </>
-              )
-            }
-          })}
-        </LazyLoad>
-      )
-    } else {
-      return (
-        <>
-          <div className={s.noMatchContent}>Tidak Ada Pertandingan</div>
-        </>
-      )
-    }
-  }
-
   render() {
     const { programmeGuides, channelSchedule, channelsPlaylist, movieId } = this.props
+    const { activeChannelId, scheduleList, channelCategory, expandLeague, limit, activeDate, hasMore, hidePlaylist } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -370,16 +226,6 @@ class Channels extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
-    const dummyLogo = [
-      { id: 1, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-      { id: 2, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-      { id: 3, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-      { id: 4, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-      { id: 5, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-      { id: 6, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-      { id: 7, thumbnailImg: 'https://cdn.stag.mola.tv/mola/image/79eda258-83dd-4105-b25f-9492adfebd0d/image.png', title: 'sahabat' },
-    ]
-
     return (
       <>
         <div>
@@ -388,68 +234,47 @@ class Channels extends Component {
         <div className={styles.channels_container}>
           <div className={styles.video_container}>
             {loadPlayer ? (
-              <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
+              <Theoplayer
+                className={customTheoplayer}
+                showBackBtn={false}
+                subtitles={this.subtitles()}
+                handleOnVideoLoad={this.handleOnVideoLoad}
+                // poster={poster}
+                {...videoSettings}
+              />
             ) : (
                 <div>Video Not Available</div> // styling later
               )}
           </div>
-          {/* {channelsPlaylist.meta.status === 'success' &&
-            programmeGuides.data &&
-            channelSchedule.length > 0 && <Schedule scheduleList={channelSchedule} handleSelectChannel={this.handleSelectChannel} activeChannelId={this.state.activeChannelId} {...this.props} />}
-          }*/}
-          <div className={styles.epg__logo__container}>
-            {channelsPlaylist.meta.status === 'success' &&
-              programmeGuides.data &&
-              channelSchedule.length > 0 && (
-                <>
-                  {dummyLogo.map(item => (
-                    <div
-                      key={item.id}
-                      className={styles.epg__logo__wrapper}
-                      onClick={() => {
-                        this.handleSelectChannel(item.id)
-                      }}
-                    >
-                      <img alt="" className={styles.epg__logo__img} src={item.thumbnailImg} />
-                    </div>
-                  ))}
-                </>
-              )}
-          </div>
-          <div className={styles.see__detail__epg}>
-            <div className={styles.see__detail__text}> Scroll to see program guide </div>
-            <div className={styles.see__detail__arrow} />
-          </div>
-
+          <PrimaryMenu handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} channelCategory={channelCategory} />
           <div className={styles.epg__list__container}>
-            <HorizontalPlaylist
-              handleCategoryFilter={this.handleCategoryFilter}
-              handleFilterAllLeague={this.handleFilterAllLeague}
-              genreSpoCategory={dummyLogo}
-              filterByLeague={this.state.filterByLeague}
-              expandLeague={this.state.expandLeague}
-              categoryFilterType={'Epg'}
+            <SecondaryMenu
+              handleCategoryFilter={this.handleSelectChannel}
+              genreSpoCategory={channelsPlaylist.data}
+              filterByLeague={activeChannelId}
+              expandLeague={expandLeague}
+              categoryFilterType={channelCategory}
+              hidePlaylist={hidePlaylist}
+              noMargin
             />
             <div className={styles.epg__grid__container}>
               <span />
               <InfiniteScroll
-                dataLength={this.state.limit.length}
+                dataLength={limit.length}
                 next={this.fetchMoreData}
-                hasMore={this.state.hasMore}
+                hasMore={hasMore}
                 hasChildren={true}
                 loader={<div className={styles.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
                 height={800}
               >
-                <span>
-                  <div className={styles.epg__wrappercontent__center}>
-                    <div className={styles.epg__Pagetitle}>{this.state.limit != null ? this.ShowMatchCard() : <div>Tidak Ada Jadwal </div>}</div>
-                  </div>
-                </span>
+                {programmeGuides.data && scheduleList.length > 0 && <ScheduleCard scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} limit={limit} />}
               </InfiniteScroll>
-              <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} filterByDates={this.state.filterByDates} categoryFilterType={'ByDate'} />
+              <ChannelCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} />
             </div>
           </div>
         </div>
+        )}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }
@@ -461,7 +286,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchChannelsPlaylist: () => dispatch(channelActions.getChannelsPlaylist()),
+  fetchChannelsPlaylist: id => dispatch(channelActions.getChannelsPlaylist(id)),
   fetchChannelSchedule: date => dispatch(channelActions.getProgrammeGuides(date)),
   fetchVideoByid: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),

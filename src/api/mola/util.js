@@ -498,6 +498,7 @@ const normalizeChannelPlaylist = response => {
           const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
+          const thumbnailImg = _get(images, 'thumbnails.cover', '')
           return {
             id,
             title,
@@ -509,6 +510,7 @@ const normalizeChannelPlaylist = response => {
             shortDescription: shortDescription || '',
             iconUrl: iconUrl || '',
             // coverTitle: coverTitle,
+            thumbnailImg,
             background,
             backgroundColor: coverBGColor || '#000622',
             isDark: isDark || 0,
