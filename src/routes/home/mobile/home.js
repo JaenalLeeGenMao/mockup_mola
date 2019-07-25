@@ -51,6 +51,7 @@ class Home extends Component {
     steps: tourSteps[this.props.user.lang],
     sliderRefs: [],
     playlistSuccess: false,
+    screenWidth: 290
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -80,6 +81,9 @@ class Home extends Component {
 
     if (type === EVENTS.TOUR_END) {
       localStorage.setItem('tour-home', true)
+      this.setState({
+        startGuide: false
+      })
       // document.cookie = '__trh=1; path=/;';
       return true
     }
@@ -189,6 +193,12 @@ class Home extends Component {
         this.handleSwipeDirection(this.activeSlider, this.prevTouchY, this.nextTouchY, 'vertical')
       }
     }
+
+    if (window.innerWidth < 375 && window.innerHeight < 600) {
+      this.setState({
+        screenWidth: 200
+      })
+    }
   }
 
   handleSwipeDirection(slider, prevX, nextX, mode = 'horizontal') {
@@ -297,10 +307,19 @@ class Home extends Component {
   }
 
   renderMenuBanner = (activeSlide, playlistData, directionIndex, className, type) => {
-    if (activeSlide.isDark > 0) {
-      return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} type={type} className={className} />
+    const { scrollIndex, activeSlideDots } = this.state
+    if (scrollIndex == 0 && activeSlideDots && activeSlideDots.length == 1 && type == 'horizontal') {
+      if (this.state.startGuide) {
+        return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={activeSlide.isDark} type={type} className={className} />
+      } else {
+        return null
+      }
     } else {
-      return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} type={type} className={className} />
+      if (activeSlide.isDark > 0) {
+        return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} type={type} className={className} />
+      } else {
+        return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} type={type} className={className} />
+      }
     }
   }
 
@@ -312,7 +331,7 @@ class Home extends Component {
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
       } = this.props.home,
-      { isDark, locale, isLandscape, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots } = this.state,
+      { isDark, locale, isLandscape, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots, screenWidth } = this.state,
       settings = {
         ...SETTINGS_MOBILE,
         className: styles.home__slick_slider_fade,
@@ -378,6 +397,9 @@ class Home extends Component {
       spotlight: {
         borderRadius: '4rem',
       },
+      tooltip: {
+        width: screenWidth
+      }
     }
 
     let filteredDesc = ''
@@ -432,7 +454,7 @@ class Home extends Component {
                 <div className={styles.home__sidebar}>
                   {/* <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" /> */}
                   {
-                    activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length > 1 ? this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourCategory')
+                    activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length >= 1 ? this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourCategory')
                       :
                       <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
                   }
@@ -527,7 +549,7 @@ class Home extends Component {
                 <div className={styles.header__library_link_wrapper}>
                   {/* {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />} */}
                   {
-                    activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
+                    activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
                       :
                       <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />
                   }
