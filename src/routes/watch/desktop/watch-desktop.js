@@ -10,6 +10,7 @@ import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
+import watchPermission from '@source/lib/watchPermission'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
@@ -30,6 +31,7 @@ import {
   infoBarText,
   infoBarClose,
   countdownWinfobar,
+  movieDetailNotAllowed,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -156,6 +158,10 @@ class WatchDesktop extends Component {
     const { user, getMovieDetail, videoId } = this.props
 
     if (dataFetched) {
+      const permission = watchPermission(dataFetched.permission, this.props.user.sid)
+      const isAllowed = permission.isAllowed
+      let watchPermissionErrorCode = permission.errorCode
+
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
@@ -175,6 +181,22 @@ class WatchDesktop extends Component {
       if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
         return <CountDown hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
       } else if (dataFetched.streamSourceUrl) {
+        if (!isAllowed) {
+          if (watchPermissionErrorCode == 'login_first') {
+            return (
+              <div className={movieDetailNotAllowed}>
+                <p>
+                  Silahkan{' '}
+                  <a style={{ color: '#005290' }} href="/accounts/login">
+                    {' '}
+                    login
+                  </a>{' '}
+                  untuk menyaksikan tayangan ini.
+                </p>
+              </div>
+            )
+          }
+        }
         return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} poster={poster} autoPlay={false} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
       }
     }
