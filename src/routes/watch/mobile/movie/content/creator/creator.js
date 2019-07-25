@@ -1,55 +1,30 @@
 import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import styles from './creator.css'
 
-import { creatorContainer } from './style'
-
-const Creator = ({ people = [] }) => {
-  const filterPeople = type =>
-    people.filter(item => {
-      return item.attributes.peopleTypeName === type
-    })
-
-  const casts = filterPeople('cast').map(cast => {
-    return <span key={cast.name}>{cast.attributes.name}</span>
-  })
-
-  const directors = filterPeople('director').map(cast => {
-    return <span key={cast.name}>{cast.attributes.name}</span>
-  })
-
-  const writers = filterPeople('writer').map(cast => {
-    return <span key={cast.name}>{cast.attributes.name}</span>
-  })
-
-  return (
-    <div className={creatorContainer}>
-      {casts.length > 0 && (
-        <>
-          <div>
-            casts:
-            <p>{casts}</p>
+class Creator extends React.Component {
+  render() {
+    const { people } = this.props
+    return (
+      <div className={styles.container}>
+        <div className={styles.inner_box_header}>
+          <span>{'Casts & Crews'}</span>
+        </div>
+        <div className={styles.people__wrapper}>
+          <div className={styles.people__wrapper__scroller}>
+            {people.map(person => {
+              return (
+                <div key={person.id} className={styles.person__wrapper}>
+                  {person.attributes.imageUrl ? <img src={person.attributes.imageUrl} /> : <div className={styles.castImg_dummy} />}
+                  <div>{person.attributes.name}</div>
+                </div>
+              )
+            })}
           </div>
-        </>
-      )}
-
-      {directors.length > 0 && (
-        <>
-          <div>
-            directors:
-            <p>{directors}</p>
-          </div>
-        </>
-      )}
-
-      {writers.length > 0 && (
-        <>
-          <div>
-            writers:
-            <p>{writers}</p>
-          </div>
-        </>
-      )}
-    </div>
-  )
+        </div>
+      </div>
+    )
+  }
 }
 
-export default Creator
+export default withStyles(styles)(Creator)

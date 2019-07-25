@@ -32,14 +32,12 @@ class Synopsis extends Component {
       <LazyLoad containerClassName={s.container}>
         <div className={s.inner_box}>
           <div className={s.inner_box_header}>
-            <div className={s.synopsis__info_icon} />
-            <span>info</span>
+            {/* <div className={s.synopsis__info_icon} /> */}
+            <span>Info</span>
           </div>
           {content && (
             <>
-              <p className={`synopsis__info_content ${show ? s.show : ''}`}>
-                {content}
-              </p>
+              <p className={`synopsis__info_content ${show ? s.show : ''}`}>{content}</p>
               {!show && (
                 <button className={s.synopsis__info_read_more} onClick={this.handleClick}>
                   Read More <div className={s.expand_collapse} />

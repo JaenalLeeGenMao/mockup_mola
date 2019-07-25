@@ -44,6 +44,8 @@ class MovieContent extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
+
+    hiddenController.push('suggestions')
     return (
       <>
         {!isMovie && <ContentOverview data={dataFetched} />}
