@@ -11,7 +11,7 @@ class Review extends Component {
       <LazyLoad containerClassName={s.container}>
         <div className={s.inner_box}>
           <div className={s.inner_box_header}>
-            <div className={s.review__info_icon} />
+            {/* <div className={s.review__info_icon} /> */}
             <span>Review</span>
           </div>
           {quotes.map(review => {

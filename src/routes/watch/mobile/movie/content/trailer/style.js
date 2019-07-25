@@ -76,8 +76,7 @@ export const titleTrailer = css`
 export const trailerTitle = css`
   padding: 0px 15px;
   font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
+  font-weight: light;
   line-height: 1.35;
   top: 0.5rem;
   color: #969696;

@@ -37,8 +37,7 @@
 .inner_box_header {
   height: 2.4rem;
   font-size: 14px;
-  text-transform: uppercase;
-  font-weight: bold;
+  font-weight: light;
 }
 
 .inner_box_header span {
