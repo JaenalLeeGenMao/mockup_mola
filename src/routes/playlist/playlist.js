@@ -101,8 +101,8 @@ class Playlist extends React.Component {
   renderPlaylist() {
     const isMobile = this.state.viewportWidth <= 680
     const carouselSetting = {
-      desktopShow: 8,
-      mobileShow: 3,
+      desktopShow: 10.5,
+      mobileShow: 2.8,
       desktopScroll: 3,
       mobileScroll: 1,
     }
@@ -118,7 +118,13 @@ class Playlist extends React.Component {
             <div className={playlistList}>
               <p className="season_text">{element.meta.seasonNumber ? `Season ${element.meta.seasonNumber}` : ''}</p>
 
-              <Carousel framePadding={'0px 2rem'} hideNextIcon={hideNextIcon(element.data.length)} slidesToScroll={slideToScroll} slidesToShow={slidesToShow} dragging={true}>
+              <Carousel
+                framePadding={!isMobile ? '0rem 2rem' : '0rem 0rem 0rem 1rem'}
+                hideNextIcon={hideNextIcon(element.data.length)}
+                slidesToScroll={slideToScroll}
+                slidesToShow={slidesToShow}
+                dragging={true}
+              >
                 {element.data.map((video, idx) => (
                   <VideoCard
                     key={'video' + idx}
@@ -159,7 +165,7 @@ class Playlist extends React.Component {
 
     return (
       <>
-        {playlistStatus != 'error' && (playlistStatus === 'loading' || (videoStatus === 'loading' && <> {<Placeholder />} </>))}
+        {(playlistStatus === 'loading' || videoStatus === 'loading') && <Placeholder isMobile={isMobile} />}
         {playlistStatus != 'error' && <>{this.renderHeader()}</>}
         {(playlistStatus === 'error' || videoStatus === 'error') && <PlaylistError status={playlistStatus || 404} message={playlistError || 'Playlist is not loaded'} />}
         {videos &&

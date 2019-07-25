@@ -62,6 +62,10 @@ export const playlistHeadMobile = css`
   flex-direction: column;
   justify-content: flex-end;
 
+  @media screen and (max-width: 960px) {
+    margin: 1rem;
+  }
+
   .line {
     content: '';
     position: absolute;
