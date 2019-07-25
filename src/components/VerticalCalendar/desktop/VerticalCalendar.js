@@ -2,16 +2,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
-import { formatDateTime, addDateTime, isLastWeek } from '@source/lib/dateTimeUtil'
+import { formatDateTime, addDateTime } from '@source/lib/dateTimeUtil'
 
 import s from './VerticalCalendar.css'
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants'
 
 class VerticalCalendar extends Component {
   static propTypes = {
-    handleCategoryFilter: PropTypes.func.isRequired,
+    handleCategoryFilter: PropTypes.func,
     filterByDates: PropTypes.string,
-    startOfWeek: PropTypes.bool,
+    // startOfWeek: PropTypes.bool,
     selectedDate: PropTypes.string,
   }
 
@@ -35,7 +34,6 @@ class VerticalCalendar extends Component {
 
   render() {
     const { handleCategoryFilter, categoryFilterType = 'ByDate', selectedDate, startOfWeek } = this.props
-
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>

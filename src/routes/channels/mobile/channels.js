@@ -4,8 +4,6 @@ import { compose } from 'redux'
 import moment from 'moment'
 import { IoIosArrowDown } from 'react-icons/io'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
 import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
@@ -22,6 +20,7 @@ import Header from '@components/Header'
 import DropdownList from '@components/DropdownList'
 import MovieDetailError from '@components/common/error'
 import RedirectToApps from '@components/RedirectToApps'
+import VerticalCalendar from '@components/VerticalCalendar'
 
 import Schedule from './schedule'
 import { getChannelProgrammeGuides } from '../selectors'
@@ -234,10 +233,18 @@ class Channels extends Component {
                       <div>Video Not Available</div> // styling later
                     )}
                   </div>
-                  {programmeGuides.data &&
-                    scheduleList.length > 0 && (
-                      <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                    )}
+                  <div className={styles.epg__channels__container}>
+                    <div className={styles.epg__card}>
+                      {programmeGuides.data &&
+                        scheduleList.length > 0 && (
+                          // <ScheduleCard />
+                          <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                        )}
+                    </div>
+                    <div className={styles.epg__calendar}>
+                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} isMobile />
+                    </div>
+                  </div>
                 </>
               )}
             </div>

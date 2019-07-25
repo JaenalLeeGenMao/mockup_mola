@@ -98,6 +98,25 @@ body {
   display: inline-block;
 }
 
+.epg__channels__container {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.epg__card {
+  width: 90vw;
+  height: 100%;
+}
+
+.epg__calendar {
+  padding: 0.5rem;
+
+  /* width: 20vw; */
+  height: 100%;
+}
+
 @media screen and (max-width: 380px) {
   .schedule_date_wrapper {
     margin: 15px;
