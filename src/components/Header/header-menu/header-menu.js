@@ -50,7 +50,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile = false, isLandscape, pathname } = this.props
+    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile = false, isLandscape, pathname = '' } = this.props
     const { uid, sid } = this.props.user
     const { headerMenuList } = this.state
 
