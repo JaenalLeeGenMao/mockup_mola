@@ -8,14 +8,20 @@ export const container = css`
   height: 100%;
   min-height: 100vh;
   border-radius: 5px;
-  margin: 0 auto;
+  margin: 2rem;
+
+  @media screen and (max-width: 960px) {
+    margin: 1rem;
+  }
 `
 
 export const fixedContainer = css`
   display: block;
   width: 100%;
   margin: 0 auto;
-  max-width: 1280px;
+  padding-top: 8vh;
+  min-width: 100%;
+  // max-width: 1280px;
 
  h3 {
   color: #6f6f6f;
@@ -98,4 +104,11 @@ export const DummyWithoutAnimationPlaceholder = styled('div')`
     width: 45vw;
     opacity: 0;
   }
+`
+
+export const DummyLinePlaceholder = styled('div')`
+  height: ${props => props.height || '1.2rem'};
+  width: ${props => props.width || '4rem'};
+  margin: 1rem 0;
+  animation: pulse 2s infinite ease-in-out;
 `
