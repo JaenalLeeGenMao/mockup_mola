@@ -37,7 +37,7 @@ class HeaderMenu extends Component {
 
   getHeaderMenus = () => {
     // link w/ libraries
-    get('https://mola01.koicdn.com/dev/json/menu-stag.json').then(({ data }) => {
+    get('https://mola01.koicdn.com/dev/json/menu.json').then(({ data }) => {
       this.setState({ headerMenuList: data ? data.data : [] })
     })
   }
@@ -50,9 +50,9 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape, pathname } = this.props
+    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile = false, isLandscape, pathname } = this.props
     const { uid, sid } = this.props.user
-    const menuTemp = this.state.headerMenuList
+    const { headerMenuList } = this.state
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
@@ -64,9 +64,14 @@ class HeaderMenu extends Component {
               <div className={styles.header_menu_outer}>
                 {!isMobile && (
                   <>
-                    {menuTemp.map(dts => {
+                    {headerMenuList.map(dts => {
+                      const absMenuUrl = dts.attributes.url
+                      const absMenuArray = absMenuUrl.split('/')
+                      const isHome = absMenuArray.length <= 3
+                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
                       return (
-                        <Link key={dts.id} title={dts.attributes.title.en} className={pathname === dts.attributes.url ? styles.header_menu__active : ''} to={dts.attributes.url}>
+                        <Link key={dts.id} title={dts.attributes.title.en} className={isActive ? styles.header_menu__active : ''} to={relMenuUrl}>
                           {dts.attributes.title.en}
                         </Link>
                       )

@@ -5,7 +5,7 @@ import SearchDesktop from './Search'
 const title = 'Search Page'
 const description = 'Search your favourite movies via Mola'
 
-function action({ query, isMobile }) {
+function action({ query, isMobile, pathname }) {
   const qs = query.q ? query.q : ''
   return {
     chunks: ['search'],
@@ -13,7 +13,7 @@ function action({ query, isMobile }) {
     description,
     component: (
       <MolaLayout>
-        <SearchDesktop title={title} searchKeyword={qs} isMobile={isMobile} />
+        <SearchDesktop title={title} searchKeyword={qs} isMobile={isMobile} pathname={pathname} />
       </MolaLayout>
     ),
   }

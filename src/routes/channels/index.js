@@ -19,11 +19,11 @@ async function action({ isMobile, pathname }) {
     url: '',
     component: isMobile ? (
       <MolaLayout>
-        <ChannelsMobile movieId={movieId} />
+        <ChannelsMobile movieId={movieId} pathname={pathname} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <ChannelsDesktop movieId={movieId} />
+        <ChannelsDesktop movieId={movieId} pathname={pathname} />
       </MolaLayout>
     ),
   }

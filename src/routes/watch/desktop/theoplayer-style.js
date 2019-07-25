@@ -16,6 +16,7 @@ export const customTheoplayer = css`
 
     &.video-container .theoplayer-poster {
       background-size: cover !important;
+      cursor: default !important;
     }
 
     &.video-container .vjs-play-progress {
