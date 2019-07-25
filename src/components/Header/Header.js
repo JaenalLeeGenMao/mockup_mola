@@ -114,7 +114,7 @@ class Header extends Component {
     const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
 
     return (
-      <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
+      <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
         {isMobile && !greyBackground && !blackBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
         {isMobile && greyBackground && !blackBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
         {isMobile && !greyBackground && blackBackground && <div className={`${styles.header__black_background}`} style={{ opacity: opacity }} />}
@@ -128,22 +128,7 @@ class Header extends Component {
               </Link>
             </LazyLoad>
           )}
-          {backButtonOn && (
-            <LazyLoad>
-              <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                <button className={styles.header__back_arrow} style={{ color }} />
-              </div>
-            </LazyLoad>
-          )}
         </div>
-        {!libraryOff && (
-          <LazyLoad>
-            <Link className={styles.header__library_link_wrapper} to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color }}>
-              <span className={`${styles[`header__library_logo_${color}`]} tourLibrary`} alt="library" />
-            </Link>
-          </LazyLoad>
-        )}
-        {this.renderHeaderLibrary()}
         {!headerMenuOff && <HeaderMenu color={color} headerMenuOff={headerMenuOff} {...this.props} />}
         {/* {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} tambahan left menu nampung sport(design baru) */}
         {/* {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />} */}

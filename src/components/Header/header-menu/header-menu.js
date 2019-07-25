@@ -32,40 +32,6 @@ class HeaderMenu extends Component {
 
   componentDidMount() {
     const { activePlaylist, activeMenu, isMobile } = this.props
-    menu = [
-      {
-        id: 'movie',
-        title: 'Movie',
-        linkUrl: '/',
-      },
-      {
-        id: 'sport',
-        title: 'Sports',
-        linkUrl: '/sports',
-      },
-      {
-        id: 'channels',
-        title: 'Channels',
-        linkUrl: '/channels',
-      },
-      {
-        id: 'matches',
-        title: 'Matches',
-        linkUrl: '/matches',
-      },
-      // {
-      //   id: 'library',
-      //   title: 'library',
-      //   linkUrl: `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
-      // },
-    ]
-
-    // const showLibrary = !isMobile && (activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels')
-    // if (showLibrary) {
-    //   const libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
-    //   menu.push({ id: 'library', title: 'Library', linkUrl: libraryUrl })
-    // }
-
     this.getHeaderMenus()
   }
 
@@ -84,68 +50,36 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape } = this.props
+    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile, isLandscape, pathname } = this.props
     const { uid, sid } = this.props.user
     const menuTemp = this.state.headerMenuList
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
-    // if (activeMenu === 'library') {
-    //   activeMenuDropdown = 'movie'
-    // } else if (activeMenu === 'matches') {
-    //   activeMenuDropdown = 'sport'
-    // } else {
-    //   activeMenuDropdown = activeMenu
-    // }
-    // let libraryUrl = ''
-    // const showLibrary = activeMenu === 'movie' || activeMenu === 'library' || activeMenu === 'channels' || activeMenu === 'search' || activeMenu === 'profile'
-    //  activeMenu === 'signout'
-    // if (showLibrary) {
-    //   libraryUrl = `movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`
-    // }
     return (
       <>
         <div className={styles.header__menu}>
           {!headerMenuOff && (
-            <span>
-              <LazyLoad className={styles.header__menu_icon_wrapper}>
-                <div className={styles.header_menu_outer}>
-                  {!isMobile && (
-                    <>
-                      {menuTemp.map(dts => {
-                        return (
-                          <Link key={dts.id} className={activeMenu === dts.id ? styles.header_menu__active : ''} to={dts.attributes.url}>
-                            {dts.attributes.title.en}
-                          </Link>
-                        )
-                      })}
-                      {/* {menu.map(dt => {
-                        return (
-                          <Link key={dt.id} className={activeMenu === dt.id ? styles.header_menu__active : ''} to={dt.linkUrl}>
-                            {dt.title}
-                          </Link>
-                        )
-                      })} */}
-                    </>
-                  )}
-                  {isMobile && (
-                    <div className={`${styles.header__menu_wrapper_m} ${isLandscape ? styles.header_menu_select_wrapper__ls : ''}`}>
-                      <DropdownList className={styles.header_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
-                      {/* {showLibrary && (
-                        <Link className={activeMenu === 'library' ? styles.header_menu__active : ''} to={libraryUrl}>
-                          Library
+            <LazyLoad className={styles.header__menu_icon_wrapper}>
+              <div className={styles.header_menu_outer}>
+                {!isMobile && (
+                  <>
+                    {menuTemp.map(dts => {
+                      return (
+                        <Link key={dts.id} title={dts.attributes.title.en} className={pathname === dts.attributes.url ? styles.header_menu__active : ''} to={dts.attributes.url}>
+                          {dts.attributes.title.en}
                         </Link>
-                      )}
-                      {(activeMenu === 'sport' || activeMenu === 'matches') && (
-                        <Link className={activeMenu === 'matches' ? styles.header_menu__active : ''} to={'/matches'}>
-                          Matches
-                        </Link>
-                      )} */}
-                    </div>
-                  )}
-                </div>
-              </LazyLoad>
-            </span>
+                      )
+                    })}
+                  </>
+                )}
+                {isMobile && (
+                  <div className={`${styles.header__menu_wrapper_m} ${isLandscape ? styles.header_menu_select_wrapper__ls : ''}`}>
+                    <DropdownList className={styles.header_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
+                  </div>
+                )}
+              </div>
+            </LazyLoad>
           )}
         </div>
       </>

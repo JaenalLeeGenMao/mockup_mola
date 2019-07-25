@@ -24,7 +24,7 @@ async function action({ isMobile, store, pathname }) {
     chunks: ['libraries'],
     component: (
       <MolaLayout>
-        <Feature {...store} id={featureId} isMobile={isMobile} />
+        <Feature {...store} id={featureId} isMobile={isMobile} pathname={pathname} />
       </MolaLayout>
     ),
   }
