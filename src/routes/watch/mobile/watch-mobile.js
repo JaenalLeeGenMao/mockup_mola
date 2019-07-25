@@ -9,6 +9,7 @@ import Tracker from '@source/lib/tracker'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
+import watchPermission from '@source/lib/watchPermission'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
@@ -28,6 +29,7 @@ import {
   infoBarText,
   posterWrapper,
   playIcon,
+  movieDetailNotAllowed,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -145,6 +147,10 @@ class MovieDetail extends Component {
         ...checkAdsSettings,
       }
 
+      const permission = watchPermission(dataFetched.permission, this.props.user.sid)
+      const isAllowed = permission.isAllowed
+      let watchPermissionErrorCode = permission.errorCode
+
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
       const { toggleInfoBar, ios_redirect_to_app, android_redirect_to_app } = this.state
@@ -159,7 +165,7 @@ class MovieDetail extends Component {
       } else {
         if (isApple) {
           //ios
-          if (ios_redirect_to_app) {
+          if (!ios_redirect_to_app) {
             return (
               <div className={posterWrapper}>
                 <img src={poster} />
@@ -167,6 +173,23 @@ class MovieDetail extends Component {
               </div>
             )
           } else {
+            if (!isAllowed) {
+              if (watchPermissionErrorCode == 'login_first') {
+                return (
+                  <div className={movieDetailNotAllowed}>
+                    <p>
+                      Silahkan{' '}
+                      <a style={{ color: '#005290' }} href="/accounts/login">
+                        {' '}
+                        login
+                      </a>{' '}
+                      untuk menyaksikan tayangan ini.
+                    </p>
+                  </div>
+                )
+              }
+            }
+
             return (
               <Theoplayer
                 className={customTheoplayer}
@@ -185,7 +208,7 @@ class MovieDetail extends Component {
           }
         } else {
           //android
-          if (android_redirect_to_app) {
+          if (!android_redirect_to_app) {
             return (
               <div className={posterWrapper}>
                 <img src={poster} />
@@ -193,19 +216,37 @@ class MovieDetail extends Component {
               </div>
             )
           } else {
-            ;<Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              poster={poster}
-              autoPlay={false}
-              // certificateUrl="test"
-              // handleOnVideoLoad={this.handleOnVideoLoad}
-              // handleOnVideoPause={this.handleOnVideoPause}
-              // handleOnLoadedData={this.handleOnLoadedData}
-              // handleOnReadyStateChange={this.handleOnReadyStateChange}
-              {...videoSettings}
-              isMobile
-            />
+            if (!isAllowed) {
+              if (watchPermissionErrorCode == 'login_first') {
+                return (
+                  <div className={movieDetailNotAllowed}>
+                    <p>
+                      Silahkan{' '}
+                      <a style={{ color: '#005290' }} href="/accounts/login">
+                        {' '}
+                        login
+                      </a>{' '}
+                      untuk menyaksikan tayangan ini.
+                    </p>
+                  </div>
+                )
+              }
+            }
+            return (
+              <Theoplayer
+                className={customTheoplayer}
+                subtitles={this.subtitles()}
+                poster={poster}
+                autoPlay={false}
+                // certificateUrl="test"
+                // handleOnVideoLoad={this.handleOnVideoLoad}
+                // handleOnVideoPause={this.handleOnVideoPause}
+                // handleOnLoadedData={this.handleOnLoadedData}
+                // handleOnReadyStateChange={this.handleOnReadyStateChange}
+                {...videoSettings}
+                isMobile
+              />
+            )
           }
         }
       }

@@ -8,7 +8,26 @@ const normalizeHomePlaylist = response => {
       ({ attributes: { playlists } }) =>
         playlists &&
         playlists.map((playlist, index) => {
-          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images, iconWebp, viewMorePortrait, viewMoreLandscape, viewMorePortraitWebp, viewMoreLandscapeWebp } } = playlist
+          const {
+            id,
+            type,
+            attributes: {
+              title,
+              description,
+              shortDescription,
+              visibility,
+              startTime,
+              endTime,
+              iconUrl,
+              isDark,
+              images,
+              iconWebp,
+              viewMorePortrait,
+              viewMoreLandscape,
+              viewMorePortraitWebp,
+              viewMoreLandscapeWebp,
+            },
+          } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const thumbnailImg = _get(images, 'thumbnails.cover', '')
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
@@ -138,7 +157,7 @@ const normalizeMatchDetail = response => {
           league,
           description,
           streamSourceUrl,
-          // permission,
+          permission,
           // subtitles,
           shortDescription,
           displayOrder,
@@ -157,7 +176,7 @@ const normalizeMatchDetail = response => {
         title,
         description,
         streamSourceUrl,
-        // permission,
+        permission,
         // subtitles,
         shortDescription,
         displayOrder,
@@ -194,7 +213,23 @@ const normalizeHomeVideo = response => {
             const {
               id,
               type,
-              attributes: { title, description, contentType, visibility, shortDescription, displayOrder, isDark, images, quotes: quoteLists, startTime, endTime, homeTeamId, awayTeamId, seasonNumber },
+              attributes: {
+                title,
+                description,
+                contentType,
+                visibility,
+                shortDescription,
+                displayOrder,
+                isDark,
+                images,
+                quotes: quoteLists,
+                startTime,
+                endTime,
+                homeTeamId,
+                awayTeamId,
+                seasonNumber,
+                permission,
+              },
             } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', '')
@@ -216,6 +251,7 @@ const normalizeHomeVideo = response => {
               visibility,
               seasonNumber,
               contentType,
+              permission,
               shortDescription: shortDescription || description,
               // coverTitle: coverTitle,
               background,
@@ -356,6 +392,7 @@ const normalizeVideoDetail = response => {
           people,
           genre,
           isDark,
+          permission,
           homeTeam,
           awayTeam,
           league,
@@ -385,6 +422,7 @@ const normalizeVideoDetail = response => {
         homeTeam,
         awayTeam,
         league,
+        permission,
         year,
         duration,
         background,
