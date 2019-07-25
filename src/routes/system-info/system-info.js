@@ -35,6 +35,7 @@ class SystemInfo extends Component {
               </div>
               <div>ISP {info.org}</div>
               <div>IP {info.ip}</div>
+              <div>Version 1.0.1</div>
             </div>
           </div>
         )}
