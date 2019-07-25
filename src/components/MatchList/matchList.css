@@ -18,11 +18,11 @@
   line-height: 1.6rem;
   padding: 5px;
   width: 138px;
-  background-color: #2c2c2c;
+  background-color: #191919;
 }
 
 .matchList__live_now {
-  background-color: #1011ee;
+  background-color: #12128b;
 }
 
 .matchList__matches {
@@ -32,7 +32,7 @@
   position: relative;
   width: 100%;
   flex-direction: column;
-  background: #000;
+  background: #191919;
 }
 
 .matchList__container:hover {
@@ -105,4 +105,35 @@
   -ms-flex-align: center;
   align-items: center;
   font-size: 1.6rem;
+}
+
+@media screen and (max-width: 640px) {
+  .matchList__container {
+    color: #f5f5f5;
+    font-weight: 300;
+    height: 10rem;
+    width: 100%;
+  }
+
+  .matchList__date {
+    padding: 5px;
+    width: 20%;
+    background-color: #383838;
+  }
+
+  .matchList__live_now {
+    background-color: #0d2caa;
+  }
+
+  .matchList__NoHomeAwayTeam {
+    display: flex;
+    height: auto;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .matchList__labelDate {
+    font-weight: 600;
+    font-size: 11px;
+  }
 }
