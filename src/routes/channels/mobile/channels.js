@@ -21,6 +21,7 @@ import DropdownList from '@components/DropdownList'
 import MovieDetailError from '@components/common/error'
 import RedirectToApps from '@components/RedirectToApps'
 import VerticalCalendar from '@components/VerticalCalendar'
+import MatchList from '@components/MatchList'
 
 import Schedule from './schedule'
 import { getChannelProgrammeGuides } from '../selectors'
@@ -236,13 +237,14 @@ class Channels extends Component {
                   <div className={styles.epg__channels__container}>
                     <div className={styles.epg__card}>
                       {programmeGuides.data &&
-                        scheduleList.length > 0 && (
-                          // <ScheduleCard />
-                          <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                        )}
+                        scheduleList.length > 0 &&
+                        scheduleList.map(dt => (
+                          <MatchList key={dt.id} data={dt} clickAble={false} />
+                          // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                        ))}
                     </div>
                     <div className={styles.epg__calendar}>
-                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} isMobile />
+                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} schedule={scheduleList} isMobile />
                     </div>
                   </div>
                 </>

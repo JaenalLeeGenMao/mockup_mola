@@ -14,7 +14,7 @@ class VerticalCalendar extends Component {
     selectedDate: PropTypes.string,
   }
 
-  getCalendar = startOfWeek => {
+  getCalendar = (startOfWeek, schedule) => {
     let resultDateList = []
     //gettodayfordefault Value
     for (var i = 0; i < 7; i++) {
@@ -26,29 +26,29 @@ class VerticalCalendar extends Component {
       const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMMM'))
       const strTimestamp = dateStringtoInt.getTime() / 1000
 
-      resultDateList.push({ title: dayDate, strTimestamp: strTimestamp })
+      resultDateList.push({ title: formattedDateTime, strTimestamp: strTimestamp, day: dayDate })
     }
     return resultDateList
   }
 
   render() {
-    const { handleCategoryFilter, categoryFilterType = 'ByDate', selectedDate, startOfWeek } = this.props
+    const { handleCategoryFilter, categoryFilterType = 'ByDate', selectedDate, startOfWeek, handleJumpToLive, schedule = [] } = this.props
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
-            {this.getCalendar(startOfWeek).map(dt => {
+            <div className={s.live__logo} onClick={handleJumpToLive} />
+            {this.getCalendar(startOfWeek, schedule).map(dt => {
               return (
                 <>
-                  {/* <div className={`${s.filterLabelByDay} ${dt.todayDate ? s.selectedFilter : ''}`}>{dt.todayDate}</div> */}
                   <div
-                    className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''}`}
+                    className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''} ${dt.isLive ? s.live__marker : ''}`}
                     key={dt.strTimestamp}
                     onClick={() => {
                       handleCategoryFilter(categoryFilterType, dt.strTimestamp)
                     }}
                   >
-                    {dt.title}
+                    {dt.day}
                   </div>
                 </>
               )
