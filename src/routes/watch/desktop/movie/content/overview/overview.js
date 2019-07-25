@@ -64,12 +64,6 @@ const Overview = ({ data }) => {
       <div className={contentOverviewSectionLeft}>
         <div>
           <h1 className={sectionLeftTitle}>{title}</h1>
-          <p className={sectionLeftText}>
-            {genre &&
-              genre.map(genreName => {
-                return <span key={genreName}>{genreName}</span>
-              })}
-          </p>
           <p className={sectionLeftDuration}>
             {releaseYear(releaseDate)}
             <span>{suitableAge ? `${suitableAge}+` : '13+'}</span>

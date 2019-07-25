@@ -9,18 +9,12 @@
 }
 
 .header_menu_outer {
-  width: 44rem;
-  height: 33px;
+  width: auto;
   white-space: nowrap;
 }
 
 .header__menu {
-  display: flex;
-  flex-direction: row;
-  text-decoration: none;
-  position: absolute;
-  right: 25%;
-  justify-content: flex-end;
+  margin-right: 2.5%;
   font-weight: 500;
 }
 
@@ -39,13 +33,23 @@
   position: relative;
 }
 
-.header__menu a.left_menu__active {
-  font-weight: bold;
-  text-transform: uppercase;
+.header__menu a:hover {
   color: white;
+  font-weight: bold;
+
+  /* text-shadow: 0 0 .65px #fff, 0 0 .65px #fff; */
 }
 
-.header__menu a:hover {
+.header__menu a::after {
+  display: block;
+  content: attr(title);
+  font-weight: bold;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.header__menu a.header_menu__active {
   color: white;
   font-weight: bold;
 }

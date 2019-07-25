@@ -27,7 +27,7 @@ async function action({ isMobile, store, pathname }) {
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <HomeDesktop {...store} />
+        <HomeDesktop {...store} pathname={pathname} />
       </MolaLayout>
     ),
   }
