@@ -43,7 +43,7 @@ class VerticalCalendar extends Component {
                 <>
                   {/* <div className={`${s.filterLabelByDay} ${dt.todayDate ? s.selectedFilter : ''}`}>{dt.todayDate}</div> */}
                   <div
-                    className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == filterByDates ? s.selectedFilter : ''}`}
+                    className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''}`}
                     key={dt.strTimestamp}
                     onClick={() => {
                       handleCategoryFilter(categoryFilterType, dt.strTimestamp)
