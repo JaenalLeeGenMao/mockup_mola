@@ -16,7 +16,8 @@ import { getErrorCode } from '@routes/home/util'
 import { getContentTypeName } from '@source/lib/globalUtil'
 
 import Placeholder from './placeholder'
-import { contentTypeList } from './const'
+import { BannerPlaceholder } from './placeholder/banner-placeholder'
+import { contentTypeList, banners as dummyDataBanners } from './const'
 
 import { container, bannerContainer, carouselMargin } from './style'
 
@@ -33,7 +34,7 @@ class Feature extends Component {
       this.updateWindowDimensions()
 
       const id = this.props.id || window.location.pathname.replace('/', '')
-
+      this.props.onHandleResetVideo()
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
       this.props.onHandleArticle(id)
@@ -47,7 +48,14 @@ class Feature extends Component {
   }
 
   componentDidUpdate() {
-    const { playlists, videos } = this.props.feature
+    const { playlists, videos } = this.props.feature,
+      { id } = this.props
+    if (playlists.meta.id && id !== playlists.meta.id) {
+      this.props.onHandleResetVideo()
+      this.props.onHandlePlaylist(id)
+      this.props.onHandleBanner(id)
+      this.props.onHandleArticle(id)
+    }
     if (playlists.meta.status === 'success' && playlists.data.length > 0 && playlists.data.length !== videos.data.length) {
       playlists.data.map((playlist, playlistIndex) => {
         this.props.onHandleVideo(playlist, playlistIndex)
@@ -99,29 +107,30 @@ class Feature extends Component {
     const isMobile = this.state.viewportWidth <= 680,
       { feature: { playlists, videos, banners, articles } } = this.props
 
-    const isLoading = playlists.meta.status === 'loading' || banners.meta.status === 'loading',
-      isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
+    const isLoading = playlists.meta.status === 'loading' || videos.meta.status === 'loading',
+      // isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
       isSuccess = playlists.meta.status === 'success'
 
-    let errorObj = { code: 0, description: '' }
-    if (banners.meta.error) {
-      errorObj = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
-    } else if (playlists.meta.error) {
-      errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
-    } else if (videos.meta.error) {
-      errorObj = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
-    } else if (articles.meta.error) {
-      errorObj = { code: getErrorCode(articles.meta.error), description: 'Video request failed' }
-    }
+    // let errorObj = { code: 0, description: '' }
+    // if (banners.meta.error) {
+    //   errorObj = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
+    // } else if (playlists.meta.error) {
+    //   errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
+    // } else if (videos.meta.error) {
+    //   errorObj = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
+    // } else if (articles.meta.error) {
+    //   errorObj = { code: getErrorCode(articles.meta.error), description: 'Video request failed' }
+    // }
 
     return (
       <>
-        {!isError && <Header libraryOff color={false} {...this.props} isMobile={isMobile} />}
+        <Header libraryOff color={false} {...this.props} isMobile={isMobile} />
         {isLoading && <Placeholder isMobile={isMobile} />}
-        {isError && <FeatureError status={errorObj.code} message={errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />}
+        {/* {isError && <FeatureError status={errorObj.code} message={errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />} */}
+        <div style={{ height: '8vh' }} />
         {isSuccess && (
           <>
-            <div style={{ height: '8vh' }} />
+            {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
             {banners.data.length > 0 && (
               <Carousel
                 wrap={banners.length === 1 ? false : true}
@@ -249,6 +258,7 @@ const mapDispatchToProps = dispatch => ({
   onHandleVideo: (playlist, index) => dispatch(featureActions.getFeatureVideo(playlist, index)),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
   onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
+  onHandleResetVideo: () => dispatch(featureActions.resetFeatureVideos()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feature)

@@ -84,7 +84,7 @@ export const DummyWithoutAnimationPlaceholder = styled('div')`
 
   /* width: 45vw; */
   border-radius: 0.25rem;
-  background-color: rgba(165, 165, 165, 0.3);
+  background-color: rgba(165, 165, 165, 1);
 
   img.bannerImage {
     position: relative;
