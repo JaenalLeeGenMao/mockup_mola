@@ -14,5 +14,9 @@
   "error_input_email": "Email cannot be empty",
   "error_valid_email": "Email is not valid",
   "error_gender": "Please enter your gender",
-  "error_date": "Please enter your date"
+  "error_date": "Please enter your date",
+  "error_phone": "Check your phone number, ex:08XXXXXXXXXX",
+  "error_name": "name cannot be empty",
+  "error_location": "location cannot be empty",
+  "error_phones": "phone number cannot be empty"
 }

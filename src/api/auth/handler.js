@@ -245,7 +245,13 @@ const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', g
 // }
 
 const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', location = '', token = '', phone = '' }) => {
-  const body = { name, birthdate, gender, location, token, phone }
+  const body = { name, birthdate, gender, token }
+  if (phone) {
+    body.phone = phone
+  }
+  if (location) {
+    body.location = location
+  }
   return patch(`${AUTH_BASE_ENDPOINT}/v1/profile`, body, {
     headers: {
       'x-csrf-token': csrf,

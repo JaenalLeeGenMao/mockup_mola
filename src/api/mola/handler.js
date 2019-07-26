@@ -1,4 +1,5 @@
 import { get, post, delete as axiosDelete } from 'axios'
+import _ from 'lodash'
 import {
   VIDEOS_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT,
@@ -13,6 +14,8 @@ import {
   CHANNELS_PLAYLIST_ENDPOINT,
   PROGRAMME_GUIDES,
   RECOMMENDATION,
+  HEADERMENU,
+  ARTICLES_RECOMMENDED_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 import dummy from './test'
@@ -45,11 +48,55 @@ const getHomePlaylist = () => {
     })
 }
 
-const getFeatureBanner = (isMobile = false, isSport = false) => {
-  let url = isMobile ? 'mobile-featured' : 'desktop-featured'
-  if (isSport) {
-    url = isMobile ? 'mobile-sport-featured' : 'desktop-sport-featured'
-  }
+const getFeaturePlaylist = id => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const data = _.get(response, 'data.data', []),
+        id = _.get(data, '[0].id', ''),
+        type = _.get(data, '[0].type', ''),
+        title = _.get(data, '[0].attributes.title', ''),
+        visibility = _.get(data, '[0].attributes.visibility', 0),
+        playlists = _.get(data, '[0].attributes.playlists', [])
+
+      const playlistsFiltered =
+        playlists.length > 0
+          ? playlists
+              .map(playlist => ({
+                id: playlist.id,
+                type: playlist.type,
+                ...playlist.attributes,
+              }))
+              .filter(playlist => playlist.visibility === 1)
+          : []
+      return {
+        meta: {
+          status: data.length > 0 ? 'success' : 'no_result',
+          error: '',
+          id,
+          title,
+          type,
+          visibility,
+        },
+        data: playlistsFiltered,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Feature playlist')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getFeatureBanner = ({ id = '' }) => {
+  /* fid's are epl, sports, movies, kids */
+  const url = id /* mobile-featured, desktop-featured, mobile-sport-featured, desktop-sport-featured, landing-page-${fid} */
   return get(`${CAMPAIGN_ENDPOINT}/${url}?include=banners`, {
     ...endpoints.setting,
   })
@@ -124,6 +171,33 @@ const getFeatureBanner = (isMobile = false, isSport = false) => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getAllGenreSpo = (id = 'leagues') => {
+  // link lama: genre-spo change into leagues
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeHomePlaylist(response)
+      return {
+        meta: {
+          status: result[0].length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: [...result[0]] || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Sport')
       return {
         meta: {
           status: 'error',
@@ -220,6 +294,37 @@ const getMatchDetail = id => {
       }
     })
 }
+const getMatchesPlaylists = id => {
+  return post(
+    `${HOME_PLAYLIST_ENDPOINT}`,
+    {
+      playlists: id,
+    },
+    {
+      ...endpoints.setting,
+    }
+  )
+    .then(response => {
+      const result = utils.normalizeMatchPlaylists(response)
+      return {
+        meta: {
+          status: result.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: result || null,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error: Mola Genre Category')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
 
 const getHomeVideo = ({ id }) => {
   // console.log('ID', id)
@@ -241,6 +346,50 @@ const getHomeVideo = ({ id }) => {
       return {
         meta: {
           status,
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getPlaylistPlaylists = id => {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const data = _.get(response, 'data.data', []),
+        description = _.get(data, '[0].attributes.description', ''),
+        background = _.get(data, '[0].attributes.images.cover.background.landscape', ''),
+        title = _.get(data, '[0].attributes.title', '')
+
+      const playlistsFiltered =
+        data.length > 0
+          ? data
+              .map(dt => ({
+                id: dt.id,
+                type: dt.type,
+                ...dt.attributes,
+              }))
+              .filter(dt => dt.visibility === 1)
+          : []
+
+      return {
+        meta: {
+          background,
+          title,
+          description,
+          status: playlistsFiltered.length > 0 ? 'success' : 'no_result',
+          error: '',
+        },
+        data: playlistsFiltered || [],
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Home')
+      return {
+        meta: {
+          status: 'error',
           error: errorMessage,
         },
         data: [],
@@ -768,8 +917,72 @@ const getProgrammeGuides = (date, playlistId) => {
     })
 }
 
+const getHeaderMenu = () => {
+  return get(`${HEADERMENU}/menu.json`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('response', response)
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
+const getRecommendedArticles = articlesId => {
+  return get(`${ARTICLES_RECOMMENDED_ENDPOINT}/${articlesId}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const data = _.get(response, 'data.data', {}),
+        title = _.get(data, 'attributes.title', ''),
+        articles = _.get(data, 'attributes.articles', [])
+
+      const articlesFiltered =
+        articles.length > 0
+          ? articles.map(article => ({
+              id: article.id,
+              type: article.type,
+              ...article.attributes,
+            }))
+          : []
+
+      return {
+        meta: {
+          status: articlesFiltered.length > 0 ? 'success' : 'no_result',
+          title,
+          error: '',
+        },
+        data: articlesFiltered,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Articles')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
+  getFeaturePlaylist,
   getFeatureBanner,
   getHomeVideo,
   getAllHistory,
@@ -789,8 +1002,13 @@ export default {
   getOrderHistoryTransactions,
   getSportList,
   getSportVideo,
+  getAllGenreSpo,
+  getMatchesPlaylists,
   getMatchesList,
   getMatchDetail,
   getChannelsList,
   getProgrammeGuides,
+  getHeaderMenu,
+  getPlaylistPlaylists,
+  getRecommendedArticles,
 }

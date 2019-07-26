@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import _groupBy from 'lodash/groupBy'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
@@ -9,7 +10,7 @@ import DropdownList from '@components/DropdownList'
 import MatchesPlaceholder from './placeholder'
 
 import MatchCard from './card'
-import { formatDateTime, isToday, isTomorrow, isMatchPassed } from '@source/lib/dateTimeUtil'
+import { formatDateTime, isToday, isTomorrow, isMatchPassed, isThisWeek, isNextWeek } from '@source/lib/dateTimeUtil'
 import matchListActions from '@actions/matches'
 
 import Header from '@components/Header'
@@ -24,12 +25,14 @@ class Matches extends Component {
     initialized: false,
     matches: [],
     filter: 1,
+    allMatches: [],
   }
 
   componentDidMount() {
     /* set the default active playlist onload */
     const { playlistId } = this.props
     playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
+    this.props.getAllGenreSpo()
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -43,9 +46,40 @@ class Matches extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.matches.data.length != this.props.matches.data.length && this.state.matches.length === 0) {
-      this.liveUpcomingFilter()
+    if (prevProps.matches.matchesPlaylists.data.length != this.props.matches.matchesPlaylists.data.length && this.state.allMatches.length === 0) {
+      // this.liveUpcomingFilter()
+
+      //get all data first render
+      let matchTemp = []
+      const { data } = this.props.matches.matchesPlaylists
+      data.forEach(dt => {
+        if (dt.id) {
+          const vidDt = dt.videos
+          for (let i = 0; i < vidDt.length; i++) {
+            matchTemp.push(vidDt[i])
+          }
+        }
+      })
+      const filterResult = this.handleSortMatches(matchTemp)
+
+      this.setState({ allMatches: filterResult, matches: filterResult })
     }
+  }
+
+  handleSortMatches = matches => {
+    // console.log('handleSortMatches : see sort macthes', matches)
+    const groupByDate = _groupBy(matches, match => {
+      if (isToday(match.startTime, match.endTime)) return 'isToday'
+      else if (isThisWeek(match.startTime)) return 'isThisWeek'
+      else if (isNextWeek(match.startTime)) return 'isNextWeek'
+      else return 'isLastWeek'
+    })
+
+    const todayMatches = groupByDate.isToday ? groupByDate.isToday.sort((a, b) => a.startTime - b.startTime) : []
+    const thisWeekMatches = groupByDate.isThisWeek ? groupByDate.isThisWeek.sort((a, b) => a.startTime - b.startTime) : []
+    const nextWeekMatches = groupByDate.isNextWeek ? groupByDate.isNextWeek.sort((a, b) => a.startTime - b.startTime) : []
+    const lastWeekMatches = groupByDate.isLastWeek ? groupByDate.isLastWeek.sort((a, b) => b.startTime - a.startTime) : []
+    return todayMatches.concat(thisWeekMatches, nextWeekMatches, lastWeekMatches)
   }
 
   liveUpcomingFilter = () => {
@@ -201,6 +235,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMatches: id => dispatch(matchListActions.getAllMatches(id)),
+  getAllGenreSpo: id => dispatch(matchListActions.getAllGenreSpo(id)),
 })
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Matches)

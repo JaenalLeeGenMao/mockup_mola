@@ -11,11 +11,12 @@ import React from 'react'
 import HomeDesktop from './desktop'
 import HomeMobile from './mobile'
 import MolaLayout from '@components/Molalayout'
+import _ from 'lodash'
 
 const title = 'Homepage'
 const description = 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
 
-async function action({ isMobile, store }) {
+async function action({ isMobile, store, pathname }) {
   return {
     title,
     description,
@@ -26,7 +27,7 @@ async function action({ isMobile, store }) {
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <HomeDesktop {...store} />
+        <HomeDesktop {...store} pathname={pathname} />
       </MolaLayout>
     ),
   }

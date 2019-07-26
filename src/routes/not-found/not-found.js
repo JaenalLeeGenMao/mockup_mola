@@ -28,7 +28,7 @@ const RelatedVideos = ({ style = {}, containerClassName = '', className = '', de
       {videos.map(({ id, background }) => {
         const imageSource = background.landscape || unavailableImg
         return (
-          <Link to={`/movie-detail/${id}`} key={id} className={className}>
+          <Link to={`/watch?v=${id}`} key={id} className={className}>
             <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="wrap" className={detailClassName}>
               <div className={styles.play_button} />
             </VideoThumbnail>

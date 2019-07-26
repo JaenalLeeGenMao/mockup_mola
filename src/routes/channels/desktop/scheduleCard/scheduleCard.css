@@ -1,0 +1,46 @@
+.epg__wrappercontent__center {
+  grid-area: 3/2;
+}
+
+.epg__Pagetitle {
+  color: white;
+
+  /* font-size: 17.5px; */
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-align: left;
+
+  /* grid-template-columns:  1fr 1fr 1fr 1fr;
+  grid-template-rows:  repeat(4, 1fr 1fr 1fr 1fr);
+  display:  grid; */
+}
+
+.noMatchContent {
+  font-size: 1.5rem;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 30rem;
+}
+
+.epgCardList__container {
+  color: white;
+  display: grid;
+  grid-gap: 0.5rem;
+  column-gap: 1.5rem;
+
+  /* grid-template-columns: repeat(1, 300px); */
+
+  /* grid-template-columns: repeat(3, 300px);
+  grid-template-rows: repeat(3, 0.73fr); */
+  justify-content: center;
+}
+
+@media screen and (max-width: 1366px) and (max-height: 657px) {
+  .epgCardList__container {
+    grid-gap: 1.5rem;
+  }
+
+  .epg__wrapper {
+    padding-top: 7rem;
+  }
+}

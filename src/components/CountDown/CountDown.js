@@ -8,10 +8,6 @@ import history from '../../history'
 import s from './CountDown.css'
 
 class CountDown extends React.Component {
-  handleGoBack = () => {
-    history.push('/')
-  }
-
   render() {
     const { startTime, hideCountDown, getMovieDetail, videoId, isMobile, className } = this.props
     const renderer = ({ days, hours, minutes, seconds, completed }) => {
@@ -24,11 +20,6 @@ class CountDown extends React.Component {
 
       return (
         <div className={`${s.countDown__wrapper} ${className}`}>
-          {!isMobile && (
-            <div className={s.arrow__container} onClick={this.handleGoBack}>
-              <span className={s.arrow__icon} />
-            </div>
-          )}
           <div className={isMobile ? s.countDownMobile : s.countDown}>
             <div className={s.startText}>Tayangan akan dimulai dalam: </div>
             {days > 0 ? `${days} hari ` : ''}

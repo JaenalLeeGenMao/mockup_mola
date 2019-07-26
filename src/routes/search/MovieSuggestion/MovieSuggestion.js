@@ -38,7 +38,7 @@ class MovieSuggestion extends React.Component {
             return (
               <div className={s.movieBox} key={movie.id}>
                 <div className={s.movieBoxInner}>
-                  <Link onClick={() => this.handleClickMovie(movie.title)} to={`/movie-detail/${movie.id}`}>
+                  <Link onClick={() => this.handleClickMovie(movie.title)} to={`/watch?v=${movie.id}`}>
                     <LazyLoad src={movie.coverUrl} containerClassName={s.movieImg} onEmptyShowDefault onErrorShowDefault errorImgClassName={s.movieErrorImg}>
                       {movieTitleRes && movieTitleRes[3] ? (
                         <div className={s.movieTitle}>
@@ -49,10 +49,10 @@ class MovieSuggestion extends React.Component {
                           </div>
                         </div>
                       ) : (
-                          <div className={s.movieTitle}>
-                            <span>{movieTitle}</span>
-                          </div>
-                        )}
+                        <div className={s.movieTitle}>
+                          <span>{movieTitle}</span>
+                        </div>
+                      )}
                     </LazyLoad>
                   </Link>
                 </div>

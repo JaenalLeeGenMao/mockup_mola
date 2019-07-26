@@ -2,7 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getAllMatches = (id) => dispatch => {
+const getAllMatches = id => dispatch => {
   dispatch({
     type: types.GET_MATCHES_PLAYLIST_LOADING,
     payload: {
@@ -41,6 +41,58 @@ const getAllMatches = (id) => dispatch => {
     }
   })
 }
+
+const getAllGenreSpo = id => dispatch => {
+  dispatch({
+    type: types.GET_MATCHES_GENRESPO_LOADING,
+    payload: {
+      meta: {
+        status: 'loading',
+        error: '',
+      },
+      data: [],
+    },
+  })
+  return Mola.getAllGenreSpo(id).then(async result => {
+    if (result.meta.status === 'error') {
+      dispatch({
+        type: types.GET_MATCHES_GENRESPO_ERROR,
+        payload: result,
+      })
+    } else {
+      let genrePlaylistId = []
+      result.data = result.data.filter(dt => {
+        genrePlaylistId.push(dt.id)
+        return dt.visibility === 1
+      })
+      // console.log('genrePlaylistId', genrePlaylistId)
+      const genreSportList = {
+        genreSpo: result.data,
+      }
+      // console.log('genre', genreSportList)
+      let matchesPlaylists = []
+      matchesPlaylists = await Mola.getMatchesPlaylists(genrePlaylistId)
+      // console.log('see matchesPlaylist', matchesPlaylists)
+      const matchesList = {
+        matchesPlaylists,
+      }
+      // console.log('see matchesList', matchesList)
+      if (matchesPlaylists.meta.status === 'success') {
+        dispatch({
+          type: types.GET_MATCHES_GENRESPO_SUCCESS,
+          payload: { ...genreSportList, ...matchesList },
+        })
+      } else {
+        dispatch({
+          type: types.GET_MATCHES_GENRESPO_ERROR,
+          payload: { ...genreSportList, ...matchesList },
+        })
+      }
+    }
+  })
+}
+
 export default {
   getAllMatches,
+  getAllGenreSpo,
 }

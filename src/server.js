@@ -113,15 +113,6 @@ app.get('/ping', (req, res) => {
 // )
 
 // app.use(
-//   '/api',
-//   proxy('https://stag.mola.tv/api/', {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
-
-// app.use(
 //   '/accounts/_',
 //   proxy(`${config.endpoints.domain}/accounts/_/`, {
 //     proxyReqPathResolver: (req, res) => {
@@ -162,19 +153,15 @@ app.get('/sign-location', async (req, res) => {
   const lat = req.query.lat
   const long = req.query.long
 
-  if (typeof lat !== 'undefined' && typeof long !== 'undefined' && lat !== '' && long !== '') {
+  if (typeof lat !== 'undefined' && typeof long !== 'undefined') {
     const body = {
       lat: parseFloat(lat),
       long: parseFloat(long),
     }
 
-    Axios.post(locationUrl, body)
-      .then(locationPayload => {
-        res.send(locationPayload.data)
-      })
-      .catch(err => {
-        res.send(err.message)
-      })
+    let locationPayload = await Axios.post(locationUrl, body)
+
+    res.send(locationPayload.data)
   }
 })
 
@@ -489,7 +476,6 @@ app.get('/signout', (req, res) => {
 app.get('*', async (req, res, next) => {
   console.log('Server URL', req.path)
   var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
-
   try {
     // global.clearInterval(inboxInterval);
 
@@ -550,11 +536,9 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          if (req.path !== '/accounts/consent') {
-            res.clearCookie('_at')
-            res.clearCookie('SID')
-            return res.redirect('/accounts/login')
-          }
+          res.clearCookie('_at')
+          res.clearCookie('SID')
+          return res.redirect('/accounts/login')
         }
       }
     } else {
@@ -777,7 +761,7 @@ app.get('*', async (req, res, next) => {
     let isSmartTV = /.*SMART-TV*./i.test(userAgent)
 
     if (isSmartTV && req.url != '/404') {
-      return res.redirect(domain + '/404' || 'http://stag.mola.tv/404')
+      return res.redirect(domain + '/error/smart')
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)

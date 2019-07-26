@@ -21,8 +21,9 @@ import { logoBlue, logoMobile } from '@global/imageUrl'
 
 import Link from '../Link'
 
-import RightMenu from './right-menu'
-import LeftMenu from './left-menu'
+// import RightMenu from './right-menu'
+// import LeftMenu from './left-menu'
+import HeaderMenu from './header-menu'
 import styles from './Header.css'
 
 class Header extends Component {
@@ -93,8 +94,9 @@ class Header extends Component {
       isDark = 1,
       logoOff = false,
       libraryOff = false,
-      rightMenuOff = false,
-      leftMenuOff = false,
+      // rightMenuOff = false,
+      // leftMenuOff = false,
+      headerMenuOff = false,
       searchOff = false,
       isMobile = false,
       stickyOff = false,
@@ -102,6 +104,7 @@ class Header extends Component {
       backButtonOn = false,
       shareButtonOn = false,
       greyBackground,
+      blackBackground,
       isLandscape = false,
       opacity = '',
       containerWidth = '100%',
@@ -112,9 +115,11 @@ class Header extends Component {
     const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
 
     return (
-      <div className={`${typeHeader} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
-        {isMobile && !greyBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
-        {isMobile && greyBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
+      <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
+        {isMobile && !greyBackground && !blackBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
+        {isMobile && greyBackground && !blackBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
+        {isMobile && !greyBackground && blackBackground && <div className={`${styles.header__black_background}`} style={{ opacity: opacity }} />}
+
         {!isMobile && <div className={styles.header__shadow_desktop} />}
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : logoWrapper}>
           {!logoOff && (
@@ -124,24 +129,10 @@ class Header extends Component {
               </Link>
             </LazyLoad>
           )}
-          {backButtonOn && (
-            <LazyLoad>
-              <div className={styles.header__back_button} onClick={this.handleGoBack}>
-                <button className={styles.header__back_arrow} style={{ color }} />
-              </div>
-            </LazyLoad>
-          )}
         </div>
-        {!libraryOff && (
-          <LazyLoad>
-            <Link className={styles.header__library_link_wrapper} to={`/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`} style={{ color }}>
-              <span className={`${styles[`header__library_logo_${color}`]} tourLibrary`} alt="library" />
-            </Link>
-          </LazyLoad>
-        )}
-        {this.renderHeaderLibrary()}
-        {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} {/*tambahan left menu nampung sport(design baru)*/}
-        {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />}
+        {!headerMenuOff && <HeaderMenu color={color} headerMenuOff={headerMenuOff} {...this.props} />}
+        {/* {!leftMenuOff && <LeftMenu color={color} leftMenuOff={leftMenuOff} {...this.props} />} tambahan left menu nampung sport(design baru) */}
+        {/* {!rightMenuOff && <RightMenu color={color} searchOff={searchOff} profileOff={profileOff} shareButtonOn={shareButtonOn} {...this.props} />} */}
       </div>
     )
   }
