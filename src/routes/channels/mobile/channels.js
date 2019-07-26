@@ -32,11 +32,12 @@ class Channels extends Component {
   state = {
     activeChannel: '',
     activeChannelId: '',
-    activeDate: formatDateTime(Date.now() / 1000, 'ddd, DD MMM YYYY'),
+    activeDate: formatDateTime(Date.now() / 1000, 'DD MMMM'),
     scheduleDateList: [],
     scheduleList: [],
     android_redirect_to_app: false,
     ios_redirect_to_app: false,
+    channelCategory: 'epg',
   }
 
   componentDidMount() {
@@ -64,7 +65,7 @@ class Channels extends Component {
     }
 
     if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
-      this.handleSelectChannel(this.state.activeChannelId)
+      this.handleSelectChannel(this.state.channelCategory, this.state.activeChannelId)
     }
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
@@ -86,22 +87,26 @@ class Channels extends Component {
     })
   }
 
-  handleSelectDate = date => {
-    // const value = e.target.options[e.target.options.selectedIndex].innerText
+  handleSelectDate = (category = 'ByDate', date) => {
+    const strDate = new Date(date * 1000)
     const selectedDate = {
-      fullDate: moment(date).format('YYYYMMDD'),
+      fullDate: moment(strDate).format('YYYYMMDD'),
+      dayMonth: formatDateTime(date, 'DD MMMM'),
       timezone: 7,
     }
+    this.setState({
+      activeDate: selectedDate.dayMonth,
+    })
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
       this.setState({
-        activeDate: date,
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
+        // activeDate: selectedDate.dayMonth,
       })
     })
   }
 
-  handleSelectChannel = id => {
+  handleSelectChannel = (category = 'epg', id) => {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
     if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
       const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
@@ -109,7 +114,7 @@ class Channels extends Component {
       this.setState({
         activeChannel: filteredSchedule.title,
         activeChannelId: id,
-        activeDate: formatDateTime(time, 'ddd, DD MMM YYYY'),
+        activeDate: formatDateTime(time, 'DD MMMM'),
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
       history.push(`/channels/${id}`)
@@ -121,7 +126,7 @@ class Channels extends Component {
     for (var i = 0; i < 7; i++) {
       const date = new Date(addDateTime(null, i, 'days'))
       const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'ddd, DD MMM YYYY')
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'ddd, DD MMMM YYYY')
       scheduleDateList.push({ id: formattedDateTime, title: formattedDateTime })
     }
 
@@ -166,7 +171,7 @@ class Channels extends Component {
   }
 
   render() {
-    const { scheduleList, activeDate, activeChannel, activeChannelId, android_redirect_to_app, ios_redirect_to_app } = this.state
+    const { scheduleList, activeDate, activeChannel, activeChannelId, android_redirect_to_app, ios_redirect_to_app, channelCategory } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -240,7 +245,7 @@ class Channels extends Component {
                     <div className={styles.epg__card}>
                       {programmeGuides.data &&
                         scheduleList.length > 0 &&
-                        scheduleList.map(dt => (
+                        scheduleList.filter(list => formatDateTime(list.start, 'DD MMMM') === formatDateTime(activeDate, 'DD MMMM')).map(dt => (
                           <MatchList key={dt.id} data={dt} noClickAble />
                           // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
                         ))}

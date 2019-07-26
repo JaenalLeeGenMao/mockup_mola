@@ -32,7 +32,7 @@ class Channels extends Component {
   state = {
     activeChannel: '',
     activeChannelId: '',
-    activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
+    activeDate: formatDateTime(Date.now() / 1000, 'DD MMMM'),
     scheduleList: [],
     expandLeague: true,
     limit: Array.from({ length: 12 }),
@@ -156,7 +156,7 @@ class Channels extends Component {
       this.setState({
         activeChannel: filteredSchedule.title,
         activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMM'),
+        activeDate: formatDateTime(time, 'DD MMMM'),
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
       history.push(`/channels/${id}`)
@@ -167,7 +167,7 @@ class Channels extends Component {
     const strDate = new Date(date * 1000)
     const selectedDate = {
       fullDate: moment(strDate).format('YYYYMMDD'),
-      dayMonth: formatDateTime(date, 'DD MMM'),
+      dayMonth: formatDateTime(date, 'DD MMMM'),
       timezone: 7,
     }
     this.setState({

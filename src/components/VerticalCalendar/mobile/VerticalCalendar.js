@@ -15,6 +15,7 @@ class VerticalCalendar extends Component {
   }
 
   getCalendar = (startOfWeek, schedule) => {
+    // console.log('schedule', schedule)
     let resultDateList = []
     //gettodayfordefault Value
     for (var i = 0; i < 7; i++) {

@@ -16,7 +16,7 @@ class ScheduleCard extends Component {
           <div className={styles.epg__Pagetitle}>
             {limit != null && scheduleList.length > 0 ? (
               <LazyLoad containerClassName={styles.epgCardList__container}>
-                {scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') === formatDateTime(activeDate, 'DD MMM')).map((dt, index) => {
+                {scheduleList.filter(list => formatDateTime(list.start, 'DD MMMM') === formatDateTime(activeDate, 'DD MMMM')).map((dt, index) => {
                   // if (index < limit.length) {
                   return <MatchList key={dt.id} data={dt} noClickAble />
                   // }
