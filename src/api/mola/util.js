@@ -100,11 +100,12 @@ const normalizeMatchPlaylists = response => {
   if (data && data.length > 0) {
     let videoData = []
     let Obj = []
-    const playlistData = data.map(({ id, attributes: { title, videos } }) => {
+    const playlistData = data.map(({ id, attributes: { title, videos, images } }) => {
+      const thumbnails = _get(images, 'thumbnails.cover', '')
       videoData =
         videos &&
         videos.map(video => {
-          const { id, attributes: { title, type, description, streamSourceUrl, shortDescription, isDark, iconUrl, sortOrder, startTime, endTime, homeTeam, awayTeam }, images } = video
+          const { id, attributes: { title, type, description, streamSourceUrl, shortDescription, isDark, iconUrl, sortOrder, startTime, endTime, homeTeam, awayTeam } } = video
           return {
             id,
             type,
@@ -121,6 +122,7 @@ const normalizeMatchPlaylists = response => {
             endTime,
             homeTeam,
             awayTeam,
+            iconPlaylistUrl: thumbnails,
           }
         })
 
@@ -128,6 +130,7 @@ const normalizeMatchPlaylists = response => {
         return {
           id,
           title,
+          thumbnails,
           videos: videoData,
         }
       }

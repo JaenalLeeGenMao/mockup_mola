@@ -7,20 +7,19 @@ import s from './HorizontalPlaylist.css'
 class HorizontalPlaylist extends Component {
   static propTypes = {
     handleCategoryFilter: PropTypes.func.isRequired,
-    handleFilterAllLeague: PropTypes.func.isRequired,
-    genreSpoCategory: PropTypes.array,
+    categoryFilterAll: PropTypes.func.isRequired,
+    matchesPlaylists: PropTypes.array,
     filterByLeague: PropTypes.string,
-    filterAllLeague: PropTypes.string,
     expandLeague: PropTypes.bool,
     allButtonOn: PropTypes.bool,
   }
 
   categoryFilterLigaType = () => {
-    const { filterByLeague, genreSpoCategory, matchesPlaylists, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
+    const { filterByLeague, matchesPlaylists, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
 
     return (
       <>
-        {genreSpoCategory.map(genre => {
+        {matchesPlaylists.data.map(genre => {
           return (
             <>
               {expandLeague && (
@@ -31,7 +30,7 @@ class HorizontalPlaylist extends Component {
                     handleCategoryFilter(categoryFilterType, genre.id)
                   }}
                 >
-                  <span className={s.imgContainer__PL}>{genre.thumbnailImg && <img className={s.filterimg__PremierLeague} src={genre.thumbnailImg} />}</span>
+                  <span className={s.imgContainer__PL}>{genre.thumbnails && <img className={s.filterimg__PremierLeague} src={genre.thumbnails} />}</span>
                   <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
                     {genre.title}
                   </span>
@@ -45,7 +44,7 @@ class HorizontalPlaylist extends Component {
   }
 
   render() {
-    const { handleFilterAllLeague, allButtonOn, filterAllLeague } = this.props
+    const { categoryFilterAll = 'All', handleCategoryFilter, filterByLeague } = this.props
     const allCat = [{ id: 'All', title: 'All' }]
     return (
       <div className={s.match_ligaType}>
@@ -55,9 +54,9 @@ class HorizontalPlaylist extends Component {
               <>
                 <span
                   key={dt}
-                  className={`${s.AllLeague} ${dt.id == filterAllLeague ? s.selectednameleague : s.nameleague}`}
+                  className={`${s.AllLeague} ${dt.id == filterByLeague ? s.selectednameleague : s.nameleague}`}
                   onClick={() => {
-                    handleFilterAllLeague('All', dt.id)
+                    handleCategoryFilter(categoryFilterAll, dt.id)
                   }}
                 >
                   All
