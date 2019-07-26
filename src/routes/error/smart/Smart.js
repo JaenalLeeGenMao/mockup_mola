@@ -10,7 +10,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import styles from './smart.css'
+import styles from './Smart.css'
 import Link from '@components/Link'
 import Layout from '@components/Molalayout'
 import LazyLoad from '@components/common/Lazyload'
