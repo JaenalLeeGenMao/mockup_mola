@@ -24,19 +24,4 @@ push_docker_staging:
     GCS_PATH: gs://sstv-staging-cdn/mola
     CDN_PATH: https://cdn.stag.supersoccer.tv/mola
   only:
-    - develop@apps/mola/mola-web
-    - new-design-dev@apps/mola/mola-web
-
-push_docker_production:
-  stage: push_docker
-  <<: *push_docker
-  variables:
-    GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_PROD
-    GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_PROD
-    NODE_ENV: production
-    REACT_APP_ENV: production
-    GCS_PATH: gs://koicdn-com/mola01
-    CDN_PATH: https://mola01.koicdn.com
-  only:
-    - master@apps/mola/mola-web
-    - master-v2@apps/mola/mola-web
+    - beta@apps/mola/mola-web
