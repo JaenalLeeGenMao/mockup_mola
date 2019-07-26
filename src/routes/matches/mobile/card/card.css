@@ -89,3 +89,11 @@
 .card__dateLabel {
   font-weight: normal;
 }
+
+.tomorrowDate {
+  background-color: #ad811e;
+}
+
+.defaultColor {
+  background-color: #383838;
+}

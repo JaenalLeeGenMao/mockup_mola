@@ -255,8 +255,6 @@ class Matches extends Component {
     return (
       <LazyLoad containerClassName={styles.matches__filterWeek}>
         <DropdownList className={styles.matches_dropdown_container_filterWeek} dataList={filterList} activeId={this.state.filterDefWeek} onClick={this.handleWeekClick} />
-        {/* this work for filter this week n last week n next week */}
-        {/* <DropdownList className={styles.matches_dropdown_container_filterWeek} dataList={filterList} activeId={this.state.filterDefWeek} onClick={this.handleFilterByDate} /> */}
       </LazyLoad>
     )
   }

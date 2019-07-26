@@ -11,34 +11,26 @@ import { defaultImgClub } from '@global/imageUrl'
 class Card extends Component {
   cardDateFormat = (startTime, endTime) => {
     let text = ''
+    let setColor = {
+      text: '',
+      className: '',
+    }
     text = formatDateTime(startTime, 'HH.mm')
 
     if (isToday(startTime, endTime)) {
       if (isMatchLive(startTime, endTime)) {
-        text = 'LIVE NOW'
+        setColor.text = 'LIVE NOW'
+        setColor.className = styles.card__live_now
       }
+    } else if (isTomorrow(startTime)) {
+      setColor.text = formatDateTime(startTime, 'HH.mm')
+      setColor.className = styles.tomorrowDate
+    } else {
+      setColor.text = formatDateTime(startTime, 'HH.mm')
+      setColor.className = styles.defaultColor
     }
-    if (isTomorrow(startTime)) {
-      // text = formatDateTime(startTime, 'HH.mm')
-      console.log('result tomorrow')
-    }
 
-    //validation old mobile view
-    // let text = ''
-    // text = formatDateTime(startTime, 'ddd, HH.mm')
-
-    // if (isToday(startTime, endTime)) {
-    //   let endDateTime = formatDateTime(endTime, 'HH:mm')
-    //   let startDateTime = formatDateTime(startTime, 'HH:mm')
-    //   let currentTime = moment().format('HH:mm')
-    //   if (currentTime >= startDateTime && currentTime <= endDateTime) {
-    //     text = 'LIVE ' + formatDateTime(startTime, 'HH.mm')
-    //   } else if (!isMatchPassed(endTime)) {
-    //     text = 'Next ' + formatDateTime(startTime, 'HH.mm')
-    //   }
-    // }
-
-    return text
+    return setColor
   }
 
   renderMatch() {
@@ -102,11 +94,12 @@ class Card extends Component {
     const { images } = this.props.data
     const date = this.cardDateFormat(data.startTime, data.endTime)
     const matchLive = isMatchLive(data.startTime, data.endTime)
+    const matchTomorrow = isTomorrow(data.startTime)
 
     return (
       <div className={styles.card__container}>
-        <div className={matchLive ? styles.card__date + ' ' + styles.card__live_now : styles.card__date}>
-          <p className={styles.card__dateLabel}> {date} </p>
+        <div className={styles.card__date + ' ' + date.className}>
+          <p className={styles.card__dateLabel}> {date.text} </p>
           <div className={styles.card__leagueImg}>{images ? <img className={styles.card__league_logo} src={images.thumbnails.cover} /> : ''}</div>
         </div>
         {this.renderMatch()}
