@@ -78,6 +78,16 @@ export default function home(state = initialState, action) {
       return { ...state, articles: { ...action.payload } }
     case types.GET_FEATURE_ARTICLE_ERROR:
       return { ...state, articles: { ...action.payload } }
+    case types.RESET_FEATURE_VIDEO:
+      return {
+        ...state,
+        videos: {
+          meta: {
+            status: 'loading',
+          },
+          data: [],
+        },
+      }
     default:
       return {
         ...initialState,

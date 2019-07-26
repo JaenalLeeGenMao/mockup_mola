@@ -148,9 +148,17 @@ const getFeatureArticle = id => dispatch => {
   })
 }
 
+const resetFeatureVideos = () => dispatch => {
+  dispatch({
+    type: types.RESET_FEATURE_VIDEO,
+    payload: null,
+  })
+}
+
 export default {
   getFeaturePlaylist,
   getFeatureVideo,
   getFeatureBanner,
   getFeatureArticle,
+  resetFeatureVideos,
 }

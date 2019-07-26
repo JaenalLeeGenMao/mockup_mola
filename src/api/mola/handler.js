@@ -358,22 +358,31 @@ const getPlaylistPlaylists = id => {
     ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomePlaylist(response)
-
       const data = _.get(response, 'data.data', []),
         description = _.get(data, '[0].attributes.description', ''),
         background = _.get(data, '[0].attributes.images.cover.background.landscape', ''),
         title = _.get(data, '[0].attributes.title', '')
+
+      const playlistsFiltered =
+        data.length > 0
+          ? data
+              .map(dt => ({
+                id: dt.id,
+                type: dt.type,
+                ...dt.attributes,
+              }))
+              .filter(dt => dt.visibility === 1)
+          : []
 
       return {
         meta: {
           background,
           title,
           description,
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: playlistsFiltered.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: playlistsFiltered || [],
       }
     })
     .catch(error => {

@@ -100,6 +100,7 @@ export const playlistList = css`
 `
 export const playlistContainer = css`
   background: #000;
+  min-height: 100%;
   width: 100%;
   padding-top: 8vh;
   position: absolute;

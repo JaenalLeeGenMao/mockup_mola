@@ -167,7 +167,7 @@ class Playlist extends React.Component {
       <>
         {(playlistStatus === 'loading' || videoStatus === 'loading') && <Placeholder isMobile={isMobile} />}
         {playlistStatus != 'error' && <>{this.renderHeader()}</>}
-        {(playlistStatus === 'error' || videoStatus === 'error') && <PlaylistError status={playlistStatus || 404} message={playlistError || 'Playlist is not loaded'} />}
+        {/* {(playlistStatus === 'error' || videoStatus === 'error') && <PlaylistError status={playlistStatus || 404} message={playlistError || 'Playlist is not loaded'} />} */}
         {videos &&
           videos.data.length > 0 &&
           videos.data.length === playlists.data.length && (
