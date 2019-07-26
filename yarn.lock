@@ -861,9 +861,9 @@
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
 
-"@supersoccer/gandalf@^1.0.45":
-  version "1.0.45"
-  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.45.tgz#fef14323e90401361511c21ee62cfff40ce53da0"
+"@supersoccer/gandalf@^1.0.46":
+  version "1.0.46"
+  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.46.tgz#2b4398d85dde4a5a6ed26e3398351e3164bda157"
   dependencies:
     axios "^0.18.0"
     babel-loader "^8.0.4"
