@@ -9,7 +9,7 @@ import s from './VerticalCalendar.css'
 class VerticalCalendar extends Component {
   static propTypes = {
     handleCategoryFilter: PropTypes.func,
-    filterByDates: PropTypes.string,
+    // filterByDates: PropTypes.string,
     // startOfWeek: PropTypes.bool,
     selectedDate: PropTypes.string,
   }

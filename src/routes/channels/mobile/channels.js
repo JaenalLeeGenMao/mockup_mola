@@ -42,6 +42,7 @@ class Channels extends Component {
   componentDidMount() {
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
+      timezone: 7,
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
@@ -89,6 +90,7 @@ class Channels extends Component {
     // const value = e.target.options[e.target.options.selectedIndex].innerText
     const selectedDate = {
       fullDate: moment(date).format('YYYYMMDD'),
+      timezone: 7,
     }
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
@@ -239,12 +241,12 @@ class Channels extends Component {
                       {programmeGuides.data &&
                         scheduleList.length > 0 &&
                         scheduleList.map(dt => (
-                          <MatchList key={dt.id} data={dt} clickAble={false} />
+                          <MatchList key={dt.id} data={dt} noClickAble />
                           // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
                         ))}
                     </div>
                     <div className={styles.epg__calendar}>
-                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} schedule={scheduleList} isMobile />
+                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} categoryFilterType={'ByDate'} schedule={scheduleList} isMobile />
                     </div>
                   </div>
                 </>

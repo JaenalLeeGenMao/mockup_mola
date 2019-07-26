@@ -18,7 +18,6 @@ import {
   ARTICLES_RECOMMENDED_ENDPOINT,
 } from './endpoints'
 import utils from './util'
-import dummy from './test'
 
 import { endpoints } from '@source/config'
 
@@ -890,8 +889,8 @@ const getChannelsList = (id = 'channels-m') => {
     })
 }
 
-const getProgrammeGuides = (date, playlistId) => {
-  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}`, {
+const getProgrammeGuides = (date, playlistId, timezone = '7') => {
+  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}?tz=${timezone}`, {
     ...endpoints.setting,
     // headers: token && { Authorization: `Bearer ${token}` }
   })

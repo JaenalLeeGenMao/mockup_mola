@@ -14,12 +14,12 @@ class ScheduleCard extends Component {
       <div>
         <div className={styles.epg__wrappercontent__center}>
           <div className={styles.epg__Pagetitle}>
-            {this.props.limit != null && scheduleList.length > 0 ? (
+            {limit != null && scheduleList.length > 0 ? (
               <LazyLoad containerClassName={styles.epgCardList__container}>
                 {scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') === formatDateTime(activeDate, 'DD MMM')).map((dt, index) => {
-                  if (index < limit.length) {
-                    return <MatchList key={dt.id} data={dt} clickAble={false} />
-                  }
+                  // if (index < limit.length) {
+                  return <MatchList key={dt.id} data={dt} noClickAble />
+                  // }
                 })}
               </LazyLoad>
             ) : (

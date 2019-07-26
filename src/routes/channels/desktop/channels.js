@@ -45,6 +45,7 @@ class Channels extends Component {
     const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user, getVUID } = this.props
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
+      timezone: 7,
     }
     fetchChannelsPlaylist('channels-m').then(() => {
       fetchChannelSchedule(selectedDate)
@@ -167,6 +168,7 @@ class Channels extends Component {
     const selectedDate = {
       fullDate: moment(strDate).format('YYYYMMDD'),
       dayMonth: formatDateTime(date, 'DD MMM'),
+      timezone: 7,
     }
     this.setState({
       activeDate: selectedDate.dayMonth,
@@ -243,8 +245,8 @@ class Channels extends Component {
                 {...videoSettings}
               />
             ) : (
-                <div>Video Not Available</div> // styling later
-              )}
+              <div>Video Not Available</div> // styling later
+            )}
           </div>
           <PrimaryMenu handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} channelCategory={channelCategory} />
           <div className={styles.epg__list__container}>

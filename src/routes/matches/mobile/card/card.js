@@ -37,8 +37,7 @@ class Card extends Component {
   }
 
   renderMatch() {
-    const { homeTeam, awayTeam, league, title } = this.props.data
-    console.log('see data card leagues matchelist', this.props.data)
+    const { homeTeam = [], awayTeam = [], league, title } = this.props.data
 
     if (homeTeam.length > 0 && awayTeam.length > 0) {
       return (

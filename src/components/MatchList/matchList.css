@@ -10,6 +10,7 @@
   justify-content: flex-start;
   margin-top: 10px;
   transition: transform 0.3s, -webkit-transform 0.3s;
+  cursor: auto;
 }
 
 .matchList__date {
