@@ -50,9 +50,10 @@ const getSportList = () => dispatch => {
 }
 
 const getSportVideo = (playlist, isMobile) => dispatch => {
-  const isSport = true
   if (playlist.id === 'web-featured') {
-    return Mola.getFeatureBanner(isMobile, isSport).then(result => {
+    const id = isMobile ? 'mobile-sport-featured' : 'desktop-sport-featured'
+
+    return Mola.getFeatureBanner({ id }).then(result => {
       result = {
         meta: {
           status: result.meta.status,

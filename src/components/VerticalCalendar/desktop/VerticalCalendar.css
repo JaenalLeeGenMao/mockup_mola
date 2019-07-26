@@ -1,0 +1,25 @@
+.filterContentfilterByDay_container {
+  padding: 0 4rem 1rem 1rem;
+  position: sticky;
+  top: 16rem;
+}
+
+.filterLabelByDay {
+  font-size: 1.5rem;
+  color: #a7a7a7;
+  margin: 1.5rem 0 1.5rem 0;
+  text-align: right;
+  cursor: pointer;
+}
+
+.selectedFilter {
+  color: white;
+  font-size: 1.8rem;
+
+  /* color: black;
+  background-color: white;
+  width: 8rem;
+  font-weight: 700;
+  text-align: center;
+  float: right; */
+}

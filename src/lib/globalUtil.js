@@ -23,61 +23,59 @@
  */
 export const setMultilineEllipsis = className => {
   const dataArray = document.getElementsByClassName(className)
-    ;[].forEach.call(dataArray, function (el) {
-      let wordArray = el.innerHTML.split(' ')
-      while (el.scrollHeight > el.offsetHeight) {
-        if (wordArray.length > 1) {
-          wordArray.pop()
-        } else {
-          return
-        }
-        el.innerHTML = `${wordArray.join(' ')}...`
+  ;[].forEach.call(dataArray, function(el) {
+    let wordArray = el.innerHTML.split(' ')
+    while (el.scrollHeight > el.offsetHeight) {
+      if (wordArray.length > 1) {
+        wordArray.pop()
+      } else {
+        return
       }
-    })
+      el.innerHTML = `${wordArray.join(' ')}...`
+    }
+  })
 }
 
 export const unsetMultilineEllipsis = (className, text) => {
   const dataArray = document.getElementsByClassName(className)
-    ;[].forEach.call(dataArray, function (el) {
-      el.innerHTML = text
-    })
+  ;[].forEach.call(dataArray, function(el) {
+    el.innerHTML = text
+  })
 }
 
-export const isMovie = (contentType) => {
+export const isMovie = contentType => {
   if (contentType == 7 || contentType == 8) {
-    return true;
+    return true
   }
 
-  return false;
+  return false
 }
 
-export const getContentTypeName = (contentTypeId) => {
+export const getContentTypeName = contentTypeId => {
   switch (contentTypeId) {
     case 1:
       return 'vod'
-      break
     case 2:
       return 'linear'
-      break
     case 3:
       return 'live'
-      break
     case 4:
       return 'replay'
-      break
     case 5:
       return 'mixed'
-      break
     case 7:
       return 'movie'
-      break
+    case 8:
+      return 'trailers'
     case 9:
       return 'mola-featured'
-      break
     case 10:
-      return 'mola-categories'
-      break
+      return 'mola-categories' /* always playlists */
+    case 'articles':
+      return 'articles'
+    case 'banners':
+      return 'banners'
     default:
-      return 'trailers'
+      return undefined
   }
 }

@@ -1,0 +1,140 @@
+.matchList__container {
+  color: white;
+  font-weight: bold;
+  display: flex;
+  flex-wrap: nowrap;
+
+  /* height: 123px; */
+  height: 17rem;
+  width: 82rem;
+  justify-content: flex-start;
+  margin-top: 10px;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+
+.matchList__date {
+  /* flex: 0.3; */
+  font-size: 1.3rem;
+  line-height: 1.6rem;
+  padding: 5px;
+  width: 138px;
+  background-color: #2c2c2c;
+  position: relative;
+}
+
+.matchList__live_now {
+  background-color: #12128b;
+}
+
+.matchList__matches {
+  /* flex: 0.7; */
+  display: flex;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+  flex-direction: column;
+  background: #191919;
+}
+
+.matchList__container:hover {
+  /* transform: translateY(-10px); */
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  transform: scale(1.1);
+  opacity: 0.9;
+
+  /* cursor: pointer; */
+
+  /* width: 74rem; */
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.matchList__league_logo {
+  /* align-self: flex-end; */
+  right: 10px;
+  bottom: 10px;
+  width: 3.2rem;
+}
+
+.matchList__club {
+  height: 6rem;
+  margin-bottom: 15px;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 0.2fr 1fr 1fr;
+}
+
+.matchList__club img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+.matchList__club span {
+  align-self: center;
+  padding-left: 10px;
+  font-size: 1.6rem;
+}
+
+.matchList__scoring {
+  text-align: right;
+  font-size: 1.5rem;
+  margin: 1.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+.matchList__leagueImg {
+  position: absolute;
+  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+  bottom: 0;
+}
+
+.matchList__labelDate {
+  padding-right: 20px;
+  padding-left: 10px;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.matchList__NoHomeAwayTeam {
+  display: flex;
+  height: 6rem;
+  margin: 3rem 1rem 3rem 1rem;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 1.6rem;
+}
+
+@media screen and (max-width: 640px) {
+  .matchList__container {
+    color: #f5f5f5;
+    font-weight: 300;
+    height: 10rem;
+    width: 100%;
+  }
+
+  .matchList__date {
+    padding: 5px;
+    width: 20%;
+    background-color: #383838;
+  }
+
+  .matchList__live_now {
+    background-color: #0d2caa;
+  }
+
+  .matchList__NoHomeAwayTeam {
+    display: flex;
+    height: auto;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .matchList__labelDate {
+    font-weight: 600;
+    font-size: 11px;
+  }
+}

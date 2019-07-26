@@ -101,7 +101,7 @@ class Profile extends React.Component {
   setData = data => {
     this.setState({
       isToggled: false,
-      name: data.name,
+      name: data.name || '',
       email: data.email || '',
       phoneNumber: data.phone || '',
       photo: data.photo || '',
@@ -134,29 +134,28 @@ class Profile extends React.Component {
     const { csrf } = this.props.runtime
     const { token } = this.props.user
     const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
-
     if (!name) {
       this.setState({
         error: locale['error_name'],
       })
-    } else if (!phoneNumber) {
-      this.setState({
-        error: locale['error_phones'],
-      })
     } else if (phoneNumber && !this.validatePhone(phoneNumber)) {
       this.setState({
-        phoneNumber: phoneNumber.replace(/^(\+?628|08)/, '628'),
         error: locale['error_phone'],
+      })
+    } else if (this.props.user.phoneNumber && !phoneNumber) {
+      this.setState({
+        error: locale['error_phones'],
       })
     } else if (!birthdate) {
       this.setState({
         error: locale['error_date'],
       })
-    } else if (!location) {
-      this.setState({
-        error: locale['error_location'],
-      })
     } else {
+      // else if (!location) {
+      //   console.log('ini lokasi', location)
+      //   this.setState({
+      //     error: locale['error_location'],
+      //   })}
       if (uploadStatus && uploadStatus.success) {
         // success upload button nyalain
         const image = await Uploader.getImageCDN(uploadStatus.path, uploadStatus.token)
@@ -187,9 +186,16 @@ class Profile extends React.Component {
   onChangeInput = e => {
     const target = e.target
     const { id, value } = target
-    this.setState({
-      [id]: value,
-    })
+
+    if (id === 'phoneNumber') {
+      this.setState({
+        [id]: value.replace(/^(\+?628|08)/, '628'),
+      })
+    } else {
+      this.setState({
+        [id]: value,
+      })
+    }
   }
 
   onChangeSelect = selectedOption => {
@@ -273,6 +279,7 @@ class Profile extends React.Component {
   }
 
   render() {
+    console.log(this.state, 'kucing')
     const { isMobile, onClick, user } = this.props
     const errClass = `${s.errorClass}`
     const { uid, subscriptions } = user

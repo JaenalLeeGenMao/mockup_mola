@@ -41,7 +41,8 @@ const getHomePlaylist = () => dispatch => {
 
 const getHomeVideo = (playlist, isMobile) => dispatch => {
   if (playlist.id === 'web-featured') {
-    return Mola.getFeatureBanner(isMobile).then(result => {
+    const id = isMobile ? 'mobile-featured' : 'desktop-featured'
+    return Mola.getFeatureBanner({ id }).then(result => {
       result = {
         meta: {
           status: result.meta.status,

@@ -142,6 +142,9 @@ class Home extends Component {
 
     if (type === EVENTS.TOUR_END) {
       localStorage.setItem('tour-home', true)
+      this.setState({
+        startGuide: false
+      })
       // document.cookie = '__trh=1; path=/;';
       return true
     }
@@ -539,10 +542,19 @@ class Home extends Component {
   }
 
   renderMenuBanner = (activeSlide, playlistData, directionIndex, handleDirection, type) => {
-    if (activeSlide.isDark > 0) {
-      return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} onClick={handleDirection} type={type} />
+    const { scrollIndex, activeSlideDots } = this.state
+    if (scrollIndex == 0 && activeSlideDots && activeSlideDots.length == 1 && type == 'horizontal') {
+      if (this.state.startGuide) {
+        return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={activeSlide.isDark} onClick={handleDirection} type={type} />
+      } else {
+        return null
+      }
     } else {
-      return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} onClick={handleDirection} type={type} />
+      if (activeSlide.isDark > 0) {
+        return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} onClick={handleDirection} type={type} />
+      } else {
+        return <HomeMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} onClick={handleDirection} type={type} />
+      }
     }
   }
 
@@ -571,14 +583,13 @@ class Home extends Component {
 
     let filteredDesc = ''
     let filteredQuote = ''
-    let watchUrl = '/movie-detail/'
+    const watchUrl = '/watch?v='
     // let buttonText = 'view_movie'
     if (activeSlide) {
       filteredDesc = filterString(activeSlide.shortDescription, 36)
       if (scrollIndex !== 0) {
         filteredQuote = activeSlide.quotes ? `“${filterString(activeSlide.quotes.attributes.text, 28)}” - ${activeSlide.quotes.attributes.author}` : ''
       }
-      watchUrl = isMovie(activeSlide.contentType) ? '/movie-detail/' : '/watch?v='
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
@@ -603,7 +614,6 @@ class Home extends Component {
               libraryOff
               isMovie
               className={styles.placeholder__header}
-              activeMenu="movie"
               isDark={isDark}
               activePlaylist={activePlaylist && activePlaylist.id !== 'web-featured' ? activePlaylist : null}
               {...this.props}
@@ -625,11 +635,10 @@ class Home extends Component {
                   }}
                 />
                 <div className={styles.home__sidebar}>
-                  {/* <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} /> */}
-                  {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
+                  {scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? (
                     this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
                   ) : (
-                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={0} onClick={this.handleScrollToIndex} />
+                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isGray={1} onClick={this.handleScrollToIndex} />
                     )}
                 </div>
                 {scrollIndex != 0 &&
@@ -654,18 +663,18 @@ class Home extends Component {
                               {!isMovie(activeSlide.contentType) && (
                                 <>
                                   {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
-                                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} tourMovieDetail`}>
+                                    <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} tourMovieDetail`}>
                                       <span className={styles.play_icon_sport} />
                                       <p>{locale['live_now']}</p>
                                     </Link>
                                   )}
                                   {activeSlide.startTime > Date.now() / 1000 && (
-                                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                    <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
                                       <p>{locale['upcoming']}</p>
                                     </Link>
                                   )}
                                   {isMatchPassed(activeSlide.endTime) && (
-                                    <Link to={`/watch?v=${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                    <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
                                       <p>{locale['replay']}</p>
                                     </Link>
                                   )}
@@ -711,12 +720,10 @@ class Home extends Component {
                   )}
                 <div className={styles.home__bottombar}>
                   <div className={`${styles.header__movie_slider} tourSlide`}>
-                    {/* {activeSlideDots && activeSlideDots.length > 1 && 
-                    <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />} */}
-                    {scrollIndex == 0 && activeSlideDots && activeSlideDots.length > 1 ? (
+                    {scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? (
                       this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
                     ) : (
-                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} onClick={this.handleNextPrevSlide} type="horizontal" />
+                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={1} onClick={this.handleNextPrevSlide} type="horizontal" />
                       )}
                   </div>
                 </div>

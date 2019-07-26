@@ -15,11 +15,11 @@ function action({ isMobile, store, pathname }) {
     description,
     component: isMobile ? (
       <MolaLayout>
-        <MatchesMobile {...store} playlistId={playlistId} />
+        <MatchesMobile {...store} playlistId={playlistId} pathname={pathname} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <MatchesDesktop playlistId={playlistId} title={title} />
+        <MatchesDesktop playlistId={playlistId} title={title} pathname={pathname} />
       </MolaLayout>
     ),
   }

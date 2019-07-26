@@ -5,14 +5,14 @@ import MolaLayout from '@components/Molalayout'
 
 const title = 'Profile Page'
 const description = 'Accounts and Personal Management'
-function action({ isMobile, query }) {
+function action({ isMobile, query, pathname }) {
   return {
     chunks: ['profile'],
     title,
     description,
     component: (
       <MolaLayout>
-        <Profile isMobile={isMobile} query={query} />
+        <Profile isMobile={isMobile} query={query} pathname={pathname} />
       </MolaLayout>
     ),
   }

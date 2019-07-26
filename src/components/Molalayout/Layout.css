@@ -12,7 +12,7 @@ html {
 html,
 body {
   height: 100%;
-  background: #000311;
+  background: #000521 !important;
   margin: 0;
 }
 
@@ -25,9 +25,10 @@ button:focus {
 }
 
 * {
-  outline: 0;
+  outline: 0 !important;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /*

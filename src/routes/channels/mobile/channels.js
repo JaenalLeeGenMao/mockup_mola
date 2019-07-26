@@ -4,14 +4,14 @@ import { compose } from 'redux'
 import moment from 'moment'
 import { IoIosArrowDown } from 'react-icons/io'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
+import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 import channelActions from '@actions/channels'
 
 import DRMConfig from '@source/lib/DRMConfig'
+import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import history from '@source/history'
 import { formatDateTime, addDateTime, isSameDay } from '@source/lib/dateTimeUtil'
@@ -19,6 +19,9 @@ import { formatDateTime, addDateTime, isSameDay } from '@source/lib/dateTimeUtil
 import Header from '@components/Header'
 import DropdownList from '@components/DropdownList'
 import MovieDetailError from '@components/common/error'
+import RedirectToApps from '@components/RedirectToApps'
+import VerticalCalendar from '@components/VerticalCalendar'
+import MatchList from '@components/MatchList'
 
 import Schedule from './schedule'
 import { getChannelProgrammeGuides } from '../selectors'
@@ -32,6 +35,8 @@ class Channels extends Component {
     activeDate: formatDateTime(Date.now() / 1000, 'ddd, DD MMM YYYY'),
     scheduleDateList: [],
     scheduleList: [],
+    android_redirect_to_app: false,
+    ios_redirect_to_app: false,
   }
 
   componentDidMount() {
@@ -39,7 +44,8 @@ class Channels extends Component {
       fullDate: moment().format('YYYYMMDD'),
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
-    fetchChannelsPlaylist().then(() => fetchChannelSchedule(selectedDate))
+    this.getConfig()
+    fetchChannelsPlaylist('channels-m').then(() => fetchChannelSchedule(selectedDate))
 
     fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -49,9 +55,10 @@ class Channels extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
     if (channelsPlaylist.meta.status === 'success' && channelsPlaylist.data.length > 0 && !prevState.activeChannel && !prevState.activeChannelId) {
+      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
       this.setState({
-        activeChannel: this.props.channelsPlaylist.data[0].title,
-        activeChannelId: this.props.channelsPlaylist.data[0].id,
+        activeChannel: selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
+        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
       })
     }
 
@@ -62,6 +69,20 @@ class Channels extends Component {
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       fetchVideoByid(movieId)
     }
+  }
+
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      if (result.data) {
+        const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        this.setState({
+          android_redirect_to_app,
+          ios_redirect_to_app,
+          // toggleInfoBar: notice_bar_enabled,
+          // notice_bar_message,
+        })
+      }
+    })
   }
 
   handleSelectDate = date => {
@@ -121,12 +142,29 @@ class Channels extends Component {
     return myTheoPlayer
   }
 
+  handlePlayMovie = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+    document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+  }
+
+  handlePlayMovieApple = () => {
+    const { movieId } = this.props
+    const domain = config.endpoints.domain
+    const url = `${domain}/download-app/${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    setTimeout(function() {
+      window.location.href = url
+    }, 250)
+  }
+
   handleOnVideoLoad = player => {
     this.player = player
   }
 
   render() {
-    const { scheduleList, activeDate, activeChannel, activeChannelId } = this.state
+    const { scheduleList, activeDate, activeChannel, activeChannelId, android_redirect_to_app, ios_redirect_to_app } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -154,7 +192,6 @@ class Channels extends Component {
 
     return (
       <>
-        {' '}
         {dataFetched && (
           <>
             <div className={styles.header_container}>
@@ -180,14 +217,36 @@ class Channels extends Component {
                       )}
                   </div>
                   <div className={styles.video_container}>
-                    {loadPlayer && (
-                      <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} poster={poster} {...videoSettings} />
+                    {loadPlayer ? (
+                      <RedirectToApps
+                        poster={poster}
+                        android_redirect_to_app={android_redirect_to_app}
+                        ios_redirect_to_app={ios_redirect_to_app}
+                        subtitles={this.subtitles()}
+                        handlePlayMovieApple={this.handlePlayMovieApple}
+                        handlePlayMovie={this.handlePlayMovie}
+                        handleOnVideoLoad={this.handleOnVideoLoad}
+                        videoSettings={videoSettings}
+                        customTheoplayer={customTheoplayer}
+                      />
+                    ) : (
+                      // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
+                      <div>Video Not Available</div> // styling later
                     )}
                   </div>
-                  {programmeGuides.data &&
-                    scheduleList.length > 0 && (
-                      <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                    )}
+                  <div className={styles.epg__channels__container}>
+                    <div className={styles.epg__card}>
+                      {programmeGuides.data &&
+                        scheduleList.length > 0 &&
+                        scheduleList.map(dt => (
+                          <MatchList key={dt.id} data={dt} clickAble={false} />
+                          // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                        ))}
+                    </div>
+                    <div className={styles.epg__calendar}>
+                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} filterByDates={activeDate} categoryFilterType={'ByDate'} schedule={scheduleList} isMobile />
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -205,7 +264,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchChannelsPlaylist: () => dispatch(channelActions.getChannelsPlaylist()),
+  fetchChannelsPlaylist: id => dispatch(channelActions.getChannelsPlaylist(id)),
   fetchChannelSchedule: date => dispatch(channelActions.getProgrammeGuides(date)),
   fetchVideoByid: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
