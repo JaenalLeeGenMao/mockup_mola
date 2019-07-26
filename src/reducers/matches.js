@@ -18,6 +18,12 @@ const initialState = {
     },
     data: [],
   },
+  matchesPlaylists: {
+    meta: {
+      status: 'loading',
+    },
+    data: [],
+  },
 }
 
 export default function matches(state = initialState, action) {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _groupBy from 'lodash/groupBy'
+import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -23,7 +24,6 @@ import s from './matches.css'
 import LoaderComp from './loaderComp'
 // import _unionBy from 'lodash/unionBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
-import useInfiniteScroll from './useInfiniteScroll'
 
 class Matches extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class Matches extends React.Component {
     filterByDates: '',
     filterByType: '',
     filterByLeague: 0,
-    filterAllLeague: 0,
+    // filterAllLeague: 0,
     leagueList: [],
     selectedWeek: 2, //1 = last week, 2 = this week, 3 = next week,
     selectedDate: null,
@@ -86,6 +86,7 @@ class Matches extends React.Component {
     const startWeekDate = moment().startOf('isoWeek')
     const date = new Date(moment().startOf('date'))
     const swdTimestamp = date.getTime() / 1000
+
     this.setState({
       filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
@@ -104,11 +105,9 @@ class Matches extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    //status successnya masi dari matches
-    if (this.props.matches.meta.status != prevProps.matches.meta.status && this.props.matches.meta.status === 'success') {
+    if (this.props.matches.matchesPlaylists.meta.status != prevProps.matches.matchesPlaylists.meta.status && this.props.matches.matchesPlaylists.meta.status === 'success') {
       let matchTemp = []
       const { data } = this.props.matches.matchesPlaylists
-      // console.log('data', data)
       data.forEach(dt => {
         if (dt.id) {
           const vidDt = dt.videos
@@ -117,36 +116,9 @@ class Matches extends React.Component {
           }
         }
       })
-      //filter matches berdasarkan default value
-      const getDataFilterLeagueId = matchTemp
-      let leagueList = []
-      getDataFilterLeagueId.map(matches => {
-        const leagueData = matches.league
-        if (leagueData != null) {
-          const filterLeague = leagueList.filter(dt => {
-            return dt.id == matches.league.id
-          })
-          if (filterLeague.length === 0) {
-            leagueList.push(leagueData)
-          }
-        }
-      })
+      const filterResult = this.handleSortMatches(matchTemp)
 
-      leagueList = leagueList.sort((a, b) => {
-        const leagueName = a.name
-        if (leagueName.indexOf('Premiere') > 0 || leagueName.indexOf('Premier') > 0) {
-          return -1
-        } else if (leagueName.indexOf('Premiere') < 0 && leagueName.indexOf('Premier') < 0) {
-          return 1
-        }
-        return 0
-      })
-      // console.log('masuk update')
-      // const filterResult = this.handleSortMatches(this.props.matches.data)
-      const filterResult = this.handleSortMatches(getDataFilterLeagueId)
-
-      // console.log('semua matchplaylists', filterResultPlaylist)
-      this.setState({ allMatches: filterResult, matches: filterResult, leagueList: leagueList })
+      this.setState({ allMatches: filterResult, matches: filterResult })
     }
   }
 
@@ -167,8 +139,6 @@ class Matches extends React.Component {
   }
 
   handleFilterByDate = (value, matches) => {
-    // console.log('matcheeess', matches)
-    // console.log('valueeee', value)
     // validation for ThisWeek
     let filterResult = []
     if (value == 'lastWeek') {
@@ -272,7 +242,6 @@ class Matches extends React.Component {
         return matches
       }
     })
-    // console.log('vidDt', filterResult)
     return filterResult
   }
 
@@ -302,10 +271,6 @@ class Matches extends React.Component {
     let selectedVal = value
     const { filterByDates, filterByType, filterByLeague, filterAllLeague, allMatches, selectedWeek } = this.state
 
-    // console.log('di handle handlecategory', filterByDates)
-    // console.log('di handle selectedweek', selectedWeek)
-    // console.log('selectedVal', selectedVal)
-
     if (category == 'ByDate') {
       this.setState({ filterByDates: selectedVal })
     }
@@ -313,24 +278,17 @@ class Matches extends React.Component {
     //League
     if (category == 'League') {
       filterLeagueRes = this.handleFilterByLeague(selectedVal, allMatches)
-      // filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
-      // if (filterByLeague == value) {
-      //   selectedVal = 0
-      // }
       filterResult = this.handleSortMatches(filterResult)
-      this.setState({ allMatches: filterLeagueRes, matches: filterResult, filterByLeague: selectedVal })
+      this.setState({ allMatches: filterLeagueRes, matches: filterLeagueRes, filterByLeague: selectedVal })
     }
 
-    // all
     if (category == 'All') {
-      // filterLeagueRes = this.handleFilterAllLeague(selectedVal, allMatches)
-      // filterResult = this.handleFilterByDate(filterByDates, filterLeagueRes)
-      // if (filterAllLeague == value) {
-      //   selectedVal = 0
-      // }
+      filterLeagueRes = this.handleFilterAllLeague(selectedVal, allMatches)
       filterResult = this.handleSortMatches(filterResult)
-      this.setState({ allMatches: ths, matches: filterResult, filterAllLeague: selectedVal })
     }
+    this.setState({ allMatches: filterLeagueRes, matches: filterLeagueRes, filterByLeague: selectedVal })
+
+    // all
   }
 
   //expand This Week
@@ -379,8 +337,6 @@ class Matches extends React.Component {
 
   renderWeek = () => {
     const { selectedWeek } = this.state
-    // console.log('selectedweek render', selectedWeek)
-    // console.log('filterbydates render', filterByDates)
 
     const weekList = [
       { id: 'lastweek', title: 'Last Week', value: '1' },
@@ -460,6 +416,8 @@ class Matches extends React.Component {
   ShowMatchCard = () => {
     const { matches } = this.state
 
+    const sortMatches = _sortBy(matches, match => match.startTime)
+
     if (matches == '') {
       return (
         <>
@@ -469,7 +427,7 @@ class Matches extends React.Component {
     } else {
       return (
         <LazyLoad containerClassName={s.matchesCardList__container}>
-          {matches.map((matchDt, index) => {
+          {sortMatches.map((matchDt, index) => {
             if (index < this.state.limit.length) {
               return (
                 <>
@@ -484,7 +442,6 @@ class Matches extends React.Component {
   }
 
   render() {
-    const matchesList = this.props.matches
     const matchCardData = this.props.matches.data
     const matchPlaylists = this.props.matches.matchesPlaylists
 
@@ -496,8 +453,8 @@ class Matches extends React.Component {
         <div className={s.headerContainer}>
           <Header stickyOff searchOff isDark={isDark} activeMenu="matches" libraryOff {...this.props} />
         </div>
-        {matchesList.meta.status === 'loading' && <Placeholder />}
-        {matchesList.meta.status === 'success' && (
+        {matchPlaylists.meta.status === 'loading' && <Placeholder />}
+        {matchPlaylists.meta.status === 'success' && (
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
@@ -513,13 +470,12 @@ class Matches extends React.Component {
                   <div className={s.matchlist_wrapper}>
                     <HorizontalPlaylist
                       handleCategoryFilter={this.handleCategoryFilter}
-                      handleFilterAllLeague={this.handleFilterAllLeague}
-                      genreSpoCategory={this.props.matches.genreSpo}
                       matchesPlaylists={this.props.matches.matchesPlaylists}
                       filterByLeague={this.state.filterByLeague}
-                      filterAllLeague={this.state.filterAllLeague}
+                      // filterAllLeague={this.state.filterAllLeague}
                       expandLeague={this.state.expandLeague}
                       categoryFilterType={'League'}
+                      categoryFilterAll={'All'}
                       allButtonOn
                       allCat
                     />
