@@ -396,7 +396,6 @@ const normalizeVideoDetail = response => {
           permission,
           genre,
           isDark,
-          permission,
           homeTeam,
           awayTeam,
           league,

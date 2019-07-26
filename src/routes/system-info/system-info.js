@@ -20,23 +20,28 @@ class SystemInfo extends Component {
     return (
       <div>
         <Header stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
-        {info !== null && (
-          <div className={SystemInfoWrapper}>
-            <div className={SystemInfoContainer}>
-              <h1>System Info</h1>
-              <div>
-                BROWSER {parserInfo.browser.name} {parserInfo.browser.version}
+
+        <div className={SystemInfoWrapper}>
+          <div className={SystemInfoContainer}>
+            <h1>System Info</h1>
+            {info !== null && (
+              <>
+                <div>
+                  BROWSER {parserInfo.browser.name} {parserInfo.browser.version}
+                </div>
+                <div>
+                  OS {parserInfo.os.name} {parserInfo.os.version}
+                </div>
+                <div>
+                  LOCATION {info.city}/{info.country} ({info.loc})
               </div>
-              <div>
-                OS {parserInfo.os.name} {parserInfo.os.version}
-              </div>
-              <div>
-                LOCATION {info.city}/{info.country} ({info.loc})
-              </div>
-              <div>ISP {info.org}</div>
-              <div>IP {info.ip}</div>
-            </div>
+                <div>ISP {info.org}</div>
+                <div>IP {info.ip}</div>
+              </>
+            )}
+            <div>Version 1.0.2</div>
           </div>
+        </div>
         )}
       </div>
     )

@@ -431,7 +431,7 @@ class Matches extends React.Component {
             if (index < this.state.limit.length) {
               return (
                 <>
-                  <MatchList key={matchDt.id} data={matchDt} />
+                  <MatchList key={matchDt.id} data={matchDt} clickAble={true} />
                 </>
               )
             }

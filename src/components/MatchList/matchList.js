@@ -86,7 +86,7 @@ class MatchList extends React.Component {
   }
 
   render() {
-    const { data } = this.props
+    const { data, clickAble } = this.props
     const { images } = this.props.data
     const date = this.cardDateFormat(data.startTime, data.endTime)
     const matchLive = isMatchLive(data.startTime, data.endTime)
