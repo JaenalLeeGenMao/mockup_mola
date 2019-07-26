@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 
-import { formatDateTime, isToday, isMatchLive, isMatchPassed } from '@source/lib/dateTimeUtil'
+import { formatDateTime, isToday, isMatchLive, isMatchPassed, isTomorrow } from '@source/lib/dateTimeUtil'
 import styles from './card.css'
 
 import { defaultImgClub } from '@global/imageUrl'
@@ -18,6 +18,11 @@ class Card extends Component {
         text = 'LIVE NOW'
       }
     }
+    if (isTomorrow(startTime)) {
+      // text = formatDateTime(startTime, 'HH.mm')
+      console.log('result tomorrow')
+    }
+
     //validation old mobile view
     // let text = ''
     // text = formatDateTime(startTime, 'ddd, HH.mm')
@@ -101,7 +106,7 @@ class Card extends Component {
     return (
       <div className={styles.card__container}>
         <div className={matchLive ? styles.card__date + ' ' + styles.card__live_now : styles.card__date}>
-          <p> {date} </p>
+          <p className={styles.card__dateLabel}> {date} </p>
           <div className={styles.card__leagueImg}>{images ? <img className={styles.card__league_logo} src={images.thumbnails.cover} /> : ''}</div>
         </div>
         {this.renderMatch()}

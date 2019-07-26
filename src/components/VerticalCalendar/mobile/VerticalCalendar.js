@@ -46,7 +46,7 @@ class VerticalCalendar extends Component {
                     className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''} ${dt.isLive ? s.live__marker : ''}`}
                     key={dt.strTimestamp}
                     onClick={() => {
-                      handleCategoryFilter(categoryFilterType, dt.strTimestamp)
+                      handleCategoryFilter(dt.strTimestamp)
                     }}
                   >
                     {dt.day}

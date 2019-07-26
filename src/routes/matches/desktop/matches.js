@@ -152,7 +152,6 @@ class Matches extends React.Component {
         if (isThisWeek(el.startTime)) {
           selectedThisWeek = 1
           filterResult.push(el)
-          // console.log('this week', filterResult)
         }
       })
     } else if (value == 'nextWeek') {
@@ -160,7 +159,6 @@ class Matches extends React.Component {
         if (isNextWeek(el.startTime)) {
           selectedNextWeek = 1
           filterResult.push(el)
-          // console.log('next week', filterResult)
         }
       })
     } else if (value == 'today') {
@@ -168,7 +166,6 @@ class Matches extends React.Component {
       matches.forEach(el => {
         if (isToday(el.startTime, el.endTime)) {
           filterResult.push(el)
-          // console.log('today', filterResult)
         }
       })
     } else if (value == 'tomorrow') {
@@ -176,7 +173,6 @@ class Matches extends React.Component {
       matches.forEach(el => {
         if (isTomorrow(el.startTime, el.endTime)) {
           filterResult.push(el)
-          // console.log('tomorrow', filterResult)
         }
       })
     } else if (value !== '') {
@@ -186,7 +182,6 @@ class Matches extends React.Component {
           const isSame = isSameDay(value, dt.startTime)
           if (isSame) {
             filterResult.push(dt)
-            // console.log('bydate', filterResult)
           }
         }
       })
