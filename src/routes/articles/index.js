@@ -15,7 +15,7 @@ import React from 'react'
 import MolaLayout from '@components/Molalayout'
 import config from '../../config'
 
-import Axios from 'Axios'
+import Axios from 'axios'
 
 import Article from './article'
 
@@ -31,13 +31,10 @@ async function action({ isMobile, store, pathname, query }) {
     featureId = ''
 
   try {
-    const response = await Axios.get(
-      `${config.endpoints.apiArticles}/articles/${articleId}`,
-      {
-        timeout: 5000,
-        maxRedirects: 1,
-      }
-    )
+    const response = await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
+      timeout: 5000,
+      maxRedirects: 1,
+    })
 
     if (response.status === 200) {
       const article = _.get(response, 'data.data', {}),
