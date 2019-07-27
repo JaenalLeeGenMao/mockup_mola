@@ -19,9 +19,9 @@ export const playlistContainer = css`
   p {
     position: relative;
     height: 2.25rem !important;
-    font-size: 0.81rem !important;
+    font-size: 1.41rem !important;
     max-width: 100%;
-    max-height: 2.25rem;
+    max-height: 3.45rem;
     text-overflow: clip;
     overflow: hidden;
     padding: 0 0.5rem;
@@ -44,6 +44,7 @@ export const playlistContainer = css`
   }
 
   .bannerImage {
+    border-radius: 0.25rem;
     position: relative;
     z-index: 1;
   }
@@ -58,6 +59,7 @@ export const playlistContainer = css`
   }
 
   .bannerImage3d {
+    border-radius: 0.25rem;
     position: relative;
     z-index: 1;
     width: 45vw;

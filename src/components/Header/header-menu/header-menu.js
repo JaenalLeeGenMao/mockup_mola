@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _ from 'lodash'
 // import $ from 'jquery'
 
 // import Auth from '@api/auth'
@@ -43,14 +44,27 @@ class HeaderMenu extends Component {
   }
 
   handleNavigation = id => {
+    const { headerMenuList: menu } = this.state
     const filteredMenu = menu.filter(dt => {
       return dt.id == id
     })
-    history.push(filteredMenu.length > 0 && filteredMenu[0].linkUrl)
+
+    if (filteredMenu.length > 0) {
+      window.location.href = filteredMenu[0].attributes.url
+    }
   }
 
   render() {
-    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile = false, isLandscape, pathname = '' } = this.props
+    const {
+      color,
+      headerMenuOff,
+      isMovie,
+      activeMenu = 'movie',
+      activePlaylist,
+      isMobile = false,
+      isLandscape,
+      pathname = '/',
+    } = this.props
     const { uid, sid } = this.props.user
     const { headerMenuList } = this.state
 
@@ -70,17 +84,35 @@ class HeaderMenu extends Component {
                       const isHome = absMenuArray.length <= 3
                       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                       const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+
+                      const title = _.get(dts, 'attributes.title.en', '')
+
                       return (
-                        <Link key={dts.id} title={dts.attributes.title.en} className={isActive ? styles.header_menu__active : ''} to={relMenuUrl}>
-                          {dts.attributes.title.en}
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={isActive ? styles.header_menu__active : ''}
+                          to={relMenuUrl}
+                        >
+                          {title}
                         </Link>
                       )
                     })}
                   </>
                 )}
                 {isMobile && (
-                  <div className={`${styles.header__menu_wrapper_m} ${isLandscape ? styles.header_menu_select_wrapper__ls : ''}`}>
-                    <DropdownList className={styles.header_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
+                  <div
+                    className={`${styles.header__menu_wrapper_m} ${
+                      isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                    }`}
+                  >
+                    <DropdownList
+                      className={styles.header_menu_dropdown_container}
+                      pathname={pathname}
+                      dataList={headerMenuList}
+                      activeId={activeMenuDropdown}
+                      onClick={this.handleNavigation}
+                    />
                   </div>
                 )}
               </div>
