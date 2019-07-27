@@ -781,37 +781,40 @@ app.get('*', async (req, res, next) => {
         }
       )
         .then(response => {
-          const article = _.get(response, 'data.data', {}),
-            title = _.get(article, 'data.attributes.title'),
-            metaTitle = _.get(article, 'data.attributes.metaTitle'),
-            metaDescription = _.get(article, 'data.attributes.metaDescription'),
-            summary = _.get(article, 'data.attributes.summary'),
-            keywords = _.get(article, 'data.attributes.metaKeywords'),
-            imageUrl = _.get(article, 'data.attributes.imageUrl', '')
+          if (response.status === 200) {
+            const article = _get(response, 'data.data', {}),
+              title = _get(article, 'attributes.title'),
+              metaTitle = _get(article, 'attributes.metaTitle'),
+              metaDescription = _get(article, 'attributes.metaDescription'),
+              summary = _get(article, 'attributes.summary'),
+              keywords = _get(article, 'attributes.metaKeywords'),
+              imageUrl = _get(article, 'attributes.imageUrl', '')
 
-          if (article && article !== undefined) {
-            if (metaTitle) {
-              data.title = metaTitle
-            } else if (title) {
-              data.title = title
+            if (article && article !== undefined) {
+              if (metaTitle) {
+                data.title = metaTitle
+              } else if (title) {
+                data.title = title
+              }
+
+              if (metaDescription) {
+                data.description = metaDescription
+              } else if (summary) {
+                data.description = summary
+              }
+              data.keywords = keywords.length > 0 ? keywords.join(',') : ''
+              data.image = imageUrl ? imageUrl : ''
+            } else {
+              data.title = 'Mola Article'
+              data.description =
+                'Read daily news of Mola, highlights and many more'
             }
 
-            if (metaDescription) {
-              data.description = metaDescription
-            } else if (summary) {
-              data.description = summary
-            }
-            data.keywords = keywords.length > 0 ? keywords.join(',') : ''
-            data.image = imageUrl ? imageUrl : ''
-          } else {
-            data.title = 'Mola Article'
-            data.description =
-              'Read daily news of Mola, highlights and many more'
+            data.type = 'article'
+
+            return article
           }
-
-          data.type = 'article'
-
-          return article
+          return null
         })
         .catch(err => {
           console.log('Error SEO articles', err)
