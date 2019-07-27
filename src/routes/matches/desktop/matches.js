@@ -63,8 +63,6 @@ class Matches extends React.Component {
   }
 
   componentDidMount() {
-    const { playlistId } = this.props
-    playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
     this.props.getAllGenreSpo()
     this.setDefaultDate()
 
@@ -186,7 +184,6 @@ class Matches extends React.Component {
   handleCategoryFilter = value => {
     let filterLeagueRes = []
     const { allMatches } = this.state
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
 
     let matchesList = []
     if (value == 'all') {
@@ -197,7 +194,19 @@ class Matches extends React.Component {
       matchesList = this.getThreeWeeksDate(filterLeagueRes)
     }
 
-    this.setState({ matches: matchesList, filterByLeague: value })
+    const startWeekDate = moment().startOf('isoWeek')
+    const date = new Date(moment().startOf('date'))
+    const swdTimestamp = date.getTime() / 1000
+
+    this.setState({
+      matches: matchesList,
+      filterByLeague: value,
+      selectedWeek: 2,
+      filterByDates: swdTimestamp,
+      startWeekDate: startWeekDate,
+    })
+
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
         duration: 1000,
@@ -342,47 +351,6 @@ class Matches extends React.Component {
     )
   }
 
-  // renderMatchCard = () => {
-  //   const { matches } = this.state
-
-  //   const sortMatches = _sortBy(matches, match => match.startTime)
-  //   console.log("matches", matches)
-  //   const threeWeeksDate = this.getThreeWeeksDate()
-
-  //   return (
-  //     threeWeeksDate.map((weeksDate) => {
-  //       let hasMatch = false
-  //       return (
-  //         <>
-  //           {
-  //             sortMatches.map((matchDt, index) => {
-  //               let flag = true
-  //               const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
-  //               if (index > 0) {
-  //                 const prevFrmtStrTime = formatDateTime(sortMatches[index - 1].startTime, 'DD MM YYYY')
-  //                 if (prevFrmtStrTime == formatStartTime) {
-  //                   flag = false
-  //                 }
-  //               }
-  //               if (formatStartTime === weeksDate.id) {
-  //                 hasMatch = true
-  //                 return (
-  //                   <MatchList key={matchDt.id} data={matchDt} clickAble={true} formatStartTime={flag ? formatStartTime : ''} />
-  //                 )
-  //               }
-  //             })
-  //           }
-  //           {
-  //             !hasMatch &&
-  //             <MatchList clickAble={false} data={weeksDate} formatStartTime={weeksDate.id} isNoSchedule noScheduleTitle={'No Match'} />
-
-  //           }
-  //         </>
-  //       )
-  //     })
-  //   )
-  // }
-
   renderMatchCard = () => {
     const { matches } = this.state
     return matches.map((matchDt, index) => {
@@ -398,13 +366,18 @@ class Matches extends React.Component {
         return (
           <>
             {/* <div>{matchDt.title}</div> */}
-            <MatchList key={matchDt.id} data={matchDt} clickAble={true} formatStartTime={flag ? formatStartTime : ''} />
+            <MatchList
+              key={matchDt.id}
+              data={matchDt}
+              noClickAble={false}
+              formatStartTime={flag ? formatStartTime : ''}
+            />
           </>
         )
       } else {
         return (
           <MatchList
-            clickAble={false}
+            noClickAble={true}
             data={matchDt}
             formatStartTime={matchDt.dateId}
             isNoSchedule
@@ -416,7 +389,6 @@ class Matches extends React.Component {
   }
 
   render() {
-    // const matchCardData = this.props.matches.data
     const matchPlaylists = this.props.matches.matchesPlaylists
 
     const { filterByDates, startWeekDate } = this.state
@@ -475,7 +447,6 @@ function mapStateToProps(state) {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getMatches: id => dispatch(matchListActions.getAllMatches(id)),
   getAllGenreSpo: id => dispatch(matchListActions.getAllGenreSpo(id)),
 })
 

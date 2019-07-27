@@ -11,7 +11,16 @@ import DropdownList from '@components/DropdownList'
 import MatchesPlaceholder from './placeholder'
 
 import MatchCard from './card'
-import { formatDateTime, isToday, isTomorrow, isMatchPassed, isThisWeek, isNextWeek, isSameDay, isLastWeek } from '@source/lib/dateTimeUtil'
+import {
+  formatDateTime,
+  isToday,
+  isTomorrow,
+  isMatchPassed,
+  isThisWeek,
+  isNextWeek,
+  isSameDay,
+  isLastWeek,
+} from '@source/lib/dateTimeUtil'
 import matchListActions from '@actions/matches'
 import VerticalCalendar from '@components/VerticalCalendar'
 import moment from 'moment'
@@ -51,14 +60,17 @@ class Matches extends Component {
 
   componentDidMount() {
     /* set the default active playlist onload */
-    const { playlistId } = this.props
-    playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
+    // const { playlistId } = this.props
+    // playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
     this.props.getAllGenreSpo()
     this.setDefaultDate()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.matches.matchesPlaylists.data.length != this.props.matches.matchesPlaylists.data.length && this.state.allMatches.length === 0) {
+    if (
+      prevProps.matches.matchesPlaylists.data.length != this.props.matches.matchesPlaylists.data.length &&
+      this.state.allMatches.length === 0
+    ) {
       //get all data first render
       let matchTemp = []
       const { data } = this.props.matches.matchesPlaylists
@@ -85,9 +97,15 @@ class Matches extends Component {
     })
 
     const todayMatches = groupByDate.isToday ? groupByDate.isToday.sort((a, b) => a.startTime - b.startTime) : []
-    const thisWeekMatches = groupByDate.isThisWeek ? groupByDate.isThisWeek.sort((a, b) => a.startTime - b.startTime) : []
-    const nextWeekMatches = groupByDate.isNextWeek ? groupByDate.isNextWeek.sort((a, b) => a.startTime - b.startTime) : []
-    const lastWeekMatches = groupByDate.isLastWeek ? groupByDate.isLastWeek.sort((a, b) => b.startTime - a.startTime) : []
+    const thisWeekMatches = groupByDate.isThisWeek
+      ? groupByDate.isThisWeek.sort((a, b) => a.startTime - b.startTime)
+      : []
+    const nextWeekMatches = groupByDate.isNextWeek
+      ? groupByDate.isNextWeek.sort((a, b) => a.startTime - b.startTime)
+      : []
+    const lastWeekMatches = groupByDate.isLastWeek
+      ? groupByDate.isLastWeek.sort((a, b) => b.startTime - a.startTime)
+      : []
     return todayMatches.concat(thisWeekMatches, nextWeekMatches, lastWeekMatches)
   }
 
@@ -103,17 +121,21 @@ class Matches extends Component {
   }
 
   handleFilterByLeague = value => {
+    const { allMatches } = this.state
     const { data } = this.props.matches.matchesPlaylists
-
     let filterResult = []
-    data.forEach(dt => {
-      if (value === dt.id) {
-        const vidDt = dt.videos
-        for (let i = 0; i < vidDt.length; i++) {
-          filterResult.push(vidDt[i])
+    if (value == 'all') {
+      filterResult = allMatches
+    } else {
+      data.forEach(dt => {
+        if (value === dt.id) {
+          const vidDt = dt.videos
+          for (let i = 0; i < vidDt.length; i++) {
+            filterResult.push(vidDt[i])
+          }
         }
-      }
-    })
+      })
+    }
     this.setState({ matches: filterResult })
   }
 
@@ -244,17 +266,28 @@ class Matches extends Component {
               </Link>
             </>
           ))}
-        {matchesList.length === 0 && <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>}
+        {matchesList.length === 0 && (
+          <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>
+        )}
       </LazyLoad>
     )
   }
 
   renderFilterWeek() {
-    const filterList = [{ id: '1', title: 'Last Week', value: 'lastWeek' }, { id: '2', title: 'This Week', value: 'thisWeek' }, { id: '3', title: 'Next Week', value: 'nextWeek' }]
+    const filterList = [
+      { id: '1', title: 'Last Week', value: 'lastWeek' },
+      { id: '2', title: 'This Week', value: 'thisWeek' },
+      { id: '3', title: 'Next Week', value: 'nextWeek' },
+    ]
 
     return (
       <LazyLoad containerClassName={styles.matches__filterWeek}>
-        <DropdownList className={styles.matches_dropdown_container_filterWeek} dataList={filterList} activeId={this.state.filterDefWeek} onClick={this.handleWeekClick} />
+        <DropdownList
+          className={styles.matches_dropdown_container_filterWeek}
+          dataList={filterList}
+          activeId={this.state.filterDefWeek}
+          onClick={this.handleWeekClick}
+        />
       </LazyLoad>
     )
   }
@@ -262,22 +295,28 @@ class Matches extends Component {
   renderFilterLeague() {
     const filterListshow = this.props.matches.matchesPlaylists
 
-    let filterListTemp = []
+    let filterListTemp = [{ id: 'all', title: 'All' }]
 
     for (let i = 0; i < filterListshow.data.length; i++) {
       let filterData = filterListshow.data[i]
       filterListTemp.push(filterData)
     }
 
+    console.log('filterListTemp', filterListTemp)
+
     return (
       <LazyLoad containerClassName={styles.matches__filter}>
-        <DropdownList className={styles.matches_dropdown_container} dataList={filterListTemp} onClick={this.handleFilterByLeague} />
+        <DropdownList
+          className={styles.matches_dropdown_container}
+          dataList={filterListTemp}
+          onClick={this.handleFilterByLeague}
+        />
       </LazyLoad>
     )
   }
 
   render() {
-    const { meta } = this.props.matches
+    const { meta } = this.props.matches.matchesPlaylists
     const { matches, filterByDates, startWeekDate } = this.state
     let sortedByStartDate = matches
     if (matches.length > 0) {
@@ -288,14 +327,23 @@ class Matches extends Component {
       <Fragment>
         {meta.status === 'loading' && <> {<MatchesPlaceholder />} </>}
         {meta.status != 'error' && <> {this.renderHeader()}</>}
-        {meta.status === 'error' && <MatchesError status={meta.status} message={meta.error || 'Mola TV Matches is not loaded'} />}
+        {meta.status === 'error' && (
+          <MatchesError status={meta.status} message={meta.error || 'Mola TV Matches is not loaded'} />
+        )}
         {meta.status === 'success' && (
           <>
             {this.renderFilterLeague()}
             {this.renderFilterWeek()}
             {this.renderMatchesList(sortedByStartDate)}
             <LazyLoad containerClassName={styles.calendarCls}>
-              <VerticalCalendar isMobile handleCategoryFilter={this.handleCategoryFilter} categoryFilterType={'ByDate'} selectedDate={filterByDates} {...this.props} startOfWeek={startWeekDate} />
+              <VerticalCalendar
+                isMobile
+                handleCategoryFilter={this.handleCategoryFilter}
+                categoryFilterType={'ByDate'}
+                selectedDate={filterByDates}
+                {...this.props}
+                startOfWeek={startWeekDate}
+              />
             </LazyLoad>
           </>
         )}

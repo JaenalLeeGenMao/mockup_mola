@@ -7,7 +7,6 @@ import { formatDateTime, addDateTime } from '@source/lib/dateTimeUtil'
 import s from './VerticalCalendar.css'
 import Scroll from 'react-scroll'
 let Link = Scroll.Link
-
 class VerticalCalendar extends Component {
   static propTypes = {
     handleCategoryFilter: PropTypes.func,
@@ -40,6 +39,7 @@ class VerticalCalendar extends Component {
   }
 
   handleSetActive = to => {
+    // activeScrollDate = to
     this.setState({
       activeDate: to,
     })

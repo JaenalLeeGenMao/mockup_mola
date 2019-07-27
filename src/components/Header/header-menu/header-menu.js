@@ -14,7 +14,7 @@ import { getLocale } from '../locale'
 import styles from './header-menu.css'
 import history from '@source/history'
 // import { IoIosArrowDown } from 'react-icons/io'
-import DropdownList from '@components/DropdownList'
+import DropdownMenu from '../dropdown-menu'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -106,7 +106,7 @@ class HeaderMenu extends Component {
                       isLandscape ? styles.header_menu_select_wrapper__ls : ''
                     }`}
                   >
-                    <DropdownList
+                    <DropdownMenu
                       className={styles.header_menu_dropdown_container}
                       pathname={pathname}
                       dataList={headerMenuList}
