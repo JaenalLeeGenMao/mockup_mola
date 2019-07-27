@@ -31,138 +31,146 @@ const routes = {
       path: '',
       load: () => import(/* webpackChunkName: 'home' */ './home'),
     },
-    {
-      path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    {
-      path: '/search',
-      load: () => import(/* webpackChunkName: 'search' */ './search'),
-    },
-    {
-      path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
-    },
-    {
-      path: '/accounts/inbox',
-      load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
-    },
-    {
-      path: '/accounts/login',
-      load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
-    },
-    {
-      path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
-    },
-    {
-      path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
-    },
-    {
-      path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
-    },
-    {
-      path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
-    },
-    {
-      path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
-    },
-    {
-      path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
-    },
-    {
-      path: '/accounts/thankyou',
-      load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
-    },
-    {
-      path: '/accounts/consent',
-      load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
-    },
-    {
-      path: '/system-info',
-      load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
-    },
-    {
-      path: '/terms',
-      load: () => import(/* webpackChunkName: 'terms' */ './terms'),
-    },
-    {
-      path: '/conditions',
-      load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
-    },
-    {
-      path: '/history-transactions',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
-    {
-      path: '/history-transactions/:id',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
-    {
-      path: '/switch-channels',
-      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
-    },
-    {
-      path: '/error/smart',
-      load: () => import(/* webpackChunkName: 'smart' */ './error/smart'),
-    },
-    {
-      path: '/matches',
-      load: () => import(/* webpackChunkName: 'matches' */ './matches'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    {
-      path: '/download-app',
-      load: () => import(/* webpackChunkName: 'download-app' */ './download-app'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    {
-      path: '/playlists',
-      load: () => import(/* webpackChunkName: 'playlists' */ './playlist'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
-    {
-      path: '/watch',
-      load: () => import(/* webpackChunkName: 'watch' */ './watch'),
-    },
-    {
-      path: '/channels',
-      load: () => import(/* webpackChunkName: 'channels' */ './channels'),
-      children: [
-        {
-          path: '/:id',
-        },
-      ],
-    },
+    // {
+    //   path: '/privacy',
+    //   load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
+    // },
+    // {
+    //   path: '/search',
+    //   load: () => import(/* webpackChunkName: 'search' */ './search'),
+    // },
+    // {
+    //   path: '/accounts/history',
+    //   load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
+    // },
+    // {
+    //   path: '/accounts/inbox',
+    //   load: () => import(/* webpackChunkName: 'inbox' */ './accounts/inbox'),
+    // },
+    // {
+    //   path: '/accounts/login',
+    //   load: () => import(/* webpackChunkName: 'login' */ './accounts/login'),
+    // },
+    // {
+    //   path: '/accounts/register',
+    //   load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
+    // },
+    // {
+    //   path: '/accounts/profile',
+    //   load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
+    // },
+    // {
+    //   path: '/accounts/forgotPassword',
+    //   load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
+    // },
+    // {
+    //   path: '/accounts/resetPassword',
+    //   load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
+    // },
+    // {
+    //   path: '/accounts/security',
+    //   load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
+    // },
+    // {
+    //   path: '/accounts/setting',
+    //   load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
+    // },
+    // {
+    //   path: '/accounts/thankyou',
+    //   load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
+    // },
+    // {
+    //   path: '/accounts/consent',
+    //   load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
+    // },
+    // {
+    //   path: '/system-info',
+    //   load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
+    // },
+    // {
+    //   path: '/terms',
+    //   load: () => import(/* webpackChunkName: 'terms' */ './terms'),
+    // },
+    // {
+    //   path: '/conditions',
+    //   load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
+    // },
+    // {
+    //   path: '/history-transactions',
+    //   load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+    // },
+    // {
+    //   path: '/history-transactions/:id',
+    //   load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+    // },
+    // {
+    //   path: '/switch-channels',
+    //   load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    // },
+    // {
+    //   path: '/matches',
+    //   load: () => import(/* webpackChunkName: 'matches' */ './matches'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/download-app',
+    //   load: () => import(/* webpackChunkName: 'download-app' */ './download-app'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/playlists',
+    //   load: () => import(/* webpackChunkName: 'playlists' */ './playlist'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/watch',
+    //   load: () => import(/* webpackChunkName: 'watch' */ './watch'),
+    // },
+    // {
+    //   path: '/channels',
+    //   load: () => import(/* webpackChunkName: 'channels' */ './channels'),
+    //   children: [
+    //     {
+    //       path: '/:id',
+    //     },
+    //   ],
+    // },
     {
       path: '/libraries',
-      load: () => import(/* webpackChunkName: 'libraries' */ './feature'),
+      // load: () => import(/* webpackChunkName: 'libraries' */ './feature'),
       children: [
         {
+          path: '/:id/articles',
+          load: () =>
+            import(/* webpackChunkName: 'libraries-not-found' */ './not-found'),
+        },
+        {
+          path: '/:id/articles/:aid',
+          load: () =>
+            import(/* webpackChunkName: 'libraries-srticle' */ './feature'),
+        },
+        {
           path: '/:id',
+          load: () => import(/* webpackChunkName: 'libraries' */ './feature'),
         },
       ],
     },
     {
       path: '/live-support',
-      load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
+      load: () =>
+        import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
@@ -184,11 +192,17 @@ const routes = {
         const pathRoute = route.chunks[0]
         if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
           if (pathRoute === 'home' || pathRoute === 'sport') {
-            document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+            document.getElementsByClassName(
+              'embeddedServiceHelpButton'
+            )[0].style.visibility =
+              'visible'
           } else {
             if (pathRoute === 'live-support') {
               if (window.App.isMobile) {
-                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+                document.getElementsByClassName(
+                  'embeddedServiceHelpButton'
+                )[0].style.visibility =
+                  'visible'
                 let _el = document.getElementsByClassName('helpButton')[0]
                 _el.style.left = '44.5vw'
                 _el.style.right = '-50vw'
@@ -196,7 +210,10 @@ const routes = {
                 _el.style.visibility = 'visible'
               }
             } else {
-              document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+              document.getElementsByClassName(
+                'embeddedServiceHelpButton'
+              )[0].style.visibility =
+                'hidden'
             }
           }
         }
@@ -217,13 +234,17 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
-      if (timer) clearTimeout(timer)
-      timer = setTimeout(function(t) {
-        // console.log("EVENT ALL")
-        tracker.sessionId()
-      }, 60000)
-    })
+    addListenerMulti(
+      document,
+      'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick',
+      function(e) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(function(t) {
+          // console.log("EVENT ALL")
+          tracker.sessionId()
+        }, 60000)
+      }
+    )
     const { location } = window
     // Parse Current URL
     const { search, pathname } = window.location

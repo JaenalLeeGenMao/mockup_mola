@@ -44,7 +44,10 @@ import _isUndefined from 'lodash/isUndefined'
 import _forEach from 'lodash/forEach'
 
 const oauth = {
-  endpoint: config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
+  endpoint:
+    config.env === 'staging'
+      ? 'https://stag.mola.tv/accounts/_/oauth2/v1'
+      : 'https://mola.tv/accounts/_/oauth2/v1',
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   scope: [
@@ -137,7 +140,16 @@ app.use(
 )
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-const { serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId }, endpoints: { domain } } = config
+const {
+  serverApi: {
+    VIDEO_API_URL,
+    AUTH_API_URL,
+    SUBSCRIPTION_API_URL,
+    appId,
+    xAppId,
+  },
+  endpoints: { domain },
+} = config
 
 const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 
@@ -145,11 +157,15 @@ const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 // var inboxInterval;
 // set a cookie
 const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
-const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(
+  domain
+)}`
 let userinfo = ''
 
 app.get('/sign-location', async (req, res) => {
-  const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+  const locationUrl = `${
+    config.endpoints.ads
+  }/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
   const lat = req.query.lat
   const long = req.query.long
 
@@ -194,32 +210,35 @@ const requestGuestToken = async res => {
   // console.log(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`)
   // console.log(domain)
   try {
-    const rawResponse = await fetch(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`, {
-      method: 'GET',
-      timeout: 5000,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-app-id': xAppId,
-        Origin: domain,
-        Referer: domain,
-      },
-      json: {
-        app_key: appKey,
-        app_secret: appSecret,
-        scope: [
-          'https://internal.supersoccer.tv/users/users.profile.read',
-          'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-          'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-          'https://api.supersoccer.tv/orders/orders.create',
-          'https://api.supersoccer.tv/videos/videos.read',
-          'paymentmethods:read.internal',
-          'payments:payment.dopay',
-          'userdata:preference.read',
-          'userdata:preference.insert',
-        ].join(' '),
-      },
-    })
+    const rawResponse = await fetch(
+      `${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`,
+      {
+        method: 'GET',
+        timeout: 5000,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-app-id': xAppId,
+          Origin: domain,
+          Referer: domain,
+        },
+        json: {
+          app_key: appKey,
+          app_secret: appSecret,
+          scope: [
+            'https://internal.supersoccer.tv/users/users.profile.read',
+            'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+            'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+            'https://api.supersoccer.tv/orders/orders.create',
+            'https://api.supersoccer.tv/videos/videos.read',
+            'paymentmethods:read.internal',
+            'payments:payment.dopay',
+            'userdata:preference.read',
+            'userdata:preference.insert',
+          ].join(' '),
+        },
+      }
+    )
 
     const content = await rawResponse.json()
     return content
@@ -251,13 +270,16 @@ const getUserInfo = async sid => {
 
 const getUserSubscription = async (userId, accessToken) => {
   try {
-    const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
-      method: 'GET',
-      timeout: 5000,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    const rawResponse = await fetch(
+      `${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`,
+      {
+        method: 'GET',
+        timeout: 5000,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
 
     const content = await rawResponse.json()
     return content
@@ -417,7 +439,8 @@ app.get('/oauth/app-callback', async (req, res) => {
           },
           json: {
             app_key: 'LDZJgphCc7',
-            app_secret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+            app_secret:
+              '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
             grant_type: 'authorization_code',
             redirect_uri: `${domain}/oauth/app-callback`,
             code,
@@ -475,7 +498,12 @@ app.get('/signout', (req, res) => {
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
   console.log('Server URL', req.path)
-  var whitelisted = ['/accounts/profile', '/accounts/inbox', '/accounts/history', '/history-transactions']
+  var whitelisted = [
+    '/accounts/profile',
+    '/accounts/inbox',
+    '/accounts/history',
+    '/history-transactions',
+  ]
   try {
     // global.clearInterval(inboxInterval);
 
@@ -489,7 +517,11 @@ app.get('*', async (req, res, next) => {
     }
 
     // Get IP
-    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null)
+    let ip =
+      req.headers['x-forwarded-for'] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      (req.connection.socket ? req.connection.socket.remoteAddress : null)
     if (ip !== null) {
       if (ip.length >= 15) {
         ip = ip.replace(/^.*:/, '')
@@ -517,7 +549,11 @@ app.get('*', async (req, res, next) => {
       // // if lifespan of token is less than 12 hours then get new access token
       if (decodedAccessToken || decodedIdToken) {
         if (decodedAccessToken && decodedIdToken) {
-          if (decodedAccessToken.sub !== decodedIdToken.sub || idTokenLifespan < 0 || accessTokenLifespan < 0) {
+          if (
+            decodedAccessToken.sub !== decodedIdToken.sub ||
+            idTokenLifespan < 0 ||
+            accessTokenLifespan < 0
+          ) {
             // res.cookie('_at', '', { expires: new Date(0) })
             // return res.redirect(req.originalUrl);
           } else if (accessTokenLifespan < 12 * 3600) {
@@ -662,7 +698,10 @@ app.get('*', async (req, res, next) => {
 
     const userAgent = req.get('User-Agent')
     /** /iPhone|iPad|iPod|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i */
-    let isMobile = /iPhone|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(userAgent) && !isTablet
+    let isMobile =
+      /iPhone|Android|PlayBook|Kindle Fire|PalmSource|Palm|IEMobile|BB10/i.test(
+        userAgent
+      ) && !isTablet
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
@@ -687,6 +726,8 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route }
 
+    /*** ###Articles Detail data and SEO ### ***/
+
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
@@ -701,13 +742,16 @@ app.get('*', async (req, res, next) => {
         appLink = 'watch?v=' + videoId
       }
       if (videoId) {
-        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id=${appId}`, {
-          timeout: 5000,
-          maxRedirects: 1,
-          // headers: {
-          //   'x-url': config.endpoints.xurl
-          // }
-        })
+        const response = await Axios.get(
+          `${VIDEO_API_URL}/${videoId}?app_id=${appId}`,
+          {
+            timeout: 5000,
+            maxRedirects: 1,
+            // headers: {
+            //   'x-url': config.endpoints.xurl
+            // }
+          }
+        )
           .then(({ data }) => {
             return data.data
           })
@@ -717,13 +761,64 @@ app.get('*', async (req, res, next) => {
           })
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
-        const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
+        const background = response
+          ? _get(response[0].attributes.images, 'cover', { landscape: '' })
+          : null
         data.image = response ? background.landscape : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
         data.appLinkUrl = appLink
       }
+    } else if (pathSplit.includes('articles')) {
+      const pathnameArr = req.path.split('articles/')
+      const articleId = pathnameArr[1]
+
+      const articleResponse = Axios.get(
+        `${config.endpoints.apiArticles}/articles/${articleId}`,
+        {
+          timeout: 5000,
+          maxRedirects: 1,
+        }
+      )
+        .then(response => {
+          const article = _.get(response, 'data.data', {}),
+            title = _.get(article, 'data.attributes.title'),
+            metaTitle = _.get(article, 'data.attributes.metaTitle'),
+            metaDescription = _.get(article, 'data.attributes.metaDescription'),
+            summary = _.get(article, 'data.attributes.summary'),
+            keywords = _.get(article, 'data.attributes.metaKeywords'),
+            imageUrl = _.get(article, 'data.attributes.imageUrl', '')
+
+          if (article && article !== undefined) {
+            if (metaTitle) {
+              data.title = metaTitle
+            } else if (title) {
+              data.title = title
+            }
+
+            if (metaDescription) {
+              data.description = metaDescription
+            } else if (summary) {
+              data.description = summary
+            }
+            data.keywords = keywords.length > 0 ? keywords.join(',') : ''
+            data.image = imageUrl ? imageUrl : ''
+          } else {
+            data.title = 'Mola Article'
+            data.description =
+              'Read daily news of Mola, highlights and many more'
+          }
+
+          data.type = 'article'
+
+          return article
+        })
+        .catch(err => {
+          console.log('Error SEO articles', err)
+          return null
+        })
     }
+    /*** ### End Of Articles Detail ***/
 
     /*** SEO - end  ***/
 
