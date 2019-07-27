@@ -78,9 +78,9 @@ class Article extends Component {
 
     const isMobile = this.state.viewportWidth <= 960
 
-    console.log('article', article)
-    console.log('related', related)
-    console.log(detail)
+    // console.log('article', article)
+    // console.log('related', related)
+    // console.log(detail)
     return (
       <div className={articleContainer}>
         {!article.isLoading && (

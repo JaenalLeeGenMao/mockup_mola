@@ -769,58 +769,59 @@ app.get('*', async (req, res, next) => {
         data.twitter_card_type = 'summary_large_image'
         data.appLinkUrl = appLink
       }
-    } else if (pathSplit.includes('articles')) {
-      const pathnameArr = req.path.split('articles/')
-      const articleId = pathnameArr[1]
-
-      const articleResponse = Axios.get(
-        `${config.endpoints.apiArticles}/articles/${articleId}`,
-        {
-          timeout: 5000,
-          maxRedirects: 1,
-        }
-      )
-        .then(response => {
-          if (response.status === 200) {
-            const article = _get(response, 'data.data', {}),
-              title = _get(article, 'attributes.title'),
-              metaTitle = _get(article, 'attributes.metaTitle'),
-              metaDescription = _get(article, 'attributes.metaDescription'),
-              summary = _get(article, 'attributes.summary'),
-              keywords = _get(article, 'attributes.metaKeywords'),
-              imageUrl = _get(article, 'attributes.imageUrl', '')
-
-            if (article && article !== undefined) {
-              if (metaTitle) {
-                data.title = metaTitle
-              } else if (title) {
-                data.title = title
-              }
-
-              if (metaDescription) {
-                data.description = metaDescription
-              } else if (summary) {
-                data.description = summary
-              }
-              data.keywords = keywords.length > 0 ? keywords.join(',') : ''
-              data.image = imageUrl ? imageUrl : ''
-            } else {
-              data.title = 'Mola Article'
-              data.description =
-                'Read daily news of Mola, highlights and many more'
-            }
-
-            data.type = 'article'
-
-            return article
-          }
-          return null
-        })
-        .catch(err => {
-          console.log('Error SEO articles', err)
-          return null
-        })
     }
+    // else if (pathSplit.includes('articles')) {
+    //   const pathnameArr = req.path.split('articles/')
+    //   const articleId = pathnameArr[1]
+
+    //   const articleResponse = Axios.get(
+    //     `${config.endpoints.apiArticles}/articles/${articleId}`,
+    //     {
+    //       timeout: 5000,
+    //       maxRedirects: 1,
+    //     }
+    //   )
+    //     .then(response => {
+    //       if (response.status === 200) {
+    //         const article = _get(response, 'data.data', {}),
+    //           title = _get(article, 'attributes.title'),
+    //           metaTitle = _get(article, 'attributes.metaTitle'),
+    //           metaDescription = _get(article, 'attributes.metaDescription'),
+    //           summary = _get(article, 'attributes.summary'),
+    //           keywords = _get(article, 'attributes.metaKeywords'),
+    //           imageUrl = _get(article, 'attributes.imageUrl', '')
+
+    //         if (article && article !== undefined) {
+    //           if (metaTitle) {
+    //             data.title = metaTitle
+    //           } else if (title) {
+    //             data.title = title
+    //           }
+
+    //           if (metaDescription) {
+    //             data.description = metaDescription
+    //           } else if (summary) {
+    //             data.description = summary
+    //           }
+    //           data.keywords = keywords.length > 0 ? keywords.join(',') : ''
+    //           data.image = imageUrl ? imageUrl : ''
+    //         } else {
+    //           data.title = 'Mola Article'
+    //           data.description =
+    //             'Read daily news of Mola, highlights and many more'
+    //         }
+
+    //         data.type = 'article'
+
+    //         return article
+    //       }
+    //       return null
+    //     })
+    //     .catch(err => {
+    //       console.log('Error SEO articles', err)
+    //       return null
+    //     })
+    // }
     /*** ### End Of Articles Detail ***/
 
     /*** SEO - end  ***/

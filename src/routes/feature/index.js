@@ -11,7 +11,6 @@ import React from 'react'
 import MolaLayout from '@components/Molalayout'
 
 import Feature from './feature'
-import Article from './article'
 
 import _ from 'lodash'
 
@@ -20,8 +19,7 @@ const description =
   'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
 
 async function action({ isMobile, store, pathname, query }) {
-  const featureId = _.get(pathname.split('/'), '[2]', ''),
-    articleId = _.get(pathname.split('/'), '[4]', '')
+  const featureId = _.get(pathname.split('/'), '[2]', '')
 
   return {
     title,
@@ -29,16 +27,12 @@ async function action({ isMobile, store, pathname, query }) {
     chunks: ['libraries'],
     component: (
       <MolaLayout>
-        {articleId ? (
-          <Article articleId={articleId} playlistId={featureId} />
-        ) : (
-          <Feature
-            {...store}
-            id={featureId}
-            isMobile={isMobile}
-            pathname={pathname}
-          />
-        )}
+        <Feature
+          {...store}
+          id={featureId}
+          isMobile={isMobile}
+          pathname={pathname}
+        />
       </MolaLayout>
     ),
   }
