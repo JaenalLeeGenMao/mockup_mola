@@ -15,7 +15,13 @@ class HorizontalPlaylist extends Component {
   }
 
   categoryFilterLigaType = () => {
-    const { filterByLeague, matchesPlaylists, handleCategoryFilter, expandLeague, categoryFilterType = 'League' } = this.props
+    const {
+      filterByLeague,
+      matchesPlaylists,
+      handleCategoryFilter,
+      expandLeague,
+      categoryFilterType = 'League',
+    } = this.props
 
     return (
       <>
@@ -27,10 +33,12 @@ class HorizontalPlaylist extends Component {
                   className={s.contentLogoAndName}
                   key={genre.id}
                   onClick={() => {
-                    handleCategoryFilter(categoryFilterType, genre.id)
+                    handleCategoryFilter(genre.id)
                   }}
                 >
-                  <span className={s.imgContainer__PL}>{genre.thumbnails && <img className={s.filterimg__PremierLeague} src={genre.thumbnails} />}</span>
+                  <span className={s.imgContainer__PL}>
+                    {genre.thumbnails && <img className={s.filterimg__PremierLeague} src={genre.thumbnails} />}
+                  </span>
                   <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
                     {genre.title}
                   </span>
@@ -56,7 +64,7 @@ class HorizontalPlaylist extends Component {
                   key={dt}
                   className={`${s.AllLeague} ${dt.id == filterByLeague ? s.selectednameleague : s.nameleague}`}
                   onClick={() => {
-                    handleCategoryFilter(categoryFilterAll, dt.id)
+                    handleCategoryFilter('all')
                   }}
                 >
                   All

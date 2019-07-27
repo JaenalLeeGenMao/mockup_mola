@@ -5,6 +5,8 @@ import moment from 'moment'
 import { formatDateTime, addDateTime } from '@source/lib/dateTimeUtil'
 
 import s from './VerticalCalendar.css'
+import Scroll from 'react-scroll'
+let Link = Scroll.Link
 
 class VerticalCalendar extends Component {
   static propTypes = {
@@ -33,24 +35,35 @@ class VerticalCalendar extends Component {
   }
 
   render() {
-    const { handleCategoryFilter, categoryFilterType = 'ByDate', selectedDate, startOfWeek } = this.props
+    const { handleCategoryFilter, selectedDate, startOfWeek } = this.props
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
             {this.getCalendar(startOfWeek).map(dt => {
+              const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
               return (
                 <>
-                  {/* <div className={`${s.filterLabelByDay} ${dt.todayDate ? s.selectedFilter : ''}`}>{dt.todayDate}</div> */}
-                  <div
-                    className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''}`}
-                    key={dt.strTimestamp}
-                    onClick={() => {
-                      handleCategoryFilter(categoryFilterType, dt.strTimestamp)
-                    }}
+                  <Link
+                    to={formatStartTime}
+                    spy={true}
+                    hashSpy={true}
+                    smooth={'easeInOutExpo'}
+                    offset={-150}
+                    duration={1000}
                   >
-                    {dt.title}
-                  </div>
+                    <div
+                      className={`${s.filterLabelByDay} ${
+                        dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''
+                      }`}
+                      key={dt.strTimestamp}
+                      onClick={() => {
+                        handleCategoryFilter(dt.strTimestamp)
+                      }}
+                    >
+                      {dt.title}
+                    </div>
+                  </Link>
                 </>
               )
             })}

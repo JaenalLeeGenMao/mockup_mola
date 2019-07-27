@@ -10,7 +10,8 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 import { defaultImgClub } from '@global/imageUrl'
 
 import moment from 'moment'
-
+import Scroll from 'react-scroll'
+let Element = Scroll.Element
 class MatchList extends React.Component {
   state = {
     titleTemps: [],
@@ -32,7 +33,7 @@ class MatchList extends React.Component {
   renderMatch() {
     const { homeTeam = [], awayTeam = [], title } = this.props.data
 
-    if (homeTeam.length > 0 && awayTeam.length > 0) {
+    if (homeTeam && awayTeam && homeTeam.length > 0 && awayTeam.length > 0) {
       return (
         <div className={styles.matchList__matches}>
           <div className={styles.matchList__club}>
@@ -86,20 +87,47 @@ class MatchList extends React.Component {
   }
 
   render() {
-    const { data, noClickAble } = this.props
-    const { images } = this.props.data
-    const date = this.cardDateFormat(data.startTime, data.endTime)
-    const matchLive = isMatchLive(data.startTime, data.endTime)
+    const { data, noClickAble = true, formatStartTime = '', isNoSchedule = false, noScheduleTitle = '' } = this.props
 
-    return (
-      <div className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}>
-        <div className={matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date}>
-          <p className={styles.matchList__labelDate}> {date} </p>
-          <div className={styles.matchList__leagueImg}>{images ? <img className={styles.matchList__league_logo} src={images.thumbnails.cover} /> : ''}</div>
-        </div>
-        {this.renderMatch()}
-      </div>
-    )
+    if (!isNoSchedule) {
+      const images = this.props.data ? this.props.data.images : ''
+      const date = this.cardDateFormat(data.startTime, data.endTime)
+      const matchLive = isMatchLive(data.startTime, data.endTime)
+
+      return (
+        <Element name={formatStartTime}>
+          <div
+            className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}
+          >
+            <div
+              className={matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date}
+            >
+              <p className={styles.matchList__labelDate}>{date}</p>
+              <div className={styles.matchList__leagueImg}>
+                {images ? <img className={styles.matchList__league_logo} src={images.thumbnails.cover} /> : ''}
+              </div>
+            </div>
+            {this.renderMatch()}
+          </div>
+        </Element>
+      )
+    } else {
+      return (
+        <Element name={formatStartTime}>
+          {/* <div className={styles.matchList__container}>
+            <div className={styles.matchList__date}>
+              <p className={styles.matchList__labelDate}>{data.title}</p>
+            </div>
+            <div className={styles.matchList__matches}>
+              <div className={styles.matchList__NoHomeAwayTeam}>
+                <span>{noScheduleTitle}</span>
+              </div>
+            </div>
+          </div> */}
+          <div />
+        </Element>
+      )
+    }
   }
 }
 
