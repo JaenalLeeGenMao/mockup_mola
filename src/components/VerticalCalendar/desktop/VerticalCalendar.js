@@ -16,6 +16,11 @@ class VerticalCalendar extends Component {
     selectedDate: PropTypes.string,
   }
 
+  state = {
+    activeDate: '',
+    selDate: this.props.selectedDate,
+  }
+
   getCalendar = startOfWeek => {
     let resultDateList = []
 
@@ -34,14 +39,32 @@ class VerticalCalendar extends Component {
     return resultDateList
   }
 
+  handleSetActive = to => {
+    this.setState({
+      activeDate: to,
+    })
+  }
+
+  handleOnClick = timestamp => {
+    this.props.handleCategoryFilter(timestamp)
+    this.setState({
+      activeDate: '',
+    })
+  }
+
   render() {
-    const { handleCategoryFilter, selectedDate, startOfWeek } = this.props
+    const { startOfWeek, selectedDate } = this.props
+    const { activeDate } = this.state
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
             {this.getCalendar(startOfWeek).map(dt => {
               const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
+              const isSelected =
+                (!activeDate && (dt.strTimestamp == selectedDate || dt.title == selectedDate)) ||
+                activeDate == formatStartTime
+
               return (
                 <>
                   <Link
@@ -51,14 +74,13 @@ class VerticalCalendar extends Component {
                     smooth={'easeInOutExpo'}
                     offset={-150}
                     duration={1000}
+                    onSetActive={this.handleSetActive}
                   >
                     <div
-                      className={`${s.filterLabelByDay} ${
-                        dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''
-                      }`}
+                      className={`${s.filterLabelByDay} ${isSelected ? s.selectedFilter : ''}`}
                       key={dt.strTimestamp}
                       onClick={() => {
-                        handleCategoryFilter(dt.strTimestamp)
+                        this.handleOnClick(dt.strTimestamp)
                       }}
                     >
                       {dt.title}

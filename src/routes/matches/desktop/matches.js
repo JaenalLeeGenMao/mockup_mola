@@ -6,22 +6,11 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _groupBy from 'lodash/groupBy'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import InfiniteScroll from 'react-infinite-scroll-component'
+// import InfiniteScroll from 'react-infinite-scroll-component'
 
 import matchListActions from '@actions/matches'
 
-import {
-  formatDateTime,
-  isToday,
-  isTomorrow,
-  isMatchPassed,
-  isMatchLive,
-  addDateTime,
-  isSameDay,
-  isLastWeek,
-  isNextWeek,
-  isThisWeek,
-} from '@source/lib/dateTimeUtil'
+import { formatDateTime, addDateTime } from '@source/lib/dateTimeUtil'
 
 import Header from '@components/Header'
 // import MatchCard from '@components/MatchCard'
@@ -32,7 +21,6 @@ import HorizontalPlaylist from '@components/HorizontalPlaylist'
 
 import Placeholder from './placeholder'
 import s from './matches.css'
-import LoaderComp from './loaderComp'
 // import _unionBy from 'lodash/unionBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
 import Scroll from 'react-scroll'
@@ -79,6 +67,16 @@ class Matches extends React.Component {
     playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
     this.props.getAllGenreSpo()
     this.setDefaultDate()
+
+    // Events.scrollEvent.register('begin', function (to, element) {
+    //   console.log("begin", arguments);
+    // });
+
+    // Events.scrollEvent.register('end', function (to, element) {
+    //   console.log("end", arguments);
+    // });
+
+    // scrollSpy.update();
   }
 
   componentWillMount() {
