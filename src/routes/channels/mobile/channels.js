@@ -37,7 +37,8 @@ class Channels extends Component {
     scheduleList: [],
     android_redirect_to_app: false,
     ios_redirect_to_app: false,
-    channelCategory: 'epg',
+    startWeekDate: moment().startOf('isoWeek'),
+    selectedWeek: '',
   }
 
   componentDidMount() {
@@ -65,7 +66,7 @@ class Channels extends Component {
     }
 
     if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
-      this.handleSelectChannel(this.state.channelCategory, this.state.activeChannelId)
+      this.handleSelectChannel(this.state.activeChannelId)
     }
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
@@ -106,7 +107,7 @@ class Channels extends Component {
     })
   }
 
-  handleSelectChannel = (category = 'epg', id) => {
+  handleSelectChannel = id => {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
     if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
       const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
@@ -121,16 +122,33 @@ class Channels extends Component {
     }
   }
 
-  getCalendar = () => {
-    let scheduleDateList = []
-    for (var i = 0; i < 7; i++) {
-      const date = new Date(addDateTime(null, i, 'days'))
-      const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'ddd, DD MMMM YYYY')
-      scheduleDateList.push({ id: formattedDateTime, title: formattedDateTime })
+  handleWeekClick = value => {
+    let startWeekDate = ''
+    let swdTimestamp = ''
+    let date = ''
+    let unixDate
+    if (value == 'thisweek') {
+      //thisMonday
+      startWeekDate = moment().startOf('isoWeek')
+      date = new Date(moment().startOf('date'))
+      swdTimestamp = formatDateTime(date / 1000, 'DD MMMM')
+      unixDate = moment(date).unix()
+    } else if (value == 'nextweek') {
+      //nextWeek
+      startWeekDate = moment().day(8)
+      date = new Date(moment(startWeekDate).startOf('date'))
+      swdTimestamp = formatDateTime(date / 1000, 'DD MMMM')
+      unixDate = moment(date).unix()
     }
 
-    return scheduleDateList
+    this.setState(
+      {
+        selectedWeek: value,
+        activeDate: swdTimestamp,
+        startWeekDate: startWeekDate,
+      },
+      () => this.handleSelectDate('byDate', unixDate)
+    )
   }
 
   subtitles = () => {
@@ -171,7 +189,7 @@ class Channels extends Component {
   }
 
   render() {
-    const { scheduleList, activeDate, activeChannel, activeChannelId, android_redirect_to_app, ios_redirect_to_app, channelCategory } = this.state
+    const { scheduleList, activeDate, activeChannel, activeChannelId, android_redirect_to_app, ios_redirect_to_app, startWeekDate, selectedWeek } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -196,7 +214,7 @@ class Channels extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
-
+    const weekList = [{ id: 'thisweek', title: 'This Week' }, { id: 'nextweek', title: 'Next Week' }]
     return (
       <>
         {dataFetched && (
@@ -218,7 +236,7 @@ class Channels extends Component {
                           </div>
 
                           <div className={styles.schedule_date_wrapper}>
-                            <DropdownList className={styles.channels_dropdown_container} dataList={this.getCalendar()} activeId={activeDate} onClick={this.handleSelectDate} />
+                            <DropdownList className={styles.channels_dropdown_container} dataList={weekList} activeId={selectedWeek} onClick={this.handleWeekClick} />
                           </div>
                         </>
                       )}
@@ -251,7 +269,17 @@ class Channels extends Component {
                         ))}
                     </div>
                     <div className={styles.epg__calendar}>
-                      <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} categoryFilterType={'ByDate'} schedule={scheduleList} isMobile />
+                      {programmeGuides.data &&
+                        scheduleList.length > 0 && (
+                          <VerticalCalendar
+                            startOfWeek={startWeekDate}
+                            handleCategoryFilter={this.handleSelectDate}
+                            selectedDate={activeDate}
+                            categoryFilterType={'ByDate'}
+                            schedule={scheduleList}
+                            isMobile
+                          />
+                        )}
                     </div>
                   </div>
                 </>

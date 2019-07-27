@@ -410,7 +410,6 @@ class Matches extends React.Component {
 
   ShowMatchCard = () => {
     const { matches } = this.state
-
     const sortMatches = _sortBy(matches, match => match.startTime)
 
     if (matches == '') {
