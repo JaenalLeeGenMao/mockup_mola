@@ -10,7 +10,7 @@ function action({ isMobile, store, pathname }) {
   const playlistId =
     pathnameArr.length === 3 ? pathnameArr[pathnameArr.length - 1] : ''
   return {
-    chunks: ['category'],
+    chunks: ['categories'],
     title,
     description,
     component: (

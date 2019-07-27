@@ -75,7 +75,7 @@ class Feature extends Component {
     const obj = {
       articles: () => (window.location.href = `/articles/${video.id}`),
       banners: () => (window.location.href = video.link),
-      playlists: () => (window.location.href = `/category/${video.id}`),
+      playlists: () => (window.location.href = `/categories/${video.id}`),
       videos: () => {
         const videoTypesRedirectUri = {
           linear: `/channels/${video.id}`,
@@ -145,7 +145,7 @@ class Feature extends Component {
             {banners.data.length > 0 && (
               <Carousel
                 wrap={banners.length === 1 ? false : true}
-                autoplay={false}
+                autoplay={true}
                 sliderCoin={true}
                 dragging={true}
                 slidesToShow={isMobile ? 1.25 : 2.25}

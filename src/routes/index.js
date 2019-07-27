@@ -139,8 +139,8 @@ const routes = {
       ],
     },
     {
-      path: '/category',
-      load: () => import(/* webpackChunkName: 'category' */ './playlist'),
+      path: '/categories',
+      load: () => import(/* webpackChunkName: 'categories' */ './playlist'),
       children: [
         {
           path: '/:id',
