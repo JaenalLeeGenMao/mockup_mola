@@ -3,8 +3,6 @@
   font-weight: bold;
   display: flex;
   flex-wrap: nowrap;
-
-  /* height: 123px; */
   height: 17rem;
   width: 82rem;
   justify-content: flex-start;
@@ -14,7 +12,6 @@
 }
 
 .matchList__date {
-  /* flex: 0.3; */
   font-size: 1.3rem;
   line-height: 1.6rem;
   padding: 5px;
@@ -28,7 +25,6 @@
 }
 
 .matchList__matches {
-  /* flex: 0.7; */
   display: flex;
   padding: 10px;
   position: relative;
@@ -38,14 +34,9 @@
 }
 
 .matchList__container:hover {
-  /* transform: translateY(-10px); */
   transition: transform 0.3s, -webkit-transform 0.3s;
   transform: scale(1.1);
   opacity: 0.9;
-
-  /* cursor: pointer; */
-
-  /* width: 74rem; */
 }
 
 .pointer {
@@ -60,8 +51,7 @@
 }
 
 .matchList__club {
-  height: 6rem;
-  margin-bottom: 15px;
+  height: 8rem;
   align-items: center;
   display: grid;
   grid-template-columns: 0.2fr 1fr 1fr;
@@ -113,12 +103,12 @@
   .matchList__container {
     color: #f5f5f5;
     font-weight: 300;
-    height: 10rem;
+    height: 110px;
     width: 100%;
   }
 
   .matchList__date {
-    padding: 10px;
+    padding: 5px;
     width: 5.5rem;
     background-color: #383838;
   }
@@ -135,10 +125,42 @@
   }
 
   .matchList__labelDate {
-    font-weight: 600;
-    font-size: 11px;
+    font-weight: normal;
+    font-size: 14px;
     padding-right: 0;
     padding-left: 0;
     margin-top: 0;
   }
+
+  .matchList__club {
+    height: 55px;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 1fr;
+  }
+
+  .matchList__club img {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .matchList__club span {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .matchList__leagueImg {
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+  }
+
+  .matchList__league_logo {
+    right: 0;
+    bottom: 0;
+    width: 20px;
+  }
+
 }

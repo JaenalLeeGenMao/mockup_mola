@@ -20,6 +20,7 @@ import {
   isNextWeek,
   isSameDay,
   isLastWeek,
+  addDateTime
 } from '@source/lib/dateTimeUtil'
 import matchListActions from '@actions/matches'
 import VerticalCalendar from '@components/VerticalCalendar'
@@ -29,14 +30,15 @@ import Header from '@components/Header'
 import MatchesError from '@components/common/error'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
+import MatchList from '@components/MatchList'
 
 import styles from './matches.css'
-
+import Scroll from 'react-scroll'
+let scroller = Scroll.scroller
 class Matches extends Component {
   state = {
     initialized: false,
     matches: [],
-    filterDefWeek: 1, // default thisweek.
     filterByDates: '',
     filterByType: '',
     filterByLeague: 0,
@@ -59,19 +61,15 @@ class Matches extends Component {
   }
 
   componentDidMount() {
-    /* set the default active playlist onload */
-    // const { playlistId } = this.props
-    // playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
     this.props.getAllGenreSpo()
     this.setDefaultDate()
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
-      prevProps.matches.matchesPlaylists.data.length != this.props.matches.matchesPlaylists.data.length &&
-      this.state.allMatches.length === 0
+      this.props.matches.matchesPlaylists.meta.status != prevProps.matches.matchesPlaylists.meta.status &&
+      this.props.matches.matchesPlaylists.meta.status === 'success'
     ) {
-      //get all data first render
       let matchTemp = []
       const { data } = this.props.matches.matchesPlaylists
       data.forEach(dt => {
@@ -82,31 +80,50 @@ class Matches extends Component {
           }
         }
       })
-      const filterResult = this.handleSortMatches(matchTemp)
-      this.setState({ allMatches: filterResult, matches: filterResult })
+
+      let matchesList = this.getThreeWeeksDate(matchTemp)
+      this.setState({ allMatches: matchesList, matches: matchesList })
+      const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+      setTimeout(() => {
+        scroller.scrollTo(formatStartTime, {
+          duration: 1000,
+          delay: 100,
+          smooth: true,
+          offset: -150, // Scrolls to element + 50 pixels down the page
+        })
+      }, 1000)
     }
   }
 
-  handleSortMatches = matches => {
-    // console.log('handleSortMatches : see sort macthes', matches)
-    const groupByDate = _groupBy(matches, match => {
-      if (isToday(match.startTime, match.endTime)) return 'isToday'
-      else if (isThisWeek(match.startTime)) return 'isThisWeek'
-      else if (isNextWeek(match.startTime)) return 'isNextWeek'
-      else return 'isLastWeek'
-    })
+  getThreeWeeksDate = matches => {
+    const sortMatches = _sortBy(matches, match => match.startTime)
+    const startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
 
-    const todayMatches = groupByDate.isToday ? groupByDate.isToday.sort((a, b) => a.startTime - b.startTime) : []
-    const thisWeekMatches = groupByDate.isThisWeek
-      ? groupByDate.isThisWeek.sort((a, b) => a.startTime - b.startTime)
-      : []
-    const nextWeekMatches = groupByDate.isNextWeek
-      ? groupByDate.isNextWeek.sort((a, b) => a.startTime - b.startTime)
-      : []
-    const lastWeekMatches = groupByDate.isLastWeek
-      ? groupByDate.isLastWeek.sort((a, b) => b.startTime - a.startTime)
-      : []
-    return todayMatches.concat(thisWeekMatches, nextWeekMatches, lastWeekMatches)
+    let threeWeeksDate = []
+    for (var i = 0; i < 21; i++) {
+      const addedDate = new Date(addDateTime(startWeekDate, i, 'days'))
+      const dtTimestamp = addedDate.getTime()
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MM YYYY')
+      const formattedDateTime2 = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
+      threeWeeksDate.push({ dateId: formattedDateTime, title: formattedDateTime2 })
+    }
+
+    let matchList = []
+    threeWeeksDate.map((weeksDate, index) => {
+      let hasMatch = false
+      sortMatches.map((matchDt, index) => {
+
+        const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        if (formatStartTime === weeksDate.dateId) {
+          hasMatch = true
+          matchList.push(matchDt)
+        }
+      })
+      if (!hasMatch) {
+        matchList.push(weeksDate)
+      }
+    })
+    return matchList
   }
 
   matchesDateFormat = (startTime, endTime) => {
@@ -136,7 +153,30 @@ class Matches extends Component {
         }
       })
     }
-    this.setState({ matches: filterResult })
+
+    const matchesList = this.getThreeWeeksDate(filterResult)
+
+    const startWeekDate = moment().startOf('isoWeek')
+    const date = new Date(moment().startOf('date'))
+    const swdTimestamp = date.getTime() / 1000
+
+    this.setState({
+      matches: matchesList,
+      filterByLeague: value,
+      selectedWeek: 2,
+      filterByDates: swdTimestamp,
+      startWeekDate: startWeekDate,
+    })
+
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 1000,
+        smooth: true,
+        offset: -150,
+      })
+    }, 1000)
+
   }
 
   handleFilterByDate = value => {
@@ -190,7 +230,7 @@ class Matches extends Component {
     let swdTimestamp = ''
     if (value == 1) {
       //lastMonday
-      startWeekDate = moment().day(-6)
+      startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -202,7 +242,7 @@ class Matches extends Component {
     }
     if (value == 3) {
       //nextWeek
-      startWeekDate = moment().day(8)
+      startWeekDate = moment().add(1, 'weeks').startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -212,6 +252,15 @@ class Matches extends Component {
       filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
     })
+
+    const formatStartTime = formatDateTime(swdTimestamp, 'DD MM YYYY')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 1000,
+        smooth: true,
+        offset: -150,
+      })
+    }, 1000)
   }
 
   handleCategoryFilter = value => {
@@ -254,38 +303,80 @@ class Matches extends Component {
     }
   }
 
-  renderMatchesList(matchesList) {
-    return (
-      <LazyLoad containerClassName={styles.matches__container}>
-        {matchesList.length > 0 &&
-          matchesList.map((data, index) => (
-            <>
-              {this.renderDate(data, index, matchesList)}
-              <Link to={'/watch?v=' + data.id}>
-                <MatchCard data={data} index={index} matchesList={matchesList} />
-              </Link>
-            </>
-          ))}
-        {matchesList.length === 0 && (
-          <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>
-        )}
-      </LazyLoad>
-    )
+  // renderMatchesList(matchesList) {
+  //   return (
+  //     <LazyLoad containerClassName={styles.matches__container}>
+  //       {matchesList.length > 0 &&
+  //         matchesList.map((data, index) => (
+  //           <>
+  //             {this.renderDate(data, index, matchesList)}
+  //             <Link to={'/watch?v=' + data.id}>
+  //               <MatchCard data={data} index={index} matchesList={matchesList} />
+  //             </Link>
+  //           </>
+  //         ))}
+  //       {matchesList.length === 0 && (
+  //         <div className={styles.matches_empty}>Maaf tidak ada pertandingan yang disiarkan pada saat ini.</div>
+  //       )}
+  //     </LazyLoad>
+  //   )
+  // }
+
+
+  renderMatchCard = () => {
+    const { matches } = this.state
+    return matches.map((matchDt, index) => {
+      if (matchDt.id) {
+        let flag = true
+        const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        if (index > 0) {
+          const prevFrmtStrTime = formatDateTime(matches[index - 1].startTime, 'DD MM YYYY')
+          if (prevFrmtStrTime == formatStartTime) {
+            flag = false
+          }
+        }
+
+        return (
+          <>
+            {this.renderDate(matchDt, index, matches)}
+            <Link to={`/watch?v=${matchDt.id}`}>
+              <MatchList
+                key={matchDt.id}
+                data={matchDt}
+                noClickAble={false}
+                formatStartTime={flag ? formatStartTime : ''}
+              />
+            </Link>
+          </>
+        )
+      } else {
+        return (
+          <MatchList
+            noClickAble={true}
+            data={matchDt}
+            formatStartTime={matchDt.dateId}
+            isNoSchedule
+            noScheduleTitle={'No Match'}
+          />
+        )
+      }
+    })
   }
 
   renderFilterWeek() {
     const filterList = [
-      { id: '1', title: 'Last Week', value: 'lastWeek' },
-      { id: '2', title: 'This Week', value: 'thisWeek' },
-      { id: '3', title: 'Next Week', value: 'nextWeek' },
+      { id: 1, title: 'Last Week', value: 'lastWeek' },
+      { id: 2, title: 'This Week', value: 'thisWeek' },
+      { id: 3, title: 'Next Week', value: 'nextWeek' },
     ]
 
+    const { selectedWeek } = this.state
     return (
       <LazyLoad containerClassName={styles.matches__filterWeek}>
         <DropdownList
           className={styles.matches_dropdown_container_filterWeek}
           dataList={filterList}
-          activeId={this.state.filterDefWeek}
+          activeId={selectedWeek}
           onClick={this.handleWeekClick}
         />
       </LazyLoad>
@@ -302,8 +393,6 @@ class Matches extends Component {
       filterListTemp.push(filterData)
     }
 
-    console.log('filterListTemp', filterListTemp)
-
     return (
       <LazyLoad containerClassName={styles.matches__filter}>
         <DropdownList
@@ -317,11 +406,7 @@ class Matches extends Component {
 
   render() {
     const { meta } = this.props.matches.matchesPlaylists
-    const { matches, filterByDates, startWeekDate } = this.state
-    let sortedByStartDate = matches
-    if (matches.length > 0) {
-      sortedByStartDate = matches.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
-    }
+    const { filterByDates, startWeekDate } = this.state
 
     return (
       <Fragment>
@@ -332,15 +417,16 @@ class Matches extends Component {
         )}
         {meta.status === 'success' && (
           <>
-            {this.renderFilterLeague()}
-            {this.renderFilterWeek()}
-            {this.renderMatchesList(sortedByStartDate)}
+            <div className={styles.filter__container}>
+              {this.renderFilterLeague()}
+              {this.renderFilterWeek()}
+            </div>
+            <LazyLoad containerClassName={styles.matches__container}>{this.renderMatchCard()}</LazyLoad>
             <LazyLoad containerClassName={styles.calendarCls}>
               <VerticalCalendar
                 isMobile
-                handleCategoryFilter={this.handleCategoryFilter}
-                categoryFilterType={'ByDate'}
                 selectedDate={filterByDates}
+                handleCategoryFilter={this.handleCategoryFilter}
                 {...this.props}
                 startOfWeek={startWeekDate}
               />

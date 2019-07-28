@@ -18,11 +18,11 @@ class VerticalCalendar extends Component {
   state = {
     activeDate: '',
     selDate: this.props.selectedDate,
+    isActiveLive: false
   }
 
   getCalendar = startOfWeek => {
     let resultDateList = []
-
     //gettodayfordefault Value
     for (var i = 0; i < 7; i++) {
       const date = new Date(addDateTime(startOfWeek, i, 'days'))
@@ -48,28 +48,37 @@ class VerticalCalendar extends Component {
   handleOnClick = timestamp => {
     this.props.handleCategoryFilter(timestamp)
     this.setState({
-      activeDate: '',
+      isActiveLive: false,
     })
   }
 
+  handleClickJumpLive = () => {
+    this.setState({
+      isActiveLive: true,
+    })
+
+    this.props.handleJumpToLive()
+  }
+
   render() {
-    const { startOfWeek, selectedDate } = this.props
-    const { activeDate } = this.state
+    const { startOfWeek, selectedDate, hasLiveLogo } = this.props
+    const { activeDate, isActiveLive } = this.state
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
+            {hasLiveLogo && <div className={`${s.live__logo} ${isActiveLive ? s.live__logo__active : ''}`} onClick={this.handleClickJumpLive} />}
             {this.getCalendar(startOfWeek).map(dt => {
               const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
-              const isSelected =
-                (!activeDate && (dt.strTimestamp == selectedDate || dt.title == selectedDate)) ||
-                activeDate == formatStartTime
+              const isSelected = dt.strTimestamp == selectedDate || dt.title == selectedDate
+              // (!activeDate && (dt.strTimestamp == selectedDate || dt.title == selectedDate)) ||
+              // activeDate == formatStartTime
 
               return (
                 <>
                   <Link
                     to={formatStartTime}
-                    spy={true}
+                    spy={false}
                     hashSpy={true}
                     smooth={'easeInOutExpo'}
                     offset={-150}

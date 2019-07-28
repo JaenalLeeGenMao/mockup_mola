@@ -87,29 +87,37 @@ class MatchList extends React.Component {
   }
 
   render() {
-    const { data, noClickAble = true, formatStartTime = '', isNoSchedule = false, noScheduleTitle = '' } = this.props
+    const { data, noClickAble = true, formatStartTime = '', toJumpLive = false, isNoSchedule = false, noScheduleTitle = '' } = this.props
 
     if (!isNoSchedule) {
       const images = this.props.data ? this.props.data.images : ''
       const date = this.cardDateFormat(data.startTime, data.endTime)
       const matchLive = isMatchLive(data.startTime, data.endTime)
-
+      console.log("formatStartTime", formatStartTime)
       return (
-        <Element name={formatStartTime}>
-          <div
-            className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}
-          >
+        <>
+          {
+            toJumpLive &&
+            <Element name={'isLive'}>
+              <div></div>
+            </Element>
+          }
+          <Element name={formatStartTime}>
             <div
-              className={matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date}
+              className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}
             >
-              <p className={styles.matchList__labelDate}>{date}</p>
-              <div className={styles.matchList__leagueImg}>
-                {images ? <img className={styles.matchList__league_logo} src={images.thumbnails.cover} /> : ''}
+              <div
+                className={matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date}
+              >
+                <p className={styles.matchList__labelDate}>{date}</p>
+                <div className={styles.matchList__leagueImg}>
+                  {images ? <img className={styles.matchList__league_logo} src={images.thumbnails.cover} /> : ''}
+                </div>
               </div>
+              {this.renderMatch()}
             </div>
-            {this.renderMatch()}
-          </div>
-        </Element>
+          </Element>
+        </>
       )
     } else {
       return (

@@ -116,11 +116,11 @@ class Header extends Component {
 
     return (
       <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`} style={{ width: containerWidth }}>
-        {isMobile && !greyBackground && !blackBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
-        {isMobile && greyBackground && !blackBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />}
-        {isMobile && !greyBackground && blackBackground && <div className={`${styles.header__black_background}`} style={{ opacity: opacity }} />}
+        {/* {isMobile && !greyBackground && !blackBackground && <div className={styles.header__shadow_mobile} style={{ opacity: opacity }} />}
+        {isMobile && greyBackground && !blackBackground && <div className={`${styles.header__grey_background}`} style={{ opacity: opacity }} />} */}
+        {/* <div className={`${styles.header__black_background}`}/> */}
 
-        {!isMobile && <div className={styles.header__shadow_desktop} />}
+        <div className={styles.header__shadow} />
         <div className={styles.header__logo_wrapper} style={backButtonOn ? { left: '0' } : logoWrapper}>
           {!logoOff && (
             <LazyLoad>

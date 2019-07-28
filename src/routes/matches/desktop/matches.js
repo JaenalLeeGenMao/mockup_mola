@@ -10,11 +10,12 @@ import moment from 'moment'
 
 import matchListActions from '@actions/matches'
 
-import { formatDateTime, addDateTime } from '@source/lib/dateTimeUtil'
+import { formatDateTime, addDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
 
 import Header from '@components/Header'
 // import MatchCard from '@components/MatchCard'
 import MatchList from '@components/MatchList'
+import Link from '@components/Link'
 import LazyLoad from '@components/common/Lazyload'
 import VerticalCalendar from '@components/VerticalCalendar'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
@@ -65,16 +66,6 @@ class Matches extends React.Component {
   componentDidMount() {
     this.props.getAllGenreSpo()
     this.setDefaultDate()
-
-    // Events.scrollEvent.register('begin', function (to, element) {
-    //   console.log("begin", arguments);
-    // });
-
-    // Events.scrollEvent.register('end', function (to, element) {
-    //   console.log("end", arguments);
-    // });
-
-    // scrollSpy.update();
   }
 
   componentWillMount() {
@@ -82,9 +73,8 @@ class Matches extends React.Component {
   }
 
   getThreeWeeksDate = matches => {
-    const sortMarches = _sortBy(matches, match => match.startTime)
-    const startWeekDate = moment().day(-6)
-
+    const startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
+    const sortMatches = _sortBy(matches, match => match.startTime)
     let threeWeeksDate = []
     for (var i = 0; i < 21; i++) {
       const addedDate = new Date(addDateTime(startWeekDate, i, 'days'))
@@ -95,10 +85,14 @@ class Matches extends React.Component {
     }
 
     let matchesList = []
+    let hasLive = false
     threeWeeksDate.map(weeksDate => {
       let hasMatch = false
-      sortMarches.map((matchDt, index) => {
+      sortMatches.map((matchDt, index) => {
         const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        if (!hasLive) {
+          hasLive = isMatchLive(matchDt.startTime, matchDt.endTime)
+        }
         if (formatStartTime === weeksDate.dateId) {
           hasMatch = true
           matchesList.push(matchDt)
@@ -109,7 +103,7 @@ class Matches extends React.Component {
       }
     })
 
-    return matchesList
+    return { matchesList, hasLive }
   }
 
   componentDidUpdate(prevProps) {
@@ -128,9 +122,9 @@ class Matches extends React.Component {
         }
       })
 
-      let matchesList = this.getThreeWeeksDate(matchTemp)
-
-      this.setState({ allMatches: matchesList, matches: matchesList })
+      const result = this.getThreeWeeksDate(matchTemp)
+      let matchesList = result.matchesList
+      this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
       const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
       setTimeout(() => {
         scroller.scrollTo(formatStartTime, {
@@ -186,12 +180,15 @@ class Matches extends React.Component {
     const { allMatches } = this.state
 
     let matchesList = []
+    let result
     if (value == 'all') {
       matchesList = allMatches
     } else {
       filterLeagueRes = this.handleFilterByLeague(value, allMatches)
       // console.log("filterLeagueRes", filterLeagueRes)
-      matchesList = this.getThreeWeeksDate(filterLeagueRes)
+      result = this.getThreeWeeksDate(filterLeagueRes)
+      matchesList = result.matchesList
+      this.setState({ allMatches: matchesList, matches: matchesList })
     }
 
     const startWeekDate = moment().startOf('isoWeek')
@@ -204,6 +201,7 @@ class Matches extends React.Component {
       selectedWeek: 2,
       filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
+      hasLive: result.hasLive
     })
 
     const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
@@ -236,7 +234,7 @@ class Matches extends React.Component {
     let swdTimestamp = ''
     if (value == 1) {
       //lastMonday
-      startWeekDate = moment().day(-6)
+      startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -248,7 +246,7 @@ class Matches extends React.Component {
     }
     if (value == 3) {
       //nextWeek
-      startWeekDate = moment().day(8)
+      startWeekDate = moment().add(1, 'weeks').startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -353,26 +351,35 @@ class Matches extends React.Component {
 
   renderMatchCard = () => {
     const { matches } = this.state
+
+    let flagLive = false
     return matches.map((matchDt, index) => {
       if (matchDt.id) {
         let flag = true
         const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
         if (index > 0) {
-          const prevFrmtStrTime = formatDateTime(matches[index - 1].startTime, 'DD MM YYYY')
+          const prevFrmtStrTime = matches[index - 1].startTime ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY') : ''
           if (prevFrmtStrTime == formatStartTime) {
             flag = false
           }
         }
+        const matchLive = isMatchLive(matchDt.startTime, matchDt.endTime)
+        if (!flagLive && matchLive) {
+          flagLive = matchLive
+        } else {
+          flagLive = false
+        }
+
         return (
-          <>
-            {/* <div>{matchDt.title}</div> */}
+          <Link to={`/watch?v=${matchDt.id}`}>
             <MatchList
+              toJumpLive={flagLive}
               key={matchDt.id}
               data={matchDt}
               noClickAble={false}
               formatStartTime={flag ? formatStartTime : ''}
             />
-          </>
+          </Link>
         )
       } else {
         return (
@@ -388,10 +395,21 @@ class Matches extends React.Component {
     })
   }
 
+  handleJumpToLive = () => {
+    setTimeout(() => {
+      scroller.scrollTo('isLive', {
+        duration: 1000,
+        delay: 100,
+        smooth: true,
+        offset: -150, // Scrolls to element + 50 pixels down the page
+      })
+    }, 1000)
+  }
+
   render() {
     const matchPlaylists = this.props.matches.matchesPlaylists
 
-    const { filterByDates, startWeekDate } = this.state
+    const { filterByDates, startWeekDate, hasLive } = this.state
     const isDark = false
     return (
       <>
@@ -425,9 +443,10 @@ class Matches extends React.Component {
                     </span>
                     <VerticalCalendar
                       handleCategoryFilter={this.handleDateFilter}
-                      categoryFilterType={'ByDate'}
                       selectedDate={filterByDates}
                       startOfWeek={startWeekDate}
+                      hasLiveLogo={hasLive}
+                      handleJumpToLive={this.handleJumpToLive}
                     />
                   </div>
                 </div>

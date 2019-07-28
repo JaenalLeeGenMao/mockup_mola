@@ -55,18 +55,25 @@ class DropdownList extends Component {
     const { activeId } = this.props
     let titleArr = []
     let title = ''
+    let thumbnails = ''
     titleArr = dataList.filter(data => {
       const selId = selectedId ? selectedId : activeId
       return selId === data.id
     })
-    // console.log("titleArr:", titleArr, " dataList", dataList)
 
     if (titleArr.length == 0) {
       title = dataList.length > 0 ? dataList[0].title : ''
+      thumbnails = dataList.length > 0 ? dataList[0].thumbnails : ''
     } else {
       title = titleArr.length > 0 ? titleArr[0].title : ''
+      thumbnails = titleArr.length > 0 ? titleArr[0].thumbnails : ''
     }
-    return <span>{title}</span>
+    return (
+      <>
+        {thumbnails && <span className={s.dropdown_img}><img src={thumbnails} /></span>}
+        <span>{title}</span>
+      </>
+    )
   }
 
   render() {
@@ -93,6 +100,7 @@ class DropdownList extends Component {
                 key={dt.id}
                 onClick={() => this.handleClickDropdownAction(dt.id)}
               >
+                {dt.thumbnails && <span className={s.dropdown_img}><img src={dt.thumbnails} /></span>}
                 <span>{dt.title}</span>
               </div>
             )
