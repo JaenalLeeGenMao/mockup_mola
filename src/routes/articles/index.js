@@ -52,7 +52,7 @@ async function action({ isMobile, store, pathname, query }) {
     }
   } catch {
     err => {
-      console.log('Error SEO articles', err)
+      // console.log('Error SEO articles', err)
     }
   }
 

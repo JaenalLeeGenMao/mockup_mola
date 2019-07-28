@@ -41,7 +41,7 @@ class VerticalCalendar extends Component {
   handleSetActive = to => {
     // activeScrollDate = to
     this.setState({
-      activeDate: to,
+      isActiveLive: false,
     })
   }
 
@@ -78,11 +78,11 @@ class VerticalCalendar extends Component {
                 <>
                   <Link
                     to={formatStartTime}
-                    spy={false}
+                    spy={true}
                     hashSpy={true}
                     smooth={'easeInOutExpo'}
                     offset={-150}
-                    duration={1000}
+                    duration={500}
                     onSetActive={this.handleSetActive}
                   >
                     <div

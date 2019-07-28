@@ -82,8 +82,8 @@ class DropdownList extends Component {
     return (
       <div className={`${s.dropdown_container} ${className ? className : ''}`}>
         <>
-          <div className={labelClassName ? labelClassName : ''}>
-            <label ref={node => (this.dropdownLabel = node)}>{this.getSelectedMenu(dataList)}</label>
+          <div ref={node => (this.dropdownLabel = node)} className={labelClassName ? labelClassName : ''}>
+            <label>{this.getSelectedMenu(dataList)}</label>
             <IoIosArrowDown className={s.select_icon} />
           </div>
         </>

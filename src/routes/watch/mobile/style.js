@@ -310,3 +310,7 @@ export const infoBarText = css`
   font-weight: bold;
   font-size: 16px;
 `
+
+export const headerContainer = css`
+  height: 60px;
+`

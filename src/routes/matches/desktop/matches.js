@@ -3,7 +3,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _groupBy from 'lodash/groupBy'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 // import InfiniteScroll from 'react-infinite-scroll-component'
@@ -43,10 +42,7 @@ class Matches extends React.Component {
     expandVideoType: true,
     expandLeague: true,
     filterByDates: '',
-    filterByType: '',
-    filterByLeague: 'All',
     // filterAllLeague: 0,
-    leagueList: [],
     selectedWeek: 2, //1 = last week, 2 = this week, 3 = next week,
     selectedDate: null,
     startWeekDate: null,
@@ -66,6 +62,10 @@ class Matches extends React.Component {
   componentDidMount() {
     this.props.getAllGenreSpo()
     this.setDefaultDate()
+
+    if (this.props.matches.matchesPlaylists.meta.status === 'success') {
+      this.setInitialData();
+    }
   }
 
   componentWillMount() {
@@ -106,34 +106,37 @@ class Matches extends React.Component {
     return { matchesList, hasLive }
   }
 
+  setInitialData = () => {
+    let matchTemp = []
+    const { data } = this.props.matches.matchesPlaylists
+    data.forEach(dt => {
+      if (dt.id) {
+        const vidDt = dt.videos
+        for (let i = 0; i < vidDt.length; i++) {
+          matchTemp.push(vidDt[i])
+        }
+      }
+    })
+
+    const result = this.getThreeWeeksDate(matchTemp)
+    let matchesList = result.matchesList
+    this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 500,
+        smooth: true,
+        offset: -150, // Scrolls to element + 50 pixels down the page
+      })
+    }, 500)
+  }
+
   componentDidUpdate(prevProps) {
     if (
       this.props.matches.matchesPlaylists.meta.status != prevProps.matches.matchesPlaylists.meta.status &&
       this.props.matches.matchesPlaylists.meta.status === 'success'
     ) {
-      let matchTemp = []
-      const { data } = this.props.matches.matchesPlaylists
-      data.forEach(dt => {
-        if (dt.id) {
-          const vidDt = dt.videos
-          for (let i = 0; i < vidDt.length; i++) {
-            matchTemp.push(vidDt[i])
-          }
-        }
-      })
-
-      const result = this.getThreeWeeksDate(matchTemp)
-      let matchesList = result.matchesList
-      this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
-      const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
-      setTimeout(() => {
-        scroller.scrollTo(formatStartTime, {
-          duration: 1000,
-          delay: 100,
-          smooth: true,
-          offset: -150, // Scrolls to element + 50 pixels down the page
-        })
-      }, 1000)
+      this.setInitialData();
     }
   }
 
@@ -207,11 +210,11 @@ class Matches extends React.Component {
     const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
-        duration: 1000,
+        duration: 500,
         smooth: true,
         offset: -150,
       })
-    }, 1000)
+    }, 500)
   }
 
   //expand This Week
@@ -260,11 +263,11 @@ class Matches extends React.Component {
     const formatStartTime = formatDateTime(swdTimestamp, 'DD MM YYYY')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
-        duration: 1000,
+        duration: 500,
         smooth: true,
         offset: -150,
       })
-    }, 1000)
+    }, 500)
   }
 
   renderWeek = () => {
@@ -298,37 +301,7 @@ class Matches extends React.Component {
     )
   }
 
-  renderFilterByType = () => {
-    const { filterByType } = this.state
-    const typeList = [
-      { id: 'live', title: 'Live' },
-      { id: 'frm', title: 'Replay Match' },
-      { id: 'highlightReplay', title: 'Highlight Match' },
-    ]
-
-    return (
-      <>
-        {typeList.map(dt => {
-          return (
-            <div className={s.labelVideoType} key={dt.id}>
-              <div
-                className={`${s.filterLabel} ${dt.id == filterByType ? s.selectedFilter : ''}`}
-                // onClick={() => {
-                //   this.handleCategoryFilter('VideoType', dt.id)
-                // }}
-                value={dt.id}
-              >
-                {dt.title}
-              </div>
-            </div>
-          )
-        })}
-      </>
-    )
-  }
-
   categoryFilter = () => {
-    const { filterByLeague, leagueList } = this.state
 
     return (
       <>
@@ -398,12 +371,11 @@ class Matches extends React.Component {
   handleJumpToLive = () => {
     setTimeout(() => {
       scroller.scrollTo('isLive', {
-        duration: 1000,
-        delay: 100,
+        duration: 500,
         smooth: true,
         offset: -150, // Scrolls to element + 50 pixels down the page
       })
-    }, 1000)
+    }, 500)
   }
 
   render() {

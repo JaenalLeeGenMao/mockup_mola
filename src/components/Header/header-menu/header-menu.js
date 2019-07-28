@@ -32,7 +32,6 @@ class HeaderMenu extends Component {
   }
 
   componentDidMount() {
-    const { activePlaylist, activeMenu, isMobile } = this.props
     this.getHeaderMenus()
   }
 
@@ -50,22 +49,23 @@ class HeaderMenu extends Component {
     })
 
     if (filteredMenu.length > 0) {
-      window.location.href = filteredMenu[0].attributes.url
+      const absMenuUrl = filteredMenu[0].attributes.url
+      const absMenuArray = absMenuUrl.split('/')
+      const isHome = absMenuArray.length <= 3
+      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+      // const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+      history.push(relMenuUrl)
     }
   }
 
   render() {
     const {
-      color,
       headerMenuOff,
-      isMovie,
       activeMenu = 'movie',
-      activePlaylist,
       isMobile = false,
       isLandscape,
       pathname = '/',
     } = this.props
-    const { uid, sid } = this.props.user
     const { headerMenuList } = this.state
 
     let activeMenuDropdown = ''

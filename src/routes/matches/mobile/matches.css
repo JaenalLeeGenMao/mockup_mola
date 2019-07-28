@@ -53,6 +53,7 @@ body {
 .matches__filter {
   margin-left: 1.4rem;
   z-index: 1;
+  width: 60%;
 }
 
 .matches_dropdown_container {
@@ -102,4 +103,10 @@ body {
   align-items: center;
   justify-content: space-between;
   z-index: 99;
+}
+
+.matches_dropdown_label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

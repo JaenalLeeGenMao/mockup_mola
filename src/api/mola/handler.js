@@ -62,12 +62,12 @@ const getFeaturePlaylist = id => {
       const playlistsFiltered =
         playlists.length > 0
           ? playlists
-              .map(playlist => ({
-                id: playlist.id,
-                type: playlist.type,
-                ...playlist.attributes,
-              }))
-              .filter(playlist => playlist.visibility === 1)
+            .map(playlist => ({
+              id: playlist.id,
+              type: playlist.type,
+              ...playlist.attributes,
+            }))
+            .filter(playlist => playlist.visibility === 1)
           : []
       return {
         meta: {
@@ -365,12 +365,12 @@ const getPlaylistPlaylists = id => {
       const playlistsFiltered =
         data.length > 0
           ? data
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
+            .map(dt => ({
+              id: dt.id,
+              type: dt.type,
+              ...dt.attributes,
+            }))
+            .filter(dt => dt.visibility === 1)
           : []
 
       return {
@@ -952,10 +952,10 @@ const getRecommendedArticles = articlesId => {
       const articlesFiltered =
         articles.length > 0
           ? articles.map(article => ({
-              id: article.id,
-              type: article.type,
-              ...article.attributes,
-            }))
+            id: article.id,
+            type: article.type,
+            ...article.attributes,
+          }))
           : []
 
       return {

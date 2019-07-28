@@ -19,6 +19,7 @@ class VerticalCalendar extends Component {
   state = {
     // isLive: false,
     calendar: [],
+    isActiveLive: false
   }
 
   componentDidMount() {
@@ -67,6 +68,20 @@ class VerticalCalendar extends Component {
     return resultDateList
   }
 
+  handleOnClick = timestamp => {
+    this.props.handleCategoryFilter(timestamp)
+    this.setState({
+      isActiveLive: false,
+    })
+  }
+
+  handleSetActive = to => {
+    // activeScrollDate = to
+    this.setState({
+      isActiveLive: false,
+    })
+  }
+
   handleClickJumpLive = () => {
     this.setState({
       isActiveLive: true,
@@ -76,31 +91,31 @@ class VerticalCalendar extends Component {
   }
 
   render() {
-    const { handleCategoryFilter, selectedDate, handleJumpToLive, hasLiveLogo } = this.props
-    const { calendar } = this.state
+    const { handleCategoryFilter, selectedDate, hasLiveLogo } = this.props
+    const { calendar, isActiveLive } = this.state
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
-            {hasLiveLogo && <div className={s.live__logo} onClick={this.handleClickJumpLive} />}
+            {hasLiveLogo && <div className={`${s.live__logo} ${isActiveLive ? s.live__logo__active : ''}`} onClick={this.handleClickJumpLive} />}
             {calendar.length > 0 &&
               calendar.map(dt => {
                 const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
                 return (
                   <Link
                     to={formatStartTime}
-                    spy={false}
+                    spy={true}
                     hashSpy={true}
                     smooth={'easeInOutExpo'}
                     offset={-150}
-                    duration={1000}
+                    duration={500}
                     onSetActive={this.handleSetActive}
                   >
                     <div
                       className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''} ${dt.live ? s.live__marker : ''}`}
                       key={dt.strTimestamp}
                       onClick={() => {
-                        handleCategoryFilter(dt.strTimestamp)
+                        this.handleOnClick(dt.strTimestamp)
                       }}
                     >
                       {dt.day}
