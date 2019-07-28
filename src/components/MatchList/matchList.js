@@ -87,27 +87,34 @@ class MatchList extends React.Component {
   }
 
   render() {
-    const { data, noClickAble = true, formatStartTime = '', toJumpLive = false, isNoSchedule = false, noScheduleTitle = '' } = this.props
+    const {
+      data,
+      noClickAble = true,
+      formatStartTime = '',
+      toJumpLive = false,
+      isNoSchedule = false,
+      noScheduleTitle = '',
+    } = this.props
 
     if (!isNoSchedule) {
       const images = this.props.data ? this.props.data.images : ''
       const date = this.cardDateFormat(data.startTime, data.endTime)
       const matchLive = isMatchLive(data.startTime, data.endTime)
-      console.log("formatStartTime", formatStartTime)
       return (
         <>
-          {
-            toJumpLive &&
+          {toJumpLive && (
             <Element name={'isLive'}>
-              <div></div>
+              <div />
             </Element>
-          }
+          )}
           <Element name={formatStartTime}>
             <div
               className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}
             >
               <div
-                className={matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date}
+                className={
+                  matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date
+                }
               >
                 <p className={styles.matchList__labelDate}>{date}</p>
                 <div className={styles.matchList__leagueImg}>
