@@ -10,7 +10,7 @@ const HomeMenu = ({ playlists, activeIndex = 0, isDark = 0, type = 'vertical', o
   const styles = type === 'vertical' ? verticalStyles : horizontalStyles
 
   return (
-    <LazyLoad containerClassName={[styles.menu, 'tourCategory'].join(' ')}>
+    <LazyLoad containerClassName={[styles.menu, 'tourHighlightChannel'].join(' ')}>
       {playlists.map(({ id }, index) => (
         <>
           <div

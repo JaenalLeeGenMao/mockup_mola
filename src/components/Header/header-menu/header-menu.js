@@ -78,33 +78,69 @@ class HeaderMenu extends Component {
               <div className={styles.header_menu_outer}>
                 {!isMobile && (
                   <>
-                    {headerMenuList.map(dts => {
+                    {headerMenuList.map((dts, index) => {
                       const absMenuUrl = dts.attributes.url
                       const absMenuArray = absMenuUrl.split('/')
                       const isHome = absMenuArray.length <= 3
                       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                       const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-
                       const title = _.get(dts, 'attributes.title.en', '')
-
-                      return (
-                        <Link
-                          key={dts.id}
-                          title={title}
-                          className={isActive ? styles.header_menu__active : ''}
-                          to={relMenuUrl}
-                        >
-                          {title}
-                        </Link>
-                      )
-                    })}
+                      if (index === 0) {
+                        return (
+                          <Link key={dts.id} title={title}
+                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                            to={relMenuUrl}>
+                            {title}
+                          </Link>
+                        )
+                      }
+                    }
+                    )}
+                    <div className='tourCategory' style={{ display: 'inline-block' }}>
+                      {headerMenuList.map((dts, index) => {
+                        const absMenuUrl = dts.attributes.url
+                        const absMenuArray = absMenuUrl.split('/')
+                        const isHome = absMenuArray.length <= 3
+                        const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                        const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                        const title = _.get(dts, 'attributes.title.en', '')
+                        if (index > 0 && index < 5) {
+                          return (
+                            <Link key={dts.id} title={title}
+                              className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                              to={relMenuUrl}>
+                              {title}
+                            </Link>
+                          )
+                        }
+                      }
+                      )}
+                    </div>
+                    {headerMenuList.map((dts, index) => {
+                      const absMenuUrl = dts.attributes.url
+                      const absMenuArray = absMenuUrl.split('/')
+                      const isHome = absMenuArray.length <= 3
+                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                      const title = _.get(dts, 'attributes.title.en', '')
+                      if (index >= 5) {
+                        return (
+                          <Link key={dts.id} title={title}
+                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                            to={relMenuUrl}>
+                            {title}
+                          </Link>
+                        )
+                      }
+                    }
+                    )}
                   </>
                 )}
                 {isMobile && (
                   <div
                     className={`${styles.header__menu_wrapper_m} ${
                       isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                    }`}
+                      }`}
                   >
                     <DropdownMenu
                       className={styles.header_menu_dropdown_container}

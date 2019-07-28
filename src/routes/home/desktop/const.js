@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './home.css'
 
 export const tourSteps = {
+  //indonesia
   id: [
     {
       target: '.tourCategory',
@@ -41,37 +42,32 @@ export const tourSteps = {
       disableBeacon: true,
       locale: { last: 'Finish' },
     },
-    // {
-    //   target: '.tourLibrary',
-    //   title: 'Perpustakaan Film',
-    //   content: 'Anda dapat menekan ikon ini untuk melihat semua daftar film per kategori',
-    //   placement: 'bottom',
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.tourMovieDiscover',
-    //   title: 'Temukan Film Kami',
-    //   content: 'Klik tombol ini untuk menemukan daftar film kami yang luar biasa',
-    //   placement: 'top',
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.tourMovieDetail',
-    //   title: 'Lihat Detail Film',
-    //   content: 'Klik tombol ini untuk menonton film dan melihat detail film: sinopsis, testimonial, pemeran, dan cuplikan',
-    //   placement: 'top',
-    //   disableBeacon: true,
-    //   locale: { last: 'Selesai' },
-    // },
   ],
+
+  //english
   en: [
     {
       target: '.tourCategory',
-      title: 'Content Categories',
+      title: 'Categories',
       content: (
         <div>
-          To navigate around different content categories, you can simply click the up and down buttons on your keyboard, or swipe <span className={styles.swipeUpIcon} /> up and down on your
-          touchscreen/trackpad.
+          Move around {"Mola's"} various categories using this menu.
+        </div>
+      ),
+      placement: 'bottom',
+      disableBeacon: true,
+      styles: {
+        tooltip: {
+          maxWidth: '100%',
+        },
+      },
+    },
+    {
+      target: '.tourCategoryChannels',
+      title: 'Channels',
+      content: (
+        <div>
+          Enjoy {"Mola's"} TV experience here.
         </div>
       ),
       placement: 'right',
@@ -83,47 +79,43 @@ export const tourSteps = {
       },
     },
     {
-      target: '.tourSlide',
-      title: 'Highlighted Contents',
+      target: '.tourCategoryMatches',
+      title: 'Matches',
       content: (
         <div>
-          {' '}
-          You can browse {"Mola's"} selected contents in each category by clicking on the left and right arrow buttons on the keyboard, or swipe <span className={styles.swipeNextIcon} /> left and
-          right using your touch screen / trackpad.
+          Click here to check on matches schedules.
+        </div>
+      ),
+      placement: 'right',
+      disableBeacon: true,
+      styles: {
+        tooltip: {
+          maxWidth: '100%',
+        },
+      },
+    },
+    {
+      target: '.tourHighlightChannel',
+      title: 'Category highlights',
+      content: (
+        <div>
+          Browse category highlights by clicking the up and down buttons on your keyboard, or swipe <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
+        </div>
+      ),
+      placement: 'right',
+      disableBeacon: true,
+    },
+    {
+      target: '.tourSlide',
+      title: 'Highlights',
+      content: (
+        <div>
+          Browse the highlights of the category by clicking the left and right buttons on your keyboard, or swipe <span className={styles.swipeNextIcon} /> left and right on your touchscreen/trackpad.
         </div>
       ),
       placement: 'top',
       disableBeacon: true,
-    },
-    {
-      target: '.tourOtherCategory',
-      title: 'Navigate to Other Channels',
-      content: <div> Do you want to watch sports, or other TV channels? Navigate using the Channel options available here.</div>,
-      placement: 'right',
-      disableBeacon: true,
       locale: { last: 'Finish' },
     },
-    // {
-    //   target: '.tourLibrary',
-    //   title: 'Movie Library',
-    //   content: 'You can click this icon to view all movie list per category',
-    //   placement: 'bottom',
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.tourMovieDiscover',
-    //   title: 'Discover Our Movie',
-    //   content: 'Click this button to discover our awesome list of movies',
-    //   placement: 'top',
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.tourMovieDetail',
-    //   title: 'View Movie Detail',
-    //   content: 'Click this button to watch movie and view movie detail: synopsis, testimonial, cast, and trailer',
-    //   placement: 'top',
-    //   disableBeacon: true,
-    //   locale: { last: 'Finish' },
-    // },
   ],
 }
