@@ -16,7 +16,7 @@ body {
   width: 100vw;
   clear: both;
   margin-top: 50px;
-  height: 56.25vw;
+  min-height: 56.25vw;
 }
 
 .channels_top_wrapper {

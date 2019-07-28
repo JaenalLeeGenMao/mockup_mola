@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
-import { formatDateTime, addDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
+import {
+  formatDateTime,
+  addDateTime,
+  isMatchLive,
+} from '@source/lib/dateTimeUtil'
 
 import s from './VerticalCalendar.css'
 import Scroll from 'react-scroll'
@@ -23,22 +27,24 @@ class VerticalCalendar extends Component {
   }
 
   componentDidMount() {
-    const setCalender = this.getCalendar(this.props.startOfWeek, this.props.schedule)
+    const weekStart = this.props.startOfWeek ? this.props.startOfWeek : null
+    const setCalender = this.getCalendar(weekStart, this.props.schedule)
     this.setState({
       calendar: setCalender,
     })
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.startOfWeek != this.props.startOfWeek) {
-      const setCalender = this.getCalendar(this.props.startOfWeek, this.props.schedule)
+    const weekStart = this.props.startOfWeek ? this.props.startOfWeek : null
+    if (weekStart && prevProps.startOfWeek != weekStart) {
+      const setCalender = this.getCalendar(weekStart, this.props.schedule)
       this.setState({
         calendar: setCalender,
       })
     }
   }
 
-  getCalendar = (startOfWeek, schedule = []) => {
+  getCalendar = (startOfWeek = null, schedule = []) => {
     let resultDateList = []
     //gettodayfordefault Value
     for (var i = 0; i < 7; i++) {
@@ -57,7 +63,10 @@ class VerticalCalendar extends Component {
         live: false,
       }
       schedule.map(item => {
-        if (isMatchLive(item.startTime, item.endTime) && formatDateTime(item.startTime, 'DD MMMM') == formattedDateTime) {
+        if (
+          isMatchLive(item.startTime, item.endTime) &&
+          formatDateTime(item.startTime, 'DD MMMM') == formattedDateTime
+        ) {
           result.live = true
         }
         return
@@ -91,7 +100,7 @@ class VerticalCalendar extends Component {
   }
 
   render() {
-    const { handleCategoryFilter, selectedDate, hasLiveLogo } = this.props
+    const { selectedDate, hasLiveLogo } = this.props
     const { calendar, isActiveLive } = this.state
     return (
       <span>
@@ -103,6 +112,7 @@ class VerticalCalendar extends Component {
                 const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
                 return (
                   <Link
+                    key={dt.id}
                     to={formatStartTime}
                     spy={true}
                     hashSpy={true}
@@ -112,12 +122,19 @@ class VerticalCalendar extends Component {
                     onSetActive={this.handleSetActive}
                   >
                     <div
-                      className={`${s.filterLabelByDay} ${dt.strTimestamp == selectedDate || dt.title == selectedDate ? s.selectedFilter : ''} ${dt.live ? s.live__marker : ''}`}
+                      className={`${s.filterLabelByDay} ${
+                        (dt.strTimestamp == selectedDate ||
+                          dt.title == selectedDate) &&
+                          !dt.live
+                          ? s.selectedFilter
+                          : s.live__flex
+                        }`}
                       key={dt.strTimestamp}
                       onClick={() => {
                         this.handleOnClick(dt.strTimestamp)
                       }}
                     >
+                      {dt.live && <span className={s.live__dot} />}
                       {dt.day}
                     </div>
                   </Link>

@@ -5,7 +5,13 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Link from '@components/Link'
 
 import styles from './matchList.css'
-import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
+import {
+  formatDateTime,
+  isToday,
+  isTomorrow,
+  isMatchPassed,
+  isMatchLive,
+} from '@source/lib/dateTimeUtil'
 
 import { defaultImgClub } from '@global/imageUrl'
 
@@ -15,11 +21,15 @@ let Element = Scroll.Element
 class MatchList extends React.Component {
   state = {
     titleTemps: [],
+    hour: 0,
+    minutes: 0,
   }
 
-  cardDateFormat = (startTime, endTime) => {
+  cardDateFormat = (startTime, endTime, isChannel = false) => {
     let text = ''
-    text = formatDateTime(startTime, 'DD MMMM HH.mm')
+    text = isChannel
+      ? formatDateTime(startTime, 'HH.mm')
+      : formatDateTime(startTime, 'DD MMMM HH.mm')
 
     if (isToday(startTime, endTime)) {
       if (isMatchLive(startTime, endTime)) {
@@ -48,7 +58,11 @@ class MatchList extends React.Component {
                       }}
                     />
                     <span>{ht.attributes.name}</span>
-                    {ht.attributes.score && <span className={styles.matchList__scoring}>{ht.attributes.score}</span>}
+                    {ht.attributes.score && (
+                      <span className={styles.matchList__scoring}>
+                        {ht.attributes.score}
+                      </span>
+                    )}
                   </>
                 )
               })}
@@ -66,7 +80,11 @@ class MatchList extends React.Component {
                       }}
                     />
                     <span>{at.attributes.name}</span>
-                    {at.attributes.score && <span className={styles.matchList__scoring}>{at.attributes.score}</span>}
+                    {at.attributes.score && (
+                      <span className={styles.matchList__scoring}>
+                        {at.attributes.score}
+                      </span>
+                    )}
                   </>
                 )
               })}
@@ -89,17 +107,31 @@ class MatchList extends React.Component {
   render() {
     const {
       data,
-      noClickAble = true,
+      noClickAble = false,
       formatStartTime = '',
       toJumpLive = false,
       isNoSchedule = false,
       noScheduleTitle = '',
+      isChannel = false
     } = this.props
 
     if (!isNoSchedule) {
       const images = this.props.data ? this.props.data.images : ''
-      const date = this.cardDateFormat(data.startTime, data.endTime)
+      const date = this.cardDateFormat(data.startTime, data.endTime, isChannel)
       const matchLive = isMatchLive(data.startTime, data.endTime)
+      const hour =
+        data.endTime && data.startTime
+          ? new Date(data.endTime * 1000).getHours() -
+          new Date(data.startTime * 1000).getHours()
+          : ''
+      const minutes = data.startTime
+        ? new Date(data.startTime * 1000).getMinutes()
+        : ''
+      const channelOrMatchStyle = isChannel
+        ? `${styles.channel__display__duration} ${styles.matchList__date}`
+        : styles.matchList__date
+      const isLiveMatch = matchLive ? styles.matchList__live_now : ''
+      const leftBoxStyle = `${channelOrMatchStyle} ${isLiveMatch}`
       return (
         <>
           {toJumpLive && (
@@ -108,18 +140,24 @@ class MatchList extends React.Component {
             </Element>
           )}
           <Element name={formatStartTime}>
-            <div
-              className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}
-            >
-              <div
-                className={
-                  matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date
-                }
-              >
+            <div className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}>
+              <div className={leftBoxStyle}>
                 <p className={styles.matchList__labelDate}>{date}</p>
-                <div className={styles.matchList__leagueImg}>
-                  {images ? <img className={styles.matchList__league_logo} src={images.thumbnails.cover} /> : ''}
-                </div>
+                {isChannel && (
+                  <div className={styles.channel__duration__text}>
+                    {hour > 0 && <div> {hour}hr </div>}
+                    {minutes > 0 && <div> {minutes}min. </div>}
+                  </div>
+                )}
+                {images &&
+                  !isChannel && (
+                    <div className={styles.matchList__leagueImg}>
+                      <img
+                        className={styles.matchList__league_logo}
+                        src={images.thumbnails.cover}
+                      />
+                    </div>
+                  )}
               </div>
               {this.renderMatch()}
             </div>

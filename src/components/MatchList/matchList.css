@@ -99,6 +99,19 @@
   font-size: 1.6rem;
 }
 
+.channel__display__duration {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.channel__duration__text {
+  font-size: 12px;
+  color: #f5f5f5;
+  font-weight: 300;
+  padding-left: 10px;
+}
+
 @media screen and (max-width: 640px) {
   .matchList__container {
     color: #f5f5f5;
@@ -163,4 +176,7 @@
     width: 20px;
   }
 
+  .channel__duration__text {
+    padding-left: 0
+  }
 }
