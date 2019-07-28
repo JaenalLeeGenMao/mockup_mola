@@ -47,7 +47,7 @@ const customTourStyle = {
   // },
   buttonNext: {
     backgroundColor: '#2C56FF',
-    fontSize: '1.06rem',
+    fontSize: '1.3rem',
     lineHeight: '1',
     padding: '8px 15px',
     textTransform: 'uppercase',
@@ -57,7 +57,7 @@ const customTourStyle = {
   },
   buttonBack: {
     color: '#000000',
-    fontSize: '1.06rem',
+    fontSize: '1.3rem',
     textTransform: 'uppercase',
     letterSpacing: '1.67px',
     fontWeight: '600',
@@ -68,21 +68,21 @@ const customTourStyle = {
   buttonSkip: {
     color: '#000000',
     fontWeight: '600',
-    fontSize: '1.06rem',
+    fontSize: '1.3rem',
     textTransform: 'uppercase',
     letterSpacing: '1.67px',
     padding: '0',
   },
   tooltipContent: {
-    fontSize: '1.06rem',
+    fontSize: '1.4rem',
     padding: '0',
     textAlign: 'left',
     color: '#858585',
-    lineHeight: '2',
+    lineHeight: '2rem',
     letterSpacing: '0.5px',
   },
   tooltipTitle: {
-    fontSize: '1.15rem',
+    fontSize: '1.5rem',
     textAlign: 'left',
     margin: '0px 0px 8px',
     letterSpacing: '0.59px',

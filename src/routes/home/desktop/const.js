@@ -102,6 +102,11 @@ export const tourSteps = {
           Browse category highlights by clicking the up and down buttons on your keyboard, or swipe <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
         </div>
       ),
+      styles: {
+        tooltip: {
+          width: '42rem',
+        },
+      },
       placement: 'right',
       disableBeacon: true,
     },
@@ -115,6 +120,12 @@ export const tourSteps = {
       ),
       placement: 'top',
       disableBeacon: true,
+      styles: {
+        tooltip: {
+          width: '39rem',
+          marginLeft: '55px'
+        },
+      },
       locale: { last: 'Finish' },
     },
   ],

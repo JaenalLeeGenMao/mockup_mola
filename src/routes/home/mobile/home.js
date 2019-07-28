@@ -51,7 +51,7 @@ class Home extends Component {
     steps: tourSteps.en,
     sliderRefs: [],
     playlistSuccess: false,
-    screenWidth: 290
+    screenWidth: 245
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -196,7 +196,7 @@ class Home extends Component {
 
     if (window.innerWidth < 375 && window.innerHeight < 600) {
       this.setState({
-        screenWidth: 200
+        screenWidth: 170
       })
     }
   }
@@ -378,7 +378,7 @@ class Home extends Component {
       },
       tooltipContent: {
         fontSize: '1.06rem',
-        padding: '0 0 20px',
+        padding: '0 0 10px',
         textAlign: 'left',
         color: '#858585',
         lineHeight: '1.3',

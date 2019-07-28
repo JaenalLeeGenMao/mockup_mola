@@ -161,6 +161,7 @@ class Html extends React.Component {
               __html: `
             .embeddedServiceHelpButton {
               visibility: hidden;
+              z-index: 99 !important;
             }
             .embeddedServiceHelpButton .helpButton {
               position: fixed;
@@ -175,6 +176,7 @@ class Html extends React.Component {
               border-radius: .5rem;
               width: 6rem;
               height: 6rem;
+              box-shadow: 0 0 12px 0 rgba(0,0,0,0.2);
             }
 
             .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
@@ -339,9 +341,9 @@ class Html extends React.Component {
               __html:
                 'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
                 `ga('create',${
-                  config.env === 'production'
-                    ? "'UA-140128558-1'"
-                    : "'UA-140128558-2'"
+                config.env === 'production'
+                  ? "'UA-140128558-1'"
+                  : "'UA-140128558-2'"
                 },'auto');ga('send','pageview')`,
             }}
           />

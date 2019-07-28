@@ -50,7 +50,7 @@ export const tourSteps = {
       title: 'Category highlights',
       content: (
         <div>
-          Browse category highlights by clicking the up and down buttons on your keyboard, or swipe <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
+          Browse category highlights by <br /> swiping <span className={styles.swipeUpIcon} /> up and down.
         </div>
       ),
       placement: 'right',
@@ -61,11 +61,16 @@ export const tourSteps = {
       title: 'Highlighted Contents',
       content: (
         <div>
-          Browse the highlights of the category by clicking the left and right buttons on your keyboard, or swipe <span className={styles.swipeNextIcon} /> left and right on your touchscreen/trackpad.
+          Browse the highlights of the category by swiping <span className={styles.swipeNextIcon} /> left and right.
         </div>
       ),
       placement: 'top',
       disableBeacon: true,
+      styles: {
+        tooltip: {
+          width: 281
+        },
+      },
       locale: { last: 'Finish' },
     },
   ],
