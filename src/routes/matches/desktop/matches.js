@@ -42,10 +42,12 @@ class Matches extends React.Component {
     expandVideoType: true,
     expandLeague: true,
     filterByDates: '',
+    filterByLeague: 'All',
     // filterAllLeague: 0,
     selectedWeek: 2, //1 = last week, 2 = this week, 3 = next week,
     selectedDate: null,
     startWeekDate: null,
+    hasLive: false,
   }
 
   setDefaultDate = () => {
@@ -64,7 +66,7 @@ class Matches extends React.Component {
     this.setDefaultDate()
 
     if (this.props.matches.matchesPlaylists.meta.status === 'success') {
-      this.setInitialData();
+      this.setInitialData()
     }
   }
 
@@ -73,7 +75,9 @@ class Matches extends React.Component {
   }
 
   getThreeWeeksDate = matches => {
-    const startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
+    const startWeekDate = moment()
+      .subtract(1, 'weeks')
+      .startOf('isoWeek')
     const sortMatches = _sortBy(matches, match => match.startTime)
     let threeWeeksDate = []
     for (var i = 0; i < 21; i++) {
@@ -136,7 +140,7 @@ class Matches extends React.Component {
       this.props.matches.matchesPlaylists.meta.status != prevProps.matches.matchesPlaylists.meta.status &&
       this.props.matches.matchesPlaylists.meta.status === 'success'
     ) {
-      this.setInitialData();
+      this.setInitialData()
     }
   }
 
@@ -184,19 +188,19 @@ class Matches extends React.Component {
 
     let matchesList = []
     let result
-    if (value == 'all') {
-      matchesList = allMatches
-    } else {
-      filterLeagueRes = this.handleFilterByLeague(value, allMatches)
-      // console.log("filterLeagueRes", filterLeagueRes)
-      result = this.getThreeWeeksDate(filterLeagueRes)
-      matchesList = result.matchesList
-      this.setState({ allMatches: matchesList, matches: matchesList })
-    }
 
     const startWeekDate = moment().startOf('isoWeek')
     const date = new Date(moment().startOf('date'))
     const swdTimestamp = date.getTime() / 1000
+
+    if (value == 'all') {
+      filterLeagueRes = allMatches
+    } else {
+      filterLeagueRes = this.handleFilterByLeague(value, allMatches)
+    }
+
+    result = this.getThreeWeeksDate(filterLeagueRes)
+    matchesList = result.matchesList
 
     this.setState({
       matches: matchesList,
@@ -204,7 +208,7 @@ class Matches extends React.Component {
       selectedWeek: 2,
       filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
-      hasLive: result.hasLive
+      hasLive: result.hasLive,
     })
 
     const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
@@ -237,7 +241,9 @@ class Matches extends React.Component {
     let swdTimestamp = ''
     if (value == 1) {
       //lastMonday
-      startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
+      startWeekDate = moment()
+        .subtract(1, 'weeks')
+        .startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -249,7 +255,9 @@ class Matches extends React.Component {
     }
     if (value == 3) {
       //nextWeek
-      startWeekDate = moment().add(1, 'weeks').startOf('isoWeek')
+      startWeekDate = moment()
+        .add(1, 'weeks')
+        .startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -302,7 +310,6 @@ class Matches extends React.Component {
   }
 
   categoryFilter = () => {
-
     return (
       <>
         {/* this week left menu */}
@@ -331,7 +338,9 @@ class Matches extends React.Component {
         let flag = true
         const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
         if (index > 0) {
-          const prevFrmtStrTime = matches[index - 1].startTime ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY') : ''
+          const prevFrmtStrTime = matches[index - 1].startTime
+            ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY')
+            : ''
           if (prevFrmtStrTime == formatStartTime) {
             flag = false
           }
@@ -419,6 +428,7 @@ class Matches extends React.Component {
                       startOfWeek={startWeekDate}
                       hasLiveLogo={hasLive}
                       handleJumpToLive={this.handleJumpToLive}
+                      isChannel={false}
                     />
                   </div>
                 </div>

@@ -14,11 +14,7 @@ import DRMConfig from '@source/lib/DRMConfig'
 import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import history from '@source/history'
-import {
-  formatDateTime,
-  addDateTime,
-  isSameDay,
-} from '@source/lib/dateTimeUtil'
+import { formatDateTime, addDateTime, isSameDay } from '@source/lib/dateTimeUtil'
 
 import Header from '@components/Header'
 import DropdownList from '@components/DropdownList'
@@ -50,18 +46,9 @@ class Channels extends Component {
       fullDate: moment().format('YYYYMMDD'),
       timezone: 7,
     }
-    const {
-      fetchChannelSchedule,
-      fetchChannelsPlaylist,
-      user,
-      fetchVideoByid,
-      movieId,
-      getVUID,
-    } = this.props
+    const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
-    fetchChannelsPlaylist('channels-m').then(() =>
-      fetchChannelSchedule(selectedDate)
-    )
+    fetchChannelsPlaylist('channels-m').then(() => fetchChannelSchedule(selectedDate))
 
     fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -69,45 +56,26 @@ class Channels extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {
-      channelsPlaylist,
-      channelSchedule,
-      movieDetail,
-      movieId,
-      fetchVideoByid,
-    } = this.props
+    const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
     if (
       channelsPlaylist.meta.status === 'success' &&
       channelsPlaylist.data.length > 0 &&
       !prevState.activeChannel &&
       !prevState.activeChannelId
     ) {
-      const selectedChannel = channelsPlaylist.data.find(
-        list => list.id == movieId
-      )
+      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
       this.setState({
         activeChannel:
-          selectedChannel && selectedChannel.title
-            ? selectedChannel.title
-            : channelsPlaylist.data[0].title,
-        activeChannelId:
-          selectedChannel && selectedChannel.id
-            ? selectedChannel.id
-            : channelsPlaylist.data[0].id,
+          selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
+        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
       })
     }
 
-    if (
-      this.state.scheduleList.length === 0 ||
-      prevState.activeChannelId !== this.state.activeChannelId
-    ) {
+    if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
       this.handleSelectChannel(this.state.activeChannelId)
     }
 
-    if (
-      movieDetail.meta.status === 'success' &&
-      movieDetail.data[0].id != movieId
-    ) {
+    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
       fetchVideoByid(movieId)
     }
   }
@@ -142,9 +110,7 @@ class Channels extends Component {
       activeDate: selectedDate.dayMonth,
     })
     this.props.fetchChannelSchedule(selectedDate).then(() => {
-      const filteredSchedule = this.props.channelSchedule.find(
-        item => item.id == this.state.activeChannelId
-      )
+      const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
       this.setState({
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
         activeDate: selectedDate.dayMonth,
@@ -153,14 +119,9 @@ class Channels extends Component {
   }
 
   handleSelectChannel = id => {
-    const filteredSchedule = this.props.channelSchedule.find(
-      item => item.id == id
-    )
+    const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
     if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
-      const time =
-        filteredSchedule.videos.length > 0
-          ? filteredSchedule.videos[0].startTime
-          : Date.now() / 1000
+      const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
       this.setState({
         activeChannel: filteredSchedule.title,
         activeChannelId: id,
@@ -203,9 +164,7 @@ class Channels extends Component {
   subtitles = () => {
     const { movieDetail } = this.props
     const subtitles =
-      movieDetail.data.length > 0 && movieDetail.data[0].subtitles
-        ? movieDetail.data[0].subtitles
-        : null
+      movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
     const myTheoPlayer =
       subtitles &&
@@ -231,7 +190,7 @@ class Channels extends Component {
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/watch?v=${movieId}`
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.href = url
     }, 250)
   }
@@ -251,12 +210,7 @@ class Channels extends Component {
       startWeekDate,
       selectedWeek,
     } = this.state
-    const {
-      channelsPlaylist,
-      programmeGuides,
-      movieId,
-      channelSchedule,
-    } = this.props
+    const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -266,13 +220,7 @@ class Channels extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const defaultVidSetting =
-      status === 'success'
-        ? defaultVideoSetting(
-          user,
-          dataFetched,
-          vuidStatus === 'success' ? vuid : ''
-        )
-        : {}
+      status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
       ...defaultVidSetting,
@@ -281,20 +229,12 @@ class Channels extends Component {
     let drmStreamUrl = '',
       isDRM = false
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (
-      status === 'success' &&
-      dataFetched.drm &&
-      dataFetched.drm.widevine &&
-      dataFetched.drm.fairplay
-    ) {
-      drmStreamUrl = isSafari
-        ? dataFetched.drm.fairplay.streamUrl
-        : dataFetched.drm.widevine.streamUrl
+    if (status === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
+      drmStreamUrl = isSafari ? dataFetched.drm.fairplay.streamUrl : dataFetched.drm.widevine.streamUrl
     }
     isDRM = drmStreamUrl ? true : false
 
-    const loadPlayer =
-      status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
+    const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
     return (
       <>
@@ -343,9 +283,9 @@ class Channels extends Component {
                         customTheoplayer={customTheoplayer}
                       />
                     ) : (
-                        // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
-                        <div>Video Not Available</div> // styling later
-                      )}
+                      // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
+                      <div>Video Not Available</div> // styling later
+                    )}
                   </div>
                   <div className={styles.epg__channels__container}>
                     <div className={styles.epg__card}>
@@ -353,17 +293,10 @@ class Channels extends Component {
                         scheduleList.length > 0 &&
                         scheduleList
                           .filter(
-                            list =>
-                              formatDateTime(list.start, 'DD MMMM') ===
-                              formatDateTime(activeDate, 'DD MMMM')
+                            list => formatDateTime(list.start, 'DD MMMM') === formatDateTime(activeDate, 'DD MMMM')
                           )
                           .map(dt => (
-                            <MatchList
-                              key={dt.id}
-                              data={dt}
-                              noClickAble
-                              isChannel
-                            />
+                            <MatchList key={dt.id} data={dt} noClickAble isChannel />
                             // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
                           ))}
                     </div>
@@ -375,6 +308,7 @@ class Channels extends Component {
                             selectedDate={activeDate}
                             schedule={scheduleList}
                             isMobile
+                            isChannel
                           />
                         )}
                     </div>
@@ -384,8 +318,7 @@ class Channels extends Component {
             </div>
           </>
         )}
-        {!dataFetched &&
-          status === 'error' && <MovieDetailError message={error} />}
+        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }
@@ -398,15 +331,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchChannelsPlaylist: id => dispatch(channelActions.getChannelsPlaylist(id)),
-  fetchChannelSchedule: date =>
-    dispatch(channelActions.getProgrammeGuides(date)),
-  fetchVideoByid: videoId =>
-    dispatch(movieDetailActions.getMovieDetail(videoId)),
+  fetchChannelSchedule: date => dispatch(channelActions.getProgrammeGuides(date)),
+  fetchVideoByid: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
-export default compose(
-  withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
-)(Channels)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Channels)

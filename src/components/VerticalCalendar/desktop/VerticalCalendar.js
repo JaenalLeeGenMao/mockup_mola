@@ -18,7 +18,7 @@ class VerticalCalendar extends Component {
   state = {
     activeDate: '',
     selDate: this.props.selectedDate,
-    isActiveLive: false
+    isActiveLive: false,
   }
 
   getCalendar = startOfWeek => {
@@ -61,18 +61,42 @@ class VerticalCalendar extends Component {
   }
 
   render() {
-    const { startOfWeek, selectedDate, hasLiveLogo } = this.props
+    const { startOfWeek, selectedDate, hasLiveLogo, isChannel = true } = this.props
     const { activeDate, isActiveLive } = this.state
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
           <span>
-            {hasLiveLogo && <div className={`${s.live__logo} ${isActiveLive ? s.live__logo__active : ''}`} onClick={this.handleClickJumpLive} />}
+            {hasLiveLogo && (
+              <div
+                className={`${s.live__logo} ${isActiveLive ? s.live__logo__active : ''}`}
+                onClick={this.handleClickJumpLive}
+              />
+            )}
             {this.getCalendar(startOfWeek).map(dt => {
               const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
-              const isSelected = dt.strTimestamp == selectedDate || dt.title == selectedDate
-              // (!activeDate && (dt.strTimestamp == selectedDate || dt.title == selectedDate)) ||
-              // activeDate == formatStartTime
+              const today = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+              // const isSelected = dt.strTimestamp == selectedDate || dt.title == selectedDate
+              let activeClass = ''
+              let isSelected = false
+              if (isChannel) {
+                if (dt.live) {
+                  activeClass = s.live__flex
+                } else if (dt.strTimestamp == selectedDate || (dt.title == selectedDate && !dt.live)) {
+                  activeClass = s.selectedLabel
+                  isSelected = true
+                }
+              } else {
+                if (today === formatStartTime) {
+                  activeClass = s.live__flex
+                } else if (
+                  dt.strTimestamp == selectedDate ||
+                  (dt.title == selectedDate && !(today === formatStartTime))
+                ) {
+                  activeClass = s.selectedLabel
+                  isSelected = true
+                }
+              }
 
               return (
                 <>
@@ -85,15 +109,31 @@ class VerticalCalendar extends Component {
                     duration={500}
                     onSetActive={this.handleSetActive}
                   >
-                    <div
-                      className={`${s.filterLabelByDay} ${isSelected ? s.selectedFilter : ''}`}
-                      key={dt.strTimestamp}
-                      onClick={() => {
-                        this.handleOnClick(dt.strTimestamp)
-                      }}
-                    >
-                      {dt.title}
-                    </div>
+                    {isChannel && (
+                      <div
+                        className={`${s.filterLabelByDay} ${activeClass}`}
+                        key={dt.strTimestamp}
+                        onClick={() => {
+                          this.handleOnClick(dt.strTimestamp)
+                        }}
+                      >
+                        {dt.title}
+                      </div>
+                    )}
+
+                    {!isChannel && (
+                      <div
+                        className={`${s.filterLabelByDay} ${activeClass}`}
+                        key={dt.strTimestamp}
+                        onClick={() => {
+                          this.handleOnClick(dt.strTimestamp)
+                        }}
+                      >
+                        {today === formatStartTime && <span className={s.live__dot} />}
+                        {isSelected && <span className={s.selectedFilter}>{dt.title}</span>}
+                        {!isSelected && <>{dt.title}</>}
+                      </div>
+                    )}
                   </Link>
                 </>
               )

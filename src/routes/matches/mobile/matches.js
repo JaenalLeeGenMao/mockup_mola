@@ -18,7 +18,7 @@ import {
   isNextWeek,
   isSameDay,
   isLastWeek,
-  addDateTime
+  addDateTime,
 } from '@source/lib/dateTimeUtil'
 import matchListActions from '@actions/matches'
 import VerticalCalendar from '@components/VerticalCalendar'
@@ -44,6 +44,7 @@ class Matches extends Component {
     allMatches: [],
     selectedDate: null,
     startWeekDate: null,
+    hasLive: false,
   }
 
   setDefaultDate = () => {
@@ -53,7 +54,7 @@ class Matches extends Component {
     const swdTimestamp = date.getTime() / 1000
 
     this.setState({
-      filterByDates: swdTimestamp,
+      // filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
     })
   }
@@ -62,7 +63,7 @@ class Matches extends Component {
     this.props.getAllGenreSpo()
     this.setDefaultDate()
     if (this.props.matches.matchesPlaylists.meta.status === 'success') {
-      this.setInitialData();
+      this.setInitialData()
     }
   }
 
@@ -101,7 +102,9 @@ class Matches extends Component {
   }
 
   getThreeWeeksDate = matches => {
-    const startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
+    const startWeekDate = moment()
+      .subtract(1, 'weeks')
+      .startOf('isoWeek')
     const sortMatches = _sortBy(matches, match => match.startTime)
     let threeWeeksDate = []
     for (var i = 0; i < 21; i++) {
@@ -174,7 +177,7 @@ class Matches extends Component {
       selectedWeek: 2,
       filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
-      hasLive: result.hasLive
+      hasLive: result.hasLive,
     })
 
     const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
@@ -185,7 +188,6 @@ class Matches extends Component {
         offset: -150,
       })
     }, 500)
-
   }
 
   handleFilterByDate = value => {
@@ -239,7 +241,9 @@ class Matches extends Component {
     let swdTimestamp = ''
     if (value == 1) {
       //lastMonday
-      startWeekDate = moment().subtract(1, 'weeks').startOf('isoWeek')
+      startWeekDate = moment()
+        .subtract(1, 'weeks')
+        .startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -251,7 +255,9 @@ class Matches extends Component {
     }
     if (value == 3) {
       //nextWeek
-      startWeekDate = moment().add(1, 'weeks').startOf('isoWeek')
+      startWeekDate = moment()
+        .add(1, 'weeks')
+        .startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -262,7 +268,7 @@ class Matches extends Component {
       startWeekDate: startWeekDate,
     })
 
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    const formatStartTime = formatDateTime(swdTimestamp, 'DD MM YYYY')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
         duration: 500,
@@ -340,7 +346,9 @@ class Matches extends Component {
         let flag = true
         const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
         if (index > 0) {
-          const prevFrmtStrTime = matches[index - 1].startTime ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY') : ''
+          const prevFrmtStrTime = matches[index - 1].startTime
+            ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY')
+            : ''
           if (prevFrmtStrTime == formatStartTime) {
             flag = false
           }
@@ -499,6 +507,7 @@ class Matches extends Component {
                 startOfWeek={startWeekDate}
                 hasLiveLogo={hasLive}
                 handleJumpToLive={this.handleJumpToLive}
+                isChannel={false}
               />
             </LazyLoad>
           </>
