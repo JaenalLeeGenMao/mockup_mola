@@ -710,7 +710,7 @@ class Home extends Component {
                             </>
                           )}
                       </picture>
-                      <a href={`/movie-library/${libraryId}`}>
+                      <a href={`/categories/${libraryId}`}>
                         <span>
                           {locale['view_all_movie']}
                           <br /> {this.state.playlists.data[scrollIndex].title.toUpperCase() + ' '}
