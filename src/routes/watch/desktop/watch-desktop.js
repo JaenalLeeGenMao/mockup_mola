@@ -32,6 +32,8 @@ import {
   infoBarClose,
   countdownWinfobar,
   movieDetailNotAllowed,
+  playIcon,
+  posterWrapper,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -49,6 +51,7 @@ class WatchDesktop extends Component {
     toggleInfoBar: true,
     countDownStatus: true,
     notice_bar_message: 'Siaran Percobaan',
+    loginPermission: false,
   }
 
   handleOnVideoLoad = player => {
@@ -90,7 +93,8 @@ class WatchDesktop extends Component {
 
   subtitles() {
     const { movieDetail } = this.props
-    const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
+    const subtitles =
+      movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
     const myTheoPlayer =
       subtitles &&
@@ -154,6 +158,19 @@ class WatchDesktop extends Component {
     this.getConfig()
   }
 
+  handlePlayLogin = () => {
+    this.setState({ loginPermission: true })
+  }
+
+  renderBlockPermission(poster) {
+    return (
+      <div className={posterWrapper}>
+        <img style={{ height: '100%', width: '100%' }} src={poster} />
+        <span className={playIcon} onClick={this.handlePlayLogin} />
+      </div>
+    )
+  }
+
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId } = this.props
 
@@ -170,34 +187,61 @@ class WatchDesktop extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
       user.loc = loc
 
-      const defaultVidSetting = dataFetched ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+      const defaultVidSetting = dataFetched
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        : {}
 
-      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
+      const checkAdsSettings =
+        adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
         ...checkAdsSettings,
       }
 
-      if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
-        return <CountDown hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
+      if (
+        this.state.countDownStatus &&
+        getContentTypeName(dataFetched.contentType) === 'live' &&
+        dataFetched.startTime * 1000 > Date.now()
+      ) {
+        return (
+          <CountDown
+            hideCountDown={this.hideCountDown}
+            startTime={dataFetched.startTime}
+            videoId={videoId}
+            getMovieDetail={getMovieDetail}
+            isMobile={false}
+          />
+        )
       } else if (dataFetched.streamSourceUrl) {
         if (!isAllowed) {
-          if (watchPermissionErrorCode == 'login_first') {
-            return (
-              <div className={movieDetailNotAllowed}>
-                <p>
-                  Silahkan{' '}
-                  <a style={{ color: '#005290' }} href="/accounts/login">
-                    {' '}
-                    login
-                  </a>{' '}
-                  untuk menyaksikan tayangan ini.
-                </p>
-              </div>
-            )
+          if (this.state.loginPermission) {
+            if (watchPermissionErrorCode == 'login_first') {
+              return (
+                <div className={movieDetailNotAllowed}>
+                  <p>
+                    Silahkan{' '}
+                    <a style={{ color: '#005290' }} href="/accounts/login">
+                      {' '}
+                      login
+                    </a>{' '}
+                    untuk menyaksikan tayangan ini.
+                  </p>
+                </div>
+              )
+            }
           }
+          return this.renderBlockPermission(poster)
         }
-        return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} poster={poster} autoPlay={false} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            handleOnVideoLoad={this.handleOnVideoLoad}
+            {...videoSettings}
+          />
+        )
       }
     }
   }
@@ -268,7 +312,13 @@ class WatchDesktop extends Component {
                       </div>
                     </div>
                   )}
-                <div className={playerClass}>{loadPlayer ? <>{this.renderVideo(dataFetched)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
+                <div className={playerClass}>
+                  {loadPlayer ? (
+                    <>{this.renderVideo(dataFetched)}</>
+                  ) : (
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
+                </div>
               </div>
               <div className={movieDetailBottom}>
                 {isMovieBool && <MovieContent dataFetched={dataFetched} />}
