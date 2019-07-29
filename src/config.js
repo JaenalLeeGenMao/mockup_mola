@@ -2,25 +2,13 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const env =
-  (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production'
-    ? 'production'
-    : 'staging'
+const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production' ? 'production' : 'staging'
 // const env = 'development'
 
 const serverApi = {
-  VIDEO_API_URL:
-    env === 'staging'
-      ? 'http://videos.global'
-      : 'http://videos.core.sstv.local', //'https://stag.mola.tv/api/v2/videos',
-  AUTH_API_URL:
-    env === 'staging'
-      ? 'http://accounts-api.global'
-      : 'http://accounts-api.accounts.sstv.local', //'https://stag.mola.tv/accounts',
-  SUBSCRIPTION_API_URL:
-    env === 'staging'
-      ? 'http://subscriptions.global'
-      : 'http://subscriptions.core.sstv.local', //'https://stag.mola.tv/api/v2/subscriptions',
+  VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://videos.core.sstv.local', //'https://stag.mola.tv/api/v2/videos',
+  AUTH_API_URL: env === 'staging' ? 'http://accounts-api.global' : 'http://accounts-api.accounts.sstv.local', //'https://stag.mola.tv/accounts',
+  SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://subscriptions.core.sstv.local', //'https://stag.mola.tv/api/v2/subscriptions',
   appId: 'molatv',
   xAppId: 2,
 }
@@ -53,11 +41,11 @@ const options = {
     port: 3000,
     endpoints: {
       clientUrl: '',
-      serverUrl: 'https://new.stag.mola.tv',
-      api: 'https://new.stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
-      apiArticles: 'https://new.stag.mola.tv/api/v2/articles',
-      auth: 'https://new.stag.mola.tv/accounts/_',
-      domain: 'https://new.stag.mola.tv',
+      serverUrl: 'https://stag.mola.tv',
+      api: 'https://stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
+      apiArticles: 'https://stag.mola.tv/api/v2/articles',
+      auth: 'https://stag.mola.tv/accounts/_',
+      domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
       asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
