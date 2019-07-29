@@ -17,23 +17,15 @@ class ScheduleCard extends Component {
             {limit != null && scheduleList.length > 0 ? (
               <LazyLoad containerClassName={styles.epgCardList__container}>
                 {scheduleList
-                  .filter(
-                    list =>
-                      formatDateTime(list.start, 'DD MMMM') ===
-                      formatDateTime(activeDate, 'DD MMMM')
-                  )
+                  .filter(list => formatDateTime(list.start, 'DD MMM') === formatDateTime(activeDate, 'DD MMM'))
                   .map((dt, index) => {
                     // if (index < limit.length) {
-                    return (
-                      <MatchList key={dt.id} data={dt} noClickAble isChannel />
-                    )
+                    return <MatchList key={dt.id} data={dt} noClickAble isChannel />
                     // }
                   })}
               </LazyLoad>
             ) : (
-              <div className={styles.noMatchContent}>
-                Tidak Ada Pertandingan
-              </div>
+              <div className={styles.noMatchContent}>Tidak Ada Pertandingan</div>
             )}
           </div>
         </div>

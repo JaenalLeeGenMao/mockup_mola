@@ -19,10 +19,10 @@ class ChannelCalendar extends Component {
     for (var i = 0; i < 7; i++) {
       const date = new Date(addDateTime(null, i, 'days'))
       const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMM')
 
       //date string to int selectedMatch
-      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMMM'))
+      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMM'))
       const strTimestamp = dateStringtoInt.getTime() / 1000
 
       dateList.push({ title: formattedDateTime, strTimestamp: strTimestamp })
@@ -40,7 +40,9 @@ class ChannelCalendar extends Component {
             {this.getCalendar().map(dt => {
               return (
                 <div
-                  className={`${s.filterLabelByDay} ${dt.strTimestamp == filterByDates || dt.title == filterByDates ? s.selectedFilter : ''}`}
+                  className={`${s.filterLabelByDay} ${
+                    dt.strTimestamp == filterByDates || dt.title == filterByDates ? s.selectedFilter : ''
+                  }`}
                   key={dt.strTimestamp}
                   onClick={() => {
                     handleCategoryFilter(categoryFilterType, dt.strTimestamp)

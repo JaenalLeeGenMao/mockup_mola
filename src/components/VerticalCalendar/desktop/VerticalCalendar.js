@@ -27,10 +27,10 @@ class VerticalCalendar extends Component {
     for (var i = 0; i < 7; i++) {
       const date = new Date(addDateTime(startOfWeek, i, 'days'))
       const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMM')
 
       //date string to int selectedMatch
-      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMMM'))
+      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMM'))
       const strTimestamp = dateStringtoInt.getTime() / 1000
 
       resultDateList.push({ title: formattedDateTime, strTimestamp: strTimestamp })
@@ -81,9 +81,9 @@ class VerticalCalendar extends Component {
               let activeClass = ''
               let isSelected = false
               if (isChannel) {
-                if (dt.live) {
+                if (today === formatStartTime) {
                   activeClass = s.live__flex
-                } else if (dt.strTimestamp == selectedDate || (dt.title == selectedDate && !dt.live)) {
+                } else if ((dt.strTimestamp == selectedDate || dt.title == selectedDate) && today !== formatStartTime) {
                   activeClass = s.selectedLabel
                   isSelected = true
                 }
@@ -112,31 +112,17 @@ class VerticalCalendar extends Component {
                     duration={500}
                     onSetActive={this.handleSetActive}
                   >
-                    {isChannel && (
-                      <div
-                        className={`${s.filterLabelByDay} ${activeClass}`}
-                        key={dt.strTimestamp}
-                        onClick={() => {
-                          this.handleOnClick(dt.strTimestamp)
-                        }}
-                      >
-                        {dt.title}
-                      </div>
-                    )}
-
-                    {!isChannel && (
-                      <div
-                        className={`${s.filterLabelByDay} ${activeClass}`}
-                        key={dt.strTimestamp}
-                        onClick={() => {
-                          this.handleOnClick(dt.strTimestamp)
-                        }}
-                      >
-                        {today === formatStartTime && <span className={s.live__dot} />}
-                        {isSelected && <span className={s.selectedFilter}>{dt.title}</span>}
-                        {!isSelected && <>{dt.title}</>}
-                      </div>
-                    )}
+                    <div
+                      className={`${s.filterLabelByDay} ${activeClass}`}
+                      key={dt.strTimestamp}
+                      onClick={() => {
+                        this.handleOnClick(dt.strTimestamp)
+                      }}
+                    >
+                      {today === formatStartTime && <span className={s.live__dot} />}
+                      {isSelected && <span className={s.selectedFilter}>{dt.title}</span>}
+                      {!isSelected && <>{dt.title}</>}
+                    </div>
                   </Link>
                 </>
               )

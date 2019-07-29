@@ -32,7 +32,7 @@ class Channels extends Component {
   state = {
     activeChannel: '',
     activeChannelId: '',
-    activeDate: formatDateTime(Date.now() / 1000, 'DD MMMM'),
+    activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleDateList: [],
     scheduleList: [],
     android_redirect_to_app: false,
@@ -103,7 +103,7 @@ class Channels extends Component {
     const strDate = new Date(date * 1000)
     const selectedDate = {
       fullDate: moment(strDate).format('YYYYMMDD'),
-      dayMonth: formatDateTime(date, 'DD MMMM'),
+      dayMonth: formatDateTime(date, 'DD MMM'),
       timezone: 7,
     }
     this.setState({
@@ -125,7 +125,7 @@ class Channels extends Component {
       this.setState({
         activeChannel: filteredSchedule.title,
         activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMMM'),
+        activeDate: formatDateTime(time, 'DD MMM'),
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
       history.push(`/channels/${id}`)
@@ -141,13 +141,13 @@ class Channels extends Component {
       //thisMonday
       startWeekDate = moment().startOf('isoWeek')
       date = new Date(moment().startOf('date'))
-      swdTimestamp = formatDateTime(date / 1000, 'DD MMMM')
+      swdTimestamp = formatDateTime(date / 1000, 'DD MMM')
       unixDate = moment(date).unix()
     } else if (value == 'nextweek') {
       //nextWeek
       startWeekDate = moment().day(8)
       date = new Date(moment(startWeekDate).startOf('date'))
-      swdTimestamp = formatDateTime(date / 1000, 'DD MMMM')
+      swdTimestamp = formatDateTime(date / 1000, 'DD MMM')
       unixDate = moment(date).unix()
     }
 
@@ -292,9 +292,7 @@ class Channels extends Component {
                       {programmeGuides.data &&
                         scheduleList.length > 0 &&
                         scheduleList
-                          .filter(
-                            list => formatDateTime(list.start, 'DD MMMM') === formatDateTime(activeDate, 'DD MMMM')
-                          )
+                          .filter(list => formatDateTime(list.start, 'DD MMM') === formatDateTime(activeDate, 'DD MMM'))
                           .map(dt => (
                             <MatchList key={dt.id} data={dt} noClickAble isChannel />
                             // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
@@ -306,7 +304,7 @@ class Channels extends Component {
                           <VerticalCalendar
                             handleCategoryFilter={this.handleSelectDate}
                             selectedDate={activeDate}
-                            schedule={scheduleList}
+                            // schedule={scheduleList}
                             isMobile
                             isChannel
                           />

@@ -25,7 +25,7 @@ class VerticalCalendar extends Component {
 
   componentDidMount() {
     const weekStart = this.props.startOfWeek ? this.props.startOfWeek : null
-    const setCalender = this.getCalendar(weekStart, this.props.schedule)
+    const setCalender = this.getCalendar(weekStart)
     this.setState({
       calendar: setCalender,
     })
@@ -34,40 +34,30 @@ class VerticalCalendar extends Component {
   componentDidUpdate(prevProps) {
     const weekStart = this.props.startOfWeek ? this.props.startOfWeek : null
     if (weekStart && prevProps.startOfWeek != weekStart) {
-      const setCalender = this.getCalendar(weekStart, this.props.schedule)
+      const setCalender = this.getCalendar(weekStart)
       this.setState({
         calendar: setCalender,
       })
     }
   }
 
-  getCalendar = (startOfWeek = null, schedule = []) => {
+  getCalendar = (startOfWeek = null) => {
     let resultDateList = []
     //gettodayfordefault Value
     for (var i = 0; i < 7; i++) {
       const date = new Date(addDateTime(startOfWeek, i, 'days'))
       const dtTimestamp = date.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MMM')
       const dayDate = formatDateTime(dtTimestamp / 1000, 'DD')
       //date string to int selectedMatch
-      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMMM'))
+      const dateStringtoInt = new Date(moment(formattedDateTime, 'DD MMM'))
       const strTimestamp = dateStringtoInt.getTime() / 1000
       let result = {
         id: formattedDateTime,
         title: formattedDateTime,
         strTimestamp: strTimestamp,
         day: dayDate,
-        live: false,
       }
-      schedule.map(item => {
-        if (
-          isMatchLive(item.startTime, item.endTime) &&
-          formatDateTime(item.startTime, 'DD MMMM') == formattedDateTime
-        ) {
-          result.live = true
-        }
-        return
-      })
       resultDateList.push(result)
     }
 
@@ -117,9 +107,12 @@ class VerticalCalendar extends Component {
 
                 let activeClass = ''
                 if (isChannel) {
-                  if (dt.live) {
+                  if (today === formatStartTime) {
                     activeClass = s.live__flex
-                  } else if (dt.strTimestamp == selectedDate || (dt.title == selectedDate && !dt.live)) {
+                  } else if (
+                    (dt.strTimestamp == selectedDate || dt.title == selectedDate) &&
+                    today !== formatStartTime
+                  ) {
                     activeClass = s.selectedFilter
                   }
                 } else {
@@ -145,30 +138,16 @@ class VerticalCalendar extends Component {
                     duration={500}
                     onSetActive={this.handleSetActive}
                   >
-                    {isChannel && (
-                      <div
-                        className={`${s.filterLabelByDay} ${activeClass}`}
-                        key={dt.strTimestamp}
-                        onClick={() => {
-                          this.handleOnClick(dt.strTimestamp)
-                        }}
-                      >
-                        {dt.live && <span className={s.live__dot} />}
-                        {dt.day}
-                      </div>
-                    )}
-                    {!isChannel && (
-                      <div
-                        className={`${s.filterLabelByDay} ${activeClass}`}
-                        key={dt.strTimestamp}
-                        onClick={() => {
-                          this.handleOnClick(dt.strTimestamp)
-                        }}
-                      >
-                        {today === formatStartTime && <span className={s.live__dot} />}
-                        {dt.day}
-                      </div>
-                    )}
+                    <div
+                      className={`${s.filterLabelByDay} ${activeClass}`}
+                      key={dt.strTimestamp}
+                      onClick={() => {
+                        this.handleOnClick(dt.strTimestamp)
+                      }}
+                    >
+                      {today === formatStartTime && <span className={s.live__dot} />}
+                      {dt.day}
+                    </div>
                   </Link>
                 )
               })}

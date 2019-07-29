@@ -5,13 +5,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Link from '@components/Link'
 
 import styles from './matchList.css'
-import {
-  formatDateTime,
-  isToday,
-  isTomorrow,
-  isMatchPassed,
-  isMatchLive,
-} from '@source/lib/dateTimeUtil'
+import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 
 import { defaultImgClub } from '@global/imageUrl'
 
@@ -27,9 +21,7 @@ class MatchList extends React.Component {
 
   cardDateFormat = (startTime, endTime, isChannel = false) => {
     let text = ''
-    text = isChannel
-      ? formatDateTime(startTime, 'HH.mm')
-      : formatDateTime(startTime, 'DD MMMM HH.mm')
+    text = isChannel ? formatDateTime(startTime, 'HH.mm') : formatDateTime(startTime, 'DD MMMM HH.mm')
 
     if (isToday(startTime, endTime)) {
       if (isMatchLive(startTime, endTime)) {
@@ -58,11 +50,7 @@ class MatchList extends React.Component {
                       }}
                     />
                     <span>{ht.attributes.name}</span>
-                    {ht.attributes.score && (
-                      <span className={styles.matchList__scoring}>
-                        {ht.attributes.score}
-                      </span>
-                    )}
+                    {ht.attributes.score && <span className={styles.matchList__scoring}>{ht.attributes.score}</span>}
                   </>
                 )
               })}
@@ -80,11 +68,7 @@ class MatchList extends React.Component {
                       }}
                     />
                     <span>{at.attributes.name}</span>
-                    {at.attributes.score && (
-                      <span className={styles.matchList__scoring}>
-                        {at.attributes.score}
-                      </span>
-                    )}
+                    {at.attributes.score && <span className={styles.matchList__scoring}>{at.attributes.score}</span>}
                   </>
                 )
               })}
@@ -112,7 +96,7 @@ class MatchList extends React.Component {
       toJumpLive = false,
       isNoSchedule = false,
       noScheduleTitle = '',
-      isChannel = false
+      isChannel = false,
     } = this.props
 
     if (!isNoSchedule) {
@@ -121,11 +105,10 @@ class MatchList extends React.Component {
       const matchLive = isMatchLive(data.startTime, data.endTime)
       const hour =
         data.endTime && data.startTime
-          ? new Date(data.endTime * 1000).getHours() -
-          new Date(data.startTime * 1000).getHours()
+          ? new Date(data.endTime * 1000).getHours() - new Date(data.startTime * 1000).getHours()
           : ''
       const minutes = data.startTime
-        ? new Date(data.startTime * 1000).getMinutes()
+        ? new Date(data.endTime * 1000).getMinutes() - new Date(data.startTime * 1000).getMinutes()
         : ''
       const channelOrMatchStyle = isChannel
         ? `${styles.channel__display__duration} ${styles.matchList__date}`
@@ -140,7 +123,9 @@ class MatchList extends React.Component {
             </Element>
           )}
           <Element name={formatStartTime}>
-            <div className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}>
+            <div
+              className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}
+            >
               <div className={leftBoxStyle}>
                 <p className={styles.matchList__labelDate}>{date}</p>
                 {isChannel && (
@@ -152,10 +137,7 @@ class MatchList extends React.Component {
                 {images &&
                   !isChannel && (
                     <div className={styles.matchList__leagueImg}>
-                      <img
-                        className={styles.matchList__league_logo}
-                        src={images.thumbnails.cover}
-                      />
+                      <img className={styles.matchList__league_logo} src={images.thumbnails.cover} />
                     </div>
                   )}
               </div>

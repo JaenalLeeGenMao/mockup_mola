@@ -84,7 +84,7 @@ class Matches extends React.Component {
       const addedDate = new Date(addDateTime(startWeekDate, i, 'days'))
       const dtTimestamp = addedDate.getTime()
       const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'YYMMDD')
-      const formattedDateTime2 = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
+      const formattedDateTime2 = formatDateTime(dtTimestamp / 1000, 'DD MMM')
       threeWeeksDate.push({ dateId: formattedDateTime, title: formattedDateTime2 })
     }
 
