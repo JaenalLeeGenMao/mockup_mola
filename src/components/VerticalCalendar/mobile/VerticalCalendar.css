@@ -1,28 +1,38 @@
 .filterContentfilterByDay_container {
-  /* padding: 0 4rem 1rem 1rem; */
-  position: sticky;
+  position: fixed;
+  right: 5px;
+}
 
-  /* top: 16rem; */
+.container_relative {
+  position: relative;
+  right: 0;
 }
 
 .filterLabelByDay {
-  font-size: 1.1rem;
-  color: #808080;
-  margin: 1.5rem 0;
-  text-align: right;
+  font-size: 14px;
+  color: #676767;
+  margin: 15px 5px;
+  text-align: center;
   cursor: pointer;
   padding: 0.3rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .selectedFilter {
-  color: #fff;
-  font-size: 1.3rem;
-}
-
-.live__marker {
-  background-color: #2c56ff;
+  background-color: #3c3c3c;
   border-radius: 50%;
-  color: #fff;
+  color: #b5b5b5;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .live__logo {
@@ -32,4 +42,32 @@
   background-position: center;
   margin-top: 0.7rem;
   height: 0.8rem;
+}
+
+.live__logo__active {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDEyIDEwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojZmZmO308L3N0eWxlPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjg3IC04MjkpIj48cGF0aCBjbGFzcz0iYSIgZD0iTTAsMFYzTDIuNSwxLjQ5M1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5MiA4MzEuNSkiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODcgODI5KSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAwKSI+PHBhdGggY2xhc3M9ImEiIGQ9Ik0xMC41OTQsMzZIMS40MDZBMS4zODcsMS4zODcsMCwwLDAsMCwzNy4zNjR2NS40NTVhMS4zODcsMS4zODcsMCwwLDAsMS40MDYsMS4zNjRINS41MzF2LjkwOUgzLjA5NFY0Nkg4LjkwNnYtLjkwOUg2LjQ2OXYtLjkwOWg0LjEyNUExLjM4NywxLjM4NywwLDAsMCwxMiw0Mi44MThWMzcuMzY0QTEuMzg3LDEuMzg3LDAsMCwwLDEwLjU5NCwzNlptLjQ2OSw2LjgxOGEuNDYyLjQ2MiwwLDAsMS0uNDY5LjQ1NUgxLjQwNmEuNDYyLjQ2MiwwLDAsMS0uNDY5LS40NTVWMzcuMzY0YS40NjIuNDYyLDAsMCwxLC40NjktLjQ1NWg5LjE4OGEuNDYyLjQ2MiwwLDAsMSwuNDY5LjQ1NVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTM2KSIvPjwvZz48L2c+PC9nPjwvc3ZnPg==);
+}
+
+.live__flex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  font-size: 17px;
+  padding-left: 0;
+  margin: 15px 3px;
+  width: 32px;
+}
+
+.live__dot {
+  animation: blinker 1.2s linear infinite;
+  background-color: #2c56ff;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 3px;
+  border-radius: 50%;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
 }

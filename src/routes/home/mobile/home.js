@@ -48,10 +48,10 @@ class Home extends Component {
     //add
     startGuide: false,
     stepIndex: 0,
-    steps: tourSteps[this.props.user.lang],
+    steps: tourSteps.en,
     sliderRefs: [],
     playlistSuccess: false,
-    screenWidth: 290
+    screenWidth: 245
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -196,7 +196,7 @@ class Home extends Component {
 
     if (window.innerWidth < 375 && window.innerHeight < 600) {
       this.setState({
-        screenWidth: 200
+        screenWidth: 170
       })
     }
   }
@@ -378,7 +378,7 @@ class Home extends Component {
       },
       tooltipContent: {
         fontSize: '1.06rem',
-        padding: '0 0 20px',
+        padding: '0 0 10px',
         textAlign: 'left',
         color: '#858585',
         lineHeight: '1.3',
@@ -452,11 +452,11 @@ class Home extends Component {
               <>
                 {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
-                  {/* <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" /> */}
+                  {/* <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourHighlightChannel" /> */}
                   {
-                    activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length >= 1 ? this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourCategory')
+                    activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length >= 1 ? this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourHighlightChannel')
                       :
-                      <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourCategory" />
+                      <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourHighlightChannel" />
                   }
                 </div>
                 {scrollIndex != 0 &&
@@ -551,7 +551,7 @@ class Home extends Component {
                   {
                     activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
                       :
-                      <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />
+                      <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={isDark} type="horizontal" className="tourSlide" />
                   }
                 </div>
                 <Slider

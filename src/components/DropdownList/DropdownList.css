@@ -29,3 +29,11 @@
 .dropdown_list_item {
   padding: 7px 0;
 }
+
+.dropdown_img {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}

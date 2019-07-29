@@ -18,7 +18,6 @@ import {
   ARTICLES_RECOMMENDED_ENDPOINT,
 } from './endpoints'
 import utils from './util'
-import dummy from './test'
 
 import { endpoints } from '@source/config'
 
@@ -63,12 +62,12 @@ const getFeaturePlaylist = id => {
       const playlistsFiltered =
         playlists.length > 0
           ? playlists
-              .map(playlist => ({
-                id: playlist.id,
-                type: playlist.type,
-                ...playlist.attributes,
-              }))
-              .filter(playlist => playlist.visibility === 1)
+            .map(playlist => ({
+              id: playlist.id,
+              type: playlist.type,
+              ...playlist.attributes,
+            }))
+            .filter(playlist => playlist.visibility === 1)
           : []
       return {
         meta: {
@@ -366,12 +365,12 @@ const getPlaylistPlaylists = id => {
       const playlistsFiltered =
         data.length > 0
           ? data
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
+            .map(dt => ({
+              id: dt.id,
+              type: dt.type,
+              ...dt.attributes,
+            }))
+            .filter(dt => dt.visibility === 1)
           : []
 
       return {
@@ -890,8 +889,8 @@ const getChannelsList = (id = 'channels-m') => {
     })
 }
 
-const getProgrammeGuides = (date, playlistId) => {
-  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}`, {
+const getProgrammeGuides = (date, playlistId, timezone = '7') => {
+  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}?tz=${timezone}`, {
     ...endpoints.setting,
     // headers: token && { Authorization: `Bearer ${token}` }
   })
@@ -953,10 +952,10 @@ const getRecommendedArticles = articlesId => {
       const articlesFiltered =
         articles.length > 0
           ? articles.map(article => ({
-              id: article.id,
-              type: article.type,
-              ...article.attributes,
-            }))
+            id: article.id,
+            type: article.type,
+            ...article.attributes,
+          }))
           : []
 
       return {

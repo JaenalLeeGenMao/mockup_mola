@@ -30,6 +30,7 @@ import {
   posterWrapper,
   playIcon,
   movieDetailNotAllowed,
+  headerContainer
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -123,7 +124,7 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -273,11 +274,11 @@ class MovieDetail extends Component {
 
     const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-    user.loc = loc
-    const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
-    const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+    // user.loc = loc
+    // const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
+    // const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
-    const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
+    // const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds(status, defaultVidSetting) : defaultVidSetting
 
     // const videoSettings = {
     //   ...checkAdsSettings,
@@ -293,9 +294,6 @@ class MovieDetail extends Component {
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
     const isMovieBool = isMovie(dataFetched.contentType)
-    const contWidth = {
-      containerWidth: isMovieBool ? undefined : '80px',
-    }
 
     const { toggleInfoBar, notice_bar_message } = this.state
     let isMatchPassed = false
@@ -307,7 +305,7 @@ class MovieDetail extends Component {
       <>
         {dataFetched && (
           <>
-            <Header logoOff stickyOff libraryOff isMobile isDark={0} backButtonOn headerMenuOff opacity={0} {...contWidth} {...this.props} />
+            <div className={headerContainer}><Header isMobile {...this.props} /></div>
             <div className={movieDetailContainer}>
               {toggleInfoBar &&
                 !isMatchPassed && (

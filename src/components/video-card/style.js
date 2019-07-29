@@ -15,9 +15,9 @@ export const videoContainer = css`
   p {
     position: relative;
     height: 1.89rem !important;
-    font-size: .81rem !important;
+    font-size: 1.41rem !important;
     max-width: 100%;
-    max-height: 2.25rem;
+    max-height: 3.45rem;
     text-overflow: clip;
     overflow: hidden;
     padding: 0 0.5rem;
@@ -40,6 +40,7 @@ export const videoContainer = css`
   }
 
   .bannerImage {
+    border-radius: .25rem;
     position: relative;
     z-index: 1;
   }
@@ -50,6 +51,7 @@ export const videoContainer = css`
   }
 
   .bannerImage3d {
+    border-radius: .25rem;
     position: relative;
     z-index: 1;
     width: 45vw;

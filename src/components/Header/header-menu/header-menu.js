@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _ from 'lodash'
 // import $ from 'jquery'
 
 // import Auth from '@api/auth'
@@ -13,7 +14,7 @@ import { getLocale } from '../locale'
 import styles from './header-menu.css'
 import history from '@source/history'
 // import { IoIosArrowDown } from 'react-icons/io'
-import DropdownList from '@components/DropdownList'
+import DropdownMenu from '../dropdown-menu'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -31,7 +32,6 @@ class HeaderMenu extends Component {
   }
 
   componentDidMount() {
-    const { activePlaylist, activeMenu, isMobile } = this.props
     this.getHeaderMenus()
   }
 
@@ -43,15 +43,29 @@ class HeaderMenu extends Component {
   }
 
   handleNavigation = id => {
+    const { headerMenuList: menu } = this.state
     const filteredMenu = menu.filter(dt => {
       return dt.id == id
     })
-    history.push(filteredMenu.length > 0 && filteredMenu[0].linkUrl)
+
+    if (filteredMenu.length > 0) {
+      const absMenuUrl = filteredMenu[0].attributes.url
+      const absMenuArray = absMenuUrl.split('/')
+      const isHome = absMenuArray.length <= 3
+      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+      // const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+      history.push(relMenuUrl)
+    }
   }
 
   render() {
-    const { color, headerMenuOff, isMovie, activeMenu = 'movie', activePlaylist, isMobile = false, isLandscape, pathname = '' } = this.props
-    const { uid, sid } = this.props.user
+    const {
+      headerMenuOff,
+      activeMenu = 'movie',
+      isMobile = false,
+      isLandscape,
+      pathname = '/',
+    } = this.props
     const { headerMenuList } = this.state
 
     let activeMenuDropdown = ''
@@ -64,23 +78,77 @@ class HeaderMenu extends Component {
               <div className={styles.header_menu_outer}>
                 {!isMobile && (
                   <>
-                    {headerMenuList.map(dts => {
+                    {headerMenuList.map((dts, index) => {
                       const absMenuUrl = dts.attributes.url
                       const absMenuArray = absMenuUrl.split('/')
                       const isHome = absMenuArray.length <= 3
                       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                       const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                      return (
-                        <Link key={dts.id} title={dts.attributes.title.en} className={isActive ? styles.header_menu__active : ''} to={relMenuUrl}>
-                          {dts.attributes.title.en}
-                        </Link>
-                      )
-                    })}
+                      const title = _.get(dts, 'attributes.title.en', '')
+                      if (index === 0) {
+                        return (
+                          <Link key={dts.id} title={title}
+                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                            to={relMenuUrl}>
+                            {title}
+                          </Link>
+                        )
+                      }
+                    }
+                    )}
+                    <div className='tourCategory' style={{ display: 'inline-block' }}>
+                      {headerMenuList.map((dts, index) => {
+                        const absMenuUrl = dts.attributes.url
+                        const absMenuArray = absMenuUrl.split('/')
+                        const isHome = absMenuArray.length <= 3
+                        const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                        const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                        const title = _.get(dts, 'attributes.title.en', '')
+                        if (index > 0 && index < 5) {
+                          return (
+                            <Link key={dts.id} title={title}
+                              className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                              to={relMenuUrl}>
+                              {title}
+                            </Link>
+                          )
+                        }
+                      }
+                      )}
+                    </div>
+                    {headerMenuList.map((dts, index) => {
+                      const absMenuUrl = dts.attributes.url
+                      const absMenuArray = absMenuUrl.split('/')
+                      const isHome = absMenuArray.length <= 3
+                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                      const title = _.get(dts, 'attributes.title.en', '')
+                      if (index >= 5) {
+                        return (
+                          <Link key={dts.id} title={title}
+                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                            to={relMenuUrl}>
+                            {title}
+                          </Link>
+                        )
+                      }
+                    }
+                    )}
                   </>
                 )}
                 {isMobile && (
-                  <div className={`${styles.header__menu_wrapper_m} ${isLandscape ? styles.header_menu_select_wrapper__ls : ''}`}>
-                    <DropdownList className={styles.header_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
+                  <div
+                    className={`${styles.header__menu_wrapper_m} ${
+                      isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                      }`}
+                  >
+                    <DropdownMenu
+                      className={styles.header_menu_dropdown_container}
+                      pathname={pathname}
+                      dataList={headerMenuList}
+                      activeId={activeMenuDropdown}
+                      onClick={this.handleNavigation}
+                    />
                   </div>
                 )}
               </div>

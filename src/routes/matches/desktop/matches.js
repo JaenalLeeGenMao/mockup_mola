@@ -3,35 +3,34 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import _groupBy from 'lodash/groupBy'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import InfiniteScroll from 'react-infinite-scroll-component'
+// import InfiniteScroll from 'react-infinite-scroll-component'
 
 import matchListActions from '@actions/matches'
 
-import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive, addDateTime, isSameDay, isLastWeek, isNextWeek, isThisWeek } from '@source/lib/dateTimeUtil'
+import { formatDateTime, addDateTime, isMatchLive } from '@source/lib/dateTimeUtil'
 
 import Header from '@components/Header'
-import MatchCard from '@components/MatchCard'
+// import MatchCard from '@components/MatchCard'
 import MatchList from '@components/MatchList'
+import Link from '@components/Link'
 import LazyLoad from '@components/common/Lazyload'
 import VerticalCalendar from '@components/VerticalCalendar'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
 
 import Placeholder from './placeholder'
 import s from './matches.css'
-import LoaderComp from './loaderComp'
 // import _unionBy from 'lodash/unionBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
-
+import Scroll from 'react-scroll'
+let scroller = Scroll.scroller
 class Matches extends React.Component {
   constructor(props) {
     super(props)
   }
 
   state = {
-    limit: Array.from({ length: 12 }),
     hasMore: true,
     resultShowData: 1,
     initialized: false,
@@ -43,43 +42,12 @@ class Matches extends React.Component {
     expandVideoType: true,
     expandLeague: true,
     filterByDates: '',
-    filterByType: '',
-    filterByLeague: 0,
+    filterByLeague: 'All',
     // filterAllLeague: 0,
-    leagueList: [],
     selectedWeek: 2, //1 = last week, 2 = this week, 3 = next week,
     selectedDate: null,
     startWeekDate: null,
-  }
-
-  fetchMoreData = () => {
-    const matchCardData = this.props.matches.data
-    const { data } = this.props.matches.matchesPlaylists
-    let matchTemp = []
-
-    data.forEach(dt => {
-      if (dt.id) {
-        const vidDt = dt.videos
-        for (let i = 0; i < vidDt.length; i++) {
-          matchTemp.push(vidDt[i])
-        }
-      }
-    })
-
-    if (matchTemp.length != 0) {
-      if (this.state.limit.length >= matchTemp.length) {
-        this.setState({
-          hasMore: false,
-        })
-        return
-      }
-      // 16 more records in 2 secs
-      setTimeout(() => {
-        this.setState({
-          limit: this.state.limit.concat(Array.from({ length: 12 })),
-        })
-      }, 1500) //2000
-    }
+    hasLive: false,
   }
 
   setDefaultDate = () => {
@@ -94,141 +62,89 @@ class Matches extends React.Component {
   }
 
   componentDidMount() {
-    const { playlistId } = this.props
-    playlistId ? this.props.getMatches(playlistId) : this.props.getMatches()
     this.props.getAllGenreSpo()
     this.setDefaultDate()
+
+    if (this.props.matches.matchesPlaylists.meta.status === 'success') {
+      this.setInitialData()
+    }
   }
 
   componentWillMount() {
     // window.addEventListener('scroll', this.onScroll)
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.matches.matchesPlaylists.meta.status != prevProps.matches.matchesPlaylists.meta.status && this.props.matches.matchesPlaylists.meta.status === 'success') {
-      let matchTemp = []
-      const { data } = this.props.matches.matchesPlaylists
-      data.forEach(dt => {
-        if (dt.id) {
-          const vidDt = dt.videos
-          for (let i = 0; i < vidDt.length; i++) {
-            matchTemp.push(vidDt[i])
-          }
+  getThreeWeeksDate = matches => {
+    const startWeekDate = moment()
+      .subtract(1, 'weeks')
+      .startOf('isoWeek')
+    const sortMatches = _sortBy(matches, match => match.startTime)
+    let threeWeeksDate = []
+    for (var i = 0; i < 21; i++) {
+      const addedDate = new Date(addDateTime(startWeekDate, i, 'days'))
+      const dtTimestamp = addedDate.getTime()
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MM YYYY')
+      const formattedDateTime2 = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
+      threeWeeksDate.push({ dateId: formattedDateTime, title: formattedDateTime2 })
+    }
+
+    let matchesList = []
+    let hasLive = false
+    threeWeeksDate.map(weeksDate => {
+      let hasMatch = false
+      sortMatches.map((matchDt, index) => {
+        const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        if (!hasLive) {
+          hasLive = isMatchLive(matchDt.startTime, matchDt.endTime)
+        }
+        if (formatStartTime === weeksDate.dateId) {
+          hasMatch = true
+          matchesList.push(matchDt)
         }
       })
-      const filterResult = this.handleSortMatches(matchTemp)
-
-      this.setState({ allMatches: filterResult, matches: filterResult })
-    }
-  }
-
-  handleSortMatches = matches => {
-    // console.log('handleSortMatches : see sort macthes', matches)
-    const groupByDate = _groupBy(matches, match => {
-      if (isToday(match.startTime, match.endTime)) return 'isToday'
-      else if (isThisWeek(match.startTime)) return 'isThisWeek'
-      else if (isNextWeek(match.startTime)) return 'isNextWeek'
-      else return 'isLastWeek'
+      if (!hasMatch) {
+        matchesList.push({ ...weeksDate })
+      }
     })
 
-    const todayMatches = groupByDate.isToday ? groupByDate.isToday.sort((a, b) => a.startTime - b.startTime) : []
-    const thisWeekMatches = groupByDate.isThisWeek ? groupByDate.isThisWeek.sort((a, b) => a.startTime - b.startTime) : []
-    const nextWeekMatches = groupByDate.isNextWeek ? groupByDate.isNextWeek.sort((a, b) => a.startTime - b.startTime) : []
-    const lastWeekMatches = groupByDate.isLastWeek ? groupByDate.isLastWeek.sort((a, b) => b.startTime - a.startTime) : []
-    return todayMatches.concat(thisWeekMatches, nextWeekMatches, lastWeekMatches)
+    return { matchesList, hasLive }
   }
 
-  handleFilterByDate = (value, matches) => {
-    // validation for ThisWeek
-    let filterResult = []
-    if (value == 'lastWeek') {
-      matches.forEach(el => {
-        if (isLastWeek(el.startTime)) {
-          filterResult.push(el)
+  setInitialData = () => {
+    let matchTemp = []
+    const { data } = this.props.matches.matchesPlaylists
+    data.forEach(dt => {
+      if (dt.id) {
+        const vidDt = dt.videos
+        for (let i = 0; i < vidDt.length; i++) {
+          matchTemp.push(vidDt[i])
         }
+      }
+    })
+
+    const result = this.getThreeWeeksDate(matchTemp)
+    let matchesList = result.matchesList
+    this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 500,
+        smooth: true,
+        offset: -150, // Scrolls to element + 50 pixels down the page
       })
-    } else if (value == 'thisWeek') {
-      matches.forEach(el => {
-        if (isThisWeek(el.startTime)) {
-          selectedThisWeek = 1
-          filterResult.push(el)
-          // console.log('this week', filterResult)
-        }
-      })
-    } else if (value == 'nextWeek') {
-      matches.forEach(el => {
-        if (isNextWeek(el.startTime)) {
-          selectedNextWeek = 1
-          filterResult.push(el)
-          // console.log('next week', filterResult)
-        }
-      })
-    } else if (value == 'today') {
-      //TODAY
-      matches.forEach(el => {
-        if (isToday(el.startTime, el.endTime)) {
-          filterResult.push(el)
-          // console.log('today', filterResult)
-        }
-      })
-    } else if (value == 'tomorrow') {
-      //Tomorrow
-      matches.forEach(el => {
-        if (isTomorrow(el.startTime, el.endTime)) {
-          filterResult.push(el)
-          // console.log('tomorrow', filterResult)
-        }
-      })
-    } else if (value !== '') {
-      //by Date
-      matches.forEach(dt => {
-        if (dt.startTime != null) {
-          const isSame = isSameDay(value, dt.startTime)
-          if (isSame) {
-            filterResult.push(dt)
-            // console.log('bydate', filterResult)
-          }
-        }
-      })
-    } else if (value === '') {
-      return matches
+    }, 500)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.matches.matchesPlaylists.meta.status != prevProps.matches.matchesPlaylists.meta.status &&
+      this.props.matches.matchesPlaylists.meta.status === 'success'
+    ) {
+      this.setInitialData()
     }
-
-    return filterResult
   }
 
-  handleFilterByType = (value, matches) => {
-    let filterResult = []
-    // Validation For Video Type
-    if (value === 'live') {
-      // Live
-      matches.forEach(el => {
-        if (isMatchLive(el.startTime, el.endTime)) {
-          filterResult.push(el)
-        }
-      })
-    } else if (value === 'frm') {
-      //Full Replay Match
-      matches.forEach(el => {
-        if (isMatchPassed(el.endTime)) {
-          filterResult.push(el)
-        }
-      })
-    } else if (value === 'highlightReplay') {
-      //HighLight Replay
-      matches.forEach(dt => {
-        if (dt.isHighlight > 0) {
-          filterResult.push(dt)
-        }
-      })
-    } else if (value === '') {
-      return matches
-    }
-
-    return filterResult
-  }
-
-  handleFilterByLeague = (value, matches) => {
+  handleFilterByLeague = value => {
     const { data } = this.props.matches.matchesPlaylists
 
     let filterResult = []
@@ -238,57 +154,71 @@ class Matches extends React.Component {
         for (let i = 0; i < vidDt.length; i++) {
           filterResult.push(vidDt[i])
         }
-      } else {
-        return matches
       }
     })
     return filterResult
   }
 
-  handleFilterAllLeague = (value, matches) => {
-    const { data } = this.props.matches.matchesPlaylists
-    // for view all video from league
-    let filterResult = []
-    if (value !== 0) {
-      data.forEach(dt => {
-        if (dt.id) {
-          const vidDt = dt.videos
-          for (let i = 0; i < vidDt.length; i++) {
-            filterResult.push(vidDt[i])
-          }
-        }
-      })
-    } else {
-      return matches
-    }
-    return filterResult
+  // handleFilterAllLeague = (value, matches) => {
+  //   const { data } = this.props.matches.matchesPlaylists
+  //   // for view all video from league
+  //   let filterResult = []
+  //   if (value !== 0) {
+  //     data.forEach(dt => {
+  //       if (dt.id) {
+  //         const vidDt = dt.videos
+  //         for (let i = 0; i < vidDt.length; i++) {
+  //           filterResult.push(vidDt[i])
+  //         }
+  //       }
+  //     })
+  //   } else {
+  //     return matches
+  //   }
+  //   return filterResult
+  // }
+
+  handleDateFilter = value => {
+    this.setState({ filterByDates: value })
   }
 
-  //start
-  handleCategoryFilter = (category, value) => {
-    let filterResult = []
+  handleCategoryFilter = value => {
     let filterLeagueRes = []
-    let selectedVal = value
-    const { filterByDates, filterByType, filterByLeague, filterAllLeague, allMatches, selectedWeek } = this.state
+    const { allMatches } = this.state
 
-    if (category == 'ByDate') {
-      this.setState({ filterByDates: selectedVal })
+    let matchesList = []
+    let result
+
+    const startWeekDate = moment().startOf('isoWeek')
+    const date = new Date(moment().startOf('date'))
+    const swdTimestamp = date.getTime() / 1000
+
+    if (value == 'all') {
+      filterLeagueRes = allMatches
+    } else {
+      filterLeagueRes = this.handleFilterByLeague(value, allMatches)
     }
 
-    //League
-    if (category == 'League') {
-      filterLeagueRes = this.handleFilterByLeague(selectedVal, allMatches)
-      filterResult = this.handleSortMatches(filterResult)
-      this.setState({ allMatches: filterLeagueRes, matches: filterLeagueRes, filterByLeague: selectedVal })
-    }
+    result = this.getThreeWeeksDate(filterLeagueRes)
+    matchesList = result.matchesList
 
-    if (category == 'All') {
-      filterLeagueRes = this.handleFilterAllLeague(selectedVal, allMatches)
-      filterResult = this.handleSortMatches(filterResult)
-    }
-    this.setState({ allMatches: filterLeagueRes, matches: filterLeagueRes, filterByLeague: selectedVal })
+    this.setState({
+      matches: matchesList,
+      filterByLeague: value,
+      selectedWeek: 2,
+      filterByDates: swdTimestamp,
+      startWeekDate: startWeekDate,
+      hasLive: result.hasLive,
+    })
 
-    // all
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 500,
+        smooth: true,
+        offset: -150,
+      })
+    }, 500)
   }
 
   //expand This Week
@@ -311,7 +241,9 @@ class Matches extends React.Component {
     let swdTimestamp = ''
     if (value == 1) {
       //lastMonday
-      startWeekDate = moment().day(-6)
+      startWeekDate = moment()
+        .subtract(1, 'weeks')
+        .startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -323,7 +255,9 @@ class Matches extends React.Component {
     }
     if (value == 3) {
       //nextWeek
-      startWeekDate = moment().day(8)
+      startWeekDate = moment()
+        .add(1, 'weeks')
+        .startOf('isoWeek')
       const date = new Date(moment(startWeekDate).startOf('date'))
       swdTimestamp = date.getTime() / 1000
     }
@@ -333,6 +267,15 @@ class Matches extends React.Component {
       filterByDates: swdTimestamp,
       startWeekDate: startWeekDate,
     })
+
+    const formatStartTime = formatDateTime(swdTimestamp, 'DD MM YYYY')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 500,
+        smooth: true,
+        offset: -150,
+      })
+    }, 500)
   }
 
   renderWeek = () => {
@@ -366,34 +309,7 @@ class Matches extends React.Component {
     )
   }
 
-  renderFilterByType = () => {
-    const { filterByType } = this.state
-    const typeList = [{ id: 'live', title: 'Live' }, { id: 'frm', title: 'Replay Match' }, { id: 'highlightReplay', title: 'Highlight Match' }]
-
-    return (
-      <>
-        {typeList.map(dt => {
-          return (
-            <div className={s.labelVideoType} key={dt.id}>
-              <div
-                className={`${s.filterLabel} ${dt.id == filterByType ? s.selectedFilter : ''}`}
-                // onClick={() => {
-                //   this.handleCategoryFilter('VideoType', dt.id)
-                // }}
-                value={dt.id}
-              >
-                {dt.title}
-              </div>
-            </div>
-          )
-        })}
-      </>
-    )
-  }
-
   categoryFilter = () => {
-    const { filterByLeague, leagueList } = this.state
-
     return (
       <>
         {/* this week left menu */}
@@ -413,40 +329,68 @@ class Matches extends React.Component {
     )
   }
 
-  ShowMatchCard = () => {
+  renderMatchCard = () => {
     const { matches } = this.state
 
-    const sortMatches = _sortBy(matches, match => match.startTime)
+    let flagLive = false
+    return matches.map((matchDt, index) => {
+      if (matchDt.id) {
+        let flag = true
+        const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        if (index > 0) {
+          const prevFrmtStrTime = matches[index - 1].startTime
+            ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY')
+            : ''
+          if (prevFrmtStrTime == formatStartTime) {
+            flag = false
+          }
+        }
+        const matchLive = isMatchLive(matchDt.startTime, matchDt.endTime)
+        if (!flagLive && matchLive) {
+          flagLive = matchLive
+        } else {
+          flagLive = false
+        }
 
-    if (matches == '') {
-      return (
-        <>
-          <div className={s.noMatchContent}>Tidak Ada Pertandingan</div>
-        </>
-      )
-    } else {
-      return (
-        <LazyLoad containerClassName={s.matchesCardList__container}>
-          {sortMatches.map((matchDt, index) => {
-            if (index < this.state.limit.length) {
-              return (
-                <>
-                  <MatchList key={matchDt.id} data={matchDt} clickAble={true} />
-                </>
-              )
-            }
-          })}
-        </LazyLoad>
-      )
-    }
+        return (
+          <Link to={`/watch?v=${matchDt.id}`}>
+            <MatchList
+              toJumpLive={flagLive}
+              key={matchDt.id}
+              data={matchDt}
+              noClickAble={false}
+              formatStartTime={flag ? formatStartTime : ''}
+            />
+          </Link>
+        )
+      } else {
+        return (
+          <MatchList
+            noClickAble={true}
+            data={matchDt}
+            formatStartTime={matchDt.dateId}
+            isNoSchedule
+            noScheduleTitle={'No Match'}
+          />
+        )
+      }
+    })
+  }
+
+  handleJumpToLive = () => {
+    setTimeout(() => {
+      scroller.scrollTo('isLive', {
+        duration: 500,
+        smooth: true,
+        offset: -150, // Scrolls to element + 50 pixels down the page
+      })
+    }, 500)
   }
 
   render() {
-    const matchCardData = this.props.matches.data
     const matchPlaylists = this.props.matches.matchesPlaylists
 
-    const { filterByDates, startWeekDate } = this.state
-
+    const { filterByDates, startWeekDate, hasLive } = this.state
     const isDark = false
     return (
       <>
@@ -458,40 +402,38 @@ class Matches extends React.Component {
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
-                <InfiniteScroll
-                  dataLength={this.state.limit.length}
-                  next={this.fetchMoreData}
-                  hasMore={this.state.hasMore}
-                  hasChildren={true}
-                  loader={<div className={s.labelLoaderIcon}>{/*<LoaderComp /> */}</div>}
-                  height={800}
-                >
-                  {/* start data infinite scroll*/}
-                  <div className={s.matchlist_wrapper}>
-                    <HorizontalPlaylist
-                      handleCategoryFilter={this.handleCategoryFilter}
-                      matchesPlaylists={this.props.matches.matchesPlaylists}
-                      filterByLeague={this.state.filterByLeague}
-                      // filterAllLeague={this.state.filterAllLeague}
-                      expandLeague={this.state.expandLeague}
-                      categoryFilterType={'League'}
-                      categoryFilterAll={'All'}
-                      allButtonOn
-                      allCat
+                {/* start data infinite scroll*/}
+                <div className={s.matchlist_wrapper}>
+                  <HorizontalPlaylist
+                    handleCategoryFilter={this.handleCategoryFilter}
+                    matchesPlaylists={this.props.matches.matchesPlaylists}
+                    filterByLeague={this.state.filterByLeague}
+                    // filterAllLeague={this.state.filterAllLeague}
+                    expandLeague={this.state.expandLeague}
+                    categoryFilterType={'League'}
+                    categoryFilterAll={'All'}
+                    allButtonOn
+                    allCat
+                  />
+                  <div className={s.matches_grid}>
+                    <span>{this.categoryFilter()}</span>
+                    <span>
+                      <div className={s.matchlist_wrappercontent_center}>
+                        <div className={s.matchlist_Pagetitle}>{this.renderMatchCard()}</div>
+                      </div>
+                    </span>
+                    <VerticalCalendar
+                      handleCategoryFilter={this.handleDateFilter}
+                      selectedDate={filterByDates}
+                      startOfWeek={startWeekDate}
+                      hasLiveLogo={hasLive}
+                      handleJumpToLive={this.handleJumpToLive}
+                      isChannel={false}
                     />
-                    <div className={s.matches_grid}>
-                      <span>{this.categoryFilter()}</span>
-                      <span>
-                        <div className={s.matchlist_wrappercontent_center}>
-                          <div className={s.matchlist_Pagetitle}>{matchCardData.length > 0 && this.state.limit != null ? <>{this.ShowMatchCard()}</> : <div>Tidak Ada Jadwal Matches</div>}</div>
-                        </div>
-                      </span>
-                      <VerticalCalendar handleCategoryFilter={this.handleCategoryFilter} categoryFilterType={'ByDate'} selectedDate={filterByDates} startOfWeek={startWeekDate} />
-                    </div>
                   </div>
-                  {/* end data infinite scroll */}
-                </InfiniteScroll>
+                </div>
               </div>
+              {/* end data infinite scroll */}
             </div>
           </>
         )}
@@ -506,7 +448,6 @@ function mapStateToProps(state) {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getMatches: id => dispatch(matchListActions.getAllMatches(id)),
   getAllGenreSpo: id => dispatch(matchListActions.getAllGenreSpo(id)),
 })
 

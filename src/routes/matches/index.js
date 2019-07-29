@@ -7,19 +7,17 @@ const title = 'Match List Page'
 const description = 'Choose your favourite Matches via Mola'
 
 function action({ isMobile, store, pathname }) {
-  const pathnameArr = pathname.split('/')
-  const playlistId = pathnameArr.length === 3 ? pathnameArr[pathnameArr.length - 1] : ''
   return {
     chunks: ['matches'],
     title,
     description,
     component: isMobile ? (
       <MolaLayout>
-        <MatchesMobile {...store} playlistId={playlistId} pathname={pathname} />
+        <MatchesMobile {...store} pathname={pathname} />
       </MolaLayout>
     ) : (
       <MolaLayout>
-        <MatchesDesktop playlistId={playlistId} title={title} pathname={pathname} />
+        <MatchesDesktop title={title} pathname={pathname} />
       </MolaLayout>
     ),
   }

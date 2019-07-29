@@ -32,7 +32,7 @@ class Channels extends Component {
   state = {
     activeChannel: '',
     activeChannelId: '',
-    activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
+    activeDate: formatDateTime(Date.now() / 1000, 'DD MMMM'),
     scheduleList: [],
     expandLeague: true,
     limit: Array.from({ length: 12 }),
@@ -45,6 +45,7 @@ class Channels extends Component {
     const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, channelsPlaylist, fetchVideoByid, user, getVUID } = this.props
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
+      timezone: 7,
     }
     fetchChannelsPlaylist('channels-m').then(() => {
       fetchChannelSchedule(selectedDate)
@@ -155,7 +156,7 @@ class Channels extends Component {
       this.setState({
         activeChannel: filteredSchedule.title,
         activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMM'),
+        activeDate: formatDateTime(time, 'DD MMMM'),
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
       history.push(`/channels/${id}`)
@@ -166,7 +167,8 @@ class Channels extends Component {
     const strDate = new Date(date * 1000)
     const selectedDate = {
       fullDate: moment(strDate).format('YYYYMMDD'),
-      dayMonth: formatDateTime(date, 'DD MMM'),
+      dayMonth: formatDateTime(date, 'DD MMMM'),
+      timezone: 7,
     }
     this.setState({
       activeDate: selectedDate.dayMonth,
@@ -243,8 +245,8 @@ class Channels extends Component {
                 {...videoSettings}
               />
             ) : (
-                <div>Video Not Available</div> // styling later
-              )}
+              <div>Video Not Available</div> // styling later
+            )}
           </div>
           <PrimaryMenu handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} channelCategory={channelCategory} />
           <div className={styles.epg__list__container}>

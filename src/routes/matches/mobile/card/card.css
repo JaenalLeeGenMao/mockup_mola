@@ -6,16 +6,18 @@
 
   /* height: 123px; */
   height: 8rem;
+  width: 22rem;
   justify-content: flex-start;
   margin-top: 10px;
 }
 
 .card__date {
   /* flex: 0.3; */
-  font-size: 1.3rem;
+  font-size: 1rem;
   line-height: 1.6rem;
+  font-weight: 600;
   padding: 5px;
-  width: 74px;
+  width: 100px;
   background-color: #383838;
 }
 
@@ -49,6 +51,8 @@
   height: 2.6rem;
   margin-bottom: 15px;
   align-items: center;
+  font-size: 1rem;
+  font-weight: normal;
 }
 
 .card__club img {
@@ -80,5 +84,16 @@
 .card__scoring {
   text-align: right;
   font-size: 1.5rem;
-  margin: 1.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+.card__dateLabel {
+  font-weight: normal;
+}
+
+.tomorrowDate {
+  background-color: #ad811e;
+}
+
+.defaultColor {
+  background-color: #383838;
 }

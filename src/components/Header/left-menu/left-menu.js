@@ -86,7 +86,7 @@ class LeftMenu extends Component {
     // }
     return (
       <>
-        <div className={`${styles.left__menu} tourOtherCategory`}>
+        <div className={`${styles.left__menu}`}>
           {!leftMenuOff && (
             <span>
               <LazyLoad className={styles.left__menu_icon_wrapper}>
@@ -103,7 +103,8 @@ class LeftMenu extends Component {
                     </>
                   )}
                   {isMobile && (
-                    <div className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''} tourOtherCategory`}>
+                    <div
+                      className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''}`}>
                       <DropdownList className={styles.left_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
                       {/* {showLibrary && (
                         <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>

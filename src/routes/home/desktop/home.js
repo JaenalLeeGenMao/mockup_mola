@@ -42,9 +42,12 @@ let ticking = false,
   flag = false
 
 const customTourStyle = {
+  // options: {
+  //   arrowColor: 'red'
+  // },
   buttonNext: {
     backgroundColor: '#2C56FF',
-    fontSize: '1.06rem',
+    fontSize: '1.3rem',
     lineHeight: '1',
     padding: '8px 15px',
     textTransform: 'uppercase',
@@ -54,7 +57,7 @@ const customTourStyle = {
   },
   buttonBack: {
     color: '#000000',
-    fontSize: '1.06rem',
+    fontSize: '1.3rem',
     textTransform: 'uppercase',
     letterSpacing: '1.67px',
     fontWeight: '600',
@@ -65,21 +68,21 @@ const customTourStyle = {
   buttonSkip: {
     color: '#000000',
     fontWeight: '600',
-    fontSize: '1.06rem',
+    fontSize: '1.3rem',
     textTransform: 'uppercase',
     letterSpacing: '1.67px',
     padding: '0',
   },
   tooltipContent: {
-    fontSize: '1.06rem',
+    fontSize: '1.4rem',
     padding: '0',
     textAlign: 'left',
     color: '#858585',
-    lineHeight: '2',
+    lineHeight: '2rem',
     letterSpacing: '0.5px',
   },
   tooltipTitle: {
-    fontSize: '1.15rem',
+    fontSize: '1.5rem',
     textAlign: 'left',
     margin: '0px 0px 8px',
     letterSpacing: '0.59px',
@@ -89,7 +92,7 @@ const customTourStyle = {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   spotlight: {
-    borderRadius: '4rem',
+    borderRadius: '5px',
   },
   tooltip: {
     width: '30rem',
@@ -109,7 +112,7 @@ class Home extends Component {
     videos: [],
     startGuide: false,
     stepIndex: 0,
-    steps: tourSteps[this.props.user.lang],
+    steps: tourSteps.en,
     playlistSuccess: false,
     sliderRefs: [],
   }
@@ -159,13 +162,13 @@ class Home extends Component {
           stepIndex: index - 1,
         },
         () => {
-          if (index === 4) {
+          if (index === 5) {
             this.sliderRefs[0].slickPrev()
           }
         }
       )
     } else {
-      if (action === ACTIONS.NEXT && index === 4) {
+      if (action === ACTIONS.NEXT && index === 5) {
         if (videos.data[0].data.length > 1) {
           this.sliderRefs[0].slickNext()
         } else {
@@ -593,7 +596,6 @@ class Home extends Component {
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
-
     return (
       <Fragment>
         <Joyride
@@ -638,7 +640,7 @@ class Home extends Component {
                   {scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? (
                     this.renderMenuBanner(activeSlide, this.state.playlists.data, scrollIndex, this.handleScrollToIndex)
                   ) : (
-                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isGray={1} onClick={this.handleScrollToIndex} />
+                      <HomeMenu playlists={this.state.playlists.data} activeIndex={scrollIndex} isDark={isDark} onClick={this.handleScrollToIndex} />
                     )}
                 </div>
                 {scrollIndex != 0 &&
@@ -723,7 +725,7 @@ class Home extends Component {
                     {scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? (
                       this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, this.handleNextPrevSlide, 'horizontal')
                     ) : (
-                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isGray={1} onClick={this.handleNextPrevSlide} type="horizontal" />
+                        <HomeMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={isDark} onClick={this.handleNextPrevSlide} type="horizontal" />
                       )}
                   </div>
                 </div>

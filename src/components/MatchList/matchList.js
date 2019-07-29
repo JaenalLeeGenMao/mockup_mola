@@ -5,20 +5,31 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Link from '@components/Link'
 
 import styles from './matchList.css'
-import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
+import {
+  formatDateTime,
+  isToday,
+  isTomorrow,
+  isMatchPassed,
+  isMatchLive,
+} from '@source/lib/dateTimeUtil'
 
 import { defaultImgClub } from '@global/imageUrl'
 
 import moment from 'moment'
-
+import Scroll from 'react-scroll'
+let Element = Scroll.Element
 class MatchList extends React.Component {
   state = {
     titleTemps: [],
+    hour: 0,
+    minutes: 0,
   }
 
-  cardDateFormat = (startTime, endTime) => {
+  cardDateFormat = (startTime, endTime, isChannel = false) => {
     let text = ''
-    text = formatDateTime(startTime, 'DD MMMM HH.mm')
+    text = isChannel
+      ? formatDateTime(startTime, 'HH.mm')
+      : formatDateTime(startTime, 'DD MMMM HH.mm')
 
     if (isToday(startTime, endTime)) {
       if (isMatchLive(startTime, endTime)) {
@@ -30,9 +41,9 @@ class MatchList extends React.Component {
   }
 
   renderMatch() {
-    const { homeTeam, awayTeam, title } = this.props.data
+    const { homeTeam = [], awayTeam = [], title } = this.props.data
 
-    if (homeTeam.length > 0 && awayTeam.length > 0) {
+    if (homeTeam && awayTeam && homeTeam.length > 0 && awayTeam.length > 0) {
       return (
         <div className={styles.matchList__matches}>
           <div className={styles.matchList__club}>
@@ -47,7 +58,11 @@ class MatchList extends React.Component {
                       }}
                     />
                     <span>{ht.attributes.name}</span>
-                    {ht.attributes.score && <span className={styles.matchList__scoring}>{ht.attributes.score}</span>}
+                    {ht.attributes.score && (
+                      <span className={styles.matchList__scoring}>
+                        {ht.attributes.score}
+                      </span>
+                    )}
                   </>
                 )
               })}
@@ -65,7 +80,11 @@ class MatchList extends React.Component {
                       }}
                     />
                     <span>{at.attributes.name}</span>
-                    {at.attributes.score && <span className={styles.matchList__scoring}>{at.attributes.score}</span>}
+                    {at.attributes.score && (
+                      <span className={styles.matchList__scoring}>
+                        {at.attributes.score}
+                      </span>
+                    )}
                   </>
                 )
               })}
@@ -86,20 +105,82 @@ class MatchList extends React.Component {
   }
 
   render() {
-    const { data, clickAble } = this.props
-    const { images } = this.props.data
-    const date = this.cardDateFormat(data.startTime, data.endTime)
-    const matchLive = isMatchLive(data.startTime, data.endTime)
+    const {
+      data,
+      noClickAble = false,
+      formatStartTime = '',
+      toJumpLive = false,
+      isNoSchedule = false,
+      noScheduleTitle = '',
+      isChannel = false
+    } = this.props
 
-    return (
-      <div className={clickAble ? `${styles.matchList__container} ${styles.pointer}` : styles.matchList__container}>
-        <div className={matchLive ? styles.matchList__date + ' ' + styles.matchList__live_now : styles.matchList__date}>
-          <p className={styles.matchList__labelDate}> {date} </p>
-          <div className={styles.matchList__leagueImg}>{images ? <img className={styles.matchList__league_logo} src={images.thumbnails.cover} /> : ''}</div>
-        </div>
-        {this.renderMatch()}
-      </div>
-    )
+    if (!isNoSchedule) {
+      const images = this.props.data ? this.props.data.images : ''
+      const date = this.cardDateFormat(data.startTime, data.endTime, isChannel)
+      const matchLive = isMatchLive(data.startTime, data.endTime)
+      const hour =
+        data.endTime && data.startTime
+          ? new Date(data.endTime * 1000).getHours() -
+          new Date(data.startTime * 1000).getHours()
+          : ''
+      const minutes = data.startTime
+        ? new Date(data.startTime * 1000).getMinutes()
+        : ''
+      const channelOrMatchStyle = isChannel
+        ? `${styles.channel__display__duration} ${styles.matchList__date}`
+        : styles.matchList__date
+      const isLiveMatch = matchLive ? styles.matchList__live_now : ''
+      const leftBoxStyle = `${channelOrMatchStyle} ${isLiveMatch}`
+      return (
+        <>
+          {toJumpLive && (
+            <Element name={'isLive'}>
+              <div />
+            </Element>
+          )}
+          <Element name={formatStartTime}>
+            <div className={noClickAble ? styles.matchList__container : `${styles.matchList__container} ${styles.pointer}`}>
+              <div className={leftBoxStyle}>
+                <p className={styles.matchList__labelDate}>{date}</p>
+                {isChannel && (
+                  <div className={styles.channel__duration__text}>
+                    {hour > 0 && <div> {hour}hr </div>}
+                    {minutes > 0 && <div> {minutes}min. </div>}
+                  </div>
+                )}
+                {images &&
+                  !isChannel && (
+                    <div className={styles.matchList__leagueImg}>
+                      <img
+                        className={styles.matchList__league_logo}
+                        src={images.thumbnails.cover}
+                      />
+                    </div>
+                  )}
+              </div>
+              {this.renderMatch()}
+            </div>
+          </Element>
+        </>
+      )
+    } else {
+      return (
+        <Element name={formatStartTime}>
+          {/* <div className={styles.matchList__container}>
+            <div className={styles.matchList__date}>
+              <p className={styles.matchList__labelDate}>{data.title}</p>
+            </div>
+            <div className={styles.matchList__matches}>
+              <div className={styles.matchList__NoHomeAwayTeam}>
+                <span>{noScheduleTitle}</span>
+              </div>
+            </div>
+          </div> */}
+          <div />
+        </Element>
+      )
+    }
   }
 }
 

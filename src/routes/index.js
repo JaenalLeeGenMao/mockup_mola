@@ -41,7 +41,8 @@ const routes = {
     },
     {
       path: '/accounts/history',
-      load: () => import(/* webpackChunkName: 'history' */ './accounts/history'),
+      load: () =>
+        import(/* webpackChunkName: 'history' */ './accounts/history'),
     },
     {
       path: '/accounts/inbox',
@@ -53,35 +54,43 @@ const routes = {
     },
     {
       path: '/accounts/register',
-      load: () => import(/* webpackChunkName: 'register' */ './accounts/register'),
+      load: () =>
+        import(/* webpackChunkName: 'register' */ './accounts/register'),
     },
     {
       path: '/accounts/profile',
-      load: () => import(/* webpackChunkName: 'profile' */ './accounts/profile'),
+      load: () =>
+        import(/* webpackChunkName: 'profile' */ './accounts/profile'),
     },
     {
       path: '/accounts/forgotPassword',
-      load: () => import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
+      load: () =>
+        import(/* webpackChunkName: 'forgotPassword' */ './accounts/forgotPassword'),
     },
     {
       path: '/accounts/resetPassword',
-      load: () => import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
+      load: () =>
+        import(/* webpackChunkName: 'resetPassword' */ './accounts/resetPassword'),
     },
     {
       path: '/accounts/security',
-      load: () => import(/* webpackChunkName: 'security' */ './accounts/security'),
+      load: () =>
+        import(/* webpackChunkName: 'security' */ './accounts/security'),
     },
     {
       path: '/accounts/setting',
-      load: () => import(/* webpackChunkName: 'setting' */ './accounts/setting'),
+      load: () =>
+        import(/* webpackChunkName: 'setting' */ './accounts/setting'),
     },
     {
       path: '/accounts/thankyou',
-      load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
+      load: () =>
+        import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
     },
     {
       path: '/accounts/consent',
-      load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
+      load: () =>
+        import(/* webpackChunkName: 'consent' */ './accounts/consent'),
     },
     {
       path: '/system-info',
@@ -97,19 +106,18 @@ const routes = {
     },
     {
       path: '/history-transactions',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+      load: () =>
+        import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
       path: '/history-transactions/:id',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+      load: () =>
+        import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
     {
       path: '/switch-channels',
-      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
-    },
-    {
-      path: '/error/smart',
-      load: () => import(/* webpackChunkName: 'smart' */ './error/smart'),
+      load: () =>
+        import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
     },
     {
       path: '/matches',
@@ -122,7 +130,8 @@ const routes = {
     },
     {
       path: '/download-app',
-      load: () => import(/* webpackChunkName: 'download-app' */ './download-app'),
+      load: () =>
+        import(/* webpackChunkName: 'download-app' */ './download-app'),
       children: [
         {
           path: '/:id',
@@ -130,8 +139,8 @@ const routes = {
       ],
     },
     {
-      path: '/playlists',
-      load: () => import(/* webpackChunkName: 'playlists' */ './playlist'),
+      path: '/categories',
+      load: () => import(/* webpackChunkName: 'categories' */ './playlist'),
       children: [
         {
           path: '/:id',
@@ -161,8 +170,18 @@ const routes = {
       ],
     },
     {
+      path: '/articles',
+      load: () => import(/* webpackChunkName: 'articles' */ './articles'),
+      children: [
+        {
+          path: '/:id',
+        },
+      ],
+    },
+    {
       path: '/live-support',
-      load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
+      load: () =>
+        import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
@@ -184,11 +203,17 @@ const routes = {
         const pathRoute = route.chunks[0]
         if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
           if (pathRoute === 'home' || pathRoute === 'sport') {
-            document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+            document.getElementsByClassName(
+              'embeddedServiceHelpButton'
+            )[0].style.visibility =
+              'visible'
           } else {
             if (pathRoute === 'live-support') {
               if (window.App.isMobile) {
-                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+                document.getElementsByClassName(
+                  'embeddedServiceHelpButton'
+                )[0].style.visibility =
+                  'visible'
                 let _el = document.getElementsByClassName('helpButton')[0]
                 _el.style.left = '44.5vw'
                 _el.style.right = '-50vw'
@@ -196,7 +221,10 @@ const routes = {
                 _el.style.visibility = 'visible'
               }
             } else {
-              document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+              document.getElementsByClassName(
+                'embeddedServiceHelpButton'
+              )[0].style.visibility =
+                'hidden'
             }
           }
         }
@@ -217,13 +245,17 @@ const track = async store => {
   if (process.env.BROWSER) {
     var timer = null
 
-    addListenerMulti(document, 'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick', function(e) {
-      if (timer) clearTimeout(timer)
-      timer = setTimeout(function(t) {
-        // console.log("EVENT ALL")
-        tracker.sessionId()
-      }, 60000)
-    })
+    addListenerMulti(
+      document,
+      'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick',
+      function(e) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(function(t) {
+          // console.log("EVENT ALL")
+          tracker.sessionId()
+        }, 60000)
+      }
+    )
     const { location } = window
     // Parse Current URL
     const { search, pathname } = window.location

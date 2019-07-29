@@ -2,22 +2,22 @@ import types from '../constants'
 import { findIndexByKeyValue } from './util'
 
 const initialState = {
-  meta: {
-    status: 'loading',
-  },
-  data: [],
-  genreSpo: {
-    meta: {
-      status: 'loading',
-    },
-    data: [],
-  },
-  matchesList: {
-    meta: {
-      status: 'loading',
-    },
-    data: [],
-  },
+  // meta: {
+  //   status: 'loading',
+  // },
+  // data: [],
+  // genreSpo: {
+  //   meta: {
+  //     status: 'loading',
+  //   },
+  //   data: [],
+  // },
+  // matchesList: {
+  //   meta: {
+  //     status: 'loading',
+  //   },
+  //   data: [],
+  // },
   matchesPlaylists: {
     meta: {
       status: 'loading',

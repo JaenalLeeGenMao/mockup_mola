@@ -585,18 +585,10 @@ const normalizeProgrammeGuides = response => {
 
       return {
         id,
-        start: moment(start)
-          .utcOffset(7)
-          .format(), // parse to WIB
-        end: moment(end)
-          .utcOffset(7)
-          .format(), // parse to WIB
-        startTime: moment(start)
-          .utcOffset(7)
-          .unix(), // parse to WIB
-        endTime: moment(end)
-          .utcOffset(7)
-          .unix(), // parse to WIB
+        start,// parse to WIB
+        end,// parse to WIB
+        startTime: moment(start).unix(), // parse to WIB
+        endTime: moment(end).unix(), // parse to WIB
         href: `/movie-detail/${videoId}`,
         title,
         description,
