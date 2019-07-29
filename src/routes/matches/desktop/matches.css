@@ -6,44 +6,34 @@ body {
 
 .matchlist_container {
   padding: 8px;
+}
 
-  /* overflow: auto;
-  height: 100vh; */
+.matches_header_bg {
+  height: 6rem;
+  display: block;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: #000;
+  z-index: 1;
 }
 
 .matchlist_wrapper {
   display: block;
-
-  /* padding-top: 10rem; */
   margin: 0;
   color: white;
-
-  /* height: 100vh; */
-
-  /* margin: 154px 0; */
-
-  /* display: grid;
-  grid-template-columns: 0.5fr 1.5fr 0.18fr;
-  grid-template-rows: repeat(3, 0.1fr 0.1fr 0.1fr); */
-
-  /* justify-content: left; */
 }
 
 .matchlist_wrappercontent_center {
   grid-area: 3/2;
+  margin-bottom: 50vh;
 }
 
 .matchlist_Pagetitle {
   color: white;
-
-  /* font-size: 17.5px; */
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   text-align: left;
-
-  /* grid-template-columns:  1fr 1fr 1fr 1fr;
-  grid-template-rows:  repeat(4, 1fr 1fr 1fr 1fr);
-  display:  grid; */
 }
 
 .matchlist_valuelistitem {

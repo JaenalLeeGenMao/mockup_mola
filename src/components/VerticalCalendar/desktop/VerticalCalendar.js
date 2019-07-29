@@ -42,6 +42,7 @@ class VerticalCalendar extends Component {
     // activeScrollDate = to
     this.setState({
       isActiveLive: false,
+      activeDate: to,
     })
   }
 
@@ -74,8 +75,8 @@ class VerticalCalendar extends Component {
               />
             )}
             {this.getCalendar(startOfWeek).map(dt => {
-              const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
-              const today = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+              const formatStartTime = formatDateTime(dt.strTimestamp, 'YYMMDD')
+              const today = formatDateTime(Date.now() / 1000, 'YYMMDD')
               // const isSelected = dt.strTimestamp == selectedDate || dt.title == selectedDate
               let activeClass = ''
               let isSelected = false
@@ -90,8 +91,10 @@ class VerticalCalendar extends Component {
                 if (today === formatStartTime) {
                   activeClass = s.live__flex
                 } else if (
-                  dt.strTimestamp == selectedDate ||
-                  (dt.title == selectedDate && !(today === formatStartTime))
+                  (!activeDate &&
+                    (dt.strTimestamp == selectedDate || dt.title == selectedDate) &&
+                    !(today === formatStartTime)) ||
+                  activeDate == formatStartTime
                 ) {
                   activeClass = s.selectedLabel
                   isSelected = true

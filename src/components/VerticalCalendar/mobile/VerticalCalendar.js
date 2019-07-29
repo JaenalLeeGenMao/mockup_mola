@@ -20,6 +20,7 @@ class VerticalCalendar extends Component {
     // isLive: false,
     calendar: [],
     isActiveLive: false,
+    activeDate: '',
   }
 
   componentDidMount() {
@@ -84,6 +85,7 @@ class VerticalCalendar extends Component {
     // activeScrollDate = to
     this.setState({
       isActiveLive: false,
+      activeDate: to,
     })
   }
 
@@ -97,7 +99,7 @@ class VerticalCalendar extends Component {
 
   render() {
     const { selectedDate, hasLiveLogo, isChannel = true } = this.props
-    const { calendar, isActiveLive } = this.state
+    const { calendar, isActiveLive, activeDate } = this.state
     return (
       <span>
         <div className={`${s.filterContentfilterByDay_container} ${isChannel ? s.container_relative : ''}`}>
@@ -110,8 +112,8 @@ class VerticalCalendar extends Component {
             )}
             {calendar.length > 0 &&
               calendar.map(dt => {
-                const formatStartTime = formatDateTime(dt.strTimestamp, 'DD MM YYYY')
-                const today = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+                const formatStartTime = formatDateTime(dt.strTimestamp, 'YYMMDD')
+                const today = formatDateTime(Date.now() / 1000, 'YYMMDD')
 
                 let activeClass = ''
                 if (isChannel) {
@@ -124,8 +126,10 @@ class VerticalCalendar extends Component {
                   if (today === formatStartTime) {
                     activeClass = s.live__flex
                   } else if (
-                    dt.strTimestamp == selectedDate ||
-                    (dt.title == selectedDate && !(today === formatStartTime))
+                    (!activeDate &&
+                      (dt.strTimestamp == selectedDate || dt.title == selectedDate) &&
+                      !(today === formatStartTime)) ||
+                    activeDate == formatStartTime
                   )
                     activeClass = s.selectedFilter
                 }

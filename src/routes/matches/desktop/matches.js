@@ -83,7 +83,7 @@ class Matches extends React.Component {
     for (var i = 0; i < 21; i++) {
       const addedDate = new Date(addDateTime(startWeekDate, i, 'days'))
       const dtTimestamp = addedDate.getTime()
-      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'DD MM YYYY')
+      const formattedDateTime = formatDateTime(dtTimestamp / 1000, 'YYMMDD')
       const formattedDateTime2 = formatDateTime(dtTimestamp / 1000, 'DD MMMM')
       threeWeeksDate.push({ dateId: formattedDateTime, title: formattedDateTime2 })
     }
@@ -93,7 +93,7 @@ class Matches extends React.Component {
     threeWeeksDate.map(weeksDate => {
       let hasMatch = false
       sortMatches.map((matchDt, index) => {
-        const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        const formatStartTime = formatDateTime(matchDt.startTime, 'YYMMDD')
         if (!hasLive) {
           hasLive = isMatchLive(matchDt.startTime, matchDt.endTime)
         }
@@ -125,7 +125,7 @@ class Matches extends React.Component {
     const result = this.getThreeWeeksDate(matchTemp)
     let matchesList = result.matchesList
     this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
         duration: 500,
@@ -211,7 +211,7 @@ class Matches extends React.Component {
       hasLive: result.hasLive,
     })
 
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'DD MM YYYY')
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
         duration: 500,
@@ -268,7 +268,7 @@ class Matches extends React.Component {
       startWeekDate: startWeekDate,
     })
 
-    const formatStartTime = formatDateTime(swdTimestamp, 'DD MM YYYY')
+    const formatStartTime = formatDateTime(swdTimestamp, 'YYMMDD')
     setTimeout(() => {
       scroller.scrollTo(formatStartTime, {
         duration: 500,
@@ -336,10 +336,10 @@ class Matches extends React.Component {
     return matches.map((matchDt, index) => {
       if (matchDt.id) {
         let flag = true
-        const formatStartTime = formatDateTime(matchDt.startTime, 'DD MM YYYY')
+        const formatStartTime = formatDateTime(matchDt.startTime, 'YYMMDD')
         if (index > 0) {
           const prevFrmtStrTime = matches[index - 1].startTime
-            ? formatDateTime(matches[index - 1].startTime, 'DD MM YYYY')
+            ? formatDateTime(matches[index - 1].startTime, 'YYMMDD')
             : ''
           if (prevFrmtStrTime == formatStartTime) {
             flag = false
@@ -415,6 +415,7 @@ class Matches extends React.Component {
                     allButtonOn
                     allCat
                   />
+                  <div className={s.matches_header_bg} />
                   <div className={s.matches_grid}>
                     <span>{this.categoryFilter()}</span>
                     <span>

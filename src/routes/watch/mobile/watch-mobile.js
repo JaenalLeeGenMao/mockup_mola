@@ -30,7 +30,7 @@ import {
   posterWrapper,
   playIcon,
   movieDetailNotAllowed,
-  headerContainer
+  headerContainer,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -53,7 +53,8 @@ class MovieDetail extends Component {
 
   subtitles() {
     const { movieDetail } = this.props
-    const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
+    const subtitles =
+      movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
     const myTheoPlayer =
       subtitles &&
@@ -93,7 +94,12 @@ class MovieDetail extends Component {
   getConfig = async () => {
     await get('/api/v2/config/app-params').then(result => {
       if (result.data) {
-        const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        const {
+          android_redirect_to_app,
+          ios_redirect_to_app,
+          notice_bar_enabled,
+          notice_bar_message,
+        } = result.data.data.attributes
         this.setState({
           android_redirect_to_app,
           ios_redirect_to_app,
@@ -124,7 +130,7 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}`
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.href = url
     }, 250)
   }
@@ -140,9 +146,12 @@ class MovieDetail extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
       user.loc = loc
 
-      const defaultVidSetting = dataFetched ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+      const defaultVidSetting = dataFetched
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        : {}
 
-      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
+      const checkAdsSettings =
+        adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
         ...checkAdsSettings,
@@ -161,12 +170,25 @@ class MovieDetail extends Component {
       }
 
       const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : countdownWOinfobar
-      if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
-        return <CountDown className={countDownClass} hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={true} />
+      if (
+        this.state.countDownStatus &&
+        getContentTypeName(dataFetched.contentType) === 'live' &&
+        dataFetched.startTime * 1000 > Date.now()
+      ) {
+        return (
+          <CountDown
+            className={countDownClass}
+            hideCountDown={this.hideCountDown}
+            startTime={dataFetched.startTime}
+            videoId={videoId}
+            getMovieDetail={getMovieDetail}
+            isMobile={true}
+          />
+        )
       } else {
         if (isApple) {
           //ios
-          if (!ios_redirect_to_app) {
+          if (ios_redirect_to_app) {
             return (
               <div className={posterWrapper}>
                 <img src={poster} />
@@ -209,7 +231,7 @@ class MovieDetail extends Component {
           }
         } else {
           //android
-          if (!android_redirect_to_app) {
+          if (android_redirect_to_app) {
             return (
               <div className={posterWrapper}>
                 <img src={poster} />
@@ -305,7 +327,9 @@ class MovieDetail extends Component {
       <>
         {dataFetched && (
           <>
-            <div className={headerContainer}><Header isMobile {...this.props} /></div>
+            <div className={headerContainer}>
+              <Header isMobile {...this.props} />
+            </div>
             <div className={movieDetailContainer}>
               {toggleInfoBar &&
                 !isMatchPassed && (
@@ -318,7 +342,13 @@ class MovieDetail extends Component {
                     </div>
                   </div>
                 )}
-              <div className={videoPlayerContainer}>{loadPlayer ? <>{this.renderVideo(dataFetched)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
+              <div className={videoPlayerContainer}>
+                {loadPlayer ? (
+                  <>{this.renderVideo(dataFetched)}</>
+                ) : (
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
+              </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {isMovieBool && <MovieContent dataFetched={dataFetched} />}
               {!isMovieBool && <SportContent dataFetched={dataFetched} />}
