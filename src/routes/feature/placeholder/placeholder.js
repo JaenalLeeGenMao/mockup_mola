@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Carousel from '@components/carousel'
-import { placeholderCardLandscape, placeholderCardPortrait } from '@global/imageUrl'
+import { placeholderBlankLandscape, placeholderBlankPortrait } from '@global/imageUrl'
 import { banners } from '../const'
 import { container, fixedContainer, carouselMargin, DummyPlaceholder, DummyWithoutAnimationPlaceholder } from './style'
 // import styles from './placeholder.css'
@@ -62,7 +62,7 @@ class Placeholder extends Component {
             <DummyWithoutAnimationPlaceholder key={bannerIndex} num={bannerIndex}>
               <img
                 className="bannerImage"
-                src={placeholderCardLandscape}
+                src={placeholderBlankLandscape}
                 // onLoad={this.updateOnImageLoad}
               />
             </DummyWithoutAnimationPlaceholder>
@@ -85,7 +85,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={playlistIndex} num={playlistIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderCardLandscape}
+                  src={placeholderBlankLandscape}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>
@@ -107,7 +107,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={categoryIndex} num={categoryIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderCardLandscape}
+                  src={placeholderBlankLandscape}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>
@@ -129,7 +129,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={movieIndex} num={movieIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderCardLandscape}
+                  src={placeholderBlankLandscape}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>

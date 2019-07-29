@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { getContentTypeName, setMultilineEllipsis } from '@source/lib/globalUtil'
 
-import { placeholderCardLandscape } from '@global/imageUrl'
+import { placeholderBlankLandscape } from '@global/imageUrl'
 
 import { articleContainer, articleGradient, icons } from './style'
 
@@ -21,7 +21,18 @@ class ArticleCard extends Component {
   }
 
   render() {
-    const { id, title, src, contentType = '', createdAt, description, onClick = () => {}, containerClassName = '', className = '', transitionMode = 'scroll' } = this.props,
+    const {
+        id,
+        title,
+        src,
+        contentType = '',
+        createdAt,
+        description,
+        onClick = () => {},
+        containerClassName = '',
+        className = '',
+        transitionMode = 'scroll',
+      } = this.props,
       { show } = this.state,
       date = moment(createdAt).format('DD MMM YYYY')
 
@@ -41,9 +52,18 @@ class ArticleCard extends Component {
 
     return (
       <div onClick={() => onClick()} className={`${articleContainer} ${containerClassName}`}>
-        <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardLandscape} />
+        <img
+          className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${
+            !show ? '' : 'hide'
+          }`}
+          src={placeholderBlankLandscape}
+        />
         <div className="imageWrapper">
-          <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
+          <Lazyload
+            className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`}
+            src={src}
+            handleCallback={this.handleTitleShow}
+          />
         </div>
         {show &&
           whitelistContentTypes[`${contentTypeName}`] && (

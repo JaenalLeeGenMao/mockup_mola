@@ -1,6 +1,6 @@
 import React from 'react'
 import Carousel from '@components/carousel'
-import { placeholderCardLandscape, placeholderCardPortrait } from '@global/imageUrl'
+import { placeholderBlankLandscape, placeholderBlankPortrait } from '@global/imageUrl'
 
 import { DummyWithoutAnimationPlaceholder } from './style'
 
@@ -19,7 +19,7 @@ export const BannerPlaceholder = ({ isMobile, data: banners }) => (
       <DummyWithoutAnimationPlaceholder key={bannerIndex} num={bannerIndex}>
         <img
           className="bannerImage"
-          src={placeholderCardLandscape}
+          src={placeholderBlankLandscape}
           // onLoad={this.updateOnImageLoad}
         />
       </DummyWithoutAnimationPlaceholder>

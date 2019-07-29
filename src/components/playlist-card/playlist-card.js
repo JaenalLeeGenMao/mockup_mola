@@ -3,7 +3,7 @@ import Lazyload from '@components/common/Lazyload/Lazyload'
 
 import { getContentTypeName } from '@source/lib/globalUtil'
 
-import { placeholderCardLandscape } from '@global/imageUrl'
+import { placeholderBlankLandscape } from '@global/imageUrl'
 
 import { playlistContainer, icons } from './style'
 
@@ -20,7 +20,17 @@ class PlaylistCard extends Component {
   }
 
   render() {
-    const { id, name, src, contentType = '', description, onClick = () => {}, containerClassName = '', className = '', transitionMode = 'scroll' } = this.props,
+    const {
+        id,
+        name,
+        src,
+        contentType = '',
+        description,
+        onClick = () => {},
+        containerClassName = '',
+        className = '',
+        transitionMode = 'scroll',
+      } = this.props,
       { show } = this.state
 
     const contentTypeName = getContentTypeName(contentType),
@@ -37,10 +47,22 @@ class PlaylistCard extends Component {
       }
 
     return (
-      <div onClick={() => onClick()} className={`${playlistContainer} ${containerClassName} ${transitionMode === 'scroll' ? '' : 'hoverOff'}`}>
-        <img className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${!show ? '' : 'hide'}`} src={placeholderCardLandscape} />
+      <div
+        onClick={() => onClick()}
+        className={`${playlistContainer} ${containerClassName} ${transitionMode === 'scroll' ? '' : 'hoverOff'}`}
+      >
+        <img
+          className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${
+            !show ? '' : 'hide'
+          }`}
+          src={placeholderBlankLandscape}
+        />
         <div className="imageWrapper">
-          <Lazyload className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`} src={src} handleCallback={this.handleTitleShow} />
+          <Lazyload
+            className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'}`}
+            src={src}
+            handleCallback={this.handleTitleShow}
+          />
           {show &&
             whitelistContentTypes[`${contentTypeName}`] && (
               <div className={icons}>
