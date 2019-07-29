@@ -82,12 +82,8 @@ class Feature extends Component {
           default: `/watch?v=${video.id}`,
         }
 
-        const contentTypeName = getContentTypeName(
-          _.get(video, 'contentType', 'default')
-        )
-        window.location.href =
-          videoTypesRedirectUri[contentTypeName] ||
-          videoTypesRedirectUri.default
+        const contentTypeName = getContentTypeName(_.get(video, 'contentType', 'default'))
+        window.location.href = videoTypesRedirectUri[contentTypeName] || videoTypesRedirectUri.default
       },
     }
 
@@ -115,8 +111,7 @@ class Feature extends Component {
     const isMobile = this.state.viewportWidth <= 680,
       { feature: { playlists, videos, banners, articles } } = this.props
 
-    const isLoading =
-        playlists.meta.status === 'loading' || videos.meta.status === 'loading',
+    const isLoading = playlists.meta.status === 'loading' || videos.meta.status === 'loading',
       // isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
       isSuccess = playlists.meta.status === 'success'
 
@@ -139,9 +134,7 @@ class Feature extends Component {
         <div style={{ height: '8vh' }} />
         {isSuccess && (
           <>
-            {banners.meta.status !== 'success' && (
-              <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />
-            )}
+            {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
             {banners.data.length > 0 && (
               <Carousel
                 wrap={banners.length === 1 ? false : true}
@@ -150,9 +143,7 @@ class Feature extends Component {
                 dragging={true}
                 slidesToShow={isMobile ? 1.25 : 2.25}
                 transitionMode={'scroll3d'}
-                withoutControls={
-                  banners.data.length < contentTypeList['banners'].slideToShow
-                }
+                withoutControls={banners.data.length < contentTypeList['banners'].slideToShow}
                 framePadding="0rem"
               >
                 {banners.data.map(obj => (
@@ -161,7 +152,7 @@ class Feature extends Component {
                     key={obj.id}
                     onClick={() => this.handleOnClick(obj)}
                     alt={obj.title}
-                    src={obj.background.landscape}
+                    src={`${obj.background.landscape}?w=1920&h=1080`}
                     // onLoad={this.updateOnImageLoad}
                     containerClassName={bannerContainer}
                   />
@@ -173,9 +164,7 @@ class Feature extends Component {
                 videos.data.length > 0 &&
                 playlists.data.length === videos.data.length &&
                 videos.data.map((video, carouselIndex) => {
-                  const contentTypeName = getContentTypeName(
-                    _.get(playlists, `data[${carouselIndex}].contentType`, '')
-                  )
+                  const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].contentType`, ''))
 
                   return (
                     <div key={carouselIndex}>
@@ -185,10 +174,7 @@ class Feature extends Component {
                         autoplay={false}
                         sliderCoin={true}
                         dragging={true}
-                        withoutControls={
-                          video.data.length <
-                          contentTypeList[contentTypeName].slideToShow
-                        }
+                        withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
                         slidesToShow={
                           isMobile
                             ? contentTypeList[contentTypeName].slideToScroll
@@ -196,9 +182,7 @@ class Feature extends Component {
                         }
                         transitionMode={'scroll'}
                         cellSpacing={12}
-                        framePadding={
-                          !isMobile ? '0rem' : '0rem 0rem 0rem 1rem'
-                        }
+                        framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {
@@ -208,11 +192,7 @@ class Feature extends Component {
                                   key={obj.id}
                                   alt={obj.title}
                                   description={obj.title}
-                                  src={
-                                    obj.type === 'playlists'
-                                      ? obj.images.cover.portrait
-                                      : obj.background.portrait
-                                  }
+                                  src={obj.type === 'playlists' ? obj.images.cover.portrait : obj.background.portrait}
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => this.handleOnClick(obj)}
                                 />
@@ -226,8 +206,8 @@ class Feature extends Component {
                                   contentType={obj.contentType}
                                   src={
                                     obj.type === 'playlists'
-                                      ? obj.images.cover.landscape
-                                      : obj.background.landscape
+                                      ? `${obj.images.cover.landscape}?w=1920&h=1080`
+                                      : `${obj.background.landscape}?w=1920&h=1080`
                                   }
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => this.handleOnClick(obj)}
@@ -248,10 +228,7 @@ class Feature extends Component {
                               slidesToShow={isMobile ? 1 : 3.5}
                               transitionMode={'scroll'}
                               cellSpacing={isMobile ? 0 : 20}
-                              withoutControls={
-                                articles.data.length <
-                                contentTypeList['articles'].slideToShow
-                              }
+                              withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                               framePadding={!isMobile ? '0rem' : '0rem 1rem'}
                             >
                               {articles.data.map(obj => (
@@ -259,7 +236,7 @@ class Feature extends Component {
                                   key={obj.id}
                                   onClick={() => this.handleOnClick(obj)}
                                   alt={obj.title}
-                                  src={obj.imageUrl}
+                                  src={`${obj.imageUrl}?w=1920&h=1080`}
                                   title={obj.title}
                                   contentType={obj.type}
                                   createdAt={obj.createdAt}
@@ -290,8 +267,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
-  onHandleVideo: (playlist, index) =>
-    dispatch(featureActions.getFeatureVideo(playlist, index)),
+  onHandleVideo: (playlist, index) => dispatch(featureActions.getFeatureVideo(playlist, index)),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
   onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
   onHandleResetVideo: () => dispatch(featureActions.resetFeatureVideos()),
