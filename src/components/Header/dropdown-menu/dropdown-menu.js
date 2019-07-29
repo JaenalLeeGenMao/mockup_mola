@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './dropdown-menu.css'
 import _ from 'lodash'
+import BodyClassName from 'react-body-classname'
 
 class DropdownList extends Component {
   state = {
@@ -62,6 +63,7 @@ class DropdownList extends Component {
 
     return (
       <div className={`${s.dropdown_container} ${className ? className : ''}`}>
+        {isOpenDropdown && <BodyClassName className={s.overflow_hidden} />}
         <div className={labelClassName ? labelClassName : ''}>
           {/* <label ref={node => (this.dropdownLabel = node)}>
             {this.getSelectedMenu(dataList)}

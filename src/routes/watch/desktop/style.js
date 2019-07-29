@@ -23,8 +23,8 @@ export const playIcon = css`
   background-repeat: no-repeat;
   background-size: contain;
   opacity: 1;
-  width: 70px;
-  height: 70px;
+  width: 7rem;
+  height: 7rem;
   display: block;
   top: 50%;
   left: 50%;
@@ -41,7 +41,7 @@ export const movieDetailContainer = css`
   background: #000311;
   color: #fff;
   width: 100vw;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 6rem);
   max-width: 100vw;
   max-height: 100vh;
   display: grid;
@@ -52,7 +52,7 @@ export const movieDetailContainer = css`
 export const movieDetailBottom = css`
   height: 100%;
   overflow: auto;
-  max-height: calc(26vh - 70px);
+  max-height: calc(26vh - 7rem);
   margin-top: 1.5%;
 `
 
@@ -102,7 +102,7 @@ export const controllerContainer = css`
 `
 
 export const videoPlayerContainer = css`
-  height: calc(74vh - 60px - 35px);
+  height: calc(74vh - 6rem - 3.5rem);
   width: 100vw;
   margin: auto;
 
@@ -112,7 +112,7 @@ export const videoPlayerContainer = css`
 `
 
 export const videoPlayerContainer__nobar = css`
-  height: calc(74vh - 60px);
+  height: calc(74vh - 6rem);
   width: 100vw;
   margin: auto;
 
@@ -178,7 +178,7 @@ export const infoBar = css`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 35px;
+  height: 3.5rem;
   z-index: 88;
   background-color: #0862a6;
   display: inline-block;
@@ -193,8 +193,8 @@ export const infoBarClose = css`
   cursor: pointer;
 
   span {
-    width: 14px;
-    height: 14px;
+    width: 1.4rem;
+    height: 1.4rem;
     background-image: url(data:image/svg+xml;charset=utf-8;base64,PCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIyLjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIg0KICAgICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczphPSJodHRwOi8vbnMuYWRvYmUuY29tL0Fkb2JlU1ZHVmlld2VyRXh0ZW5zaW9ucy8zLjAvIg0KICAgICB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjMwcHgiIGhlaWdodD0iMzBweCIgdmlld0JveD0iMCAwIDMwIDMwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzMCAzMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCiAgICAuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGRlZnM+DQo8L2RlZnM+DQo8Zz4NCiAgICA8Zz4NCiAgICAgICAgPGc+DQogICAgICAgICAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjkuNiwwLjRjLTAuNS0wLjUtMS4yLTAuNS0xLjcsMEwwLjQsMjcuOWMtMC41LDAuNS0wLjUsMS4yLDAsMS43QzAuNiwyOS45LDAuOSwzMCwxLjIsMzBzMC42LTAuMSwwLjktMC40DQogICAgICAgICAgICAgICAgTDI5LjYsMi4xQzMwLjEsMS42LDMwLjEsMC44LDI5LjYsMC40eiIvPg0KICAgICAgICA8L2c+DQogICAgPC9nPg0KICAgIDxnPg0KICAgICAgICA8Zz4NCiAgICAgICAgICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yOS42LDI3LjlMMi4xLDAuNGMtMC41LTAuNS0xLjItMC41LTEuNywwYy0wLjUsMC41LTAuNSwxLjIsMCwxLjdsMjcuNiwyNy42YzAuMiwwLjIsMC41LDAuNCwwLjksMC40DQogICAgICAgICAgICAgICAgczAuNi0wLjEsMC45LTAuNEMzMC4xLDI5LjIsMzAuMSwyOC40LDI5LjYsMjcuOXoiLz4NCiAgICAgICAgPC9nPg0KICAgIDwvZz4NCjwvZz4NCjwvc3ZnPg==);
     background-repeat: no-repeat;
     background-size: contain;
@@ -212,12 +212,12 @@ export const infoBarContainer = css`
 
 export const infoBarText = css`
   color: #fff;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: bold;
 `
 
 export const headerContainer = css`
-  height: 60px;
+  height: 6rem;
   position: relative;
   display: block;
 `
@@ -228,5 +228,5 @@ export const videoPlayerWrapper = css`
 `
 
 export const countdownWinfobar = css`
-  height: calc(100% - 65px - 38px) !important;
+  height: calc(100% - 6.5rem - 3.8rem) !important;
 `

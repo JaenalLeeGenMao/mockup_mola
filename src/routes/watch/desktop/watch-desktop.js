@@ -55,7 +55,7 @@ class WatchDesktop extends Component {
     loginPermission: false,
   }
 
-  handleOnVideoLoad = player => {
+  handleOnReadyStateChange = player => {
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
@@ -86,10 +86,6 @@ class WatchDesktop extends Component {
         // this.handleVideoError(e);
       }
     })
-    // player.addEventListener('error', e => {
-    //   console.log('error', e, '======', player.error.code)
-    //   // this.handleVideoError(e);
-    // })
   }
 
   subtitles() {
@@ -239,7 +235,7 @@ class WatchDesktop extends Component {
             subtitles={this.subtitles()}
             poster={poster}
             autoPlay={false}
-            handleOnVideoLoad={this.handleOnVideoLoad}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
             {...videoSettings}
           />
         )
