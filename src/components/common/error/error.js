@@ -10,16 +10,34 @@ import { nightMode404 as notFound, internalServerError, commonError, molaText as
 
 import styles from './error.css'
 
-const Error = ({ className = '', title = '', message = '', isDark = 0 /** isDark is color of the text */, status = 1 /** none, 400, 502 */ }) => {
+const Error = ({
+  className = '',
+  title = '',
+  message = '',
+  isDark = 0 /** isDark is color of the text */,
+  status = 1 /** none, 400, 502 */,
+}) => {
   let imageUri
   switch (status) {
     case 400:
       title = 'This is not the web page you are looking for'
       imageUri = notFound
       break
+    case 403:
+      title = 'This page is forbidden'
+      imageUri = notFound
+    case 404:
+      title = 'Are you sure this is the right address?'
+      imageUri = notFound
+      break
     case 502:
       title = 'Server on Maintenance'
       imageUri = internalServerError
+      break
+    case 503:
+      title = 'Server on Maintenance'
+      imageUri = internalServerError
+      break
       break
     default:
       title = 'Oops, Sorry :('

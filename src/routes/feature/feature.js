@@ -111,26 +111,33 @@ class Feature extends Component {
     const isMobile = this.state.viewportWidth <= 680,
       { feature: { playlists, videos, banners, articles } } = this.props
 
-    const isLoading = playlists.meta.status === 'loading' || videos.meta.status === 'loading',
-      // isError = playlists.meta.status === 'error' || banners.meta.status === 'error',
+    const isLoading = playlists.meta.status === 'loading',
+      isError = playlists.meta.status === 'error',
       isSuccess = playlists.meta.status === 'success'
 
-    // let errorObj = { code: 0, description: '' }
-    // if (banners.meta.error) {
-    //   errorObj = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
-    // } else if (playlists.meta.error) {
-    //   errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
-    // } else if (videos.meta.error) {
-    //   errorObj = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
-    // } else if (articles.meta.error) {
-    //   errorObj = { code: getErrorCode(articles.meta.error), description: 'Video request failed' }
-    // }
+    let errorObj = { code: 0, description: '' }
+    if (playlists.meta.error) {
+      errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
+    } else if (banners.meta.error) {
+      errorObj = { code: getErrorCode(banners.meta.error), description: 'Banner request failed' }
+    } else if (videos.meta.error) {
+      errorObj = { code: getErrorCode(videos.meta.error), description: 'Video request failed' }
+    } else if (articles.meta.error) {
+      errorObj = { code: getErrorCode(articles.meta.error), description: 'Video request failed' }
+    }
 
     return (
       <>
         <Header libraryOff color={false} {...this.props} isMobile={isMobile} />
         {isLoading && <Placeholder isMobile={isMobile} />}
-        {/* {isError && <FeatureError status={errorObj.code} message={errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'} />} */}
+        {isError && (
+          <FeatureError
+            status={errorObj.code}
+            message={
+              errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'
+            }
+          />
+        )}
         <div style={{ height: '8vh' }} />
         {isSuccess && (
           <>
