@@ -20,7 +20,7 @@ const getPlaylist = id => dispatch => {
         payload: {
           meta: {
             status: 'error',
-            error: 'Error: get playlist failed',
+            error: result.meta.error || 'Error: get playlist failed',
           },
           data: [],
         },

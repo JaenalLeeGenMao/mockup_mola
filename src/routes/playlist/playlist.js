@@ -6,11 +6,21 @@ import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import Carousel from '@components/carousel'
 import VideoCard from '@components/video-card'
-import playlistAction from '@actions/playlist'
 import PlaylistError from '@components/common/error'
 
+import playlistAction from '@actions/playlist'
+
+import { getErrorCode } from '@routes/home/util'
+
 import Placeholder from './placeholder'
-import { playlistContainer, DesktopBackgroundStyle, MobileBackgroundStyle, playlistHeadDesktop, playlistHeadMobile, playlistList } from './playlistStyle'
+import {
+  playlistContainer,
+  DesktopBackgroundStyle,
+  MobileBackgroundStyle,
+  playlistHeadDesktop,
+  playlistHeadMobile,
+  playlistList,
+} from './playlistStyle'
 
 const trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 
@@ -141,33 +151,30 @@ class Playlist extends React.Component {
     )
   }
 
-  renderHeader() {
-    const isDark = false
-    const isMobile = this.state.viewportWidth <= 680
-    return (
-      <div className="header_container">
-        <Header blackBackground isMobile={isMobile} libraryOff activeMenu="movie" isDark={isDark} {...this.props} />
-      </div>
-    )
-  }
-
   render() {
     const isMobile = this.state.viewportWidth <= 680
-    const { meta: { status: playlistStatus, error: playlistError, background: backgroundImage } } = this.props.playlist.playlists
-    const { meta: { status: videoStatus, error: videoError } } = this.props.playlist.videos
-    // const divStyle = {
-    //   backgroundImage: `url(https://peach.blender.org/wp-content/uploads/bbb-splash.png?x43337)`,
-    //   'background-repeat': 'no-repeat',
-    //   'background-attachment': 'fixed',
-    //   'background-position': 'center',
-    // }
+    const {
+      meta: { status: playlistStatus, error: playlistError, background: backgroundImage },
+    } = this.props.playlist.playlists
+
     const { videos, playlists } = this.props.playlist
+    let errorObj = { code: 0, description: '' }
+    if (playlists.meta.error) {
+      errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
+    }
 
     return (
       <>
-        {(playlistStatus === 'loading' || videoStatus === 'loading') && <Placeholder isMobile={isMobile} />}
-        {playlistStatus != 'error' && <>{this.renderHeader()}</>}
-        {/* {(playlistStatus === 'error' || videoStatus === 'error') && <PlaylistError status={playlistStatus || 404} message={playlistError || 'Playlist is not loaded'} />} */}
+        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} />
+        {playlistStatus === 'loading' && <Placeholder isMobile={isMobile} />}
+        {playlistStatus === 'error' && (
+          <PlaylistError
+            status={errorObj.code || 404}
+            message={
+              errorObj.description || 'Something went wrong, if the problem persist please try clear your browser cache'
+            }
+          />
+        )}
         {videos &&
           videos.data.length > 0 &&
           videos.data.length === playlists.data.length && (

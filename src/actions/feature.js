@@ -22,7 +22,7 @@ const getFeaturePlaylist = id => dispatch => {
         payload: {
           meta: {
             status: 'error',
-            error: 'Error: feature playlist failed',
+            error: result.meta.error || 'Error: feature playlist failed',
           },
           data: [],
         },
@@ -102,7 +102,7 @@ const getFeatureBanner = pathname => dispatch => {
         payload: {
           meta: {
             status: 'error',
-            error: 'Error: feature banner failed',
+            error: result.meta.error || 'Error: feature banner failed',
           },
           data: [],
         },
@@ -134,7 +134,7 @@ const getFeatureArticle = id => dispatch => {
         payload: {
           meta: {
             status: 'error',
-            error: 'Error: feature articles failed',
+            error: result.meta.error || 'Error: feature articles failed',
           },
           data: [],
         },

@@ -53,6 +53,9 @@ export const viewAllMovieMobileBgWebp = `${imgBaseUrl}/background_darker_mobile.
 export const placeholderCardLandscape = `${imgBaseUrl}/placeholder-card-landscape.png`
 export const placeholderCardPortrait = `${imgBaseUrl}/placeholder-card-portrait.png`
 
+export const placeholderBlankLandscape = `${imgBaseUrl}/placeholder-blank-landscape.png`
+export const placeholderBlankPortrait = `${imgBaseUrl}/placeholder-blank-portrait.png`
+
 export const viewAllMovieImg = 'https://cdn01.sent.tv/BCSaWm1FQBSnozrmH74m_sent_1563354762.png'
 export const viewAllMovieImgWebp = 'https://cdn01.sent.tv/tEiP59aSTAek9XzGLM04_sent_1563354795.webp'
 

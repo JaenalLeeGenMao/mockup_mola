@@ -1,8 +1,15 @@
 import React, { Component } from 'react'
 // import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Carousel from '@components/carousel'
-import { placeholderCardLandscape, placeholderCardPortrait } from '@global/imageUrl'
-import { container, fixedContainer, carouselMargin, DummyPlaceholder, DummyWithoutAnimationPlaceholder, DummyLinePlaceholder } from './style'
+import { placeholderBlankLandscape, placeholderBlankPortrait } from '@global/imageUrl'
+import {
+  container,
+  fixedContainer,
+  carouselMargin,
+  DummyPlaceholder,
+  DummyWithoutAnimationPlaceholder,
+  DummyLinePlaceholder,
+} from './style'
 
 // import styles from './placeholder.css'
 
@@ -69,7 +76,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={movieIndex} num={movieIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderCardPortrait}
+                  src={placeholderBlankPortrait}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>
@@ -94,7 +101,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={movieIndex} num={movieIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderCardPortrait}
+                  src={placeholderBlankPortrait}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>
