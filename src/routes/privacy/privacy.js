@@ -43,8 +43,8 @@ class Privacy extends Component {
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_nine']}</p>
             <div className={styles.privacy_titleparagraphcls}>{locale['privacy_titleparagraph_ten']}</div>
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_ten']}</p>
-            <a href="https://mola.tv" className={styles.privacy_contentlink}>
-              mola.tv
+            <a href="mailto:support@mola.tv" className={styles.privacy_contentlink}>
+              support@mola.tv
             </a>
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_twlv']}</p>
           </div>
