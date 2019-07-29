@@ -6,7 +6,7 @@ import _ from 'lodash'
 // import Auth from '@api/auth'
 
 import LazyLoad from '@components/common/Lazyload'
-// import Footer from '@components/Footer'
+import Footer from '@components/Footer'
 import Link from '@components/Link'
 
 import { getLocale } from '../locale'
@@ -23,12 +23,51 @@ import { connect } from 'react-redux'
 
 import { get } from 'axios'
 
-let menu = []
+const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
+  const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
+  const isLogin = uid || sid
+
+  let name = `${firstName} ${lastName}`
+  if (firstName == null) {
+    name = ''
+  }
+  return (
+    <LazyLoad containerClassName={styles.popup__menu_container}>
+      <div className={styles.popup__menu_header}>
+        <div className={styles.popup__menu_close} onClick={onClick} />
+      </div>
+      <div className={styles.popup__menu_content}>
+        {isLogin && (
+          <>
+            <div className={styles.popup__menu_profile_container}>
+              <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+                {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
+              </Link>
+              <h2 className={styles.popup__menu_username}>{name}</h2>
+            </div>
+            <Link to="/accounts/profile" onClick={onClick}>
+              {locale['profile']}
+            </Link>
+            {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
+            {/* <Link to="/accounts/history" onClick={onClick}>{locale['video_history']}</Link> */}
+            {/* <Link to="/accounts/profile?tab=subscription" onClick={onClick}>{locale['paket_MOLA']}</Link> */}
+            {/* <Link to="/accounts/profile?tab=transaction" onClick={onClick}>{locale['transaction_history']}</Link> */}
+          </>
+        )}
+        <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
+          {locale['sign_out']}
+        </Link>
+        <Footer />
+      </div>
+    </LazyLoad>
+  )
+}
 class HeaderMenu extends Component {
   state = {
     locale: getLocale(),
     activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
     headerMenuList: [],
+    toggle: false /* Toggle profile */,
   }
 
   componentDidMount() {
@@ -37,9 +76,25 @@ class HeaderMenu extends Component {
 
   getHeaderMenus = () => {
     // link w/ libraries
-    get('https://mola01.koicdn.com/dev/json/menu.json').then(({ data }) => {
+    get('https://cdn.stag.mola.tv/mola/dev/json/menu.json').then(({ data }) => {
       this.setState({ headerMenuList: data ? data.data : [] })
     })
+  }
+
+  handleToggle = () => {
+    const { user: { uid = '', sid = '' } } = this.props
+    const isLogin = uid || sid
+    if (isLogin) {
+      const { toggle } = this.state
+      this.setState({ toggle: !toggle })
+    } else {
+      window.location.href = '/accounts/login'
+    }
+  }
+
+  handleSignOut = e => {
+    e.preventDefault()
+    window.location.href = '/signout'
   }
 
   handleNavigation = id => {
@@ -54,19 +109,18 @@ class HeaderMenu extends Component {
       const isHome = absMenuArray.length <= 3
       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
       // const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-      history.push(relMenuUrl)
+
+      if (filteredMenu[0].id == 9) {
+        this.handleToggle()
+      } else {
+        history.push(relMenuUrl)
+      }
     }
   }
 
   render() {
-    const {
-      headerMenuOff,
-      activeMenu = 'movie',
-      isMobile = false,
-      isLandscape,
-      pathname = '/',
-    } = this.props
-    const { headerMenuList } = this.state
+    const { headerMenuOff, activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
+    const { headerMenuList, toggle } = this.state
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
@@ -85,18 +139,20 @@ class HeaderMenu extends Component {
                       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                       const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
                       const title = _.get(dts, 'attributes.title.en', '')
-                      if (index === 0) {
+                      if (dts.id === 1) {
                         return (
-                          <Link key={dts.id} title={title}
+                          <Link
+                            key={dts.id}
+                            title={title}
                             className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            to={relMenuUrl}>
+                            to={relMenuUrl}
+                          >
                             {title}
                           </Link>
                         )
                       }
-                    }
-                    )}
-                    <div className='tourCategory' style={{ display: 'inline-block' }}>
+                    })}
+                    <div className="tourCategory" style={{ display: 'inline-block' }}>
                       {headerMenuList.map((dts, index) => {
                         const absMenuUrl = dts.attributes.url
                         const absMenuArray = absMenuUrl.split('/')
@@ -104,17 +160,19 @@ class HeaderMenu extends Component {
                         const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                         const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
                         const title = _.get(dts, 'attributes.title.en', '')
-                        if (index > 0 && index < 5) {
+                        if (dts.id > 1 && dts.id < 6) {
                           return (
-                            <Link key={dts.id} title={title}
+                            <Link
+                              key={dts.id}
+                              title={title}
                               className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                              to={relMenuUrl}>
+                              to={relMenuUrl}
+                            >
                               {title}
                             </Link>
                           )
                         }
-                      }
-                      )}
+                      })}
                     </div>
                     {headerMenuList.map((dts, index) => {
                       const absMenuUrl = dts.attributes.url
@@ -123,24 +181,37 @@ class HeaderMenu extends Component {
                       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                       const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
                       const title = _.get(dts, 'attributes.title.en', '')
-                      if (index >= 5) {
+                      if (dts.id >= 6 && dts.id != 9) {
                         return (
-                          <Link key={dts.id} title={title}
+                          <Link
+                            key={dts.id}
+                            title={title}
                             className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            to={relMenuUrl}>
+                            to={relMenuUrl}
+                          >
+                            {title}
+                          </Link>
+                        )
+                      } else if (dts.id == 9) {
+                        return (
+                          <Link
+                            key={dts.id}
+                            title={title}
+                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                            onClick={this.handleToggle}
+                          >
                             {title}
                           </Link>
                         )
                       }
-                    }
-                    )}
+                    })}
                   </>
                 )}
                 {isMobile && (
                   <div
                     className={`${styles.header__menu_wrapper_m} ${
                       isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                      }`}
+                    }`}
                   >
                     <DropdownMenu
                       className={styles.header_menu_dropdown_container}
@@ -150,6 +221,14 @@ class HeaderMenu extends Component {
                       onClick={this.handleNavigation}
                     />
                   </div>
+                )}
+                {toggle && (
+                  <PopupMenu
+                    onClick={this.handleToggle}
+                    user={this.props.user}
+                    locale={this.state.locale}
+                    onSignOut={this.handleSignOut}
+                  />
                 )}
               </div>
             </LazyLoad>
