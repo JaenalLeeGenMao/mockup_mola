@@ -22,7 +22,7 @@ import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
 
 import Placeholder from './placeholder'
-import LoaderVideoBox from './LoaderVideoBox'
+import LoaderVideoBox from './loaderVideoBox'
 import ScheduleCard from './scheduleCard'
 import PrimaryMenu from './primaryMenu'
 import SecondaryMenu from './secondaryMenu'
