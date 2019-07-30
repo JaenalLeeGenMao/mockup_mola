@@ -286,12 +286,10 @@ class Channels extends Component {
                 <div className={styles.epg__card}>
                   {programmeGuides.data &&
                     scheduleList.length > 0 &&
-                    scheduleList
-                      .filter(list => formatDateTime(list.start, 'DD MMM') === formatDateTime(activeDate, 'DD MMM'))
-                      .map(dt => (
-                        <MatchList key={dt.id} data={dt} noClickAble isChannel />
-                        // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                      ))}
+                    scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map(dt => (
+                      <MatchList key={dt.id} data={dt} noClickAble isChannel />
+                      // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                    ))}
                 </div>
                 <div className={styles.epg__calendar}>
                   <VerticalCalendar
