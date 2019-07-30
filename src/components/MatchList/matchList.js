@@ -9,7 +9,6 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 
 import { defaultImgClub } from '@global/imageUrl'
 
-import moment from 'moment'
 import Scroll from 'react-scroll'
 let Element = Scroll.Element
 class MatchList extends React.Component {
@@ -21,7 +20,7 @@ class MatchList extends React.Component {
 
   cardDateFormat = (startTime, endTime, isChannel = false) => {
     let text = ''
-    text = isChannel ? formatDateTime(startTime, 'HH.mm') : formatDateTime(startTime, 'DD MMMM HH.mm')
+    text = isChannel ? formatDateTime(startTime, 'HH.mm') : formatDateTime(startTime, 'DD MMM HH.mm')
 
     if (isToday(startTime, endTime)) {
       if (isMatchLive(startTime, endTime)) {

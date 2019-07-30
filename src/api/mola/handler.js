@@ -22,7 +22,7 @@ import utils from './util'
 import { endpoints } from '@source/config'
 
 const getHomePlaylist = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/mola-home`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/home-new`, {
     ...endpoints.setting,
   })
     .then(response => {
