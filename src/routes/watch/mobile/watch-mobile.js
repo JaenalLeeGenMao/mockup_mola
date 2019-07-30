@@ -77,18 +77,33 @@ class MovieDetail extends Component {
     return videoSettings
   }
 
-  getLoc = async () => {
+  getLoc = () => {
     const geolocation = Tracker.getLangLat()
     const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    let loc = ''
 
-    const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
+    if (typeof latitude !== 'undefined' && typeof longitude !== 'undefined' && latitude !== '' && longitude !== '') {
+      get(`/sign-location?lat=${latitude}&long=${longitude}`)
+        .then(response => {
+          loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
 
-    const loc = locationPayload.data.data.loc
-
-    this.setState({
-      loc: loc,
-    })
+          if (response.status === 200) {
+            this.setState({
+              loc: loc,
+            })
+          } else {
+            this.setState({
+              loc: '',
+            })
+          }
+        })
+        .catch(error => {
+          this.setState({
+            loc: '',
+          })
+        })
+    }
   }
 
   getConfig = async () => {

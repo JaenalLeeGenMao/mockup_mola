@@ -153,19 +153,41 @@ const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri
 let userinfo = ''
 
 app.get('/sign-location', async (req, res) => {
-  const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+  const locationUrl = `${config.endpoints.ads}/v1za/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
   const lat = req.query.lat
   const long = req.query.long
 
-  if (typeof lat !== 'undefined' && typeof long !== 'undefined') {
+  if (typeof lat !== 'undefined' && typeof long !== 'undefined' && lat !== '' && long !== '') {
     const body = {
       lat: parseFloat(lat),
       long: parseFloat(long),
     }
 
-    let locationPayload = await Axios.post(locationUrl, body)
+    Axios.post(locationUrl, body)
+      .then(response => {
+        if (response.status === 200) {
+          res.send(response.data)
+        } else {
+          res.send({
+            status: response.status,
+            statusText: response.statusText,
+            data: {
+              loc: '',
+            },
+          })
+        }
+      })
+      .catch(err => {
+        const response = err.response
 
-    res.send(locationPayload.data)
+        res.send({
+          status: response.status,
+          statusText: response.statusText,
+          data: {
+            loc: '',
+          },
+        })
+      })
   }
 })
 
