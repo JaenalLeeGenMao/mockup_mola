@@ -153,7 +153,7 @@ const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri
 let userinfo = ''
 
 app.get('/sign-location', async (req, res) => {
-  const locationUrl = `${config.endpoints.ads}/v1za/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+  const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
   const lat = req.query.lat
   const long = req.query.long
 
