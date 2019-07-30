@@ -18,7 +18,7 @@ import DropdownMenu from '../dropdown-menu'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-
+import config from '@source/config'
 // import { connect } from 'tls'
 
 import { get } from 'axios'
@@ -75,8 +75,11 @@ class HeaderMenu extends Component {
   }
 
   getHeaderMenus = () => {
-    // link w/ libraries
-    get('https://cdn.stag.mola.tv/mola/dev/json/menu.json').then(({ data }) => {
+    const headerUrl =
+      config.env === 'production'
+        ? 'https://mola01.koicdn.com/dev/json/menu.json'
+        : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+    get(headerUrl).then(({ data }) => {
       this.setState({ headerMenuList: data ? data.data : [] })
     })
   }
