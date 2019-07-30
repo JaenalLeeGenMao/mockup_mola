@@ -63,12 +63,15 @@ class Watch extends Component {
   componentWillUnmount() {
     updateCustomMeta('og:title', 'Mola TV')
     updateCustomMeta('og:image', logoLandscapeBlue)
-    updateCustomMeta('og:description', 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.')
+    updateCustomMeta(
+      'og:description',
+      'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
+    )
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
   }
 
   render() {
-    const { isMobile, vuid, videoId } = this.props
+    const { isMobile, vuid, videoId, getMovieDetail } = this.props
     const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -80,8 +83,22 @@ class Watch extends Component {
             <Helmet>
               <title>{dataFetched.title}</title>
             </Helmet>
-            {isMobile && <WatchMobile videoId={videoId} movieDetail={this.props.movieDetail} vuid={vuid} />}
-            {!isMobile && <WatchDesktop videoId={videoId} movieDetail={this.props.movieDetail} vuid={vuid} />}
+            {isMobile && (
+              <WatchMobile
+                videoId={videoId}
+                movieDetail={this.props.movieDetail}
+                getMovieDetail={getMovieDetail}
+                vuid={vuid}
+              />
+            )}
+            {!isMobile && (
+              <WatchDesktop
+                videoId={videoId}
+                movieDetail={this.props.movieDetail}
+                getMovieDetail={getMovieDetail}
+                vuid={vuid}
+              />
+            )}
           </>
         )}
       </>

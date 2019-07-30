@@ -18,8 +18,10 @@ class Conditions extends Component {
   render() {
     const { locale } = this.state
     return (
-      <div className={styles.conditions_header}>
-        <HeaderCondition stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+      <>
+        <div className={styles.conditions_header}>
+          <HeaderCondition stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+        </div>
         <div className={styles.conditions_content_singlepage}>
           <div className={styles.conditions_contentheadlinecls}>{locale['conditions_contentheadline']}</div>
           <div className={styles.conditions_contentbody}>
@@ -27,7 +29,7 @@ class Conditions extends Component {
             <p className={styles.conditions_contentfullpone}>{locale['conditions_contentparagraph_one']}</p>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }

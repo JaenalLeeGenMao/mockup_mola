@@ -39,8 +39,18 @@ body {
   margin-left: 20px;
   margin-right: 50px;
   padding-top: 90px;
-  margin-bottom: 50px;
+  margin-bottom: 50vh;
   position: absolute;
+}
+
+.matches_header_bg {
+  height: 60px;
+  display: block;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: #000;
+  z-index: 1;
 }
 
 .matches__date {

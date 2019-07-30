@@ -1,0 +1,32 @@
+
+
+.placeholder__content {
+  color: white;
+  display: grid;
+  grid-gap: 3rem;
+  column-gap: 1.5rem;
+  margin: 0 auto;
+  width: 100%;
+  justify-content: center;
+}
+
+.placeholder__content .placeholder__box {
+  height: 17rem;
+  width: 70rem;
+  border-radius: 8px;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}

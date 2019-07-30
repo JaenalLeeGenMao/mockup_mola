@@ -15,7 +15,7 @@ export const articleContainer = css`
   :hover {
     pointer-events: auto;
     cursor: pointer;
-    transform: scale(1.05);
+    transform: scale(1.025);
   }
 
   h3 {
@@ -84,7 +84,7 @@ export const articleContainer = css`
     object-fit: cover;
     object-position: center;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
 
     @media screen and (max-width: 960px) {
       width: 100%;

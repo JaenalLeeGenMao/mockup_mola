@@ -5,45 +5,35 @@ body {
 }
 
 .matchlist_container {
-  padding: 8px;
+  padding: 0.8rem;
+}
 
-  /* overflow: auto;
-  height: 100vh; */
+.matches_header_bg {
+  height: 6rem;
+  display: block;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: #000;
+  z-index: 1;
 }
 
 .matchlist_wrapper {
   display: block;
-
-  /* padding-top: 10rem; */
   margin: 0;
   color: white;
-
-  /* height: 100vh; */
-
-  /* margin: 154px 0; */
-
-  /* display: grid;
-  grid-template-columns: 0.5fr 1.5fr 0.18fr;
-  grid-template-rows: repeat(3, 0.1fr 0.1fr 0.1fr); */
-
-  /* justify-content: left; */
 }
 
 .matchlist_wrappercontent_center {
   grid-area: 3/2;
+  margin-bottom: 50vh;
 }
 
 .matchlist_Pagetitle {
   color: white;
-
-  /* font-size: 17.5px; */
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   text-align: left;
-
-  /* grid-template-columns:  1fr 1fr 1fr 1fr;
-  grid-template-rows:  repeat(4, 1fr 1fr 1fr 1fr);
-  display:  grid; */
 }
 
 .matchlist_valuelistitem {
@@ -53,9 +43,9 @@ body {
 
 .matchlist_valuelistitem div {
   text-align: left;
-  padding: 8px 0;
+  padding: 0.8rem 0;
   color: #fff;
-  font-size: 15px;
+  font-size: 1.5rem;
 }
 
 .wrapperData {
@@ -108,11 +98,6 @@ body {
   display: grid;
   grid-gap: 0.5rem;
   column-gap: 1.5rem;
-
-  /* grid-template-columns: repeat(1, 300px); */
-
-  /* grid-template-columns: repeat(3, 300px);
-  grid-template-rows: repeat(3, 0.73fr); */
   justify-content: center;
 }
 
@@ -165,7 +150,7 @@ body {
 
 .labelfilter {
   background-color: #515151;
-  font-size: 15px;
+  font-size: 1.5rem;
   border: none;
   color: white;
   font-weight: 600;
@@ -185,11 +170,7 @@ body {
 
 .contentFilterLeague {
   display: grid;
-
-  /* grid-template-columns: 1fr 1fr 1fr 1fr 1fr; */
   margin: 2rem 0 2rem 0;
-
-  /* grid-row-gap: 0.4rem; */
   grid-column-gap: 1.5rem;
 }
 
@@ -248,9 +229,7 @@ body {
   font-size: 1rem;
   color: #a7a7a7;
   text-align: right;
-  margin: 0 10px 0 10px;
-
-  /* padding: 2rem 0 2rem 0; */
+  margin: 0 1rem 0 1rem;
 }
 
 .todayLabel {
@@ -346,7 +325,7 @@ body {
 }
 
 .labelLeague {
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #a7a7a7;
   margin: 1rem 0 1rem 0;
 }

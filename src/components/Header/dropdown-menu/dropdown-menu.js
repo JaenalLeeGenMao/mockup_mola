@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './dropdown-menu.css'
 import _ from 'lodash'
+import BodyClassName from 'react-body-classname'
 
 class DropdownList extends Component {
   state = {
@@ -62,6 +63,7 @@ class DropdownList extends Component {
 
     return (
       <div className={`${s.dropdown_container} ${className ? className : ''}`}>
+        {isOpenDropdown && <BodyClassName className={s.overflow_hidden} />}
         <div className={labelClassName ? labelClassName : ''}>
           {/* <label ref={node => (this.dropdownLabel = node)}>
             {this.getSelectedMenu(dataList)}
@@ -70,34 +72,39 @@ class DropdownList extends Component {
           <div className={s.dropdown__icon_burger_menu} onClick={this.handleClickDropdown} />
         </div>
         {dataList.length > 0 && (
-          <div
-            ref={node => (this.dropdownMenu = node)}
-            className={`${s.dropdown_menu_container} ${isOpenDropdown ? '' : s.hide}`}
-          >
-            <div className={s.dropdown_menu_open}>
-              <div className={s.dropdown__icon_burger_close} onClick={this.handleClickDropdown} />
-              {dataList.map(dts => {
-                const absMenuUrl = _.get(dts, 'attributes.url', '')
-                const absMenuArray = absMenuUrl.split('/')
-                const isHome = absMenuArray.length <= 3
-                const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+          <>
+            <div className={`${s.background_container}  ${isOpenDropdown ? s.show_background : ''}`} />
+            <div
+              ref={node => (this.dropdownMenu = node)}
+              className={`${s.dropdown_menu_container} ${isOpenDropdown ? '' : s.hide}`}
+            >
+              <div className={s.dropdown_menu_open}>
+                <div className={s.dropdown__icon_burger_close} onClick={this.handleClickDropdown} />
+                <div className={s.dropdown_list_container}>
+                  {dataList.map(dts => {
+                    const absMenuUrl = _.get(dts, 'attributes.url', '')
+                    const absMenuArray = absMenuUrl.split('/')
+                    const isHome = absMenuArray.length <= 3
+                    const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
 
-                const title = _.get(dts, 'attributes.title.en', '')
+                    const title = _.get(dts, 'attributes.title.en', '')
 
-                return (
-                  <div
-                    className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
-                    isActive={isActive}
-                    key={dts.id}
-                    onClick={() => this.handleClickDropdownAction(dts.id)}
-                  >
-                    <span>{title}</span>
-                  </div>
-                )
-              })}
+                    return (
+                      <div
+                        className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
+                        isActive={isActive}
+                        key={dts.id}
+                        onClick={() => this.handleClickDropdownAction(dts.id)}
+                      >
+                        <span>{title}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     )

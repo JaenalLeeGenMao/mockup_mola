@@ -18,8 +18,10 @@ class Privacy extends Component {
     const { locale } = this.state
 
     return (
-      <div className={styles.privacy_header}>
-        <HeaderPrivacy stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+      <>
+        <div className={styles.privacy_header}>
+          <HeaderPrivacy stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+        </div>
         <div className={styles.privacy_singlepage}>
           <div className={styles.privacy_contentheadlinecls}>{locale['privacy_contentheadline']}</div>
           <div className={styles.privacy_contentbody}>
@@ -43,13 +45,13 @@ class Privacy extends Component {
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_nine']}</p>
             <div className={styles.privacy_titleparagraphcls}>{locale['privacy_titleparagraph_ten']}</div>
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_ten']}</p>
-            <a href="https://mola.tv" className={styles.privacy_contentlink}>
-              mola.tv
+            <a href="mailto:support@mola.tv" className={styles.privacy_contentlink}>
+              support@mola.tv
             </a>
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_twlv']}</p>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }

@@ -15,6 +15,7 @@ import watchPermission from '@source/lib/watchPermission'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import MovieDetailError from '@components/common/error'
+import AgeRestrictionModal from '@components/AgeRestriction'
 // import Link from '@components/Link'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
@@ -32,6 +33,8 @@ import {
   infoBarClose,
   countdownWinfobar,
   movieDetailNotAllowed,
+  playIcon,
+  posterWrapper,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -49,9 +52,10 @@ class WatchDesktop extends Component {
     toggleInfoBar: true,
     countDownStatus: true,
     notice_bar_message: 'Siaran Percobaan',
+    loginPermission: false,
   }
 
-  handleOnVideoLoad = player => {
+  handleOnReadyStateChange = player => {
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
@@ -82,15 +86,12 @@ class WatchDesktop extends Component {
         // this.handleVideoError(e);
       }
     })
-    // player.addEventListener('error', e => {
-    //   console.log('error', e, '======', player.error.code)
-    //   // this.handleVideoError(e);
-    // })
   }
 
   subtitles() {
     const { movieDetail } = this.props
-    const subtitles = movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
+    const subtitles =
+      movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
     const myTheoPlayer =
       subtitles &&
@@ -113,20 +114,33 @@ class WatchDesktop extends Component {
     return videoSettings
   }
 
-  getLoc = async () => {
+  getLoc = () => {
     const geolocation = Tracker.getLangLat()
     const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     let loc = ''
 
     if (typeof latitude !== 'undefined' && typeof longitude !== 'undefined' && latitude !== '' && longitude !== '') {
-      const locationPayload = await get(`/sign-location?lat=${latitude}&long=${longitude}`)
-      loc = typeof locationPayload.data.data.loc !== 'undefined' ? locationPayload.data.data.loc : ''
-    }
+      get(`/sign-location?lat=${latitude}&long=${longitude}`)
+        .then(response => {
+          loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
 
-    this.setState({
-      loc: loc,
-    })
+          if (response.status === 200) {
+            this.setState({
+              loc: loc,
+            })
+          } else {
+            this.setState({
+              loc: '',
+            })
+          }
+        })
+        .catch(error => {
+          this.setState({
+            loc: '',
+          })
+        })
+    }
   }
 
   getConfig = async () => {
@@ -154,6 +168,19 @@ class WatchDesktop extends Component {
     this.getConfig()
   }
 
+  handlePlayLogin = () => {
+    this.setState({ loginPermission: true })
+  }
+
+  renderBlockPermission(poster) {
+    return (
+      <div className={posterWrapper}>
+        <img style={{ height: '100%', width: '100%' }} src={poster} />
+        <span className={playIcon} onClick={this.handlePlayLogin} />
+      </div>
+    )
+  }
+
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId } = this.props
 
@@ -170,34 +197,61 @@ class WatchDesktop extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
       user.loc = loc
 
-      const defaultVidSetting = dataFetched ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
+      const defaultVidSetting = dataFetched
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        : {}
 
-      const checkAdsSettings = adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
+      const checkAdsSettings =
+        adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
         ...checkAdsSettings,
       }
 
-      if (this.state.countDownStatus && getContentTypeName(dataFetched.contentType) === 'live' && dataFetched.startTime * 1000 > Date.now()) {
-        return <CountDown hideCountDown={this.hideCountDown} startTime={dataFetched.startTime} videoId={videoId} getMovieDetail={getMovieDetail} isMobile={false} />
+      if (
+        this.state.countDownStatus &&
+        getContentTypeName(dataFetched.contentType) === 'live' &&
+        dataFetched.startTime * 1000 > Date.now()
+      ) {
+        return (
+          <CountDown
+            hideCountDown={this.hideCountDown}
+            startTime={dataFetched.startTime}
+            videoId={videoId}
+            getMovieDetail={getMovieDetail}
+            isMobile={false}
+          />
+        )
       } else if (dataFetched.streamSourceUrl) {
         if (!isAllowed) {
-          if (watchPermissionErrorCode == 'login_first') {
-            return (
-              <div className={movieDetailNotAllowed}>
-                <p>
-                  Silahkan{' '}
-                  <a style={{ color: '#005290' }} href="/accounts/login">
-                    {' '}
-                    login
-                  </a>{' '}
-                  untuk menyaksikan tayangan ini.
-                </p>
-              </div>
-            )
+          if (this.state.loginPermission) {
+            if (watchPermissionErrorCode == 'login_first') {
+              return (
+                <div className={movieDetailNotAllowed}>
+                  <p>
+                    Silahkan{' '}
+                    <a style={{ color: '#005290' }} href="/accounts/login">
+                      {' '}
+                      login
+                    </a>{' '}
+                    untuk menyaksikan tayangan ini.
+                  </p>
+                </div>
+              )
+            }
           }
+          return this.renderBlockPermission(poster)
         }
-        return <Theoplayer className={customTheoplayer} subtitles={this.subtitles()} poster={poster} autoPlay={false} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
+            {...videoSettings}
+          />
+        )
       }
     }
   }
@@ -221,7 +275,6 @@ class WatchDesktop extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const dataFetched = videoStatus === 'success' && data.length > 0 ? data[0] : undefined
-
     let drmStreamUrl = '',
       isDRM = false
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
@@ -235,7 +288,6 @@ class WatchDesktop extends Component {
     if (dataFetched && dataFetched.trailers.length === 0) {
       hiddenController.push('trailers')
     }
-
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
@@ -268,7 +320,13 @@ class WatchDesktop extends Component {
                       </div>
                     </div>
                   )}
-                <div className={playerClass}>{loadPlayer ? <>{this.renderVideo(dataFetched)}</> : <div className={movieDetailNotAvailableContainer}>Video Not Available</div>}</div>
+                <div className={playerClass}>
+                  {loadPlayer ? (
+                    <>{this.renderVideo(dataFetched)}</>
+                  ) : (
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
+                </div>
               </div>
               <div className={movieDetailBottom}>
                 {isMovieBool && <MovieContent dataFetched={dataFetched} />}
@@ -277,6 +335,7 @@ class WatchDesktop extends Component {
             </div>
           </>
         )}
+        {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )

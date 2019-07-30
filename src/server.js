@@ -157,15 +157,37 @@ app.get('/sign-location', async (req, res) => {
   const lat = req.query.lat
   const long = req.query.long
 
-  if (typeof lat !== 'undefined' && typeof long !== 'undefined') {
+  if (typeof lat !== 'undefined' && typeof long !== 'undefined' && lat !== '' && long !== '') {
     const body = {
       lat: parseFloat(lat),
       long: parseFloat(long),
     }
 
-    let locationPayload = await Axios.post(locationUrl, body)
+    Axios.post(locationUrl, body)
+      .then(response => {
+        if (response.status === 200) {
+          res.send(response.data)
+        } else {
+          res.send({
+            status: response.status,
+            statusText: response.statusText,
+            data: {
+              loc: '',
+            },
+          })
+        }
+      })
+      .catch(err => {
+        const response = err.response
 
-    res.send(locationPayload.data)
+        res.send({
+          status: response.status,
+          statusText: response.statusText,
+          data: {
+            loc: '',
+          },
+        })
+      })
   }
 })
 

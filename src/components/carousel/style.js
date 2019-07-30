@@ -13,13 +13,21 @@ export const carouselContainer = css`
   }
 
   & .slider-frame {
-    padding: 1rem 0 !important;
+    // padding: 1rem 0 !important;
+    padding: 1rem .5rem 1rem !important;
     // margin: 1rem 0 !important;
   }
 
+  // li.slide-visible {
+  //   padding: 80px !important;
+  // }
+
   li.slide-current {
-    margin: auto 1.15% !important;
+    // margin: auto 1.15% !important;
+    margin: auto .875% !important;
+    padding: 0px !important;
   }
+
 
   button {
     transition: all ease 500ms;

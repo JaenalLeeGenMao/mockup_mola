@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 // import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import Carousel from '@components/carousel'
+import LazyLoad from '@components/common/Lazyload'
+
 import { placeholderBlankLandscape, placeholderBlankPortrait } from '@global/imageUrl'
+
 import { banners } from '../const'
 import { container, fixedContainer, carouselMargin, DummyPlaceholder, DummyWithoutAnimationPlaceholder } from './style'
-// import styles from './placeholder.css'
 
 class Placeholder extends Component {
   constructor(props) {
@@ -56,16 +58,19 @@ class Placeholder extends Component {
           withoutControls={true}
           slidesToShow={isMobile ? 1.25 : 2.25}
           transitionMode={'scroll3d'}
-          framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
+          cellSpacing={20}
+          // framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
         >
           {banners.map((_, bannerIndex) => (
-            <DummyWithoutAnimationPlaceholder key={bannerIndex} num={bannerIndex}>
-              <img
-                className="bannerImage"
-                src={placeholderBlankLandscape}
-                // onLoad={this.updateOnImageLoad}
-              />
-            </DummyWithoutAnimationPlaceholder>
+            <LazyLoad key={bannerIndex}>
+              <DummyWithoutAnimationPlaceholder num={bannerIndex}>
+                <img
+                  className="bannerImage3d"
+                  src={placeholderBlankLandscape}
+                  // onLoad={this.updateOnImageLoad}
+                />
+              </DummyWithoutAnimationPlaceholder>
+            </LazyLoad>
           ))}
         </Carousel>
         <div className={fixedContainer}>
@@ -75,7 +80,7 @@ class Placeholder extends Component {
             autoplay={false}
             sliderCoin={true}
             dragging={true}
-            withoutControls={false}
+            withoutControls={true}
             slideToScroll={isMobile ? 1.3 : 4}
             slidesToShow={isMobile ? 1.3 : 4.5}
             transitionMode={'scroll'}
@@ -97,7 +102,7 @@ class Placeholder extends Component {
             autoplay={false}
             sliderCoin={true}
             dragging={true}
-            withoutControls={false}
+            withoutControls={true}
             slideToScroll={isMobile ? 1.6 : 6}
             slidesToShow={isMobile ? 1.6 : 6.5}
             transitionMode={'scroll'}
@@ -119,7 +124,7 @@ class Placeholder extends Component {
             autoplay={false}
             sliderCoin={true}
             dragging={true}
-            withoutControls={false}
+            withoutControls={true}
             slideToScroll={isMobile ? 2.8 : 7.5}
             slidesToShow={isMobile ? 2.8 : 7.5}
             transitionMode={'scroll'}

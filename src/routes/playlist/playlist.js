@@ -15,6 +15,7 @@ import { getErrorCode } from '@routes/home/util'
 import Placeholder from './placeholder'
 import {
   playlistContainer,
+  playlistWrapper,
   DesktopBackgroundStyle,
   MobileBackgroundStyle,
   playlistHeadDesktop,
@@ -158,6 +159,7 @@ class Playlist extends React.Component {
     } = this.props.playlist.playlists
 
     const { videos, playlists } = this.props.playlist
+
     let errorObj = { code: 0, description: '' }
     if (playlists.meta.error) {
       errorObj = { code: getErrorCode(playlists.meta.error), description: 'Playlist request failed' }
@@ -187,7 +189,7 @@ class Playlist extends React.Component {
                   // <DesktopBackgroundStyle url="http://images.unsplash.com/photo-1520901157462-0ea3fb2f9024?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" />
                   <DesktopBackgroundStyle url={backgroundImage} />
                 )}
-                <div style={{ position: 'relative' }}>
+                <div className={playlistWrapper}>
                   {this.renderTitle()}
                   {this.renderPlaylist()}
                 </div>

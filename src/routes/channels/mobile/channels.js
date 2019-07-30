@@ -23,6 +23,7 @@ import RedirectToApps from '@components/RedirectToApps'
 import VerticalCalendar from '@components/VerticalCalendar'
 import MatchList from '@components/MatchList'
 
+import Placeholder from './placeholder'
 import Schedule from './schedule'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
@@ -32,7 +33,7 @@ class Channels extends Component {
   state = {
     activeChannel: '',
     activeChannelId: '',
-    activeDate: formatDateTime(Date.now() / 1000, 'DD MMMM'),
+    activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleDateList: [],
     scheduleList: [],
     android_redirect_to_app: false,
@@ -103,7 +104,7 @@ class Channels extends Component {
     const strDate = new Date(date * 1000)
     const selectedDate = {
       fullDate: moment(strDate).format('YYYYMMDD'),
-      dayMonth: formatDateTime(date, 'DD MMMM'),
+      dayMonth: formatDateTime(date, 'DD MMM'),
       timezone: 7,
     }
     this.setState({
@@ -125,7 +126,7 @@ class Channels extends Component {
       this.setState({
         activeChannel: filteredSchedule.title,
         activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMMM'),
+        activeDate: formatDateTime(time, 'DD MMM'),
         scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
       })
       history.push(`/channels/${id}`)
@@ -141,13 +142,13 @@ class Channels extends Component {
       //thisMonday
       startWeekDate = moment().startOf('isoWeek')
       date = new Date(moment().startOf('date'))
-      swdTimestamp = formatDateTime(date / 1000, 'DD MMMM')
+      swdTimestamp = formatDateTime(date / 1000, 'DD MMM')
       unixDate = moment(date).unix()
     } else if (value == 'nextweek') {
       //nextWeek
       startWeekDate = moment().day(8)
       date = new Date(moment(startWeekDate).startOf('date'))
-      swdTimestamp = formatDateTime(date / 1000, 'DD MMMM')
+      swdTimestamp = formatDateTime(date / 1000, 'DD MMM')
       unixDate = moment(date).unix()
     }
 
@@ -238,86 +239,71 @@ class Channels extends Component {
 
     return (
       <>
-        {dataFetched && (
-          <>
-            <div className={styles.header_container}>
-              <Header
-                shadowMobile
-                libraryOff
-                className={styles.placeholder__header}
-                isDark={0}
-                activeMenu="channels"
-                isMobile
-                {...this.props}
-              />
-            </div>
-            <div className={styles.channels_container}>
-              {channelsPlaylist.meta.status === 'success' && (
-                <>
-                  <div className={styles.channels_top_wrapper}>
-                    {programmeGuides.data &&
-                      channelSchedule &&
-                      activeChannel &&
-                      activeChannelId && (
-                        <div className={styles.channels_list_wrapper}>
-                          <DropdownList
-                            className={styles.channels_dropdown_container}
-                            dataList={channelSchedule}
-                            activeId={activeChannelId}
-                            onClick={this.handleSelectChannel}
-                          />
-                        </div>
-                      )}
-                  </div>
-                  <div className={styles.video_container}>
-                    {loadPlayer ? (
-                      <RedirectToApps
-                        poster={poster}
-                        android_redirect_to_app={android_redirect_to_app}
-                        ios_redirect_to_app={ios_redirect_to_app}
-                        subtitles={this.subtitles()}
-                        handlePlayMovieApple={this.handlePlayMovieApple}
-                        handlePlayMovie={this.handlePlayMovie}
-                        handleOnVideoLoad={this.handleOnVideoLoad}
-                        videoSettings={videoSettings}
-                        customTheoplayer={customTheoplayer}
-                      />
-                    ) : (
-                      // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
-                      <div>Video Not Available</div> // styling later
-                    )}
-                  </div>
-                  <div className={styles.epg__channels__container}>
-                    <div className={styles.epg__card}>
-                      {programmeGuides.data &&
-                        scheduleList.length > 0 &&
-                        scheduleList
-                          .filter(
-                            list => formatDateTime(list.start, 'DD MMMM') === formatDateTime(activeDate, 'DD MMMM')
-                          )
-                          .map(dt => (
-                            <MatchList key={dt.id} data={dt} noClickAble isChannel />
-                            // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                          ))}
-                    </div>
-                    <div className={styles.epg__calendar}>
-                      {programmeGuides.data &&
-                        scheduleList.length > 0 && (
-                          <VerticalCalendar
-                            handleCategoryFilter={this.handleSelectDate}
-                            selectedDate={activeDate}
-                            schedule={scheduleList}
-                            isMobile
-                            isChannel
-                          />
-                        )}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </>
-        )}
+        <div className={styles.header_container}>
+          <Header
+            shadowMobile
+            libraryOff
+            className={styles.placeholder__header}
+            isDark={0}
+            activeMenu="channels"
+            isMobile
+            {...this.props}
+          />
+        </div>
+        <div className={styles.channels_container}>
+          {channelsPlaylist.meta.status === 'success' && (
+            <>
+              <div className={styles.channels_top_wrapper}>
+                <div className={styles.channels_list_wrapper}>
+                  <DropdownList
+                    className={styles.channels_dropdown_container}
+                    dataList={channelSchedule}
+                    activeId={activeChannelId}
+                    onClick={this.handleSelectChannel}
+                  />
+                </div>
+              </div>
+              <div className={styles.video_container}>
+                {loadPlayer ? (
+                  <RedirectToApps
+                    poster={poster}
+                    android_redirect_to_app={android_redirect_to_app}
+                    ios_redirect_to_app={ios_redirect_to_app}
+                    subtitles={this.subtitles()}
+                    handlePlayMovieApple={this.handlePlayMovieApple}
+                    handlePlayMovie={this.handlePlayMovie}
+                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    videoSettings={videoSettings}
+                    customTheoplayer={customTheoplayer}
+                  />
+                ) : (
+                  // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
+                  <div>Video Not Available</div> // styling later
+                )}
+              </div>
+              <div className={styles.epg__channels__container}>
+                {programmeGuides.loading && <Placeholder />}
+                <div className={styles.epg__card}>
+                  {programmeGuides.data &&
+                    scheduleList.length > 0 &&
+                    scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map(dt => (
+                      <MatchList key={dt.id} data={dt} noClickAble isChannel />
+                      // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                    ))}
+                </div>
+                <div className={styles.epg__calendar}>
+                  <VerticalCalendar
+                    handleCategoryFilter={this.handleSelectDate}
+                    selectedDate={activeDate}
+                    // schedule={scheduleList}
+                    isMobile
+                    isChannel
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )

@@ -1,11 +1,11 @@
 import styled, { css } from 'react-emotion'
 
 export const container = css`
-  position: fixed;
+  // position: fixed;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 100;
   min-height: 100vh;
   border-radius: 5px;
   margin: 0 auto;
@@ -15,7 +15,7 @@ export const fixedContainer = css`
   display: block;
   width: 100%;
   margin: 0 auto;
-  max-width: 1280px;
+  max-width: 90vw;
 
  h3 {
   color: #6f6f6f;
@@ -23,6 +23,9 @@ export const fixedContainer = css`
   }
 
   @media screen and (max-width: 960px) {
+    max-width: 100vw;
+    margin: 0 0 0 1rem;
+
     h3 {
       color: #6f6f6f;
       font-size: 15px;
@@ -39,7 +42,8 @@ export const carouselMargin = css`
 
   @media screen and (max-width: 960px) {
     div.slider-frame {
-      margin: 0 1rem !important;
+      // padding: 0 1rem !important;
+      margin: 0 !important;
     }
   }
 `
@@ -47,7 +51,7 @@ export const carouselMargin = css`
 export const DummyPlaceholder = styled('div')`
   height: auto;
 
-  /* width: 45vw; */
+  /* width: 40vw; */
   border-radius: 0.25rem;
   animation: pulse ${props => props.num + 1}s infinite ease-in-out;
 
@@ -57,10 +61,10 @@ export const DummyPlaceholder = styled('div')`
     opacity: 0;
   }
 
-  imgbannerImage3d {
+  img.bannerImage3d {
     position: relative;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
     opacity: 0;
   }
 
@@ -82,20 +86,31 @@ export const DummyPlaceholder = styled('div')`
 export const DummyWithoutAnimationPlaceholder = styled('div')`
   height: auto;
 
-  /* width: 45vw; */
+  width: 40vw;
+  position: relative;
+  display: inline-block;
   border-radius: 0.25rem;
-  background-color: rgba(165, 165, 165, 1);
+  transition: all ease 500ms;
+  background-color: rgba(68, 68, 68, 1);
 
-  img.bannerImage {
+  @media screen and (max-width: 960px) {
+    width: 77.5vw;
+  }
+
+  .bannerImage {
     position: relative;
     z-index: 1;
     opacity: 0;
   }
 
-  imgbannerImage3d {
+  .bannerImage3d {
     position: relative;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
     opacity: 0;
+
+    @media screen and (max-width: 960px) {
+      width: 77.5vw;
+    }
   }
 `

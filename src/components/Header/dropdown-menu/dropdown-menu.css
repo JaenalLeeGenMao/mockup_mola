@@ -3,7 +3,7 @@
   color: white;
   font-size: 12px;
   width: auto;
-  z-index: 1;
+  z-index: 2;
 }
 
 .select_icon {
@@ -25,8 +25,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 3;
 }
 
 .dropdown_menu_container.hide {
@@ -38,11 +37,14 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
+  text-align: right;
   width: 80%;
   height: 100%;
   background: rgba(0, 0, 0, 1);
   padding: 1rem 2rem;
   z-index: 2;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .dropdown_list_item {
@@ -67,6 +69,7 @@
   background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+Cjx0aXRsZT5BcnRib2FyZCAxPC90aXRsZT4KPHBhdGggZmlsbD0iI0I1QjVCNSIgZD0iTTM2LDE0YTIsMiwwLDAsMS0yLDJsLTIxLS45MUExLjA4LDEuMDgsMCwwLDEsMTIsMTRoMGExLjA4LDEuMDgsMCwwLDEsMS0xLjA5TDM0LDEyYTIsMiwwLDAsMSwyLDJaIi8+CjxwYXRoIGZpbGw9IiNCNUI1QjUiIGQ9Ik0xMiwyNGEyLDIsMCwwLDAsMiwybDIxLS45MUExLjA4LDEuMDgsMCwwLDAsMzYsMjRoMGExLjA4LDEuMDgsMCwwLDAtMS0xLjA5TDE0LDIyYTIsMiwwLDAsMC0yLDJaIi8+CjxwYXRoIGZpbGw9IiNCNUI1QjUiIGQ9Ik0zNiwzNGEyLDIsMCwwLDEtMiwybC0yMS0uOTFBMS4wOCwxLjA4LDAsMCwxLDEyLDM0aDBhMS4wOCwxLjA4LDAsMCwxLDEtMS4wOUwzNCwzMmEyLDIsMCwwLDEsMiwyWiIvPgo8L3N2Zz4=);
   background-repeat: no-repeat;
   background-position: center;
+  z-index: 2;
 }
 
 .dropdown__icon_burger_close {
@@ -77,4 +80,30 @@
   background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+Cjx0aXRsZT5BcnRib2FyZCAyPC90aXRsZT4KPHBhdGggZmlsbD0iI0I1QjVCNSIgZD0iTTI3LjU2LDI0bDcuMTgtOS4yMmExLjA4LDEuMDgsMCwwLDAtLjA1LTEuNDZoMGExLjA4LDEuMDgsMCwwLDAtMS40Ni0uMDVMMjQsMjAuNDRsLTkuMjItNy4xOGExLjA4LDEuMDgsMCwwLDAtMS40Ni4wNWgwYTEuMDgsMS4wOCwwLDAsMC0uMDUsMS40NkwyMC40NCwyNGwtNy4xOCw5LjIyYTEuMDgsMS4wOCwwLDAsMCwuMDUsMS40NmgwYTEuMDgsMS4wOCwwLDAsMCwxLjQ2LjA1TDI0LDI3LjU2bDkuMjIsNy4xOGExLjA4LDEuMDgsMCwwLDAsMS40Ni0uMDVoMGExLjA4LDEuMDgsMCwwLDAsLjA1LTEuNDZaIi8+Cjwvc3ZnPg==);
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.overflow_hidden {
+  overflow: hidden;
+}
+
+.background_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity ease 0.8s;
+  opacity: 0;
+  z-index: 1;
+}
+
+.show_background {
+  transition: opacity ease 0.8s;
+  opacity: 1;
+  width: 100%;
+}
+
+.dropdown_list_container {
+  margin-top: 40px;
 }

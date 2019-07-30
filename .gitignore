@@ -3,7 +3,10 @@ package-lock.json
 
 yarn-error.log
 
+newrelic_agent.log
+
 build
 
 .vscode
 .DS_Store
+.newrelic_agent.log
