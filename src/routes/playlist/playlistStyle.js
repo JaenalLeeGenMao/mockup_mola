@@ -1,40 +1,36 @@
 import styled, { css } from 'react-emotion'
 
 export const DesktopBackgroundStyle = styled('div')`
-  min-height: 100%;
-  &::before {
-    content: '';
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: top;
-    background-image: url(${props => props.url});
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    -webkit-filter: blur(8px) brightness(0.8);
-    -moz-filter: blur(8px) brightness(0.8);
-    -ms-filter: blur(8px) brightness(0.8);
-    -o-filter: blur(8px) brightness(0.8);
-    filter: blur(8px) brightness(0.8);
-  }
+  content: '';
+  background-image: url(${props => props.url});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  -webkit-filter: blur(8px) brightness(0.8);
+  -moz-filter: blur(8px) brightness(0.8);
+  -ms-filter: blur(8px) brightness(0.8);
+  -o-filter: blur(8px) brightness(0.8);
+  filter: blur(8px) brightness(0.8);
 `
 
 export const MobileBackgroundStyle = styled('div')`
-  &::before {
-    content: '';
-    background-repeat: no-repeat;
-    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${props => props.url});
-    // background-attachment: fixed;
-    background-size: contain;
-    background-position: top;
-    position: absolute;
-    top: 8vh;
-    left: 0;
-    width: 100%;
-    height: 30vh;
-  }
+  content: '';
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${props => props.url});
+  background-repeat: no-repeat;
+  // background-attachment: fixed;
+  background-size: contain;
+  background-position: top;
+  position: absolute;
+  top: 8vh;
+  left: 0;
+  width: 100%;
+  height: 30vh;
 `
 
 export const playlistHeadDesktop = css`
@@ -109,12 +105,31 @@ export const playlistContainer = css`
 
 export const playlistWrapper = css`
   position: relative;
-  max-width: 90vw;
+  max-width: 95vw;
   margin: 0 auto;
 
   @media screen and (max-width: 960px) {
     max-width: 100vw;
     margin: 0;
+  }
+`
+
+export const playlistCardWrapper = css`
+  display: inline-block;
+  vertical-align: middle;
+  width: 12.75vw;
+  margin: 0.5rem;
+  overflow: hidden;
+
+  @media screen and (max-width: 960px) {
+    width: 31.5vw;
+    margin: 0.25rem;
+  }
+
+  /* khusus iPhone SE */
+  @media screen and (max-width: 330px) {
+    width: 47.5vw;
+    margin: 0.25rem;
   }
 `
 

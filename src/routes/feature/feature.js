@@ -159,7 +159,7 @@ class Feature extends Component {
                     key={obj.id}
                     onClick={() => this.handleOnClick(obj)}
                     alt={obj.title}
-                    src={`${obj.background.landscape}?w=1920&h=1080`}
+                    src={obj.background.landscape}
                     // onLoad={this.updateOnImageLoad}
                     containerClassName={bannerContainer}
                   />
@@ -211,11 +211,7 @@ class Feature extends Component {
                                   alt={obj.title}
                                   description={obj.title}
                                   contentType={obj.contentType}
-                                  src={
-                                    obj.type === 'playlists'
-                                      ? `${obj.images.cover.landscape}?w=1920&h=1080`
-                                      : `${obj.background.landscape}?w=1920&h=1080`
-                                  }
+                                  src={obj.type === 'playlists' ? obj.images.cover.landscape : obj.background.landscape}
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => this.handleOnClick(obj)}
                                 />
@@ -243,7 +239,7 @@ class Feature extends Component {
                                   key={obj.id}
                                   onClick={() => this.handleOnClick(obj)}
                                   alt={obj.title}
-                                  src={`${obj.imageUrl}?w=1920&h=1080`}
+                                  src={obj.imageUrl}
                                   title={obj.title}
                                   contentType={obj.type}
                                   createdAt={obj.createdAt}

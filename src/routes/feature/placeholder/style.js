@@ -15,7 +15,7 @@ export const fixedContainer = css`
   display: block;
   width: 100%;
   margin: 0 auto;
-  max-width: 90vw;
+  max-width: 95vw;
 
  h3 {
   color: #6f6f6f;

@@ -4,7 +4,7 @@ export const container = css`
   display: block;
   width: 100%;
   margin: 0 auto;
-  max-width: 90vw;
+  max-width: 95vw;
 
   h3 {
     padding: 0 0.5rem;

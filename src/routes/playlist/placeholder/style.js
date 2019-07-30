@@ -36,7 +36,7 @@ export const fixedContainer = css`
 export const mainContent = css`
   display: block;
   margin: 0 auto;
-  max-width: 90vw;
+  max-width: 95vw;
 
   @media screen and (max-width: 960px) {
     max-width: 100vw;
