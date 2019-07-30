@@ -9,8 +9,9 @@ export const tourSteps = {
       title: 'Kategori Konten',
       content: (
         <div>
-          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard, atau geser <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar
-          sentuh/trackpad Anda.</div>
+          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard, atau
+          geser <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar sentuh/trackpad Anda.
+        </div>
       ),
       placement: 'right',
       disableBeacon: true,
@@ -26,8 +27,8 @@ export const tourSteps = {
       content: (
         <div>
           {' '}
-          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard, atau geser <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan
-          layar sentuh/trackpad Anda.
+          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard,
+          atau geser <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan layar sentuh/trackpad Anda.
         </div>
       ),
       placement: 'top',
@@ -36,7 +37,13 @@ export const tourSteps = {
     {
       target: '.tourOtherCategory',
       title: 'Telusuri Channel lain',
-      content: <div> Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di atas ini.</div>,
+      content: (
+        <div>
+          {' '}
+          Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di
+          atas ini.
+        </div>
+      ),
       placement: 'left',
       disableBeacon: true,
       locale: { last: 'Finish' },
@@ -45,6 +52,13 @@ export const tourSteps = {
 
   //english
   en: [
+    {
+      target: '.tourHamburger',
+      title: 'Explore Channel Category',
+      content: <div>Move around {"Mola's"} various categories using this menu.</div>,
+      placement: 'bottom',
+      disableBeacon: true,
+    },
     {
       target: '.tourHighlightChannel',
       title: 'Category highlights',
@@ -68,7 +82,7 @@ export const tourSteps = {
       disableBeacon: true,
       styles: {
         tooltip: {
-          width: 281
+          width: 281,
         },
       },
       locale: { last: 'Finish' },

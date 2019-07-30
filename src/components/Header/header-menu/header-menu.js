@@ -209,7 +209,7 @@ class HeaderMenu extends Component {
                 )}
                 {isMobile && (
                   <div
-                    className={`${styles.header__menu_wrapper_m} ${
+                    className={`${styles.header__menu_wrapper_m} tourHamburger ${
                       isLandscape ? styles.header_menu_select_wrapper__ls : ''
                     }`}
                   >
