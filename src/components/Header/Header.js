@@ -16,7 +16,7 @@ import LazyLoad from '@components/common/Lazyload'
 
 import history from '../../history'
 
-import { logoBlue, logoMobile } from '@global/imageUrl'
+import { logoBlue, logoMobile, logoHorizontal } from '@global/imageUrl'
 
 import Link from '../Link'
 
