@@ -9,7 +9,8 @@ export const tourSteps = {
       title: 'Kategori Konten',
       content: (
         <div>
-          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard, atau geser
+          Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard, atau
+          geser
           <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar sentuh/trackpad Anda.
         </div>
       ),
@@ -27,7 +28,8 @@ export const tourSteps = {
       content: (
         <div>
           {' '}
-          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard, atau geser
+          Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard,
+          atau geser
           <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan layar sentuh/trackpad Anda.
         </div>
       ),
@@ -37,10 +39,16 @@ export const tourSteps = {
     {
       target: '.tourOtherCategory',
       title: 'Telusuri Channel lain',
-      content: <div> Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di atas ini.</div>,
+      content: (
+        <div>
+          {' '}
+          Ingin menonton pertandingan olahraga atau saluran TV lainnya? Telusuri dengan menggunakan pilihan Channel di
+          atas ini.
+        </div>
+      ),
       placement: 'right',
       disableBeacon: true,
-      locale: { last: 'Finish' },
+      locale: { last: 'Selesai' },
     },
   ],
 
@@ -49,11 +57,7 @@ export const tourSteps = {
     {
       target: '.tourCategory',
       title: 'Categories',
-      content: (
-        <div>
-          Move around {"Mola's"} various categories using this menu.
-        </div>
-      ),
+      content: <div>Move around {"Mola's"} various categories using this menu.</div>,
       placement: 'bottom',
       disableBeacon: true,
       styles: {
@@ -65,11 +69,7 @@ export const tourSteps = {
     {
       target: '.tourCategoryChannels',
       title: 'Channels',
-      content: (
-        <div>
-          Enjoy {"Mola's"} TV experience here.
-        </div>
-      ),
+      content: <div>Enjoy {"Mola's"} TV experience here.</div>,
       placement: 'right',
       disableBeacon: true,
       styles: {
@@ -81,11 +81,7 @@ export const tourSteps = {
     {
       target: '.tourCategoryMatches',
       title: 'Matches',
-      content: (
-        <div>
-          Click here to check on matches schedules.
-        </div>
-      ),
+      content: <div>Click here to check on matches schedules.</div>,
       placement: 'right',
       disableBeacon: true,
       styles: {
@@ -99,7 +95,8 @@ export const tourSteps = {
       title: 'Category highlights',
       content: (
         <div>
-          Browse category highlights by clicking the up and down buttons on your keyboard, or swipe <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
+          Browse category highlights by clicking the up and down buttons on your keyboard, or swipe{' '}
+          <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
         </div>
       ),
       styles: {
@@ -115,7 +112,8 @@ export const tourSteps = {
       title: 'Highlights',
       content: (
         <div>
-          Browse the highlights of the category by clicking the left and right buttons on your keyboard, or swipe <span className={styles.swipeNextIcon} /> left and right on your touchscreen/trackpad.
+          Browse the highlights of the category by clicking the left and right buttons on your keyboard, or swipe{' '}
+          <span className={styles.swipeNextIcon} /> left and right on your touchscreen/trackpad.
         </div>
       ),
       placement: 'top',
@@ -123,10 +121,10 @@ export const tourSteps = {
       styles: {
         tooltip: {
           width: '39rem',
-          marginLeft: '55px'
+          marginLeft: '55px',
         },
       },
-      locale: { last: 'Finish' },
+      locale: { last: 'Done' },
     },
   ],
 }
