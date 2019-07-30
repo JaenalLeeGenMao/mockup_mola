@@ -884,9 +884,10 @@
   dependencies:
     methods "^1.1.2"
 
-"@supersoccer/gandalf@^1.0.46":
-  version "1.0.46"
-  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.46.tgz#2b4398d85dde4a5a6ed26e3398351e3164bda157"
+"@supersoccer/gandalf@^1.0.47":
+  version "1.0.47"
+  resolved "https://registry.yarnpkg.com/@supersoccer/gandalf/-/gandalf-1.0.47.tgz#f0983bc4e2bbddeaa90d261917d47b98dcc6f126"
+  integrity sha512-hYOXA4NOGDs3AXsXIz1aiWYInYzOERlLrwUgiAb4ris4/UwJ/+a0wZFRn08nXg3F38CHYRJmr/ACbth0a206Dg==
   dependencies:
     axios "^0.18.0"
     babel-loader "^8.0.4"
