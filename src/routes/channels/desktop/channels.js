@@ -22,6 +22,7 @@ import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
 
 import Placeholder from './placeholder'
+import LoaderVideoBox from './LoaderVideoBox'
 import ScheduleCard from './scheduleCard'
 import PrimaryMenu from './primaryMenu'
 import SecondaryMenu from './secondaryMenu'
@@ -259,60 +260,62 @@ class Channels extends Component {
         <div>
           <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
         </div>
-        <div className={styles.channels_container}>
-          <div className={styles.video_container}>
-            {loadPlayer ? (
-              <Theoplayer
-                className={customTheoplayer}
-                showBackBtn={false}
-                subtitles={this.subtitles()}
-                handleOnVideoLoad={this.handleOnVideoLoad}
-                // poster={poster}
-                {...videoSettings}
-              />
-            ) : (
-              <div>Video Not Available</div> // styling later
-            )}
-          </div>
-          <PrimaryMenu
-            handleSelectChannel={this.handleSelectChannel}
-            channelsPlaylist={channelsPlaylist}
-            channelCategory={channelCategory}
-          />
-          <div className={styles.epg__list__container}>
-            <SecondaryMenu
-              handleCategoryFilter={this.handleSelectChannel}
-              genreSpoCategory={channelsPlaylist.data}
-              filterByLeague={activeChannelId}
-              expandLeague={expandLeague}
-              categoryFilterType={channelCategory}
-              hidePlaylist={hidePlaylist}
-              noMargin
+        {channelsPlaylist.meta.status === 'loading' && <LoaderVideoBox />}
+        {channelsPlaylist.meta.status === 'success' && (
+          <div className={styles.channels_container}>
+            <div className={styles.video_container}>
+              {loadPlayer ? (
+                <Theoplayer
+                  className={customTheoplayer}
+                  showBackBtn={false}
+                  subtitles={this.subtitles()}
+                  handleOnVideoLoad={this.handleOnVideoLoad}
+                  // poster={poster}
+                  {...videoSettings}
+                />
+              ) : (
+                <div>Video Not Available</div> // styling later
+              )}
+            </div>
+            <PrimaryMenu
+              handleSelectChannel={this.handleSelectChannel}
+              channelsPlaylist={channelsPlaylist}
+              channelCategory={channelCategory}
             />
-            <div className={styles.epg__grid__container}>
-              <span />
-              <InfiniteScroll
-                dataLength={limit.length}
-                next={this.fetchMoreData}
-                hasMore={hasMore}
-                hasChildren={true}
-                loader={<div className={styles.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
-                height={800}
-              >
-                {programmeGuides.data &&
-                  scheduleList.length > 0 && (
-                    <ScheduleCard
-                      scheduleList={scheduleList}
-                      activeDate={activeDate}
-                      activeChannelId={activeChannelId}
-                      limit={limit}
-                    />
-                  )}
-              </InfiniteScroll>
-              <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} isChannel />
+            <div className={styles.epg__list__container}>
+              <SecondaryMenu
+                handleCategoryFilter={this.handleSelectChannel}
+                genreSpoCategory={channelsPlaylist.data}
+                filterByLeague={activeChannelId}
+                expandLeague={expandLeague}
+                categoryFilterType={channelCategory}
+                hidePlaylist={hidePlaylist}
+              />
+              <div className={styles.epg__grid__container}>
+                <span />
+                <InfiniteScroll
+                  dataLength={limit.length}
+                  next={this.fetchMoreData}
+                  hasMore={hasMore}
+                  hasChildren={true}
+                  loader={<div className={styles.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
+                  height={800}
+                >
+                  {programmeGuides.loading && <Placeholder />}
+                  {programmeGuides.data &&
+                    scheduleList.length > 0 && (
+                      <ScheduleCard
+                        scheduleList={scheduleList}
+                        activeDate={activeDate}
+                        activeChannelId={activeChannelId}
+                        limit={limit}
+                      />
+                    )}
+                </InfiniteScroll>
+                <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} isChannel />
+              </div>
             </div>
           </div>
-        </div>
         )}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>

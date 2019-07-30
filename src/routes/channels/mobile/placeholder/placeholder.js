@@ -1,13 +1,23 @@
-import React, { Component } from 'react'
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-class Placeholder extends Component {
-  render() {
-    return (
-      <>
-        <h1> PLACEHOLDER LOADDDIIIINGGNGNGNGNGNG </h1>
-      </>
-    )
-  }
+import styles from './placeholder.css'
+
+const Placeholder = () => {
+  return (
+    <div className={styles.placeholder__container}>
+      <div className={styles.placeholder__detail}>
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+        <div className={styles.placeholder__line} />
+      </div>
+    </div>
+  )
 }
 
-export default Placeholder
+export default withStyles(styles)(Placeholder)

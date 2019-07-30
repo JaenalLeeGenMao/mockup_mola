@@ -106,6 +106,7 @@ body {
 
   /* background-color: #000521; */
   margin-top: 0.5rem;
+  min-height: 60vh;
 }
 
 .epg__card {
