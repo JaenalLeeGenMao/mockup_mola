@@ -1,3 +1,7 @@
+.terms_header {
+  height: 6rem;
+}
+
 .terms_singlepage {
   background: linear-gradient(#0e1d3d, #000);
 }

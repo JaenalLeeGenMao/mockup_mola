@@ -16,8 +16,10 @@ class Terms extends Component {
   render() {
     const { locale } = this.state
     return (
-      <div className={styles.terms_header}>
-        <HeaderTerms stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+      <>
+        <div className={styles.terms_header}>
+          <HeaderTerms {...this.props} />
+        </div>
         <div className={styles.terms_singlepage}>
           <div className={styles.terms_contentheadlinecls}>{locale['terms_contentheadline']}</div>
           <div className={styles.terms_contentbody}>
@@ -52,7 +54,7 @@ class Terms extends Component {
             <p className={styles.terms_contentfullpone}>{locale['terms_contentparagraph_ffthteen']}</p>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }

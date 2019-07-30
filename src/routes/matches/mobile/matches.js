@@ -493,6 +493,7 @@ class Matches extends Component {
         )}
         {meta.status === 'success' && (
           <>
+            <div className={styles.matches_header_bg} />
             <div className={styles.filter__container}>
               {this.renderFilterLeague()}
               {this.renderFilterWeek()}

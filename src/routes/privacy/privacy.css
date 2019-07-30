@@ -1,3 +1,7 @@
+.privacy_header {
+  height: 6rem;
+}
+
 .privacy_singlepage {
   background: linear-gradient(#0e1d3d, #000);
 }

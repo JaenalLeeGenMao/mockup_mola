@@ -43,6 +43,16 @@ body {
   position: absolute;
 }
 
+.matches_header_bg {
+  height: 60px;
+  display: block;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: #000;
+  z-index: 1;
+}
+
 .matches__date {
   color: #ddd;
   font-size: 14px;

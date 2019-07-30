@@ -18,8 +18,10 @@ class Privacy extends Component {
     const { locale } = this.state
 
     return (
-      <div className={styles.privacy_header}>
-        <HeaderPrivacy stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+      <>
+        <div className={styles.privacy_header}>
+          <HeaderPrivacy stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
+        </div>
         <div className={styles.privacy_singlepage}>
           <div className={styles.privacy_contentheadlinecls}>{locale['privacy_contentheadline']}</div>
           <div className={styles.privacy_contentbody}>
@@ -49,7 +51,7 @@ class Privacy extends Component {
             <p className={styles.privacy_contentfullpone}>{locale['privacy_contentparagraph_twlv']}</p>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }
