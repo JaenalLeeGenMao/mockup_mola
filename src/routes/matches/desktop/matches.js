@@ -48,6 +48,7 @@ class Matches extends React.Component {
     selectedDate: null,
     startWeekDate: null,
     hasLive: false,
+    noMatch: false,
   }
 
   setDefaultDate = () => {
@@ -342,8 +343,7 @@ class Matches extends React.Component {
   }
 
   renderMatchCard = () => {
-    const { matches } = this.state
-
+    const { matches, noMatch } = this.state
     let flagLive = false
 
     if (noMatch) {
