@@ -46,7 +46,7 @@ export const tourSteps = {
       ),
       placement: 'left',
       disableBeacon: true,
-      locale: { last: 'Finish' },
+      locale: { last: 'Selesai' },
     },
   ],
 
@@ -85,7 +85,7 @@ export const tourSteps = {
           width: 281,
         },
       },
-      locale: { last: 'Finish' },
+      locale: { last: 'Done' },
     },
   ],
 }

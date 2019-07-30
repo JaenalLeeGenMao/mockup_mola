@@ -16,6 +16,7 @@ import Placeholder from './placeholder'
 import {
   playlistContainer,
   playlistWrapper,
+  playlistCardWrapper,
   DesktopBackgroundStyle,
   MobileBackgroundStyle,
   playlistHeadDesktop,
@@ -129,22 +130,25 @@ class Playlist extends React.Component {
             <div className={playlistList}>
               <p className="season_text">{element.meta.seasonNumber ? `Season ${element.meta.seasonNumber}` : ''}</p>
 
-              <Carousel
+              {/* <Carousel
                 framePadding={!isMobile ? '0rem 2rem' : '0rem 0rem 0rem 1rem'}
                 hideNextIcon={hideNextIcon(element.data.length)}
                 slidesToScroll={slideToScroll}
                 slidesToShow={slidesToShow}
                 dragging={true}
-              >
+              > */}
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {element.data.map((video, idx) => (
-                  <VideoCard
-                    key={'video' + idx}
-                    onClick={() => this.handleOnClick(video.id)}
-                    description={video.title ? video.title : ''}
-                    src={video.background.portrait ? video.background.portrait : ''}
-                  />
+                  <LazyLoad containerClassName={playlistCardWrapper} key={'video' + idx}>
+                    <VideoCard
+                      onClick={() => this.handleOnClick(video.id)}
+                      description={video.title ? video.title : ''}
+                      src={video.background.portrait ? video.background.portrait : ''}
+                    />
+                  </LazyLoad>
                 ))}
-              </Carousel>
+              </div>
+              {/* </Carousel> */}
             </div>
           </LazyLoad>
         ))}

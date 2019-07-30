@@ -15,7 +15,7 @@ import watchPermission from '@source/lib/watchPermission'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import MovieDetailError from '@components/common/error'
-import AgeRestrictionModal from '@components/AgeRestriction'
+// import AgeRestrictionModal from '@components/AgeRestriction'
 // import Link from '@components/Link'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
@@ -335,7 +335,7 @@ class WatchDesktop extends Component {
             </div>
           </>
         )}
-        {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+        {/* {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />} */}
         {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )

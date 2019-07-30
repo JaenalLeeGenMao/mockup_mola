@@ -5,8 +5,18 @@ import _get from 'lodash/get'
 import Tracker from '@source/lib/tracker'
 
 export const handleTracker = async (data, props) => {
-  const { clientIp, userId, heartbeat, window: clientWindow, event, referrer, video_quality, bitrate, client_bandwidth } = data
-  const { id: videoId, source } = props
+  const {
+    clientIp,
+    userId,
+    heartbeat,
+    window: clientWindow,
+    event,
+    referrer,
+    video_quality,
+    bitrate,
+    client_bandwidth,
+  } = data
+  const { id: videoId, contentType } = props
   /* Parse Current Url */
   const urlParams = queryString.parse(clientWindow.location.search)
 
@@ -62,7 +72,7 @@ export const handleTracker = async (data, props) => {
       project_id: 'molatv',
       ip: clientIp || null,
       path: `${clientWindow.location.host}${location.pathname}${location.search}`,
-      video_type: source || null,
+      video_type: contentType || null,
       // action,
       // current_duration: currentDuration,
       // total_duration: totalDuration,
