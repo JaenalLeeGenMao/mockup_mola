@@ -307,8 +307,22 @@
   color: white;
 }
 
+.header_menu_hamburgermenu_container {
+  display: none;
+}
+
 @media screen and (min-width: 2000px) {
   .header__menu {
     left: 16rem;
+  }
+}
+
+@media screen and (max-width: 778px) {
+  .header_menu_outer {
+    display: none;
+  }
+
+  .header_menu_hamburgermenu_container {
+    display: block;
   }
 }
