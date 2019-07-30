@@ -8,11 +8,6 @@ export const container = css`
   height: 100%;
   min-height: 100vh;
   border-radius: 5px;
-  margin: 2rem;
-
-  @media screen and (max-width: 960px) {
-    margin: 1rem;
-  }
 `
 
 export const fixedContainer = css`
@@ -32,10 +27,22 @@ export const fixedContainer = css`
     h3 {
       color: #6f6f6f;
       font-size: 15px;
-      margin: 0 1rem;
+      margin: 0;
     }
   }
 }
+`
+
+export const mainContent = css`
+  display: block;
+  margin: 0 auto;
+  max-width: 90vw;
+
+  @media screen and (max-width: 960px) {
+    max-width: 100vw;
+    margin: 0 0 0 1rem;
+    padding-top: 16vh;
+  }
 `
 
 export const carouselMargin = css`
@@ -45,7 +52,8 @@ export const carouselMargin = css`
 
   @media screen and (max-width: 960px) {
     div.slider-frame {
-      margin: 0 1rem !important;
+      margin: 0 !important;
+      padding: 1rem 0 !important;
     }
   }
 `
@@ -53,9 +61,10 @@ export const carouselMargin = css`
 export const DummyPlaceholder = styled('div')`
   height: auto;
 
-  /* width: 45vw; */
+  /* width: 40vw; */
   border-radius: 0.25rem;
-  animation: pulse ${props => props.num + 1}s infinite ease-in-out;
+  // animation: pulse ${props => props.num + 1}s infinite ease-in-out;
+  animation: pulse 2s infinite ease-in-out;
 
   img.bannerImage {
     position: relative;
@@ -66,7 +75,7 @@ export const DummyPlaceholder = styled('div')`
   imgbannerImage3d {
     position: relative;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
     opacity: 0;
   }
 
@@ -88,7 +97,7 @@ export const DummyPlaceholder = styled('div')`
 export const DummyWithoutAnimationPlaceholder = styled('div')`
   height: auto;
 
-  /* width: 45vw; */
+  /* width: 40vw; */
   border-radius: 0.25rem;
   background-color: rgba(165, 165, 165, 0.3);
 
@@ -101,7 +110,7 @@ export const DummyWithoutAnimationPlaceholder = styled('div')`
   imgbannerImage3d {
     position: relative;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
     opacity: 0;
   }
 `

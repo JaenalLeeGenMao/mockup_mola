@@ -145,7 +145,7 @@ class Feature extends Component {
             {banners.data.length > 0 && (
               <Carousel
                 wrap={banners.length === 1 ? false : true}
-                autoplay={true}
+                autoplay={false}
                 sliderCoin={true}
                 dragging={true}
                 slidesToShow={isMobile ? 1.25 : 2.25}
@@ -225,7 +225,7 @@ class Feature extends Component {
                       </Carousel>
                       {carouselIndex === 1 &&
                         articles.data.length > 0 && (
-                          <div className={container}>
+                          <div className={container} style={{ margin: 0 }}>
                             <h3>Articles</h3>
                             <Carousel
                               wrap={articles.length === 1 ? false : true}

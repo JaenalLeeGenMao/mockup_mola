@@ -4,9 +4,10 @@ export const container = css`
   display: block;
   width: 100%;
   margin: 0 auto;
-  max-width: 1280px;
+  max-width: 90vw;
 
   h3 {
+    padding: 0 0.5rem;
     color: #6f6f6f;
     font-size: 1.28rem;
     font-weight: 300;
@@ -24,6 +25,9 @@ export const container = css`
   }
 
   @media screen and (max-width: 960px) {
+    margin: 0;
+    max-width: 100vw;
+
     h3 {
       color: #6f6f6f;
       font-size: 15px;

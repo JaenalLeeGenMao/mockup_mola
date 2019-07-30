@@ -11,7 +11,7 @@ export const DesktopBackgroundStyle = styled('div')`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: absolute;
     -webkit-filter: blur(8px) brightness(0.8);
     -moz-filter: blur(8px) brightness(0.8);
@@ -25,10 +25,10 @@ export const MobileBackgroundStyle = styled('div')`
   &::before {
     content: '';
     background-repeat: no-repeat;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${props => props.url});
     // background-attachment: fixed;
     background-size: contain;
     background-position: top;
-    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${props => props.url});
     position: absolute;
     top: 8vh;
     left: 0;
@@ -105,6 +105,17 @@ export const playlistContainer = css`
   padding-top: 8vh;
   position: absolute;
   top: 0;
+`
+
+export const playlistWrapper = css`
+  position: relative;
+  max-width: 90vw;
+  margin: 0 auto;
+
+  @media screen and (max-width: 960px) {
+    max-width: 100vw;
+    margin: 0;
+  }
 `
 
 // .playlist_head p {

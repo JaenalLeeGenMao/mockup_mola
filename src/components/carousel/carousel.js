@@ -47,7 +47,9 @@ class BannerCarousel extends Component {
             c.onResize()
           }
         }}
-        autoGenerateStyleTag={false} /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
+        autoGenerateStyleTag={
+          false
+        } /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
         cellSpacing={isMobile ? 5 : this.props.cellSpacing || 12}
@@ -75,7 +77,14 @@ class BannerCarousel extends Component {
         renderCenterLeftControls={({ previousSlide, currentSlide }) => {
           return (
             <LazyLoad>
-              <button onClick={previousSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === 0 ? destroyButtons : `${arrowButtons} default`}>
+              <button
+                onClick={previousSlide}
+                className={
+                  this.props.transitionMode === 'scroll3d'
+                    ? hiddenButtons
+                    : currentSlide === 0 ? destroyButtons : `${arrowButtons} default`
+                }
+              >
                 {this.props.transitionMode !== 'scroll3d' && <span className={chevronLeft} />}
               </button>
             </LazyLoad>
@@ -88,7 +97,14 @@ class BannerCarousel extends Component {
           } else {
             return (
               <LazyLoad>
-                <button onClick={nextSlide} className={this.props.transitionMode === 'scroll3d' ? hiddenButtons : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`}>
+                <button
+                  onClick={nextSlide}
+                  className={
+                    this.props.transitionMode === 'scroll3d'
+                      ? hiddenButtons
+                      : currentSlide === newVal ? destroyButtons : `${arrowButtons} default`
+                  }
+                >
                   {this.props.transitionMode !== 'scroll3d' && <span className={chevronRight} />}
                 </button>
               </LazyLoad>

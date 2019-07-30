@@ -9,7 +9,7 @@ export const playlistContainer = css`
   :hover {
     pointer-events: auto;
     cursor: pointer;
-    transform: scale(1.05);
+    transform: scale(1.025);
   }
 
   :hover.hoverOff {
@@ -32,7 +32,7 @@ export const playlistContainer = css`
     @media screen and (max-width: 960px) {
       opacity: 1;
       max-width: 100%;
-      margin: 0 0.5rem;
+      // margin: 0 0.5rem;
       font-size: 11px;
       max-height: 24px;
       text-overflow: clip;
@@ -62,10 +62,10 @@ export const playlistContainer = css`
     border-radius: 0.25rem;
     position: relative;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
 
     @media screen and (max-width: 960px) {
-      width: 80vw;
+      width: 77.5vw;
     }
   }
 

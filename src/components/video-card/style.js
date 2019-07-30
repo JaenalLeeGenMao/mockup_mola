@@ -9,7 +9,7 @@ export const videoContainer = css`
   :hover {
     pointer-events: auto;
     cursor: pointer;
-    transform: scale(1.05);
+    transform: scale(1.025);
   }
 
   p {
@@ -54,7 +54,7 @@ export const videoContainer = css`
     border-radius: .25rem;
     position: relative;
     z-index: 1;
-    width: 45vw;
+    width: 40vw;
   }
 
   .bannerImage3d.hide {
