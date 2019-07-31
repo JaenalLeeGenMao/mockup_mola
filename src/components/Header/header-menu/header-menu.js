@@ -167,29 +167,31 @@ class HeaderMenu extends Component {
                       )
                     }
                   })}
-                  <div className="tourCategory" style={{ display: 'inline-block' }}>
-                    {headerMenuList.map((dts, index) => {
-                      // console.log('dataaa headerMenu', dts)
-                      const absMenuUrl = dts.attributes.url
-                      const absMenuArray = absMenuUrl.split('/')
-                      const isHome = absMenuArray.length <= 3
-                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                      const title = _.get(dts, 'attributes.title.en', '')
-                      if (dts.id > 1 && dts.id < 6) {
-                        return (
-                          <Link
-                            key={dts.id}
-                            title={title}
-                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            to={relMenuUrl}
-                          >
-                            {title}
-                          </Link>
-                        )
-                      }
-                    })}
-                  </div>
+
+                  {headerMenuList.length > 0 && (
+                    <div className="tourCategory" style={{ display: 'inline-block' }}>
+                      {headerMenuList.map((dts, index) => {
+                        const absMenuUrl = dts.attributes.url
+                        const absMenuArray = absMenuUrl.split('/')
+                        const isHome = absMenuArray.length <= 3
+                        const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                        const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                        const title = _.get(dts, 'attributes.title.en', '')
+                        if (dts.id > 1 && dts.id < 6) {
+                          return (
+                            <Link
+                              key={dts.id}
+                              title={title}
+                              className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                              to={relMenuUrl}
+                            >
+                              {title}
+                            </Link>
+                          )
+                        }
+                      })}
+                    </div>
+                  )}
                   {headerMenuList.map((dts, index) => {
                     const absMenuUrl = dts.attributes.url
                     const absMenuArray = absMenuUrl.split('/')
