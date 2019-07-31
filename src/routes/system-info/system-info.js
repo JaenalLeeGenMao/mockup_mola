@@ -39,7 +39,7 @@ class SystemInfo extends Component {
                 <div>IP {info.ip}</div>
               </>
             )}
-            <div>Version 1.0.8</div>
+            <div>Version 1.0.9</div>
           </div>
         </div>
       </div>
