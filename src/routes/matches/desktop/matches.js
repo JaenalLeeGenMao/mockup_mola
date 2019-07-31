@@ -202,17 +202,17 @@ class Matches extends React.Component {
     result = this.getThreeWeeksDate(filterLeagueRes)
     matchesList = result.matchesList
 
-    for (let i = 0; i < result.matchesList.length; i++) {
-      let flag = false
-      let dataTemp = result.matchesList.dateId
-      if (dataTemp == null) {
-        flag = true
-      }
-      this.setState({
-        flag: true,
-        noMatch: true,
-      })
-    }
+    // for (let i = 0; i < result.matchesList.length; i++) {
+    //   let flag = false
+    //   let dataTemp = result.matchesList.dateId
+    //   if (dataTemp == null) {
+    //     flag = true
+    //   }
+    //   this.setState({
+    //     flag: true,
+    //     noMatch: true,
+    //   })
+    // }
 
     this.setState({
       matches: matchesList,
