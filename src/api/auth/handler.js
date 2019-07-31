@@ -25,7 +25,7 @@ const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', g
       return {
         meta: {
           status: 'error',
-          error,
+          error: error.response.data,
         },
         data: {},
       }
@@ -244,7 +244,15 @@ const createNewUser = ({ email = '', password = '', csrf = '', birthdate = '', g
 //     })
 // }
 
-const updateProfile = ({ name = '', csrf = '', birthdate = '', gender = '', location = '', token = '', phone = '' }) => {
+const updateProfile = ({
+  name = '',
+  csrf = '',
+  birthdate = '',
+  gender = '',
+  location = '',
+  token = '',
+  phone = '',
+}) => {
   const body = { name, birthdate, gender, token }
   if (phone) {
     body.phone = phone
