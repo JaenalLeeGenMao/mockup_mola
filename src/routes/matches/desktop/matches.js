@@ -201,20 +201,16 @@ class Matches extends React.Component {
 
     result = this.getThreeWeeksDate(filterLeagueRes)
     matchesList = result.matchesList
-
-    // for (let i = 0; i < result.matchesList.length; i++) {
-    //   let flag = false
-    //   let dataTemp = result.matchesList.dateId
-    //   if (dataTemp == null) {
-    //     flag = true
-    //   }
-    //   this.setState({
-    //     flag: true,
-    //     noMatch: true,
-    //   })
-    // }
+    let flag = true
+    for (let i = 0; i < result.matchesList.length; i++) {
+      //kalau ada minimal 1 pertandingan
+      if (result.matchesList[i].id) {
+        flag = false
+      }
+    }
 
     this.setState({
+      noMatch: flag,
       matches: matchesList,
       filterByLeague: value,
       selectedWeek: 2,
@@ -231,6 +227,10 @@ class Matches extends React.Component {
         offset: -150,
       })
     }, 500)
+  }
+
+  renderNoMatchLeague = () => {
+    return <div className={s.noMatch}>Tidak Ada Pertandingan</div>
   }
 
   //expand This Week
@@ -345,6 +345,11 @@ class Matches extends React.Component {
     const { matches } = this.state
 
     let flagLive = false
+
+    if (noMatch) {
+      return this.renderNoMatchLeague()
+    }
+
     return matches.map((matchDt, index) => {
       if (matchDt.id) {
         let flag = true
