@@ -136,13 +136,13 @@ export const playlistCardWrapper = css`
   overflow: hidden;
 
   @media screen and (max-width: 960px) {
-    width: 31.5vw;
+    width: 30.5vw;
     margin: 0.25rem;
   }
 
   /* khusus iPhone SE */
   @media screen and (max-width: 330px) {
-    width: 47.5vw;
+    width: 45vw;
     margin: 0.25rem;
   }
 `

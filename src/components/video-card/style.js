@@ -41,6 +41,10 @@ export const videoContainer = css`
     opacity: 1;
   }
 
+  .imageWrapper {
+    position: relative;
+  }
+
   .bannerImage {
     border-radius: .25rem;
     position: relative;
@@ -69,7 +73,7 @@ export const videoContainer = css`
 export const icons = css`
   position: absolute;
   z-index: 2;
-  bottom: 4.65rem;
+  bottom: 7.5%;
   left: 0.75rem;
   // opacity: 0;
   // transition: all ease 500ms;
@@ -84,8 +88,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -99,8 +103,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -114,8 +118,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -129,8 +133,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 `

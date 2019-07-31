@@ -134,8 +134,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -149,8 +149,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -164,8 +164,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -179,8 +179,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 `
