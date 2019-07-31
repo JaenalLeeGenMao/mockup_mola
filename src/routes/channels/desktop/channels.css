@@ -13,7 +13,7 @@
 }
 
 .epg__list__container {
-  height: 93vh;
+  min-height: 86vh;
 }
 
 .labelLoaderIcon {
@@ -82,6 +82,6 @@
   }
 
   .epg__list__container {
-    height: 85.5vh;
+    min-height: 80vh;
   }
 }
