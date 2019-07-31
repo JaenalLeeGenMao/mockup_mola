@@ -88,12 +88,7 @@ class Header extends Component {
   // }
 
   render() {
-    const {
-      isDark = 1,
-      headerMenuOff = false,
-      isMobile = false,
-      isLandscape = false,
-    } = this.props
+    const { isDark = 1, headerMenuOff = false, isMobile = false, isLandscape = false } = this.props
     const color = isDark ? 'black' : 'white'
     const headerStyle = isMobile ? styles.header__container_m : styles.header__container
     const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
@@ -108,7 +103,7 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         </div>
-        {!headerMenuOff && <HeaderMenu color={color} headerMenuOff={headerMenuOff} {...this.props} />}
+        <HeaderMenu color={color} headerMenuOff={headerMenuOff} {...this.props} />
       </div>
     )
   }

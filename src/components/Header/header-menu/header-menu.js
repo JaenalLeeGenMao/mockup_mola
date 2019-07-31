@@ -124,31 +124,50 @@ class HeaderMenu extends Component {
   render() {
     const { headerMenuOff, activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
     const { headerMenuList, toggle } = this.state
-    // const headerRes = !isMobile ? styles.header__show : ''
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
     return (
       <>
         <div className={styles.header__menu}>
-          {!headerMenuOff && (
-            <LazyLoad className={styles.header__menu_icon_wrapper}>
-              <div
-                className={`${styles.header__menu_wrapper_hamburgerMenu} tourHamburger ${
-                  isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                }`}
-              >
-                <DropdownMenu
-                  className={styles.header_menu_hamburgermenu_container}
-                  pathname={pathname}
-                  dataList={headerMenuList}
-                  activeId={activeMenuDropdown}
-                  onClick={this.handleNavigation}
-                />
-              </div>
-              <div className={styles.header_menu_outer}>
-                {!isMobile && (
-                  <>
+          <LazyLoad className={styles.header__menu_icon_wrapper}>
+            <div
+              className={`${styles.header__menu_wrapper_hamburgerMenu} tourHamburger ${
+                isLandscape ? styles.header_menu_select_wrapper__ls : ''
+              }`}
+            >
+              <DropdownMenu
+                className={styles.header_menu_hamburgermenu_container}
+                pathname={pathname}
+                dataList={headerMenuList}
+                activeId={activeMenuDropdown}
+                onClick={this.handleNavigation}
+              />
+            </div>
+            <div className={styles.header_menu_outer}>
+              {!isMobile && (
+                <>
+                  {headerMenuList.map((dts, index) => {
+                    const absMenuUrl = dts.attributes.url
+                    const absMenuArray = absMenuUrl.split('/')
+                    const isHome = absMenuArray.length <= 3
+                    const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    const title = _.get(dts, 'attributes.title.en', '')
+                    if (dts.id === 1) {
+                      return (
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          to={relMenuUrl}
+                        >
+                          {title}
+                        </Link>
+                      )
+                    }
+                  })}
+                  <div className="tourCategory" style={{ display: 'inline-block' }}>
                     {headerMenuList.map((dts, index) => {
                       // console.log('dataaa headerMenu', dts)
                       const absMenuUrl = dts.attributes.url
@@ -157,7 +176,7 @@ class HeaderMenu extends Component {
                       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
                       const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
                       const title = _.get(dts, 'attributes.title.en', '')
-                      if (dts.id === 1) {
+                      if (dts.id > 1 && dts.id < 6) {
                         return (
                           <Link
                             key={dts.id}
@@ -170,93 +189,65 @@ class HeaderMenu extends Component {
                         )
                       }
                     })}
-                    <div className="tourCategory" style={{ display: 'inline-block' }}>
-                      {headerMenuList.map((dts, index) => {
-                        // console.log('dataaa headerMenu', dts)
-                        const absMenuUrl = dts.attributes.url
-                        const absMenuArray = absMenuUrl.split('/')
-                        const isHome = absMenuArray.length <= 3
-                        const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                        const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                        const title = _.get(dts, 'attributes.title.en', '')
-                        if (dts.id > 1 && dts.id < 6) {
-                          return (
-                            <Link
-                              key={dts.id}
-                              title={title}
-                              className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                              to={relMenuUrl}
-                            >
-                              {title}
-                            </Link>
-                          )
-                        }
-                      })}
-                    </div>
-                    {headerMenuList.map((dts, index) => {
-                      const absMenuUrl = dts.attributes.url
-                      const absMenuArray = absMenuUrl.split('/')
-                      const isHome = absMenuArray.length <= 3
-                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                      const title = _.get(dts, 'attributes.title.en', '')
-                      if (dts.id >= 6 && dts.id != 9) {
-                        return (
-                          <Link
-                            key={dts.id}
-                            title={title}
-                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            to={relMenuUrl}
-                          >
-                            {title}
-                          </Link>
-                        )
-                      } else if (dts.id == 9) {
-                        return (
-                          <Link
-                            key={dts.id}
-                            title={title}
-                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            onClick={this.handleToggle}
-                          >
-                            {title}
-                          </Link>
-                        )
-                      }
-                    })}
-                  </>
-                )}
-                {/* {headerRes && (
-                  <div className={`${styles.header__menu_wrapper_m} ${isLandscape ? styles.header_menu_select_wrapper__ls : ''}`}>
-                    <DropdownMenu className={styles.header_menu_dropdown_container} pathname={pathname} dataList={headerMenuList} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
                   </div>
-                )} */}
-                {isMobile && (
-                  <div
-                    className={`${styles.header__menu_wrapper_m} tourHamburger ${
-                      isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                    }`}
-                  >
-                    <DropdownMenu
-                      className={styles.header_menu_dropdown_container}
-                      pathname={pathname}
-                      dataList={headerMenuList}
-                      activeId={activeMenuDropdown}
-                      onClick={this.handleNavigation}
-                    />
-                  </div>
-                )}
-                {toggle && (
-                  <PopupMenu
-                    onClick={this.handleToggle}
-                    user={this.props.user}
-                    locale={this.state.locale}
-                    onSignOut={this.handleSignOut}
+                  {headerMenuList.map((dts, index) => {
+                    const absMenuUrl = dts.attributes.url
+                    const absMenuArray = absMenuUrl.split('/')
+                    const isHome = absMenuArray.length <= 3
+                    const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    const title = _.get(dts, 'attributes.title.en', '')
+                    if (dts.id >= 6 && dts.id != 9) {
+                      return (
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          to={relMenuUrl}
+                        >
+                          {title}
+                        </Link>
+                      )
+                    } else if (dts.id == 9) {
+                      return (
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          onClick={this.handleToggle}
+                        >
+                          {title}
+                        </Link>
+                      )
+                    }
+                  })}
+                </>
+              )}
+              {isMobile && (
+                <div
+                  className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                    isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                  }`}
+                >
+                  <DropdownMenu
+                    className={styles.header_menu_dropdown_container}
+                    pathname={pathname}
+                    dataList={headerMenuList}
+                    activeId={activeMenuDropdown}
+                    onClick={this.handleNavigation}
                   />
-                )}
-              </div>
-            </LazyLoad>
-          )}
+                </div>
+              )}
+              {toggle && (
+                <PopupMenu
+                  onClick={this.handleToggle}
+                  user={this.props.user}
+                  locale={this.state.locale}
+                  onSignOut={this.handleSignOut}
+                />
+              )}
+            </div>
+          </LazyLoad>
         </div>
       </>
     )
