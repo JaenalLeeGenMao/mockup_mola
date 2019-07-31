@@ -99,14 +99,26 @@ class Channels extends Component {
   }
 
   handleScroll = () => {
-    if (window.scrollY >= window.innerHeight - 85) {
-      this.setState({
-        hidePlaylist: false,
-      })
-    } else if (window.scrollY <= window.innerHeight - 130) {
-      this.setState({
-        hidePlaylist: true,
-      })
+    if (window.innerHeight <= 720) {
+      if (window.scrollY > window.innerHeight - 110) {
+        this.setState({
+          hidePlaylist: false,
+        })
+      } else if (window.scrollY <= window.innerHeight - 160) {
+        this.setState({
+          hidePlaylist: true,
+        })
+      }
+    } else {
+      if (window.scrollY > window.innerHeight - 135) {
+        this.setState({
+          hidePlaylist: false,
+        })
+      } else if (window.scrollY <= window.innerHeight - 160) {
+        this.setState({
+          hidePlaylist: true,
+        })
+      }
     }
   }
 
@@ -293,25 +305,18 @@ class Channels extends Component {
               />
               <div className={styles.epg__grid__container}>
                 <span />
-                <InfiniteScroll
-                  dataLength={limit.length}
-                  next={this.fetchMoreData}
-                  hasMore={hasMore}
-                  hasChildren={true}
-                  loader={<div className={styles.labelLoaderIcon}>{/* <LoaderComp /> */}</div>}
-                  height={800}
-                >
-                  {programmeGuides.loading && <Placeholder />}
-                  {programmeGuides.data &&
-                    scheduleList.length > 0 && (
-                      <ScheduleCard
-                        scheduleList={scheduleList}
-                        activeDate={activeDate}
-                        activeChannelId={activeChannelId}
-                        limit={limit}
-                      />
-                    )}
-                </InfiniteScroll>
+
+                {programmeGuides.loading && <Placeholder />}
+                {!programmeGuides.loading &&
+                  programmeGuides.data &&
+                  scheduleList.length > 0 && (
+                    <ScheduleCard
+                      scheduleList={scheduleList}
+                      activeDate={activeDate}
+                      activeChannelId={activeChannelId}
+                      limit={limit}
+                    />
+                  )}
                 <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} isChannel />
               </div>
             </div>
