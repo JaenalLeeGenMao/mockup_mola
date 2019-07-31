@@ -15,11 +15,14 @@ class Terms extends Component {
   }
   render() {
     const { locale } = this.state
+    const { noHeader } = this.props
     return (
       <>
-        <div className={styles.terms_header}>
-          <HeaderTerms {...this.props} />
-        </div>
+        {!noHeader && (
+          <div className={styles.terms_header}>
+            <HeaderTerms {...this.props} />
+          </div>
+        )}
         <div className={styles.terms_singlepage}>
           <div className={styles.terms_contentheadlinecls}>{locale['terms_contentheadline']}</div>
           <div className={styles.terms_contentbody}>
