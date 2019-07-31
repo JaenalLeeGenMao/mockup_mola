@@ -142,7 +142,7 @@ export const playlistCardWrapper = css`
 
   /* khusus iPhone SE */
   @media screen and (max-width: 330px) {
-    width: 45vw;
+    width: 46vw;
     margin: 0.25rem;
   }
 `
