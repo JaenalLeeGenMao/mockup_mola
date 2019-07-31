@@ -596,6 +596,19 @@ class Home extends Component {
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
     const libraryId = scrollIndex > 0 ? playlistId.replace('f-', '') : ''
+
+    //for now only
+    let catalogId = ''
+    if (libraryId == 'mola1-fea') {
+      catalogId = 'epl'
+    } else if (libraryId == 'mola2-fea') {
+      catalogId = 'sports'
+    } else if (libraryId == 'mola3-fea') {
+      catalogId = 'movies'
+    } else if (libraryId == 'mola4-fea') {
+      catalogId = 'kids'
+    }
+
     return (
       <Fragment>
         <Joyride
@@ -710,7 +723,7 @@ class Home extends Component {
                             </>
                           )}
                       </picture>
-                      <a href={`/categories/${libraryId}`}>
+                      <a href={`/libraries/${catalogId}`}>
                         <span>
                           {locale['view_all_movie']}
                           <br /> {this.state.playlists.data[scrollIndex].title.toUpperCase() + ' '}
