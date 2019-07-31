@@ -31,7 +31,7 @@ export const container = css`
     h3 {
       color: #6f6f6f;
       font-size: 15px;
-      margin: 0 1rem;
+      margin: 0 5px;
     }
 
     p {

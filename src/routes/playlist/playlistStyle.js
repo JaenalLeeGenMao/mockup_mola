@@ -45,8 +45,11 @@ export const playlistHeadDesktop = css`
   }
 
   .description {
+    height: 3.65rem;
     line-height: 1.825rem;
     font-size: 1.2rem;
+    text-transform: lowercase;
+    overflow: hidden;
   }
 `
 
@@ -59,6 +62,7 @@ export const playlistHeadMobile = css`
   justify-content: flex-end;
 
   @media screen and (max-width: 960px) {
+    padding: 1rem 0.5rem 0.5rem;
     margin: 1rem;
   }
 
@@ -76,11 +80,19 @@ export const playlistHeadMobile = css`
     line-height: 4rem;
     font-size: 1.8rem;
     font-weight: 600;
+
+    @media screen and (max-width: 960px) {
+      line-height: 3rem;
+    }
   }
+
   .description {
     color: white;
-    line-height: 1.825rem;
+    height: 3rem;
+    line-height: 1.5rem;
     font-size: 1.2rem;
+    text-transform: lowercase;
+    overflow: hidden;
   }
 `
 
@@ -107,10 +119,12 @@ export const playlistWrapper = css`
   position: relative;
   max-width: 95vw;
   margin: 0 auto;
+  padding-top: 15vh;
 
   @media screen and (max-width: 960px) {
     max-width: 100vw;
     margin: 0;
+    padding-top: 0;
   }
 `
 

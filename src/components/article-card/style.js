@@ -28,12 +28,11 @@ export const articleContainer = css`
 
   p {
     position: relative;
-    height: 1.65rem !important;
+    line-height: 1.25rem !important;
+    height: 2.5rem !important;
     font-size: 1rem !important;
     padding: .2rem 0 !important;
     max-width: 100%;
-    max-height: 2.25rem;
-    white-space: nowrap;
     text-overflow: clip;
     overflow: hidden;
     padding: 0 0.5rem;
