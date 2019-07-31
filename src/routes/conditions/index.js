@@ -6,14 +6,15 @@ import MolaLayout from '@components/Molalayout'
 const title = 'Conditions Page'
 const description = 'Info Usage OS details'
 
-async function action({ isMobile }) {
+async function action({ isMobile, query }) {
+  const noHeader = query.noHeader ? true : false
   return {
     chunks: ['conditions'],
     title,
     description,
     component: (
       <MolaLayout>
-        <Conditions isMobile={isMobile} />
+        <Conditions isMobile={isMobile} noHeader={noHeader} />
       </MolaLayout>
     ),
   }

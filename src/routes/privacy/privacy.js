@@ -16,12 +16,14 @@ class Privacy extends Component {
   }
   render() {
     const { locale } = this.state
-
+    const { noHeader } = this.props
     return (
       <>
-        <div className={styles.privacy_header}>
-          <HeaderPrivacy stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
-        </div>
+        {!noHeader && (
+          <div className={styles.privacy_header}>
+            <HeaderPrivacy {...this.props} />
+          </div>
+        )}
         <div className={styles.privacy_singlepage}>
           <div className={styles.privacy_contentheadlinecls}>{locale['privacy_contentheadline']}</div>
           <div className={styles.privacy_contentbody}>

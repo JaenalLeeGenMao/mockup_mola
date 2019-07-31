@@ -66,4 +66,8 @@
     padding-top: 45px;
     padding-bottom: 15px;
   }
+
+  .conditions_header {
+    height: 60px;
+  }
 }

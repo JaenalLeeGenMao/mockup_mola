@@ -17,14 +17,15 @@ import Privacy from './privacy'
 const title = 'Privacy Page'
 const description = 'Privacy Policy'
 
-function action({ isMobile }) {
+function action({ isMobile, query }) {
+  const noHeader = query.noHeader ? true : false
   return {
     chunks: ['privacy'],
     title,
     description,
     component: (
       <Layout>
-        <Privacy isMobile={isMobile} />
+        <Privacy isMobile={isMobile} noHeader={noHeader} />
       </Layout>
     ),
   }

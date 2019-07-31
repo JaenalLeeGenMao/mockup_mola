@@ -57,4 +57,8 @@
     padding-top: 45px;
     padding-bottom: 15px;
   }
+
+  .privacy_header {
+    height: 60px;
+  }
 }

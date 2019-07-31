@@ -52,4 +52,8 @@
     padding-top: 45px;
     padding-bottom: 15px;
   }
+
+  .terms_header {
+    height: 60px;
+  }
 }
