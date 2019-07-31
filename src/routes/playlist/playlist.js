@@ -137,7 +137,7 @@ class Playlist extends React.Component {
                 slidesToShow={slidesToShow}
                 dragging={true}
               > */}
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', margin: '0px 5px' }}>
                 {element.data.map((video, idx) => (
                   <LazyLoad containerClassName={playlistCardWrapper} key={'video' + idx}>
                     <VideoCard

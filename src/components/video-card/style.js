@@ -14,10 +14,10 @@ export const videoContainer = css`
 
   p {
     position: relative;
-    height: 1.89rem !important;
     font-size: 1.41rem !important;
     max-width: 100%;
-    max-height: 3.45rem;
+    line-height: 1.89rem !important;
+    height: 3.78rem;
     text-overflow: clip;
     overflow: hidden;
     padding: 0 0.5rem;
@@ -29,14 +29,20 @@ export const videoContainer = css`
       opacity: 1;
       max-width: 100%;
       margin: 0 .5rem;
-      font-size: 11px;
-      max-height: 24px;
+      font-size: 12px !important;
+      line-height: 14px !important;
+      height: 28px !important;
+      overflow: hidden;
       text-overflow: clip;
     }
   }
 
   :hover p {
     opacity: 1;
+  }
+
+  .imageWrapper {
+    position: relative;
   }
 
   .bannerImage {
@@ -67,7 +73,7 @@ export const videoContainer = css`
 export const icons = css`
   position: absolute;
   z-index: 2;
-  bottom: 3.25rem;
+  bottom: 7.5%;
   left: 0.75rem;
   // opacity: 0;
   // transition: all ease 500ms;
@@ -82,8 +88,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -97,8 +103,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -112,8 +118,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -127,8 +133,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 `

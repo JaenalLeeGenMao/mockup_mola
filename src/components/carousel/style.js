@@ -13,7 +13,6 @@ export const carouselContainer = css`
   }
 
   & .slider-frame {
-    // padding: 1rem 0 !important;
     padding: 1rem .5rem 1rem !important;
     // margin: 1rem 0 !important;
   }

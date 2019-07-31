@@ -189,7 +189,7 @@ class Feature extends Component {
                         }
                         transitionMode={'scroll'}
                         cellSpacing={12}
-                        framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
+                        framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {
@@ -232,7 +232,7 @@ class Feature extends Component {
                               transitionMode={'scroll'}
                               cellSpacing={isMobile ? 0 : 20}
                               withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
-                              framePadding={!isMobile ? '0rem' : '0rem 1rem'}
+                              framePadding={!isMobile ? '0rem' : '0rem 5px'}
                             >
                               {articles.data.map(obj => (
                                 <ArticleCard

@@ -18,10 +18,10 @@ export const playlistContainer = css`
 
   p {
     position: relative;
-    height: 2.25rem !important;
+    height: 3.65rem !important;
+    line-height: 1.825rem;
     font-size: 1.41rem !important;
     max-width: 100%;
-    max-height: 3.45rem;
     text-overflow: clip;
     overflow: hidden;
     padding: 0 0.5rem;
@@ -32,9 +32,9 @@ export const playlistContainer = css`
     @media screen and (max-width: 960px) {
       opacity: 1;
       max-width: 100%;
-      // margin: 0 0.5rem;
-      font-size: 11px;
-      max-height: 24px;
+      font-size: 12px !important;
+      line-height: 14px;
+      height: 28px !important;
       text-overflow: clip;
     }
   }
@@ -93,8 +93,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -108,8 +108,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -123,8 +123,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -138,8 +138,8 @@ export const icons = css`
     vertical-align: middle;
 
     @media screen and (max-width: 960px) {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
     }
   }
 `
