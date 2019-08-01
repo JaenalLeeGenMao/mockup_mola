@@ -66,6 +66,7 @@ class Feature extends Component {
     ) {
       playlists.data.map((playlist, playlistIndex) => {
         if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+          trackedPlaylistIds.push(playlist.id)
           this.props.onHandleVideo(playlist, playlistIndex)
         }
       })
