@@ -122,7 +122,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { headerMenuOff, activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
+    const { activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
     const { headerMenuList, toggle } = this.state
 
     let activeMenuDropdown = ''
