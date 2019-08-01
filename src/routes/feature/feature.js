@@ -21,6 +21,7 @@ import { contentTypeList, banners as dummyDataBanners } from './const'
 
 import { container, bannerContainer, carouselMargin } from './style'
 
+let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
   constructor(props) {
     super(props)
@@ -55,14 +56,18 @@ class Feature extends Component {
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
       this.props.onHandleArticle(id)
+
+      trackedPlaylistIds = []
     }
     if (
       playlists.meta.status === 'success' &&
       playlists.data.length > 0 &&
-      playlists.data.length !== videos.data.length
+      videos.data.length < playlists.data.length
     ) {
       playlists.data.map((playlist, playlistIndex) => {
-        this.props.onHandleVideo(playlist, playlistIndex)
+        if (trackedPlaylistIds.indexOf(playlist.id) === -1) {
+          this.props.onHandleVideo(playlist, playlistIndex)
+        }
       })
     }
   }
@@ -150,7 +155,9 @@ class Feature extends Component {
                 dragging={true}
                 slidesToShow={isMobile ? 1.25 : 2.25}
                 transitionMode={'scroll3d'}
-                withoutControls={banners.data.length < contentTypeList['banners'].slideToShow}
+                withoutControls={
+                  banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
+                }
                 framePadding="0rem"
               >
                 {banners.data.map(obj => (
