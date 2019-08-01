@@ -437,7 +437,7 @@ class Matches extends React.Component {
                     <span>{this.categoryFilter()}</span>
                     <span>
                       <div className={s.matchlist_wrappercontent_center}>
-                        <div className={s.matchlist_Pagetitle}>{this.renderMatchCard()}</div>
+                        <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
                       </div>
                     </span>
                     <VerticalCalendar

@@ -175,6 +175,10 @@
   align-items: center;
 }
 
+.header__menu_wrapper_m {
+ cursor: pointer;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header__menu {
@@ -307,7 +311,7 @@
   color: white;
 }
 
-.header_menu_hamburgermenu_container {
+.header__menu_wrapper_m {
   display: none;
 }
 
@@ -322,7 +326,7 @@
     display: none;
   }
 
-  .header_menu_hamburgermenu_container {
+  .header__menu_wrapper_m {
     display: block;
   }
 }
