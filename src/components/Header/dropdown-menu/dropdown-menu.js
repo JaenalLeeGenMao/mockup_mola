@@ -10,9 +10,7 @@ class DropdownList extends Component {
     selectedId: 0,
   }
 
-  componentDidMount() {
-    // document.addEventListener('mousedown', this.handleClickDropdown)
-  }
+  componentDidMount() {}
 
   componentWillUnMount() {
     // document.removeEventListener('mousedown', this.handleClickDropdown)

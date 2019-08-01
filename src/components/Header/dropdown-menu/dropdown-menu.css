@@ -52,6 +52,7 @@
   font-size: 18px;
   font-weight: 400;
   padding: 1rem 0;
+  cursor: pointer;
 }
 
 .dropdown_list_item.active {
@@ -80,10 +81,12 @@
   background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+Cjx0aXRsZT5BcnRib2FyZCAyPC90aXRsZT4KPHBhdGggZmlsbD0iI0I1QjVCNSIgZD0iTTI3LjU2LDI0bDcuMTgtOS4yMmExLjA4LDEuMDgsMCwwLDAtLjA1LTEuNDZoMGExLjA4LDEuMDgsMCwwLDAtMS40Ni0uMDVMMjQsMjAuNDRsLTkuMjItNy4xOGExLjA4LDEuMDgsMCwwLDAtMS40Ni4wNWgwYTEuMDgsMS4wOCwwLDAsMC0uMDUsMS40NkwyMC40NCwyNGwtNy4xOCw5LjIyYTEuMDgsMS4wOCwwLDAsMCwuMDUsMS40NmgwYTEuMDgsMS4wOCwwLDAsMCwxLjQ2LjA1TDI0LDI3LjU2bDkuMjIsNy4xOGExLjA4LDEuMDgsMCwwLDAsMS40Ni0uMDVoMGExLjA4LDEuMDgsMCwwLDAsLjA1LTEuNDZaIi8+Cjwvc3ZnPg==);
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
 }
 
 .overflow_hidden {
   overflow: hidden;
+  pointer-events: none;
 }
 
 .background_container {

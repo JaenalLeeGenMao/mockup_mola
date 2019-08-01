@@ -131,19 +131,6 @@ class HeaderMenu extends Component {
       <>
         <div className={styles.header__menu}>
           <LazyLoad className={styles.header__menu_icon_wrapper}>
-            <div
-              className={`${styles.header__menu_wrapper_hamburgerMenu} tourHamburger ${
-                isLandscape ? styles.header_menu_select_wrapper__ls : ''
-              }`}
-            >
-              <DropdownMenu
-                className={styles.header_menu_hamburgermenu_container}
-                pathname={pathname}
-                dataList={headerMenuList}
-                activeId={activeMenuDropdown}
-                onClick={this.handleNavigation}
-              />
-            </div>
             <div className={styles.header_menu_outer}>
               {!isMobile && (
                 <>
@@ -225,8 +212,21 @@ class HeaderMenu extends Component {
                   })}
                 </>
               )}
-              {isMobile && (
-                <div
+            </div>
+            <div
+              className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                isLandscape ? styles.header_menu_select_wrapper__ls : ''
+              }`}
+            >
+              <DropdownMenu
+                className={styles.header_menu_dropdown_container}
+                pathname={pathname}
+                dataList={headerMenuList}
+                activeId={activeMenuDropdown}
+                onClick={this.handleNavigation}
+              />
+            </div>
+            {/* <div
                   className={`${styles.header__menu_wrapper_m} tourHamburger ${
                     isLandscape ? styles.header_menu_select_wrapper__ls : ''
                   }`}
@@ -238,17 +238,15 @@ class HeaderMenu extends Component {
                     activeId={activeMenuDropdown}
                     onClick={this.handleNavigation}
                   />
-                </div>
-              )}
-              {toggle && (
-                <PopupMenu
-                  onClick={this.handleToggle}
-                  user={this.props.user}
-                  locale={this.state.locale}
-                  onSignOut={this.handleSignOut}
-                />
-              )}
-            </div>
+                </div> */}
+            {toggle && (
+              <PopupMenu
+                onClick={this.handleToggle}
+                user={this.props.user}
+                locale={this.state.locale}
+                onSignOut={this.handleSignOut}
+              />
+            )}
           </LazyLoad>
         </div>
       </>

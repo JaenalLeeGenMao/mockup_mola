@@ -42,7 +42,6 @@
 }
 
 .live__dot {
-  /* animation: blinker 1.2s linear infinite; */
   background-color: #2c56ff;
   width: 1rem;
   height: 8px;
@@ -52,7 +51,8 @@
   border-radius: 50%;
 }
 
-/* @keyframes blinker {
-  50% { opacity: 0; }
-} */
-
+@media screen and (max-width: 768px) {
+  .filterContentfilterByDay_container {
+    padding: 0 2rem 1rem 1rem;
+  }
+}

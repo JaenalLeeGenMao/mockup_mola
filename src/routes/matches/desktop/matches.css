@@ -29,11 +29,13 @@ body {
   margin-bottom: 50vh;
 }
 
-.matchlist_Pagetitle {
+.matchlist_content_center {
   color: white;
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   text-align: left;
+  display: grid;
+  justify-content: center;
 }
 
 .matchlist_valuelistitem {
@@ -106,10 +108,6 @@ body {
   grid-template-columns: 0.5fr 2fr 0.5fr;
   grid-column-gap: 3rem;
   margin-top: 5rem;
-
-  /* margin: 3rem 0 0 0; */
-
-  /* margin: 0 auto; */
   width: 100%;
 }
 
@@ -493,6 +491,12 @@ body {
   margin: 14rem;
 }
 
+@media screen and (max-width: 768px) {
+  .filterContent_container {
+    padding: 0 1rem 1rem 2rem;
+  }
+}
+
 @media screen and (max-width: 1366px) and (max-height: 657px) {
   .matchesCardList__container {
     grid-gap: 1.5rem;
@@ -500,5 +504,20 @@ body {
 
   .matchlist_wrapper {
     padding-top: 7rem;
+  }
+}
+
+
+@media screen and (min-width: 1500px) {
+  .matches_grid {
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+  }
+
+  .matches_grid > span:first-child {
+    justify-self: flex-end;
+  }
+
+  .matches_grid > span:last-child {
+    justify-self: flex-start;
   }
 }
