@@ -1,8 +1,8 @@
 export const contentTypeList = {
   vod: {
     id: 1,
-    slideToShow: 4.5,
-    slideToScroll: 1.6,
+    slideToShow: 7.5,
+    slideToScroll: 2.8,
   },
   linear: {
     id: 2,

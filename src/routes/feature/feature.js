@@ -193,7 +193,7 @@ class Feature extends Component {
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {
-                            if (contentTypeName === 'movie') {
+                            if (contentTypeName === 'movie' || contentTypeName === 'vod') {
                               return (
                                 <VideoCard
                                   key={obj.id}
