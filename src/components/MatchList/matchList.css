@@ -126,12 +126,11 @@
   .matchList__club {
     height: 5rem;
   }
-  
+
   .matchList__club img {
     width: 4rem;
     height: 4rem;
   }
-  
 }
 
 @media screen and (max-width: 640px) {
