@@ -8,6 +8,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig, playStoreBadge, appStoreBadge } from '@global/imageUrl'
 import history from '@source/history'
 import styles from './downloadApp.css'
+import { globalTracker } from '@source/lib/globalTracker'
 
 class DownloadApp extends Component {
   state = {
@@ -28,6 +29,17 @@ class DownloadApp extends Component {
 
   handleClose = () => {
     history.goBack()
+  }
+
+  handleStoreTracker = () => {
+    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const payload = {
+      window,
+      user: this.props.user,
+      linkRedirectUrl: isApple ? 'redirect-to-appstore' : 'redirect-to-playstore',
+      event: 'event_pages',
+    }
+    globalTracker(payload)
   }
 
   getConfig = async () => {
@@ -65,11 +77,15 @@ class DownloadApp extends Component {
           )}
           <div className={styles.gradient} />
           <div className={styles.detail__container__mobile}>
-            <div className={styles.detail__title}>{dataFetched && <h1 className={`${styles.detail__title__text} ${titleClass}`}>{dataFetched.title}</h1>}</div>
-            <div className={styles.detail__desc}>
-              <div className={styles.detail__desc__text}>Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app di</div>
+            <div className={styles.detail__title}>
+              {dataFetched && <h1 className={`${styles.detail__title__text} ${titleClass}`}>{dataFetched.title}</h1>}
             </div>
-            <a className={styles.btn_open_app} href={storeUrl}>
+            <div className={styles.detail__desc}>
+              <div className={styles.detail__desc__text}>
+                Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app di
+              </div>
+            </div>
+            <a className={styles.btn_open_app} onClick={this.handleStoreTracker} href={storeUrl}>
               <img src={badgeUrl} />
             </a>
             <div className={styles.detail__desc}>
