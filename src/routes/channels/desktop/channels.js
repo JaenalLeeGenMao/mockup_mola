@@ -303,9 +303,9 @@ class Channels extends Component {
                 categoryFilterType={channelCategory}
                 hidePlaylist={hidePlaylist}
               />
+              <div className={styles.epg__header__bg} />
               <div className={styles.epg__grid__container}>
                 <span />
-
                 {programmeGuides.loading && <Placeholder />}
                 {!programmeGuides.loading &&
                   programmeGuides.data &&
