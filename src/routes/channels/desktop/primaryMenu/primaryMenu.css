@@ -24,6 +24,7 @@
 .epg__logo__img {
   width: 7.5rem;
   height: 7.5rem;
+  border-radius: 50%;
 }
 
 .see__detail__epg {

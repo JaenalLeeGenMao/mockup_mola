@@ -16,8 +16,16 @@ const Placeholder = () => {
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__line} />
         <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
-        <div className={styles.placeholder__line} />
+      </div>
+      <div className={styles.placeholder__detailDot}>
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
+        <div className={styles.placeholder__lineDot} />
       </div>
     </div>
   )

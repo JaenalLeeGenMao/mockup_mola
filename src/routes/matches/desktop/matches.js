@@ -48,6 +48,7 @@ class Matches extends React.Component {
     selectedDate: null,
     startWeekDate: null,
     hasLive: false,
+    noMatch: false,
   }
 
   setDefaultDate = () => {
@@ -193,7 +194,7 @@ class Matches extends React.Component {
     const date = new Date(moment().startOf('date'))
     const swdTimestamp = date.getTime() / 1000
 
-    if (value == 'all') {
+    if (value == 'All') {
       filterLeagueRes = allMatches
     } else {
       filterLeagueRes = this.handleFilterByLeague(value, allMatches)
@@ -201,8 +202,16 @@ class Matches extends React.Component {
 
     result = this.getThreeWeeksDate(filterLeagueRes)
     matchesList = result.matchesList
+    let flag = true
+    for (let i = 0; i < result.matchesList.length; i++) {
+      //kalau ada minimal 1 pertandingan
+      if (result.matchesList[i].id) {
+        flag = false
+      }
+    }
 
     this.setState({
+      noMatch: flag,
       matches: matchesList,
       filterByLeague: value,
       selectedWeek: 2,
@@ -219,6 +228,10 @@ class Matches extends React.Component {
         offset: -150,
       })
     }, 500)
+  }
+
+  renderNoMatchLeague = () => {
+    return <div className={s.noMatch}>Tidak Ada Pertandingan</div>
   }
 
   //expand This Week
@@ -330,9 +343,13 @@ class Matches extends React.Component {
   }
 
   renderMatchCard = () => {
-    const { matches } = this.state
-
+    const { matches, noMatch } = this.state
     let flagLive = false
+
+    if (noMatch) {
+      return this.renderNoMatchLeague()
+    }
+
     return matches.map((matchDt, index) => {
       if (matchDt.id) {
         let flag = true
@@ -420,7 +437,7 @@ class Matches extends React.Component {
                     <span>{this.categoryFilter()}</span>
                     <span>
                       <div className={s.matchlist_wrappercontent_center}>
-                        <div className={s.matchlist_Pagetitle}>{this.renderMatchCard()}</div>
+                        <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
                       </div>
                     </span>
                     <VerticalCalendar

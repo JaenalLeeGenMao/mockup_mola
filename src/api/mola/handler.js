@@ -360,18 +360,33 @@ const getPlaylistPlaylists = id => {
       const data = _.get(response, 'data.data', []),
         description = _.get(data, '[0].attributes.description', ''),
         background = _.get(data, '[0].attributes.images.cover.background.landscape', ''),
+        playlists = _.get(data, '[0].attributes.playlists', ''),
         title = _.get(data, '[0].attributes.title', '')
 
-      const playlistsFiltered =
-        data.length > 0
-          ? data
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
-          : []
+      let playlistsFiltered = []
+      if (playlists) {
+        playlistsFiltered =
+          playlists.length > 0
+            ? playlists
+                .map(dt => ({
+                  id: dt.id,
+                  type: dt.type,
+                  ...dt.attributes,
+                }))
+                .filter(dt => dt.visibility === 1)
+            : []
+      } else {
+        playlistsFiltered =
+          data.length > 0
+            ? data
+                .map(dt => ({
+                  id: dt.id,
+                  type: dt.type,
+                  ...dt.attributes,
+                }))
+                .filter(dt => dt.visibility === 1)
+            : []
+      }
 
       return {
         meta: {
@@ -402,14 +417,16 @@ const getSportVideo = ({ id }) => {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('handler response get sport 2222', response) //here video exist?
-      const result = utils.normalizeHomeVideo(response)
+      let result = utils.normalizeHomeVideo(response)
+      if (result.length > 0 && result[0].length > 0) {
+        result = result[0].filter(dt => dt.visibility === 1)
+      }
       return {
         meta: {
           status: 'success',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result || [],
       }
     })
     .catch(error => {

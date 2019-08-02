@@ -16,7 +16,7 @@ import LazyLoad from '@components/common/Lazyload'
 
 import history from '../../history'
 
-import { logoBlue, logoMobile } from '@global/imageUrl'
+import { logoBlue, logoMobile, logoHorizontal } from '@global/imageUrl'
 
 import Link from '../Link'
 
@@ -26,89 +26,56 @@ import HeaderMenu from './header-menu'
 import styles from './Header.css'
 
 class Header extends Component {
-  // state = {
-  //   genre: { data: [] },
-  // }
-
-  handleGoBack = () => {
-    // const { goBack } = history
-    // if (goBack) {
-    //   goBack()
-    // }
-    history.push('/')
+  state = {
+    width: 0,
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const genre = nextProps.search.genre
+  componentDidMount() {
+    if (process.env.BROWSER) {
+      this.setState({ width: window.innerWidth })
+      window.addEventListener('resize', this.handleWindowSizeChange)
+    }
+  }
 
-  //   return { ...prevState, genre }
-  // }
+  componentWillUnmount() {
+    if (process.env.BROWSER) {
+      window.removeEventListener('resize', this.handleWindowSizeChange)
+    }
+  }
 
-  // findGenreDataById = (genreData = this.props.search.genre.data, genreId = this.props.genreId) => {
-  //   return genreData.filter(genre => {
-  //     return genre.id === genreId
-  //   })[0]
-  // }
-
-  // getCurrentGenre(genreData) {
-  //   const { genre: { data: genreDt } } = this.state
-
-  //   if (typeof genreData === 'undefined' || genreData === '') {
-  //     return genreDt[0]
-  //   }
-
-  //   return genreData
-  // }
-
-  // renderHeaderLibrary() {
-  //   const { isDark = 1, isMobile = false, isLibraryCopy = false, handleMenuToggleClick, isMenuToggled = false, genreId, cardTitle } = this.props
-
-  //   const { genre: { data: genreDt } } = this.state
-  //   const currentGenre = this.getCurrentGenre(this.findGenreDataById(this.props.search.genre.data, genreId))
-  //   const color = isDark ? 'black' : 'white'
-  //   return (
-  //     isLibraryCopy && (
-  //       <div className={styles.header__copy_library}>
-  //         <LazyLoad>
-  //           <div className={styles.header__logo_wrap}>
-  //             {/* <Link to="/">
-  //               <img alt="molatv" src={isMobile ? logoLandscapeBlue : logoBlue} className={styles.header__logo} />
-  //             </Link> */}
-  //             {genreDt.length <= 0 ? null : (
-  //               <button className={styles.header__action_button} onClick={handleMenuToggleClick}>
-  //                 {currentGenre.title} <IoIosArrowDown className={styles.header__action_dropdown} size={32} color={color} />
-  //               </button>
-  //             )}
-  //           </div>
-  //           <div />
-  //         </LazyLoad>
-  //       </div>
-  //     )
-  //   )
-  // }
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth })
+  }
 
   render() {
-    const {
-      isDark = 1,
-      headerMenuOff = false,
-      isMobile = false,
-      isLandscape = false,
-    } = this.props
+    const { isDark = 1, isMobile = false, isLandscape = false } = this.props
     const color = isDark ? 'black' : 'white'
     const headerStyle = isMobile ? styles.header__container_m : styles.header__container
-    const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
+    const logoWrapper = isLandscape ? { left: 0 } : { left: '2.5%' }
+    const { width } = this.state
+    let isMobileView = width < 778
+    if (/iPad/i.test(navigator.userAgent)) {
+      isMobileView = true
+    }
 
+    const allProps = {
+      ...this.props,
+      isMobile: isMobileView,
+    }
     return (
       <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
         <div className={styles.header__shadow} />
-        <div className={styles.header__logo_wrapper} style={logoWrapper}>
+        <div
+          className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}
+          style={logoWrapper}
+        >
           <LazyLoad>
             <Link to="/">
-              <img alt="molatv" src={isMobile ? logoMobile : logoBlue} className={styles.header__logo} />
+              <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
             </Link>
           </LazyLoad>
         </div>
-        {!headerMenuOff && <HeaderMenu color={color} headerMenuOff={headerMenuOff} {...this.props} />}
+        <HeaderMenu color={color} {...allProps} />
       </div>
     )
   }
