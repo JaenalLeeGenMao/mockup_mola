@@ -1,15 +1,13 @@
 .match_ligaType {
-  /* display: grid;
-  grid-template-columns: 1.1fr 3fr 1.2fr; */
   grid-column-gap: 1rem;
   background-color: #313131;
   position: sticky;
   top: 6rem;
-
-  /* margin-bottom: 8rem; */
   z-index: 1;
   height: 5rem;
   margin-top: 3rem;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .allFilterLabel {
@@ -26,55 +24,45 @@
   padding: 1rem 1rem 1rem 1rem;
 }
 
-.AllLeague {
+.playlist_all {
   margin: 1rem 1rem 1rem 1rem;
 }
 
 .contentLogoAndName {
   display: flex;
   margin: 0 1rem 0 1rem;
-
-  /* margin: 1rem 5rem 1rem 0; */
   align-items: center;
-
-  /* justify-content: flex-end; */
   cursor: pointer;
 }
 
-.imgContainer__PL {
-  background-color: white;
+.img__container {
   border-radius: 8rem;
-  width: 3rem;
+  width: auto;
   height: 3rem;
 }
 
-.filterimg__PremierLeague {
-  width: 3rem;
+.img {
+  width: auto;
   height: 3rem;
   margin: 0;
   display: inline-block;
-  border-radius: 50%;
 }
 
-.selectednameleague {
+.selected_playlist {
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
   color: white;
   text-align: right;
-
-  /* margin: 0 10px 0 10px; */
   margin: 1rem 1rem 1rem 1rem;
 }
 
-.nameleague {
+.playlist__container {
   cursor: pointer;
   font-size: 1.1rem;
   color: #a7a7a7;
   text-align: right;
   margin: 1rem 1rem 1rem 1rem;
-
-  /* padding: 2rem 0 2rem 0; */
 }
 
 .hidePlaylist {
