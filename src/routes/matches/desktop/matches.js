@@ -194,7 +194,7 @@ class Matches extends React.Component {
     const date = new Date(moment().startOf('date'))
     const swdTimestamp = date.getTime() / 1000
 
-    if (value == 'all') {
+    if (value == 'All') {
       filterLeagueRes = allMatches
     } else {
       filterLeagueRes = this.handleFilterByLeague(value, allMatches)

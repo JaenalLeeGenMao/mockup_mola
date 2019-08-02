@@ -14,6 +14,19 @@
   position: relative !important;
 }
 
+.header__container_m {
+  padding: 3% 5% 0 5%;
+  align-items: center;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: auto;
+  width: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
 .header__logo_wrapper {
   position: relative;
   left: 2.5%;

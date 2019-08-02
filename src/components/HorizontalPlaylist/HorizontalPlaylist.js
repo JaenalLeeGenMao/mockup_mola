@@ -69,7 +69,7 @@ class HorizontalPlaylist extends Component {
                     dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
                   }`}
                   onClick={() => {
-                    handleCategoryFilter('all')
+                    handleCategoryFilter('All')
                   }}
                 >
                   All
