@@ -567,9 +567,11 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          res.clearCookie('_at')
-          res.clearCookie('SID')
-          return res.redirect('/accounts/login')
+          if (req.path !== '/accounts/consent') {
+            res.clearCookie('_at')
+            res.clearCookie('SID')
+            return res.redirect('/accounts/login')
+          }
         }
       }
     } else {
