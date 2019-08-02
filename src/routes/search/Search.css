@@ -1,5 +1,6 @@
 @import '../../components/variables.css';
-@import '../../global/style/css/grainBackground.css';
+
+/* @import '../../global/style/css/grainBackground.css'; */
 
 .root {
   background-color: #000;
@@ -139,7 +140,7 @@
 }
 
 .containerBg {
-  background-color: #11110f;
+  background-color: #000;
   position: absolute;
   top: 0;
   left: 0;
