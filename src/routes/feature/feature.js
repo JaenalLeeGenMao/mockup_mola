@@ -207,7 +207,11 @@ class Feature extends Component {
                                   key={obj.id}
                                   alt={obj.title}
                                   description={obj.title}
-                                  src={obj.type === 'playlists' ? obj.images.cover.portrait : obj.background.portrait}
+                                  src={
+                                    obj.type === 'playlists'
+                                      ? `${obj.images.cover.portrait}?w=540`
+                                      : `${obj.background.portrait}?w=540`
+                                  }
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => this.handleOnClick(obj)}
                                 />

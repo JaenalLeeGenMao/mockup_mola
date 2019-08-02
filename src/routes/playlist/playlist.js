@@ -128,7 +128,7 @@ class Playlist extends React.Component {
         {this.props.playlist.videos.data.map((element, i) => (
           <LazyLoad key={'playlist' + i}>
             <div className={playlistList}>
-              <p className="season_text">{element.meta.seasonNumber ? `Season ${element.meta.seasonNumber}` : ''}</p>
+              <p className="season_text">{element.meta.title ? `Season ${element.meta.title}` : ''}</p>
 
               {/* <Carousel
                 framePadding={!isMobile ? '0rem 2rem' : '0rem 0rem 0rem 1rem'}
@@ -137,13 +137,13 @@ class Playlist extends React.Component {
                 slidesToShow={slidesToShow}
                 dragging={true}
               > */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', margin: '0px 5px' }}>
+              <div className="seasonListWrapper">
                 {element.data.map((video, idx) => (
                   <LazyLoad containerClassName={playlistCardWrapper} key={'video' + idx}>
                     <VideoCard
                       onClick={() => this.handleOnClick(video.id)}
                       description={video.title ? video.title : ''}
-                      src={video.background.portrait ? video.background.portrait : ''}
+                      src={`${video.background.portrait}?w=540` ? `${video.background.portrait}?w=540` : ''}
                     />
                   </LazyLoad>
                 ))}
@@ -195,6 +195,7 @@ class Playlist extends React.Component {
                 )}
                 <div className={playlistWrapper}>
                   {this.renderTitle()}
+                  {this.renderPlaylist()}
                   {this.renderPlaylist()}
                 </div>
               </div>

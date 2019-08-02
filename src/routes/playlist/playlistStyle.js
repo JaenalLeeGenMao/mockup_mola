@@ -2,21 +2,20 @@ import styled, { css } from 'react-emotion'
 
 export const DesktopBackgroundStyle = styled('div')`
   content: '';
-  background-image: url(${props => props.url});
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${props => props.url});
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   background-position: top;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  position: absolute;
-  -webkit-filter: blur(8px) brightness(0.8);
-  -moz-filter: blur(8px) brightness(0.8);
-  -ms-filter: blur(8px) brightness(0.8);
-  -o-filter: blur(8px) brightness(0.8);
-  filter: blur(8px) brightness(0.8);
+  position: fixed;
+  -webkit-filter: blur(12px) brightness(0.5);
+  -moz-filter: blur(12px) brightness(0.5);
+  -ms-filter: blur(12px) brightness(0.5);
+  -o-filter: blur(12px) brightness(0.5);
+  filter: blur(12px) brightness(0.5);
 `
 
 export const MobileBackgroundStyle = styled('div')`
@@ -36,12 +35,17 @@ export const MobileBackgroundStyle = styled('div')`
 export const playlistHeadDesktop = css`
   max-width: 45rem;
   color: white;
-  margin: 2rem;
+  margin: 1rem;
 
   .title {
     line-height: 4rem;
     font-size: 1.8rem;
-    font-weight: 600;
+    font-weight: 300;
+
+    @media screen and (max-width: 960px) {
+      margin-bottom: 0.5rem;
+      font-size: 17px;
+    }
   }
 
   .description {
@@ -50,6 +54,12 @@ export const playlistHeadDesktop = css`
     font-size: 1.2rem;
     text-transform: lowercase;
     overflow: hidden;
+    margin-bottom: 6rem;
+
+    @media screen and (max-width: 960px) {
+      margin-bottom: 3rem;
+      font-size: 11px;
+    }
   }
 `
 
@@ -63,7 +73,7 @@ export const playlistHeadMobile = css`
 
   @media screen and (max-width: 960px) {
     padding: 1rem 0.5rem 0.5rem;
-    margin: 1rem;
+    margin: 1rem 0.5rem;
   }
 
   .line {
@@ -79,10 +89,12 @@ export const playlistHeadMobile = css`
   .title {
     line-height: 4rem;
     font-size: 1.8rem;
-    font-weight: 600;
+    font-weight: 300;
 
     @media screen and (max-width: 960px) {
       line-height: 3rem;
+      margin-bottom: 0.5rem;
+      font-size: 17px;
     }
   }
 
@@ -93,17 +105,46 @@ export const playlistHeadMobile = css`
     font-size: 1.2rem;
     text-transform: lowercase;
     overflow: hidden;
+    margin-bottom: 3rem;
+
+    @media screen and (max-width: 960px) {
+      margin-bottom: 3rem;
+      font-size: 11px;
+    }
   }
 `
 
 export const playlistList = css`
-  // margin-bottom: 1.5rem;
   min-width: 100%;
+  margin-bottom: 1.2rem;
+
+  @media screen and (max-width: 960px) {
+    margin-bottom: 25px;
+  }
+
   .season_text {
     color: #6f6f6f;
     font-size: 1.3rem;
-    padding: 0 2rem;
+    font-weight: 600;
+    padding: 0 0.75rem;
     margin-bottom: 5px;
+
+    @media screen and (max-width: 960px) {
+      font-size: 13px;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .seasonListWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    // margin: 0px 1%;
+
+    @media screen and (max-width: 960px) {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0px 5px;
+    }
   }
 `
 export const playlistContainer = css`
@@ -119,7 +160,7 @@ export const playlistWrapper = css`
   position: relative;
   max-width: 95vw;
   margin: 0 auto;
-  padding-top: 15vh;
+  padding-top: 10vh;
 
   @media screen and (max-width: 960px) {
     max-width: 100vw;
@@ -131,7 +172,8 @@ export const playlistWrapper = css`
 export const playlistCardWrapper = css`
   display: inline-block;
   vertical-align: middle;
-  width: 12.75vw;
+  width: 9.75vw;
+  // width: 16rem;
   margin: 0.5rem;
   overflow: hidden;
 
