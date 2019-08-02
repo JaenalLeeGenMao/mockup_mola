@@ -64,8 +64,8 @@
 
 .dropdown__icon_burger_menu {
   position: relative;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: block;
   background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+Cjx0aXRsZT5BcnRib2FyZCAxPC90aXRsZT4KPHBhdGggZmlsbD0iI0I1QjVCNSIgZD0iTTM2LDE0YTIsMiwwLDAsMS0yLDJsLTIxLS45MUExLjA4LDEuMDgsMCwwLDEsMTIsMTRoMGExLjA4LDEuMDgsMCwwLDEsMS0xLjA5TDM0LDEyYTIsMiwwLDAsMSwyLDJaIi8+CjxwYXRoIGZpbGw9IiNCNUI1QjUiIGQ9Ik0xMiwyNGEyLDIsMCwwLDAsMiwybDIxLS45MUExLjA4LDEuMDgsMCwwLDAsMzYsMjRoMGExLjA4LDEuMDgsMCwwLDAtMS0xLjA5TDE0LDIyYTIsMiwwLDAsMC0yLDJaIi8+CjxwYXRoIGZpbGw9IiNCNUI1QjUiIGQ9Ik0zNiwzNGEyLDIsMCwwLDEtMiwybC0yMS0uOTFBMS4wOCwxLjA4LDAsMCwxLDEyLDM0aDBhMS4wOCwxLjA4LDAsMCwxLDEtMS4wOUwzNCwzMmEyLDIsMCwwLDEsMiwyWiIvPgo8L3N2Zz4=);
   background-repeat: no-repeat;
@@ -75,8 +75,8 @@
 
 .dropdown__icon_burger_close {
   position: relative;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: block;
   background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+Cjx0aXRsZT5BcnRib2FyZCAyPC90aXRsZT4KPHBhdGggZmlsbD0iI0I1QjVCNSIgZD0iTTI3LjU2LDI0bDcuMTgtOS4yMmExLjA4LDEuMDgsMCwwLDAtLjA1LTEuNDZoMGExLjA4LDEuMDgsMCwwLDAtMS40Ni0uMDVMMjQsMjAuNDRsLTkuMjItNy4xOGExLjA4LDEuMDgsMCwwLDAtMS40Ni4wNWgwYTEuMDgsMS4wOCwwLDAsMC0uMDUsMS40NkwyMC40NCwyNGwtNy4xOCw5LjIyYTEuMDgsMS4wOCwwLDAsMCwuMDUsMS40NmgwYTEuMDgsMS4wOCwwLDAsMCwxLjQ2LjA1TDI0LDI3LjU2bDkuMjIsNy4xOGExLjA4LDEuMDgsMCwwLDAsMS40Ni0uMDVoMGExLjA4LDEuMDgsMCwwLDAsLjA1LTEuNDZaIi8+Cjwvc3ZnPg==);
   background-repeat: no-repeat;
@@ -86,7 +86,6 @@
 
 .overflow_hidden {
   overflow: hidden;
-  pointer-events: none;
 }
 
 .background_container {
@@ -109,4 +108,32 @@
 
 .dropdown_list_container {
   margin-top: 40px;
+}
+
+@media screen and (max-width: 640px) {
+  .dropdown__icon_burger_menu {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .dropdown__icon_burger_close {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
+
+@media screen and (max-height: 520px) {
+  .dropdown_list_container {
+    margin-top: 20px;
+  }
+
+  .dropdown_list_item {
+    font-size: 16px;
+    padding: 10px 0;
+  }
+
+  .dropdown_list_item.active {
+    font-size: 22px;
+    padding: 10px 0;
+  }
 }

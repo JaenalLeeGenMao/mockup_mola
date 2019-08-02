@@ -311,10 +311,6 @@
   color: white;
 }
 
-.header__menu_wrapper_m {
-  display: none;
-}
-
 @media screen and (min-width: 2000px) {
   .header__menu {
     left: 16rem;
@@ -327,6 +323,6 @@
   }
 
   .header__menu_wrapper_m {
-    display: block;
+    display: flex;
   }
 }

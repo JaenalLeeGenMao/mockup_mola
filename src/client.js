@@ -163,7 +163,7 @@ async function onLocationChange(location, action) {
   }
 
   window.debugError = context.store.getState().runtime.debugError
-
+  window.debugStore = context.store.getState()
   // if (context.store.getState().user.sid) {
   //   const tokenExpired = context.store.getState().user.tokenExpired * 1000
   //   if (tokenExpired < Date.now()) {

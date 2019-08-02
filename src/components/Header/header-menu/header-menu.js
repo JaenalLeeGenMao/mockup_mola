@@ -127,6 +127,8 @@ class HeaderMenu extends Component {
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
+
+    console.log('isMobile', isMobile)
     return (
       <>
         <div className={styles.header__menu}>
@@ -213,19 +215,21 @@ class HeaderMenu extends Component {
                 </>
               )}
             </div>
-            <div
-              className={`${styles.header__menu_wrapper_m} tourHamburger ${
-                isLandscape ? styles.header_menu_select_wrapper__ls : ''
-              }`}
-            >
-              <DropdownMenu
-                className={styles.header_menu_dropdown_container}
-                pathname={pathname}
-                dataList={headerMenuList}
-                activeId={activeMenuDropdown}
-                onClick={this.handleNavigation}
-              />
-            </div>
+            {isMobile && (
+              <div
+                className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                  isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                }`}
+              >
+                <DropdownMenu
+                  className={styles.header_menu_dropdown_container}
+                  pathname={pathname}
+                  dataList={headerMenuList}
+                  activeId={activeMenuDropdown}
+                  onClick={this.handleNavigation}
+                />
+              </div>
+            )}
             {/* <div
                   className={`${styles.header__menu_wrapper_m} tourHamburger ${
                     isLandscape ? styles.header_menu_select_wrapper__ls : ''

@@ -26,19 +26,8 @@ import HeaderMenu from './header-menu'
 import styles from './Header.css'
 
 class Header extends Component {
-  constructor() {
-    super()
-    this.state = {
-      width: 0,
-    }
-  }
-
-  handleGoBack = () => {
-    // const { goBack } = history
-    // if (goBack) {
-    //   goBack()
-    // }
-    history.push('/')
+  state = {
+    width: 0,
   }
 
   componentDidMount() {
@@ -62,24 +51,31 @@ class Header extends Component {
     const { isDark = 1, isMobile = false, isLandscape = false } = this.props
     const color = isDark ? 'black' : 'white'
     const headerStyle = isMobile ? styles.header__container_m : styles.header__container
-    const logoWrapper = isLandscape ? { left: 0, width: '4rem' } : { left: '2.5%', width: '4rem' }
+    const logoWrapper = isLandscape ? { left: 0 } : { left: '2.5%' }
     const { width } = this.state
-    let isMobileView = width < 640
-    if (/iPad/i.test(navigator.userAgent) && width > 768) {
+    let isMobileView = width < 778
+    if (/iPad/i.test(navigator.userAgent)) {
       isMobileView = true
     }
 
+    const allProps = {
+      ...this.props,
+      isMobile: isMobileView,
+    }
     return (
       <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
         <div className={styles.header__shadow} />
-        <div className={styles.header__logo_wrapper} style={logoWrapper}>
+        <div
+          className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}
+          style={logoWrapper}
+        >
           <LazyLoad>
             <Link to="/">
               <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
             </Link>
           </LazyLoad>
         </div>
-        <HeaderMenu color={color} isMobile={isMobileView} {...this.props} />
+        <HeaderMenu color={color} {...allProps} />
       </div>
     )
   }
