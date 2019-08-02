@@ -128,7 +128,6 @@ class HeaderMenu extends Component {
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
 
-    console.log('isMobile', isMobile)
     return (
       <>
         <div className={styles.header__menu}>
