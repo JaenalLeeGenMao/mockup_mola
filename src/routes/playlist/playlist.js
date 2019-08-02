@@ -196,7 +196,6 @@ class Playlist extends React.Component {
                 <div className={playlistWrapper}>
                   {this.renderTitle()}
                   {this.renderPlaylist()}
-                  {this.renderPlaylist()}
                 </div>
               </div>
             </>
