@@ -38,7 +38,7 @@ class PlaylistCard extends Component {
         vod: 'playIcon' /** videos */,
         movie: 'playIcon' /** videos */,
         linear: 'tvIcon' /** channels */,
-        live: 'matchIcon' /** matches */,
+        live: 'liveIcon' /** matches */,
         replay: 'matchIcon' /** matches */,
         trailers: 'playIcon' /** videos */,
         'mola-featured': 'tvIcon' /** videos */,
