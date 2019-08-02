@@ -184,29 +184,29 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-    setTimeout(function() {
-      if (typeof document !== 'undefined') {
-        const pathRoute = route.chunks[0]
-        if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
-          if (pathRoute === 'home' || pathRoute === 'sport') {
-            document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-          } else {
-            if (pathRoute === 'live-support') {
-              if (window.App.isMobile) {
-                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-                let _el = document.getElementsByClassName('helpButton')[0]
-                _el.style.left = '44.5vw'
-                _el.style.right = '-50vw'
-                _el.style.top = '50vh'
-                _el.style.visibility = 'visible'
-              }
-            } else {
-              document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
-            }
-          }
-        }
-      }
-    }, 3000)
+    // setTimeout(function() {
+    //   if (typeof document !== 'undefined') {
+    //     const pathRoute = route.chunks[0]
+    //     if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
+    //       if (pathRoute === 'home' || pathRoute === 'sport') {
+    //         document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+    //       } else {
+    //         if (pathRoute === 'live-support') {
+    //           if (window.App.isMobile) {
+    //             document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+    //             let _el = document.getElementsByClassName('helpButton')[0]
+    //             _el.style.left = '44.5vw'
+    //             _el.style.right = '-50vw'
+    //             _el.style.top = '50vh'
+    //             _el.style.visibility = 'visible'
+    //           }
+    //         } else {
+    //           document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+    //         }
+    //       }
+    //     }
+    //   }
+    // }, 3000)
     // Provide default values for title, description etc.
     route.title = `${route.title || 'Untitled Page'}`
     route.description = route.description || ''
