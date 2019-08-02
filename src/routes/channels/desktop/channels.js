@@ -39,7 +39,6 @@ class Channels extends Component {
     expandLeague: true,
     limit: Array.from({ length: 12 }),
     hasMore: true,
-    channelCategory: 'epg',
     hidePlaylist: true,
   }
 
@@ -58,7 +57,9 @@ class Channels extends Component {
       timezone: 7,
     }
     fetchChannelsPlaylist('channels-m').then(() => {
-      fetchChannelSchedule(selectedDate)
+      fetchChannelSchedule(selectedDate).then(() => {
+        this.handleSelectChannel(movieId)
+      })
     })
     fetchVideoByid(movieId)
 
@@ -70,7 +71,7 @@ class Channels extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
-    const { scheduleList, activeChannelId, channelCategory } = this.state
+    const { scheduleList, activeChannelId } = this.state
     if (
       channelsPlaylist.meta.status === 'success' &&
       channelsPlaylist.data.length > 0 &&
@@ -85,11 +86,11 @@ class Channels extends Component {
       })
     }
 
-    if (scheduleList.length === 0 || prevState.activeChannelId !== activeChannelId) {
-      this.handleSelectChannel(channelCategory, activeChannelId)
+    if (prevState.activeChannelId !== activeChannelId) {
+      this.handleSelectChannel(activeChannelId)
     }
 
-    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+    if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       fetchVideoByid(movieId)
     }
   }
@@ -176,20 +177,18 @@ class Channels extends Component {
     return myTheoPlayer
   }
 
-  handleSelectChannel = (category = 'epg', id) => {
-    // console.log('masuk select channel', id)
+  handleSelectChannel = id => {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
-    if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
-      const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
+    const time =
+      filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
 
-      this.setState({
-        activeChannel: filteredSchedule.title,
-        activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMM'),
-        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
-      })
-      history.push(`/channels/${id}`)
-    }
+    this.setState({
+      activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+      activeChannelId: id,
+      activeDate: formatDateTime(time, 'DD MMM'),
+      scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+    })
+    history.push(`/channels/${id}`)
   }
 
   handleSelectDate = date => {
@@ -232,16 +231,7 @@ class Channels extends Component {
 
   render() {
     const { programmeGuides, channelSchedule, channelsPlaylist, movieId } = this.props
-    const {
-      activeChannelId,
-      scheduleList,
-      channelCategory,
-      expandLeague,
-      limit,
-      activeDate,
-      hasMore,
-      hidePlaylist,
-    } = this.state
+    const { activeChannelId, scheduleList, expandLeague, limit, activeDate, hasMore, hidePlaylist } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -289,18 +279,13 @@ class Channels extends Component {
                 <div>Video Not Available</div> // styling later
               )}
             </div>
-            <PrimaryMenu
-              handleSelectChannel={this.handleSelectChannel}
-              channelsPlaylist={channelsPlaylist}
-              channelCategory={channelCategory}
-            />
+            <PrimaryMenu handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} />
             <div className={styles.epg__list__container}>
               <SecondaryMenu
                 handleCategoryFilter={this.handleSelectChannel}
                 genreSpoCategory={channelsPlaylist.data}
                 filterByLeague={activeChannelId}
                 expandLeague={expandLeague}
-                categoryFilterType={channelCategory}
                 hidePlaylist={hidePlaylist}
               />
               <div className={styles.epg__header__bg} />
@@ -322,7 +307,7 @@ class Channels extends Component {
             </div>
           </div>
         )}
-        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
+        {/* {!dataFetched && status === 'error' && <MovieDetailError message={error} />} */}
       </>
     )
   }

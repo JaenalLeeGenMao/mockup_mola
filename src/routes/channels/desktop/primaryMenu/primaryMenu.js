@@ -5,7 +5,7 @@ import styles from './primaryMenu.css'
 
 class PrimaryMenu extends Component {
   render() {
-    const { channelsPlaylist, handleSelectChannel, channelCategory } = this.props
+    const { channelsPlaylist, handleSelectChannel } = this.props
     return (
       <>
         <div className={styles.epg__logo__container}>
@@ -16,7 +16,7 @@ class PrimaryMenu extends Component {
                   key={item.id}
                   className={styles.epg__logo__wrapper}
                   onClick={() => {
-                    handleSelectChannel(channelCategory, item.id)
+                    handleSelectChannel(item.id)
                   }}
                 >
                   <img alt="" className={styles.epg__logo__img} src={item.thumbnailImg} />

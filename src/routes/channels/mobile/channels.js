@@ -49,7 +49,11 @@ class Channels extends Component {
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
-    fetchChannelsPlaylist('channels-m').then(() => fetchChannelSchedule(selectedDate))
+    fetchChannelsPlaylist('channels-m').then(() => {
+      fetchChannelSchedule(selectedDate).then(() => {
+        this.handleSelectChannel(movieId)
+      })
+    })
 
     fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -72,11 +76,11 @@ class Channels extends Component {
       })
     }
 
-    if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
+    if (prevState.activeChannelId !== this.state.activeChannelId) {
       this.handleSelectChannel(this.state.activeChannelId)
     }
 
-    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+    if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       fetchVideoByid(movieId)
     }
   }
@@ -121,16 +125,16 @@ class Channels extends Component {
 
   handleSelectChannel = id => {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
-    if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
-      const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
-      this.setState({
-        activeChannel: filteredSchedule.title,
-        activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMM'),
-        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
-      })
-      history.push(`/channels/${id}`)
-    }
+    const time =
+      filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
+
+    this.setState({
+      activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+      activeChannelId: id,
+      activeDate: formatDateTime(time, 'DD MMM'),
+      scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+    })
+    history.push(`/channels/${id}`)
   }
 
   handleWeekClick = value => {
@@ -304,7 +308,7 @@ class Channels extends Component {
             </>
           )}
         </div>
-        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
+        {/* {!dataFetched && status === 'error' && <MovieDetailError message={error} />} */}
       </>
     )
   }
