@@ -44,6 +44,7 @@ export const playlistContainer = css`
   }
 
   .bannerImage {
+    display: inline-block;
     border-radius: 0.25rem;
     position: relative;
     z-index: 1;
@@ -53,12 +54,14 @@ export const playlistContainer = css`
     position: relative;
   }
 
-  .bannerImage.hide {
+  .bannerImage.hide,
+  .bannerPlaceholder {
     position: absolute;
     z-index: 0;
   }
 
   .bannerImage3d {
+    display: inline-block;
     border-radius: 0.25rem;
     position: relative;
     z-index: 1;

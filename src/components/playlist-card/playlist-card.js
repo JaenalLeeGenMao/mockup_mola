@@ -22,7 +22,7 @@ class PlaylistCard extends Component {
   render() {
     const {
         id,
-        name,
+        title,
         src,
         contentType = '',
         description,
