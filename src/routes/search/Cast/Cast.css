@@ -1,6 +1,6 @@
 .resultTitle,
 .resultTitleLoading {
-  color: #bababa;
+  color: #969696;
   font-size: 17px;
   font-weight: normal;
   display: block;
@@ -8,7 +8,7 @@
 }
 
 .resultTitleLoading {
-  width: 150px;
+  width: 100px;
   height: 1.7rem;
   padding: 0;
   margin-bottom: 2rem;
@@ -91,7 +91,7 @@
 }
 
 .people__wrapper {
-  height: 130px;
+  height: 13rem;
   overflow: hidden;
 }
 
@@ -99,12 +99,12 @@
   display: flex;
   overflow-x: auto;
 
-  /* height: calc(100% + 30px); */
+  /* height: calc(100% - 30px); */
 }
 
 .person__wrapper {
-  margin: 0 10px 20px;
-  width: calc(57% - 20px);
+  margin: 0 15px 20px;
+  width: calc(100% - 20px);
 
   /* width: calc(25% - 20px); */
   line-height: 1.25;
@@ -124,7 +124,22 @@
   }
 }
 
+/*
+ipad pro
+*/
+
 @media screen and (max-width: 1024px) {
+  .castBox {
+    width: 100%;
+  }
+
+  .person__wrapper {
+    margin: 0 10px 20px;
+
+    /* width: calc(100% - 20px); */
+    width: calc(57% - 20px);
+  }
+
   .castBox > img {
     height: 66px;
     width: 66px;
@@ -133,6 +148,7 @@
   .castImg_dummy {
     height: 66px;
     width: 66px;
+    display: -webkit-inline-box;
   }
 }
 
@@ -153,7 +169,8 @@
 
 @media screen and (max-width: 640px) {
   .resultTitle {
-    font-size: 1.7rem;
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
   }
 
   .resultContent {
@@ -173,6 +190,10 @@
     word-wrap: break-word;
   }
 
+  .castTitle {
+    font-size: 11px;
+  }
+
   .castBox > img,
   .castImg_dummy {
     height: 50px;
@@ -189,7 +210,7 @@
   }
 
   .castBox span {
-    font-size: 1.2rem;
+    font-size: 11px;
     line-height: 1.2;
   }
 }

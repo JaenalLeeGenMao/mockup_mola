@@ -15,7 +15,7 @@ class Cast extends React.Component {
     return (
       <div className={s.container}>
         <div className={s.resultTitle}>
-          <span>{'Cast'}</span>
+          <span>Cast</span>
         </div>
         <div className={s.resultContent}>
           <div className={s.people__wrapper}>

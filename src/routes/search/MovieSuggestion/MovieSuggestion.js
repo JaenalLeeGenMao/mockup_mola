@@ -34,7 +34,7 @@ class MovieSuggestion extends React.Component {
     const movieData = data.slice(0, 5)
     return (
       <div className={s.resultRowWrap}>
-        <div className={s.resultTitle}>Movie</div>
+        <div className={s.resultTitle}>Movies</div>
         <div className={s.resultContent}>
           <div className={s.movie__wrapper}>
             <div className={s.movie__wrapper__scroller}>
@@ -52,9 +52,7 @@ class MovieSuggestion extends React.Component {
                         onErrorShowDefault
                         errorImgClassName={s.movieErrorImg}
                       >
-                        <div className={s.contentImg}>
-                          <img src={movieUrl} className={s.imgDefault} />
-                        </div>
+                        <img src={movieUrl} className={s.imgDefault} />
                         {movieTitleRes && movieTitleRes[3] ? (
                           <div className={s.movieTitle}>
                             <div>

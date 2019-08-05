@@ -1,5 +1,5 @@
 .resultRowWrap {
-  padding-bottom: 3.2rem;
+  padding-bottom: 1.2rem;
   margin: 0;
   display: flex;
   flex-wrap: wrap;
@@ -13,10 +13,11 @@
   font-weight: normal;
   display: block;
   width: 100%;
+  height: auto;
 }
 
 .resultTitle {
-  color: #bababa;
+  color: #969696;
   font-size: 1.7rem;
   font-weight: normal;
   display: block;
@@ -25,7 +26,7 @@
 
 .resultTitleLoading {
   display: block;
-  width: 150px;
+  width: 100px;
   height: 1.7rem;
   padding: 0;
   margin-bottom: 2rem;
@@ -39,18 +40,12 @@
 }
 
 .movieImg {
-  /* width: auto;
-  height: auto; */
-
-  /* padding: 5px; */
   margin: 0 auto;
-
-  /* min-height: 100px; */
   white-space: normal;
+}
 
-  img {
-    height: auto;
-  }
+.movieImg img {
+  height: auto;
 }
 
 .movieErrorImg {
@@ -59,7 +54,7 @@
 
 .movieImgLoading {
   width: 100%;
-  height: 120px;
+  height: 273.469px;
   margin: 0 5px;
 }
 
@@ -127,13 +122,15 @@
 }
 
 .movie__wrapper {
-  height: 500px;
+  height: 420px;
   overflow: hidden;
 }
 
 .movie__wrapper__scroller {
   /* display: flex; */
   overflow-x: auto;
+
+  /* height: auto; */
   height: calc(100% + 30px);
   white-space: nowrap;
 }
@@ -152,33 +149,68 @@
 
 @media screen and (max-width: 640px) {
   .movieBox {
-    width: 100%;
+    height: 225px;
+    width: 117px;
+    padding: 5px;
+
+    /* width: 100%; */
+  }
+
+  .movieContent {
+    padding: 3px;
+  }
+
+  .resultContent {
+    height: 276px;
+    overflow-x: auto;
+    display: flex;
   }
 
   .movieImgLoading {
     width: 100%;
+
+    /* width: 400px; */
     height: 200px;
+
+    /* padding: 6px; */
   }
 
   .movieTitle {
-    font-size: 1.2rem;
+    font-size: 11px;
   }
 
   .movieTitleResult {
-    font-size: 16px;
+    font-size: 11px;
   }
 
   .movie__wrapper {
-    height: 400px;
+    height: 260px;
   }
 
-  .contentImg {
-    height: 56.25vw;
+  .resultTitle {
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
   }
 
-  .imgDefault {
-    height: 56.25vw;
-  }
+  /* .imgDefault {
+    height: auto;
+    /* width: 256px; */
+
+  /* } */
+
+  /* .movieImg {
+    width: auto;
+    height: auto;
+    padding: 5px;
+    margin: 0 auto;
+
+    min-height: 100px;
+    white-space: normal;
+
+    img {
+      height: auto;
+    }
+  } */
 }
 
 /* Big TV Styles */
