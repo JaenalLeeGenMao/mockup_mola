@@ -122,11 +122,11 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
+    const { isMobile = false, isLandscape, pathname = '/' } = this.props
     const { headerMenuList, toggle } = this.state
 
-    let activeMenuDropdown = ''
-    activeMenuDropdown = activeMenu
+    // let activeMenuDropdown = ''
+    // activeMenuDropdown = activeMenu
 
     return (
       <>
@@ -224,7 +224,7 @@ class HeaderMenu extends Component {
                   className={styles.header_menu_dropdown_container}
                   pathname={pathname}
                   dataList={headerMenuList}
-                  activeId={activeMenuDropdown}
+                  // activeId={activeMenuDropdown}
                   onClick={this.handleNavigation}
                 />
               </div>

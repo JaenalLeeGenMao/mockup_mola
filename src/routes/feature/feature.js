@@ -26,7 +26,7 @@ class Feature extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewportWidth: 0,
+      viewportWidth: this.props.isMobile ? 0 : 1200,
     }
   }
 

@@ -27,12 +27,16 @@ import styles from './Header.css'
 
 class Header extends Component {
   state = {
-    width: 0,
+    width: this.props.isMobile ? 640 : 1200,
+    isLandscape: false,
   }
 
   componentDidMount() {
     if (process.env.BROWSER) {
-      this.setState({ width: window.innerWidth })
+      this.setState({
+        width: window.innerWidth,
+        isLandscape: window.innerHeight < window.innerWidth,
+      })
       window.addEventListener('resize', this.handleWindowSizeChange)
     }
   }
@@ -44,24 +48,22 @@ class Header extends Component {
   }
 
   handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth })
+    this.setState({
+      width: window.innerWidth,
+      isLandscape: window.innerHeight < window.innerWidth,
+    })
   }
 
   render() {
-    const { isDark = 1, isMobile = false, isLandscape = false } = this.props
-    const color = isDark ? 'black' : 'white'
-    const headerStyle = isMobile ? styles.header__container_m : styles.header__container
+    const { pathname } = this.props
+    const { width, isLandscape } = this.state
     const logoWrapper = isLandscape ? { left: 0 } : { left: '2.5%' }
-    const { width } = this.state
     let isMobileView = width < 778
     if (/iPad/i.test(navigator.userAgent)) {
       isMobileView = true
     }
 
-    const allProps = {
-      ...this.props,
-      isMobile: isMobileView,
-    }
+    const headerStyle = isMobileView ? styles.header__container_m : styles.header__container
     return (
       <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
         <div className={styles.header__shadow} />
@@ -75,7 +77,7 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         </div>
-        <HeaderMenu color={color} {...allProps} />
+        <HeaderMenu isMobile={isMobileView} isLandscape={isLandscape} pathname={pathname} />
       </div>
     )
   }
