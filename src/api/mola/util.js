@@ -69,7 +69,22 @@ const normalizeMatchesList = response => {
         videos &&
         videos
           .map(video => {
-            const { id, type, attributes: { title, description, shortDescription, sortOrder, startTime, endTime, iconUrl, isDark, images, league } } = video
+            const {
+              id,
+              type,
+              attributes: {
+                title,
+                description,
+                shortDescription,
+                sortOrder,
+                startTime,
+                endTime,
+                iconUrl,
+                isDark,
+                images,
+                league,
+              },
+            } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
             const coverBGColor = _get(images, 'cover.backgroundColor', '')
             return {
@@ -105,7 +120,23 @@ const normalizeMatchPlaylists = response => {
       videoData =
         videos &&
         videos.map(video => {
-          const { id, attributes: { title, type, description, streamSourceUrl, shortDescription, isDark, iconUrl, sortOrder, startTime, endTime, homeTeam, awayTeam } } = video
+          const {
+            id,
+            attributes: {
+              title,
+              type,
+              description,
+              streamSourceUrl,
+              shortDescription,
+              isDark,
+              iconUrl,
+              sortOrder,
+              startTime,
+              endTime,
+              homeTeam,
+              awayTeam,
+            },
+          } = video
           return {
             id,
             type,
@@ -193,10 +224,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-            id: league.id,
-            name: league.attributes.name,
-            iconUrl: league.attributes.iconUrl,
-          }
+              id: league.id,
+              name: league.attributes.name,
+              iconUrl: league.attributes.iconUrl,
+            }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -271,7 +302,7 @@ const normalizeHomeVideo = response => {
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) { }
+    } catch (err) {}
   }
   return []
 }
@@ -381,6 +412,7 @@ const normalizeVideoDetail = response => {
       const {
         id,
         attributes: {
+          ads,
           title,
           images,
           quotes,
@@ -408,6 +440,7 @@ const normalizeVideoDetail = response => {
       } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
+        ads,
         id,
         title,
         quotes,
@@ -484,16 +517,18 @@ const normalizeMovieLibrary = response => {
 const normalizeMovieLibraryList = response => {
   const { data } = response.data
   if (data && data.length > 0) {
-    return data.map(({ id, type, attributes: { title: genreTitle, visibility, description: videoDesc, images: videoImg } }) => {
-      return {
-        id,
-        visibility,
-        type,
-        genreTitle,
-        videoDesc,
-        thumbnail: videoImg.cover.library.portrait,
+    return data.map(
+      ({ id, type, attributes: { title: genreTitle, visibility, description: videoDesc, images: videoImg } }) => {
+        return {
+          id,
+          visibility,
+          type,
+          genreTitle,
+          videoDesc,
+          thumbnail: videoImg.cover.library.portrait,
+        }
       }
-    })
+    )
   }
   return {
     meta: {
@@ -537,7 +572,21 @@ const normalizeChannelPlaylist = response => {
       ({ attributes: { playlists } }) =>
         playlists &&
         playlists.map((playlist, index) => {
-          const { id, type, attributes: { title, description, shortDescription, visibility, startTime, endTime, iconUrl, isDark, images } } = playlist
+          const {
+            id,
+            type,
+            attributes: {
+              title,
+              description,
+              shortDescription,
+              visibility,
+              startTime,
+              endTime,
+              iconUrl,
+              isDark,
+              images,
+            },
+          } = playlist
           const background = _get(images, 'cover', { portrait: null, landscape: null })
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           const thumbnailImg = _get(images, 'thumbnails.cover', '')
@@ -577,16 +626,31 @@ const normalizeProgrammeGuides = response => {
           end,
           title,
           description,
-          playlist: { id: playlistId, attributes: { parentId, images: playlistImages, isFree, country, sortOrder, visibility, seo: playlistSeo } },
-          video: { id: videoId, attributes: { drm, images: videoImage, title: videoTtile, subtitles, displayOrder, seo: videoSeo, endTime, startTime } },
+          playlist: {
+            id: playlistId,
+            attributes: { parentId, images: playlistImages, isFree, country, sortOrder, visibility, seo: playlistSeo },
+          },
+          video: {
+            id: videoId,
+            attributes: {
+              drm,
+              images: videoImage,
+              title: videoTtile,
+              subtitles,
+              displayOrder,
+              seo: videoSeo,
+              endTime,
+              startTime,
+            },
+          },
         },
         type,
       } = result
 
       return {
         id,
-        start,// parse to WIB
-        end,// parse to WIB
+        start, // parse to WIB
+        end, // parse to WIB
         startTime: moment(start).unix(), // parse to WIB
         endTime: moment(end).unix(), // parse to WIB
         href: `/movie-detail/${videoId}`,
@@ -628,7 +692,11 @@ const normalizeRecommendation = response => {
   const { data } = response.data
   if (data && data.length > 0) {
     return data.map(list => {
-      const { id, type, attributes: { playlists, title, description, shortDescription, images, isDark, streamSourceUrl, year, ads } } = list
+      const {
+        id,
+        type,
+        attributes: { playlists, title, description, shortDescription, images, isDark, streamSourceUrl, year, ads },
+      } = list
       const background = _get(images, 'cover.background', { portrait: null, landscape: null })
       const coverBGColor = _get(images, 'cover.backgroundColor', '')
       return {

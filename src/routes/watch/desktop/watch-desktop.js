@@ -200,13 +200,12 @@ class WatchDesktop extends Component {
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
 
-      const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
+      const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
       const defaultVidSetting = dataFetched
         ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
         : {}
-
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
