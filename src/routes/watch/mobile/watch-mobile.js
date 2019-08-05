@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
-import { get } from 'axios'
+import { get, post } from 'axios'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
