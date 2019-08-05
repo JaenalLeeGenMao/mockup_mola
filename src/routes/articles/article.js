@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import { get } from 'axios'
+
 import { ARTICLES_ENDPOINT, ARTICLES_RELATED_ENDPOINT } from '@api/mola/endpoints'
+
+import Header from '@components/Header'
 
 import { CustomBackground, articleContainer } from './style'
 
@@ -80,6 +83,7 @@ class Article extends Component {
     // console.log(detail)
     return (
       <div className={articleContainer}>
+        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} />
         {!article.isLoading && (
           <>
             {isMobile ? (
