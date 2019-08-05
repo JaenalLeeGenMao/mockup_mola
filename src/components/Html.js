@@ -51,7 +51,6 @@ class Html extends React.Component {
       appLinkUrl = '',
       type = 'website',
     } = this.props
-
     return (
       <html className="no-js" lang="en">
         <head>
@@ -79,14 +78,14 @@ class Html extends React.Component {
           <meta property="og:site_name" content="molatv" />
           <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} data-react-helmet="true" />
           <meta property="og:description" content={description} data-react-helmet="true" />
-          <meta property="og:image" content={image} data-react-helmet="true" />
+          <meta property="og:image" content={image ? image : '/mola.png'} data-react-helmet="true" />
           <meta property="og:url" content={url} data-react-helmet="true" />
           <meta property="og:video" content={url} data-react-helmet="true" />
           <meta property="og:type" content={type} data-react-helmet="true" />
 
           <meta property="twitter:text:title" content={title} data-react-helmet="true" />
           <meta name="twitter:description" content={description} data-react-helmet="true" />
-          <meta name="twitter:image:src" content={image} data-react-helmet="true" />
+          <meta name="twitter:image:src" content={image ? image : '/mola.png'} data-react-helmet="true" />
           <meta name="twitter:card" content={twitter_card_type} data-react-helmet="true" />
 
           <meta name="referrer" content="origin" />
