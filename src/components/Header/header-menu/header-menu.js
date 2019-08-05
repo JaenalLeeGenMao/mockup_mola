@@ -122,122 +122,135 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { headerMenuOff, activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
+    const { activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
     const { headerMenuList, toggle } = this.state
 
     let activeMenuDropdown = ''
     activeMenuDropdown = activeMenu
+
     return (
       <>
         <div className={styles.header__menu}>
-          {!headerMenuOff && (
-            <LazyLoad className={styles.header__menu_icon_wrapper}>
-              <div className={styles.header_menu_outer}>
-                {!isMobile && (
-                  <>
-                    {headerMenuList.map((dts, index) => {
-                      const absMenuUrl = dts.attributes.url
-                      const absMenuArray = absMenuUrl.split('/')
-                      const isHome = absMenuArray.length <= 3
-                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                      const title = _.get(dts, 'attributes.title.en', '')
-                      if (dts.id === 1) {
-                        return (
-                          <Link
-                            key={dts.id}
-                            title={title}
-                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            to={relMenuUrl}
-                          >
-                            {title}
-                          </Link>
-                        )
-                      }
-                    })}
-                    {headerMenuList.length > 0 && (
-                      <div className="tourCategory" style={{ display: 'inline-block' }}>
-                        {headerMenuList.map((dts, index) => {
-                          const absMenuUrl = dts.attributes.url
-                          const absMenuArray = absMenuUrl.split('/')
-                          const isHome = absMenuArray.length <= 3
-                          const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                          const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                          const title = _.get(dts, 'attributes.title.en', '')
-                          if (dts.id > 1 && dts.id < 6) {
-                            return (
-                              <Link
-                                key={dts.id}
-                                title={title}
-                                className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                                to={relMenuUrl}
-                              >
-                                {title}
-                              </Link>
-                            )
-                          }
-                        })}
-                      </div>
-                    )}
-                    {headerMenuList.map((dts, index) => {
-                      const absMenuUrl = dts.attributes.url
-                      const absMenuArray = absMenuUrl.split('/')
-                      const isHome = absMenuArray.length <= 3
-                      const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                      const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
-                      const title = _.get(dts, 'attributes.title.en', '')
-                      if (dts.id >= 6 && dts.id != 9) {
-                        return (
-                          <Link
-                            key={dts.id}
-                            title={title}
-                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            to={relMenuUrl}
-                          >
-                            {title}
-                          </Link>
-                        )
-                      } else if (dts.id == 9) {
-                        return (
-                          <Link
-                            key={dts.id}
-                            title={title}
-                            className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
-                            onClick={this.handleToggle}
-                          >
-                            {title}
-                          </Link>
-                        )
-                      }
-                    })}
-                  </>
-                )}
-                {isMobile && (
-                  <div
-                    className={`${styles.header__menu_wrapper_m} tourHamburger ${
-                      isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                    }`}
-                  >
-                    <DropdownMenu
-                      className={styles.header_menu_dropdown_container}
-                      pathname={pathname}
-                      dataList={headerMenuList}
-                      activeId={activeMenuDropdown}
-                      onClick={this.handleNavigation}
-                    />
-                  </div>
-                )}
-                {toggle && (
-                  <PopupMenu
-                    onClick={this.handleToggle}
-                    user={this.props.user}
-                    locale={this.state.locale}
-                    onSignOut={this.handleSignOut}
-                  />
-                )}
+          <LazyLoad className={styles.header__menu_icon_wrapper}>
+            <div className={styles.header_menu_outer}>
+              {!isMobile && (
+                <>
+                  {headerMenuList.map((dts, index) => {
+                    const absMenuUrl = dts.attributes.url
+                    const absMenuArray = absMenuUrl.split('/')
+                    const isHome = absMenuArray.length <= 3
+                    const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    const title = _.get(dts, 'attributes.title.en', '')
+                    if (dts.id === 1) {
+                      return (
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          to={relMenuUrl}
+                        >
+                          {title}
+                        </Link>
+                      )
+                    }
+                  })}
+
+                  {headerMenuList.length > 0 && (
+                    <div className="tourCategory" style={{ display: 'inline-block' }}>
+                      {headerMenuList.map((dts, index) => {
+                        const absMenuUrl = dts.attributes.url
+                        const absMenuArray = absMenuUrl.split('/')
+                        const isHome = absMenuArray.length <= 3
+                        const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                        const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                        const title = _.get(dts, 'attributes.title.en', '')
+                        if (dts.id > 1 && dts.id < 6) {
+                          return (
+                            <Link
+                              key={dts.id}
+                              title={title}
+                              className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                              to={relMenuUrl}
+                            >
+                              {title}
+                            </Link>
+                          )
+                        }
+                      })}
+                    </div>
+                  )}
+                  {headerMenuList.map((dts, index) => {
+                    const absMenuUrl = dts.attributes.url
+                    const absMenuArray = absMenuUrl.split('/')
+                    const isHome = absMenuArray.length <= 3
+                    const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
+                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    const title = _.get(dts, 'attributes.title.en', '')
+                    if (dts.id >= 6 && dts.id != 9) {
+                      return (
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          to={relMenuUrl}
+                        >
+                          {title}
+                        </Link>
+                      )
+                    } else if (dts.id == 9) {
+                      return (
+                        <Link
+                          key={dts.id}
+                          title={title}
+                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          onClick={this.handleToggle}
+                        >
+                          {title}
+                        </Link>
+                      )
+                    }
+                  })}
+                </>
+              )}
+            </div>
+            {isMobile && (
+              <div
+                className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                  isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                }`}
+              >
+                <DropdownMenu
+                  className={styles.header_menu_dropdown_container}
+                  pathname={pathname}
+                  dataList={headerMenuList}
+                  activeId={activeMenuDropdown}
+                  onClick={this.handleNavigation}
+                />
               </div>
-            </LazyLoad>
-          )}
+            )}
+            {/* <div
+                  className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                    isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                  }`}
+                >
+                  <DropdownMenu
+                    className={styles.header_menu_dropdown_container}
+                    pathname={pathname}
+                    dataList={headerMenuList}
+                    activeId={activeMenuDropdown}
+                    onClick={this.handleNavigation}
+                  />
+                </div> */}
+            {toggle && (
+              <PopupMenu
+                onClick={this.handleToggle}
+                user={this.props.user}
+                locale={this.state.locale}
+                onSignOut={this.handleSignOut}
+              />
+            )}
+          </LazyLoad>
         </div>
       </>
     )

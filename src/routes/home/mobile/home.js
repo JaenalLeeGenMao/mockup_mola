@@ -51,7 +51,7 @@ class Home extends Component {
     steps: tourSteps.en,
     sliderRefs: [],
     playlistSuccess: false,
-    screenWidth: 245
+    screenWidth: 245,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -82,7 +82,7 @@ class Home extends Component {
     if (type === EVENTS.TOUR_END) {
       localStorage.setItem('tour-home', true)
       this.setState({
-        startGuide: false
+        startGuide: false,
       })
       // document.cookie = '__trh=1; path=/;';
       return true
@@ -142,27 +142,31 @@ class Home extends Component {
     } else {
       isLandscapeVar = true
     }
-    var resizeTimer;
+    var resizeTimer
     const that = this
-    window.addEventListener('resize', function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () {
-        if (window.innerHeight > window.innerWidth) {
-          isLandscapeVar = false
-        } else {
-          isLandscapeVar = true
-        }
-        if (that.state.isLandscape != isLandscapeVar) {
-          that.setState({
-            isLandscape: isLandscapeVar
-          })
-        }
-      }, 300);
-    }, false);
+    window.addEventListener(
+      'resize',
+      function() {
+        clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(function() {
+          if (window.innerHeight > window.innerWidth) {
+            isLandscapeVar = false
+          } else {
+            isLandscapeVar = true
+          }
+          if (that.state.isLandscape != isLandscapeVar) {
+            that.setState({
+              isLandscape: isLandscapeVar,
+            })
+          }
+        }, 300)
+      },
+      false
+    )
 
     if (this.state.isLandscape != isLandscapeVar) {
       this.setState({
-        isLandscape: isLandscapeVar
+        isLandscape: isLandscapeVar,
       })
     }
 
@@ -196,7 +200,7 @@ class Home extends Component {
 
     if (window.innerWidth < 375 && window.innerHeight < 600) {
       this.setState({
-        screenWidth: 170
+        screenWidth: 200,
       })
     }
   }
@@ -275,8 +279,10 @@ class Home extends Component {
   handleColorChange = (index, swipeIndex = 0) => {
     const that = this
     this.activeSlider = this.state.sliderRefs[index]
-    setTimeout(function () {
-      const activeSlick = document.querySelector(`.slick-active .${contentStyles.content__container} .slick-active .grid-slick`),
+    setTimeout(function() {
+      const activeSlick = document.querySelector(
+          `.slick-active .${contentStyles.content__container} .slick-active .grid-slick`
+        ),
         { videos, sliderRefs } = that.state
       let isDark = 1
       if (activeSlick) {
@@ -310,28 +316,65 @@ class Home extends Component {
     const { scrollIndex, activeSlideDots } = this.state
     if (scrollIndex == 0 && activeSlideDots && activeSlideDots.length == 1 && type == 'horizontal') {
       if (this.state.startGuide) {
-        return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={activeSlide.isDark} type={type} className={className} />
+        return (
+          <HomeMobileMenu
+            playlists={playlistData}
+            activeIndex={directionIndex}
+            isGray={activeSlide.isDark}
+            type={type}
+            className={className}
+          />
+        )
       } else {
         return null
       }
     } else {
       if (activeSlide.isDark > 0) {
-        return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={1} type={type} className={className} />
+        return (
+          <HomeMobileMenu
+            playlists={playlistData}
+            activeIndex={directionIndex}
+            isGray={1}
+            type={type}
+            className={className}
+          />
+        )
       } else {
-        return <HomeMobileMenu playlists={playlistData} activeIndex={directionIndex} isGray={0} type={type} className={className} />
+        return (
+          <HomeMobileMenu
+            playlists={playlistData}
+            activeIndex={directionIndex}
+            isGray={0}
+            type={type}
+            className={className}
+          />
+        )
       }
     }
   }
 
   render() {
-    const
-      {
+    const {
         playlists,
         playlists: { meta: { status: playlistStatus = 'loading', error: playlistError = '' } },
         videos,
         videos: { meta: { status: videoStatus = 'loading', error: videoError = '' } },
       } = this.props.home,
-      { isDark, locale, isLandscape, startGuide, steps, playlistSuccess, stepIndex, sliderRefs, scrollIndex, swipeIndex, activeSlide, activeSlideDots, screenWidth } = this.state,
+      {
+        isDark,
+        locale,
+        isLandscape,
+        startGuide,
+        steps,
+        playlistSuccess,
+        stepIndex,
+        sliderRefs,
+        scrollIndex,
+        swipeIndex,
+        activeSlide,
+        activeSlideDots,
+        screenWidth,
+      } = this.state,
       settings = {
         ...SETTINGS_MOBILE,
         className: styles.home__slick_slider_fade,
@@ -398,8 +441,8 @@ class Home extends Component {
         borderRadius: '4rem',
       },
       tooltip: {
-        width: screenWidth
-      }
+        width: screenWidth,
+      },
     }
 
     let filteredDesc = ''
@@ -408,10 +451,9 @@ class Home extends Component {
     if (activeSlide) {
       filteredDesc = activeSlide.shortDescription
       if (scrollIndex !== 0) {
-        filteredQuote = activeSlide.quotes ?
-          `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
-          :
-          `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
+        filteredQuote = activeSlide.quotes
+          ? `“${filterString(activeSlide.quotes.attributes.text, 15)}” - ${activeSlide.quotes.attributes.author}`
+          : `“${activeSlide.title ? activeSlide.title : ''}“` + ' - Coming Soon'
       }
     }
     const playlistId = playlists.data[scrollIndex] ? playlists.data[scrollIndex].id : ''
@@ -457,7 +499,9 @@ class Home extends Component {
             />
           )}
           {playlistStatus === 'loading' || (videoStatus === 'loading' && <HomePlaceholder />)}
-          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />}
+          {playlistStatus === 'error' && (
+            <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />
+          )}
           {/* {videoStatus === 'error' && <HomeError status={videoErrorCode} message={videoError || 'Mola TV video is not loaded'} />} */}
           {videos &&
             videos.data.length > 0 &&
@@ -466,106 +510,141 @@ class Home extends Component {
                 {/* <div className={styles.home__gradient} /> */}
                 <div className={styles.home__sidebar}>
                   {/* <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourHighlightChannel" /> */}
-                  {
-                    activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length >= 1 ? this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourHighlightChannel')
-                      :
-                      <HomeMobileMenu playlists={playlists.data} activeIndex={scrollIndex} isDark={isDark} className="tourHighlightChannel" />
-                  }
+                  {activeSlide && scrollIndex == 0 && playlists.data && playlists.data.length >= 1 ? (
+                    this.renderMenuBanner(activeSlide, playlists.data, scrollIndex, 'tourHighlightChannel')
+                  ) : (
+                    <HomeMobileMenu
+                      playlists={playlists.data}
+                      activeIndex={scrollIndex}
+                      isDark={isDark}
+                      className="tourHighlightChannel"
+                    />
+                  )}
                 </div>
                 {scrollIndex != 0 &&
                   activeSlide &&
                   activeSlide.id && (
-                    <LazyLoad containerClassName={`${styles.header__detail_container} ${isLandscape ? styles.header__detail_container_ls : ''} ${0 ? styles.black : styles.white}`}>
+                    <LazyLoad
+                      containerClassName={`${styles.header__detail_container} ${
+                        isLandscape ? styles.header__detail_container_ls : ''
+                      } ${0 ? styles.black : styles.white}`}
+                    >
                       {!activeSlide.buttonText &&
                         scrollIndex != 0 && (
                           <>
-                            {(isMovie(activeSlide.contentType) || getContentTypeName(activeSlide.contentType) == 'vod') && (
-                              <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.home__detail_button} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                            {(isMovie(activeSlide.contentType) ||
+                              getContentTypeName(activeSlide.contentType) == 'vod') && (
+                              <Link
+                                to={`${watchUrl}${activeSlide.id}`}
+                                className={`${styles.home__detail_button} ${
+                                  0 ? styles.black : styles.white
+                                } tourMovieDetail`}
+                              >
                                 <span className={`${styles.icon__view_movie} ${0 ? styles.black : styles.white}`} />
                               </Link>
                             )}
-                            {!isMovie(activeSlide.contentType) &&
+                            {!isMovie(activeSlide.contentType) && (
                               <>
                                 {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
-                                  <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__button_livenow} tourMovieDetail`}>
+                                  <Link
+                                    to={`${watchUrl}${activeSlide.id}`}
+                                    className={`${styles.sport__button_livenow} tourMovieDetail`}
+                                  >
                                     <span className={styles.play_icon_sport} />
                                     <p>{locale['live_now']}</p>
                                   </Link>
                                 )}
                                 {activeSlide.startTime > Date.now() / 1000 && (
-                                  <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                  <Link
+                                    to={`${watchUrl}${activeSlide.id}`}
+                                    className={`${styles.sport__detail_button} ${
+                                      styles.sport__detail_upc_btn
+                                    } tourMovieDetail`}
+                                  >
                                     <p>{locale['upcoming']}</p>
                                   </Link>
                                 )}
                                 {isMatchPassed(activeSlide.endTime) && (
-                                  <Link to={`${watchUrl}${activeSlide.id}`} className={`${styles.sport__detail_button} ${styles.sport__detail_upc_btn} tourMovieDetail`}>
+                                  <Link
+                                    to={`${watchUrl}${activeSlide.id}`}
+                                    className={`${styles.sport__detail_button} ${
+                                      styles.sport__detail_upc_btn
+                                    } tourMovieDetail`}
+                                  >
                                     <p>{locale['replay']}</p>
                                   </Link>
                                 )}
                               </>
-                            }
+                            )}
                           </>
                         )}
                       {activeSlide.buttonText && (
-                        <a href={`${activeSlide.link ? activeSlide.link : ''}`} className={`${styles.home__detail_button_text} ${0 ? styles.black : styles.white} tourMovieDetail`}>
+                        <a
+                          href={`${activeSlide.link ? activeSlide.link : ''}`}
+                          className={`${styles.home__detail_button_text} ${
+                            0 ? styles.black : styles.white
+                          } tourMovieDetail`}
+                        >
                           <p>{activeSlide.buttonText ? activeSlide.buttonText : ''}</p>
                         </a>
                       )}
-                      <div className={styles.header__playlist_title}>{this.state.playlists.data[scrollIndex].title}</div>
+                      <div className={styles.header__playlist_title}>
+                        {this.state.playlists.data[scrollIndex].title}
+                      </div>
                       <h1 className={styles[activeSlide.title.length > 16 ? 'small' : 'big']}>{activeSlide.title}</h1>
-                      {!isMovie(activeSlide.contentType) ?
-                        <>
-                          {filteredDesc &&
-                            <p className={`${styles.home_desc} filteredText`}>
-                              {filteredDesc}
-                            </p>
-                          }
-                        </>
-                        :
+                      {!isMovie(activeSlide.contentType) ? (
+                        <>{filteredDesc && <p className={`${styles.home_desc} filteredText`}>{filteredDesc}</p>}</>
+                      ) : (
                         <>
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredDesc}</p>
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredQuote}</p>
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredDesc}</p>
                           <p className={`${styles.home_desc__animation} filteredText`}>{filteredQuote}</p>
                         </>
-                      }
-
+                      )}
                     </LazyLoad>
                   )}
                 {scrollIndex != 0 &&
                   swipeIndex + 1 === videos.data[scrollIndex].data.length && (
                     <LazyLoad containerClassName={styles.view_all_movie_container}>
                       <picture>
-                        {this.state.playlists.data[scrollIndex].iconUrl ?
+                        {this.state.playlists.data[scrollIndex].iconUrl ? (
                           <>
                             <source srcSet={this.state.playlists.data[scrollIndex].iconWebp} type="image/webp" />
                             <source srcSet={this.state.playlists.data[scrollIndex].iconUrl} type="image/jpeg" />
                             <img src={this.state.playlists.data[scrollIndex].iconUrl} />
                           </>
-                          :
+                        ) : (
                           <>
                             <source srcSet={viewAllMovieImgWebp} type="image/webp" />
                             <source srcSet={viewAllMovieImg} type="image/jpeg" />
                             <img src={viewAllMovieImg} />
                           </>
-                        }
+                        )}
                       </picture>
                       <a href={`/libraries/${catalogId}`}>
                         <span>
                           {locale['view_all_movie']}
                           <br /> {this.state.playlists.data[scrollIndex].title.toUpperCase() + ' '}
-                          {locale['other']}</span>
+                          {locale['other']}
+                        </span>
                         <i />
                       </a>
                     </LazyLoad>
                   )}
                 <div className={styles.header__library_link_wrapper}>
                   {/* {activeSlideDots && activeSlideDots.length > 1 && <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={0} type="horizontal" className="tourSlide" />} */}
-                  {
-                    activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
-                      :
-                      <HomeMobileMenu playlists={activeSlideDots} activeIndex={swipeIndex} isDark={isDark} type="horizontal" className="tourSlide" />
-                  }
+                  {activeSlide && scrollIndex == 0 && activeSlideDots && activeSlideDots.length >= 1 ? (
+                    this.renderMenuBanner(activeSlide, activeSlideDots, swipeIndex, 'tourSlide', 'horizontal')
+                  ) : (
+                    <HomeMobileMenu
+                      playlists={activeSlideDots}
+                      activeIndex={swipeIndex}
+                      isDark={isDark}
+                      type="horizontal"
+                      className="tourSlide"
+                    />
+                  )}
                 </div>
                 <Slider
                   {...settings}
@@ -578,10 +657,20 @@ class Home extends Component {
                     const { id } = video.meta
 
                     if (video.data <= 0) {
-                      return;
+                      return
                     }
 
-                    return <HomeMobileContent key={id} videos={video.data} index={index} isLandscape={isLandscape} updateSlider={this.handleUpdateSlider} updateColorChange={this.handleColorChange} user={this.props.user} />
+                    return (
+                      <HomeMobileContent
+                        key={id}
+                        videos={video.data}
+                        index={index}
+                        isLandscape={isLandscape}
+                        updateSlider={this.handleUpdateSlider}
+                        updateColorChange={this.handleColorChange}
+                        user={this.props.user}
+                      />
+                    )
                   })}
                 </Slider>
               </>

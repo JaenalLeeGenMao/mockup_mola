@@ -83,7 +83,7 @@
 }
 
 .matchList__labelDate {
-  padding-right: 20px;
+  padding-right: 24px;
   padding-left: 10px;
   font-weight: 600;
   font-size: 1.5rem;
@@ -112,13 +112,34 @@
   padding-left: 10px;
 }
 
-@media screen and (max-width: 640px) {
+.noMatchesInfo {
+  font-size: 1rem;
+  text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
   .matchList__container {
+    height: 12rem;
+    width: 100%;
+  }
+
+  .matchList__club {
+    height: 5rem;
+  }
+
+  .matchList__club img {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  /* .matchList__container {
     color: #f5f5f5;
     font-weight: 300;
     height: 110px;
     width: 100%;
-  }
+  } */
 
   .matchList__date {
     padding: 5px;
@@ -177,6 +198,6 @@
   }
 
   .channel__duration__text {
-    padding-left: 0
+    padding-left: 0;
   }
 }

@@ -175,6 +175,10 @@
   align-items: center;
 }
 
+.header__menu_wrapper_m {
+  cursor: pointer;
+}
+
 /* mobile Styles */
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header__menu {
@@ -310,5 +314,15 @@
 @media screen and (min-width: 2000px) {
   .header__menu {
     left: 16rem;
+  }
+}
+
+@media screen and (max-width: 778px) {
+  .header_menu_outer {
+    display: none;
+  }
+
+  .header__menu_wrapper_m {
+    display: flex;
   }
 }

@@ -38,6 +38,7 @@ export const notificationBarBackground = `${imgBaseUrl}/notification-bar.png`
 export const noImg = `${imgBaseUrl}/no-img.png`
 export const logoMobile = `${imgBaseUrl}/mola-logo-mobile.svg`
 export const logoBlue = `${imgBaseUrl}/mola-blue.svg`
+export const logoHorizontal = `${imgBaseUrl}/mola_logo_horizontal.png`
 export const logoLandscapeBlue = `${imgBaseUrl}/mola-landscape-blue.svg`
 export const line = `${imgBaseUrl}/line.png`
 export const facebook = `${imgBaseUrl}/facebook.png`

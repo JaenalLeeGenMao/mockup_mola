@@ -36,10 +36,13 @@ class HorizontalPlaylist extends Component {
                     handleCategoryFilter(genre.id)
                   }}
                 >
-                  <span className={s.imgContainer__PL}>
-                    {genre.thumbnails && <img className={s.filterimg__PremierLeague} src={genre.thumbnails} />}
+                  <span className={s.img__container}>
+                    {genre.thumbnails && <img className={s.img} src={genre.thumbnails} />}
                   </span>
-                  <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
+                  <span
+                    value={genre.id}
+                    className={filterByLeague == genre.id ? s.selected_playlist : s.playlist__container}
+                  >
                     {genre.title}
                   </span>
                 </div>
@@ -60,15 +63,17 @@ class HorizontalPlaylist extends Component {
           {allCat.map(dt => {
             return (
               <>
-                <span
+                <div
                   key={dt}
-                  className={`${s.AllLeague} ${dt.id == filterByLeague ? s.selectednameleague : s.nameleague}`}
+                  className={`${s.playlist_all} ${
+                    dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
+                  }`}
                   onClick={() => {
-                    handleCategoryFilter('all')
+                    handleCategoryFilter('All')
                   }}
                 >
                   All
-                </span>
+                </div>
               </>
             )
           })}

@@ -40,6 +40,7 @@ const getPlaylistVideo = (playlist, index) => dispatch => {
       meta: {
         status: result.meta.status,
         id: playlist.id,
+        title: playlist.title,
         sortOrder: index,
         seasonNumber: playlist.seasonNumber ? playlist.seasonNumber : '',
       },
