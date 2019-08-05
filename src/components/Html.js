@@ -81,6 +81,7 @@ class Html extends React.Component {
           <meta property="og:description" content={description} data-react-helmet="true" />
           <meta property="og:image" content={image} data-react-helmet="true" />
           <meta property="og:url" content={url} data-react-helmet="true" />
+          <meta property="og:video" content={url} data-react-helmet="true" />
           <meta property="og:type" content={type} data-react-helmet="true" />
 
           <meta property="twitter:text:title" content={title} data-react-helmet="true" />

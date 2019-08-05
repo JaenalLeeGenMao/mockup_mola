@@ -30,7 +30,7 @@ class Playlist extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewportWidth: 0,
+      viewportWidth: this.props.isMobile ? 0 : 1200,
       carouselRefs: [],
       carouselRefsCounter: 0 /* carouselRefsCounter is a flag to prevent resizing upon initializing carousel */,
       playlists: [],

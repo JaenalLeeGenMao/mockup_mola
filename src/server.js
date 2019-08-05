@@ -721,7 +721,7 @@ app.get('*', async (req, res, next) => {
     const data = { ...route }
 
     /*** ###Articles Detail data and SEO ### ***/
-
+    data.url = config.endpoints.domain + req.path
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
@@ -757,6 +757,7 @@ app.get('*', async (req, res, next) => {
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
         data.appLinkUrl = appLink
+        data.url = config.endpoints.domain + req.path + '?v=' + videoId
       }
     }
     // else if (pathSplit.includes('articles')) {

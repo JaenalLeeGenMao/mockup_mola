@@ -57,7 +57,6 @@ class Header extends Component {
   render() {
     const { pathname } = this.props
     const { width, isLandscape } = this.state
-    const logoWrapper = isLandscape ? { left: 0 } : { left: '2.5%' }
     let isMobileView = width < 778
     if (/iPad/i.test(navigator.userAgent)) {
       isMobileView = true
@@ -67,10 +66,7 @@ class Header extends Component {
     return (
       <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
         <div className={styles.header__shadow} />
-        <div
-          className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}
-          style={logoWrapper}
-        >
+        <div className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}>
           <LazyLoad>
             <Link to="/">
               <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />

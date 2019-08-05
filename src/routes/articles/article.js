@@ -2,16 +2,13 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import { get } from 'axios'
-import {
-  ARTICLES_ENDPOINT,
-  ARTICLES_RELATED_ENDPOINT,
-} from '@api/mola/endpoints'
+import { ARTICLES_ENDPOINT, ARTICLES_RELATED_ENDPOINT } from '@api/mola/endpoints'
 
 import { CustomBackground, articleContainer } from './style'
 
 class Article extends Component {
   state = {
-    viewportWidth: 0,
+    viewportWidth: this.props.isMobile ? 0 : 1200,
     article: {
       isLoading: true,
       data: '',
