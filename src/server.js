@@ -753,7 +753,7 @@ app.get('*', async (req, res, next) => {
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
         const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
-        data.image = response ? background.landscape : ''
+        data.image = response ? background.landscape + '?w=600' : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
         data.appLinkUrl = appLink
