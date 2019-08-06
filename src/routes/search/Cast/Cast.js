@@ -17,35 +17,35 @@ class Cast extends React.Component {
         <div className={s.resultTitle}>
           <span>Cast</span>
         </div>
-        <div className={s.resultContent}>
-          <div className={s.people__wrapper}>
-            <div className={s.people__wrapper__scroller}>
-              {data.map(cast => {
-                const castNameRes = getMatchWordSearch(cast.title, searchText)
-                return (
-                  <div key={cast.id} className={s.person__wrapper}>
-                    <div className={s.castBox}>
-                      {cast.imageUrl ? (
-                        <img className={s.castImg} src={cast.imageUrl} />
-                      ) : (
-                        <div className={s.castImg_dummy} />
-                      )}
-                      {castNameRes && castNameRes[3] ? (
-                        <div>
-                          <span>{castNameRes[0]}</span>
-                          <span className={s.castNameResult}>{castNameRes[1]}</span>
-                          <span>{castNameRes[2]}</span>
-                        </div>
-                      ) : (
-                        <div>{cast.title}</div>
-                      )}
-                    </div>
+        {/* <div className={s.resultContent}> */}
+        <div className={s.people__wrapper}>
+          <div className={s.people__wrapper__scroller}>
+            {data.map(cast => {
+              const castNameRes = getMatchWordSearch(cast.title, searchText)
+              return (
+                <div key={cast.id} className={s.person__wrapper}>
+                  <div className={s.castBox}>
+                    {cast.coverUrl ? (
+                      <img className={s.castImg} src={cast.coverUrl} />
+                    ) : (
+                      <div className={s.castImg_dummy} />
+                    )}
+                    {castNameRes && castNameRes[3] ? (
+                      <div>
+                        <span>{castNameRes[0]}</span>
+                        <span className={s.castNameResult}>{castNameRes[1]}</span>
+                        <span>{castNameRes[2]}</span>
+                      </div>
+                    ) : (
+                      <div>{cast.title}</div>
+                    )}
                   </div>
-                )
-              })}
-            </div>
+                </div>
+              )
+            })}
           </div>
         </div>
+        {/* </div> */}
       </div>
       // <div className={s.resultRow}>
       //   <div className={s.resultTitle}>Cast</div>
