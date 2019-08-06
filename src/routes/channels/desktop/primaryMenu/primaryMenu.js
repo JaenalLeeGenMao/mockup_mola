@@ -9,21 +9,17 @@ class PrimaryMenu extends Component {
     return (
       <>
         <div className={styles.epg__logo__container}>
-          {channelsPlaylist.meta.status === 'success' && (
-            <>
-              {channelsPlaylist.data.map(item => (
-                <div
-                  key={item.id}
-                  className={styles.epg__logo__wrapper}
-                  onClick={() => {
-                    handleSelectChannel(item.id)
-                  }}
-                >
-                  <img alt="" className={styles.epg__logo__img} src={item.thumbnailImg} />
-                </div>
-              ))}
-            </>
-          )}
+          {channelsPlaylist.data.map(item => (
+            <div
+              key={item.id}
+              className={styles.epg__logo__wrapper}
+              onClick={() => {
+                handleSelectChannel(item.id)
+              }}
+            >
+              <img alt="" className={styles.epg__logo__img} src={item.thumbnailImg} />
+            </div>
+          ))}
         </div>
         <div className={styles.see__detail__epg}>
           <div className={styles.see__detail__text}> Scroll to see program guide </div>
