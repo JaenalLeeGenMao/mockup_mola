@@ -51,8 +51,10 @@ class MovieSuggestion extends React.Component {
                         onEmptyShowDefault
                         onErrorShowDefault
                         errorImgClassName={s.movieErrorImg}
+                        src={movieUrl}
+                        className={s.imgDefault}
                       >
-                        <img src={movieUrl} className={s.imgDefault} />
+                        {/* <img src={movieUrl} className={s.imgDefault} /> */}
                         {movieTitleRes && movieTitleRes[3] ? (
                           <div className={s.movieTitle}>
                             <div>
