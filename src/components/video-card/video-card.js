@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 
+import { getContentTypeName } from '@source/lib/globalUtil'
+
 import { placeholderBlankPortrait } from '@global/imageUrl'
 
 import { videoContainer, icons } from './style'
@@ -20,6 +22,7 @@ class VideoCard extends Component {
   render() {
     const {
         src,
+        contentType = '',
         description,
         onClick = () => {},
         containerClassName = '',
@@ -27,6 +30,19 @@ class VideoCard extends Component {
         transitionMode = 'scroll',
       } = this.props,
       { show } = this.state
+
+    const contentTypeName = getContentTypeName(contentType),
+      whitelistContentTypes = {
+        vod: 'playIcon' /** videos */,
+        movie: 'playIcon' /** videos */,
+        linear: 'tvIcon' /** channels */,
+        live: 'liveIcon' /** matches */,
+        replay: 'matchIcon' /** matches */,
+        trailers: 'playIcon' /** videos */,
+        'mola-featured': 'tvIcon' /** videos */,
+        // 'mola-categories': 'matchIcon' /** videos */,
+        articles: 'articleIcon' /** videos */,
+      }
 
     return (
       <div onClick={() => onClick()} className={`${videoContainer} ${containerClassName}`}>
@@ -42,11 +58,12 @@ class VideoCard extends Component {
             src={src}
             handleCallback={this.handleTitleShow}
           />
-          {show && (
-            <div className={icons}>
-              <span className="playIcon" />
-            </div>
-          )}
+          {show &&
+            whitelistContentTypes[`${contentTypeName}`] && (
+              <div className={icons}>
+                <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
+              </div>
+            )}
         </div>
         <p>{description}</p>
       </div>
