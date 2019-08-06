@@ -9,7 +9,8 @@
 
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import LazyLoad from '@components/common/Lazyload'
 // import { getComponent } from '../../../../gandalf';
 // const LazyLoad = getComponent('LazyLoad')
@@ -55,7 +56,7 @@ class Header extends Component {
   }
 
   render() {
-    const { pathname } = this.props
+    const { pathname, headerMenu } = this.props
     const { width, isLandscape } = this.state
     let isMobileView = width < 778
     if (/iPad/i.test(navigator.userAgent)) {
@@ -73,10 +74,16 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         </div>
-        <HeaderMenu isMobile={isMobileView} isLandscape={isLandscape} pathname={pathname} />
+        <HeaderMenu isMobile={isMobileView} menu={headerMenu} isLandscape={isLandscape} pathname={pathname} />
       </div>
     )
   }
 }
 
-export default withStyles(styles)(Header)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps, null))(Header)
