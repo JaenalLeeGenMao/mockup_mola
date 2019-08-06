@@ -272,6 +272,19 @@ const track = async store => {
       } //tracker.sendPubSub(payload, token)
     }
 
+    if (pathname.includes('channels')) {
+      if (token && !inSearchPage) {
+        const channelId = pathname.split('/')
+        const payload = {
+          window,
+          videoId: channelId[2],
+          user: user,
+          event: 'event_videos',
+        }
+        globalTracker(payload)
+      } //tracker.sendPubSub(payload, token)
+    }
+
     // HOTFIX need to find a way to get refferer in react
     currentLocation = location
   }
