@@ -123,7 +123,6 @@ class HeaderMenu extends Component {
     const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu } } = this.props
     const { toggle } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
-    console.log('headerMenuList', headerMenuList)
 
     return (
       <>
