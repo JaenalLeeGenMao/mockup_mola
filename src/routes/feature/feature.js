@@ -14,6 +14,7 @@ import featureActions from '@actions/feature'
 import { getErrorCode } from '@routes/home/util'
 
 import { getContentTypeName } from '@source/lib/globalUtil'
+import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 
 import Placeholder from './placeholder'
 import { BannerPlaceholder } from './placeholder/banner-placeholder'
@@ -201,6 +202,11 @@ class Feature extends Component {
                       >
                         {video.data.length > 0 &&
                           video.data.map(obj => {
+                            const videoCTN = getContentTypeName(_.get(obj, 'contentType', '')),
+                              isMatch = videoCTN === 'live' || videoCTN === 'replay',
+                              matchLive =
+                                isMatch &&
+                                isMatchLive(obj.startTime, obj.endTime) /** id 4 is replay matches, 3 is live matches */
                             if (contentTypeName === 'movie' || contentTypeName === 'vod') {
                               return (
                                 <VideoCard
@@ -222,7 +228,7 @@ class Feature extends Component {
                                   key={obj.id}
                                   alt={obj.title}
                                   description={obj.title}
-                                  contentType={obj.contentType}
+                                  contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
                                   src={obj.type === 'playlists' ? obj.images.cover.landscape : obj.background.landscape}
                                   // onLoad={this.updateOnImageLoad}
                                   onClick={() => this.handleOnClick(obj)}
