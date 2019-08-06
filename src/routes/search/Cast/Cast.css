@@ -103,7 +103,7 @@
 }
 
 .person__wrapper {
-  margin: 0 15px 20px;
+  margin: 0 10px 20px;
   width: calc(100% + 20px);
 
   /* width: calc(25% - 20px); */
@@ -151,9 +151,9 @@
     line-height: 1;
   }
 
-  .castBox div {
+  /* .castBox div {
     padding: 0 10px;
-  }
+  } */
 }
 
 @media screen and (max-width: 640px) {
