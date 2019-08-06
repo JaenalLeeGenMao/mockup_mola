@@ -41,9 +41,11 @@ const handlerGetVUID = ({ deviceId, r }) => {
 axiosRetry(axios, {
   retries: 3,
   retryDelay: retryCount => {
-    return retryCount * 2000
+    return retryCount * 4000
   },
-  retryCondition: () => true,
+  retryCondition: error => {
+    return error.response.status == 500
+  },
 })
 
 export const getVUID = deviceId => dispatch => {
