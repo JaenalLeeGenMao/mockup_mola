@@ -152,6 +152,7 @@ const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 let userinfo = ''
 
+/*
 app.get('/sign-location', async (req, res) => {
   const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
   const lat = req.query.lat
@@ -190,7 +191,7 @@ app.get('/sign-location', async (req, res) => {
       })
   }
 })
-
+*/
 const extendToken = async token => {
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {
@@ -358,6 +359,27 @@ const requestCode = async (req, res) => {
   console.log('oAuth==>', oAuthAuthorizationEndpoint)
 
   return oAuthAuthorizationEndpoint
+}
+
+const getHeaderMenus = async () => {
+  try {
+    const headerUrl =
+      config.env === 'production'
+        ? 'https://mola01.koicdn.com/dev/json/menu.json'
+        : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+    const response = await Axios.get(headerUrl)
+      .then(({ data }) => {
+        return data.data
+      })
+      .catch(err => {
+        console.log('Error Get Header Menu', err)
+        return null
+      })
+    return response
+  } catch (err) {
+    console.log('Error Get Header Menu', err)
+    return null
+  }
 }
 
 // set a cookie
@@ -566,9 +588,11 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          res.clearCookie('_at')
-          res.clearCookie('SID')
-          return res.redirect('/accounts/login')
+          if (req.path !== '/accounts/consent') {
+            res.clearCookie('_at')
+            res.clearCookie('SID')
+            return res.redirect('/accounts/login')
+          }
         }
       }
     } else {
@@ -640,6 +664,7 @@ app.get('*', async (req, res, next) => {
       }
     }
 
+    const responseHeaderMenu = await getHeaderMenus()
     const initialState = {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
@@ -659,6 +684,9 @@ app.get('*', async (req, res, next) => {
         type: '',
         lang: req.query.lang || 'en',
         clientIp: ip,
+      },
+      headerMenu: {
+        data: responseHeaderMenu ? responseHeaderMenu : null,
       },
       runtime: {
         appUrl: 'molaapp://mola.tv/watch',
@@ -718,7 +746,8 @@ app.get('*', async (req, res, next) => {
     const data = { ...route }
 
     /*** ###Articles Detail data and SEO ### ***/
-
+    data.url = config.endpoints.domain + req.path
+    data.image = config.endpoints.domain + '/mola.png'
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
@@ -750,10 +779,11 @@ app.get('*', async (req, res, next) => {
         data.title = response ? response[0].attributes.title : ''
         data.description = response ? response[0].attributes.description : ''
         const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
-        data.image = response ? background.landscape : ''
+        data.image = response ? background.landscape + '?w=600' : ''
         data.type = 'video.other'
         data.twitter_card_type = 'summary_large_image'
         data.appLinkUrl = appLink
+        data.url = config.endpoints.domain + req.path + '?v=' + videoId
       }
     }
     // else if (pathSplit.includes('articles')) {

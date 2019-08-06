@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import Carousel from '@components/carousel'
+import PlaylistCard from '@components/playlist-card'
 import VideoCard from '@components/video-card'
 import PlaylistError from '@components/common/error'
 
@@ -12,11 +13,15 @@ import playlistAction from '@actions/playlist'
 
 import { getErrorCode } from '@routes/home/util'
 
+import { getContentTypeName } from '@source/lib/globalUtil'
+import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
+
 import Placeholder from './placeholder'
 import {
   playlistContainer,
   playlistWrapper,
-  playlistCardWrapper,
+  portraitCardWrapper,
+  landscapeCardWrapper,
   DesktopBackgroundStyle,
   MobileBackgroundStyle,
   playlistHeadDesktop,
@@ -30,7 +35,7 @@ class Playlist extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewportWidth: 0,
+      viewportWidth: this.props.isMobile ? 0 : 1200,
       carouselRefs: [],
       carouselRefsCounter: 0 /* carouselRefsCounter is a flag to prevent resizing upon initializing carousel */,
       playlists: [],
@@ -125,33 +130,54 @@ class Playlist extends React.Component {
 
     return (
       <>
-        {this.props.playlist.videos.data.map((element, i) => (
-          <LazyLoad key={'playlist' + i}>
-            <div className={playlistList}>
-              <p className="season_text">{element.meta.title ? `Season ${element.meta.title}` : ''}</p>
+        {this.props.playlist.videos.data.map((element, playlistIndex) => {
+          const { playlist: { playlists, videos } } = this.props
 
-              {/* <Carousel
+          return (
+            <LazyLoad key={'playlist' + playlistIndex}>
+              <div className={playlistList}>
+                <p className="season_text">{element.meta.title ? `Season ${element.meta.title}` : ''}</p>
+
+                {/* <Carousel
                 framePadding={!isMobile ? '0rem 2rem' : '0rem 0rem 0rem 1rem'}
                 hideNextIcon={hideNextIcon(element.data.length)}
                 slidesToScroll={slideToScroll}
                 slidesToShow={slidesToShow}
                 dragging={true}
               > */}
-              <div className="seasonListWrapper">
-                {element.data.map((video, idx) => (
-                  <LazyLoad containerClassName={playlistCardWrapper} key={'video' + idx}>
-                    <VideoCard
-                      onClick={() => this.handleOnClick(video.id)}
-                      description={video.title ? video.title : ''}
-                      src={`${video.background.portrait}?w=540` ? `${video.background.portrait}?w=540` : ''}
-                    />
-                  </LazyLoad>
-                ))}
+                <div className="seasonListWrapper">
+                  {element.data.map((video, idx) => {
+                    const contentTypeName = getContentTypeName(_.get(video, 'contentType', '')),
+                      isLandscape = contentTypeName === 'live' || contentTypeName === 'replay',
+                      matchLive = isMatchLive(video.startTime, video.endTime) /** id 4 is replay matches */
+                    return (
+                      <LazyLoad
+                        containerClassName={isLandscape ? landscapeCardWrapper : portraitCardWrapper}
+                        key={'video' + idx}
+                      >
+                        {isLandscape ? (
+                          <PlaylistCard
+                            onClick={() => this.handleOnClick(video.id)}
+                            description={video.title ? video.title : ''}
+                            contentType={matchLive ? video.contentType : 4}
+                            src={`${video.background.landscape}?w=540` ? `${video.background.landscape}?w=540` : ''}
+                          />
+                        ) : (
+                          <VideoCard
+                            onClick={() => this.handleOnClick(video.id)}
+                            description={video.title ? video.title : ''}
+                            src={`${video.background.portrait}?w=540` ? `${video.background.portrait}?w=540` : ''}
+                          />
+                        )}
+                      </LazyLoad>
+                    )
+                  })}
+                </div>
+                {/* </Carousel> */}
               </div>
-              {/* </Carousel> */}
-            </div>
-          </LazyLoad>
-        ))}
+            </LazyLoad>
+          )
+        })}
       </>
     )
   }

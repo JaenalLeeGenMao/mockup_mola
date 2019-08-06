@@ -9,7 +9,8 @@
 
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import LazyLoad from '@components/common/Lazyload'
 // import { getComponent } from '../../../../gandalf';
 // const LazyLoad = getComponent('LazyLoad')
@@ -27,12 +28,16 @@ import styles from './Header.css'
 
 class Header extends Component {
   state = {
-    width: 0,
+    width: this.props.isMobile ? 640 : 1200,
+    isLandscape: false,
   }
 
   componentDidMount() {
     if (process.env.BROWSER) {
-      this.setState({ width: window.innerWidth })
+      this.setState({
+        width: window.innerWidth,
+        isLandscape: window.innerHeight < window.innerWidth,
+      })
       window.addEventListener('resize', this.handleWindowSizeChange)
     }
   }
@@ -44,41 +49,41 @@ class Header extends Component {
   }
 
   handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth })
+    this.setState({
+      width: window.innerWidth,
+      isLandscape: window.innerHeight < window.innerWidth,
+    })
   }
 
   render() {
-    const { isDark = 1, isMobile = false, isLandscape = false } = this.props
-    const color = isDark ? 'black' : 'white'
-    const headerStyle = isMobile ? styles.header__container_m : styles.header__container
-    const logoWrapper = isLandscape ? { left: 0 } : { left: '2.5%' }
-    const { width } = this.state
+    const { pathname, headerMenu } = this.props
+    const { width, isLandscape } = this.state
     let isMobileView = width < 778
     if (/iPad/i.test(navigator.userAgent)) {
       isMobileView = true
     }
 
-    const allProps = {
-      ...this.props,
-      isMobile: isMobileView,
-    }
+    const headerStyle = isMobileView ? styles.header__container_m : styles.header__container
     return (
       <div className={`${headerStyle} ${isLandscape ? styles.header__cnt_landscape : ''}`}>
         <div className={styles.header__shadow} />
-        <div
-          className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}
-          style={logoWrapper}
-        >
+        <div className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}>
           <LazyLoad>
             <Link to="/">
               <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
             </Link>
           </LazyLoad>
         </div>
-        <HeaderMenu color={color} {...allProps} />
+        <HeaderMenu isMobile={isMobileView} menu={headerMenu} isLandscape={isLandscape} pathname={pathname} />
       </div>
     )
   }
 }
 
-export default withStyles(styles)(Header)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps, null))(Header)

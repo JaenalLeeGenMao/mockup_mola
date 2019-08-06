@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
-import { get } from 'axios'
+import { get, post } from 'axios'
+import config from '../../../../src/config'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
@@ -118,14 +119,19 @@ class WatchDesktop extends Component {
     const geolocation = Tracker.getLangLat()
     const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+    const body = {
+      lat: parseFloat(latitude),
+      long: parseFloat(longitude),
+    }
     let loc = ''
 
     if (typeof latitude !== 'undefined' && typeof longitude !== 'undefined' && latitude !== '' && longitude !== '') {
-      get(`/sign-location?lat=${latitude}&long=${longitude}`)
+      post(locationUrl, body)
         .then(response => {
-          loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
-
           if (response.status === 200) {
+            loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
+
             this.setState({
               loc: loc,
             })
@@ -135,7 +141,7 @@ class WatchDesktop extends Component {
             })
           }
         })
-        .catch(error => {
+        .catch(err => {
           this.setState({
             loc: '',
           })
@@ -194,13 +200,12 @@ class WatchDesktop extends Component {
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
 
-      const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
+      const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
       const defaultVidSetting = dataFetched
         ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
         : {}
-
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
