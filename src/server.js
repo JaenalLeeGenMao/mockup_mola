@@ -497,7 +497,7 @@ app.get('/accounts/signin', async (req, res) => {
     httpOnly: true,
   })
 
-  if (!req.cookies._at) {
+  if (!req.cookies._at || !_isUndefined(req.query.app_key)) {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }

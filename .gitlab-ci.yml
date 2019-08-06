@@ -6,7 +6,7 @@ stages:
 .job_template: &push_docker
   image: google/cloud-sdk
   services:
-    - docker:dind
+    - docker:18.09-dind
   script:
     - export DOCKER_HOST="tcp://localhost:2375"
     - docker info
