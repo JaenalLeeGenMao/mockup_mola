@@ -203,6 +203,8 @@
 
   .searchAutocomplete span {
     display: none;
+    top: 16px;
+    left: 75px;
   }
 
   .searchInputWrapper {
@@ -210,6 +212,7 @@
     padding: 0;
     margin: 0 auto;
     width: 80%;
+    height: 52px;
   }
 
   .searchText {
@@ -236,6 +239,12 @@
     width: 80%;
     text-align: left;
     font-size: 1.4rem;
+  }
+
+  .searchInput,
+  .searchInputSuggestion {
+    height: 52px;
+    padding: 10px 75px;
   }
 }
 

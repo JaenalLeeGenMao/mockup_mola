@@ -31,7 +31,7 @@ import styles from './channels.css'
 class Channels extends Component {
   state = {
     activeChannel: '',
-    activeChannelId: '',
+    activeChannelId: 'mola-1',
     activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleList: [],
     hidePlaylist: true,
@@ -53,7 +53,18 @@ class Channels extends Component {
     }
     fetchChannelsPlaylist('channels-m').then(() => {
       fetchChannelSchedule(selectedDate).then(() => {
-        this.handleSelectChannel(movieId)
+        const filteredSchedule = this.props.channelSchedule.find(item => item.id == movieId)
+        const time =
+          filteredSchedule && filteredSchedule.videos.length > 0
+            ? filteredSchedule.videos[0].startTime
+            : Date.now() / 1000
+
+        this.setState({
+          activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+          activeChannelId: movieId,
+          activeDate: formatDateTime(time, 'DD MMM'),
+          scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+        })
       })
     })
     fetchVideoByid(movieId)
@@ -66,25 +77,6 @@ class Channels extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
-    const { scheduleList, activeChannelId } = this.state
-    if (
-      channelsPlaylist.meta.status === 'success' &&
-      channelsPlaylist.data.length > 0 &&
-      !prevState.activeChannel &&
-      !prevState.activeChannelId
-    ) {
-      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
-      this.setState({
-        activeChannel:
-          selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
-        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
-      })
-    }
-
-    if (prevState.activeChannelId !== activeChannelId) {
-      this.handleSelectChannel(activeChannelId)
-    }
-
     if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       fetchVideoByid(movieId)
     }

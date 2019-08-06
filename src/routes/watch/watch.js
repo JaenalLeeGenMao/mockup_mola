@@ -10,6 +10,7 @@ import { updateCustomMeta } from '@source/DOMUtils'
 
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
+import MovieDetailError from '@components/common/error'
 import WatchDesktop from './desktop'
 import WatchMobile from './mobile'
 
@@ -72,10 +73,9 @@ class Watch extends Component {
 
   render() {
     const { isMobile, vuid, videoId, getMovieDetail } = this.props
-    const { meta: { status }, data } = this.props.movieDetail
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-
     return (
       <>
         {dataFetched && (
@@ -101,6 +101,7 @@ class Watch extends Component {
             )}
           </>
         )}
+        {status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

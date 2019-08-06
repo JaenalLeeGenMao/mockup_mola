@@ -277,7 +277,7 @@ const track = async store => {
         const channelId = pathname.split('/')
         const payload = {
           window,
-          videoId: channelId[2],
+          videoId: channelId.length > 2 && channelId[2] != '' ? channelId[2] : 'mola-1',
           user: user,
           event: 'event_videos',
         }
