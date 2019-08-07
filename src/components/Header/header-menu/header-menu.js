@@ -61,7 +61,6 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
 class HeaderMenu extends Component {
   state = {
     locale: getLocale(),
-    activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
     headerMenuList: [],
     toggle: false /* Toggle profile */,
   }

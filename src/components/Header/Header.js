@@ -56,7 +56,7 @@ class Header extends Component {
   }
 
   render() {
-    const { pathname, headerMenu } = this.props
+    const { pathname, headerMenu, user } = this.props
     const { width, isLandscape } = this.state
     let isMobileView = width < 778
     if (/iPad/i.test(navigator.userAgent)) {
@@ -74,7 +74,13 @@ class Header extends Component {
             </Link>
           </LazyLoad>
         </div>
-        <HeaderMenu isMobile={isMobileView} menu={headerMenu} isLandscape={isLandscape} pathname={pathname} />
+        <HeaderMenu
+          user={user}
+          isMobile={isMobileView}
+          menu={headerMenu}
+          isLandscape={isLandscape}
+          pathname={pathname}
+        />
       </div>
     )
   }
