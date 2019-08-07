@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
 import history from '@source/history'
-import styles from './platformCheckMobile.css'
+import styles from './PlatformCheckMobile.css'
 import Header from '@components/Header'
 
 class PlatformCheck extends Component {
