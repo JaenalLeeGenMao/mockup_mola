@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
@@ -6,7 +8,7 @@ import styles from './PlatformCheckMobile.css'
 import Header from '@components/Header'
 import { globalTracker } from '@source/lib/globalTracker'
 
-class PlatformCheck extends Component {
+class PlatformCheckMobile extends Component {
   state = {
     result: [],
   }
@@ -87,4 +89,10 @@ class PlatformCheck extends Component {
   }
 }
 
-export default withStyles(styles)(PlatformCheck)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps, null))(PlatformCheckMobile)
