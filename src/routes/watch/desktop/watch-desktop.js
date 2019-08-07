@@ -12,6 +12,7 @@ import Tracker from '@source/lib/tracker'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 import watchPermission from '@source/lib/watchPermission'
+import PlatformDesktop from '@components/PlatformCheck'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
@@ -190,7 +191,7 @@ class WatchDesktop extends Component {
   }
 
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId } = this.props
+    const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, potraitPoster } = this.props
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
@@ -215,51 +216,65 @@ class WatchDesktop extends Component {
       const videoSettings = {
         ...checkAdsSettings,
       }
-
-      if (
-        this.state.countDownStatus &&
-        getContentTypeName(dataFetched.contentType) === 'live' &&
-        dataFetched.startTime * 1000 > Date.now()
-      ) {
+      if (blocked) {
         return (
-          <CountDown
-            hideCountDown={this.hideCountDown}
-            startTime={dataFetched.startTime}
-            videoId={videoId}
-            getMovieDetail={getMovieDetail}
-            isMobile={false}
-          />
+          <>
+            <PlatformDesktop
+              iconStatus={iconStatus}
+              status={status}
+              icon={icon}
+              name={name}
+              // title={apiFetched ? dataFetched.title : ''}
+              portraitPoster={poster ? dataFetched.background.landscape : ''}
+            />
+          </>
         )
-      } else if (dataFetched.streamSourceUrl) {
-        if (!isAllowed) {
-          if (this.state.loginPermission) {
-            if (watchPermissionErrorCode == 'login_first') {
-              return (
-                <div className={movieDetailNotAllowed}>
-                  <p>
-                    Silahkan{' '}
-                    <a style={{ color: '#005290' }} href="/accounts/login">
-                      {' '}
-                      login
-                    </a>{' '}
-                    untuk menyaksikan tayangan ini.
-                  </p>
-                </div>
-              )
+      } else {
+        if (
+          this.state.countDownStatus &&
+          getContentTypeName(dataFetched.contentType) === 'live' &&
+          dataFetched.startTime * 1000 > Date.now()
+        ) {
+          return (
+            <CountDown
+              hideCountDown={this.hideCountDown}
+              startTime={dataFetched.startTime}
+              videoId={videoId}
+              getMovieDetail={getMovieDetail}
+              isMobile={false}
+            />
+          )
+        } else if (dataFetched.streamSourceUrl) {
+          if (!isAllowed) {
+            if (this.state.loginPermission) {
+              if (watchPermissionErrorCode == 'login_first') {
+                return (
+                  <div className={movieDetailNotAllowed}>
+                    <p>
+                      Silahkan{' '}
+                      <a style={{ color: '#005290' }} href="/accounts/login">
+                        {' '}
+                        login
+                      </a>{' '}
+                      untuk menyaksikan tayangan ini.
+                    </p>
+                  </div>
+                )
+              }
             }
+            return this.renderBlockPermission(poster)
           }
-          return this.renderBlockPermission(poster)
+          return (
+            <Theoplayer
+              className={customTheoplayer}
+              subtitles={this.subtitles()}
+              poster={poster}
+              autoPlay={false}
+              handleOnReadyStateChange={this.handleOnReadyStateChange}
+              {...videoSettings}
+            />
+          )
         }
-        return (
-          <Theoplayer
-            className={customTheoplayer}
-            subtitles={this.subtitles()}
-            poster={poster}
-            autoPlay={false}
-            handleOnReadyStateChange={this.handleOnReadyStateChange}
-            {...videoSettings}
-          />
-        )
       }
     }
   }
