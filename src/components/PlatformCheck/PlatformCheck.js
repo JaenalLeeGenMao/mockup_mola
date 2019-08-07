@@ -1,13 +1,27 @@
 import React, { Component } from 'react'
-
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
 import styles from './PlatformCheck.css'
+import { globalTracker } from '@source/lib/globalTracker'
 
 class PlatformCheck extends Component {
   state = {
     result: [],
   }
+
+  goto(url) {
+    const payload = {
+      user: this.props.user,
+      window,
+      linkRedirectUrl: url,
+      event: 'event_pages',
+    }
+    globalTracker(payload)
+    window.location = url
+  }
+
   render() {
     const { name, portraitPoster, title, titleClass, icon, iconStatus, status } = this.props
     return (
@@ -30,24 +44,20 @@ class PlatformCheck extends Component {
                 <div className={styles.detail__desc_img}>
                   {icon.map((s, idx) => {
                     return (
-                      <img
-                        key={idx}
-                        src={s}
-                        className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
-                      />
+                      <div className={styles.detail__desc_img__status__icon} key={idx}>
+                        <img
+                          key={idx}
+                          src={s}
+                          className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
+                        />
+                        <img className={styles.detail__desc_img__status__color} key={idx} src={iconStatus[idx]} />
+                        <p className={styles.detail__desc_img__status__info} key={idx}>
+                          {name[idx]}
+                        </p>
+                      </div>
                     )
                   })}
                 </div>
-                <div className={styles.detail__desc_img__status}>
-                  {iconStatus.map((i, idx) => {
-                    return <img key={idx} src={i} />
-                  })}
-                </div>
-              </div>
-              <div className={styles.detail__desc__text__icon}>
-                {name.map((n, idx) => {
-                  return <p key={idx}>{n}</p>
-                })}
               </div>
               <div className={styles.detail__desc__text__icon__bottom} />
               <div className={styles.detail__desc__text__icon__bottom__text}>
@@ -57,9 +67,9 @@ class PlatformCheck extends Component {
               <div className={styles.detail__desc__text__icon__bottom__text}>
                 atau, untuk pembelian online silahkan kunjungi:
                 <div className={styles.detail__desc__text__icon__bottom__text}>
-                  <a href="https://www.blibli.com/promosi/molatv">Blibli.com </a>
+                  <a onClick={() => this.goto('https://www.blibli.com/promosi/molatv')}>Blibli.com </a>
                   <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
-                  <a href="https://www.matrixshop.co.id/molamatrix"> Mola-Matrix</a>
+                  <a onClick={() => this.goto('https://www.matrixshop.co.id/molamatrix')}> Mola-Matrix</a>
                 </div>
               </div>
             </div>
@@ -71,4 +81,10 @@ class PlatformCheck extends Component {
   }
 }
 
-export default withStyles(styles)(PlatformCheck)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps, null))(PlatformCheck)
