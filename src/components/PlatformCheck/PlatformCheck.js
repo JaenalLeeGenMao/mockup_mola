@@ -44,18 +44,14 @@ class PlatformCheck extends Component {
                 <div className={styles.detail__desc_img}>
                   {icon.map((s, idx) => {
                     return (
-                      <div key={idx} style={{ textAlign: 'center', flexDirection: 'column' }}>
+                      <div className={styles.detail__desc_img__status__icon} key={idx}>
                         <img
                           key={idx}
                           src={s}
                           className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
                         />
-                        <img
-                          key={idx}
-                          src={iconStatus[idx]}
-                          style={{ position: 'relative', bottom: '3rem', right: 0, width: '10%' }}
-                        />
-                        <p style={{ position: 'relative', bottom: '3rem', color: '#a7a7a7' }} key={idx}>
+                        <img className={styles.detail__desc_img__status__color} key={idx} src={iconStatus[idx]} />
+                        <p className={styles.detail__desc_img__status__info} key={idx}>
                           {name[idx]}
                         </p>
                       </div>

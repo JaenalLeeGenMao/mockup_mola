@@ -51,25 +51,22 @@ class PlatformCheck extends Component {
               <div className={styles.detail__desc_img}>
                 {icon.map((s, idx) => {
                   return (
-                    <img
-                      key={idx}
-                      src={s}
-                      className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
-                    />
+                    <div className={styles.detail__desc_img__status__icon} key={idx}>
+                      <img
+                        key={idx}
+                        src={s}
+                        className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
+                      />
+                      <img className={styles.detail__desc_img__status__color} key={idx} src={iconStatus[idx]} />
+                      <p className={styles.detail__desc_img__status__info} key={idx}>
+                        {name[idx]}
+                      </p>
+                    </div>
                   )
                 })}
               </div>
-              <div className={styles.detail__desc_img__status}>
-                {iconStatus.map((i, idx) => {
-                  return <img key={idx} src={i} />
-                })}
-              </div>
             </div>
-            <div className={styles.detail__desc__text__icon}>
-              {name.map((n, idx) => {
-                return <p key={idx}>{n}</p>
-              })}
-            </div>
+
             <div className={styles.detail__desc__text__icon__bottom} />
             <div className={styles.detail__desc__text__icon__bottom__text}>
               Mola Polytron Streaming &amp; Mola Matrix bisa diperoleh di:
