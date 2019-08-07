@@ -119,7 +119,9 @@ class WatchDesktop extends Component {
     const geolocation = Tracker.getLangLat()
     const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
-    const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+    const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
+      config.env === 'production' ? 'sent_ads' : 'mola_ads'
+    }`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
