@@ -960,7 +960,7 @@ app.get('*', async (req, res, next) => {
     let isSmartTV = /.*SMART-TV*./i.test(userAgent)
 
     if (isSmartTV && req.url != '/404') {
-      return res.redirect(domain + '/404' || 'http://stag.mola.tv/404')
+      return res.redirect(domain + '/error/smart')
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
