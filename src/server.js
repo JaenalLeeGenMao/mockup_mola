@@ -42,6 +42,8 @@ import Crypto from 'crypto.js'
 import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import _forEach from 'lodash/forEach'
+import NodeCache from 'node-cache'
+const videoCache = new NodeCache()
 
 const oauth = {
   endpoint:
@@ -723,38 +725,75 @@ app.get('*', async (req, res, next) => {
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
-    if (firstPath === 'movie-detail' || firstPath === 'watch') {
+    if (firstPath === 'watch') {
       let videoId = '',
         appLink = ''
-      if (firstPath === 'movie-detail') {
-        videoId = pathSplit.length > 2 ? pathSplit[2] : ''
-        appLink = 'movie-detail/' + videoId
-      } else {
-        videoId = req.query.v
-        appLink = 'watch?v=' + videoId
-      }
-      if (videoId) {
-        const response = await Axios.get(`${VIDEO_API_URL}/${videoId}?app_id=${appId}`, {
-          timeout: 5000,
-          maxRedirects: 1,
-          // headers: {
-          //   'x-url': config.endpoints.xurl
-          // }
+      videoId = req.query.v
+      appLink = 'watch?v=' + videoId
+      let videoObj = {}
+      let hasCache = false
+      videoCache.get(videoId, function(err, value) {
+        if (!err) {
+          if (value == undefined) {
+            // key not found
+            hasCache = false
+            console.log('cache value is undefined', err)
+          } else {
+            hasCache = true
+            videoObj = value
+            console.log('cache value is: ', value)
+            //{ my: "Special", variable: 42 }
+            // ... do something ...
+          }
+        }
+      })
+      if (!hasCache) {
+        if (videoId) {
+          let response = null
+          try {
+            const rawResponse = await fetch(`${VIDEO_API_URL}/${videoId}?app_id=${appId}`, {
+              timeout: 5000,
+              maxRedirects: 1,
+            })
+            response = await rawResponse.json()
+          } catch (err) {
+            console.log('error video api call for seo ', err)
+          }
+          const videoData = response && response.data ? response.data : null
+          data.title = videoData ? videoData[0].attributes.title : 'Mola TV'
+          data.description = videoData
+            ? videoData[0].attributes.description
+            : 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
+          const background = videoData ? _get(videoData[0].attributes.images, 'cover', { landscape: '' }) : null
+          data.image = videoData ? background.landscape : ''
+          data.type = 'video.other'
+          data.twitter_card_type = 'summary_large_image'
+          data.appLinkUrl = appLink
+          videoObj = {
+            title: data.title,
+            description: data.description,
+            image: data.image,
+            type: data.type,
+            twitter_card_type: data.twitter_card_type,
+            appLinkUrl: data.appLinkUrl,
+          }
+        }
+        videoCache.set(videoId, videoObj, function(err, success) {
+          if (!err && success) {
+            console.log('success set cache node cache', videoId, videoObj)
+            // true
+            // ... do something ...
+          } else {
+            console.log('failed set cache node cache', videoId, ', err:', err)
+          }
         })
-          .then(({ data }) => {
-            return data.data
-          })
-          .catch(err => {
-            console.log('Error SEO movies', err)
-            return null
-          })
-        data.title = response ? response[0].attributes.title : ''
-        data.description = response ? response[0].attributes.description : ''
-        const background = response ? _get(response[0].attributes.images, 'cover', { landscape: '' }) : null
-        data.image = response ? background.landscape : ''
-        data.type = 'video.other'
-        data.twitter_card_type = 'summary_large_image'
-        data.appLinkUrl = appLink
+      } else {
+        data.title = videoObj.title
+        data.description = videoObj.description
+        data.image = videoObj.image
+        data.type = videoObj.type
+        data.twitter_card_type = videoObj.twitter_card_type
+        data.appLinkUrl = videoObj.appLinkUrl
       }
     }
     // else if (pathSplit.includes('articles')) {
