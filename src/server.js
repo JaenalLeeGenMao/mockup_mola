@@ -737,11 +737,11 @@ app.get('*', async (req, res, next) => {
           if (value == undefined) {
             // key not found
             hasCache = false
-            console.log('cache value is undefined', err)
+            // console.log('cache value is undefined', err)
           } else {
             hasCache = true
             videoObj = value
-            console.log('cache value is: ', value)
+            // console.log('cache value is: ', value)
             //{ my: "Special", variable: 42 }
             // ... do something ...
           }
