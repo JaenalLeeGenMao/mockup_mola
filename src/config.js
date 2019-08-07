@@ -42,7 +42,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://stag.mola.tv',
-      api: '/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
+      api: 'https://stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
       apiArticles: 'https://stag.mola.tv/api/v2/articles',
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
