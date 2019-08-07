@@ -4,7 +4,9 @@ import _get from 'lodash/get'
 const production = process.env.REACT_APP_ENV === 'production'
 const cookieName = production ? '_pst' : '_pst_staging'
 
-const TOKEN_ENDPOINT = production ? 'https://mola.tv/api/v2/videos/_/pubsub' : 'https://stag.mola.tv/api/v2/videos/_/pubsub'
+const TOKEN_ENDPOINT = production
+  ? 'https://mola.tv/api/v2/videos/_/pubsub'
+  : 'https://beta.stag.mola.tv/api/v2/videos/_/pubsub'
 
 const PUBSUB_ENDPOINT = production
   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
@@ -143,7 +145,12 @@ class Tracker {
 
     // Delete/unsend all missing/null values in payload.data
     keys.forEach(key => {
-      if (!payload.data[key] || payload.data[key] === null || payload.data[key].length < 1 || payload.data[key][0] === null) {
+      if (
+        !payload.data[key] ||
+        payload.data[key] === null ||
+        payload.data[key].length < 1 ||
+        payload.data[key][0] === null
+      ) {
         delete adjustedPayload.data[key]
       }
     })
