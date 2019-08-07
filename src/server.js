@@ -152,6 +152,7 @@ const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
 const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 let userinfo = ''
 
+/*
 app.get('/sign-location', async (req, res) => {
   const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
   const lat = req.query.lat
@@ -190,7 +191,7 @@ app.get('/sign-location', async (req, res) => {
       })
   }
 })
-
+*/
 const extendToken = async token => {
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {

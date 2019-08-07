@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
-import { get } from 'axios'
+import { get, post } from 'axios'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
@@ -81,14 +81,19 @@ class MovieDetail extends Component {
     const geolocation = Tracker.getLangLat()
     const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
+    const body = {
+      lat: parseFloat(latitude),
+      long: parseFloat(longitude),
+    }
     let loc = ''
 
     if (typeof latitude !== 'undefined' && typeof longitude !== 'undefined' && latitude !== '' && longitude !== '') {
-      get(`/sign-location?lat=${latitude}&long=${longitude}`)
+      post(locationUrl, body)
         .then(response => {
-          loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
-
           if (response.status === 200) {
+            loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
+
             this.setState({
               loc: loc,
             })
@@ -98,7 +103,7 @@ class MovieDetail extends Component {
             })
           }
         })
-        .catch(error => {
+        .catch(err => {
           this.setState({
             loc: '',
           })
