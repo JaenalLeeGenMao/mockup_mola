@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
-import history from '@source/history'
-import styles from './platformCheck.css'
-import Header from '@components/Header'
+import styles from './PlatformCheck.css'
 
 class PlatformCheck extends Component {
   state = {
@@ -28,14 +26,9 @@ class PlatformCheck extends Component {
               <div className={styles.detail__desc__text}>Tayangan ini dapat disaksikan di:</div>
             </div>
             <div className={styles.detail__container}>
-              {/* <div className={styles.detail__title}>
-              {<h1 className={`${styles.detail__title__text} ${titleClass}`}>{title}</h1>}
-            </div> */}
-
               <div className={styles.detail__desc__icon}>
                 <div className={styles.detail__desc_img}>
                   {icon.map((s, idx) => {
-                    // return <img key={idx} src={s} />
                     return (
                       <img
                         key={idx}
