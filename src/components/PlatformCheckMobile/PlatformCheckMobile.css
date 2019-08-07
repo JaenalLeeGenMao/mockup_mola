@@ -85,7 +85,7 @@
 .detail__desc__icon {
   margin-top: 0;
   display: inline-block;
-  width: 100%;
+  width: 95%;
   line-height: 1.3;
   color: #fff;
   -webkit-box-sizing: border-box;
@@ -152,9 +152,10 @@
 }
 
 .detail__desc__text__icon p {
+  font-size: 11px;
   color: #808080;
   text-align: center;
-  padding: 0 2.5rem 0 2rem;
+  padding: 0 2rem 0 2rem;
 }
 
 .btn_open_app {
