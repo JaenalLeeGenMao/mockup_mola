@@ -57,7 +57,6 @@ class Watch extends Component {
       if (filterForBlockFind) {
         this.setState({ isCheckerDone: true, block: false })
       } else {
-        // const filterForBlock = dataFetch.platforms.filter(dt => dt.id != 1)
         const filterForBlock = dataFetch.platforms
         const isBlocked = filterForBlock.length > 0
         let stat = []
