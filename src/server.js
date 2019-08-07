@@ -98,20 +98,20 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
 })
 
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
+app.use(
+  '/api',
+  proxy(`${config.endpoints.domain}/api/`, {
+    proxyReqPathResolver: (req, res) => {
+      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+    },
+  })
+)
 
 // app.use(
 //   '/accounts/_',
@@ -876,7 +876,7 @@ app.get('*', async (req, res, next) => {
     let isSmartTV = /.*SMART-TV*./i.test(userAgent)
 
     if (isSmartTV && req.url != '/404') {
-      return res.redirect(domain + '/error/smart')
+      return res.redirect(domain + '/404' || 'http://stag.mola.tv/404')
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
