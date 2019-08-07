@@ -14,13 +14,36 @@ const getChannelsPlaylist = id => dispatch => {
     },
   })
 
-  return Mola.getChannelsList(id).then(result => {
+  return Mola.getChannelsList(id).then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_CHANNELS_PLAYLIST_ERROR,
         payload: result,
       })
     } else {
+      const channelIdList = []
+      if (result.data) {
+        for (const channelDetail of result.data) {
+          channelIdList.push(channelDetail.id)
+        }
+        const channelAvail = []
+        const channelVideoRes = await Mola.getMatchDetail(channelIdList)
+        if (channelVideoRes.data.length > 0) {
+          channelVideoRes.data.map(videos => {
+            if (videos.platforms && videos.platforms.length > 0) {
+              videos.platforms.map(platform => {
+                if (platform.id == 1 && platform.status == 1) {
+                  const filterResult = result.data.find(channels => {
+                    return channels.id === videos.id
+                  })
+                  channelAvail.push(filterResult)
+                }
+              })
+            }
+          })
+        }
+        result.data = channelAvail
+      }
       dispatch({
         type: types.GET_CHANNELS_PLAYLIST_SUCCESS,
         payload: result,
