@@ -7,13 +7,31 @@ import * as movieDetailActions from '@actions/movie-detail'
 
 import DRMConfig from '@source/lib/DRMConfig'
 import { updateCustomMeta } from '@source/DOMUtils'
+import PlatformCheck from '@components/PlatformCheckMobile'
+import PlatformDesktop from '@components/PlatformCheck'
 
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
 import WatchDesktop from './desktop'
 import WatchMobile from './mobile'
+import iconRed from './assets/merah.png'
+import iconGreen from './assets/hijau.png'
 
 class Watch extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      iconStatus: [],
+      name: '',
+      imageUrl: [],
+      block: false,
+      isCheckerDone: false,
+      iconGreen,
+      status: [],
+    }
+  }
+
   componentDidMount() {
     const { getMovieDetail, videoId, getVUID, user } = this.props
 
@@ -22,12 +40,46 @@ class Watch extends Component {
     getVUID(deviceId)
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { getMovieDetail, movieDetail, videoId } = this.props
+    const { status } = this.state
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
       // this.getLoc()
       getMovieDetail(videoId)
+    }
+
+    if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
+      const dataFetch = movieDetail.data[0]
+
+      const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
+
+      if (filterForBlockFind) {
+        this.setState({ isCheckerDone: true, block: false })
+      } else {
+        // const filterForBlock = dataFetch.platforms.filter(dt => dt.id != 1)
+        const filterForBlock = dataFetch.platforms
+        const isBlocked = filterForBlock.length > 0
+        let stat = []
+        let state = []
+        let img = []
+        let st = status
+
+        if (isBlocked) {
+          filterForBlock.forEach(dt => {
+            st.push(dt.status)
+            if (dt.status === 1) {
+              stat.push(iconGreen)
+            } else {
+              stat.push(iconRed)
+            }
+
+            state.push(dt.name)
+            img.push(dt.imageUrl)
+          })
+        }
+        this.setState({ isCheckerDone: true, name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
+      }
     }
     this.updateMetaTag()
   }
@@ -72,35 +124,77 @@ class Watch extends Component {
 
   render() {
     const { isMobile, vuid, videoId, getMovieDetail } = this.props
+    const { block, isCheckerDone } = this.state
     const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
 
     return (
       <>
-        {dataFetched && (
-          <>
-            <Helmet>
-              <title>{dataFetched.title}</title>
-            </Helmet>
-            {isMobile && (
-              <WatchMobile
-                videoId={videoId}
-                movieDetail={this.props.movieDetail}
-                getMovieDetail={getMovieDetail}
-                vuid={vuid}
-              />
-            )}
-            {!isMobile && (
+        {isMobile &&
+          isCheckerDone &&
+          block && (
+            <PlatformCheck
+              dataFetched={apiFetched ? data[0] : ''}
+              iconStatus={this.state.iconStatus}
+              status={this.state.status}
+              icon={this.state.imageUrl}
+              name={this.state.name}
+              title={apiFetched ? dataFetched.title : ''}
+              portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+            />
+          )}
+
+        {!isMobile &&
+          dataFetched &&
+          block &&
+          isCheckerDone && (
+            <>
+              <Helmet>
+                <title>{dataFetched.title}</title>
+              </Helmet>
               <WatchDesktop
+                blocked={block}
                 videoId={videoId}
                 movieDetail={this.props.movieDetail}
                 getMovieDetail={getMovieDetail}
                 vuid={vuid}
+                iconStatus={this.state.iconStatus}
+                status={this.state.status}
+                icon={this.state.imageUrl}
+                name={this.state.name}
+                title={apiFetched ? dataFetched.title : ''}
+                portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
               />
-            )}
-          </>
-        )}
+            </>
+          )}
+
+        {dataFetched &&
+          !block &&
+          isCheckerDone && (
+            <>
+              <Helmet>
+                <title>{dataFetched.title}</title>
+              </Helmet>
+              {isMobile && (
+                <WatchMobile
+                  videoId={videoId}
+                  movieDetail={this.props.movieDetail}
+                  getMovieDetail={getMovieDetail}
+                  vuid={vuid}
+                />
+              )}
+              {!isMobile && (
+                <WatchDesktop
+                  blocked={block}
+                  videoId={videoId}
+                  movieDetail={this.props.movieDetail}
+                  getMovieDetail={getMovieDetail}
+                  vuid={vuid}
+                />
+              )}
+            </>
+          )}
       </>
     )
   }

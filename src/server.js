@@ -569,7 +569,7 @@ app.get('*', async (req, res, next) => {
           // res.cookie('_at', '', { expires: new Date(0) });
           res.clearCookie('_at')
           res.clearCookie('SID')
-          return res.redirect('/accounts/login')
+          // return res.redirect('/accounts/login')
         }
       }
     } else {
