@@ -19,7 +19,7 @@ class PlatformCheckMobile extends Component {
   handleRedirectTracker = (link, redirect) => {
     window.open(link, '_blank')
     const { user, videoId } = this.props
-    const path = `https://mola.tv/blocker/preorder-redirect/${videoId}/?redirect=${redirect}`
+    const path = `https://mola.tv/blocker/page-redirect/${videoId}/?redirect=${redirect}`
     const payload = {
       window,
       user: user,
@@ -76,7 +76,11 @@ class PlatformCheckMobile extends Component {
             <div className={styles.detail__desc__text__icon__bottom__text}>
               atau, untuk pembelian online silahkan kunjungi:
               <div className={styles.detail__desc__text__icon__bottom__text}>
-                <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
+                <a
+                  onClick={() =>
+                    this.handleRedirectTracker('https://www.blibli.com/promosi/launching-mola-polytron', 'blibli.com')
+                  }
+                >
                   Blibli.com
                 </a>
                 <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
