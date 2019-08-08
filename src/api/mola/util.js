@@ -220,6 +220,7 @@ const normalizeMatchDetail = response => {
         isHighlight,
         startTime,
         endTime,
+        platforms,
         shortDescription: shortDescription || '',
         background: coverBG,
         backgroundColor: coverBGColor || '#000622',

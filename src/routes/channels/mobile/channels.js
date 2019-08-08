@@ -29,7 +29,7 @@ import styles from './channels.css'
 class Channels extends Component {
   state = {
     activeChannel: '',
-    activeChannelId: 'mola-1',
+    activeChannelId: '',
     activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleDateList: [],
     scheduleList: [],
@@ -47,6 +47,12 @@ class Channels extends Component {
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
     fetchChannelsPlaylist('channels-m').then(() => {
+      const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
+      const id =
+        video && video.id
+          ? video.id
+          : this.props.channelsPlaylist.data.length > 0 ? this.props.channelsPlaylist.data[0].id : ''
+      fetchVideoByid(id)
       fetchChannelSchedule(selectedDate).then(() => {
         const filteredSchedule = this.props.channelSchedule.find(item => item.id == movieId)
         const time =
@@ -63,7 +69,6 @@ class Channels extends Component {
       })
     })
 
-    fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
   }
@@ -94,13 +99,11 @@ class Channels extends Component {
       dayMonth: formatDateTime(date, 'DD MMM'),
       timezone: 7,
     }
-    this.setState({
-      activeDate: selectedDate.dayMonth,
-    })
+
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
       this.setState({
-        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
+        scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
         activeDate: selectedDate.dayMonth,
       })
     })
@@ -244,7 +247,7 @@ class Channels extends Component {
                 <div className={styles.channels_list_wrapper}>
                   <DropdownList
                     className={styles.channels_dropdown_container}
-                    dataList={channelSchedule}
+                    dataList={channelsPlaylist.data}
                     activeId={activeChannelId}
                     onClick={this.handleSelectChannel}
                   />
@@ -276,6 +279,7 @@ class Channels extends Component {
                         // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
                       ))}
                     {programmeGuides.error &&
+                      !programmeGuides.loading &&
                       !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
                   </div>
                 </div>

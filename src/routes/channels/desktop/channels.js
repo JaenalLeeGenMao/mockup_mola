@@ -31,27 +31,25 @@ import styles from './channels.css'
 class Channels extends Component {
   state = {
     activeChannel: '',
-    activeChannelId: 'mola-1',
+    activeChannelId: '',
     activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleList: [],
     hidePlaylist: true,
   }
 
   componentDidMount() {
-    const {
-      fetchChannelSchedule,
-      fetchChannelsPlaylist,
-      movieId,
-      channelsPlaylist,
-      fetchVideoByid,
-      user,
-      getVUID,
-    } = this.props
+    const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, fetchVideoByid, user, getVUID } = this.props
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
       timezone: 7,
     }
     fetchChannelsPlaylist('channels-m').then(() => {
+      const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
+      const id =
+        video && video.id
+          ? video.id
+          : this.props.channelsPlaylist.data.length > 0 ? this.props.channelsPlaylist.data[0].id : ''
+      fetchVideoByid(id)
       fetchChannelSchedule(selectedDate).then(() => {
         const filteredSchedule = this.props.channelSchedule.find(item => item.id == movieId)
         const time =
@@ -61,13 +59,12 @@ class Channels extends Component {
 
         this.setState({
           activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
-          activeChannelId: movieId,
+          activeChannelId: id,
           activeDate: formatDateTime(time, 'DD MMM'),
           scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
         })
       })
     })
-    fetchVideoByid(movieId)
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
@@ -185,14 +182,12 @@ class Channels extends Component {
       dayMonth: formatDateTime(date, 'DD MMM'),
       timezone: 7,
     }
-    this.setState({
-      activeDate: selectedDate.dayMonth,
-    })
+
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
       this.setState({
-        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
-        // activeDate: selectedDate.dayMonth,
+        scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+        activeDate: selectedDate.dayMonth,
       })
     })
   }
@@ -269,6 +264,7 @@ class Channels extends Component {
                     />
                   )}
                 {programmeGuides.error &&
+                  !programmeGuides.loading &&
                   !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
                 <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} isChannel />
               </div>
