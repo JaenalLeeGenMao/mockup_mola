@@ -61,6 +61,7 @@ export const playlistContainer = css`
   }
 
   .bannerImage3d {
+    display: inline-block;
     border-radius: 0.25rem;
     position: relative;
     z-index: 1;

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import moment from 'moment'
-import { IoIosArrowDown } from 'react-icons/io'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { get } from 'axios'
 
@@ -14,17 +13,15 @@ import DRMConfig from '@source/lib/DRMConfig'
 import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import history from '@source/history'
-import { formatDateTime, addDateTime, isSameDay } from '@source/lib/dateTimeUtil'
+import { formatDateTime } from '@source/lib/dateTimeUtil'
 
 import Header from '@components/Header'
 import DropdownList from '@components/DropdownList'
-import MovieDetailError from '@components/common/error'
 import RedirectToApps from '@components/RedirectToApps'
 import VerticalCalendar from '@components/VerticalCalendar'
 import MatchList from '@components/MatchList'
 
 import Placeholder from './placeholder'
-import Schedule from './schedule'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
@@ -32,7 +29,7 @@ import styles from './channels.css'
 class Channels extends Component {
   state = {
     activeChannel: '',
-    activeChannelId: '',
+    activeChannelId: 'mola-1',
     activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleDateList: [],
     scheduleList: [],
@@ -49,7 +46,22 @@ class Channels extends Component {
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
-    fetchChannelsPlaylist('channels-m').then(() => fetchChannelSchedule(selectedDate))
+    fetchChannelsPlaylist('channels-m').then(() => {
+      fetchChannelSchedule(selectedDate).then(() => {
+        const filteredSchedule = this.props.channelSchedule.find(item => item.id == movieId)
+        const time =
+          filteredSchedule && filteredSchedule.videos.length > 0
+            ? filteredSchedule.videos[0].startTime
+            : Date.now() / 1000
+
+        this.setState({
+          activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+          activeChannelId: movieId,
+          activeDate: formatDateTime(time, 'DD MMM'),
+          scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+        })
+      })
+    })
 
     fetchVideoByid(movieId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -58,25 +70,7 @@ class Channels extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
-    if (
-      channelsPlaylist.meta.status === 'success' &&
-      channelsPlaylist.data.length > 0 &&
-      !prevState.activeChannel &&
-      !prevState.activeChannelId
-    ) {
-      const selectedChannel = channelsPlaylist.data.find(list => list.id == movieId)
-      this.setState({
-        activeChannel:
-          selectedChannel && selectedChannel.title ? selectedChannel.title : channelsPlaylist.data[0].title,
-        activeChannelId: selectedChannel && selectedChannel.id ? selectedChannel.id : channelsPlaylist.data[0].id,
-      })
-    }
-
-    if (this.state.scheduleList.length === 0 || prevState.activeChannelId !== this.state.activeChannelId) {
-      this.handleSelectChannel(this.state.activeChannelId)
-    }
-
-    if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != movieId) {
+    if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       fetchVideoByid(movieId)
     }
   }
@@ -84,17 +78,10 @@ class Channels extends Component {
   getConfig = async () => {
     await get('/api/v2/config/app-params').then(result => {
       if (result.data) {
-        const {
-          android_redirect_to_app,
-          ios_redirect_to_app,
-          notice_bar_enabled,
-          notice_bar_message,
-        } = result.data.data.attributes
+        const { android_redirect_to_app, ios_redirect_to_app } = result.data.data.attributes
         this.setState({
           android_redirect_to_app,
           ios_redirect_to_app,
-          // toggleInfoBar: notice_bar_enabled,
-          // notice_bar_message,
         })
       }
     })
@@ -121,16 +108,16 @@ class Channels extends Component {
 
   handleSelectChannel = id => {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
-    if (filteredSchedule && this.props.movieDetail.meta.status === 'success') {
-      const time = filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
-      this.setState({
-        activeChannel: filteredSchedule.title,
-        activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMM'),
-        scheduleList: filteredSchedule.videos ? filteredSchedule.videos : [],
-      })
-      history.push(`/channels/${id}`)
-    }
+    const time =
+      filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
+
+    this.setState({
+      activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+      activeChannelId: id,
+      activeDate: formatDateTime(time, 'DD MMM'),
+      scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+    })
+    history.push(`/channels/${id}`)
   }
 
   handleWeekClick = value => {
@@ -264,7 +251,7 @@ class Channels extends Component {
                 </div>
               </div>
               <div className={styles.video_container}>
-                {loadPlayer ? (
+                {loadPlayer && (
                   <RedirectToApps
                     poster={poster}
                     android_redirect_to_app={android_redirect_to_app}
@@ -276,20 +263,21 @@ class Channels extends Component {
                     videoSettings={videoSettings}
                     customTheoplayer={customTheoplayer}
                   />
-                ) : (
-                  // <Theoplayer className={customTheoplayer} showBackBtn={false} subtitles={this.subtitles()} handleOnVideoLoad={this.handleOnVideoLoad} {...videoSettings} />
-                  <div>Video Not Available</div> // styling later
                 )}
               </div>
               <div className={styles.epg__channels__container}>
                 {programmeGuides.loading && <Placeholder />}
                 <div className={styles.epg__card}>
-                  {programmeGuides.data &&
-                    scheduleList.length > 0 &&
-                    scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map(dt => (
-                      <MatchList key={dt.id} data={dt} noClickAble isChannel />
-                      // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                    ))}
+                  <div className={styles.epg__infinite__scroll} style={{ height: `${window.innerHeight - 313}px` }}>
+                    {programmeGuides.data &&
+                      scheduleList.length > 0 &&
+                      scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map(dt => (
+                        <MatchList key={dt.id} data={dt} noClickAble isChannel />
+                        // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                      ))}
+                    {programmeGuides.error &&
+                      !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
+                  </div>
                 </div>
                 <div className={styles.epg__calendar}>
                   <VerticalCalendar
@@ -304,7 +292,7 @@ class Channels extends Component {
             </>
           )}
         </div>
-        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
+        {/* {!dataFetched && status === 'error' && <MovieDetailError message={error} />} */}
       </>
     )
   }

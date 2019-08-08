@@ -9,17 +9,15 @@ import styles from './scheduleCard.css'
 
 class ScheduleCard extends Component {
   render() {
-    const { scheduleList, limit, activeDate } = this.props
+    const { scheduleList = [], activeDate } = this.props
     return (
       <div>
         <div className={styles.epg__wrappercontent__center}>
           <div className={styles.epg__Pagetitle}>
-            {limit != null && scheduleList.length > 0 ? (
+            {scheduleList.length > 0 ? (
               <LazyLoad containerClassName={styles.epgCardList__container}>
                 {scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map((dt, index) => {
-                  // if (index < limit.length) {
                   return <MatchList key={dt.id} data={dt} noClickAble isChannel />
-                  // }
                 })}
               </LazyLoad>
             ) : (

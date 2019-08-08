@@ -15,26 +15,26 @@ class SecondaryMenu extends Component {
   }
 
   categoryFilterLigaType = () => {
-    const { filterByLeague, genreSpoCategory, handleCategoryFilter, expandLeague, hidePlaylist, categoryFilterType = 'League' } = this.props
+    const { filterByLeague, genreSpoCategory, handleCategoryFilter } = this.props
     return (
       <>
         {genreSpoCategory.map(genre => {
           return (
             <>
-              {expandLeague && (
-                <div
-                  className={s.contentLogoAndName}
-                  key={genre.id}
-                  onClick={() => {
-                    handleCategoryFilter(categoryFilterType, genre.id)
-                  }}
-                >
-                  <span className={s.imgContainer__PL}>{genre.thumbnailImg && <img className={s.filterimg__PremierLeague} src={genre.thumbnailImg} />}</span>
-                  <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
-                    {genre.title}
-                  </span>
-                </div>
-              )}
+              <div
+                className={s.contentLogoAndName}
+                key={genre.id}
+                onClick={() => {
+                  handleCategoryFilter(genre.id)
+                }}
+              >
+                <span className={s.imgContainer__PL}>
+                  {genre.thumbnailImg && <img className={s.filterimg__PremierLeague} src={genre.thumbnailImg} />}
+                </span>
+                <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
+                  {genre.title}
+                </span>
+              </div>
             </>
           )
         })}
@@ -43,7 +43,7 @@ class SecondaryMenu extends Component {
   }
 
   render() {
-    const { handleFilterAllLeague, allButtonOn, hidePlaylist, marginStyle } = this.props
+    const { handleFilterAllLeague, allButtonOn, hidePlaylist } = this.props
     return (
       <div className={hidePlaylist ? s.hidePlaylist : `${s.match_ligaType} ${s.showPlaylist}`}>
         {allButtonOn ? (

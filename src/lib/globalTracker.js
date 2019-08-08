@@ -6,9 +6,20 @@ import history from '@source/history'
 import dateFormat from 'dateformat'
 
 export const globalTracker = async data => {
-  const { user, heartbeat, window: clientWindow, event, referrer, video_quality, bitrate, client_bandwidth, videoId, linkRedirectUrl } = data
+  const {
+    user,
+    heartbeat,
+    window: clientWindow,
+    event,
+    referrer,
+    video_quality,
+    bitrate,
+    client_bandwidth,
+    videoId,
+    linkRedirectUrl,
+  } = data
 
-  // console.log('user', user)
+  // console.log('event', event)
   let currentLocation = history.location
   const UA = new UaParser()
   UA.setUA(navigator.userAgent)

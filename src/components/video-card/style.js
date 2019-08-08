@@ -59,6 +59,7 @@ export const videoContainer = css`
   }
 
   .bannerImage3d {
+    display: inline-block;
     border-radius: .25rem;
     position: relative;
     z-index: 1;

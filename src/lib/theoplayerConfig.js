@@ -1,6 +1,7 @@
 import { handleTracker } from './videoTracker'
 import { endpoints } from '@source/config'
 import Tracker from '@source/lib/tracker'
+import config from '@source/config'
 import { get } from 'axios'
 
 let ticker = []
@@ -147,7 +148,7 @@ export const defaultVideoSetting = (user, videoDt, vuid) => {
   const payload = {
     project_id: '2',
     video_id: videoData.id,
-    app_id: 'sent_ads',
+    app_id: config.env === 'production' ? 'sent_ads' : 'mola_ads',
     session_id: Tracker.sessionId(window),
     client_ip: user.clientIp,
     uuid: uuidADS(),

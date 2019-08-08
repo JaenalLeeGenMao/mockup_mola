@@ -1,8 +1,8 @@
-import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LoadingPlaceholder from '@components/common/LoadingPlaceholder';
+import React from 'react'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import LoadingPlaceholder from '@components/common/LoadingPlaceholder'
 
-import s from './Cast.css';
+import s from './Cast.css'
 
 const Cast = () => {
   return (
@@ -35,7 +35,7 @@ const Cast = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default withStyles(s)(Cast);
+export default withStyles(s)(Cast)

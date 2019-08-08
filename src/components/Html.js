@@ -51,7 +51,6 @@ class Html extends React.Component {
       appLinkUrl = '',
       type = 'website',
     } = this.props
-
     return (
       <html className="no-js" lang="en">
         <head>
@@ -81,6 +80,7 @@ class Html extends React.Component {
           <meta property="og:description" content={description} data-react-helmet="true" />
           <meta property="og:image" content={image} data-react-helmet="true" />
           <meta property="og:url" content={url} data-react-helmet="true" />
+          <meta property="og:video" content={url} data-react-helmet="true" />
           <meta property="og:type" content={type} data-react-helmet="true" />
 
           <meta property="twitter:text:title" content={title} data-react-helmet="true" />
@@ -307,7 +307,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
                 },'auto');ga('send','pageview')`,
             }}
           />
-          <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" />
+          {/* <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" />
           <script
             dangerouslySetInnerHTML={{
               __html: `var initESW = function(gslbBaseURL) {
@@ -360,7 +360,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
                   initESW('https://service.force.com');
                 }`,
             }}
-          />
+          /> */}
 
           <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
         </body>

@@ -414,6 +414,7 @@ const normalizeVideoDetail = response => {
       const {
         id,
         attributes: {
+          ads,
           title,
           images,
           quotes,
@@ -442,6 +443,7 @@ const normalizeVideoDetail = response => {
       } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
+        ads,
         id,
         title,
         quotes,

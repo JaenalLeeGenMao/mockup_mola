@@ -134,12 +134,9 @@
 }
 
 @media screen and (max-width: 640px) {
-  /* .matchList__container {
-    color: #f5f5f5;
-    font-weight: 300;
-    height: 110px;
-    width: 100%;
-  } */
+  .matchList__container {
+    height: 130px;
+  }
 
   .matchList__date {
     padding: 5px;

@@ -17,6 +17,7 @@ import channelsPlaylist from './channels-playlist'
 import programmeGuides from './program-guides'
 import feature from './feature'
 import playlist from './playlist'
+import headerMenu from './header-menu'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -40,4 +41,5 @@ export default combineReducers({
   programmeGuides,
   feature,
   playlist,
+  headerMenu,
 })

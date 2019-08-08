@@ -363,6 +363,27 @@ const requestCode = async (req, res) => {
   return oAuthAuthorizationEndpoint
 }
 
+const getHeaderMenus = async () => {
+  try {
+    const headerUrl =
+      config.env === 'production'
+        ? 'https://mola01.koicdn.com/dev/json/menu.json'
+        : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+    const response = await Axios.get(headerUrl)
+      .then(({ data }) => {
+        return data.data
+      })
+      .catch(err => {
+        console.log('Error Get Header Menu', err)
+        return null
+      })
+    return response
+  } catch (err) {
+    console.log('Error Get Header Menu', err)
+    return null
+  }
+}
+
 // set a cookie
 app.use('*', async (req, res, next) => {
   // check if client sent cookie
@@ -478,7 +499,7 @@ app.get('/accounts/signin', async (req, res) => {
     httpOnly: true,
   })
 
-  if (!req.cookies._at) {
+  if (!req.cookies._at || !_isUndefined(req.query.app_key)) {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }
@@ -569,8 +590,10 @@ app.get('*', async (req, res, next) => {
           }
         } else if (decodedIdToken) {
           // res.cookie('_at', '', { expires: new Date(0) });
-          res.clearCookie('_at')
-          res.clearCookie('SID')
+          if (req.path !== '/accounts/consent') {
+            res.clearCookie('_at')
+            res.clearCookie('SID')
+          }
           // return res.redirect('/accounts/login')
         }
       }
@@ -643,6 +666,7 @@ app.get('*', async (req, res, next) => {
       }
     }
 
+    const responseHeaderMenu = await getHeaderMenus()
     const initialState = {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
@@ -662,6 +686,9 @@ app.get('*', async (req, res, next) => {
         type: '',
         lang: req.query.lang || 'en',
         clientIp: ip,
+      },
+      headerMenu: {
+        data: responseHeaderMenu ? responseHeaderMenu : null,
       },
       runtime: {
         appUrl: 'molaapp://mola.tv/watch',
@@ -721,7 +748,8 @@ app.get('*', async (req, res, next) => {
     const data = { ...route }
 
     /*** ###Articles Detail data and SEO ### ***/
-
+    data.url = config.endpoints.domain + req.path
+    data.image = config.endpoints.domain + '/mola.png'
     const pathSplit = req.path.split('/')
     const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
@@ -886,7 +914,7 @@ app.get('*', async (req, res, next) => {
     let isSmartTV = /.*SMART-TV*./i.test(userAgent)
 
     if (isSmartTV && req.url != '/404') {
-      return res.redirect(domain + '/error/smart')
+      return res.redirect(domain + '/404' || 'http://stag.mola.tv/404')
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
