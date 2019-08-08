@@ -173,14 +173,14 @@ class Channels extends Component {
     const { movieId } = this.props
     const domain = config.endpoints.domain
     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-    document.location = `intent://mola.tv/watch?v=${movieId}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+    document.location = `intent://mola.tv/watch?v=${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   handlePlayMovieApple = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${movieId}`
-    document.location = `molaapp://mola.tv/watch?v=${movieId}`
+    document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
     setTimeout(function() {
       window.location.href = url
     }, 250)

@@ -43,7 +43,7 @@ import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import _forEach from 'lodash/forEach'
 import NodeCache from 'node-cache'
-const videoCache = new NodeCache()
+const molaCache = new NodeCache()
 
 const oauth = {
   endpoint:
@@ -364,24 +364,52 @@ const requestCode = async (req, res) => {
 }
 
 const getHeaderMenus = async () => {
-  try {
-    const headerUrl =
-      config.env === 'production'
-        ? 'https://mola01.koicdn.com/dev/json/menu.json'
-        : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
-    const response = await Axios.get(headerUrl)
-      .then(({ data }) => {
-        return data.data
+  let hasCache = false
+  let headerArr = []
+  molaCache.get('headerMenu', function(err, value) {
+    if (!err) {
+      if (value == undefined) {
+        // key not found
+        hasCache = false
+        // console.log('cache value header menu is undefined')
+      } else {
+        // console.log('cache value header menu is ', value)
+        hasCache = true
+        headerArr = value
+      }
+    }
+  })
+
+  if (!hasCache) {
+    try {
+      const headerUrl =
+        config.env === 'production'
+          ? 'https://mola01.koicdn.com/dev/json/menu.json'
+          : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+      let response = null
+
+      const rawResponse = await fetch(`${headerUrl}`, {
+        timeout: 5000,
+        maxRedirects: 1,
       })
-      .catch(err => {
-        console.log('Error Get Header Menu', err)
-        return null
+      response = await rawResponse.json()
+      console.log('RESPONSE HEADER', response)
+      headerArr = response && response.data ? response.data : []
+    } catch (err) {
+      console.log('Error Get Header Menu', err)
+    }
+    if (headerArr.length > 0) {
+      molaCache.set('headerMenu', headerArr, function(err, success) {
+        if (!err && success) {
+          console.log('success set cache node cache headermenu', headerArr)
+        } else {
+          console.log('failed set cache node cache headermenu', 'err:', err)
+        }
       })
-    return response
-  } catch (err) {
-    console.log('Error Get Header Menu', err)
-    return null
+    }
   }
+
+  return headerArr
 }
 
 // set a cookie
@@ -760,7 +788,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      videoCache.get(videoId, function(err, value) {
+      molaCache.get(videoId, function(err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -806,7 +834,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        videoCache.set(videoId, videoObj, function(err, success) {
+        molaCache.set(videoId, videoObj, function(err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true

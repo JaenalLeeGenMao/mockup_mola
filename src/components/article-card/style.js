@@ -60,7 +60,6 @@ export const articleContainer = css`
   }
 
   .bannerImage {
-    display: inline-block;
     position: relative;
     object-fit: cover;
     object-position: center;
