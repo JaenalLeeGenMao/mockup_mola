@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
 import styles from './PlatformCheck.css'
@@ -10,18 +8,18 @@ class PlatformCheck extends Component {
   state = {
     result: [],
   }
-
-  goto(url) {
+  handleRedirectTracker = (link, redirect) => {
+    window.open(link, '_blank')
+    const { user, videoId } = this.props
+    const path = `https://mola.tv/blocker/preorder-redirect/${videoId}/?redirect=${redirect}`
     const payload = {
-      user: this.props.user,
       window,
-      linkRedirectUrl: url,
+      user: user,
+      linkRedirectUrl: path,
       event: 'event_pages',
     }
     globalTracker(payload)
-    window.location = url
   }
-
   render() {
     const { name, portraitPoster, title, titleClass, icon, iconStatus, status } = this.props
     return (
@@ -67,9 +65,17 @@ class PlatformCheck extends Component {
               <div className={styles.detail__desc__text__icon__bottom__text}>
                 atau, untuk pembelian online silahkan kunjungi:
                 <div className={styles.detail__desc__text__icon__bottom__text}>
-                  <a onClick={() => this.goto('https://www.blibli.com/promosi/molatv')}>Blibli.com </a>
+                  <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
+                    Blibli.com
+                  </a>
                   <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
-                  <a onClick={() => this.goto('https://www.matrixshop.co.id/molamatrix')}> Mola-Matrix</a>
+                  <a
+                    onClick={() =>
+                      this.handleRedirectTracker('https://www.matrixshop.co.id/molamatrix', 'matrixshop.co.id')
+                    }
+                  >
+                    Mola-Matrix
+                  </a>
                 </div>
               </div>
             </div>
@@ -81,10 +87,4 @@ class PlatformCheck extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    ...state,
-  }
-}
-
-export default compose(withStyles(styles), connect(mapStateToProps, null))(PlatformCheck)
+export default withStyles(styles)(PlatformCheck)

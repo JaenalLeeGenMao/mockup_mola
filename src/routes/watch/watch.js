@@ -141,6 +141,8 @@ class Watch extends Component {
               name={this.state.name}
               title={apiFetched ? dataFetched.title : ''}
               portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+              user={this.props.user}
+              videoId={this.props.videoId}
             />
           )}
 
