@@ -16,6 +16,8 @@ import {
   RECOMMENDATION,
   HEADERMENU,
   ARTICLES_RECOMMENDED_ENDPOINT,
+  HOME_PLAYLIST_ENDPOINT_NOCACHE,
+  VIDEOS_ENDPOINT_NOCACHE,
 } from './endpoints'
 import utils from './util'
 
@@ -263,7 +265,7 @@ const getMatchesList = (id = 'mola-soc') => {
 
 const getMatchDetail = id => {
   return post(
-    `${VIDEOS_ENDPOINT}/?relationships=1`,
+    `${VIDEOS_ENDPOINT_NOCACHE}/?relationships=1`,
     {
       videos: id,
     },
@@ -295,7 +297,7 @@ const getMatchDetail = id => {
 }
 const getMatchesPlaylists = id => {
   return post(
-    `${HOME_PLAYLIST_ENDPOINT}`,
+    `${HOME_PLAYLIST_ENDPOINT_NOCACHE}`,
     {
       playlists: id,
     },

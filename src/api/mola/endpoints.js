@@ -2,8 +2,9 @@
 import { endpoints } from '@source/config'
 
 export const HOME_PLAYLIST_ENDPOINT = `${endpoints.api}/videos/cache/playlists`
-
+export const HOME_PLAYLIST_ENDPOINT_NOCACHE = `${endpoints.api}/videos/playlists`
 export const VIDEOS_ENDPOINT = `${endpoints.api}/videos/cache`
+export const VIDEOS_ENDPOINT_NOCACHE = `${endpoints.api}/videos`
 // export const VIDEOS_ENDPOINT = 'https://private-86dd3-movie178.apiary-mock.com/videos';
 export const HISTORY_ENDPOINT = `${endpoints.api}/userdata`
 
