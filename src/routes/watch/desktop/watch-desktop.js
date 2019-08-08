@@ -226,6 +226,8 @@ class WatchDesktop extends Component {
               name={name}
               // title={apiFetched ? dataFetched.title : ''}
               portraitPoster={poster ? dataFetched.background.landscape : ''}
+              user={this.props.user}
+              videoId={this.props.videoId}
             />
           </>
         )
