@@ -136,7 +136,7 @@ class Playlist extends React.Component {
           return (
             <LazyLoad key={'playlist' + playlistIndex}>
               <div className={playlistList}>
-                <p className="season_text">{element.meta.title ? `Season ${element.meta.title}` : ''}</p>
+                <p className="season_text">{element.meta.title ? `${element.meta.title}` : ''}</p>
 
                 {/* <Carousel
                 framePadding={!isMobile ? '0rem 2rem' : '0rem 0rem 0rem 1rem'}
