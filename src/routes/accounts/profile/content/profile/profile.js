@@ -279,7 +279,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    console.log(this.state, 'kucing')
     const { isMobile, onClick, user } = this.props
     const errClass = `${s.errorClass}`
     const { uid, subscriptions } = user

@@ -67,6 +67,7 @@ export const articleContainer = css`
   }
 
   .imageWrapper {
+    display: inline-block;
     position: relative;
     max-height: 100%;
     overflow: hidden;
@@ -78,7 +79,7 @@ export const articleContainer = css`
   }
 
   .bannerImage3d {
-
+    display: inline-block;
     position: relative;
     object-fit: cover;
     object-position: center;

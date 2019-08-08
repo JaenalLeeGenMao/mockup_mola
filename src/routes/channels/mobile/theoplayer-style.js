@@ -4,10 +4,10 @@ export const customTheoplayer = css`
    {
     &.video-container,
     &.video-container.video-js.vjs-fluid {
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      float: left;
+      // width: 100%;
+      // height: 100%;
+      // padding: 0;
+      // float: left;
     }
 
     &.theoplayer-skin:not(.theo-seekbar-inside-controls) .theo-button-tooltip {

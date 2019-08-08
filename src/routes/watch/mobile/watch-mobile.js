@@ -13,7 +13,6 @@ import watchPermission from '@source/lib/watchPermission'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
-import MovieDetailError from '@components/common/error'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
 import {
@@ -167,7 +166,7 @@ class MovieDetail extends Component {
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
 
-      const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
+      const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
       const defaultVidSetting = dataFetched
@@ -379,7 +378,6 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

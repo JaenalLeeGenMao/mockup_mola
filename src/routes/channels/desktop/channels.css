@@ -82,6 +82,30 @@
   z-index: 1;
 }
 
+.video__unavailable {
+  height: 70vh;
+  width: 100vw;
+  margin: 6rem auto auto auto;
+  font-size: 24px;
+  color: #f5f5f5;
+  letter-spacing: 1px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.epg__no__schedule {
+  color: #f5f5f5;
+  height: 100%;
+  letter-spacing: 1px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
 @media screen and (max-width: 1366px) and (max-height: 657px) {
   .epgCardList__container {
     grid-gap: 1.5rem;

@@ -15,10 +15,6 @@ import styles from './header-menu.css'
 import history from '@source/history'
 // import { IoIosArrowDown } from 'react-icons/io'
 import DropdownMenu from '../dropdown-menu'
-
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import config from '@source/config'
 // import { connect } from 'tls'
 
 import { get } from 'axios'
@@ -65,24 +61,23 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
 class HeaderMenu extends Component {
   state = {
     locale: getLocale(),
-    activeMenu: this.props.activeMenu ? this.props.activeMenu : 'movie',
     headerMenuList: [],
     toggle: false /* Toggle profile */,
   }
 
   componentDidMount() {
-    this.getHeaderMenus()
+    // this.getHeaderMenus()
   }
 
-  getHeaderMenus = () => {
-    const headerUrl =
-      config.env === 'production'
-        ? 'https://mola01.koicdn.com/dev/json/menu.json'
-        : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
-    get(headerUrl).then(({ data }) => {
-      this.setState({ headerMenuList: data ? data.data : [] })
-    })
-  }
+  // getHeaderMenus = () => {
+  //   const headerUrl =
+  //     config.env === 'production'
+  //       ? 'https://mola01.koicdn.com/dev/json/menu.json'
+  //       : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+  //   get(headerUrl).then(({ data }) => {
+  //     this.setState({ headerMenuList: data ? data.data : [] })
+  //   })
+  // }
 
   handleToggle = () => {
     const { user: { uid = '', sid = '' } } = this.props
@@ -101,10 +96,12 @@ class HeaderMenu extends Component {
   }
 
   handleNavigation = id => {
-    const { headerMenuList: menu } = this.state
-    const filteredMenu = menu.filter(dt => {
-      return dt.id == id
-    })
+    const { menu: { data: headerMenu } } = this.props
+    const filteredMenu = headerMenu
+      ? headerMenu.filter(dt => {
+          return dt.id == id
+        })
+      : []
 
     if (filteredMenu.length > 0) {
       const absMenuUrl = filteredMenu[0].attributes.url
@@ -122,11 +119,9 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { activeMenu = 'movie', isMobile = false, isLandscape, pathname = '/' } = this.props
-    const { headerMenuList, toggle } = this.state
-
-    let activeMenuDropdown = ''
-    activeMenuDropdown = activeMenu
+    const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu } } = this.props
+    const { toggle } = this.state
+    const headerMenuList = headerMenu ? headerMenu : []
 
     return (
       <>
@@ -224,7 +219,7 @@ class HeaderMenu extends Component {
                   className={styles.header_menu_dropdown_container}
                   pathname={pathname}
                   dataList={headerMenuList}
-                  activeId={activeMenuDropdown}
+                  // activeId={activeMenuDropdown}
                   onClick={this.handleNavigation}
                 />
               </div>
@@ -257,14 +252,4 @@ class HeaderMenu extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  // console.log('see state', state)
-  return {
-    ...state,
-  }
-}
-const mapDispatchToProps = dispatch => ({
-  getHeaderMenu: () => dispatch(getHeaderMenu()),
-})
-
-export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(HeaderMenu)
+export default withStyles(styles)(HeaderMenu)

@@ -169,7 +169,7 @@ export const playlistWrapper = css`
   }
 `
 
-export const playlistCardWrapper = css`
+export const portraitCardWrapper = css`
   display: inline-block;
   vertical-align: middle;
   width: 9.75vw;
@@ -179,6 +179,26 @@ export const playlistCardWrapper = css`
 
   @media screen and (max-width: 960px) {
     width: 30.5vw;
+    margin: 0.25rem;
+  }
+
+  /* khusus iPhone SE */
+  @media screen and (max-width: 330px) {
+    width: 46vw;
+    margin: 0.25rem;
+  }
+`
+
+export const landscapeCardWrapper = css`
+  display: inline-block;
+  vertical-align: middle;
+  width: 15vw;
+  // width: 16rem;
+  margin: 0.5rem;
+  overflow: hidden;
+
+  @media screen and (max-width: 960px) {
+    width: 46.5vw;
     margin: 0.25rem;
   }
 

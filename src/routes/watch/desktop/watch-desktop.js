@@ -16,7 +16,6 @@ import PlatformDesktop from '@components/PlatformCheck'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
-import MovieDetailError from '@components/common/error'
 // import AgeRestrictionModal from '@components/AgeRestriction'
 // import Link from '@components/Link'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
@@ -203,13 +202,12 @@ class WatchDesktop extends Component {
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
 
-      const adsFlag = dataFetched ? _get(dataFetched, 'dataFetched.ads', null) : null
+      const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
       const defaultVidSetting = dataFetched
         ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
         : {}
-
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
@@ -295,7 +293,7 @@ class WatchDesktop extends Component {
 
   render() {
     const { isControllerActive, loc } = this.state
-    const { meta: { status: videoStatus, error }, data } = this.props.movieDetail
+    const { meta: { status: videoStatus }, data } = this.props.movieDetail
     const { user } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
@@ -361,7 +359,6 @@ class WatchDesktop extends Component {
           </>
         )}
         {/* {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />} */}
-        {!dataFetched && status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

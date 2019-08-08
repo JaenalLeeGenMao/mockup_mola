@@ -12,6 +12,7 @@ import PlatformDesktop from '@components/PlatformCheck'
 
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
+import MovieDetailError from '@components/common/error'
 import WatchDesktop from './desktop'
 import WatchMobile from './mobile'
 import iconRed from './assets/merah.png'
@@ -127,7 +128,6 @@ class Watch extends Component {
     const { meta: { status }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
-
     return (
       <>
         {isMobile &&
@@ -196,6 +196,7 @@ class Watch extends Component {
               )}
             </>
           )}
+        {status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

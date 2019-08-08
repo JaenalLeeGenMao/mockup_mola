@@ -1,5 +1,6 @@
 @import '../../components/variables.css';
-@import '../../global/style/css/grainBackground.css';
+
+/* @import '../../global/style/css/grainBackground.css'; */
 
 .root {
   background-color: #000;
@@ -28,7 +29,7 @@
   margin: 0 auto;
   width: 80%;
   background-color: #2b2b2b;
-  height: 52px;
+  height: 5.2rem;
   border-radius: 200px;
 }
 
@@ -55,8 +56,8 @@
 }
 
 .searchAutocomplete span {
-  top: 16px;
-  left: 75px;
+  top: 1.6rem;
+  left: 7.5rem;
   position: absolute;
   font-weight: 400;
 }
@@ -99,8 +100,8 @@
   outline: 0;
   font-size: 2.2rem;
   line-height: 1;
-  height: 52px;
-  padding: 10px 75px;
+  height: 5.2rem;
+  padding: 1rem 7.5rem;
   position: absolute;
   z-index: 101;
 }
@@ -139,7 +140,7 @@
 }
 
 .containerBg {
-  background-color: #11110f;
+  background-color: #000;
   position: absolute;
   top: 0;
   left: 0;
@@ -202,6 +203,8 @@
 
   .searchAutocomplete span {
     display: none;
+    top: 16px;
+    left: 75px;
   }
 
   .searchInputWrapper {
@@ -209,6 +212,7 @@
     padding: 0;
     margin: 0 auto;
     width: 80%;
+    height: 52px;
   }
 
   .searchText {
@@ -235,6 +239,12 @@
     width: 80%;
     text-align: left;
     font-size: 1.4rem;
+  }
+
+  .searchInput,
+  .searchInputSuggestion {
+    height: 52px;
+    padding: 10px 75px;
   }
 }
 

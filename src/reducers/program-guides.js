@@ -3,7 +3,7 @@ import types from '../constants'
 const initialState = {
   loading: true,
   data: null,
-  error: false
+  error: false,
 }
 
 export default function programmeGuides(state = initialState, action) {
@@ -17,22 +17,22 @@ export default function programmeGuides(state = initialState, action) {
           loading: false,
           data: {
             ...state.data,
-            [action.payload.playlistId]: { ...state[action.payload.playlistId], ...action.payload }
+            [action.payload.playlistId]: { ...state[action.payload.playlistId], ...action.payload },
           },
           error: false,
-        };
+        }
       }
       return {
         ...state,
         loading: false,
         data: {
           ...state.data,
-          [action.payload.playlistId]: action.payload
+          [action.payload.playlistId]: action.payload,
         },
-        error: false
-      };
+        error: false,
+      }
     case types.GET_PROGRAMME_GUIDES_ERROR:
-      return { ...state, loading: false, error: true, }
+      return { ...state, data: null, loading: false, error: true }
     default:
       return {
         ...state,
