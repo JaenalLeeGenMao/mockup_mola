@@ -17,7 +17,6 @@ class Cast extends React.Component {
         <div className={s.resultTitle}>
           <span>Cast</span>
         </div>
-        {/* <div className={s.resultContent}> */}
         <div className={s.people__wrapper}>
           <div className={s.people__wrapper__scroller}>
             {data.map(cast => {
@@ -45,7 +44,6 @@ class Cast extends React.Component {
             })}
           </div>
         </div>
-        {/* </div> */}
       </div>
       // <div className={s.resultRow}>
       //   <div className={s.resultTitle}>Cast</div>

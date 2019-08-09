@@ -28,25 +28,27 @@ class HorizontalPlaylist extends Component {
         {matchesPlaylists.data.map(genre => {
           return (
             <>
-              {expandLeague && (
-                <div
-                  className={s.contentLogoAndName}
-                  key={genre.id}
-                  onClick={() => {
-                    handleCategoryFilter(genre.id)
-                  }}
-                >
-                  <span className={s.img__container}>
-                    {genre.thumbnails && <img className={s.img} src={genre.thumbnails} />}
-                  </span>
-                  <span
-                    value={genre.id}
-                    className={filterByLeague == genre.id ? s.selected_playlist : s.playlist__container}
+              <div className={s.genre__wrapper}>
+                {expandLeague && (
+                  <div
+                    className={s.contentLogoAndName}
+                    key={genre.id}
+                    onClick={() => {
+                      handleCategoryFilter(genre.id)
+                    }}
                   >
-                    {genre.title}
-                  </span>
-                </div>
-              )}
+                    <span className={s.img__container}>
+                      {genre.thumbnails && <img className={s.img} src={genre.thumbnails} />}
+                    </span>
+                    <span
+                      value={genre.id}
+                      className={filterByLeague == genre.id ? s.selected_playlist : s.playlist__container}
+                    >
+                      {genre.title}
+                    </span>
+                  </div>
+                )}
+              </div>
             </>
           )
         })}
@@ -77,7 +79,9 @@ class HorizontalPlaylist extends Component {
               </>
             )
           })}
-          {this.categoryFilterLigaType()}
+          <div className={s.league__wrapper}>
+            <div className={s.league__wrapper_scroller}>{this.categoryFilterLigaType()}</div>
+          </div>
         </span>
       </div>
     )
