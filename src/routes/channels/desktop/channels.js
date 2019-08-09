@@ -5,6 +5,7 @@ import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
+import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
@@ -36,6 +37,8 @@ class Channels extends Component {
     activeDate: formatDateTime(Date.now() / 1000, 'DD MMM'),
     scheduleList: [],
     hidePlaylist: true,
+    notice_bar_message: 'Siaran Percobaan',
+    toggleInfoBar: true,
   }
 
   componentDidMount() {
@@ -44,6 +47,7 @@ class Channels extends Component {
       fullDate: moment().format('YYYYMMDD'),
       timezone: 7,
     }
+    this.getConfig()
     fetchChannelsPlaylist('channels-m').then(() => {
       const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
       const id =
@@ -93,6 +97,18 @@ class Channels extends Component {
       event: 'event_videos',
     }
     globalTracker(payload)
+  }
+
+  getConfig = async () => {
+    await get('/api/v2/config/app-params').then(result => {
+      if (result.data) {
+        const { notice_bar_enabled, notice_bar_message } = result.data.data.attributes
+        this.setState({
+          toggleInfoBar: notice_bar_enabled,
+          notice_bar_message,
+        })
+      }
+    })
   }
 
   handleScroll = () => {
@@ -204,9 +220,15 @@ class Channels extends Component {
     })
   }
 
+  handleCloseInfoBar = () => {
+    this.setState({
+      toggleInfoBar: false,
+    })
+  }
+
   render() {
     const { programmeGuides, channelSchedule, channelsPlaylist, movieId } = this.props
-    const { activeChannelId, scheduleList, activeDate, hidePlaylist } = this.state
+    const { activeChannelId, scheduleList, activeDate, hidePlaylist, notice_bar_message, toggleInfoBar } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -232,6 +254,7 @@ class Channels extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
+
     return (
       <>
         <div>
@@ -240,7 +263,17 @@ class Channels extends Component {
         {channelsPlaylist.meta.status === 'loading' && <LoaderVideoBox />}
         {channelsPlaylist.meta.status === 'success' && (
           <div className={styles.channels_container}>
-            <div className={styles.video_container}>
+            <div className={!toggleInfoBar ? styles.video_container : styles.video_container_with_infobar}>
+              {toggleInfoBar && (
+                <div className={styles.channel__infobar}>
+                  <div className={styles.channel__infobar__container}>
+                    <div className={styles.channel__infobar__text}>{notice_bar_message}</div>
+                    <div className={styles.channel__infobar__close} onClick={this.handleCloseInfoBar}>
+                      <span />
+                    </div>
+                  </div>
+                </div>
+              )}
               {loadPlayer && (
                 <Theoplayer
                   className={customTheoplayer}
