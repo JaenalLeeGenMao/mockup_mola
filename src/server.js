@@ -635,12 +635,20 @@ app.get('*', async (req, res, next) => {
             }
           }
         } else if (decodedIdToken) {
-          // res.cookie('_at', '', { expires: new Date(0) });
           if (req.path !== '/accounts/consent') {
+            // res.cookie('_at', '', { expires: new Date(0) });
             res.clearCookie('_at')
             res.clearCookie('SID')
+            // return res.redirect('/accounts/login')
+          } else {
+            if (req.cookies.SID) {
+              res.cookie('SIDX', req.cookies.SID, {
+                path: '/',
+                maxAge: 7 * 24 * 3600 * 1000,
+                httpOnly: true,
+              })
+            }
           }
-          // return res.redirect('/accounts/login')
         }
       }
     } else {
