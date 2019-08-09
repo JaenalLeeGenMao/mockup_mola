@@ -14,6 +14,7 @@ import DRMConfig from '@source/lib/DRMConfig'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import history from '@source/history'
 import { formatDateTime } from '@source/lib/dateTimeUtil'
+import { globalTracker } from '@source/lib/globalTracker'
 
 import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
@@ -50,6 +51,7 @@ class Channels extends Component {
           ? video.id
           : this.props.channelsPlaylist.data.length > 0 ? this.props.channelsPlaylist.data[0].id : ''
       fetchVideoByid(id)
+      this.eventVideosTracker(id)
       fetchChannelSchedule(selectedDate).then(() => {
         const filteredSchedule = this.props.channelSchedule.find(item => item.id == movieId)
         const time =
@@ -81,6 +83,16 @@ class Channels extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  eventVideosTracker = id => {
+    const payload = {
+      window,
+      videoId: id,
+      user: this.props.user,
+      event: 'event_videos',
+    }
+    globalTracker(payload)
   }
 
   handleScroll = () => {
