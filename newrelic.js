@@ -11,7 +11,7 @@ exports.config = {
    */
 
   /* Staging */
-  app_name: ['mola-web-production'],
+  app_name: ['mola-web-staging'],
 
   /* Production */
   // app_name: ['mola-web-production'],
