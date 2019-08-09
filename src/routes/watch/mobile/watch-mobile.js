@@ -79,9 +79,9 @@ class MovieDetail extends Component {
   getLoc = () => {
     const geolocation = Tracker.getLangLat()
     const latitude =
-      geolocation.length > 0 && geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+      geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude =
-      geolocation.length > 0 && geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+      geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
     }`
