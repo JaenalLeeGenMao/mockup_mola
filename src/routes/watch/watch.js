@@ -19,18 +19,14 @@ import iconRed from './assets/merah.png'
 import iconGreen from './assets/hijau.png'
 
 class Watch extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      iconStatus: [],
-      name: '',
-      imageUrl: [],
-      block: false,
-      isCheckerDone: false,
-      iconGreen,
-      status: [],
-    }
+  state = {
+    iconStatus: [],
+    name: '',
+    imageUrl: [],
+    block: false,
+    isCheckerDone: false,
+    iconGreen,
+    status: [],
   }
 
   componentDidMount() {
@@ -130,7 +126,8 @@ class Watch extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     return (
       <>
-        {isMobile &&
+        TEST HALAMAN WATCH
+        {/* {isMobile &&
           isCheckerDone &&
           block && (
             <PlatformCheck
@@ -196,7 +193,7 @@ class Watch extends Component {
               )}
             </>
           )}
-        {status === 'error' && <MovieDetailError message={error} />}
+        {status === 'error' && <MovieDetailError message={error} />} */}
       </>
     )
   }
