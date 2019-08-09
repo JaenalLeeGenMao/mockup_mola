@@ -80,7 +80,9 @@ class Home extends Component {
     const { videos } = this.props.home
 
     if (type === EVENTS.TOUR_END) {
-      localStorage.setItem('tour-home', true)
+      try {
+        localStorage.setItem('tour-home', true)
+      } catch (err) {}
       this.setState({
         startGuide: false,
       })
@@ -257,7 +259,10 @@ class Home extends Component {
         playlistSuccess: true,
       },
       () => {
-        let isTourDone = localStorage.getItem('tour-home')
+        let isTourDone = true
+        try {
+          localStorage.getItem('tour-home')
+        } catch (err) {}
 
         if (!isTourDone) {
           this.setState({

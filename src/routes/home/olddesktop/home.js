@@ -135,8 +135,9 @@ class Home extends Component {
           document.getElementsByClassName('tourSlideWrapper')[0].remove()
         }
       }
-
-      localStorage.setItem('tour-home', true)
+      try {
+        localStorage.setItem('tour-home', true)
+      } catch (err) {}
 
       // document.cookie = '__trh=1; path=/;';
       return true
@@ -215,7 +216,10 @@ class Home extends Component {
               //     return item.indexOf('__trh=') >= 0;
               //   });
 
-              let isTourDone = localStorage.getItem('tour-home')
+              let isTourDone = true
+              try {
+                isTourDone = localStorage.getItem('tour-home')
+              } catch (err) {}
 
               if (isTourDone) {
                 for (var i = 0; i < videos.data.length; i++) {
@@ -253,7 +257,11 @@ class Home extends Component {
   }
 
   componentDidUpdate() {
-    const { playlists: { meta: { status: playlistStatus } }, videos, videos: { meta: { status: videoStatus } } } = this.props.home
+    const {
+      playlists: { meta: { status: playlistStatus } },
+      videos,
+      videos: { meta: { status: videoStatus } },
+    } = this.props.home
     //update loading state
     if (playlistStatus === 'success') {
       if (videoStatus === 'success' && !this.state.playlistSuccess) {
@@ -262,7 +270,10 @@ class Home extends Component {
             playlistSuccess: true,
           },
           () => {
-            let isTourDone = localStorage.getItem('tour-home')
+            let isTourDone = true
+            try {
+              localStorage.getItem('tour-home')
+            } catch (err) {}
 
             if (isTourDone) {
               for (var i = 0; i < videos.data.length; i++) {
@@ -293,7 +304,7 @@ class Home extends Component {
 
   handleColorChange = () => {
     const that = this
-    setTimeout(function () {
+    setTimeout(function() {
       const activeSlick = document.querySelector('.active .slick-active .grid-slick')
       let isDark = 1
       if (activeSlick) {
@@ -334,7 +345,7 @@ class Home extends Component {
   handleMouseClick = () => {
     /** handle mouse click */
     const that = this
-      ; (this.prevMouseDownY = 0), (this.currentMouseDownY = 0)
+    ;(this.prevMouseDownY = 0), (this.currentMouseDownY = 0)
     document.onmousedown = event => {
       ticking = false
       that.prevMouseDownY = event.y
@@ -362,7 +373,7 @@ class Home extends Component {
     $.data(
       that,
       'scrollCheck',
-      setTimeout(function () {
+      setTimeout(function() {
         /* Determine the direction of the scroll (< 0 → up, > 0 → down). */
         var delta = (event.deltaY || -event.wheelDelta || event.detail) >> 10 || 1
         if (delta < 0) {
@@ -502,9 +513,16 @@ class Home extends Component {
         <div className={styles.home__container}>
           {playlistStatus !== 'error' && <Header isDark={isDark} activePlaylist={activePlaylist} {...this.props} />}
           {playlistStatus === 'loading' && videoStatus === 'loading' && <HomePlaceholder />}
-          {playlistStatus === 'error' && <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />}
-          {videoStatus === 'error' && videoError !== '' && <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />}
-          {playlistSuccess && <HomeDesktopMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />}
+          {playlistStatus === 'error' && (
+            <HomeError status={playlistErrorCode} message={playlistError || 'MOLA playlist is not loaded'} />
+          )}
+          {videoStatus === 'error' &&
+            videoError !== '' && (
+              <HomeError status={videoErrorCode} message={videoError || 'MOLA video is not loaded'} />
+            )}
+          {playlistSuccess && (
+            <HomeDesktopMenu isDark={isDark} playlists={playlists.data} onClick={this.handleScrollToIndex} />
+          )}
           {playlistSuccess &&
             videos &&
             videos.data.length > 0 &&
@@ -521,7 +539,11 @@ class Home extends Component {
                           this.sliderRefs = []
                           this.trackedSliderIds = []
                         }
-                        if (this.trackedSliderIds.indexOf(id) === -1 && this.sliderRefs.length < trackedPlaylistIds.length && node !== null) {
+                        if (
+                          this.trackedSliderIds.indexOf(id) === -1 &&
+                          this.sliderRefs.length < trackedPlaylistIds.length &&
+                          node !== null
+                        ) {
                           node = {
                             ...node,
                             id,
@@ -535,7 +557,15 @@ class Home extends Component {
                       prevArrow={<HomeArrow direction="prev" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
                       nextArrow={<HomeArrow direction="next" isDark={isDark} id={id} sliderRefs={this.sliderRefs} />}
                     >
-                      {video.data.map(eachVids => <HomeDesktopContent {...eachVids} key={eachVids.id} isSafari={isSafari} ticking={ticking} sliderRefs={this.sliderRefs} />)}
+                      {video.data.map(eachVids => (
+                        <HomeDesktopContent
+                          {...eachVids}
+                          key={eachVids.id}
+                          isSafari={isSafari}
+                          ticking={ticking}
+                          sliderRefs={this.sliderRefs}
+                        />
+                      ))}
                     </Slider>
                   </Element>
                 </RSLink>

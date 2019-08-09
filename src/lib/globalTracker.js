@@ -35,8 +35,8 @@ export const globalTracker = async data => {
   const browser = browserName !== null && browserVersion !== null ? `${browserName} ${browserVersion}` : null
 
   const geolocation = tracker.getLangLat() ? tracker.getLangLat() : ''
-  const latitude = geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
-  const longitude = geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+  const latitude = geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+  const longitude = geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
 
   const urlParams = queryString.parse(clientWindow.location.search)
   let adjustedSubs = []
