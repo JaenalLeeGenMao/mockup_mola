@@ -53,7 +53,6 @@ class WatchDesktop extends Component {
     toggleInfoBar: true,
     countDownStatus: true,
     notice_bar_message: 'Siaran Percobaan',
-    loginPermission: false,
   }
 
   handleOnReadyStateChange = player => {
@@ -214,6 +213,8 @@ class WatchDesktop extends Component {
       const videoSettings = {
         ...checkAdsSettings,
       }
+
+      // Block if the video is not available in web & app
       if (blocked) {
         return (
           <>
@@ -230,6 +231,25 @@ class WatchDesktop extends Component {
           </>
         )
       } else {
+        // Block if user is not logged in
+        if (!isAllowed) {
+          if (watchPermissionErrorCode == 'login_first') {
+            return (
+              <div className={movieDetailNotAllowed}>
+                <p>
+                  Silahkan{' '}
+                  <a style={{ color: '#005290' }} href="/accounts/login">
+                    {' '}
+                    login
+                  </a>{' '}
+                  untuk menyaksikan tayangan ini.
+                </p>
+              </div>
+            )
+          }
+        }
+
+        // Show countdown if it is a live match
         if (
           this.state.countDownStatus &&
           getContentTypeName(dataFetched.contentType) === 'live' &&
@@ -245,25 +265,7 @@ class WatchDesktop extends Component {
             />
           )
         } else if (dataFetched.streamSourceUrl) {
-          if (!isAllowed) {
-            if (this.state.loginPermission) {
-              if (watchPermissionErrorCode == 'login_first') {
-                return (
-                  <div className={movieDetailNotAllowed}>
-                    <p>
-                      Silahkan{' '}
-                      <a style={{ color: '#005290' }} href="/accounts/login">
-                        {' '}
-                        login
-                      </a>{' '}
-                      untuk menyaksikan tayangan ini.
-                    </p>
-                  </div>
-                )
-              }
-            }
-            return this.renderBlockPermission(poster)
-          }
+          // Else render, only if there's streamSourceUrl
           return (
             <Theoplayer
               className={customTheoplayer}

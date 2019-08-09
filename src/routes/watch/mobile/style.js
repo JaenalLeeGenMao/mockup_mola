@@ -30,6 +30,7 @@ export const movieDetailNotAllowed = css`
   align-items: center;
   position: relative;
   font-size: 1rem;
+  background: black;
 `
 
 export const movieDetailNotAvailableContainer = css`
