@@ -474,6 +474,11 @@ app.get('/oauth/callback', async (req, res) => {
     })
   }
 
+  if (req.cookies.redirectwatch) {
+    const redirect = `/watch?v=${req.cookies.redirectwatch}`
+    return res.redirect(domain + redirect)
+  }
+
   return res.redirect(domain || 'https://stag.mola.tv')
 })
 
@@ -527,7 +532,14 @@ app.get('/accounts/signin', async (req, res) => {
     httpOnly: true,
   })
 
-  if (!req.cookies._at || !_isUndefined(req.query.app_key)) {
+  if (!req.cookies._at && !_isUndefined(req.query.redirect_watch)) {
+    res.cookie('redirectwatch', req.query.redirect_watch, {
+      maxAge: 30 * 1000,
+      httpOnly: true,
+    })
+  }
+
+  if (!req.cookies._at) {
     const callbackCode = await requestCode(req, res)
     return res.redirect(callbackCode)
   }

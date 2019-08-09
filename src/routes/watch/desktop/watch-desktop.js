@@ -238,7 +238,7 @@ class WatchDesktop extends Component {
               <div className={movieDetailNotAllowed}>
                 <p>
                   Silahkan{' '}
-                  <a style={{ color: '#005290' }} href="/accounts/login">
+                  <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
                     {' '}
                     login
                   </a>{' '}
