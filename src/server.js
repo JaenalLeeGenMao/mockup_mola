@@ -532,7 +532,7 @@ app.get('/accounts/signin', async (req, res) => {
     httpOnly: true,
   })
 
-  if (!req.cookies._at && !_isUndefined(req.query.redirect_watch)) {
+  if (!req.cookies._at && req.query.redirect_watch) {
     res.cookie('redirectwatch', req.query.redirect_watch, {
       maxAge: 30 * 1000,
       httpOnly: true,
