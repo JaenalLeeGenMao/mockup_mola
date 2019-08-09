@@ -126,7 +126,6 @@ class Watch extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     return (
       <>
-        TEST HALAMAN WATCH
         {/* {isMobile &&
           isCheckerDone &&
           block && (
@@ -166,7 +165,7 @@ class Watch extends Component {
               />
             </>
           )}
-
+ */}
         {dataFetched &&
           !block &&
           isCheckerDone && (
@@ -193,7 +192,7 @@ class Watch extends Component {
               )}
             </>
           )}
-        {status === 'error' && <MovieDetailError message={error} />} */}
+        {/* {status === 'error' && <MovieDetailError message={error} />} */}
       </>
     )
   }
