@@ -36,11 +36,9 @@ class Login extends Component {
     })
   }
 
-  validateEmail = mail => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-      return true
-    }
-    return false
+  validateEmail = email => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(email).toLowerCase())
   }
 
   handleLogin = async () => {
@@ -74,28 +72,33 @@ class Login extends Component {
           haveQuery = true
 
           const appKey = urlParams.get('app_key')
-          if (!_isUndefined(appKey)) {
+          if (appKey) {
             paramsQuery['app_key'] = appKey
           }
 
           const redirectURL = urlParams.get('redirect_uri')
-          if (!_isUndefined(redirectURL)) {
+          if (redirectURL) {
             paramsQuery['redirect_uri'] = redirectURL
           }
 
           const responseType = urlParams.get('response_type')
-          if (!_isUndefined(responseType)) {
+          if (responseType) {
             paramsQuery['response_type'] = responseType
           }
 
           const state = urlParams.get('state')
-          if (!_isUndefined(state)) {
+          if (state) {
             paramsQuery['state'] = state
           }
 
           const scope = urlParams.get('scope')
-          if (!_isUndefined(scope)) {
+          if (scope) {
             paramsQuery['scope'] = scope
+          }
+
+          const redirectWatch = urlParams.get('redirect_watch')
+          if (redirectWatch) {
+            paramsQuery['redirect_watch'] = redirectWatch
           }
         }
 

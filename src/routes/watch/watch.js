@@ -8,11 +8,9 @@ import * as movieDetailActions from '@actions/movie-detail'
 import DRMConfig from '@source/lib/DRMConfig'
 import { updateCustomMeta } from '@source/DOMUtils'
 import PlatformCheck from '@components/PlatformCheckMobile'
-import PlatformDesktop from '@components/PlatformCheck'
-
+import MovieDetailError from '@components/common/error'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
-import MovieDetailError from '@components/common/error'
 import WatchDesktop from './desktop'
 import WatchMobile from './mobile'
 import iconRed from './assets/merah.png'
@@ -121,12 +119,13 @@ class Watch extends Component {
   render() {
     const { isMobile, vuid, videoId, getMovieDetail } = this.props
     const { block, isCheckerDone } = this.state
-    const { meta: { status }, data } = this.props.movieDetail
+    const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
+
     return (
       <>
-        {/* {isMobile &&
+        {isMobile &&
           isCheckerDone &&
           block && (
             <PlatformCheck
@@ -165,7 +164,7 @@ class Watch extends Component {
               />
             </>
           )}
- */}
+
         {dataFetched &&
           !block &&
           isCheckerDone && (
@@ -192,7 +191,7 @@ class Watch extends Component {
               )}
             </>
           )}
-        {/* {status === 'error' && <MovieDetailError message={error} />} */}
+        {status === 'error' && <MovieDetailError message={error} />}
       </>
     )
   }

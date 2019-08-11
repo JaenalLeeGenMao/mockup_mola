@@ -192,6 +192,23 @@ class MovieDetail extends Component {
         isMatchPassed = true
       }
 
+      if (!isAllowed) {
+        if (watchPermissionErrorCode == 'login_first') {
+          return (
+            <div className={movieDetailNotAllowed}>
+              <p>
+                Silahkan{' '}
+                <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
+                  {' '}
+                  login
+                </a>{' '}
+                untuk menyaksikan tayangan ini.
+              </p>
+            </div>
+          )
+        }
+      }
+
       const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : countdownWOinfobar
       if (
         this.state.countDownStatus &&
@@ -219,23 +236,6 @@ class MovieDetail extends Component {
               </div>
             )
           } else {
-            if (!isAllowed) {
-              if (watchPermissionErrorCode == 'login_first') {
-                return (
-                  <div className={movieDetailNotAllowed}>
-                    <p>
-                      Silahkan{' '}
-                      <a style={{ color: '#005290' }} href="/accounts/login">
-                        {' '}
-                        login
-                      </a>{' '}
-                      untuk menyaksikan tayangan ini.
-                    </p>
-                  </div>
-                )
-              }
-            }
-
             return (
               <Theoplayer
                 className={customTheoplayer}
@@ -262,22 +262,6 @@ class MovieDetail extends Component {
               </div>
             )
           } else {
-            if (!isAllowed) {
-              if (watchPermissionErrorCode == 'login_first') {
-                return (
-                  <div className={movieDetailNotAllowed}>
-                    <p>
-                      Silahkan{' '}
-                      <a style={{ color: '#005290' }} href="/accounts/login">
-                        {' '}
-                        login
-                      </a>{' '}
-                      untuk menyaksikan tayangan ini.
-                    </p>
-                  </div>
-                )
-              }
-            }
             return (
               <Theoplayer
                 className={customTheoplayer}

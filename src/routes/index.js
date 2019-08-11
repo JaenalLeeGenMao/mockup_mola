@@ -169,6 +169,10 @@ const routes = {
       path: '/live-support',
       load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
+    {
+      path: '/error/smart',
+      load: () => import(/* webpackChunkName: 'smart' */ './error/smart'),
+    },
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {
       path: '(.*)',

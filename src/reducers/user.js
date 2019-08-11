@@ -16,6 +16,7 @@ const initialState = {
   expire: '',
   type: '',
   isLoading: false,
+  subscriptions: [],
 }
 
 // const fakeData = {

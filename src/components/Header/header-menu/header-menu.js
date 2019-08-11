@@ -79,7 +79,7 @@ class HeaderMenu extends Component {
   //   })
   // }
 
-  handleToggle = () => {
+  handleToggle = e => {
     const { user: { uid = '', sid = '' } } = this.props
     const isLogin = uid || sid
     if (isLogin) {
@@ -88,6 +88,7 @@ class HeaderMenu extends Component {
     } else {
       window.location.href = '/accounts/login'
     }
+    e.preventDefault()
   }
 
   handleSignOut = e => {
