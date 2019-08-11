@@ -173,6 +173,7 @@ class Channels extends Component {
     const { movieId } = this.props
     const domain = config.endpoints.domain
     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
+    const source = 'redirect-from-browser'
     document.location = `intent://mola.tv/watch?v=${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
@@ -180,6 +181,7 @@ class Channels extends Component {
     const { movieId } = this.props
     const domain = config.endpoints.domain
     const url = `${domain}/download-app/${movieId}`
+    const source = 'redirect-from-browser'
     document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
     setTimeout(function() {
       window.location.href = url
