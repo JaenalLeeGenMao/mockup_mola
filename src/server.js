@@ -422,6 +422,12 @@ app.use('*', async (req, res, next) => {
       maxAge: 7 * 24 * 3600 * 1000,
       httpOnly: true,
     })
+
+    res.cookie('SIDX', req.cookies.SID, {
+      path: '/',
+      maxAge: 7 * 24 * 3600 * 1000,
+      httpOnly: true,
+    })
   }
   // if (`${cookie.__deviceId}` === 'undefined' || cookie.__deviceId === undefined) {
   //   const deviceId = Crypto.uuid() // 076d029f-4927-ec5f-5b06e35e
