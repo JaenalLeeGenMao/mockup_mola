@@ -164,6 +164,17 @@ class Channels extends Component {
     )
   }
 
+  handleOnVideoVolumeChange = player => {
+    if (player) {
+      const playerVolumeInfo = {
+        volume: player.volume,
+        muted: player.muted,
+      }
+
+      localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+    }
+  }
+
   subtitles = () => {
     const { movieDetail } = this.props
     const subtitles =
@@ -221,6 +232,15 @@ class Channels extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
+    let theoVolumeInfo = {}
+
+    if (localStorage) {
+      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    }
+
     const { user } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
@@ -228,6 +248,7 @@ class Channels extends Component {
       status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
+      ...theoVolumeInfo,
       ...defaultVidSetting,
     }
 

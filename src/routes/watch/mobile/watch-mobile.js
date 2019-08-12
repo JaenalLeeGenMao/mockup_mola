@@ -50,6 +50,17 @@ class MovieDetail extends Component {
     notice_bar_message: 'Siaran Percobaan',
   }
 
+  handleOnVideoVolumeChange = player => {
+    if (player) {
+      const playerVolumeInfo = {
+        volume: player.volume,
+        muted: player.muted,
+      }
+
+      localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+    }
+  }
+
   subtitles() {
     const { movieDetail } = this.props
     const subtitles =
@@ -162,6 +173,15 @@ class MovieDetail extends Component {
 
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId } = this.props
+    let theoVolumeInfo = {}
+
+    if (localStorage) {
+      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    }
+
     if (dataFetched) {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -179,6 +199,7 @@ class MovieDetail extends Component {
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
+        ...theoVolumeInfo,
         ...checkAdsSettings,
       }
 
@@ -249,6 +270,7 @@ class MovieDetail extends Component {
                 // handleOnVideoPause={this.handleOnVideoPause}
                 // handleOnLoadedData={this.handleOnLoadedData}
                 // handleOnReadyStateChange={this.handleOnReadyStateChange}
+                // handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                 {...videoSettings}
                 isMobile
               />
@@ -275,6 +297,7 @@ class MovieDetail extends Component {
                 // handleOnVideoPause={this.handleOnVideoPause}
                 // handleOnLoadedData={this.handleOnLoadedData}
                 // handleOnReadyStateChange={this.handleOnReadyStateChange}
+                // handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                 {...videoSettings}
                 isMobile
               />

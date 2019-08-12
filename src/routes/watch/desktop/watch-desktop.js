@@ -88,6 +88,17 @@ class WatchDesktop extends Component {
     })
   }
 
+  handleOnVideoVolumeChange = player => {
+    if (player) {
+      const playerVolumeInfo = {
+        volume: player.volume,
+        muted: player.muted,
+      }
+
+      localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+    }
+  }
+
   subtitles() {
     const { movieDetail } = this.props
     const subtitles =
@@ -192,6 +203,14 @@ class WatchDesktop extends Component {
 
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, potraitPoster } = this.props
+    let theoVolumeInfo = {}
+
+    if (localStorage) {
+      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    }
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
@@ -213,6 +232,7 @@ class WatchDesktop extends Component {
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
+        ...theoVolumeInfo,
         ...checkAdsSettings,
       }
 
@@ -275,6 +295,7 @@ class WatchDesktop extends Component {
               poster={poster}
               autoPlay={false}
               handleOnReadyStateChange={this.handleOnReadyStateChange}
+              handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
               {...videoSettings}
             />
           )
