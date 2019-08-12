@@ -46,6 +46,7 @@ class Feature extends Component {
   }
 
   componentWillUnmount() {
+    trackedPlaylistIds = []
     window.removeEventListener('resize', this.updateWindowDimensions)
   }
 
