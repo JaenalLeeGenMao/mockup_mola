@@ -55,7 +55,7 @@ const handleTimeUpdate = (payload, player) => {
       calcTime = Math.max(time - 60, 0)
     }
 
-    var vTracks = player.videoTracks,
+    var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
       currentTrack
     for (var i = 0; i < vTracks.length; i++) {
       currentTrack = vTracks.item(i)

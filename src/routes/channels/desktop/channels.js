@@ -30,6 +30,8 @@ import ChannelCalendar from './channelCalendar'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
+
+let errorFlag = 0
 class Channels extends Component {
   state = {
     activeChannel: '',
@@ -135,7 +137,7 @@ class Channels extends Component {
     }
   }
 
-  handleOnVideoLoad = player => {
+  handleOnReadyStateChange = player => {
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
@@ -160,16 +162,15 @@ class Channels extends Component {
 
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
-        this.props.getVUID_retry()
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
       } else {
         // console.log('ERROR content protection', e)
         // this.handleVideoError(e);
       }
     })
-    // player.addEventListener('error', e => {
-    //   console.log('error', e, '======', player.error.code)
-    //   // this.handleVideoError(e);
-    // })
   }
 
   handleOnVideoVolumeChange = player => {
@@ -190,12 +191,17 @@ class Channels extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ subtitleUrl, country }) => ({
-        kind: 'subtitles',
-        src: subtitleUrl,
-        label: country,
-        type: 'srt',
-      }))
+      subtitles.length > 0 &&
+      subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
+        const arrSubType = subtitleUrl.split('.')
+        const subtitleType = arrSubType[arrSubType.length - 1] || 'vtt'
+        return {
+          kind: type,
+          src: subtitleUrl,
+          label: country,
+          type: subtitleType,
+        }
+      })
 
     return myTheoPlayer
   }
@@ -300,8 +306,8 @@ class Channels extends Component {
                   className={customTheoplayer}
                   showBackBtn={false}
                   subtitles={this.subtitles()}
-                  handleOnVideoLoad={this.handleOnVideoLoad}
                   handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                  handleOnReadyStateChange={this.handleOnReadyStateChange}
                   // poster={poster}
                   {...videoSettings}
                 />

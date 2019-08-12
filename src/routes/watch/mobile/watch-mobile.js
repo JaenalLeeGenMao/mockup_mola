@@ -69,12 +69,17 @@ class MovieDetail extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ subtitleUrl, country }) => ({
-        kind: 'subtitles',
-        src: subtitleUrl,
-        label: country,
-        type: 'srt',
-      }))
+      subtitles.length > 0 &&
+      subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
+        const arrSubType = subtitleUrl.split('.')
+        const subtitleType = arrSubType[arrSubType.length - 1] || 'vtt'
+        return {
+          kind: type,
+          src: subtitleUrl,
+          label: country,
+          type: subtitleType,
+        }
+      })
 
     return myTheoPlayer
   }

@@ -49,9 +49,13 @@ export const handleTracker = async (data, props) => {
 
   const geolocation = Tracker.getLangLat()
   const latitude =
-    geolocation.length > 0 && geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    geolocation && geolocation.length > 0 && geolocation && geolocation.split(',').length == 2
+      ? geolocation.split(',')[0]
+      : ''
   const longitude =
-    geolocation.length > 0 && geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    geolocation && geolocation.length > 0 && geolocation && geolocation.split(',').length == 2
+      ? geolocation.split(',')[1]
+      : ''
   /* eslint-disable */
   const payload = {
     data: {

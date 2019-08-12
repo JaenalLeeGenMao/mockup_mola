@@ -6,7 +6,18 @@ const Theoplayer = getComponent('theoplayer')
 import styles from './RedirectToApps.css'
 class RedirectToApps extends Component {
   render() {
-    const { android_redirect_to_app, ios_redirect_to_app, videoSettings, handleOnVideoLoad, handlePlayMovie, handlePlayMovieApple, subtitles, poster, customTheoplayer } = this.props
+    const {
+      android_redirect_to_app,
+      ios_redirect_to_app,
+      videoSettings,
+      handleOnReadyStateChange,
+      handlePlayMovie,
+      handlePlayMovieApple,
+      subtitles,
+      poster,
+      customTheoplayer,
+      handleOnVideoVolumeChange,
+    } = this.props
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
     if (isApple) {
@@ -19,7 +30,15 @@ class RedirectToApps extends Component {
           </div>
         )
       } else {
-        return <Theoplayer className={customTheoplayer} subtitles={subtitles} handleOnVideoLoad={handleOnVideoLoad} {...videoSettings} />
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={subtitles}
+            handleOnReadyStateChange={handleOnReadyStateChange}
+            handleOnVideoVolumeChange={handleOnVideoVolumeChange}
+            {...videoSettings}
+          />
+        )
       }
     } else {
       //android
@@ -31,7 +50,15 @@ class RedirectToApps extends Component {
           </div>
         )
       } else {
-        return <Theoplayer className={customTheoplayer} subtitles={subtitles} handleOnVideoLoad={handleOnVideoLoad} {...videoSettings} />
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={subtitles}
+            handleOnReadyStateChange={handleOnReadyStateChange}
+            handleOnVideoVolumeChange={handleOnVideoVolumeChange}
+            {...videoSettings}
+          />
+        )
       }
     }
   }

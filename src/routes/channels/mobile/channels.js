@@ -27,6 +27,7 @@ import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
 
+let errorFlag = 0
 class Channels extends Component {
   state = {
     activeChannel: '',
@@ -182,12 +183,17 @@ class Channels extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ subtitleUrl, country }) => ({
-        kind: 'subtitles',
-        src: subtitleUrl,
-        label: country,
-        type: 'srt',
-      }))
+      subtitles.length > 0 &&
+      subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
+        const arrSubType = subtitleUrl.split('.')
+        const subtitleType = arrSubType[arrSubType.length - 1] || 'vtt'
+        return {
+          kind: type,
+          src: subtitleUrl,
+          label: country,
+          type: subtitleType,
+        }
+      })
 
     return myTheoPlayer
   }
@@ -206,13 +212,25 @@ class Channels extends Component {
     const url = `${domain}/download-app/${movieId}`
     const source = 'redirect-from-browser'
     document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
 
-  handleOnVideoLoad = player => {
+  handleOnReadyStateChange = player => {
     this.player = player
+
+    player.addEventListener('contentprotectionerror', e => {
+      if (e.error.toLowerCase() == 'error during license server request') {
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
+      } else {
+        // console.log('ERROR content protection', e)
+        // this.handleVideoError(e);
+      }
+    })
   }
 
   render() {
@@ -297,9 +315,10 @@ class Channels extends Component {
                     subtitles={this.subtitles()}
                     handlePlayMovieApple={this.handlePlayMovieApple}
                     handlePlayMovie={this.handlePlayMovie}
-                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    handleOnReadyStateChange={this.handleOnReadyStateChange}
                     videoSettings={videoSettings}
                     customTheoplayer={customTheoplayer}
+                    handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                   />
                 )}
               </div>
