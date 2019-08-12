@@ -45,7 +45,7 @@ const Theoplayer = getComponent('theoplayer')
 
 import MovieContent from './movie'
 import SportContent from './sport'
-
+let errorFlag = 0
 class WatchDesktop extends Component {
   state = {
     movieDetail: [],
@@ -80,7 +80,10 @@ class WatchDesktop extends Component {
 
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
-        this.props.getVUID_retry()
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
       } else {
         // console.log('ERROR content protection', e)
         // this.handleVideoError(e);

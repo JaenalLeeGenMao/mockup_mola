@@ -40,6 +40,7 @@ const Theoplayer = getComponent('theoplayer')
 import MovieContent from './movie'
 import SportContent from './sport'
 
+let errorFlag = 0
 class MovieDetail extends Component {
   state = {
     loc: '',
@@ -171,6 +172,22 @@ class MovieDetail extends Component {
     }, 250)
   }
 
+  handleOnReadyStateChange = player => {
+    this.player = player
+
+    player.addEventListener('contentprotectionerror', e => {
+      if (e.error.toLowerCase() == 'error during license server request') {
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
+      } else {
+        // console.log('ERROR content protection', e)
+        // this.handleVideoError(e);
+      }
+    })
+  }
+
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId } = this.props
     let theoVolumeInfo = {}
@@ -265,12 +282,7 @@ class MovieDetail extends Component {
                 subtitles={this.subtitles()}
                 poster={poster}
                 autoPlay={false}
-                // certificateUrl="test"
-                // handleOnVideoLoad={this.handleOnVideoLoad}
-                // handleOnVideoPause={this.handleOnVideoPause}
-                // handleOnLoadedData={this.handleOnLoadedData}
-                // handleOnReadyStateChange={this.handleOnReadyStateChange}
-                // handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                handleOnReadyStateChange={this.handleOnReadyStateChange}
                 {...videoSettings}
                 isMobile
               />
