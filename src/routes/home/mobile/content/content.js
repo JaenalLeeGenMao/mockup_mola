@@ -10,10 +10,11 @@ class Content extends Component {
     this.props.updateSlider(this.wrapperSlider)
   }
   handleClickMobile = link => {
-    var domain = window.location.href.split('/')
-    var linkRedirect = link.split('/')
+    var domainRedirect = link.split('/')
 
-    link && domain[2] === linkRedirect[2] ? (window.location.href = link) : window.open(link, '_blank')
+    link && domainRedirect[2].includes('mola.tv') && domainRedirect[3] === 'banner'
+      ? window.open(link, '_blank')
+      : domainRedirect[2].includes('mola.tv') ? (window.location.href = link) : window.open(link, '_blank')
 
     const payload = {
       window,

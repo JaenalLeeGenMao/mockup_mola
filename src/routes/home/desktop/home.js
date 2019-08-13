@@ -213,13 +213,13 @@ class Home extends Component {
     var handleClick = function(e) {
       var target = e.target
       var isPlaylist = target.parentElement.getElementsByClassName('is-home-playlist').length
-      var domain = window.location.href.split('/')
-      var linkRedirect = __this.state.activeSlide.link.split('/')
-
+      var domainRedirect = __this.state.activeSlide.link.split('/')
       if (isPlaylist <= 0 && target.classList.contains('is-home-gradient')) {
-        __this.state.activeSlide.link && domain[2] === linkRedirect[2]
-          ? (window.location.href = __this.state.activeSlide.link)
-          : window.open(__this.state.activeSlide.link, '_blank')
+        __this.state.activeSlide.link && domainRedirect[2].includes('mola.tv') && domainRedirect[3] === 'banner'
+          ? window.open(__this.state.activeSlide.link, '_blank')
+          : domainRedirect[2].includes('mola.tv')
+            ? (window.location.href = __this.state.activeSlide.link)
+            : window.open(__this.state.activeSlide.link, '_blank')
       }
 
       const payload = {
