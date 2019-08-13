@@ -681,7 +681,6 @@ class Home extends Component {
               libraryOff
               isMovie
               className={styles.placeholder__header}
-              isDark={isDark}
               activePlaylist={activePlaylist && activePlaylist.id !== 'web-featured' ? activePlaylist : null}
               {...this.props}
             />
@@ -710,7 +709,7 @@ class Home extends Component {
                     <HomeMenu
                       playlists={this.state.playlists.data}
                       activeIndex={scrollIndex}
-                      isDark={isDark}
+                      isDark={0}
                       onClick={this.handleScrollToIndex}
                     />
                   )}
@@ -832,7 +831,7 @@ class Home extends Component {
                       <HomeMenu
                         playlists={activeSlideDots}
                         activeIndex={swipeIndex}
-                        isDark={isDark}
+                        isDark={0}
                         onClick={this.handleNextPrevSlide}
                         type="horizontal"
                       />
