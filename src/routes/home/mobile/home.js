@@ -645,7 +645,7 @@ class Home extends Component {
                     <HomeMobileMenu
                       playlists={activeSlideDots}
                       activeIndex={swipeIndex}
-                      isDark={isDark}
+                      isDark={0}
                       type="horizontal"
                       className="tourSlide"
                     />
