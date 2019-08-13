@@ -7,7 +7,7 @@ import * as movieDetailActions from '@actions/movie-detail'
 
 import DRMConfig from '@source/lib/DRMConfig'
 import { updateCustomMeta } from '@source/DOMUtils'
-import PlatformCheck from '@components/PlatformCheckMobile'
+import PlatformCheckMobile from '@components/PlatformCheckMobile'
 import MovieDetailError from '@components/common/error'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
@@ -25,6 +25,7 @@ class Watch extends Component {
     isCheckerDone: false,
     iconGreen,
     status: [],
+    isHeader: false,
   }
 
   componentDidMount() {
@@ -72,7 +73,15 @@ class Watch extends Component {
             img.push(dt.imageUrl)
           })
         }
-        this.setState({ isCheckerDone: true, name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
+        this.setState({
+          isHeader: true,
+          isCheckerDone: true,
+          name: state,
+          imageUrl: img,
+          status: st,
+          block: true,
+          iconStatus: stat,
+        })
       }
     }
     this.updateMetaTag()
@@ -118,7 +127,7 @@ class Watch extends Component {
 
   render() {
     const { isMobile, vuid, videoId, getMovieDetail } = this.props
-    const { block, isCheckerDone } = this.state
+    const { block, isCheckerDone, isHeader } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -128,16 +137,17 @@ class Watch extends Component {
         {isMobile &&
           isCheckerDone &&
           block && (
-            <PlatformCheck
+            <PlatformCheckMobile
               dataFetched={apiFetched ? data[0] : ''}
               iconStatus={this.state.iconStatus}
               status={this.state.status}
               icon={this.state.imageUrl}
               name={this.state.name}
               title={apiFetched ? dataFetched.title : ''}
-              portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+              portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
               user={this.props.user}
               videoId={this.props.videoId}
+              isHeader={isHeader}
             />
           )}
 

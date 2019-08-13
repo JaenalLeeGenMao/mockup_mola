@@ -21,29 +21,29 @@ const getChannelsPlaylist = id => dispatch => {
         payload: result,
       })
     } else {
-      const channelIdList = []
-      if (result.data) {
-        for (const channelDetail of result.data) {
-          channelIdList.push(channelDetail.id)
-        }
-        const channelAvail = []
-        const channelVideoRes = await Mola.getMatchDetail(channelIdList)
-        if (channelVideoRes.data.length > 0) {
-          channelVideoRes.data.map(videos => {
-            if (videos.platforms && videos.platforms.length > 0) {
-              videos.platforms.map(platform => {
-                if (platform.id == 1 && platform.status == 1) {
-                  const filterResult = result.data.find(channels => {
-                    return channels.id === videos.id
-                  })
-                  channelAvail.push(filterResult)
-                }
-              })
-            }
-          })
-        }
-        result.data = channelAvail
-      }
+      // const channelIdList = []
+      // if (result.data) {
+      //   for (const channelDetail of result.data) {
+      //     channelIdList.push(channelDetail.id)
+      //   }
+      // const channelAvail = []
+      // const channelVideoRes = await Mola.getMatchDetail(channelIdList)
+      // if (channelVideoRes.data.length > 0) {
+      //   channelVideoRes.data.map(videos => {
+      //     if (videos.platforms && videos.platforms.length > 0) {
+      //       videos.platforms.map(platform => {
+      //         if (platform.id == 1 && platform.status == 1) {
+      //           const filterResult = result.data.find(channels => {
+      //             return channels.id === videos.id
+      //           })
+      //           channelAvail.push(filterResult)
+      //         }
+      //       })
+      //     }
+      //   })
+      // }
+      // result.data = channelAvail
+      // }
       dispatch({
         type: types.GET_CHANNELS_PLAYLIST_SUCCESS,
         payload: result,
