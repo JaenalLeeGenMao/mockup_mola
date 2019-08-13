@@ -10,7 +10,10 @@ class Content extends Component {
     this.props.updateSlider(this.wrapperSlider)
   }
   handleClickMobile = link => {
-    link ? window.open(link, '_blank') : false
+    var domain = window.location.href.split('/')
+    var linkRedirect = link.split('/')
+
+    link && domain[2] === linkRedirect[2] ? (window.location.href = link) : window.open(link, '_blank')
 
     const payload = {
       window,
