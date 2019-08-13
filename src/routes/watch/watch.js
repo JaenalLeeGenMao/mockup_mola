@@ -15,6 +15,8 @@ import WatchDesktop from './desktop'
 import WatchMobile from './mobile'
 import iconRed from './assets/merah.png'
 import iconGreen from './assets/hijau.png'
+import Placeholder from './desktop/placeholder'
+import PlaceholderMobile from './mobile/placeholder'
 
 class Watch extends Component {
   state = {
@@ -134,6 +136,8 @@ class Watch extends Component {
 
     return (
       <>
+        {status === 'loading' && !isMobile && <> {<Placeholder />} </>}
+        {status === 'loading' && isMobile && <> {<PlaceholderMobile />} </>}
         {isMobile &&
           isCheckerDone &&
           block && (
