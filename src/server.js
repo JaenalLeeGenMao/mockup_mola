@@ -139,6 +139,28 @@ app.use(
     },
   })
 )
+
+app.get('/page-redirect', (req, res) => {
+  res.status(200)
+  res.sendFile(path.join(__dirname, 'public/page-redirect.html'))
+})
+
+app.use((req, res, next) => {
+  if (req.path === '/accounts/login' && req.query.redirect_to) {
+    res.cookie('_tredirect', req.query.redirect_to, {
+      maxAge: 120 * 1000,
+      httpOnly: true,
+    })
+  }
+
+  if (req.path === '/' && req.cookies._tredirect && req.cookies._at) {
+    res.clearCookie('_tredirect')
+    return res.redirect(req.cookies._tredirect)
+  }
+
+  next()
+})
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 const {
