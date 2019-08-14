@@ -353,16 +353,17 @@ class Channels extends Component {
         {channelsPlaylist.meta.status === 'success' && (
           <div className={styles.channels_container}>
             <div className={!toggleInfoBar ? styles.video_container : styles.video_container_with_infobar}>
-              {toggleInfoBar && (
-                <div className={styles.channel__infobar}>
-                  <div className={styles.channel__infobar__container}>
-                    <div className={styles.channel__infobar__text}>{notice_bar_message}</div>
-                    <div className={styles.channel__infobar__close} onClick={this.handleCloseInfoBar}>
-                      <span />
+              {!block &&
+                toggleInfoBar && (
+                  <div className={styles.channel__infobar}>
+                    <div className={styles.channel__infobar__container}>
+                      <div className={styles.channel__infobar__text}>{notice_bar_message}</div>
+                      <div className={styles.channel__infobar__close} onClick={this.handleCloseInfoBar}>
+                        <span />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
               {!block && loadPlayer ? (
                 <Theoplayer
                   className={customTheoplayer}
