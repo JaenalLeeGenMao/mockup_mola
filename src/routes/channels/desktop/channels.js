@@ -109,7 +109,6 @@ class Channels extends Component {
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
       const dataFetch = movieDetail.data[0]
-      // console.log('data fetched', dataFetch)
 
       const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
 
@@ -268,11 +267,14 @@ class Channels extends Component {
       filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
 
     this.setState({
+      block: false,
       activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
       activeChannelId: id,
       activeDate: formatDateTime(time, 'DD MMM'),
       scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
     })
+
+    this.eventVideosTracker(id)
     history.push(`/channels/${id}`)
   }
 
