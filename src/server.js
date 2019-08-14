@@ -382,10 +382,7 @@ const getHeaderMenus = async () => {
 
   if (!hasCache) {
     try {
-      const headerUrl =
-        config.env === 'production'
-          ? 'https://mola01.koicdn.com/dev/json/menu.json'
-          : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+      const headerUrl = `${domain}/api/v2/config/ui/menu`
       let response = null
 
       const rawResponse = await fetch(`${headerUrl}`, {
@@ -635,12 +632,20 @@ app.get('*', async (req, res, next) => {
             }
           }
         } else if (decodedIdToken) {
-          // res.cookie('_at', '', { expires: new Date(0) });
           if (req.path !== '/accounts/consent') {
+            // res.cookie('_at', '', { expires: new Date(0) });
             res.clearCookie('_at')
             res.clearCookie('SID')
+            // return res.redirect('/accounts/login')
+          } else {
+            if (req.cookies.SID) {
+              res.cookie('SIDX', req.cookies.SID, {
+                path: '/',
+                maxAge: 7 * 24 * 3600 * 1000,
+                httpOnly: true,
+              })
+            }
           }
-          // return res.redirect('/accounts/login')
         }
       }
     } else {
@@ -960,7 +965,7 @@ app.get('*', async (req, res, next) => {
     let isSmartTV = /.*SMART-TV*./i.test(userAgent)
 
     if (isSmartTV && req.url != '/404') {
-      return res.redirect(domain + '/404' || 'http://stag.mola.tv/404')
+      return res.redirect(domain + '/error/smart')
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)

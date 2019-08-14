@@ -263,8 +263,8 @@ class Feature extends Component {
                                   contentType={obj.type}
                                   createdAt={obj.createdAt}
                                   description={obj.imageCaption}
-                                  // onLoad={this.updateOnImageLoad}
-                                  // containerClassName={bannerContainer}
+                                // onLoad={this.updateOnImageLoad}
+                                // containerClassName={bannerContainer}
                                 />
                               ))}
                             </Carousel>

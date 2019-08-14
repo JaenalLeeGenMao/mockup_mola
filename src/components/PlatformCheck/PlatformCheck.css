@@ -10,7 +10,7 @@
 }
 
 .player__container {
-  height: 18rem;
+  height: 0;
   width: 100vw;
   margin: auto;
   display: flex;
@@ -66,7 +66,7 @@
 }
 
 .title__text__small {
-  font-size: 25px;
+  font-size: 2.5rem;
 }
 
 .detail__desc {
@@ -94,9 +94,6 @@
 
 .detail__desc_img {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: row;
 }
 
 .status__img__true {
@@ -119,15 +116,15 @@
 
 .detail__desc_img__status__color {
   position: relative;
-  bottom: 4rem;
+  bottom: 0;
   right: 0;
-  width: 10%;
+  width: 14%;
   margin-left: 5rem;
 }
 
 .detail__desc_img__status__info {
   position: relative;
-  bottom: 3rem;
+  bottom: 0;
   color: #a7a7a7;
 }
 
@@ -140,7 +137,7 @@
 
 .detail__desc__text {
   color: #a7a7a7;
-  font-size: 46px;
+  font-size: 2.8rem;
   line-height: 1.5;
 }
 
@@ -167,13 +164,13 @@
 
 .link_back {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #ddd;
   font-weight: 600;
 }
 
 .gradient {
-  background: linear-gradient(to top, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.5) 100%);
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -218,7 +215,7 @@
 .detail__desc__text__icon__bottom__text__and {
   cursor: pointer;
   text-align: center;
-  font-size: 16px;
+  font-size: 1.6rem;
   line-height: 1.5;
   color: #ddd;
   display: inline-block;

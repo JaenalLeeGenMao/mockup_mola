@@ -48,8 +48,14 @@ export const handleTracker = async (data, props) => {
   const browser = browserName && browserVersion ? `${browserName} ${browserVersion}` : null
 
   const geolocation = Tracker.getLangLat()
-  const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
-  const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+  const latitude =
+    geolocation && geolocation.length > 0 && geolocation && geolocation.split(',').length == 2
+      ? geolocation.split(',')[0]
+      : ''
+  const longitude =
+    geolocation && geolocation.length > 0 && geolocation && geolocation.split(',').length == 2
+      ? geolocation.split(',')[1]
+      : ''
   /* eslint-disable */
   const payload = {
     data: {

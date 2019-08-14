@@ -20,6 +20,7 @@ import { globalTracker } from '@source/lib/globalTracker'
 import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
+import PlatformDesktop from '@components/PlatformCheck'
 
 import Placeholder from './placeholder'
 import LoaderVideoBox from './loaderVideoBox'
@@ -29,7 +30,13 @@ import SecondaryMenu from './secondaryMenu'
 import ChannelCalendar from './channelCalendar'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
+
+import iconRed from './assets/merah.png'
+import iconGreen from './assets/hijau.png'
+
 import styles from './channels.css'
+
+let errorFlag = 0
 class Channels extends Component {
   state = {
     activeChannel: '',
@@ -39,6 +46,12 @@ class Channels extends Component {
     hidePlaylist: true,
     notice_bar_message: 'Siaran Percobaan',
     toggleInfoBar: true,
+    imageUrl: [],
+    block: false,
+    status: [],
+    iconStatus: [],
+    iconGreen,
+    name: '',
   }
 
   componentDidMount() {
@@ -76,12 +89,55 @@ class Channels extends Component {
     getVUID(deviceId)
 
     window.addEventListener('scroll', this.handleScroll)
+
+    this.theoVolumeInfo = {}
+    try {
+      const theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    } catch (err) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
+    const { status } = this.state
+
     if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       fetchVideoByid(movieId)
+    }
+
+    if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
+      const dataFetch = movieDetail.data[0]
+
+      const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
+
+      if (filterForBlockFind) {
+        this.setState({ block: false })
+      } else {
+        const filterForBlock = dataFetch.platforms
+        // console.log('status blocker dong', filterForBlock)
+        const isBlocked = filterForBlock.length > 0
+        let stat = []
+        let state = []
+        let img = []
+        let st = status
+
+        if (isBlocked) {
+          filterForBlock.forEach(dt => {
+            st.push(dt.status)
+            if (dt.status === 1) {
+              stat.push(iconGreen)
+            } else {
+              stat.push(iconRed)
+            }
+
+            state.push(dt.name)
+            img.push(dt.imageUrl)
+          })
+        }
+        this.setState({ name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
+      }
     }
   }
 
@@ -135,7 +191,7 @@ class Channels extends Component {
     }
   }
 
-  handleOnVideoLoad = player => {
+  handleOnReadyStateChange = player => {
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
@@ -160,16 +216,27 @@ class Channels extends Component {
 
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
-        this.props.getVUID_retry()
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
       } else {
         // console.log('ERROR content protection', e)
         // this.handleVideoError(e);
       }
     })
-    // player.addEventListener('error', e => {
-    //   console.log('error', e, '======', player.error.code)
-    //   // this.handleVideoError(e);
-    // })
+  }
+
+  handleOnVideoVolumeChange = player => {
+    if (player) {
+      const playerVolumeInfo = {
+        volume: player.volume,
+        muted: player.muted,
+      }
+      try {
+        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      } catch (err) {}
+    }
   }
 
   subtitles() {
@@ -179,12 +246,17 @@ class Channels extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ subtitleUrl, country }) => ({
-        kind: 'subtitles',
-        src: subtitleUrl,
-        label: country,
-        type: 'srt',
-      }))
+      subtitles.length > 0 &&
+      subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
+        const arrSubType = subtitleUrl.split('.')
+        const subtitleType = arrSubType[arrSubType.length - 1] || 'vtt'
+        return {
+          kind: type,
+          src: subtitleUrl,
+          label: country,
+          type: subtitleType,
+        }
+      })
 
     return myTheoPlayer
   }
@@ -195,11 +267,14 @@ class Channels extends Component {
       filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
 
     this.setState({
+      block: false,
       activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
       activeChannelId: id,
       activeDate: formatDateTime(time, 'DD MMM'),
       scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
     })
+
+    this.eventVideosTracker(id)
     history.push(`/channels/${id}`)
   }
 
@@ -228,7 +303,20 @@ class Channels extends Component {
 
   render() {
     const { programmeGuides, channelSchedule, channelsPlaylist, movieId } = this.props
-    const { activeChannelId, scheduleList, activeDate, hidePlaylist, notice_bar_message, toggleInfoBar } = this.state
+    const {
+      activeChannelId,
+      scheduleList,
+      channelCategory,
+      expandLeague,
+      limit,
+      activeDate,
+      hasMore,
+      hidePlaylist,
+      block,
+      toggleInfoBar,
+      notice_bar_message,
+    } = this.state
+    // console.log('status blockednya', block)
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -242,6 +330,7 @@ class Channels extends Component {
       status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
+      ...this.theoVolumeInfo,
       ...defaultVidSetting,
     }
 
@@ -274,15 +363,27 @@ class Channels extends Component {
                   </div>
                 </div>
               )}
-              {loadPlayer && (
+              {!block && loadPlayer ? (
                 <Theoplayer
                   className={customTheoplayer}
                   showBackBtn={false}
                   subtitles={this.subtitles()}
-                  handleOnVideoLoad={this.handleOnVideoLoad}
+                  handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                  handleOnReadyStateChange={this.handleOnReadyStateChange}
                   // poster={poster}
                   {...videoSettings}
                 />
+              ) : block ? (
+                <PlatformDesktop
+                  iconStatus={this.state.iconStatus}
+                  status={this.state.status}
+                  icon={this.state.imageUrl}
+                  name={this.state.name}
+                  title={apiFetched ? dataFetched.title : ''}
+                  portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                />
+              ) : (
+                <div>Video Not Available</div> // styling later
               )}
               {status === 'error' &&
                 !loadPlayer && <div className={styles.video__unavailable}>Video Not Available</div>}

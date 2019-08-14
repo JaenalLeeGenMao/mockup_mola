@@ -55,7 +55,7 @@ const handleTimeUpdate = (payload, player) => {
       calcTime = Math.max(time - 60, 0)
     }
 
-    var vTracks = player.videoTracks,
+    var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
       currentTrack
     for (var i = 0; i < vTracks.length; i++) {
       currentTrack = vTracks.item(i)
@@ -64,7 +64,9 @@ const handleTimeUpdate = (payload, player) => {
         // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
         video_quality = `${currentTrack.activeQuality.height}`
         bitrate = `${currentTrack.activeQuality.bandwidth}`
-        client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+        try {
+          client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+        } catch (err) {}
         //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
       }
     }

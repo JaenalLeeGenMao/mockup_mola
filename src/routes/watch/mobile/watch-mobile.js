@@ -40,6 +40,7 @@ const Theoplayer = getComponent('theoplayer')
 import MovieContent from './movie'
 import SportContent from './sport'
 
+let errorFlag = 0
 class MovieDetail extends Component {
   state = {
     loc: '',
@@ -50,6 +51,18 @@ class MovieDetail extends Component {
     notice_bar_message: 'Siaran Percobaan',
   }
 
+  handleOnVideoVolumeChange = player => {
+    if (player) {
+      const playerVolumeInfo = {
+        volume: player.volume,
+        muted: player.muted,
+      }
+      try {
+        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      } catch (err) {}
+    }
+  }
+
   subtitles() {
     const { movieDetail } = this.props
     const subtitles =
@@ -57,12 +70,17 @@ class MovieDetail extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ subtitleUrl, country }) => ({
-        kind: 'subtitles',
-        src: subtitleUrl,
-        label: country,
-        type: 'srt',
-      }))
+      subtitles.length > 0 &&
+      subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
+        const arrSubType = subtitleUrl.split('.')
+        const subtitleType = arrSubType[arrSubType.length - 1] || 'vtt'
+        return {
+          kind: type,
+          src: subtitleUrl,
+          label: country,
+          type: subtitleType,
+        }
+      })
 
     return myTheoPlayer
   }
@@ -78,8 +96,10 @@ class MovieDetail extends Component {
 
   getLoc = () => {
     const geolocation = Tracker.getLangLat()
-    const latitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
-    const longitude = geolocation && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
+    const latitude =
+      geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
+    const longitude =
+      geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
     }`
@@ -158,8 +178,33 @@ class MovieDetail extends Component {
     }, 250)
   }
 
+  handleOnReadyStateChange = player => {
+    this.player = player
+
+    player.addEventListener('contentprotectionerror', e => {
+      if (e.error.toLowerCase() == 'error during license server request') {
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
+      } else {
+        // console.log('ERROR content protection', e)
+        // this.handleVideoError(e);
+      }
+    })
+  }
+
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId } = this.props
+    let theoVolumeInfo = {}
+
+    try {
+      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    } catch (err) {}
+
     if (dataFetched) {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -177,6 +222,7 @@ class MovieDetail extends Component {
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
+        ...theoVolumeInfo,
         ...checkAdsSettings,
       }
 
@@ -242,11 +288,7 @@ class MovieDetail extends Component {
                 subtitles={this.subtitles()}
                 poster={poster}
                 autoPlay={false}
-                // certificateUrl="test"
-                // handleOnVideoLoad={this.handleOnVideoLoad}
-                // handleOnVideoPause={this.handleOnVideoPause}
-                // handleOnLoadedData={this.handleOnLoadedData}
-                // handleOnReadyStateChange={this.handleOnReadyStateChange}
+                handleOnReadyStateChange={this.handleOnReadyStateChange}
                 {...videoSettings}
                 isMobile
               />
@@ -273,6 +315,7 @@ class MovieDetail extends Component {
                 // handleOnVideoPause={this.handleOnVideoPause}
                 // handleOnLoadedData={this.handleOnLoadedData}
                 // handleOnReadyStateChange={this.handleOnReadyStateChange}
+                // handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                 {...videoSettings}
                 isMobile
               />

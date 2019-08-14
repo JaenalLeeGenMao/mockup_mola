@@ -135,6 +135,13 @@
   white-space: nowrap;
 }
 
+/* .playiconMovie {
+  width: 3.2rem;
+  height: 2.5rem;
+  display: inline-block;
+  background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHRpdGxlPkFydGJvYXJkIDEwIGNvcHkgNTwvdGl0bGU+PGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjciIGZpbGw9IiNiZTIwYjEiLz48cGF0aCBkPSJNMTEuNTQsNy42bC01LTNhLjQ3LjQ3LDAsMCwwLS43Mi40VjExYS40Ny40NywwLDAsMCwuNzIuNGw1LTNBLjQ2LjQ2LDAsMCwwLDExLjU0LDcuNloiIGZpbGw9IiNmZmYiLz48L3N2Zz4=);
+} */
+
 @media screen and (max-width: 1280px) {
   .movieErrorImg {
     height: 125px;

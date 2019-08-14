@@ -21,11 +21,16 @@ import DropdownList from '@components/DropdownList'
 import RedirectToApps from '@components/RedirectToApps'
 import VerticalCalendar from '@components/VerticalCalendar'
 import MatchList from '@components/MatchList'
+import PlatformCheckMobile from '@components/PlatformCheckMobile'
 
 import Placeholder from './placeholder'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
+
+let errorFlag = 0
+import iconRed from './assets/merah.png'
+import iconGreen from './assets/hijau.png'
 
 class Channels extends Component {
   state = {
@@ -38,6 +43,12 @@ class Channels extends Component {
     ios_redirect_to_app: false,
     startWeekDate: moment().startOf('isoWeek'),
     selectedWeek: '',
+    block: false,
+    isHeader: false,
+    status: [],
+    iconStatus: [],
+    iconGreen,
+    name: '',
   }
 
   componentDidMount() {
@@ -73,12 +84,56 @@ class Channels extends Component {
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
+
+    this.theoVolumeInfo = {}
+    try {
+      const theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    } catch (err) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
+    const { status } = this.state
+
     if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       fetchVideoByid(movieId)
+    }
+
+    if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
+      const dataFetch = movieDetail.data[0]
+      // console.log('data fetched', dataFetch)
+
+      const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
+
+      if (filterForBlockFind) {
+        this.setState({ block: false })
+      } else {
+        const filterForBlock = dataFetch.platforms
+        // console.log('status blocker dong', filterForBlock)
+        const isBlocked = filterForBlock.length > 0
+        let stat = []
+        let state = []
+        let img = []
+        let st = status
+
+        if (isBlocked) {
+          filterForBlock.forEach(dt => {
+            st.push(dt.status)
+            if (dt.status === 1) {
+              stat.push(iconGreen)
+            } else {
+              stat.push(iconRed)
+            }
+
+            state.push(dt.name)
+            img.push(dt.imageUrl)
+          })
+        }
+        this.setState({ name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
+      }
     }
   }
 
@@ -127,11 +182,14 @@ class Channels extends Component {
       filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
 
     this.setState({
+      block: false,
       activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
       activeChannelId: id,
       activeDate: formatDateTime(time, 'DD MMM'),
       scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
     })
+
+    this.eventVideosTracker(id)
     history.push(`/channels/${id}`)
   }
 
@@ -164,6 +222,18 @@ class Channels extends Component {
     )
   }
 
+  handleOnVideoVolumeChange = player => {
+    if (player) {
+      const playerVolumeInfo = {
+        volume: player.volume,
+        muted: player.muted,
+      }
+      try {
+        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      } catch (err) {}
+    }
+  }
+
   subtitles = () => {
     const { movieDetail } = this.props
     const subtitles =
@@ -171,12 +241,17 @@ class Channels extends Component {
 
     const myTheoPlayer =
       subtitles &&
-      subtitles.map(({ subtitleUrl, country }) => ({
-        kind: 'subtitles',
-        src: subtitleUrl,
-        label: country,
-        type: 'srt',
-      }))
+      subtitles.length > 0 &&
+      subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
+        const arrSubType = subtitleUrl.split('.')
+        const subtitleType = arrSubType[arrSubType.length - 1] || 'vtt'
+        return {
+          kind: type,
+          src: subtitleUrl,
+          label: country,
+          type: subtitleType,
+        }
+      })
 
     return myTheoPlayer
   }
@@ -184,24 +259,36 @@ class Channels extends Component {
   handlePlayMovie = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
     const source = 'redirect-from-browser'
+    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
     document.location = `intent://mola.tv/watch?v=${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   handlePlayMovieApple = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    const url = `${domain}/download-app/${movieId}`
     const source = 'redirect-from-browser'
+    const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
     setTimeout(function() {
       window.location.href = url
     }, 250)
   }
 
-  handleOnVideoLoad = player => {
+  handleOnReadyStateChange = player => {
     this.player = player
+
+    player.addEventListener('contentprotectionerror', e => {
+      if (e.error.toLowerCase() == 'error during license server request') {
+        errorFlag = errorFlag + 1
+        if (errorFlag < 2) {
+          this.props.getVUID_retry()
+        }
+      } else {
+        // console.log('ERROR content protection', e)
+        // this.handleVideoError(e);
+      }
+    })
   }
 
   render() {
@@ -214,6 +301,8 @@ class Channels extends Component {
       ios_redirect_to_app,
       startWeekDate,
       selectedWeek,
+      block,
+      isHeader,
     } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -228,6 +317,7 @@ class Channels extends Component {
       status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
+      ...this.theoVolumeInfo,
       ...defaultVidSetting,
     }
 
@@ -267,8 +357,9 @@ class Channels extends Component {
                   />
                 </div>
               </div>
-              <div className={styles.video_container}>
-                {loadPlayer && (
+
+              {!block && loadPlayer ? (
+                <div className={styles.video_container}>
                   <RedirectToApps
                     poster={poster}
                     android_redirect_to_app={android_redirect_to_app}
@@ -276,37 +367,53 @@ class Channels extends Component {
                     subtitles={this.subtitles()}
                     handlePlayMovieApple={this.handlePlayMovieApple}
                     handlePlayMovie={this.handlePlayMovie}
-                    handleOnVideoLoad={this.handleOnVideoLoad}
+                    handleOnReadyStateChange={this.handleOnReadyStateChange}
                     videoSettings={videoSettings}
                     customTheoplayer={customTheoplayer}
+                    handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                   />
-                )}
-              </div>
-              <div className={styles.epg__channels__container}>
-                {programmeGuides.loading && <Placeholder />}
-                <div className={styles.epg__card}>
-                  <div className={styles.epg__infinite__scroll} style={{ height: `${window.innerHeight - 313}px` }}>
-                    {programmeGuides.data &&
-                      scheduleList.length > 0 &&
-                      scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map(dt => (
-                        <MatchList key={dt.id} data={dt} noClickAble isChannel />
-                        // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
-                      ))}
-                    {programmeGuides.error &&
-                      !programmeGuides.loading &&
-                      !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
+                </div>
+              ) : (
+                block && (
+                  <PlatformCheckMobile
+                    iconStatus={this.state.iconStatus}
+                    status={this.state.status}
+                    icon={this.state.imageUrl}
+                    name={this.state.name}
+                    portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+                    user={this.props.user}
+                    isHeader={isHeader}
+                  />
+                )
+              )}
+
+              {!block && (
+                <div className={styles.epg__channels__container}>
+                  {programmeGuides.loading && <Placeholder />}
+                  <div className={styles.epg__card}>
+                    <div className={styles.epg__infinite__scroll} style={{ height: `${window.innerHeight - 313}px` }}>
+                      {programmeGuides.data &&
+                        scheduleList.length > 0 &&
+                        scheduleList.filter(list => formatDateTime(list.start, 'DD MMM') == activeDate).map(dt => (
+                          <MatchList key={dt.id} data={dt} noClickAble isChannel />
+                          // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
+                        ))}
+                      {programmeGuides.error &&
+                        !programmeGuides.loading &&
+                        !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
+                    </div>
+                  </div>
+                  <div className={styles.epg__calendar}>
+                    <VerticalCalendar
+                      handleCategoryFilter={this.handleSelectDate}
+                      selectedDate={activeDate}
+                      // schedule={scheduleList}
+                      isMobile
+                      isChannel
+                    />
                   </div>
                 </div>
-                <div className={styles.epg__calendar}>
-                  <VerticalCalendar
-                    handleCategoryFilter={this.handleSelectDate}
-                    selectedDate={activeDate}
-                    // schedule={scheduleList}
-                    isMobile
-                    isChannel
-                  />
-                </div>
-              </div>
+              )}
             </>
           )}
         </div>

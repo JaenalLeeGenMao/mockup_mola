@@ -6,7 +6,7 @@ const cookieName = production ? '_pst' : '_pst_staging'
 
 const TOKEN_ENDPOINT = production
   ? 'https://mola.tv/api/v2/videos/_/pubsub'
-  : 'https://beta.stag.mola.tv/api/v2/videos/_/pubsub'
+  : 'https://stag.mola.tv/api/v2/videos/_/pubsub'
 
 const PUBSUB_ENDPOINT = production
   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
@@ -91,7 +91,9 @@ class Tracker {
     if (location && location.length > 0) {
       location = location[0].split('=')[1]
     } else {
-      location = localStorage.getItem('user-location')
+      try {
+        location = localStorage.getItem('user-location')
+      } catch (err) {}
       if (window.navigator.geolocation) {
         // console.log("MASUK SINI?")
         window.navigator.geolocation.getCurrentPosition(
@@ -102,7 +104,9 @@ class Tracker {
             // console.log(latitude);
             // console.log(longitude);
             document.cookie = `__loc=${location}; max-age=${60 * 60}; path=/;`
-            localStorage.setItem('user-location', location)
+            try {
+              localStorage.setItem('user-location', location)
+            } catch (err) {}
           },
           function() {},
           options

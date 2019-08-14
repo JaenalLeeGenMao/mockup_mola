@@ -6,7 +6,10 @@
   z-index: 1;
   height: 5rem;
   margin-top: 3rem;
-  overflow: auto;
+
+  /* overflow: hidden; */
+
+  /* overflow: auto; */
   white-space: nowrap;
 }
 
@@ -21,7 +24,9 @@
 .filLeague {
   display: flex;
   justify-content: center;
-  padding: 1rem 1rem 1rem 1rem;
+
+  /* padding: 1rem 24rem 1rem 23rem; */
+  padding: 1rem 9rem 1rem 9rem;
 }
 
 .playlist_all {
@@ -71,4 +76,20 @@
 
 .showPlaylist {
   opacity: 1;
+}
+
+.league__wrapper {
+  /* width: 100%; */
+  overflow: hidden;
+}
+
+.league__wrapper_scroller {
+  display: flex;
+  overflow-x: auto;
+  height: calc(100% + 30px);
+}
+
+.genre__wrapper {
+  width: calc(100% + 20px);
+  line-height: 1.25;
 }

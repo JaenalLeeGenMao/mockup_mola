@@ -65,6 +65,7 @@ class MovieSuggestion extends React.Component {
                           </div>
                         ) : (
                           <div className={s.movieTitle}>
+                            {/* <span className={s.playiconMovie} /> */}
                             <span>{movieTitle}</span>
                           </div>
                         )}
