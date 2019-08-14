@@ -97,8 +97,9 @@ class WatchDesktop extends Component {
         volume: player.volume,
         muted: player.muted,
       }
-
-      localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      try {
+        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      } catch (err) {}
     }
   }
 
@@ -211,12 +212,12 @@ class WatchDesktop extends Component {
     const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, potraitPoster } = this.props
     let theoVolumeInfo = {}
 
-    if (localStorage) {
+    try {
       theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    }
+    } catch (err) {}
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)

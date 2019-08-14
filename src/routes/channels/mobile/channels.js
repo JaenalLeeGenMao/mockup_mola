@@ -84,6 +84,14 @@ class Channels extends Component {
 
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
+
+    this.theoVolumeInfo = {}
+    try {
+      const theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (theoVolumeInfo != null) {
+        this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      }
+    } catch (err) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -217,8 +225,9 @@ class Channels extends Component {
         volume: player.volume,
         muted: player.muted,
       }
-
-      localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      try {
+        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      } catch (err) {}
     }
   }
 

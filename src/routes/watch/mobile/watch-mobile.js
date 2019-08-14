@@ -57,8 +57,9 @@ class MovieDetail extends Component {
         volume: player.volume,
         muted: player.muted,
       }
-
-      localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      try {
+        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
+      } catch (err) {}
     }
   }
 
@@ -197,12 +198,12 @@ class MovieDetail extends Component {
     const { user, getMovieDetail, videoId } = this.props
     let theoVolumeInfo = {}
 
-    if (localStorage) {
+    try {
       theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    }
+    } catch (err) {}
 
     if (dataFetched) {
       const { loc } = this.state

@@ -741,39 +741,40 @@ class Home extends Component {
                                   <p>{locale['view_movie']}</p>
                                 </Link>
                               )}
-                              {!isMovie(activeSlide.contentType) && (
-                                <>
-                                  {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
-                                    <Link
-                                      to={`${watchUrl}${activeSlide.id}`}
-                                      className={`${styles.sport__detail_button} tourMovieDetail`}
-                                    >
-                                      <span className={styles.play_icon_sport} />
-                                      <p>{locale['live_now']}</p>
-                                    </Link>
-                                  )}
-                                  {activeSlide.startTime > Date.now() / 1000 && (
-                                    <Link
-                                      to={`${watchUrl}${activeSlide.id}`}
-                                      className={`${styles.sport__detail_button} ${
-                                        styles.sport__detail_upc_btn
-                                      } tourMovieDetail`}
-                                    >
-                                      <p>{locale['upcoming']}</p>
-                                    </Link>
-                                  )}
-                                  {isMatchPassed(activeSlide.endTime) && (
-                                    <Link
-                                      to={`${watchUrl}${activeSlide.id}`}
-                                      className={`${styles.sport__detail_button} ${
-                                        styles.sport__detail_upc_btn
-                                      } tourMovieDetail`}
-                                    >
-                                      <p>{locale['replay']}</p>
-                                    </Link>
-                                  )}
-                                </>
-                              )}
+                              {!isMovie(activeSlide.contentType) &&
+                                !(getContentTypeName(activeSlide.contentType) == 'vod') && (
+                                  <>
+                                    {isMatchLive(activeSlide.startTime, activeSlide.endTime) && (
+                                      <Link
+                                        to={`${watchUrl}${activeSlide.id}`}
+                                        className={`${styles.sport__detail_button} tourMovieDetail`}
+                                      >
+                                        <span className={styles.play_icon_sport} />
+                                        <p>{locale['live_now']}</p>
+                                      </Link>
+                                    )}
+                                    {activeSlide.startTime > Date.now() / 1000 && (
+                                      <Link
+                                        to={`${watchUrl}${activeSlide.id}`}
+                                        className={`${styles.sport__detail_button} ${
+                                          styles.sport__detail_upc_btn
+                                        } tourMovieDetail`}
+                                      >
+                                        <p>{locale['upcoming']}</p>
+                                      </Link>
+                                    )}
+                                    {isMatchPassed(activeSlide.endTime) && (
+                                      <Link
+                                        to={`${watchUrl}${activeSlide.id}`}
+                                        className={`${styles.sport__detail_button} ${
+                                          styles.sport__detail_upc_btn
+                                        } tourMovieDetail`}
+                                      >
+                                        <p>{locale['replay']}</p>
+                                      </Link>
+                                    )}
+                                  </>
+                                )}
                             </>
                           )}
                         {activeSlide.buttonText && (
