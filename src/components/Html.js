@@ -307,7 +307,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
                 },'auto');ga('send','pageview')`,
             }}
           />
-          <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" />
+          <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" crossOrigin />
           <script
             dangerouslySetInnerHTML={{
               __html: `var initESW = function(gslbBaseURL) {
@@ -362,7 +362,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             }}
           />
 
-          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
+          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" crossOrigin />
         </body>
       </html>
     )
