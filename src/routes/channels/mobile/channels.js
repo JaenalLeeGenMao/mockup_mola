@@ -256,16 +256,16 @@ class Channels extends Component {
   handlePlayMovie = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
     const source = 'redirect-from-browser'
+    const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
     document.location = `intent://mola.tv/watch?v=${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   handlePlayMovieApple = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    const url = `${domain}/download-app/${movieId}`
     const source = 'redirect-from-browser'
+    const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
     setTimeout(function() {
       window.location.href = url
@@ -307,15 +307,6 @@ class Channels extends Component {
     const dataFetched = apiFetched ? data[0] : undefined
     const poster = apiFetched ? dataFetched.background.landscape : ''
 
-    let theoVolumeInfo = {}
-
-    if (localStorage) {
-      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
-      if (theoVolumeInfo != null) {
-        theoVolumeInfo = JSON.parse(theoVolumeInfo)
-      }
-    }
-
     const { user } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
@@ -323,7 +314,7 @@ class Channels extends Component {
       status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
 
     const videoSettings = {
-      ...theoVolumeInfo,
+      ...this.theoVolumeInfo,
       ...defaultVidSetting,
     }
 

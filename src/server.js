@@ -382,10 +382,7 @@ const getHeaderMenus = async () => {
 
   if (!hasCache) {
     try {
-      const headerUrl =
-        config.env === 'production'
-          ? 'https://mola01.koicdn.com/dev/json/menu.json'
-          : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
+      const headerUrl = `${domain}/api/v2/config/ui/menu`
       let response = null
 
       const rawResponse = await fetch(`${headerUrl}`, {
