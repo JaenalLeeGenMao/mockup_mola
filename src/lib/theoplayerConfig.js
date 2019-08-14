@@ -70,8 +70,7 @@ const handleTimeUpdate = (payload, player) => {
         //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
       }
     }
-
-    if (bitrate && !ticker.includes(calcTime)) {
+    if (!ticker.includes(calcTime)) {
       ticker.push(calcTime)
 
       Tracker.sessionId()
