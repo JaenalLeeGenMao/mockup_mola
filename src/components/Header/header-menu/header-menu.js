@@ -118,7 +118,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu } } = this.props
+    const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu }, activeMenuId } = this.props
     const { toggle } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
 
@@ -134,7 +134,14 @@ class HeaderMenu extends Component {
                     const absMenuArray = absMenuUrl.split('/')
                     const isHome = absMenuArray.length <= 3
                     const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    let isActive = ''
+
+                    if (activeMenuId) {
+                      isActive = dts.id == activeMenuId
+                    } else {
+                      isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    }
+
                     const title = _.get(dts, 'attributes.title.en', '')
                     if (dts.id === 1) {
                       return (
@@ -157,7 +164,14 @@ class HeaderMenu extends Component {
                         const absMenuArray = absMenuUrl.split('/')
                         const isHome = absMenuArray.length <= 3
                         const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                        const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                        let isActive = ''
+
+                        if (activeMenuId) {
+                          isActive = dts.id == activeMenuId
+                        } else {
+                          isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                        }
+
                         const title = _.get(dts, 'attributes.title.en', '')
                         if (dts.id > 1 && dts.id < 6) {
                           return (
@@ -179,7 +193,14 @@ class HeaderMenu extends Component {
                     const absMenuArray = absMenuUrl.split('/')
                     const isHome = absMenuArray.length <= 3
                     const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    let isActive = ''
+
+                    if (activeMenuId) {
+                      isActive = dts.id == activeMenuId
+                    } else {
+                      isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    }
+
                     const title = _.get(dts, 'attributes.title.en', '')
                     if (dts.id >= 6 && dts.id != 9) {
                       return (
@@ -218,7 +239,7 @@ class HeaderMenu extends Component {
                   className={styles.header_menu_dropdown_container}
                   pathname={pathname}
                   dataList={headerMenuList}
-                  // activeId={activeMenuDropdown}
+                  activeId={activeMenuId}
                   onClick={this.handleNavigation}
                 />
               </div>

@@ -440,6 +440,7 @@ const normalizeVideoDetail = response => {
           startTime,
           endTime,
           contentType,
+          menuId,
         },
       } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
@@ -471,6 +472,7 @@ const normalizeVideoDetail = response => {
         startTime,
         endTime,
         contentType,
+        menuId,
       }
     })
   }

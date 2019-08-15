@@ -56,7 +56,7 @@ class Header extends Component {
   }
 
   render() {
-    const { pathname, headerMenu, user } = this.props
+    const { pathname, headerMenu, user, activeMenuId } = this.props
     const { width, isLandscape } = this.state
     let isMobileView = width < 778
     if (/iPad/i.test(navigator.userAgent)) {
@@ -78,6 +78,7 @@ class Header extends Component {
           user={user}
           isMobile={isMobileView}
           menu={headerMenu}
+          activeMenuId={activeMenuId}
           isLandscape={isLandscape}
           pathname={pathname}
         />

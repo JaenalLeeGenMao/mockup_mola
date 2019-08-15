@@ -49,7 +49,10 @@ class Profile extends Component {
     /* Notify user with payment details (.e.g success / failed) */
     if (this.flag && query.status_code) {
       if (query.status_code === '200') {
-        toastr.info('Notification', `Payment Successful! status ${query.transaction_status} with order ID ${query.order_id}`)
+        toastr.info(
+          'Notification',
+          `Payment Successful! status ${query.transaction_status} with order ID ${query.order_id}`
+        )
       } else {
         toastr.warning('Notification', getPaymentDesc(query.status_code))
       }
@@ -89,7 +92,10 @@ class Profile extends Component {
             <LazyLoad containerClassName={styles.active}>{this.getCurrentActionTitle()}</LazyLoad>
           ) : (
             <Fragment>
-              <div onClick={() => this.handleTabClick()} className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}>
+              <div
+                onClick={() => this.handleTabClick()}
+                className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}
+              >
                 Profil
               </div>
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
@@ -116,10 +122,25 @@ class Profile extends Component {
     return (
       <div className={styles.profile__contents_container}>
         <div className={styles.profile__contents_wrapper}>
-          {tab === 'security' && <ContentSecurity onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
-          {tab === 'subscription' && <ContentSubscription onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
+          {tab === 'security' && (
+            <ContentSecurity
+              onClick={() => this.setState({ switch: !this.state.switch })}
+              isMobile={this.props.isMobile}
+            />
+          )}
+          {tab === 'subscription' && (
+            <ContentSubscription
+              onClick={() => this.setState({ switch: !this.state.switch })}
+              isMobile={this.props.isMobile}
+            />
+          )}
           {/* {tab === 'setting' && <div>setting</div>} */}
-          {!this.state.whitelistedTabs.includes(tab) && <ContentProfile onClick={() => this.setState({ switch: !this.state.switch })} isMobile={this.props.isMobile} />}
+          {!this.state.whitelistedTabs.includes(tab) && (
+            <ContentProfile
+              onClick={() => this.setState({ switch: !this.state.switch })}
+              isMobile={this.props.isMobile}
+            />
+          )}
         </div>
       </div>
     )
@@ -128,7 +149,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <Header libraryOff className={styles.placeholder__header} leftMenuOff isDark={0} {...this.props} />
+        <Header className={styles.placeholder__header} {...this.props} activeMenuId={9} />
         {this.renderTabs()}
         {this.renderContents()}
       </div>

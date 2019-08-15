@@ -360,7 +360,7 @@ class WatchDesktop extends Component {
         {dataFetched && (
           <>
             <div className={headerContainer}>
-              <Header stickyOff libraryOff {...this.props} />
+              <Header {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
             <div className={movieDetailContainer}>
               <div className={videoPlayerWrapper}>
