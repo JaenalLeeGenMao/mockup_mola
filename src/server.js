@@ -396,7 +396,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -857,7 +857,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, function(err, success) {
+        molaCache.set(videoId, videoObj, 2700, function(err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
