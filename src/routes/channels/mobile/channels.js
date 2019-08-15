@@ -54,7 +54,7 @@ class Channels extends Component {
   componentDidMount() {
     const selectedDate = {
       fullDate: moment().format('YYYYMMDD'),
-      timezone: 7,
+      timezone: 0,
     }
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
@@ -67,7 +67,7 @@ class Channels extends Component {
       fetchVideoByid(id)
       this.eventVideosTracker(id)
       fetchChannelSchedule(selectedDate).then(() => {
-        const filteredSchedule = this.props.channelSchedule.find(item => item.id == movieId)
+        const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
         const time =
           filteredSchedule && filteredSchedule.videos.length > 0
             ? filteredSchedule.videos[0].startTime
@@ -164,7 +164,7 @@ class Channels extends Component {
     const selectedDate = {
       fullDate: moment(strDate).format('YYYYMMDD'),
       dayMonth: formatDateTime(date, 'DD MMM'),
-      timezone: 7,
+      timezone: 0,
     }
 
     this.props.fetchChannelSchedule(selectedDate).then(() => {
