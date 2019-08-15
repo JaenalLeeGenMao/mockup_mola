@@ -3,6 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
 import styles from './PlatformCheck.css'
 import { globalTracker } from '@source/lib/globalTracker'
+import config from '@source/config'
 
 class PlatformCheck extends Component {
   state = {
@@ -11,7 +12,7 @@ class PlatformCheck extends Component {
   handleRedirectTracker = (link, redirect) => {
     window.open(link, '_blank')
     const { user, videoId } = this.props
-    const path = `https://mola.tv/blocker/page-redirect/${videoId}/?redirect=${redirect}`
+    const path = `${config.endpoints.domain}/blocker/page-redirect/${videoId}/?redirect=${redirect}`
     const payload = {
       window,
       user: user,
