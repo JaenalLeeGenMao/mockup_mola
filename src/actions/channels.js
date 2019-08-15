@@ -72,8 +72,8 @@ const getProgrammeGuides = selectedDate => async (dispatch, getState) => {
   if (channelsPlaylist.meta.status === 'success') {
     await Promise.all(
       channelsPlaylist.data.map(async playlist => {
-        const yesterdayProgramme = await Mola.getProgrammeGuides(yesterdayDate, playlist.id)
-        const todayProgramme = await Mola.getProgrammeGuides(selectedDate.fullDate, playlist.id)
+        const yesterdayProgramme = await Mola.getProgrammeGuides(yesterdayDate, playlist.id, selectedDate.timezone)
+        const todayProgramme = await Mola.getProgrammeGuides(selectedDate.fullDate, playlist.id, selectedDate.timezone)
         if (yesterdayProgramme.meta.status === 'error' && todayProgramme.meta.status === 'error') {
           dispatch({
             type: types.GET_PROGRAMME_GUIDES_ERROR,

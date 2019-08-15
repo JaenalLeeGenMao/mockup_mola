@@ -908,7 +908,7 @@ const getChannelsList = (id = 'channels-m') => {
     })
 }
 
-const getProgrammeGuides = (date, playlistId, timezone = '7') => {
+const getProgrammeGuides = (date, playlistId, timezone = 7) => {
   return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}?tz=${timezone}`, {
     ...endpoints.setting,
     // headers: token && { Authorization: `Bearer ${token}` }
