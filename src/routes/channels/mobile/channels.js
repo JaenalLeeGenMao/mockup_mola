@@ -382,6 +382,7 @@ class Channels extends Component {
                     name={this.state.name}
                     portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
                     user={this.props.user}
+                    videoId={activeChannelId}
                     isHeader={isHeader}
                   />
                 )

@@ -56,8 +56,15 @@ class Tracker {
         return item.indexOf('__clientId=') >= 0
       })
 
-    if (clientId && clientId.length > 0) {
+    let clientIdVal = ''
+
+    if (clientId[0]) {
+      clientIdVal = clientId[0].split('=')[1]
+    }
+
+    if (clientId && clientId.length > 0 && clientIdVal) {
       clientId = clientId[0].split('=')[1]
+      document.cookie = `__clientId=${clientId}; max-age=${60 * 60 * 24 * 365 * 2}; path=/;`
     } else {
       clientId =
         Math.random()

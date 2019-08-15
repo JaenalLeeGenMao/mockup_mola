@@ -382,6 +382,8 @@ class Channels extends Component {
                   name={this.state.name}
                   title={apiFetched ? dataFetched.title : ''}
                   portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                  user={this.props.user}
+                  videoId={activeChannelId}
                 />
               ) : (
                 <div>Video Not Available</div> // styling later
