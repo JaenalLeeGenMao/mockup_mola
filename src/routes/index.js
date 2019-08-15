@@ -189,46 +189,52 @@ const routes = {
 
     // Execute each child route until one of them return the result
     const route = await next()
-    const hideOffline = e => {
-      const targetHide = document.getElementsByClassName('embeddedServiceHelpButton')[0]
-      if (e.target.innerText === 'Offline') {
-        targetHide.style.visibility = 'hidden'
-      } else if (e.target.innerHTML === 'Online') {
-        targetHide.style.visibility = 'visible'
-      }
-    }
 
-    let elMessage = null
-    setTimeout(function() {
-      if (typeof document !== 'undefined') {
-        const pathRoute = route.chunks[0]
-        if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
-          elMessage = document.getElementsByClassName('message')[0]
-          if (pathRoute === 'home') {
-            elMessage.addEventListener('DOMSubtreeModified', hideOffline)
-            if (elMessage.innerHTML === 'Online') {
-              document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-            }
-          } else {
-            if (pathRoute === 'live-support') {
-              if (window.App.isMobile) {
-                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-                let _el = document.getElementsByClassName('helpButton')[0]
-                _el.style.left = '44.5vw'
-                _el.style.right = '-50vw'
-                _el.style.top = '50vh'
-                _el.style.visibility = 'visible'
-              }
-            } else {
-              if (elMessage && _isFunction(elMessage)) {
-                elMessage.removeventListener('DOMSubtreeModified', hideOffline)
-              }
-              document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
-            }
-          }
-        }
-      }
-    }, 3000)
+    // ***TOOGLE ICON LIVE SUPPORT***
+
+    // const hideOffline = e => {
+    //   const targetHide = document.getElementsByClassName('embeddedServiceHelpButton')[0]
+    //   if (e.target.innerText === 'Offline') {
+    //     targetHide.style.visibility = 'hidden'
+    //   } else if (e.target.innerHTML === 'Online') {
+    //     targetHide.style.visibility = 'visible'
+    //   }
+    // }
+
+    // let elMessage = null
+    // setTimeout(function() {
+    //   if (typeof document !== 'undefined') {
+    //     const pathRoute = route.chunks[0]
+    //     if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
+    //       elMessage = document.getElementsByClassName('message')[0]
+    //       if (pathRoute === 'home') {
+    //         elMessage.addEventListener('DOMSubtreeModified', hideOffline)
+    //         if (elMessage.innerHTML === 'Online') {
+    //           document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+    //         }
+    //       } else {
+    //         if (pathRoute === 'live-support') {
+    //           if (window.App.isMobile) {
+    //             document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+    //             let _el = document.getElementsByClassName('helpButton')[0]
+    //             _el.style.left = '44.5vw'
+    //             _el.style.right = '-50vw'
+    //             _el.style.top = '50vh'
+    //             _el.style.visibility = 'visible'
+    //           }
+    //         } else {
+    //           if (elMessage && _isFunction(elMessage)) {
+    //             elMessage.removeventListener('DOMSubtreeModified', hideOffline)
+    //           }
+    //           document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+    //         }
+    //       }
+    //     }
+    //   }
+    // }, 3000)
+
+    // ***END OF TOOTGLE ICON LIVE SUPPORT***
+
     // Provide default values for title, description etc.
     route.title = `${route.title || 'Untitled Page'}`
     route.description = route.description || ''
