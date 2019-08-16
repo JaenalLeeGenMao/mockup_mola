@@ -62,7 +62,12 @@ const FormContent = ({ id, label, value, type = 'password', disabled, onChange, 
     <div className={s.profile_form_wrapper}>
       <label htmlFor={id}>{label}</label>
       {type === 'select' ? (
-        <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
+        <Select
+          value={value}
+          onChange={selectedOption => onChange({ ...selectedOption, id })}
+          options={options}
+          styles={colourStyles}
+        />
       ) : (
         <div className={`${s.profile_form_input_wrapper} ${disabled ? s.disabled : ''}`}>
           <div>{error && <p className={s.profile_form_input_wrapper_error}>{error}</p>}</div>
@@ -181,8 +186,15 @@ class Register extends Component {
         csrf,
       }
       const result = await Auth.createNewUser(payload)
+      // const result = {
+      //   name: 'blablabla',
+      //   email: 'qahyne@gmail.com',
+      //   gender: 'l',
+      //   birthdate: 12122018,
+      // }
       // console.log('ini user', result)
       if (result.meta.status === 'success') {
+        // if (result) {
         this.setState({
           error: '',
           isInVerified: true,
@@ -447,10 +459,10 @@ class Register extends Component {
 
     return (
       <div id="secondary_form" className={styles.register__content_form}>
-        <h4>{locale['verify_account']} !</h4>
-        <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle']}</p>
+        <h4>{locale['verify_account2']} !</h4>
+        <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle2']}</p>
         <div>{error && <p className={styles.register__content_error}>{error}</p>}</div>
-        <div className={styles.register__content_verify_token}>
+        {/* <div className={styles.register__content_verify_token}>
           <TextInput
             id="token"
             name="token"
@@ -467,7 +479,7 @@ class Register extends Component {
           </button>
         </div>
         {this.renderResendVerification()}
-        <div>{resendError && <p style={{ textAlign: 'center', color: 'red' }}>{resendError}</p>}</div>
+        <div>{resendError && <p style={{ textAlign: 'center', color: 'red' }}>{resendError}</p>}</div> */}
       </div>
     )
   }
@@ -478,7 +490,9 @@ class Register extends Component {
         <div className={styles.register__header_wrapper}>
           <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} />
         </div>
-        <div className={styles.register__content_wrapper}>{this.state.isInVerified ? this.renderOtpVerification() : this.renderRegistration()}</div>
+        <div className={styles.register__content_wrapper}>
+          {this.state.isInVerified ? this.renderOtpVerification() : this.renderRegistration()}
+        </div>
         <div className={styles.register__footer_wrapper}>
           <Footer />
         </div>
