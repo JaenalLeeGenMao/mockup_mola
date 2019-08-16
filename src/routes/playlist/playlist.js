@@ -197,7 +197,7 @@ class Playlist extends React.Component {
 
     return (
       <>
-        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} />
+        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} activeMenuId={playlists.meta.menuId} />
         {playlistStatus === 'loading' && <Placeholder isMobile={isMobile} />}
         {playlistStatus === 'error' && (
           <PlaylistError

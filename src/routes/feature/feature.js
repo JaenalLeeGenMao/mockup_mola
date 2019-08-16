@@ -136,7 +136,7 @@ class Feature extends Component {
 
     return (
       <>
-        <Header libraryOff color={false} {...this.props} isMobile={isMobile} />
+        <Header libraryOff color={false} {...this.props} isMobile={isMobile} activeMenuId={playlists.meta.menuId} />
         {isLoading && <Placeholder isMobile={isMobile} />}
         {isError && (
           <FeatureError

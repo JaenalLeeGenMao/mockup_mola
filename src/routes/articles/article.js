@@ -74,7 +74,8 @@ class Article extends Component {
       formattedReadTime = readTime ? ` - ${readTime} minute read` : '',
       caption = _.get(article, 'data.attributes.imageCaption', ''),
       formattedCaption = caption ? `"${caption}"` : '',
-      detail = _.get(article, 'data.attributes.content', '')
+      detail = _.get(article, 'data.attributes.content', ''),
+      menuId = _.get(article, 'data.attributes.menuId', '')
 
     const isMobile = this.state.viewportWidth <= 960
 
@@ -83,7 +84,7 @@ class Article extends Component {
     // console.log(detail)
     return (
       <div className={articleContainer}>
-        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} />
+        <Header isMobile={isMobile} libraryOff isDark={false} activeMenuId={menuId} {...this.props} />
         {!article.isLoading && (
           <>
             {isMobile ? (

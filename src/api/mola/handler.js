@@ -59,7 +59,8 @@ const getFeaturePlaylist = id => {
         type = _.get(data, '[0].type', ''),
         title = _.get(data, '[0].attributes.title', ''),
         visibility = _.get(data, '[0].attributes.visibility', 0),
-        playlists = _.get(data, '[0].attributes.playlists', [])
+        playlists = _.get(data, '[0].attributes.playlists', []),
+        menuId = _.get(data, '[0].attributes.menuId', '')
 
       const playlistsFiltered =
         playlists.length > 0
@@ -79,6 +80,7 @@ const getFeaturePlaylist = id => {
           title,
           type,
           visibility,
+          menuId,
         },
         data: playlistsFiltered,
       }
@@ -363,7 +365,8 @@ const getPlaylistPlaylists = id => {
         description = _.get(data, '[0].attributes.description', ''),
         background = _.get(data, '[0].attributes.images.cover.background.landscape', ''),
         playlists = _.get(data, '[0].attributes.playlists', ''),
-        title = _.get(data, '[0].attributes.title', '')
+        title = _.get(data, '[0].attributes.title', ''),
+        menuId = _.get(data, '[0].attributes.menuId', '')
 
       let playlistsFiltered = []
       if (playlists) {
@@ -397,6 +400,7 @@ const getPlaylistPlaylists = id => {
           description,
           status: playlistsFiltered.length > 0 ? 'success' : 'no_result',
           error: '',
+          menuId,
         },
         data: playlistsFiltered || [],
       }
