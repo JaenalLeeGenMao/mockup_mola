@@ -446,12 +446,12 @@ class Register extends Component {
           type="text"
           onKeyUp={this.handleKeyUp}
         />
-        {isLoading && (
+        {!isLoading && (
           <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
             {locale['sign_up']}
           </button>
         )}
-        {!isLoading && (
+        {isLoading && (
           <button type="submit" className={styles.register__content_submit_disabled}>
             <div className={styles.loading__page}>
               {/* {locale['sign_in']} */}

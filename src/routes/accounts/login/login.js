@@ -197,6 +197,11 @@ class Login extends Component {
               <Link to="/accounts/forgotPassword">{locale['forget_password']} ?</Link>
             </div>
             {!isLoading && (
+              <button type="submit" className={styles.login__content_submit} onClick={this.handleLogin}>
+                {locale['sign_in']}
+              </button>
+            )}
+            {isLoading && (
               <button type="submit" className={styles.login__content_submit_disabled}>
                 <div className={styles.loading__page}>
                   {/* {locale['sign_in']} */}
@@ -207,11 +212,6 @@ class Login extends Component {
                     <div />
                   </div>
                 </div>
-              </button>
-            )}
-            {isLoading && (
-              <button type="submit" className={styles.login__content_submit} onClick={this.handleLogin}>
-                {locale['sign_in']}
               </button>
             )}
 
