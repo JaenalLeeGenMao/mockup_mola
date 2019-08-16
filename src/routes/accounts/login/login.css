@@ -9,15 +9,12 @@
   background: linear-gradient(#0e1d3d, #000);
 }
 
-.login__header_wrapper,
-.login__footer_wrapper,
-.login__content_wrapper {
+.login__header_wrapper, .login__footer_wrapper, .login__content_wrapper {
   position: relative;
   width: 100%;
 }
 
-.login__header_wrapper,
-.login__footer_wrapper {
+.login__header_wrapper, .login__footer_wrapper {
   margin-bottom: 5rem;
 }
 
@@ -50,8 +47,7 @@
   text-align: right;
 }
 
-.login__content_forget_password a,
-.login__content_register a {
+.login__content_forget_password a, .login__content_register a {
   display: inline-block;
   font-weight: 500;
   letter-spacing: 0.136rem;
@@ -98,6 +94,24 @@
   font-weight: 500;
 }
 
+.login__content_submit_disabled {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem 1.6rem;
+  height: 5rem;
+  width: 100%;
+  background: #343434;
+  border: none;
+  border-radius: 0.4rem;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.46rem;
+  cursor: pointer;
+  letter-spacing: 0.191rem;
+  font-weight: 500;
+}
+
 .login__content_submit:hover {
   background: #2242c4;
 }
@@ -126,7 +140,7 @@
 }
 
 @media screen and (max-width: 640px) {
-  .login__header_wrapper > div {
+  .login__header_wrapper>div {
     padding: 5%;
   }
 
@@ -146,6 +160,11 @@
     font-size: 1rem;
   }
 
+  .login__content_submit_disabled {
+    height: 3.25rem;
+    font-size: 1rem;
+  }
+
   .login__content_social_wrapper button {
     height: 3.25rem;
   }
@@ -158,4 +177,58 @@
     margin: 2rem 0.5rem 0 0.5rem;
     font-size: 1rem;
   }
+
+  .loading__ring {
+    top: -120%;
+  }
+}
+
+.loading__ring {
+  display: block;
+  position: relative;
+  width: 52px;
+  height: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  bottom: 50%;
+}
+
+.loading__ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 11px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: loading__ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.loading__ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.loading__ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.loading__ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes loading__ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading__page {
+  width: 100%;
+  height: 92%;
 }

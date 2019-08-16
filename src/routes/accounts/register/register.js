@@ -104,6 +104,7 @@ class Register extends Component {
     isCountdown: false,
     isInVerified: false,
     locale: getLocale(),
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -196,6 +197,7 @@ class Register extends Component {
       if (result.meta.status === 'success') {
         // if (result) {
         this.setState({
+          isLoading: true,
           error: '',
           isInVerified: true,
         })
@@ -345,7 +347,18 @@ class Register extends Component {
   }
 
   renderRegistration() {
-    const { locale, username, birthdate, gender, phone, email, password, confirmPassword, error } = this.state
+    const {
+      locale,
+      username,
+      birthdate,
+      gender,
+      phone,
+      email,
+      password,
+      confirmPassword,
+      error,
+      isLoading,
+    } = this.state
 
     return (
       <div id="main_form" className={styles.register__content_form}>
@@ -433,9 +446,25 @@ class Register extends Component {
           type="text"
           onKeyUp={this.handleKeyUp}
         />
-        <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
-          {locale['sign_up']}
-        </button>
+        {isLoading && (
+          <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
+            {locale['sign_up']}
+          </button>
+        )}
+        {!isLoading && (
+          <button type="submit" className={styles.register__content_submit_disabled}>
+            <div className={styles.loading__page}>
+              {/* {locale['sign_in']} */}
+              <div className={styles.loading__ring}>
+                <div />
+                <div />
+                <div />
+                <div />
+              </div>
+            </div>
+          </button>
+        )}
+
         <div className={styles.register__content_separator}>
           <p>{locale['or']}</p>
         </div>
