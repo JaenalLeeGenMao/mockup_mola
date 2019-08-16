@@ -197,4 +197,9 @@
   .channel__duration__text {
     padding-left: 0;
   }
+
+  .matchList__container:hover {
+    transition: none;
+    transform: none;
+  }
 }
