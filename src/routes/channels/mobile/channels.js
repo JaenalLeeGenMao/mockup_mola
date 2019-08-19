@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
@@ -148,15 +147,14 @@ class Channels extends Component {
   }
 
   getConfig = async () => {
-    await get('/api/v2/config/app-params').then(result => {
-      if (result.data) {
-        const { android_redirect_to_app, ios_redirect_to_app } = result.data.data.attributes
-        this.setState({
-          android_redirect_to_app,
-          ios_redirect_to_app,
-        })
-      }
-    })
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { android_redirect_to_app, ios_redirect_to_app } = configParams.data
+      this.setState({
+        android_redirect_to_app,
+        ios_redirect_to_app,
+      })
+    }
   }
 
   handleSelectDate = date => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
-import { get, post } from 'axios'
+import { post } from 'axios'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
@@ -133,22 +133,16 @@ class MovieDetail extends Component {
   }
 
   getConfig = async () => {
-    await get('/api/v2/config/app-params').then(result => {
-      if (result.data) {
-        const {
-          android_redirect_to_app,
-          ios_redirect_to_app,
-          notice_bar_enabled,
-          notice_bar_message,
-        } = result.data.data.attributes
-        this.setState({
-          android_redirect_to_app,
-          ios_redirect_to_app,
-          toggleInfoBar: notice_bar_enabled,
-          notice_bar_message,
-        })
-      }
-    })
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = configParams.data
+      this.setState({
+        android_redirect_to_app,
+        ios_redirect_to_app,
+        toggleInfoBar: notice_bar_enabled,
+        notice_bar_message,
+      })
+    }
   }
 
   componentDidMount() {

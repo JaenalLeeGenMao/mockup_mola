@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _get from 'lodash/get'
-import { get, post } from 'axios'
-import config from '../../../../src/config'
+import { post } from 'axios'
+import config from '@source/config'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
@@ -171,15 +169,14 @@ class WatchDesktop extends Component {
   }
 
   getConfig = async () => {
-    await get('/api/v2/config/app-params').then(result => {
-      if (result.data) {
-        const { notice_bar_enabled, notice_bar_message } = result.data.data.attributes
-        this.setState({
-          toggleInfoBar: notice_bar_enabled,
-          notice_bar_message,
-        })
-      }
-    })
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { notice_bar_enabled, notice_bar_message } = configParams.data
+      this.setState({
+        toggleInfoBar: notice_bar_enabled,
+        notice_bar_message,
+      })
+    }
   }
 
   componentDidMount() {

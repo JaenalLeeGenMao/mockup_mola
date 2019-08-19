@@ -372,9 +372,9 @@ const getHeaderMenus = async () => {
       if (value == undefined) {
         // key not found
         hasCache = false
-        // console.log('cache value header menu is undefined')
+        console.log('cache value header menu is undefined')
       } else {
-        // console.log('cache value header menu is ', value)
+        console.log('cache value header menu is ', value)
         hasCache = true
         headerArr = value
       }
@@ -443,7 +443,7 @@ const getConfigParams = async () => {
     } catch (err) {
       // console.log('Error Get Paramss', err)
     }
-    if (configParams.length > 0) {
+    if (configParams) {
       molaCache.set('configParams', configParams, 900, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
