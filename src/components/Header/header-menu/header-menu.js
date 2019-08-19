@@ -19,7 +19,7 @@ import DropdownMenu from '../dropdown-menu'
 
 import { get } from 'axios'
 
-const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
+const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
   const isLogin = uid || sid
 
@@ -36,12 +36,12 @@ const PopupMenu = ({ user, locale, onClick, onSignOut }) => {
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
-              <Link to="/accounts/profile" className={styles.popup__menu_image_wrapper}>
+              <Link onClick={onProfileClick} className={styles.popup__menu_image_wrapper}>
                 {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
               </Link>
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
-            <Link to="/accounts/profile">{locale['profile']}</Link>
+            <Link onClick={onProfileClick}>{locale['profile']}</Link>
             {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
             {/* <Link to="/accounts/history" onClick={onClick}>{locale['video_history']}</Link> */}
             {/* <Link to="/accounts/profile?tab=subscription" onClick={onClick}>{locale['paket_MOLA']}</Link> */}
@@ -63,19 +63,11 @@ class HeaderMenu extends Component {
     toggle: false /* Toggle profile */,
   }
 
-  componentDidMount() {
-    // this.getHeaderMenus()
+  handleProfileClick = () => {
+    const { toggle } = this.state
+    this.setState({ toggle: !toggle })
+    history.push('/accounts/profile')
   }
-
-  // getHeaderMenus = () => {
-  //   const headerUrl =
-  //     config.env === 'production'
-  //       ? 'https://mola01.koicdn.com/dev/json/menu.json'
-  //       : 'https://cdn.stag.mola.tv/mola/dev/json/menu.json'
-  //   get(headerUrl).then(({ data }) => {
-  //     this.setState({ headerMenuList: data ? data.data : [] })
-  //   })
-  // }
 
   handleToggle = e => {
     const { user: { uid = '', sid = '' } } = this.props
@@ -260,6 +252,7 @@ class HeaderMenu extends Component {
             {toggle && (
               <PopupMenu
                 onClick={this.handleToggle}
+                onProfileClick={this.handleProfileClick}
                 user={this.props.user}
                 locale={this.state.locale}
                 onSignOut={this.handleSignOut}
