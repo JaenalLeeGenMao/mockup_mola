@@ -13,6 +13,7 @@ import webpack from 'webpack'
 import WebpackAssetsManifest from 'webpack-assets-manifest'
 import nodeExternals from 'webpack-node-externals'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import DashboardPlugin from 'webpack-dashboard/plugin'
 import overrideRules from './lib/overrideRules'
 import pkg from '../package.json'
 
@@ -367,7 +368,10 @@ const clientConfig = {
           const fileFilter = file => !file.endsWith('.map')
           const addPath = file => manifest.getPublicPath(file)
           const chunkFiles = stats.compilation.chunkGroups.reduce((acc, c) => {
-            acc[c.name] = [...(acc[c.name] || []), ...c.chunks.reduce((files, cc) => [...files, ...cc.files.filter(fileFilter).map(addPath)], [])]
+            acc[c.name] = [
+              ...(acc[c.name] || []),
+              ...c.chunks.reduce((files, cc) => [...files, ...cc.files.filter(fileFilter).map(addPath)], []),
+            ]
             return acc
           }, Object.create(null))
           fs.writeFileSync(chunkFileName, JSON.stringify(chunkFiles, null, 2))
@@ -498,6 +502,7 @@ const serverConfig = {
   plugins: [
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
+    new DashboardPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         BROWSER: false,
