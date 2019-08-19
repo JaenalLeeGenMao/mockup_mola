@@ -188,19 +188,33 @@ class Register extends Component {
       }
       const result = await Auth.createNewUser(payload)
       // const result = {
-      //   name: 'blablabla',
-      //   email: 'qahyne@gmail.com',
+      //   email: 'qahyne@getnada.com',
+      //   password: 'qahyne@getnada.com',
+      //   birthdate: '12021996',
       //   gender: 'l',
-      //   birthdate: 12122018,
+      //   phone: '082118815437',
       // }
       // console.log('ini user', result)
       if (result.meta.status === 'success') {
         // if (result) {
-        this.setState({
-          isLoading: true,
-          error: '',
-          isInVerified: true,
-        })
+        if (this.props.configParams.data.bypass_otp) {
+          this.setState({
+            error: '',
+            isLoading: true,
+          })
+          history.push({
+            pathname: '/accounts/thankyou',
+            state: {
+              isAccesible: true,
+            },
+          })
+        } else {
+          this.setState({
+            error: '',
+            isInVerified: true,
+            isLoading: true,
+          })
+        }
       } else {
         if (result.meta.error && result.meta.error.error_description) {
           if (result.meta.error.error === 'account_not_verified') {
@@ -485,13 +499,16 @@ class Register extends Component {
 
   renderOtpVerification() {
     const { locale, token, error, resendError } = this.state
+    const { email } = this.state,
+      { runtime: { csrf } } = this.props
 
     return (
       <div id="secondary_form" className={styles.register__content_form}>
-        <h4>{locale['verify_account2']} !</h4>
-        <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle2']}</p>
+        <h4>{locale['verify_account']} !</h4>
+        <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle']}</p>
+
         <div>{error && <p className={styles.register__content_error}>{error}</p>}</div>
-        {/* <div className={styles.register__content_verify_token}>
+        <div className={styles.register__content_verify_token}>
           <TextInput
             id="token"
             name="token"
@@ -508,7 +525,7 @@ class Register extends Component {
           </button>
         </div>
         {this.renderResendVerification()}
-        <div>{resendError && <p style={{ textAlign: 'center', color: 'red' }}>{resendError}</p>}</div> */}
+        <div>{resendError && <p style={{ textAlign: 'center', color: 'red' }}>{resendError}</p>}</div>
       </div>
     )
   }
