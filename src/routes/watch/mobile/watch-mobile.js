@@ -378,7 +378,7 @@ class MovieDetail extends Component {
         {dataFetched && (
           <>
             <div className={headerContainer}>
-              <Header isMobile {...this.props} />
+              <Header isMobile {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
             <div className={movieDetailContainer}>
               {toggleInfoBar &&
