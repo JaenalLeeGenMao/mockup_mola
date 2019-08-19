@@ -3,9 +3,13 @@ import { endpoints } from '@source/config'
 import Tracker from '@source/lib/tracker'
 import config from '@source/config'
 import { get } from 'axios'
+import { getContentTypeName } from '@source/lib/globalUtil'
 
-let ticker = []
+let ticker = [],
+  tickerLive = []
 var videoData, userData
+let timeLive = -1
+
 const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandwidth }) => {
   const { clientIp, uid, referrer } = userData
   // const currentDuration = player ? player.currentTime : '';
@@ -30,52 +34,99 @@ const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandw
 }
 
 const handleTimeUpdate = (payload, player) => {
-  const time = Math.round(payload)
-  let bitrate = '',
-    video_quality = '',
-    client_bandwidth = ''
+  //Live
+  if (getContentTypeName(videoData.contentType) == 'linear' || getContentTypeName(videoData.contentType) == 'live') {
+    // console.log('this.liveVidId', this.liveVidId)
+    // console.log('videoData.id', videoData.id)
+    // this.liveVidId = videoData.id
+    // if (this.liveVidId != videoData.id) {
+    //   timeLive = -1
+    // }
+    const time = Math.round(payload)
+    let bitrate = '',
+      video_quality = '',
+      client_bandwidth = ''
 
-  // console.log("time", time)
-  // console.log("buffer start", player.buffered.start(0))
-  // console.log("buffer end", player.buffered.end(0))
-  // console.log("buffer length", player.buffered.length)
+    if (!player.ads.playing) {
+      if (!ticker.includes(time)) {
+        ticker.push(time)
+        timeLive = timeLive + 1
+      }
+      // console.log('timeLive', timeLive, tickerLive, ticker)
+      // console.log('timeLive', timeLive)
+      if (timeLive % 60 === 0) {
+        // console.log('ticker', ticker)
+        var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
+          currentTrack
+        for (var i = 0; i < vTracks.length; i++) {
+          currentTrack = vTracks.item(i)
+          if (currentTrack.enabled && currentTrack.activeQuality) {
+            // console.log("Resolution:", currentTrack.activeQuality.height)
+            // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
+            video_quality = `${currentTrack.activeQuality.height}`
+            bitrate = `${currentTrack.activeQuality.bandwidth}`
+            try {
+              client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+            } catch (err) {}
+            //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+          }
 
-  if (time % 60 === 0 && !player.ads.playing) {
-    var calcTime = time
-    /* NOTE:
-      these two types (live video) return currentTime callback
-      from theoplayer starting from 60s
-      so we need to substract 60s from the currentTime
-      2 = channel
-      3 = live match
-      untuk live match type nya bisa berubah setelah matchnya selesai, jadinya
-      cek berdasarkan streamsourceurl, karena kalau live di urlnya ada text 'Live'
-    */
-    if (videoData.streamSourceUrl.toLowerCase().indexOf('live') > -1) {
-      calcTime = Math.max(time - 60, 0)
-    }
-
-    var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
-      currentTrack
-    for (var i = 0; i < vTracks.length; i++) {
-      currentTrack = vTracks.item(i)
-      if (currentTrack.enabled && currentTrack.activeQuality) {
-        // console.log("Resolution:", currentTrack.activeQuality.height)
-        // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
-        video_quality = `${currentTrack.activeQuality.height}`
-        bitrate = `${currentTrack.activeQuality.bandwidth}`
-        try {
-          client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-        } catch (err) {}
-        //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+          if (!tickerLive.includes(timeLive)) {
+            tickerLive.push(timeLive)
+            Tracker.sessionId()
+            const heartbeat = timeLive !== 0
+            // console.log('masuk SINI TIMELIVE', timeLive)
+            // console.log('dt:', video_quality, bitrate, client_bandwidth)
+            handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
+          }
+        }
       }
     }
-    if (!ticker.includes(calcTime)) {
-      ticker.push(calcTime)
+  } else {
+    const time = Math.round(payload)
+    let bitrate = '',
+      video_quality = '',
+      client_bandwidth = ''
 
-      Tracker.sessionId()
-      const heartbeat = calcTime !== 0
-      handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
+    // console.log("time", time)
+    // console.log("buffer start", player.buffered.start(0))
+    // console.log("buffer end", player.buffered.end(0))
+    // console.log("buffer length", player.buffered.length)
+
+    if (time % 60 === 0 && !player.ads.playing) {
+      var calcTime = time
+      /* NOTE:
+        these two types (live video) return currentTime callback
+        from theoplayer starting from 60s
+        so we need to substract 60s from the currentTime
+        2 = channel
+        3 = live match
+        untuk live match type nya bisa berubah setelah matchnya selesai, jadinya
+        cek berdasarkan streamsourceurl, karena kalau live di urlnya ada text 'Live'
+      */
+
+      var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
+        currentTrack
+      for (var i = 0; i < vTracks.length; i++) {
+        currentTrack = vTracks.item(i)
+        if (currentTrack.enabled && currentTrack.activeQuality) {
+          // console.log("Resolution:", currentTrack.activeQuality.height)
+          // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
+          video_quality = `${currentTrack.activeQuality.height}`
+          bitrate = `${currentTrack.activeQuality.bandwidth}`
+          try {
+            client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+          } catch (err) {}
+          //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+        }
+      }
+      if (!ticker.includes(calcTime)) {
+        ticker.push(calcTime)
+
+        Tracker.sessionId()
+        const heartbeat = calcTime !== 0
+        handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
+      }
     }
   }
 }
@@ -110,6 +161,8 @@ export const defaultVideoSetting = (user, videoDt, vuid) => {
   videoData = videoDt
   userData = user
   ticker = []
+  tickerLive = []
+  timeLive = -1
 
   var movieUrl = videoDt.streamSourceUrl
 
