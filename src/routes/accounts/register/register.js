@@ -506,7 +506,6 @@ class Register extends Component {
       <div id="secondary_form" className={styles.register__content_form}>
         <h4>{locale['verify_account']} !</h4>
         <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle']}</p>
-
         <div>{error && <p className={styles.register__content_error}>{error}</p>}</div>
         <div className={styles.register__content_verify_token}>
           <TextInput

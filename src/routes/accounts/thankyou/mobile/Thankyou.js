@@ -45,6 +45,15 @@ class Thankyou extends React.Component {
     if (!isAccesible) {
       history.push('not-found')
     }
+    this.toLogin = setTimeout(() => {
+      window.location.href = '/accounts/login'
+    }, 15000)
+  }
+
+  componentWillUnmount() {
+    if (this.toLogin) {
+      clearTimeout(this.toLogin)
+    }
   }
 
   render() {
@@ -62,7 +71,9 @@ class Thankyou extends React.Component {
                 <h1>{locale['enjoy']}</h1>
                 <div className={s.description}>
                   <p>{locale['your_account_has_been_verified']}</p>
-                  <p>{locale['thankyou_description']}</p>
+                  <p>
+                    Atau klik <a href={'/accounts/login'}> disini</a> jika tidak diarahkan lebih dari 10 detik
+                  </p>
                 </div>
               </div>
             </LazyLoad>
