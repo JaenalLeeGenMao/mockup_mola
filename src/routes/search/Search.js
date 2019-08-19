@@ -68,14 +68,17 @@ class Search extends React.Component {
         '-' +
         ('0' + expiredDateStamp.getDate()).slice(-2) +
         ' 00:00:00'
-      //hanya delete keyword cache saja, data movie dan cast masih tersimpan
-      searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, () => {
-        searchDb.searchKeyword
-          .where('createdDate')
-          .belowOrEqual(expiredDate)
-          .delete()
-          .then(function() {})
-      })
+
+      if (navigator.cookieEnabled) {
+        //hanya delete keyword cache saja, data movie dan cast masih tersimpan
+        searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, () => {
+          searchDb.searchKeyword
+            .where('createdDate')
+            .belowOrEqual(expiredDate)
+            .delete()
+            .then(function() {})
+        })
+      }
     }
 
     if (recentSearch.meta.status === 'loading' && prevState.recentSearch.length <= 0) {
