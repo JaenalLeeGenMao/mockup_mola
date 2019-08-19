@@ -132,7 +132,7 @@ class MovieDetail extends Component {
     }
   }
 
-  getConfig = async () => {
+  getConfig = () => {
     const { configParams } = this.props
     if (configParams.data) {
       const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = configParams.data
@@ -232,28 +232,50 @@ class MovieDetail extends Component {
         isMatchPassed = true
       }
 
+      if (isApple) {
+        //ios
+        if (ios_redirect_to_app) {
+          return (
+            <div className={posterWrapper}>
+              <img src={poster} />
+              <span className={playIcon} onClick={this.handlePlayMovieApple} />
+            </div>
+          )
+        }
+      } else {
+        if (android_redirect_to_app) {
+          return (
+            <div className={posterWrapper}>
+              <img src={poster} />
+              <span className={playIcon} onClick={this.handlePlayMovie} />
+            </div>
+          )
+        }
+      }
+
+      if (!isAllowed) {
+        if (watchPermissionErrorCode == 'login_first') {
+          return (
+            <div className={movieDetailNotAllowed}>
+              <p>
+                Silahkan{' '}
+                <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
+                  {' '}
+                  login
+                </a>{' '}
+                untuk menyaksikan tayangan ini.
+              </p>
+            </div>
+          )
+        }
+      }
+
       const countDownClass = toggleInfoBar && !isMatchPassed ? countdownWinfobar : countdownWOinfobar
       if (
         this.state.countDownStatus &&
         getContentTypeName(dataFetched.contentType) === 'live' &&
         dataFetched.startTime * 1000 > Date.now()
       ) {
-        if (!isAllowed && !android_redirect_to_app) {
-          if (watchPermissionErrorCode == 'login_first') {
-            return (
-              <div className={movieDetailNotAllowed}>
-                <p>
-                  Silahkan{' '}
-                  <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
-                    {' '}
-                    login
-                  </a>{' '}
-                  untuk menyaksikan tayangan ini.
-                </p>
-              </div>
-            )
-          }
-        }
         return (
           <CountDown
             className={countDownClass}
@@ -265,91 +287,17 @@ class MovieDetail extends Component {
           />
         )
       } else {
-        if (isApple) {
-          //ios
-          if (ios_redirect_to_app) {
-            return (
-              <div className={posterWrapper}>
-                <img src={poster} />
-                <span className={playIcon} onClick={this.handlePlayMovieApple} />
-              </div>
-            )
-          } else {
-            if (!isAllowed) {
-              if (watchPermissionErrorCode == 'login_first') {
-                return (
-                  <div className={movieDetailNotAllowed}>
-                    <p>
-                      Silahkan{' '}
-                      <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
-                        {' '}
-                        login
-                      </a>{' '}
-                      untuk menyaksikan tayangan ini.
-                    </p>
-                  </div>
-                )
-              }
-            }
-            return (
-              <Theoplayer
-                className={customTheoplayer}
-                subtitles={this.subtitles()}
-                poster={poster}
-                autoPlay={false}
-                handleOnReadyStateChange={this.handleOnReadyStateChange}
-                {...videoSettings}
-                isMobile
-              />
-            )
-          }
-        } else {
-          // console.log('kumhakumaha', android_redirect_to_app)
-          //android
-          // console.log('asdsadsadsa', android_redirect_to_app, isAllowed)
-          if (android_redirect_to_app && !isAllowed) {
-            // console.log('mashokk', android_redirect_to_app, isAllowed)
-            return (
-              <div className={posterWrapper}>
-                <img src={poster} />
-                <span className={playIcon} onClick={this.handlePlayMovie} />
-              </div>
-            )
-          } else {
-            if (!isAllowed) {
-              if (watchPermissionErrorCode == 'login_first') {
-                return (
-                  <div className={movieDetailNotAllowed}>
-                    <p>
-                      Silahkan{' '}
-                      <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
-                        {' '}
-                        login
-                      </a>{' '}
-                      untuk menyaksikan tayangan ini.
-                    </p>
-                  </div>
-                )
-              }
-            }
-            return (
-              <Theoplayer
-                className={customTheoplayer}
-                subtitles={this.subtitles()}
-                poster={poster}
-                autoPlay={false}
-                // certificateUrl="test"
-                // handleOnVideoLoad={this.handleOnVideoLoad}
-                // handleOnVideoPause={this.handleOnVideoPause}
-                // handleOnLoadedData={this.handleOnLoadedData}
-                // handleOnReadyStateChange={this.handleOnReadyStateChange}
-                // handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                {...videoSettings}
-                isMobile
-              />
-            )
-          }
-        }
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
+            {...videoSettings}
+            isMobile
+          />
+        )
       }
     }
   }
