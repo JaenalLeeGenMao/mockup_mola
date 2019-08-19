@@ -197,7 +197,12 @@ class Register extends Component {
       // console.log('ini user', result)
       if (result.meta.status === 'success') {
         // if (result) {
-        if (this.props.configParams.data.bypass_otp) {
+        const { configParams } = this.props
+        let bypass_otp = false
+        if (configParams.data) {
+          bypass_otp = configParams.data.bypass_otp
+        }
+        if (bypass_otp) {
           this.setState({
             error: '',
             isLoading: true,
