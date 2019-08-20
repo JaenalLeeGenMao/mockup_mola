@@ -372,9 +372,9 @@ const getHeaderMenus = async () => {
       if (value == undefined) {
         // key not found
         hasCache = false
-        console.log('cache value header menu is undefined')
+        // console.log('cache value header menu is undefined')
       } else {
-        console.log('cache value header menu is ', value)
+        // console.log('cache value header menu is ', value)
         hasCache = true
         headerArr = value
       }
