@@ -92,6 +92,7 @@ class Register extends Component {
   state = {
     username: '',
     email: '',
+    confirmEmail: '',
     birthdate: '',
     gender: '',
     phone: '',
@@ -142,7 +143,7 @@ class Register extends Component {
   }
 
   handleRegister = async () => {
-    const { email, password, confirmPassword, birthdate, gender, phone, locale } = this.state,
+    const { email, confirmEmail, password, confirmPassword, birthdate, gender, phone, locale } = this.state,
       { runtime: { csrf } } = this.props
 
     if (email == '') {
@@ -153,13 +154,17 @@ class Register extends Component {
       this.setState({
         error: locale['error_valid_email'],
       })
-    } else if (password != confirmPassword) {
+    } else if (email != confirmEmail) {
       this.setState({
-        error: locale['error_input'],
+        error: locale['error_email'],
       })
     } else if (password == '' || !password) {
       this.setState({
         error: locale['error_input_password'],
+      })
+    } else if (password != confirmPassword) {
+      this.setState({
+        error: locale['error_input'],
       })
     } else if (gender === '') {
       this.setState({
@@ -373,6 +378,7 @@ class Register extends Component {
       gender,
       phone,
       email,
+      confirmEmail,
       password,
       confirmPassword,
       error,
@@ -404,6 +410,18 @@ class Register extends Component {
           isError={error !== ''}
           errorClassName={styles.register__content_input_error}
           placeholder="Email"
+          type="text"
+          onKeyUp={this.handleKeyUp}
+        />
+        <TextInput
+          id="confirmEmail"
+          name="confirmEmail"
+          onChange={this.handleInputChange}
+          value={confirmEmail}
+          className={styles.register__content_input}
+          isError={error !== ''}
+          errorClassName={styles.register__content_input_error}
+          placeholder="Konfirmasi Email"
           type="text"
           onKeyUp={this.handleKeyUp}
         />
