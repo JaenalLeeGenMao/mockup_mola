@@ -47,6 +47,11 @@ class Watch extends Component {
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
+      if (window) {
+        if (window.debugStore) {
+          window.debugStore.movieDetail = this.props.movieDetail
+        }
+      }
       const dataFetch = movieDetail.data[0]
 
       const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
