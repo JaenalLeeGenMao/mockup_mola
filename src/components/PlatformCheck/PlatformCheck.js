@@ -11,9 +11,8 @@ class PlatformCheck extends Component {
   }
   handleRedirectTracker = (link, redirect) => {
     const { user, videoId } = this.props
-    const path = `https://mola.tv/blocker/preorder-redirect/${videoId}/?redirect=${redirect}`
-    const getEnv = window.location.href.split('.tv')
-    const link_redirect = `${getEnv}.tv/page-redirect?link_redirect=${link}`
+    const path = `${config.endpoints.domain}/blocker/page-redirect/${videoId}/?redirect=${redirect}`
+    const link_redirect = `/page-redirect?link_redirect=${link}`
     const payload = {
       window,
       user: user,
