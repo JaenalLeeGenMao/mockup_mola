@@ -70,7 +70,7 @@ class ArticleCard extends Component {
             <>
               <div className={articleGradient} />
               <div className={icons}>
-                <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
+                {/* <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} /> */}
                 <h3>{date}</h3>
                 <p className="info_content">{description}</p>
                 <div />

@@ -44,7 +44,8 @@ class PlaylistCard extends Component {
         'mola-featured': 'tvIcon' /** videos */,
         // 'mola-categories': 'matchIcon' /** videos */,
         articles: 'articleIcon' /** videos */,
-      }
+      },
+      isMatch = contentTypeName === 'live' || contentTypeName === 'replay'
 
     return (
       <div
@@ -63,12 +64,13 @@ class PlaylistCard extends Component {
             src={src}
             handleCallback={this.handleTitleShow}
           />
-          {/* {show &&
+          {show &&
+            isMatch &&
             whitelistContentTypes[`${contentTypeName}`] && (
               <div className={icons}>
                 <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
               </div>
-            )} */}
+            )}
         </div>
         {/* <p>{description}</p> */}
       </div>
