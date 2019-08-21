@@ -75,4 +75,12 @@ export const carouselHeader = css`
     background: white;
     border: 0.112rem solid #ffffff;
   }
+
+  @media screen and (max-width: 960px) {
+    a {
+      font-size: 12px;
+      margin: 0 5px;
+      padding: 4px 10px;
+    }
+  }
 `
