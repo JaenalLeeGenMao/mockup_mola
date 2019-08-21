@@ -20,7 +20,7 @@ import Placeholder from './placeholder'
 import { BannerPlaceholder } from './placeholder/banner-placeholder'
 import { contentTypeList, banners as dummyDataBanners } from './const'
 
-import { container, bannerContainer, carouselMargin } from './style'
+import { container, bannerContainer, carouselMargin, carouselHeader } from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
@@ -181,22 +181,27 @@ class Feature extends Component {
                 videos.data.length > 0 &&
                 playlists.data.length === videos.data.length &&
                 videos.data.map((video, carouselIndex) => {
-                  const contentTypeName = getContentTypeName(_.get(playlists, `data[${carouselIndex}].contentType`, ''))
+                  const contentTypeName = getContentTypeName(
+                      _.get(playlists, `data[${carouselIndex}].contentType`, '')
+                    ),
+                    playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
+                    slideToShow = isMobile
+                      ? contentTypeList[contentTypeName].slideToScroll
+                      : contentTypeList[contentTypeName].slideToShow
 
                   return (
                     <div key={carouselIndex}>
-                      {video.data.length > 0 && <h3>{video.meta.title}</h3>}
+                      <div className={carouselHeader}>
+                        {video.data.length > 0 && <h3>{video.meta.title}</h3>}
+                        {video.data.length > slideToShow && <a href={`/categories/${playlistId}`}>View All</a>}
+                      </div>
                       <Carousel
                         wrap={false}
                         autoplay={false}
                         sliderCoin={true}
                         dragging={true}
                         withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
-                        slidesToShow={
-                          isMobile
-                            ? contentTypeList[contentTypeName].slideToScroll
-                            : contentTypeList[contentTypeName].slideToShow
-                        }
+                        slidesToShow={slideToShow}
                         transitionMode={'scroll'}
                         cellSpacing={12}
                         framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}

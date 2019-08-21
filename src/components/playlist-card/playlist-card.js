@@ -63,14 +63,14 @@ class PlaylistCard extends Component {
             src={src}
             handleCallback={this.handleTitleShow}
           />
-          {show &&
+          {/* {show &&
             whitelistContentTypes[`${contentTypeName}`] && (
               <div className={icons}>
                 <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} />
               </div>
-            )}
+            )} */}
         </div>
-        <p>{description}</p>
+        {/* <p>{description}</p> */}
       </div>
     )
   }
