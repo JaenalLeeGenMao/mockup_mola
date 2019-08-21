@@ -61,16 +61,16 @@
 
 .home__arrow_next {
   right: 5vw;
-  top: 40%;
-  transform: translateY(-40%);
+  top: 15%;
+  transform: translateY(-15%);
   border-width: 0.2rem;
   border-radius: 50%;
 }
 
 .home__arrow_prev {
   left: 5vw;
-  top: 40%;
-  transform: translateY(-40%);
+  top: 15%;
+  transform: translateY(-15%);
   border-width: 0.2rem;
   border-radius: 50%;
 
