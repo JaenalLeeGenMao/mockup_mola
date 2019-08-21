@@ -175,7 +175,7 @@ export const portraitCardWrapper = css`
   width: 9.75vw;
   // width: 16rem;
   margin: 0.5rem;
-  overflow: hidden;
+  // overflow: hidden;
 
   @media screen and (max-width: 960px) {
     width: 30.5vw;
@@ -195,7 +195,7 @@ export const landscapeCardWrapper = css`
   width: 15vw;
   // width: 16rem;
   margin: 0.5rem;
-  overflow: hidden;
+  // overflow: hidden;
 
   @media screen and (max-width: 960px) {
     width: 46.5vw;

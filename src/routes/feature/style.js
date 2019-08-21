@@ -57,3 +57,30 @@ export const carouselMargin = css`
   //   }
   // }
 `
+
+export const carouselHeader = css`
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    color: #969696;
+    border: 0.112rem solid #969696;
+    border-radius: 3rem;
+    padding: 0.25rem 1rem 0.35rem 1rem;
+    transition: all ease 500ms;
+  }
+
+  a:hover {
+    color: #000000;
+    background: white;
+    border: 0.112rem solid #ffffff;
+  }
+
+  @media screen and (max-width: 960px) {
+    a {
+      font-size: 12px;
+      margin: 0 5px;
+      padding: 4px 10px;
+    }
+  }
+`

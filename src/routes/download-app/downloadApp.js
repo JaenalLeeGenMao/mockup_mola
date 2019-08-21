@@ -82,7 +82,7 @@ class DownloadApp extends Component {
             </div>
             <div className={styles.detail__desc}>
               <div className={styles.detail__desc__text}>
-                Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app di
+                Untuk menyaksikan tayangan ini, silakan unduh Mola TV mobile app melalui tombol di bawah ini
               </div>
             </div>
             <a className={styles.btn_open_app} onClick={this.handleStoreTracker} href={storeUrl}>

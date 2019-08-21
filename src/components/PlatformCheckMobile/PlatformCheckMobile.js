@@ -90,13 +90,32 @@ class PlatformCheckMobile extends Component {
                   <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
                     Blibli.com
                   </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
+                  <div className={styles.detail__desc__text__icon__bottom__text__and}>,&nbsp;</div>
                   <a
                     onClick={() =>
                       this.handleRedirectTracker('https://www.matrixshop.co.id/molamatrix', 'matrixshop.co.id')
                     }
                   >
                     Mola-Matrix
+                  </a>
+                  <div className={styles.detail__desc__text__icon__bottom__text__and}>,&nbsp;</div>
+                  <a
+                    onClick={() =>
+                      this.handleRedirectTracker(
+                        'https://www.tokopedia.com/polytron-id/mola-polytron-streaming-device',
+                        'tokopedia.com'
+                      )
+                    }
+                  >
+                    Tokopedia
+                  </a>
+                  <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
+                  <a
+                    onClick={() =>
+                      this.handleRedirectTracker('https://www.polytronstore.com/video/358', 'polytronstore.com')
+                    }
+                  >
+                    polytronstore.com
                   </a>
                 </div>
               </div>
