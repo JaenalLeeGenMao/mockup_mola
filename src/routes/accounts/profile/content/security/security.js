@@ -7,7 +7,6 @@ import { updatePassword } from '@actions/resetPassword'
 
 import '@global/style/css/reactReduxToastr.css'
 
-import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components'
 import LazyLoad from '@components/common/Lazyload'
 
 import s from './security.css'
@@ -71,15 +70,33 @@ class Security extends React.Component {
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
             <div className={s.security_form_wrapper}>
               <label htmlFor="currentPassword">Sandi sekarang</label>
-              <input type="password" id="currentPassword" onChange={this.onChangeInput} value={currentPassword} onKeyUp={this.handleKeyUp} />
+              <input
+                type="password"
+                id="currentPassword"
+                onChange={this.onChangeInput}
+                value={currentPassword}
+                onKeyUp={this.handleKeyUp}
+              />
             </div>
             <div className={s.security_form_wrapper}>
               <label htmlFor="newPassword">Ubah sandi</label>
-              <input type="password" id="newPassword" onChange={this.onChangeInput} value={newPassword} onKeyUp={this.handleKeyUp} />
+              <input
+                type="password"
+                id="newPassword"
+                onChange={this.onChangeInput}
+                value={newPassword}
+                onKeyUp={this.handleKeyUp}
+              />
             </div>
             <div className={s.security_form_wrapper}>
               <label htmlFor="confirmNewPassword">Konfirmasi sandi</label>
-              <input type="password" id="confirmNewPassword" onChange={this.onChangeInput} value={confirmNewPassword} onKeyUp={this.handleKeyUp} />
+              <input
+                type="password"
+                id="confirmNewPassword"
+                onChange={this.onChangeInput}
+                value={confirmNewPassword}
+                onKeyUp={this.handleKeyUp}
+              />
             </div>
             <div style={{ textAlign: 'left', padding: '2rem 0' }}>
               <button className={s.security_button_active} onClick={this.handleSubmit}>

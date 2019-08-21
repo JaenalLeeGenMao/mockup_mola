@@ -230,7 +230,3 @@ export const videoPlayerWrapper = css`
   width: 100vw;
   background: #000;
 `
-
-export const countdownWinfobar = css`
-  height: calc(100% - 6.5rem - 3.8rem) !important;
-`
