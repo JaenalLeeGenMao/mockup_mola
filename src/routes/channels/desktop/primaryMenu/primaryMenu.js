@@ -5,14 +5,18 @@ import styles from './primaryMenu.css'
 
 class PrimaryMenu extends Component {
   render() {
-    const { channelsPlaylist, handleSelectChannel } = this.props
+    const { channelsPlaylist, handleSelectChannel, activeChannelId } = this.props
     return (
       <>
         <div className={styles.epg__logo__container}>
           {channelsPlaylist.data.map(item => (
             <div
               key={item.id}
-              className={styles.epg__logo__wrapper}
+              className={
+                item.id === activeChannelId
+                  ? `${styles.epg__logo__wrapper} ${styles.logo__active}`
+                  : styles.epg__logo__wrapper
+              }
               onClick={() => {
                 handleSelectChannel(item.id)
               }}

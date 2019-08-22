@@ -396,7 +396,11 @@ class Channels extends Component {
               {status === 'error' &&
                 !loadPlayer && <div className={styles.video__unavailable}>Video Not Available</div>}
             </div>
-            <PrimaryMenu handleSelectChannel={this.handleSelectChannel} channelsPlaylist={channelsPlaylist} />
+            <PrimaryMenu
+              activeChannelId={activeChannelId}
+              handleSelectChannel={this.handleSelectChannel}
+              channelsPlaylist={channelsPlaylist}
+            />
             <div className={styles.epg__list__container}>
               <SecondaryMenu
                 handleCategoryFilter={this.handleSelectChannel}
