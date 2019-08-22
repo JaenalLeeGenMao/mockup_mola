@@ -68,14 +68,17 @@ class Search extends React.Component {
         '-' +
         ('0' + expiredDateStamp.getDate()).slice(-2) +
         ' 00:00:00'
-      //hanya delete keyword cache saja, data movie dan cast masih tersimpan
-      searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, () => {
-        searchDb.searchKeyword
-          .where('createdDate')
-          .belowOrEqual(expiredDate)
-          .delete()
-          .then(function() {})
-      })
+
+      if (navigator.cookieEnabled) {
+        //hanya delete keyword cache saja, data movie dan cast masih tersimpan
+        searchDb.transaction('rw', searchDb.moviesResult, searchDb.castsResult, searchDb.searchKeyword, () => {
+          searchDb.searchKeyword
+            .where('createdDate')
+            .belowOrEqual(expiredDate)
+            .delete()
+            .then(function () { })
+        })
+      }
     }
 
     if (recentSearch.meta.status === 'loading' && prevState.recentSearch.length <= 0) {
@@ -176,11 +179,11 @@ class Search extends React.Component {
   }
 
   parseCastSuggestion = (result, val) => {
-    const matchCastArr = result.data.filter(function(dt) {
+    const matchCastArr = result.data.filter(function (dt) {
       return dt.type == 'casts'
     })
 
-    const firstMatchCastArr = matchCastArr.filter(function(dt) {
+    const firstMatchCastArr = matchCastArr.filter(function (dt) {
       if (dt.title) {
         return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
       }
@@ -192,11 +195,11 @@ class Search extends React.Component {
   }
 
   parseMovieSuggestion = (result, val) => {
-    const matchMovieArr = result.data.filter(function(dt) {
+    const matchMovieArr = result.data.filter(function (dt) {
       return dt.type == 'videos'
     })
 
-    const firstMatchMovieArr = matchMovieArr.filter(function(dt) {
+    const firstMatchMovieArr = matchMovieArr.filter(function (dt) {
       if (dt.title) {
         return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
       }

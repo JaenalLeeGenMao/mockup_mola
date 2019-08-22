@@ -26,6 +26,7 @@ class Login extends Component {
   state = {
     error: '',
     locale: getLocale(),
+    isLoading: false,
   }
 
   handleInputChange = e => {
@@ -62,6 +63,9 @@ class Login extends Component {
       })
 
       if (result.meta.status === 'success') {
+        this.setState({
+          isLoading: true,
+        })
         let accountURL = '/accounts/signin'
 
         let paramsQuery = {}
@@ -155,7 +159,7 @@ class Login extends Component {
   }
 
   render() {
-    const { locale, error } = this.state
+    const { locale, error, isLoading } = this.state
     return (
       <div className={styles.login__container}>
         <div className={styles.login__header_wrapper}>
@@ -192,9 +196,25 @@ class Login extends Component {
             <div className={styles.login__content_forget_password}>
               <Link to="/accounts/forgotPassword">{locale['forget_password']} ?</Link>
             </div>
-            <button type="submit" className={styles.login__content_submit} onClick={this.handleLogin}>
-              {locale['sign_in']}
-            </button>
+            {!isLoading && (
+              <button type="submit" className={styles.login__content_submit} onClick={this.handleLogin}>
+                {locale['sign_in']}
+              </button>
+            )}
+            {isLoading && (
+              <button type="submit" className={styles.login__content_submit_disabled}>
+                <div className={styles.loading__page}>
+                  {/* {locale['sign_in']} */}
+                  <div className={styles.loading__ring}>
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                </div>
+              </button>
+            )}
+
             <div className={styles.login__content_separator}>
               <p>{locale['or']}</p>
             </div>

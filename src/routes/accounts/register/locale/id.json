@@ -21,5 +21,6 @@
   "error_phone": "Periksa kembali no handphone anda, contoh 08XXXXXXXXXX",
   "error_name": "nama tidak boleh kosong",
   "error_location": "lokasi tidak boleh kosong",
-  "error_phones": "nomor telepon tidak boleh kosong"
+  "error_phones": "nomor telepon tidak boleh kosong",
+  "error_email": "email harus sama dengan yang pertama"
 }

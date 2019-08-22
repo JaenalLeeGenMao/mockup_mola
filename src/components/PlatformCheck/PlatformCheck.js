@@ -10,9 +10,9 @@ class PlatformCheck extends Component {
     result: [],
   }
   handleRedirectTracker = (link, redirect) => {
-    window.open(link, '_blank')
     const { user, videoId } = this.props
     const path = `${config.endpoints.domain}/blocker/page-redirect/${videoId}/?redirect=${redirect}`
+    const link_redirect = `/page-redirect?link_redirect=${link}`
     const payload = {
       window,
       user: user,
@@ -20,6 +20,7 @@ class PlatformCheck extends Component {
       event: 'event_pages',
     }
     globalTracker(payload)
+    window.open(link_redirect, '_blank')
   }
   render() {
     const { name, portraitPoster, title, titleClass, icon, iconStatus, status } = this.props

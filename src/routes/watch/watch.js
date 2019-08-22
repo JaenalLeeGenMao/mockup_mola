@@ -24,7 +24,6 @@ class Watch extends Component {
     name: '',
     imageUrl: [],
     block: false,
-    isCheckerDone: false,
     iconGreen,
     status: [],
     isHeader: false,
@@ -48,12 +47,17 @@ class Watch extends Component {
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
+      if (window) {
+        if (window.debugStore) {
+          window.debugStore.movieDetail = this.props.movieDetail
+        }
+      }
       const dataFetch = movieDetail.data[0]
 
       const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
 
       if (filterForBlockFind) {
-        this.setState({ isCheckerDone: true, block: false })
+        this.setState({ block: false })
       } else {
         const filterForBlock = dataFetch.platforms
         const isBlocked = filterForBlock.length > 0
@@ -77,7 +81,6 @@ class Watch extends Component {
         }
         this.setState({
           isHeader: true,
-          isCheckerDone: true,
           name: state,
           imageUrl: img,
           status: st,
@@ -129,7 +132,7 @@ class Watch extends Component {
 
   render() {
     const { isMobile, vuid, videoId, getMovieDetail } = this.props
-    const { block, isCheckerDone, isHeader } = this.state
+    const { block, isHeader } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -139,7 +142,6 @@ class Watch extends Component {
         {status === 'loading' && !isMobile && <> {<Placeholder />} </>}
         {status === 'loading' && isMobile && <> {<PlaceholderMobile />} </>}
         {isMobile &&
-          isCheckerDone &&
           block && (
             <PlatformCheckMobile
               dataFetched={apiFetched ? data[0] : ''}
@@ -157,8 +159,7 @@ class Watch extends Component {
 
         {!isMobile &&
           dataFetched &&
-          block &&
-          isCheckerDone && (
+          block && (
             <>
               <Helmet>
                 <title>{dataFetched.title}</title>
@@ -180,8 +181,7 @@ class Watch extends Component {
           )}
 
         {dataFetched &&
-          !block &&
-          isCheckerDone && (
+          !block && (
             <>
               <Helmet>
                 <title>{dataFetched.title}</title>

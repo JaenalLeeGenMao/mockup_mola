@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
-import { get, post } from 'axios'
+import { post } from 'axios'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
@@ -132,23 +132,17 @@ class MovieDetail extends Component {
     }
   }
 
-  getConfig = async () => {
-    await get('/api/v2/config/app-params').then(result => {
-      if (result.data) {
-        const {
-          android_redirect_to_app,
-          ios_redirect_to_app,
-          notice_bar_enabled,
-          notice_bar_message,
-        } = result.data.data.attributes
-        this.setState({
-          android_redirect_to_app,
-          ios_redirect_to_app,
-          toggleInfoBar: notice_bar_enabled,
-          notice_bar_message,
-        })
-      }
-    })
+  getConfig = () => {
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = configParams.data
+      this.setState({
+        android_redirect_to_app,
+        ios_redirect_to_app,
+        toggleInfoBar: notice_bar_enabled,
+        notice_bar_message,
+      })
+    }
   }
 
   componentDidMount() {
@@ -238,6 +232,27 @@ class MovieDetail extends Component {
         isMatchPassed = true
       }
 
+      if (isApple) {
+        //ios
+        if (ios_redirect_to_app) {
+          return (
+            <div className={posterWrapper}>
+              <img src={poster} />
+              <span className={playIcon} onClick={this.handlePlayMovieApple} />
+            </div>
+          )
+        }
+      } else {
+        if (android_redirect_to_app) {
+          return (
+            <div className={posterWrapper}>
+              <img src={poster} />
+              <span className={playIcon} onClick={this.handlePlayMovie} />
+            </div>
+          )
+        }
+      }
+
       if (!isAllowed) {
         if (watchPermissionErrorCode == 'login_first') {
           return (
@@ -272,56 +287,17 @@ class MovieDetail extends Component {
           />
         )
       } else {
-        if (isApple) {
-          //ios
-          if (ios_redirect_to_app) {
-            return (
-              <div className={posterWrapper}>
-                <img src={poster} />
-                <span className={playIcon} onClick={this.handlePlayMovieApple} />
-              </div>
-            )
-          } else {
-            return (
-              <Theoplayer
-                className={customTheoplayer}
-                subtitles={this.subtitles()}
-                poster={poster}
-                autoPlay={false}
-                handleOnReadyStateChange={this.handleOnReadyStateChange}
-                {...videoSettings}
-                isMobile
-              />
-            )
-          }
-        } else {
-          //android
-          if (android_redirect_to_app) {
-            return (
-              <div className={posterWrapper}>
-                <img src={poster} />
-                <span className={playIcon} onClick={this.handlePlayMovie} />
-              </div>
-            )
-          } else {
-            return (
-              <Theoplayer
-                className={customTheoplayer}
-                subtitles={this.subtitles()}
-                poster={poster}
-                autoPlay={false}
-                // certificateUrl="test"
-                // handleOnVideoLoad={this.handleOnVideoLoad}
-                // handleOnVideoPause={this.handleOnVideoPause}
-                // handleOnLoadedData={this.handleOnLoadedData}
-                // handleOnReadyStateChange={this.handleOnReadyStateChange}
-                // handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                {...videoSettings}
-                isMobile
-              />
-            )
-          }
-        }
+        return (
+          <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={poster}
+            autoPlay={false}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
+            {...videoSettings}
+            isMobile
+          />
+        )
       }
     }
   }
@@ -378,7 +354,7 @@ class MovieDetail extends Component {
         {dataFetched && (
           <>
             <div className={headerContainer}>
-              <Header isMobile {...this.props} />
+              <Header isMobile {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
             <div className={movieDetailContainer}>
               {toggleInfoBar &&

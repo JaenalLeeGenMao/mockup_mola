@@ -43,6 +43,7 @@ import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import _forEach from 'lodash/forEach'
 import NodeCache from 'node-cache'
+// const videoCache = new NodeCache()
 const molaCache = new NodeCache()
 
 const oauth = {
@@ -138,6 +139,12 @@ app.use(
     },
   })
 )
+
+app.get('/page-redirect', (req, res) => {
+  res.status(200)
+  res.sendFile(path.join(__dirname, 'public/page-redirect.html'))
+})
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 const {
@@ -407,6 +414,52 @@ const getHeaderMenus = async () => {
   }
 
   return headerArr
+}
+
+const getConfigParams = async () => {
+  let hasCache = false
+  let configParams = null
+
+  molaCache.get('configParams', function(err, value) {
+    if (!err) {
+      if (value == undefined) {
+        // key not found
+        hasCache = false
+        // console.log('cache value header menu is undefined')
+      } else {
+        // console.log('cache value header menu is ', value)
+        hasCache = true
+        configParams = value
+      }
+    }
+  })
+
+  if (!hasCache) {
+    try {
+      const configUrl = `${domain}/api/v2/config/app-params`
+      let response = null
+
+      const rawResponse = await fetch(`${configUrl}`, {
+        timeout: 5000,
+        maxRedirects: 1,
+      })
+      response = await rawResponse.json()
+      // console.log('response params', response)
+      configParams = response && response.data && response.data.attributes ? response.data.attributes : null
+    } catch (err) {
+      // console.log('Error Get Paramss', err)
+    }
+    if (configParams) {
+      molaCache.set('configParams', configParams, 900, function(err, success) {
+        if (!err && success) {
+          console.log('success set cache node cache config params', configParams)
+        } else {
+          console.log('failed set cache node cache config params', 'err:', err)
+        }
+      })
+    }
+  }
+  return configParams
 }
 
 // set a cookie
@@ -718,6 +771,8 @@ app.get('*', async (req, res, next) => {
     }
 
     const responseHeaderMenu = await getHeaderMenus()
+    const responseConfigParams = await getConfigParams()
+
     const initialState = {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
@@ -740,6 +795,9 @@ app.get('*', async (req, res, next) => {
       },
       headerMenu: {
         data: responseHeaderMenu ? responseHeaderMenu : null,
+      },
+      configParams: {
+        data: responseConfigParams ? responseConfigParams : '',
       },
       runtime: {
         appUrl: 'molaapp://mola.tv/watch',

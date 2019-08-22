@@ -84,7 +84,13 @@ class DropdownList extends Component {
                     const absMenuArray = absMenuUrl.split('/')
                     const isHome = absMenuArray.length <= 3
                     const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-                    const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    let isActive = ''
+
+                    if (activeId) {
+                      isActive = dts.id == activeId
+                    } else {
+                      isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
+                    }
 
                     const title = _.get(dts, 'attributes.title.en', '')
 

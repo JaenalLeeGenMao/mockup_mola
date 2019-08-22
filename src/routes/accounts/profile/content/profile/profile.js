@@ -62,10 +62,23 @@ const FormContent = ({ id, label, value, type = 'password', disabled, onChange, 
     <div className={s.profile_form_wrapper}>
       <label htmlFor={id}>{label}</label>
       {type === 'select' ? (
-        <Select value={value} onChange={selectedOption => onChange({ ...selectedOption, id })} options={options} styles={colourStyles} />
+        <Select
+          value={value}
+          onChange={selectedOption => onChange({ ...selectedOption, id })}
+          options={options}
+          styles={colourStyles}
+        />
       ) : (
         <div className={`${s.profile_form_input_wrapper} ${disabled ? s.disabled : ''}`}>
-          <input type={type} id={id} onChange={onChange} onClick={e => e.target.focus()} value={value} className={disabled ? s.disabled : ''} disabled={disabled} />
+          <input
+            type={type}
+            id={id}
+            onChange={onChange}
+            onClick={e => e.target.focus()}
+            value={value}
+            className={disabled ? s.disabled : ''}
+            disabled={disabled}
+          />
         </div>
       )}
     </div>
@@ -76,7 +89,19 @@ class Profile extends React.Component {
   constructor(props) {
     super(props)
 
-    const { uid, firstName, lastName, email, phone, photo, birthdate, gender, location, subscriptions } = props.user
+    const {
+      uid,
+      firstName,
+      lastName,
+      email,
+      phone,
+      photo,
+      birthdate,
+      gender,
+      location,
+      subscriptions,
+      phoneNumber,
+    } = props.user
     // this.propsName = `${firstName} ${lastName}`
 
     this.state = {
@@ -108,6 +133,7 @@ class Profile extends React.Component {
       birthdate: data.birthdate || '',
       gender: data.gender || 'm',
       location: data.location || '',
+      error: '',
     })
   }
 
@@ -138,15 +164,18 @@ class Profile extends React.Component {
       this.setState({
         error: locale['error_name'],
       })
-    } else if (phoneNumber && !this.validatePhone(phoneNumber)) {
+    }
+    if (phoneNumber && !this.validatePhone(phoneNumber)) {
       this.setState({
         error: locale['error_phone'],
       })
-    } else if (this.props.user.phoneNumber && !phoneNumber) {
+    }
+    if (this.props.user.phoneNumber && !phoneNumber) {
       this.setState({
         error: locale['error_phones'],
       })
-    } else if (!birthdate) {
+    }
+    if (!birthdate) {
       this.setState({
         error: locale['error_date'],
       })
@@ -282,7 +311,19 @@ class Profile extends React.Component {
     const { isMobile, onClick, user } = this.props
     const errClass = `${s.errorClass}`
     const { uid, subscriptions } = user
-    const { isToggled, name, email, phoneNumber, photo, birthdate, gender, location, error, locale, isError } = this.state
+    const {
+      isToggled,
+      name,
+      email,
+      phoneNumber,
+      photo,
+      birthdate,
+      gender,
+      location,
+      error,
+      locale,
+      isError,
+    } = this.state
 
     return (
       <div>
@@ -295,12 +336,47 @@ class Profile extends React.Component {
                 {!photo && <p>Edit</p>}
                 {photo && <img alt="" src={photo} />}
               </div>
-              <input id="file" className={s.profile_image_input} type="file" accept="image/*" onChange={this.handleFileSelect} />
+              <input
+                id="file"
+                className={s.profile_image_input}
+                type="file"
+                accept="image/*"
+                onChange={this.handleFileSelect}
+              />
             </div>
-            <FormContent isError={error !== ''} type="text" id="name" label="Ubah nama" value={name} onChange={this.onChangeInput} />
-            <FormContent isError={error !== ''} type="text" id="email" label="Ubah email" value={email} onChange={this.onChangeInput} disabled />
-            <FormContent isError={error !== ''} type="text" id="phoneNumber" label="Ubah nomor telfon" value={phoneNumber} onChange={this.onChangeInput} />
-            <FormContent isError={error !== ''} type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} />
+            <FormContent
+              isError={error !== ''}
+              type="text"
+              id="name"
+              label="Ubah nama"
+              value={name}
+              onChange={this.onChangeInput}
+            />
+            <FormContent
+              isError={error !== ''}
+              type="text"
+              id="email"
+              label="Ubah email"
+              value={email}
+              onChange={this.onChangeInput}
+              disabled
+            />
+            <FormContent
+              isError={error !== ''}
+              type="text"
+              id="phoneNumber"
+              label="Ubah nomor telfon"
+              value={phoneNumber}
+              onChange={this.onChangeInput}
+            />
+            <FormContent
+              isError={error !== ''}
+              type="date"
+              id="birthdate"
+              label="Ubah tanggal lahir"
+              value={birthdate}
+              onChange={this.onChangeInput}
+            />
             <FormContent
               isError={error !== ''}
               type="select"
@@ -310,7 +386,15 @@ class Profile extends React.Component {
               onChange={this.onChangeSelect}
               options={genderOptions}
             />
-            <FormContent isError={error !== ''} type="select" id="location" label="Ubah lokasi" value={{ label: location, value: location }} onChange={this.onChangeSelect} options={countryOptions} />
+            <FormContent
+              isError={error !== ''}
+              type="select"
+              id="location"
+              label="Ubah lokasi"
+              value={{ label: location, value: location }}
+              onChange={this.onChangeSelect}
+              options={countryOptions}
+            />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleSubmit}>
                 Simpan
@@ -331,7 +415,11 @@ class Profile extends React.Component {
             <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
             <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={user.gender} />
             <FormPlaceholder id="changeLocation" label="Lokasi" value={user.location} />
-            <FormPlaceholder id="changeSubscription" label="Status Berlangganan" value={subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'} />
+            <FormPlaceholder
+              id="changeSubscription"
+              label="Status Berlangganan"
+              value={subscriptions.length > 0 ? 'Aktif' : 'Belum Aktif'}
+            />
             <div className={s.profile_button_wrapper}>
               <button className={s.profile_button_active} onClick={this.handleClick}>
                 Ubah

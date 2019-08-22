@@ -5,7 +5,6 @@ import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
-import { get } from 'axios'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
@@ -156,15 +155,14 @@ class Channels extends Component {
   }
 
   getConfig = async () => {
-    await get('/api/v2/config/app-params').then(result => {
-      if (result.data) {
-        const { notice_bar_enabled, notice_bar_message } = result.data.data.attributes
-        this.setState({
-          toggleInfoBar: notice_bar_enabled,
-          notice_bar_message,
-        })
-      }
-    })
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { notice_bar_enabled, notice_bar_message } = configParams.data
+      this.setState({
+        toggleInfoBar: notice_bar_enabled,
+        notice_bar_message,
+      })
+    }
   }
 
   handleScroll = () => {

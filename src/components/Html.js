@@ -303,11 +303,11 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               __html:
                 'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
                 `ga('create',${
-                  config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"
+                config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"
                 },'auto');ga('send','pageview')`,
             }}
           />
-          {/* <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" crossOrigin />
+          {/* <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js"  crossOrigin="true" />
           <script
             dangerouslySetInnerHTML={{
               __html: `var initESW = function(gslbBaseURL) {
@@ -362,7 +362,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             }}
           /> */}
 
-          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" crossOrigin />
+          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" crossOrigin="true" />
         </body>
       </html>
     )

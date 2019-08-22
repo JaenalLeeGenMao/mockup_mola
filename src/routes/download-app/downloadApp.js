@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { get } from 'axios'
 import * as movieDetailActions from '@actions/movie-detail'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig, playStoreBadge, appStoreBadge } from '@global/imageUrl'
@@ -43,15 +42,14 @@ class DownloadApp extends Component {
   }
 
   getConfig = async () => {
-    await get('/api/v2/config/app-params').then(result => {
-      if (result.data) {
-        const { store_url, ios_store_url } = result.data.data.attributes
-        this.setState({
-          store_url,
-          ios_store_url,
-        })
-      }
-    })
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { store_url, ios_store_url } = configParams.data
+      this.setState({
+        store_url,
+        ios_store_url,
+      })
+    }
   }
 
   render() {

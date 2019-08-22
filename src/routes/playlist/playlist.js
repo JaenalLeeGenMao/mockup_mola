@@ -147,7 +147,7 @@ class Playlist extends React.Component {
               > */}
                 <div className="seasonListWrapper">
                   {element.data.map((video, idx) => {
-                    const contentTypeName = getContentTypeName(_.get(video, 'contentType', '')),
+                    const contentTypeName = getContentTypeName(_.get(playlists, `data[${idx}].contentType`, '')),
                       isLandscape = contentTypeName === 'live' || contentTypeName === 'replay',
                       matchLive = isMatchLive(video.startTime, video.endTime) /** id 4 is replay matches */
                     return (
@@ -197,7 +197,7 @@ class Playlist extends React.Component {
 
     return (
       <>
-        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} />
+        <Header isMobile={isMobile} libraryOff isDark={false} {...this.props} activeMenuId={playlists.meta.menuId} />
         {playlistStatus === 'loading' && <Placeholder isMobile={isMobile} />}
         {playlistStatus === 'error' && (
           <PlaylistError

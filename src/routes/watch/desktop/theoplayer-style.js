@@ -10,6 +10,10 @@ export const customTheoplayer = css`
       float: left;
     }
 
+    &.theoplayer-skin .theo-audio-track-control-button {
+      display: none;
+    }
+
     &.video-container .theo-primary-color {
       color: #fff !important;
     }

@@ -92,6 +92,7 @@ class Register extends Component {
   state = {
     username: '',
     email: '',
+    confirmEmail: '',
     birthdate: '',
     gender: '',
     phone: '',
@@ -104,6 +105,7 @@ class Register extends Component {
     isCountdown: false,
     isInVerified: false,
     locale: getLocale(),
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -141,7 +143,7 @@ class Register extends Component {
   }
 
   handleRegister = async () => {
-    const { email, password, confirmPassword, birthdate, gender, phone, locale } = this.state,
+    const { email, confirmEmail, password, confirmPassword, birthdate, gender, phone, locale } = this.state,
       { runtime: { csrf } } = this.props
 
     if (email == '') {
@@ -152,13 +154,17 @@ class Register extends Component {
       this.setState({
         error: locale['error_valid_email'],
       })
-    } else if (password != confirmPassword) {
+    } else if (email != confirmEmail) {
       this.setState({
-        error: locale['error_input'],
+        error: locale['error_email'],
       })
     } else if (password == '' || !password) {
       this.setState({
         error: locale['error_input_password'],
+      })
+    } else if (password != confirmPassword) {
+      this.setState({
+        error: locale['error_input'],
       })
     } else if (gender === '') {
       this.setState({
@@ -187,18 +193,38 @@ class Register extends Component {
       }
       const result = await Auth.createNewUser(payload)
       // const result = {
-      //   name: 'blablabla',
-      //   email: 'qahyne@gmail.com',
+      //   email: 'qahyne@getnada.com',
+      //   password: 'qahyne@getnada.com',
+      //   birthdate: '12021996',
       //   gender: 'l',
-      //   birthdate: 12122018,
+      //   phone: '082118815437',
       // }
       // console.log('ini user', result)
       if (result.meta.status === 'success') {
         // if (result) {
-        this.setState({
-          error: '',
-          isInVerified: true,
-        })
+        const { configParams } = this.props
+        let bypass_otp = false
+        if (configParams.data) {
+          bypass_otp = configParams.data.bypass_otp
+        }
+        if (bypass_otp) {
+          this.setState({
+            error: '',
+            isLoading: true,
+          })
+          history.push({
+            pathname: '/accounts/thankyou',
+            state: {
+              isAccesible: true,
+            },
+          })
+        } else {
+          this.setState({
+            error: '',
+            isInVerified: true,
+            isLoading: true,
+          })
+        }
       } else {
         if (result.meta.error && result.meta.error.error_description) {
           if (result.meta.error.error === 'account_not_verified') {
@@ -345,7 +371,19 @@ class Register extends Component {
   }
 
   renderRegistration() {
-    const { locale, username, birthdate, gender, phone, email, password, confirmPassword, error } = this.state
+    const {
+      locale,
+      username,
+      birthdate,
+      gender,
+      phone,
+      email,
+      confirmEmail,
+      password,
+      confirmPassword,
+      error,
+      isLoading,
+    } = this.state
 
     return (
       <div id="main_form" className={styles.register__content_form}>
@@ -372,6 +410,18 @@ class Register extends Component {
           isError={error !== ''}
           errorClassName={styles.register__content_input_error}
           placeholder="Email"
+          type="text"
+          onKeyUp={this.handleKeyUp}
+        />
+        <TextInput
+          id="confirmEmail"
+          name="confirmEmail"
+          onChange={this.handleInputChange}
+          value={confirmEmail}
+          className={styles.register__content_input}
+          isError={error !== ''}
+          errorClassName={styles.register__content_input_error}
+          placeholder="Konfirmasi Email"
           type="text"
           onKeyUp={this.handleKeyUp}
         />
@@ -433,9 +483,25 @@ class Register extends Component {
           type="text"
           onKeyUp={this.handleKeyUp}
         />
-        <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
-          {locale['sign_up']}
-        </button>
+        {!isLoading && (
+          <button type="submit" className={styles.register__content_submit} onClick={this.handleRegister}>
+            {locale['sign_up']}
+          </button>
+        )}
+        {isLoading && (
+          <button type="submit" className={styles.register__content_submit_disabled}>
+            <div className={styles.loading__page}>
+              {/* {locale['sign_in']} */}
+              <div className={styles.loading__ring}>
+                <div />
+                <div />
+                <div />
+                <div />
+              </div>
+            </div>
+          </button>
+        )}
+
         <div className={styles.register__content_separator}>
           <p>{locale['or']}</p>
         </div>
@@ -456,13 +522,15 @@ class Register extends Component {
 
   renderOtpVerification() {
     const { locale, token, error, resendError } = this.state
+    const { email } = this.state,
+      { runtime: { csrf } } = this.props
 
     return (
       <div id="secondary_form" className={styles.register__content_form}>
-        <h4>{locale['verify_account2']} !</h4>
-        <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle2']}</p>
+        <h4>{locale['verify_account']} !</h4>
+        <p className={styles.register__content_subtitle}>{locale['verify_account_subtitle']}</p>
         <div>{error && <p className={styles.register__content_error}>{error}</p>}</div>
-        {/* <div className={styles.register__content_verify_token}>
+        <div className={styles.register__content_verify_token}>
           <TextInput
             id="token"
             name="token"
@@ -479,7 +547,7 @@ class Register extends Component {
           </button>
         </div>
         {this.renderResendVerification()}
-        <div>{resendError && <p style={{ textAlign: 'center', color: 'red' }}>{resendError}</p>}</div> */}
+        <div>{resendError && <p style={{ textAlign: 'center', color: 'red' }}>{resendError}</p>}</div>
       </div>
     )
   }

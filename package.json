@@ -8,7 +8,7 @@
   },
   "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
   "dependencies": {
-    "@babel/polyfill": "7.0.0",
+    "@babel/polyfill": "^7.4.4",
     "@supersoccer/gandalf": "^1.0.49",
     "axios": "0.18.0",
     "axios-retry": "^3.1.2",
@@ -81,6 +81,7 @@
     "ua-parser-js": "0.7.19",
     "universal-router": "6.0.0",
     "url": "^0.11.0",
+    "webpack-dashboard": "^3.0.7",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
@@ -209,8 +210,8 @@
     "build-stats": "yarn run build --release --analyse",
     "deploy": "babel-node tools/run deploy",
     "render": "babel-node tools/run render",
-    "serve": "babel-node tools/run runServer",
-    "start": "babel-node tools/run start",
+    "serve": "webpack-dashboard -- babel-node tools/run runServer",
+    "start": "webpack-dashboard -- babel-node tools/run start",
     "dev": "REACT_APP_ENV=development BABEL_ENV=development yarn start",
     "stag": "REACT_APP_ENV=staging BABEL_ENV=staging yarn start",
     "prod": "REACT_APP_ENV=production BABEL_ENV=production yarn start"
