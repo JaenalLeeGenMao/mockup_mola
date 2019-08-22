@@ -23,6 +23,8 @@
 }
 
 .epg__logo__wrapper:hover {
+  transform: translateY(-10px);
+  transition: transform 0.3s, -webkit-transform 0.3s;
   opacity: 1;
 }
 
