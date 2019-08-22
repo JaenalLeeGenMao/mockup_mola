@@ -6,16 +6,6 @@ export const container = css`
   margin: 0 auto;
   max-width: 95vw;
 
-  h3 {
-    padding: 0 0.5rem;
-    color: #6f6f6f;
-    font-size: 1.28rem;
-    font-weight: 300;
-    display: inline-block;
-    vertical-align: middle;
-    font-weight: 400;
-  }
-
   p {
     color: #ffffff;
     font-size: 1.28rem;
@@ -27,12 +17,6 @@ export const container = css`
   @media screen and (max-width: 960px) {
     margin: 0;
     max-width: 100vw;
-
-    h3 {
-      color: #6f6f6f;
-      font-size: 15px;
-      margin: 0 5px;
-    }
 
     p {
       color: #ffffff;
@@ -61,12 +45,29 @@ export const carouselMargin = css`
 export const carouselHeader = css`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    padding: 0 0.5rem;
+    color: #cbcbcb;
+    font-size: 1.28rem;
+    font-weight: 300;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 400;
+  }
 
   a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 1.25rem;
+    font-weight: 400;
     color: #969696;
     border: 0.112rem solid #969696;
     border-radius: 3rem;
-    padding: 0.25rem 1rem 0.35rem 1rem;
+    padding: 0.5rem;
     transition: all ease 500ms;
   }
 
@@ -77,10 +78,17 @@ export const carouselHeader = css`
   }
 
   @media screen and (max-width: 960px) {
+    h3 {
+      color: #cbcbcb;
+      font-size: 15px;
+      margin: 0 5px;
+    }
+
     a {
       font-size: 12px;
       margin: 0 5px;
-      padding: 4px 10px;
+      padding: 0.25rem;
+      border-width: 1px;
     }
   }
 `
