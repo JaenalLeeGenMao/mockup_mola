@@ -88,6 +88,7 @@ export const carouselHeader = css`
       font-size: 12px;
       margin: 0 5px;
       padding: 0.25rem;
+      border-width: 1px;
     }
   }
 `
