@@ -190,7 +190,7 @@ class Feature extends Component {
                       : contentTypeList[contentTypeName].slideToShow
 
                   return (
-                    <div key={carouselIndex}>
+                    <div key={carouselIndex} style={{ margin: '0 0 1rem 0' }}>
                       <div className={carouselHeader}>
                         {video.data.length > 0 && <h3>{video.meta.title}</h3>}
                         {video.data.length > slideToShow && <a href={`/categories/${playlistId}`}>View All</a>}
