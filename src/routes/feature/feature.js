@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -136,6 +137,9 @@ class Feature extends Component {
 
     return (
       <>
+        <Helmet>
+          <title>{playlists.meta.title}</title>
+        </Helmet>
         <Header libraryOff color={false} {...this.props} isMobile={isMobile} activeMenuId={playlists.meta.menuId} />
         {isLoading && <Placeholder isMobile={isMobile} />}
         {isError && (
