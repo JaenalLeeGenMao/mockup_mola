@@ -195,7 +195,7 @@ class Feature extends Component {
                     <div key={carouselIndex} style={{ margin: '0 0 1rem 0' }}>
                       <div className={carouselHeader}>
                         {video.data.length > 0 && <h3>{video.meta.title}</h3>}
-                        {viewAllShow && <a href={`/categories/${playlistId}`}>View All</a>}
+                        {!viewAllShow && <a href={`/categories/${playlistId}`}>View All</a>}
                       </div>
                       <Carousel
                         wrap={false}
