@@ -189,15 +189,13 @@ class Feature extends Component {
                       _.get(playlists, `data[${carouselIndex}].contentType`, '')
                     ),
                     playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
-                    slideToShow = isMobile
-                      ? contentTypeList[contentTypeName].slideToScroll
-                      : contentTypeList[contentTypeName].slideToShow
+                    viewAllShow = contentTypeName === 'mola-featured' || contentTypeName === 'mola-categories'
 
                   return (
                     <div key={carouselIndex} style={{ margin: '0 0 1rem 0' }}>
                       <div className={carouselHeader}>
                         {video.data.length > 0 && <h3>{video.meta.title}</h3>}
-                        {video.data.length > slideToShow && <a href={`/categories/${playlistId}`}>View All</a>}
+                        {viewAllShow && <a href={`/categories/${playlistId}`}>View All</a>}
                       </div>
                       <Carousel
                         wrap={false}
@@ -205,7 +203,11 @@ class Feature extends Component {
                         sliderCoin={true}
                         dragging={true}
                         withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
-                        slidesToShow={slideToShow}
+                        slidesToShow={
+                          isMobile
+                            ? contentTypeList[contentTypeName].slideToScroll
+                            : contentTypeList[contentTypeName].slideToShow
+                        }
                         transitionMode={'scroll'}
                         cellSpacing={12}
                         framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
