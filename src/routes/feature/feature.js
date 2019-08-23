@@ -199,7 +199,7 @@ class Feature extends Component {
                       <div className={carouselHeader}>
                         {video.data.length > 0 && <h3>{video.meta.title}</h3>}
                         {!viewAllHide &&
-                          video.data.length > slideToShow && <a href={`/categories/${playlistId}`}>View All</a>}
+                          video.data.length > slideToShow && <a href={`/categories/${playlistId}`}>View More</a>}
                       </div>
                       <Carousel
                         wrap={false}
