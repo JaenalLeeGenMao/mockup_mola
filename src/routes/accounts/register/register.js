@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import { formatDateTime } from '@source/lib/dateTimeUtil'
 
 import Auth from '@api/auth'
 import config from '@source/config'
@@ -21,7 +22,10 @@ const { getComponent } = require('@supersoccer/gandalf')
 const TextInput = getComponent('text-input')
 import { genderOptions } from '../profile/content/profile/const'
 import Select from 'react-select'
+import DatePicker from 'react-datepicker'
+
 import s from '../profile/content/profile/profile.css'
+import dtPickerStyle from 'react-datepicker/dist/react-datepicker.css'
 
 const countDownTime = 60
 
@@ -29,8 +33,8 @@ const FormContent = ({ id, label, value, type = 'password', disabled, onChange, 
   const colourStyles = {
     control: (base, state) => ({
       ...base,
-      padding: '0.25rem',
-      marginBottom: '1rem',
+      padding: '0.35rem',
+      marginBottom: '0.5rem',
       background: '#FFFFFF',
       // match with the menu
       borderRadius: '.4rem',
@@ -106,6 +110,7 @@ class Register extends Component {
     isInVerified: false,
     locale: getLocale(),
     isLoading: false,
+    startDate: '',
   }
 
   componentDidMount() {
@@ -130,6 +135,12 @@ class Register extends Component {
         [id]: value,
       })
     }
+  }
+
+  handleDtPickerChange = date => {
+    this.setState({
+      birthdate: date,
+    })
   }
 
   validateEmail = email => {
@@ -183,14 +194,19 @@ class Register extends Component {
       this.setState({
         error: '',
       })
+      let dated = new Date(birthdate)
+      console.log('data', dated)
+      const frmtDate = formatDateTime(dated.getTime() / 1000, 'YYYY-MM-DD')
+
       const payload = {
         email,
         password,
-        birthdate,
+        birthdate: frmtDate,
         gender,
         phone,
         csrf,
       }
+      console.log('pusing', payload)
       const result = await Auth.createNewUser(payload)
       // const result = {
       //   email: 'qahyne@getnada.com',
@@ -449,6 +465,7 @@ class Register extends Component {
           type="password"
           onKeyUp={this.handleKeyUp}
         />
+
         <FormContent
           errorClassName={styles.register__content_input_error}
           type="select"
@@ -458,7 +475,7 @@ class Register extends Component {
           onChange={this.onChangeSelect}
           options={genderOptions}
         />
-        <TextInput
+        {/* <TextInput
           id="birthdate"
           name="birthdate"
           onChange={this.handleInputChange}
@@ -467,10 +484,26 @@ class Register extends Component {
           isError={error !== ''}
           errorClassName={styles.register__content_input_error}
           placeholder="Tanggal Lahir"
-          label="Tanggal Lahir"
-          type="date"
+          label={<DatePicker />}
           onKeyUp={this.handleKeyUp}
-        />
+          type="date"
+        /> */}
+        <div className={`${styles.register__content_input} ${error ? styles.register__content_input_error : ''}`}>
+          <DatePicker
+            // value={birthdate}
+            selected={this.state.birthdate}
+            onChange={this.handleDtPickerChange}
+            isError={error !== ''}
+            // errorClassName={styles.register__content_input_error}
+            placeholder="Tanggal Lahir"
+            label="Tanggal Lahir"
+            placeholderText="dd-mm-yyyy"
+            type="input"
+            // dateFormat="dd-mm-yyyy"
+          />
+        </div>
+
+        {/* </TextInput> */}
         <TextInput
           id="phone"
           name="phone"
@@ -556,11 +589,11 @@ class Register extends Component {
     return (
       <div className={styles.register__container}>
         <div className={styles.register__header_wrapper}>
-          <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} />
+          <Header isDark={false} stickyOff libraryOff rightMenuOff leftMenuOff {...this.props} activeMenuId={9} />
         </div>
-        <div className={styles.register__content_wrapper}>
-          {this.state.isInVerified ? this.renderOtpVerification() : this.renderRegistration()}
-        </div>
+        {/* <div className={styles.register__content_wrapper}> */}
+        {this.state.isInVerified ? this.renderOtpVerification() : this.renderRegistration()}
+        {/* </div> */}
         <div className={styles.register__footer_wrapper}>
           <Footer />
         </div>
@@ -573,4 +606,4 @@ const mapStateToProps = state => {
   return { ...state }
 }
 
-export default compose(withStyles(styles), connect(mapStateToProps))(Register)
+export default compose(withStyles(styles, dtPickerStyle), connect(mapStateToProps))(Register)

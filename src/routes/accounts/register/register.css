@@ -42,7 +42,27 @@
 }
 
 .register__content_input input {
+  width: 100%;
+  box-sizing: border-box;
   height: 4rem;
+}
+
+.register__content_input {
+  width: 100%;
+}
+
+/* .register__content_input div {
+  
+} */
+
+.register__content_input>div>div input {
+  padding: 0 1.5rem;
+  border-radius: 3px;
+}
+
+.register__content_input>div:first-child, .register__content_input>div:first-child>div {
+  width: 100%;
+  padding: 0.6rem 0;
 }
 
 .register__content_input_error input {
@@ -134,6 +154,16 @@
 }
 
 @media screen and (max-width: 640px) {
+  .register__content_input>div>div input {
+    padding: 0 1.5rem;
+    border-radius: 3px;
+  }
+
+  .register__content_input>div:first-child, .register__content_input>div:first-child>div {
+    width: 100%;
+    padding: 0 0;
+  }
+
   .register__header_wrapper>div {
     padding: 5%;
   }
