@@ -61,7 +61,7 @@ export const carouselHeader = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 5rem;
+    width: 8rem;
     height: 1.25rem;
     font-weight: 400;
     color: #969696;
