@@ -92,7 +92,7 @@ class Channels extends Component {
       if (theoVolumeInfo != null) {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -236,7 +236,7 @@ class Channels extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -276,7 +276,7 @@ class Channels extends Component {
     const source = 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -381,19 +381,19 @@ class Channels extends Component {
                     handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                   />
                 ) : (
-                  block && (
-                    <PlatformCheckMobile
-                      iconStatus={this.state.iconStatus}
-                      status={this.state.status}
-                      icon={this.state.imageUrl}
-                      name={this.state.name}
-                      portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
-                      user={this.props.user}
-                      videoId={activeChannelId}
-                      isHeader={isHeader}
-                    />
-                  )
-                )}
+                    block && (
+                      <PlatformCheckMobile
+                        iconStatus={this.state.iconStatus}
+                        status={this.state.status}
+                        icon={this.state.imageUrl}
+                        name={this.state.name}
+                        portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+                        user={this.props.user}
+                        videoId={activeChannelId}
+                        isHeader={isHeader}
+                      />
+                    )
+                  )}
               </div>
 
               {!block && (
