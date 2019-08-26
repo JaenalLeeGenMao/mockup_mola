@@ -14,20 +14,18 @@ import MolaLayout from '@components/Molalayout'
 import _ from 'lodash'
 
 const title = 'Homepage'
-const description = 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
+const description =
+  'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
 
 async function action({ isMobile, store, pathname }) {
+  const Home = isMobile ? HomeMobile : HomeDesktop
   return {
     title,
     description,
     chunks: ['home'],
-    component: isMobile ? (
+    component: (
       <MolaLayout>
-        <HomeMobile {...store} />
-      </MolaLayout>
-    ) : (
-      <MolaLayout>
-        <HomeDesktop {...store} pathname={pathname} />
+        <Home {...store} pathname={pathname} />
       </MolaLayout>
     ),
   }

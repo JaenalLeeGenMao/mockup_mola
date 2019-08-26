@@ -117,7 +117,7 @@ class Feature extends Component {
   // }
 
   render() {
-    const isMobile = this.state.viewportWidth <= 680,
+    const isMobile = this.state.viewportWidth <= 960,
       { feature: { playlists, videos, banners, articles } } = this.props
 
     const isLoading = playlists.meta.status === 'loading',
