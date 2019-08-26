@@ -267,7 +267,7 @@ class Channels extends Component {
     const domain = config.endpoints.domain
     const source = 'redirect-from-browser'
     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-    document.location = `intent://mola.tv/watch?v=${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+    document.location = `intent://mola.tv/channels/${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   handlePlayMovieApple = () => {
@@ -275,7 +275,7 @@ class Channels extends Component {
     const domain = config.endpoints.domain
     const source = 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
-    document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
+    document.location = `molaapp://mola.tv/channels/${movieId}&utm_source=${source}`
     setTimeout(function () {
       window.location.href = url
     }, 250)
