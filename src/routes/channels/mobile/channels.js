@@ -180,14 +180,20 @@ class Channels extends Component {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
     const time =
       filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
-
-    this.setState({
-      block: false,
+    const setState = {
       activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
       activeChannelId: id,
       activeDate: formatDateTime(time, 'DD MMM'),
       scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
-    })
+    }
+    if (this.props.movieId && this.props.movieId == id) {
+      this.setState(setState)
+    } else {
+      this.setState({
+        block: false,
+        ...setState,
+      })
+    }
 
     this.eventVideosTracker(id)
     history.push(`/channels/${id}`)
