@@ -77,7 +77,7 @@ class Article extends Component {
       detail = _.get(article, 'data.attributes.content', ''),
       menuId = _.get(article, 'data.attributes.menuId', '')
 
-    const isMobile = this.state.viewportWidth <= 960
+    const isMobile = this.state.viewportWidth <= 680
 
     // console.log('article', article)
     // console.log('related', related)

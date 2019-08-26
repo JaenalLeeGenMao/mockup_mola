@@ -12,11 +12,12 @@ class BannerCarousel extends Component {
     super(props)
     this.state = {
       viewportWidth: 0,
+      show: false,
     }
   }
 
   componentDidMount() {
-    if (window) {
+    if (window && this.rootCarouselRef) {
       this.updateWindowDimensions()
       window.addEventListener('resize', this.updateWindowDimensions)
       setTimeout(() => {
@@ -26,7 +27,7 @@ class BannerCarousel extends Component {
   }
 
   updateWindowDimensions = () => {
-    this.setState({ viewportWidth: window.innerWidth })
+    this.setState({ viewportWidth: window.innerWidth, show: true })
   }
 
   static propTypes = {
@@ -39,13 +40,18 @@ class BannerCarousel extends Component {
   }
 
   render() {
-    const isMobile = Boolean(this.state.viewportWidth <= 800)
+    const isMobile = Boolean(this.state.viewportWidth <= 680)
+
     return (
       <Carousel
         ref={c => {
           if (c !== null && c.onResize) {
+            this.rootCarouselRef = c /** used to tracked if carousel exist or has been loaded */
             c.onResize()
           }
+        }}
+        style={{
+          opacity: this.state.show ? 1 : 0,
         }}
         autoGenerateStyleTag={
           false
