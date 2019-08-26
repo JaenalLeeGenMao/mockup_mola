@@ -372,14 +372,16 @@ class Search extends React.Component {
           <div className={s.container}>
             <div className={s.searchAutocomplete}>{showResult && <span>{this.textSuggestion}</span>}</div>
             <div className={s.searchInputWrapper}>
-              <i className={s.searchIcon} />
               <input
                 className={s.searchInput}
                 ref={this.inputSearch}
                 onChange={this.handleSearchChange}
                 onKeyDown={this.handleSearchKeyDown}
+                placeholder="Search"
               />
               {showRemoveIcon && <i className={s.removeSearchIcon} onClick={this.handleRemoveSearch} />}
+              <div className={s.lineSearch} />
+              <i className={s.searchIcon} />
             </div>
 
             {isEmptyInput && (

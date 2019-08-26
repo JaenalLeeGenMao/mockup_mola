@@ -117,6 +117,10 @@
   text-align: center;
 }
 
+.matchList__tomorrow {
+  background-color: #ad811e;
+}
+
 @media screen and (max-width: 1200px) {
   .matchList__container {
     height: 12rem;
@@ -146,6 +150,10 @@
 
   .matchList__live_now {
     background-color: #0d2caa;
+  }
+
+  .matchList__tomorrow {
+    background-color: #ad811e;
   }
 
   .matchList__NoHomeAwayTeam {
