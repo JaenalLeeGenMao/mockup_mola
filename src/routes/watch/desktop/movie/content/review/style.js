@@ -5,7 +5,7 @@ export const reviewSliderContainer = css`
   position: relative;
   max-width: 100vw;
   max-height: 30vh;
-  height: 30vh;
+  height: 100%;
   margin: 0;
   padding: 0;
 
@@ -78,6 +78,10 @@ export const reviewSliderWrapper = css`
 export const reviewSliderDetail = css`
   padding: 0;
   padding-top: calc(26vh / 10);
+
+  @media screen and (max-height: 700px) {
+    padding: 0;
+  }
 `
 
 export const reviewSliderProfile = css`

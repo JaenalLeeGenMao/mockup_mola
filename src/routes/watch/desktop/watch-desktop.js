@@ -235,6 +235,14 @@ class WatchDesktop extends Component {
   //   }
   // }
 
+  handleWindowSizeChange = () => {
+    const bottomHeight = document.getElementById('detailBottom').clientHeight
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    document.querySelector('#detailBottom > div').style.height = isSafari
+      ? `${bottomHeight - 60}px`
+      : 'calc(26vh - 60px)'
+  }
+
   componentDidMount() {
     const {
       // getMovieDetail,
