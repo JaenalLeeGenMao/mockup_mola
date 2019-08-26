@@ -76,7 +76,8 @@ export const reviewSliderWrapper = css`
 `
 
 export const reviewSliderDetail = css`
-  padding: 5rem;
+  padding: 0;
+  padding-top: calc(26vh / 10);
 `
 
 export const reviewSliderProfile = css`

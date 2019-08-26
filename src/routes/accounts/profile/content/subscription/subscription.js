@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
-import { toastr } from 'react-redux-toastr';
-import { connect } from 'react-redux';
-import moment from 'moment';
+import React, { Component, Fragment } from 'react'
+import { toastr } from 'react-redux-toastr'
+import { connect } from 'react-redux'
+import moment from 'moment'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
@@ -11,7 +11,6 @@ import Mola from '@api/mola'
 
 import '@global/style/css/reactReduxToastr.css'
 
-import { UiInput, UiNavigation, UiButton, UiMobileNav } from '@components'
 import LazyLoad from '@components/common/Lazyload'
 
 import s from './subscription.css'
@@ -77,7 +76,11 @@ class Subscription extends Component {
                 <Fragment key={index}>
                   {subs.length > 0 &&
                     subs.map(sub => (
-                      <LazyLoad key={sub.id} containerClassName={s.sideCenter} containerStyle={{ display: today < expiry ? 'block' : 'none' }}>
+                      <LazyLoad
+                        key={sub.id}
+                        containerClassName={s.sideCenter}
+                        containerStyle={{ display: today < expiry ? 'block' : 'none' }}
+                      >
                         <div className={s.subscription__wrapper_active}>
                           <div className={s.subscription__section_left_active}>
                             <h1>PREMIUM</h1>
@@ -85,7 +88,10 @@ class Subscription extends Component {
                           </div>
                           <div className={s.subscription__section_right_active}>
                             <h1>
-                              <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub.attributes.priceUnit === 'm' ? 'bulan' : 'tahun'}
+                              <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub
+                                .attributes.priceUnit === 'm'
+                                ? 'bulan'
+                                : 'tahun'}
                             </h1>
                             <p>
                               {sub.attributes.title} - {sub.attributes.description}
@@ -93,9 +99,14 @@ class Subscription extends Component {
                           </div>
                           <div className={s.icon_tick} />
                         </div>
-                        <div className={s.subscription_expiry}>Paketmu akan berakhir secara otomatis pada {formattedExpiry}.</div>
+                        <div className={s.subscription_expiry}>
+                          Paketmu akan berakhir secara otomatis pada {formattedExpiry}.
+                        </div>
                         <div className={s.subscription_button_wrapper}>
-                          <button className={s.subscription_button_active} onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}>
+                          <button
+                            className={s.subscription_button_active}
+                            onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}
+                          >
                             {new Date(expiry - today).getDate()} days left
                           </button>
                         </div>
@@ -112,7 +123,7 @@ class Subscription extends Component {
               <LazyLoad
                 key={sub.id}
                 containerClassName={s.sideCenter}
-              // containerStyle={{ display: isToggled ? 'none' : 'block' }}
+                // containerStyle={{ display: isToggled ? 'none' : 'block' }}
               >
                 <div className={s.subscription__wrapper}>
                   <div className={s.subscription__section_left}>
@@ -121,7 +132,10 @@ class Subscription extends Component {
                   </div>
                   <div className={s.subscription__section_right}>
                     <h1>
-                      <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub.attributes.priceUnit === 'm' ? 'bulan' : 'tahun'}
+                      <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub.attributes
+                        .priceUnit === 'm'
+                        ? 'bulan'
+                        : 'tahun'}
                     </h1>
                     <p>
                       {sub.attributes.title} - {sub.attributes.description}

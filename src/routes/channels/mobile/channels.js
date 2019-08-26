@@ -21,6 +21,7 @@ import RedirectToApps from '@components/RedirectToApps'
 import VerticalCalendar from '@components/VerticalCalendar'
 import MatchList from '@components/MatchList'
 import PlatformCheckMobile from '@components/PlatformCheckMobile'
+import LazyLoad from '@components/common/Lazyload'
 
 import Placeholder from './placeholder'
 import { getChannelProgrammeGuides } from '../selectors'
@@ -55,6 +56,7 @@ class Channels extends Component {
       fullDate: moment().format('YYYYMMDD'),
       timezone: 0,
     }
+
     const { fetchChannelSchedule, fetchChannelsPlaylist, user, fetchVideoByid, movieId, getVUID } = this.props
     this.getConfig()
     fetchChannelsPlaylist('channels-m').then(() => {
@@ -74,7 +76,7 @@ class Channels extends Component {
 
         this.setState({
           activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
-          activeChannelId: movieId,
+          activeChannelId: id,
           activeDate: formatDateTime(time, 'DD MMM'),
           scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
         })
@@ -98,12 +100,12 @@ class Channels extends Component {
     const { status } = this.state
 
     if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
-      fetchVideoByid(movieId)
+      const id = movieId ? movieId : prevState.activeChannelId
+      fetchVideoByid(id)
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
       const dataFetch = movieDetail.data[0]
-      // console.log('data fetched', dataFetch)
 
       const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
 
@@ -347,17 +349,19 @@ class Channels extends Component {
             <>
               <div className={styles.channels_top_wrapper}>
                 <div className={styles.channels_list_wrapper}>
-                  <DropdownList
-                    className={styles.channels_dropdown_container}
-                    dataList={channelsPlaylist.data}
-                    activeId={activeChannelId}
-                    onClick={this.handleSelectChannel}
-                  />
+                  <LazyLoad>
+                    <DropdownList
+                      className={styles.channels_dropdown_container}
+                      dataList={channelsPlaylist.data}
+                      activeId={activeChannelId}
+                      onClick={this.handleSelectChannel}
+                    />
+                  </LazyLoad>
                 </div>
               </div>
 
-              {!block && loadPlayer ? (
-                <div className={styles.video_container}>
+              <div className={styles.video_container}>
+                {!block && loadPlayer ? (
                   <RedirectToApps
                     poster={poster}
                     android_redirect_to_app={android_redirect_to_app}
@@ -370,21 +374,21 @@ class Channels extends Component {
                     customTheoplayer={customTheoplayer}
                     handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                   />
-                </div>
-              ) : (
-                block && (
-                  <PlatformCheckMobile
-                    iconStatus={this.state.iconStatus}
-                    status={this.state.status}
-                    icon={this.state.imageUrl}
-                    name={this.state.name}
-                    portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
-                    user={this.props.user}
-                    videoId={activeChannelId}
-                    isHeader={isHeader}
-                  />
-                )
-              )}
+                ) : (
+                  block && (
+                    <PlatformCheckMobile
+                      iconStatus={this.state.iconStatus}
+                      status={this.state.status}
+                      icon={this.state.imageUrl}
+                      name={this.state.name}
+                      portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+                      user={this.props.user}
+                      videoId={activeChannelId}
+                      isHeader={isHeader}
+                    />
+                  )
+                )}
+              </div>
 
               {!block && (
                 <div className={styles.epg__channels__container}>

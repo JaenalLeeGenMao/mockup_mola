@@ -104,10 +104,10 @@ const routes = {
       path: '/history-transactions/:id',
       load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     },
-    {
-      path: '/switch-channels',
-      load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
-    },
+    // {
+    //   path: '/switch-channels',
+    //   load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    // },
     {
       path: '/matches',
       load: () => import(/* webpackChunkName: 'matches' */ './matches'),

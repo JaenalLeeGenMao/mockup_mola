@@ -30,10 +30,7 @@ import {
   infoBarContainer,
   infoBarText,
   infoBarClose,
-  countdownWinfobar,
   movieDetailNotAllowed,
-  playIcon,
-  posterWrapper,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'

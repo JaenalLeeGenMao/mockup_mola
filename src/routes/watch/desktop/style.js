@@ -52,8 +52,8 @@ export const movieDetailContainer = css`
 export const movieDetailBottom = css`
   height: 100%;
   overflow: auto;
-  max-height: calc(26vh - 7rem);
-  margin-top: 1.5%;
+  max-height: calc(100% - 5.5rem);
+  margin-top: 1.5rem;
 `
 
 export const movieDetailNotAvailableContainer = css`
@@ -80,7 +80,10 @@ export const movieDetailNotAllowed = css`
 `
 
 export const controllerContainer = css`
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
   position: absolute;
   text-align: center;
   bottom: 0;
@@ -88,7 +91,7 @@ export const controllerContainer = css`
 
   div {
     display: inline-block;
-    padding: 2rem 5rem;
+    padding: 0 5rem;
     text-transform: uppercase;
     letter-spacing: 0.25rem;
     color: #a9a9a9;
@@ -226,8 +229,4 @@ export const headerContainer = css`
 export const videoPlayerWrapper = css`
   width: 100vw;
   background: #000;
-`
-
-export const countdownWinfobar = css`
-  height: calc(100% - 6.5rem - 3.8rem) !important;
 `

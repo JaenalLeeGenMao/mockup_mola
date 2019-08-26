@@ -103,7 +103,8 @@ class Channels extends Component {
     const { status } = this.state
 
     if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
-      fetchVideoByid(movieId)
+      const id = movieId ? movieId : prevState.activeChannelId
+      fetchVideoByid(id)
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
