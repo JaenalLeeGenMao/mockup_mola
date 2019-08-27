@@ -92,7 +92,7 @@ class Channels extends Component {
       if (theoVolumeInfo != null) {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -180,14 +180,20 @@ class Channels extends Component {
     const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
     const time =
       filteredSchedule && filteredSchedule.videos.length > 0 ? filteredSchedule.videos[0].startTime : Date.now() / 1000
-
-    this.setState({
-      block: false,
+    const setState = {
       activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
       activeChannelId: id,
       activeDate: formatDateTime(time, 'DD MMM'),
       scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
-    })
+    }
+    if (this.props.movieId && this.props.movieId == id) {
+      this.setState(setState)
+    } else {
+      this.setState({
+        block: false,
+        ...setState,
+      })
+    }
 
     this.eventVideosTracker(id)
     history.push(`/channels/${id}`)
@@ -230,7 +236,7 @@ class Channels extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -261,7 +267,7 @@ class Channels extends Component {
     const domain = config.endpoints.domain
     const source = 'redirect-from-browser'
     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
-    document.location = `intent://mola.tv/watch?v=${movieId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+    document.location = `intent://mola.tv/channels/${movieId}?utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   handlePlayMovieApple = () => {
@@ -269,8 +275,8 @@ class Channels extends Component {
     const domain = config.endpoints.domain
     const source = 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
-    document.location = `molaapp://mola.tv/watch?v=${movieId}&utm_source=${source}`
-    setTimeout(function() {
+    document.location = `molaapp://mola.tv/channels/${movieId}?utm_source=${source}`
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -375,19 +381,19 @@ class Channels extends Component {
                     handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                   />
                 ) : (
-                  block && (
-                    <PlatformCheckMobile
-                      iconStatus={this.state.iconStatus}
-                      status={this.state.status}
-                      icon={this.state.imageUrl}
-                      name={this.state.name}
-                      portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
-                      user={this.props.user}
-                      videoId={activeChannelId}
-                      isHeader={isHeader}
-                    />
-                  )
-                )}
+                    block && (
+                      <PlatformCheckMobile
+                        iconStatus={this.state.iconStatus}
+                        status={this.state.status}
+                        icon={this.state.imageUrl}
+                        name={this.state.name}
+                        portraitPoster={apiFetched ? dataFetched.background.portrait : ''}
+                        user={this.props.user}
+                        videoId={activeChannelId}
+                        isHeader={isHeader}
+                      />
+                    )
+                  )}
               </div>
 
               {!block && (
