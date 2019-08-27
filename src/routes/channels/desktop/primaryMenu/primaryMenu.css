@@ -20,11 +20,10 @@
   align-items: center;
   cursor: pointer;
   opacity: 0.6;
+  padding: 0.3rem;
 }
 
 .epg__logo__wrapper:hover {
-  transform: translateY(-10px);
-  transition: transform 0.3s, -webkit-transform 0.3s;
   opacity: 1;
 }
 
@@ -33,8 +32,8 @@
 }
 
 .epg__logo__img {
-  width: 7.5rem;
-  height: 7.5rem;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
 }
 
