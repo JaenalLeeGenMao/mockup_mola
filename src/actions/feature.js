@@ -31,12 +31,13 @@ const getFeaturePlaylist = id => dispatch => {
       dispatch({
         type: types.GET_FEATURE_PLAYLIST_SUCCESS,
         payload: result,
+        id,
       })
     }
   })
 }
 
-const getFeatureVideo = (playlist, index = 0) => async dispatch => {
+const getFeatureVideo = ({ id = '', playlist, index = 0 }) => async dispatch => {
   const contentTypeName = await getContentTypeName(_.get(playlist, 'contentType', ''))
 
   if (contentTypeName === 'mola-categories') {
@@ -57,6 +58,7 @@ const getFeatureVideo = (playlist, index = 0) => async dispatch => {
       dispatch({
         type: types.GET_FEATURE_VIDEO,
         payload: result,
+        id,
       })
     })
   }
@@ -78,6 +80,7 @@ const getFeatureVideo = (playlist, index = 0) => async dispatch => {
     dispatch({
       type: types.GET_FEATURE_VIDEO,
       payload: result,
+      id,
     })
   })
 }
@@ -111,6 +114,7 @@ const getFeatureBanner = pathname => dispatch => {
       dispatch({
         type: types.GET_FEATURE_BANNER_SUCCESS,
         payload: result,
+        id: pathname,
       })
     }
   })
@@ -143,6 +147,7 @@ const getFeatureArticle = id => dispatch => {
       dispatch({
         type: types.GET_FEATURE_ARTICLE_SUCCESS,
         payload: result,
+        id,
       })
     }
   })
