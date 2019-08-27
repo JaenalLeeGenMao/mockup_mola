@@ -213,7 +213,6 @@ class Feature extends Component {
                             : contentTypeList[contentTypeName].slideToShow
                         }
                         transitionMode={'scroll'}
-                        cellSpacing={12}
                         framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                       >
                         {video.data.length > 0 &&
@@ -264,7 +263,6 @@ class Feature extends Component {
                               dragging={true}
                               slidesToShow={isMobile ? 1 : 3.5}
                               transitionMode={'scroll'}
-                              cellSpacing={isMobile ? 0 : 20}
                               withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                               framePadding={!isMobile ? '0rem' : '0rem 5px'}
                             >

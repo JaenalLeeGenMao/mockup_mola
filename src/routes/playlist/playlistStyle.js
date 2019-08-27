@@ -127,11 +127,12 @@ export const playlistList = css`
     font-size: 1.3rem;
     font-weight: 600;
     padding: 0 0.75rem;
-    margin-bottom: 5px;
+    margin-bottom: 0.725rem;
 
     @media screen and (max-width: 960px) {
       font-size: 13px;
-      padding: 0 0.5rem;
+      padding: 0 0.75rem;
+      margin-bottom: 10px;
     }
   }
 
@@ -178,14 +179,14 @@ export const portraitCardWrapper = css`
   // overflow: hidden;
 
   @media screen and (max-width: 960px) {
-    width: 30.5vw;
-    margin: 0.25rem;
+    width: 29.75vw;
+    margin: 0.35rem;
   }
 
   /* khusus iPhone SE */
   @media screen and (max-width: 330px) {
-    width: 46vw;
-    margin: 0.25rem;
+    width: 44vw;
+    margin: 0.5rem;
   }
 `
 

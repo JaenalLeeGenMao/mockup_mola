@@ -40,7 +40,8 @@ class BannerCarousel extends Component {
   }
 
   render() {
-    const isMobile = Boolean(this.state.viewportWidth <= 680)
+    const { viewportWidth, show } = this.state,
+      isMobile = Boolean(viewportWidth <= 680)
 
     return (
       <Carousel
@@ -51,14 +52,14 @@ class BannerCarousel extends Component {
           }
         }}
         style={{
-          opacity: this.state.show ? 1 : 0,
+          opacity: show ? 1 : 0,
         }}
         autoGenerateStyleTag={
           false
         } /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
-        cellSpacing={isMobile ? 5 : this.props.cellSpacing || 12}
+        cellSpacing={isMobile ? viewportWidth * 0.025 : viewportWidth * 0.0125}
         className={`${carouselContainer} ${this.props.className}`}
         disableEdgeSwiping={true}
         dragging={this.props.dragging}

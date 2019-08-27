@@ -9,7 +9,7 @@ export const videoContainer = css`
   :hover {
     pointer-events: auto;
     cursor: pointer;
-    transform: scale(1.025);
+    transform: scale(1.075);
   }
 
   p {

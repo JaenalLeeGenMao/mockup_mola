@@ -58,7 +58,6 @@ class Placeholder extends Component {
           withoutControls={true}
           slidesToShow={isMobile ? 1.25 : 2.25}
           transitionMode={'scroll3d'}
-          cellSpacing={20}
           // framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
         >
           {banners.map((_, bannerIndex) => (
