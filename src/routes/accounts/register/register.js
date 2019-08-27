@@ -499,7 +499,7 @@ class Register extends Component {
             label="Tanggal Lahir"
             placeholderText="dd-mm-yyyy"
             type="input"
-            // dateFormat="dd-mm-yyyy"
+            dateFormat="dd/MM/yyyy"
           />
         </div>
 

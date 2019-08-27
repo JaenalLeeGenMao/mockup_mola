@@ -13,9 +13,11 @@ import LazyLoad from '@components/common/Lazyload'
 
 import { genderOptions, countryOptions } from './const'
 import { getLocale } from '../../../register/locale'
+import DatePicker from 'react-datepicker'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './profile.css'
+import dtPickerStyle from 'react-datepicker/dist/react-datepicker.css'
 
 const FormPlaceholder = ({ id, label, value }) => {
   return (
@@ -156,10 +158,12 @@ class Profile extends React.Component {
   }
 
   handleSubmit = async e => {
+    let dated = new Date(birthdate)
+    const frmtDate = formatDateTime(dated.getTime() / 1000, 'YYYY-MM-DD')
     const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus, error, locale } = this.state
     const { csrf } = this.props.runtime
     const { token } = this.props.user
-    const payload = { name, csrf, birthdate, gender, location, token, phone: phoneNumber }
+    const payload = { name, csrf, birthdate: frmtDate, gender, location, token, phone: phoneNumber }
     if (!name) {
       this.setState({
         error: locale['error_name'],
@@ -210,6 +214,12 @@ class Profile extends React.Component {
       isToggled: !this.state.isToggled,
     })
     this.props.onClick()
+  }
+
+  handleDtPickerChange = date => {
+    this.setState({
+      birthdate: date,
+    })
   }
 
   onChangeInput = e => {
@@ -369,14 +379,22 @@ class Profile extends React.Component {
               value={phoneNumber}
               onChange={this.onChangeInput}
             />
-            <FormContent
-              isError={error !== ''}
-              type="date"
-              id="birthdate"
-              label="Ubah tanggal lahir"
-              value={birthdate}
-              onChange={this.onChangeInput}
-            />
+            {/* <FormContent isError={error !== ''} type="date" id="birthdate" label="Ubah tanggal lahir" value={birthdate} onChange={this.onChangeInput} /> */}
+
+            <div className={s.profile_form_wrapper}>
+              <label label="Tanggal Lahir"> Tanggal Lahir </label>
+              <DatePicker
+                popperClassName={s.birthdate_popper}
+                isError={error !== ''}
+                id="birthdate"
+                selected={birthdate}
+                onChange={this.handleDtPickerChange}
+                placeholderText="dd/mm/yyyy"
+                label="Tanggal Lahir"
+                dateFormat="dd/MM/yyyy"
+              />
+            </div>
+
             <FormContent
               isError={error !== ''}
               type="select"
@@ -447,5 +465,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const Default = withStyles(s)(Profile)
+const Default = withStyles(s, dtPickerStyle)(Profile)
 export default connect(mapStateToProps, mapDispatchToProps)(Default)
