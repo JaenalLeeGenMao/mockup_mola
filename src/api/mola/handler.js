@@ -499,32 +499,6 @@ const getSearchResult = ({ q }) => {
     })
 }
 
-const getSearchGenre = () => {
-  return get(`${SEARCH_GENRE_ENDPOINT}`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeSearchGenre(response)
-      return {
-        meta: {
-          status: result.length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: [...result[0]] || [],
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Search Genre')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
-
 const getRecentSearch = (sessionId, sid) => {
   return get(`${RECENT_SEARCH_ENDPOINT}`, {
     params: { sessionId: sessionId },
@@ -645,59 +619,6 @@ const getMovieDetail = ({ id }) => {
     })
     .catch(error => {
       const errorMessage = error.toString().replace('Error:', 'Mola Movie Detail')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
-
-const getMovieLibraryList = () => {
-  return get(`${VIDEOS_ENDPOINT}`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeMovieLibraryList(response)
-
-      return {
-        meta: {
-          status: result.length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: [...result] || [],
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola List of Movie Library')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
-
-const getMovieLibrary = id => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeMovieLibrary(response)
-      return {
-        meta: {
-          status: result.length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: result.length > 0 ? result : [],
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Movie Library')
       return {
         meta: {
           status: 'error',
@@ -857,34 +778,34 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
       }
     })
 }
-const getOrderHistoryTransactions = ({ uid, token }) => {
-  // console.log('token', token)
-  return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
-    headers: token && { Authorization: `Bearer ${token}` },
-    withCredentials: true,
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const { data } = response.data
-      return {
-        meta: {
-          status: 'success',
-          error: '',
-        },
-        data,
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola History Transactions')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
+// const getOrderHistoryTransactions = ({ uid, token }) => {
+//   // console.log('token', token)
+//   return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
+//     headers: token && { Authorization: `Bearer ${token}` },
+//     withCredentials: true,
+//     ...endpoints.setting,
+//   })
+//     .then(response => {
+//       const { data } = response.data
+//       return {
+//         meta: {
+//           status: 'success',
+//           error: '',
+//         },
+//         data,
+//       }
+//     })
+//     .catch(error => {
+//       const errorMessage = error.toString().replace('Error:', 'Mola History Transactions')
+//       return {
+//         meta: {
+//           status: 'error',
+//           error: errorMessage,
+//         },
+//         data: [],
+//       }
+//     })
+// }
 
 const getChannelsList = (id = 'channels-m') => {
   return get(`${CHANNELS_PLAYLIST_ENDPOINT}/${id}`, {
@@ -1009,19 +930,15 @@ export default {
   getHomeVideo,
   getAllHistory,
   getSearchResult,
-  getSearchGenre,
   getRecentSearch,
   postRecentSearch,
   deleteRecentSearch,
   deleteRecentSearchAll,
   getMovieDetail,
-  getMovieLibrary,
-  getMovieLibraryList,
   getRecommendation,
   getAllSubscriptions,
   createOrder,
   createMidtransPayment,
-  getOrderHistoryTransactions,
   getSportList,
   getSportVideo,
   getAllGenreSpo,

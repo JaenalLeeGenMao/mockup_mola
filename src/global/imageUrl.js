@@ -1,12 +1,6 @@
 import { endpoints } from '@source/config'
 const imgBaseUrl = `${endpoints.asset}/images`
 
-const switchChannels = `${imgBaseUrl}/switch-channels`
-export const sportsImg = `${switchChannels}/sc_sports.png`
-export const entertainmentsImg = `${switchChannels}/sc_entertainments.png`
-export const seriesImg = `${switchChannels}/sc_series.png`
-export const movieImg = `${switchChannels}/sc_movies.png`
-
 const search = `${imgBaseUrl}/search`
 export const errorImg = `${search}/error.png`
 
@@ -17,10 +11,6 @@ export const activeRadioBtn = `${radio}/active.png`
 const cb = `${imgBaseUrl}/checkbox`
 export const unactiveCbBtn = `${cb}/unactive.png`
 export const activeCbBtn = `${cb}/active.png`
-
-const movieLibrary = `${imgBaseUrl}/radio`
-export const defaultImgPortrait = `${movieLibrary}/default-img-mola_library-01.jpg`
-export const defaultImgLandscape = `${movieLibrary}/default-img-mola_library-02.jpg`
 
 const eye = `${imgBaseUrl}/eye`
 export const eyeVisible = `${eye}/visible.png`

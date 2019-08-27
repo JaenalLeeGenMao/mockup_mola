@@ -216,36 +216,6 @@ const getSearchResult = searchText => dispatch => {
   }
 }
 
-const getSearchGenre = () => dispatch => {
-  dispatch({
-    type: types.GET_SEARCH_GENRE_LOADING,
-    payload: {
-      meta: {
-        status: 'loading',
-        error: '',
-      },
-      data: [],
-    },
-  })
-
-  return Mola.getSearchGenre().then(result => {
-    if (result.meta.status === 'error') {
-      dispatch({
-        type: types.GET_SEARCH_GENRE_ERROR,
-        payload: result,
-      })
-    } else {
-      result.data = result.data.filter(dt => {
-        return dt.visibility === 1
-      })
-      dispatch({
-        type: types.GET_SEARCH_GENRE_SUCCESS,
-        payload: result,
-      })
-    }
-  })
-}
-
 const getRecentSearch = (sessionId, sid) => dispatch => {
   dispatch({
     type: types.GET_RECENT_SEARCH_LOADING,
@@ -274,6 +244,5 @@ const getRecentSearch = (sessionId, sid) => dispatch => {
 
 export default {
   getSearchResult,
-  getSearchGenre,
   getRecentSearch,
 }

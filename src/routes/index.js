@@ -96,17 +96,13 @@ const routes = {
       path: '/conditions',
       load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },
-    {
-      path: '/history-transactions',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
-    {
-      path: '/history-transactions/:id',
-      load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
-    },
     // {
-    //   path: '/switch-channels',
-    //   load: () => import(/* webpackChunkName: 'switch-channels' */ './switch-channels'),
+    //   path: '/history-transactions',
+    //   load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
+    // },
+    // {
+    //   path: '/history-transactions/:id',
+    //   load: () => import(/* webpackChunkName: 'history-transactions' */ './history-transactions'),
     // },
     {
       path: '/matches',

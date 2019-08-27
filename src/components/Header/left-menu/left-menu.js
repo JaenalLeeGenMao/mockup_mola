@@ -45,11 +45,11 @@ class LeftMenu extends Component {
         title: 'matches',
         linkUrl: '/matches',
       },
-      {
-        id: 'library',
-        title: 'library',
-        linkUrl: `/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
-      },
+      // {
+      //   id: 'library',
+      //   title: 'library',
+      //   linkUrl: `/movie-library${activePlaylist ? `/${activePlaylist.id.replace('f-', '')}` : ''}`,
+      // },
     ]
 
     // const showLibrary = !isMobile
@@ -95,7 +95,11 @@ class LeftMenu extends Component {
                     <>
                       {menu.map(dt => {
                         return (
-                          <Link key={dt.id} className={activeMenu === dt.id ? styles.left_menu__active : ''} to={dt.linkUrl}>
+                          <Link
+                            key={dt.id}
+                            className={activeMenu === dt.id ? styles.left_menu__active : ''}
+                            to={dt.linkUrl}
+                          >
                             {dt.title}
                           </Link>
                         )
@@ -104,8 +108,16 @@ class LeftMenu extends Component {
                   )}
                   {isMobile && (
                     <div
-                      className={`${styles.left__menu_wrapper_m} ${isLandscape ? styles.left_menu_select_wrapper__ls : ''}`}>
-                      <DropdownList className={styles.left_menu_dropdown_container} dataList={menu} activeId={activeMenuDropdown} onClick={this.handleNavigation} />
+                      className={`${styles.left__menu_wrapper_m} ${
+                        isLandscape ? styles.left_menu_select_wrapper__ls : ''
+                      }`}
+                    >
+                      <DropdownList
+                        className={styles.left_menu_dropdown_container}
+                        dataList={menu}
+                        activeId={activeMenuDropdown}
+                        onClick={this.handleNavigation}
+                      />
                       {/* {showLibrary && (
                         <Link className={activeMenu === 'library' ? styles.left_menu__active : ''} to={libraryUrl}>
                           Library
