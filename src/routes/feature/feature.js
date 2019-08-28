@@ -209,6 +209,7 @@ class Feature extends Component {
                         _.get(playlists, `data[${carouselIndex}].contentType`, '')
                       ),
                       playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
+                      viewMorePlaylistId = _.get(playlists, `data[${carouselIndex}].viewMorePlaylistId`, ''),
                       slideToShow = isMobile
                         ? contentTypeList[contentTypeName].slideToScroll
                         : contentTypeList[contentTypeName].slideToShow,
@@ -219,7 +220,9 @@ class Feature extends Component {
                         <div className={carouselHeader}>
                           {video.data.length > 0 && <h3>{video.meta.title}</h3>}
                           {!viewAllHide &&
-                            video.data.length > slideToShow && <a href={`/categories/${playlistId}`}>View More</a>}
+                            video.data.length > slideToShow && (
+                              <a href={`/categories/${viewMorePlaylistId || playlistId}`}>View More</a>
+                            )}
                         </div>
                         <Carousel
                           wrap={false}
