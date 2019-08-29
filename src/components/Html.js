@@ -101,18 +101,22 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
           />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(yoastSEOPlugin) }} />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
-          {/* <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
+          <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" />
           <script
             dangerouslySetInnerHTML={{
               __html:
                 'var OneSignal = window.OneSignal || [];' +
                 'OneSignal.push(function() {' +
                 'OneSignal.init({' +
-                `appId: ${config.env == 'production' ? '"5d6c228d-12ee-4b17-9946-cd772f84f314"' : '"679fe5dc-5170-4cda-8302-f9cbccc9f38c"'},` +
+                `appId: ${
+                  config.env == 'production'
+                    ? '"5d6c228d-12ee-4b17-9946-cd772f84f314"'
+                    : '"679fe5dc-5170-4cda-8302-f9cbccc9f38c"'
+                },` +
                 '});' +
                 '});',
             }}
-          /> */}
+          />
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />
