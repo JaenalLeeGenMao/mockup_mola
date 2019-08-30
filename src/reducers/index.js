@@ -16,6 +16,7 @@ import feature from './feature'
 import playlist from './playlist'
 import headerMenu from './header-menu'
 import configParams from './config-params'
+import partners from './partners'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -38,4 +39,5 @@ export default combineReducers({
   playlist,
   headerMenu,
   configParams,
+  partners,
 })

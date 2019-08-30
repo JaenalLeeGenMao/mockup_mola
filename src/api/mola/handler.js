@@ -18,6 +18,7 @@ import {
   ARTICLES_RECOMMENDED_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT_NOCACHE,
   VIDEOS_ENDPOINT_NOCACHE,
+  PARTNERS_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 
@@ -237,6 +238,7 @@ const getSportList = (id = 'mola-sport') => {
       }
     })
 }
+
 const getMatchesList = (id = 'mola-soc') => {
   return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
@@ -297,6 +299,7 @@ const getMatchDetail = id => {
       }
     })
 }
+
 const getMatchesPlaylists = id => {
   return post(
     `${HOME_PLAYLIST_ENDPOINT_NOCACHE}`,
@@ -923,6 +926,30 @@ const getRecommendedArticles = articlesId => {
     })
 }
 
+const getPartners = () => {
+  return get(`${PARTNERS_ENDPOINT}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizePartners(response)
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: result,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: [],
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getFeaturePlaylist,
@@ -950,4 +977,5 @@ export default {
   getHeaderMenu,
   getPlaylistPlaylists,
   getRecommendedArticles,
+  getPartners,
 }

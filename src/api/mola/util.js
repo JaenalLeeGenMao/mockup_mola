@@ -652,6 +652,23 @@ const normalizeRecommendation = response => {
   return []
 }
 
+const normalizePartners = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(({ id, type, attributes: { name, url, order, createdAt } }) => {
+      return {
+        id,
+        type,
+        name,
+        url,
+        order,
+        createdAt,
+      }
+    })
+  }
+  return []
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
@@ -666,4 +683,5 @@ export default {
   normalizeProgrammeGuides,
   normalizeRecommendation,
   normalizeMatchPlaylists,
+  normalizePartners,
 }

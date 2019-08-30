@@ -11,6 +11,7 @@ import * as vuid from './vuid'
 import * as channels from './channels'
 import * as feature from './feature'
 import * as playlist from './playlist'
+import * as partners from './partners'
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE'
 export default {
@@ -27,4 +28,5 @@ export default {
   ...channels,
   ...feature,
   ...playlist,
+  ...partners,
 }
