@@ -4,6 +4,7 @@ import Tracker from '@source/lib/tracker'
 import config from '@source/config'
 import { get } from 'axios'
 import { getContentTypeName } from '@source/lib/globalUtil'
+import Moment from 'moment'
 
 let ticker = [],
   tickerLive = []
@@ -206,6 +207,7 @@ export const defaultVideoSetting = (user, videoDt, vuid) => {
     session_id: Tracker.sessionId(window),
     client_ip: user.clientIp,
     uuid: uuidADS(),
+    time_offset: `${Moment().utcOffset() / 60}`,
     loc: user.loc,
   }
 

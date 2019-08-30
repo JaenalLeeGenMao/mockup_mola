@@ -78,6 +78,14 @@ class MatchList extends React.Component {
       )
     } else {
       return (
+        // <div className={styles.matchList__matches}>
+        //   <div className={styles.matchList__TitleContent}>
+        //     <span>{title}</span>
+        //     <p className={styles.matchList__timeHour}>
+        //       {startTimeHour} - {endtimeHour}
+        //     </p>
+        //   </div>
+        // </div>
         <div className={styles.matchList__matches}>
           <div className={styles.matchList__NoHomeAwayTeam}>
             <span>{title}</span>
@@ -102,6 +110,7 @@ class MatchList extends React.Component {
       const images = this.props.data ? this.props.data.images : ''
       const date = this.cardDateFormat(data.startTime, data.endTime, isChannel)
       const matchLive = isMatchLive(data.startTime, data.endTime)
+      const matchTomorrow = isTomorrow(data.startTime)
       const hour =
         data.endTime && data.startTime
           ? new Date(data.endTime * 1000).getHours() - new Date(data.startTime * 1000).getHours()
@@ -113,7 +122,8 @@ class MatchList extends React.Component {
         ? `${styles.channel__display__duration} ${styles.matchList__date}`
         : styles.matchList__date
       const isLiveMatch = matchLive ? styles.matchList__live_now : ''
-      const leftBoxStyle = `${channelOrMatchStyle} ${isLiveMatch}`
+      const isTomorrowMatch = matchTomorrow ? styles.matchList__tomorrow : ''
+      const leftBoxStyle = `${channelOrMatchStyle} ${isLiveMatch} ${isTomorrowMatch}`
       return (
         <>
           {toJumpLive && (

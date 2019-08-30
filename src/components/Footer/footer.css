@@ -20,6 +20,7 @@
 @media screen and (max-width: 864px) {
   .footer__container {
     padding: 0;
+    width: 103%;
   }
 
   .footer__container a {

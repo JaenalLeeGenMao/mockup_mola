@@ -26,6 +26,15 @@
   padding: 0.6rem;
 }
 
+.profile_form_wrapper > div > div:first-child,
+.profile_form_wrapper > div:first-child > div {
+  width: 100%;
+}
+
+.profile_form_wrapper > div > div input {
+  width: 91%;
+}
+
 .profile_form_input_wrapper {
   max-width: 100%;
   width: 100%;
@@ -63,7 +72,7 @@
   font-size: 1.2rem;
 }
 
-.profile_form_wrapper>div {
+.profile_form_wrapper > div {
   max-width: 23vw;
   font-size: 1.42rem;
   width: 100%;
@@ -79,10 +88,15 @@
   font-size: 1.2rem;
 }
 
-.profile_form_input_wrapper.disabled, .profile_form_wrapper input.disabled {
+.profile_form_input_wrapper.disabled,
+.profile_form_wrapper input.disabled {
   background: #111;
   color: #343434;
   cursor: not-allowed;
+}
+
+.profile_form_wrapper > div.birthdate_popper {
+  width: auto;
 }
 
 .profile_image_wrapper {
@@ -165,6 +179,19 @@
   width: 2rem !important;
 }
 
+.datepicker__wrapper {
+  width: 100%;
+}
+
+.profile__form_datepicker {
+  padding: 0.38rem 4.5%;
+  background: #343434;
+  border-radius: 0.4rem;
+  border-color: #343434;
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
 @media only screen and (max-width: 1024px) {
   .profile_form_wrapper {
     flex-direction: column;
@@ -178,10 +205,15 @@
   }
 
   .profile_form_wrapper label {
-    color: #6f6f6f;
+    color: #130808;
     font-weight: lighter;
     font-size: 0.9rem;
     margin: 1rem 0;
+  }
+
+  .profile_form_wrapper > div:first-child,
+  .profile_form_wrapper > div:first-child > div {
+    width: 10%;
   }
 
   .profile_form_input_wrapper {
@@ -198,7 +230,7 @@
     padding: 20px 15px;
   }
 
-  .profile_form_wrapper>div {
+  .profile_form_wrapper > div {
     max-width: 100%;
     width: 100%;
   }
@@ -213,7 +245,8 @@
     padding-bottom: 140px;
   }
 
-  .profile_button, .profile_button_active {
+  .profile_button,
+  .profile_button_active {
     border-radius: 4px;
     font-size: 0.8rem;
     width: 100%;

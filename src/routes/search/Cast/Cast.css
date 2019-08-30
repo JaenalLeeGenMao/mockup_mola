@@ -34,6 +34,11 @@
   line-height: 1.3;
 }
 
+.castBox div {
+  font-size: 1.3rem;
+  color: #6f6f6f;
+}
+
 .castBoxLoading {
   width: calc(100% / 6);
   text-align: center;
@@ -104,9 +109,7 @@
 
 .person__wrapper {
   margin: 0 10px 20px;
-  width: calc(100% + 20px);
-
-  /* width: calc(25% - 20px); */
+  width: calc(100% / 7);
   line-height: 1.25;
 }
 
@@ -118,11 +121,9 @@
   margin: 0 auto 10px;
 }
 
-@media screen and (max-width: 1280px) {
-  .castBox {
-    width: calc(100% / 6);
-  }
-}
+/*
+ipad pro
+*/
 
 @media screen and (max-width: 1024px) {
   .castBox {

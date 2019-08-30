@@ -76,7 +76,7 @@ class Search extends React.Component {
             .where('createdDate')
             .belowOrEqual(expiredDate)
             .delete()
-            .then(function () { })
+            .then(function() {})
         })
       }
     }
@@ -179,11 +179,11 @@ class Search extends React.Component {
   }
 
   parseCastSuggestion = (result, val) => {
-    const matchCastArr = result.data.filter(function (dt) {
+    const matchCastArr = result.data.filter(function(dt) {
       return dt.type == 'casts'
     })
 
-    const firstMatchCastArr = matchCastArr.filter(function (dt) {
+    const firstMatchCastArr = matchCastArr.filter(function(dt) {
       if (dt.title) {
         return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
       }
@@ -195,11 +195,11 @@ class Search extends React.Component {
   }
 
   parseMovieSuggestion = (result, val) => {
-    const matchMovieArr = result.data.filter(function (dt) {
+    const matchMovieArr = result.data.filter(function(dt) {
       return dt.type == 'videos'
     })
 
-    const firstMatchMovieArr = matchMovieArr.filter(function (dt) {
+    const firstMatchMovieArr = matchMovieArr.filter(function(dt) {
       if (dt.title) {
         return dt.title.toLowerCase().indexOf(val.toLowerCase()) === 0
       }
@@ -372,14 +372,16 @@ class Search extends React.Component {
           <div className={s.container}>
             <div className={s.searchAutocomplete}>{showResult && <span>{this.textSuggestion}</span>}</div>
             <div className={s.searchInputWrapper}>
-              <i className={s.searchIcon} />
               <input
                 className={s.searchInput}
                 ref={this.inputSearch}
                 onChange={this.handleSearchChange}
                 onKeyDown={this.handleSearchKeyDown}
+                placeholder="Search"
               />
               {showRemoveIcon && <i className={s.removeSearchIcon} onClick={this.handleRemoveSearch} />}
+              <div className={s.lineSearch} />
+              <i className={s.searchIcon} />
             </div>
 
             {isEmptyInput && (
@@ -471,7 +473,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getSearchGenre: () => dispatch(searchActions.getSearchGenre()),
   getRecentSearch: (sessionId, sid) => dispatch(searchActions.getRecentSearch(sessionId, sid)),
   getSearchResult: searchText => dispatch(searchActions.getSearchResult(searchText)),
 })

@@ -2,8 +2,7 @@ import styled, { css } from 'react-emotion'
 
 export const CustomBackground = styled('div')`
   position: ${props => props.position || 'fixed'};
-  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-    url(${props => props.url});
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(${props => props.url});
   background-repeat: no-repeat;
   background-position: center center;
   background-size: ${props => props.backgroundSize || 'cover'};
