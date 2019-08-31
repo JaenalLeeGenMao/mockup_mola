@@ -26,6 +26,7 @@ const getFeaturePlaylist = id => dispatch => {
           },
           data: [],
         },
+        id,
       })
     } else {
       dispatch({
@@ -109,6 +110,7 @@ const getFeatureBanner = pathname => dispatch => {
           },
           data: [],
         },
+        id: pathname,
       })
     } else {
       dispatch({
@@ -142,6 +144,7 @@ const getFeatureArticle = id => dispatch => {
           },
           data: [],
         },
+        id,
       })
     } else {
       dispatch({
