@@ -111,7 +111,11 @@ class Feature extends Component {
 
     if (video) {
       /** only execute when a video object exist */
-      history.push(obj[video.type]())
+      if (video.type == 'banners') {
+        window.location.href = obj[video.type]()
+      } else {
+        history.push(obj[video.type]())
+      }
     } else {
       alert(`Mola does NOT recognized this link \n${JSON.stringify(video)}`)
     }
