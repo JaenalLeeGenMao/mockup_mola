@@ -147,11 +147,11 @@ body {
 }
 
 .live {
-  background-color: #0d2caa;
+  background-color: #12128b;
 }
 
 .replay {
-  background-color: #383838;
+  background-color: #2c2c2c;
 }
 
 .upcoming {
@@ -159,5 +159,5 @@ body {
 }
 
 .transparent {
-  background-color: transparent
+  background-color: transparent;
 }
