@@ -241,10 +241,14 @@ body {
 .filterLabel {
   font-size: 1.5rem;
   color: #a7a7a7;
-  margin: 2rem 0 2rem 0;
+  margin: 1rem 0 1rem 0;
   display: flex;
   justify-content: left;
   cursor: pointer;
+}
+
+.filterLabel:first-child {
+  margin-top: 0;
 }
 
 .btnFilter {
@@ -389,6 +393,11 @@ body {
   height: 3rem;
 }
 
+.tourWeek {
+  display: flex;
+  flex-direction: column;
+}
+
 .filterimg__PremierLeague {
   width: 2.5rem;
   height: 2.5rem;
@@ -519,4 +528,41 @@ body {
   .matches_grid > span:last-child {
     justify-self: flex-start;
   }
+}
+
+.dot {
+  /* height: 25px;
+  width: 25px;
+  background-color: blue;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  vertical-align: middle; */
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 5px 10px;
+  vertical-align: middle
+}
+
+.matchStatusText {
+  vertical-align: middle;
+  font-size: 1.4rem;
+}
+
+.teksLegend {
+  vertical-align: middle;
+}
+
+.live {
+  background-color: #0d2caa;
+}
+
+.replay {
+  background-color: #383838;
+}
+
+.upcoming {
+  background-color: #ad811e;
 }

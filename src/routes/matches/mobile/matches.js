@@ -9,6 +9,10 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import DropdownList from '@components/DropdownList'
 import MatchesPlaceholder from './placeholder'
 
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
+import { tourSteps } from './const'
+
 import {
   formatDateTime,
   isToday,
@@ -32,6 +36,7 @@ import MatchList from '@components/MatchList'
 
 import styles from './matches.css'
 import Scroll from 'react-scroll'
+
 let scroller = Scroll.scroller
 class Matches extends Component {
   state = {
@@ -45,6 +50,11 @@ class Matches extends Component {
     selectedDate: null,
     startWeekDate: null,
     hasLive: false,
+    startGuide: false,
+    stepIndex: 0,
+    steps: tourSteps.en,
+    matchesPlaylistsSuccess: false,
+    screenWidth: 245,
   }
 
   setDefaultDate = () => {
@@ -65,6 +75,53 @@ class Matches extends Component {
     if (this.props.matches.matchesPlaylists.meta.status === 'success') {
       this.setInitialData()
     }
+    if (window.innerWidth < 375 && window.innerHeight < 600) {
+      this.setState({
+        screenWidth: 200,
+      })
+    }
+  }
+
+  handleTourCallback = data => {
+    const { type, action, index } = data
+    // console.log('tipe', type)
+    // console.log('aksi', action)
+    // console.log('indeks', index)
+    if (type === EVENTS.TOUR_END) {
+      try {
+        localStorage.setItem('tour-matches', true)
+      } catch (err) {}
+      this.setState({
+        startGuide: false,
+      })
+      const disableScroll = document.getElementsByTagName('body')
+      disableScroll[0].style.overflow = 'visible'
+      const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
+      setTimeout(() => {
+        scroller.scrollTo(formatStartTime, {
+          duration: 500,
+          smooth: true,
+          offset: -150, // Scrolls to element + 50 pixels down the page
+        })
+      }, 500)
+      return true
+    }
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1,
+      })
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState({
+        stepIndex: index - 1,
+      })
+    }
+    // else {
+    //   if (action === ACTIONS.NEXT && index === 5) {
+    //     this.setState({
+    //       stepIndex: index + 1,
+    //     })
+    //   }
+    // }
   }
 
   componentDidUpdate(prevProps) {
@@ -73,7 +130,29 @@ class Matches extends Component {
       this.props.matches.matchesPlaylists.meta.status === 'success'
     ) {
       this.setInitialData()
+      this.initTour()
     }
+  }
+
+  initTour = () => {
+    this.setState(
+      {
+        matchesPlaylistsSuccess: true,
+      },
+      () => {
+        let isTourDone = true
+        try {
+          isTourDone = localStorage.getItem('tour-matches')
+        } catch (err) {}
+        if (!isTourDone) {
+          this.setState({
+            startGuide: true,
+          })
+          const disableScroll = document.getElementsByTagName('body')
+          disableScroll[0].style.overflow = 'hidden'
+        }
+      }
+    )
   }
 
   setInitialData = () => {
@@ -91,14 +170,16 @@ class Matches extends Component {
     const result = this.getThreeWeeksDate(matchTemp)
     let matchesList = result.matchesList
     this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
-    setTimeout(() => {
-      scroller.scrollTo(formatStartTime, {
-        duration: 500,
-        smooth: true,
-        offset: -150, // Scrolls to element + 50 pixels down the page
-      })
-    }, 500)
+    if (!this.state.startGuide && localStorage.getItem('tour-matches')) {
+      const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
+      setTimeout(() => {
+        scroller.scrollTo(formatStartTime, {
+          duration: 500,
+          smooth: true,
+          offset: -150, // Scrolls to element + 50 pixels down the page
+        })
+      }, 500)
+    }
   }
 
   getThreeWeeksDate = matches => {
@@ -439,7 +520,7 @@ class Matches extends Component {
     return (
       <LazyLoad containerClassName={styles.matches__filterWeek}>
         <DropdownList
-          className={styles.matches_dropdown_container_filterWeek}
+          className={`${styles.matches_dropdown_container_filterWeek} tourWeek`}
           dataList={filterList}
           activeId={selectedWeek}
           onClick={this.handleWeekClick}
@@ -462,7 +543,7 @@ class Matches extends Component {
       <LazyLoad containerClassName={styles.matches__filter}>
         <DropdownList
           className={styles.matches_dropdown_container}
-          labelClassName={styles.matches_dropdown_label}
+          labelClassName={`${styles.matches_dropdown_label}`}
           dataList={filterListTemp}
           onClick={this.handleFilterByLeague}
         />
@@ -482,7 +563,63 @@ class Matches extends Component {
 
   render() {
     const { meta } = this.props.matches.matchesPlaylists
-    const { filterByDates, startWeekDate, hasLive } = this.state
+    const { filterByDates, startWeekDate, hasLive, startGuide, steps, stepIndex, screenWidth } = this.state
+
+    const customTourStyle = {
+      buttonNext: {
+        backgroundColor: '#2C56FF',
+        fontSize: '1.06rem',
+        lineHeight: '1',
+        padding: '8px 15px',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        borderRadius: '30px',
+        fontWeight: '600',
+      },
+      buttonBack: {
+        color: '#000000',
+        fontSize: '1.06rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        fontWeight: '600',
+      },
+      buttonClose: {
+        display: 'none',
+      },
+      buttonSkip: {
+        color: '#000000',
+        fontWeight: '600',
+        fontSize: '1.06rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1.67px',
+        padding: '0',
+      },
+      tooltipContent: {
+        fontSize: '1.06rem',
+        padding: '0',
+        textAlign: 'left',
+        color: '#858585',
+        lineHeight: '1.3',
+        letterSpacing: '0.5px',
+      },
+      tooltipTitle: {
+        fontSize: '1.15rem',
+        textAlign: 'left',
+        margin: '0px 0px 8px',
+        letterSpacing: '0.59px',
+        textTransform: 'uppercase',
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      },
+      spotlight: {
+        borderRadius: '5px',
+        backgroundColor: 'rgb(203, 203, 203, 0.7)',
+      },
+      tooltip: {
+        width: screenWidth,
+      },
+    }
 
     return (
       <Fragment>
@@ -498,7 +635,9 @@ class Matches extends Component {
               {this.renderFilterLeague()}
               {this.renderFilterWeek()}
             </div>
-            <LazyLoad containerClassName={styles.matches__container}>{this.renderMatchCard()}</LazyLoad>
+            <LazyLoad containerClassName={`${styles.matches__container} tourMatchStatus`}>
+              {this.renderMatchCard()}
+            </LazyLoad>
             <LazyLoad containerClassName={styles.calendarCls}>
               <VerticalCalendar
                 isMobile
@@ -513,6 +652,17 @@ class Matches extends Component {
             </LazyLoad>
           </>
         )}
+        <Joyride
+          disableOverlayClose={true}
+          stepIndex={stepIndex}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        />
       </Fragment>
     )
   }

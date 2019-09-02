@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './home.css'
+import styles from './matches.css'
 
 export const tourSteps = {
   //indonesia
@@ -11,7 +11,6 @@ export const tourSteps = {
         <div>
           Untuk bernavigasi ke kategori konten yang berbeda, Anda cukup klik tombol atas dan bawah pada keyboard, atau
           geser
-          <span className={styles.swipeUpIcon} /> ke atas dan ke bawah pada layar sentuh/trackpad Anda.
         </div>
       ),
       placement: 'right',
@@ -30,7 +29,6 @@ export const tourSteps = {
           {' '}
           Anda dapat menelusuri konten pilihan Mola di setiap kategori dengan klik tombol kiri dan kanan pada keyboard,
           atau geser
-          <span className={styles.swipeNextIcon} /> kiri dan kanan menggunakan layar sentuh/trackpad Anda.
         </div>
       ),
       placement: 'top',
@@ -55,76 +53,80 @@ export const tourSteps = {
   //english
   en: [
     {
-      target: '.tourCategory',
-      title: 'Categories',
-      content: <div>Move around {"Mola's"} various categories using this menu.</div>,
+      target: '.tourPlaylist',
+      title: 'Channel List',
+      content: <div>Filter matches based on sports or leagues.</div>,
       placement: 'bottom',
       disableBeacon: true,
       styles: {
         tooltip: {
-          maxWidth: '100%',
+          width: '40rem',
         },
       },
     },
     {
-      target: '.tourCategoryChannels',
-      title: 'Channels',
-      content: <div>Enjoy {"Mola's"} TV experience here.</div>,
-      placement: 'bottom',
-      disableBeacon: true,
-      styles: {
-        tooltip: {
-          maxWidth: '100%',
-        },
-      },
-    },
-    {
-      target: '.tourCategoryMatches',
-      title: 'Matches',
-      content: <div>Click here to check on matches schedules.</div>,
-      placement: 'bottom',
-      disableBeacon: true,
-      styles: {
-        tooltip: {
-          maxWidth: '100%',
-        },
-      },
-    },
-    {
-      target: '.tourHighlightChannel',
-      title: 'Category highlights',
-      content: (
-        <div>
-          Browse category highlights by clicking the up and down buttons on your keyboard, or swipe{' '}
-          <span className={styles.swipeUpIcon} /> up and down on your touchscreen/trackpad.
-        </div>
-      ),
-      styles: {
-        tooltip: {
-          width: '42rem',
-        },
-      },
+      target: '.tourWeek',
+      title: 'Filter By Week',
+      content: <div>View matches based on week.</div>,
       placement: 'right',
       disableBeacon: true,
+      styles: {
+        tooltip: {
+          maxWidth: '100%',
+        },
+      },
     },
     {
-      target: '.tourSlide',
-      title: 'Highlights',
-      content: (
-        <div>
-          Browse the highlights of the category by clicking the left and right buttons on your keyboard, or swipe{' '}
-          <span className={styles.swipeNextIcon} /> left and right on your touchscreen/trackpad.
-        </div>
-      ),
-      placement: 'top',
+      target: '.tourFilterDate',
+      title: 'Filter By Date',
+      content: <div>View matches based on date.</div>,
+      placement: 'left',
       disableBeacon: true,
       styles: {
         tooltip: {
-          width: '39rem',
-          marginLeft: '55px',
+          maxWidth: '100%',
+        },
+      },
+    },
+    {
+      target: '.tourMatchStatus',
+      title: 'Match Status',
+      content: (
+        <div>
+          <div className={styles.matchStatusText}>
+            <span className={`${styles.dot} ${styles.live}`} />
+            <span className={styles.teksLegend}>The match is live now</span>
+          </div>
+
+          <div className={styles.matchStatusText}>
+            <span className={`${styles.dot} ${styles.replay}`} />
+            <span className={styles.teksLegend}>The match is over and you can see replay match</span>
+          </div>
+
+          <div className={styles.matchStatusText}>
+            <span className={`${styles.dot} ${styles.upcoming}`} />
+            <span className={styles.teksLegend}>The match is upcoming</span>
+          </div>
+        </div>
+      ),
+      placement: 'center',
+      disableBeacon: true,
+      styles: {
+        tooltip: {
+          width: '41rem',
+          // height: '31rem'
         },
       },
       locale: { last: 'Done' },
     },
   ],
 }
+
+// Sports filter
+// Filter matches based on sports or leagues.
+
+// Filter by Week
+// View matches based on week
+
+// Filter by Date
+// View matches based on date

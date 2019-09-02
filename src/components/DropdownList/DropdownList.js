@@ -70,7 +70,11 @@ class DropdownList extends Component {
     }
     return (
       <>
-        {thumbnails && <span className={s.dropdown_img}><img src={thumbnails} /></span>}
+        {thumbnails && (
+          <span className={s.dropdown_img}>
+            <img src={thumbnails} />
+          </span>
+        )}
         <span>{title}</span>
       </>
     )
@@ -83,8 +87,10 @@ class DropdownList extends Component {
       <div className={`${s.dropdown_container} ${className ? className : ''}`}>
         <>
           <div ref={node => (this.dropdownLabel = node)} className={labelClassName ? labelClassName : ''}>
-            <label>{this.getSelectedMenu(dataList)}</label>
-            <IoIosArrowDown className={s.select_icon} />
+            <div className={`${s.tourPlaylist} tourPlaylist`}>
+              <label>{this.getSelectedMenu(dataList)}</label>
+              <IoIosArrowDown className={s.select_icon} />
+            </div>
           </div>
         </>
         <div
@@ -100,7 +106,11 @@ class DropdownList extends Component {
                 key={dt.id}
                 onClick={() => this.handleClickDropdownAction(dt.id)}
               >
-                {dt.thumbnails && <span className={s.dropdown_img}><img src={dt.thumbnails} /></span>}
+                {dt.thumbnails && (
+                  <span className={s.dropdown_img}>
+                    <img src={dt.thumbnails} />
+                  </span>
+                )}
                 <span>{dt.title}</span>
               </div>
             )

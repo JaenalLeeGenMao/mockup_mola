@@ -4,13 +4,22 @@
   top: 16rem;
 }
 
+.tourFilterDate {
+  display: flex;
+  flex-direction: column;
+}
+
 .filterLabelByDay {
   font-size: 1.5rem;
   color: #676767;
-  margin: 1.5rem 0.5rem 1.5rem 0;
+  margin: 0.75rem 0.5rem 0.75rem 0;
   text-align: right;
   cursor: pointer;
 }
+
+/* .filterLabelByDay:first-child {
+  margin-top: 0;
+} */
 
 .selectedLabel {
   margin-right: 0;
@@ -30,6 +39,7 @@
   background-position: right;
   height: 2rem;
   cursor: pointer;
+  margin-bottom: 0.75rem;
 }
 
 .live__logo__active {

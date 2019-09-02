@@ -67,7 +67,7 @@ class VerticalCalendar extends Component {
     return (
       <span>
         <div className={s.filterContentfilterByDay_container}>
-          <span>
+          <span className={`${s.tourFilterDate} tourFilterDate`}>
             {hasLiveLogo && (
               <div
                 className={`${s.live__logo} ${isActiveLive ? s.live__logo__active : ''}`}

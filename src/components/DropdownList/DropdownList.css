@@ -37,3 +37,7 @@
   margin-right: 10px;
   vertical-align: middle;
 }
+
+.tourPlaylist {
+  display: inline-block
+}

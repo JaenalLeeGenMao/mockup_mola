@@ -93,6 +93,7 @@ const customTourStyle = {
   },
   spotlight: {
     borderRadius: '5px',
+    backgroundColor: 'rgb(203, 203, 203, 0.7)',
   },
   tooltip: {
     width: '30rem',
