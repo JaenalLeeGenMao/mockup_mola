@@ -36,10 +36,39 @@ class PlatformCheck extends Component {
     globalTracker(payload)
     window.open(link_redirect, '_blank')
   }
-  render() {
-    const { name, portraitPoster, icon, iconStatus, status, partners } = this.props
+
+  renderLink = () => {
+    const { partners } = this.props
     const dataFetch = partners.data
 
+    if (partners.meta.status === 'success') {
+      return (
+        <>
+          {dataFetch.map((dt, idx) => {
+            return (
+              <a key={idx} onClick={() => this.handleRedirectTracker(dt.url || '')}>
+                {' '}
+                <span>{dt.name}</span>
+              </a>
+            )
+          })}
+        </>
+      )
+    } else if (partners.meta.status === 'error') {
+      {
+        return (
+          <>
+            <a onClick={() => this.handleRedirectTracker('https://www.polytronstore.com/video/358', 'polytron.com')}>
+              polytron.com
+            </a>
+          </>
+        )
+      }
+    }
+  }
+
+  render() {
+    const { name, portraitPoster, icon, iconStatus, status } = this.props
     return (
       <>
         <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster})` }}>
@@ -82,19 +111,7 @@ class PlatformCheck extends Component {
               </div>
               <div className={styles.detail__desc__text__icon__bottom__text}>
                 atau, untuk pembelian online silahkan kunjungi:
-                <div className={styles.detail__desc__text__icon__bottom__text}>
-                  {dataFetch.map((dt, idx) => {
-                    // console.log('data', data)
-                    // console.log('link', dt.attributes.link)
-
-                    return (
-                      <a key={idx} onClick={() => this.handleRedirectTracker(dt.url)}>
-                        {' '}
-                        <span>{dt.name}</span>
-                      </a>
-                    )
-                  })}
-                </div>
+                <div className={styles.detail__desc__text__icon__bottom__text}>{this.renderLink()}</div>
                 {/* <div className={styles.detail__desc__text__icon__bottom__text}>
                   <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
                     Blibli.com

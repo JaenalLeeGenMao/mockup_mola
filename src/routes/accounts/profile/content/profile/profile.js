@@ -411,7 +411,7 @@ class Profile extends React.Component {
                 onChange={this.handleDtPickerChange}
                 placeholderText="dd/mm/yyyy"
                 label="Tanggal Lahir"
-                dateFormat="dd-MM-yyyy"
+                dateFormat="dd/MM/yyyy"
               />
             </div>
 
