@@ -104,7 +104,8 @@ class Profile extends React.Component {
       subscriptions,
       phoneNumber,
     } = props.user
-    // this.propsName = `${firstName} ${lastName}`
+
+    // let frmtDateBirth = new Date(birthdate)
 
     this.state = {
       isToggled: false,
@@ -126,13 +127,15 @@ class Profile extends React.Component {
   }
 
   setData = data => {
+    let frmtDateBirth = new Date(data.birthdate ? data.birthdate : '')
+
     this.setState({
       isToggled: false,
       name: data.name || '',
       email: data.email || '',
       phoneNumber: data.phone || '',
       photo: data.photo || '',
-      birthdate: data.birthdate || '',
+      birthdate: data.birthdate ? frmtDateBirth : '',
       gender: data.gender || 'm',
       location: data.location || '',
       error: '',
@@ -158,9 +161,23 @@ class Profile extends React.Component {
   }
 
   handleSubmit = async e => {
+    const {
+      name,
+      email,
+      frmtDateBirth,
+      birthdate,
+      photo,
+      gender,
+      location,
+      phoneNumber,
+      uploadStatus,
+      error,
+      locale,
+    } = this.state
+
     let dated = new Date(birthdate)
     const frmtDate = formatDateTime(dated.getTime() / 1000, 'YYYY-MM-DD')
-    const { name, email, birthdate, photo, gender, location, phoneNumber, uploadStatus, error, locale } = this.state
+
     const { csrf } = this.props.runtime
     const { token } = this.props.user
     const payload = { name, csrf, birthdate: frmtDate, gender, location, token, phone: phoneNumber }
@@ -335,6 +352,9 @@ class Profile extends React.Component {
       isError,
     } = this.state
 
+    let frmtDateBirth = user.birthdate ? new Date(user.birthdate) : ''
+    const birth = user.birthdate ? formatDateTime(frmtDateBirth.getTime() / 1000, 'DD-MM-YYYY') : ''
+
     return (
       <div>
         <div>{error && <p className={s.profile_from_input_wrapper_error}>{error}</p>}</div>
@@ -391,7 +411,7 @@ class Profile extends React.Component {
                 onChange={this.handleDtPickerChange}
                 placeholderText="dd/mm/yyyy"
                 label="Tanggal Lahir"
-                dateFormat="dd/MM/yyyy"
+                dateFormat="dd-MM-yyyy"
               />
             </div>
 
@@ -430,7 +450,7 @@ class Profile extends React.Component {
             <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.name} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />
             <FormPlaceholder id="changePhoneNumber" label="Nomor Telfon" value={user.phone} />
-            <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={user.birthdate} />
+            <FormPlaceholder id="changeBirthdate" label="Tanggal Lahir" value={birth} />
             <FormPlaceholder id="changeGender" label="Jenis Kelamin" value={user.gender} />
             <FormPlaceholder id="changeLocation" label="Lokasi" value={user.location} />
             <FormPlaceholder
