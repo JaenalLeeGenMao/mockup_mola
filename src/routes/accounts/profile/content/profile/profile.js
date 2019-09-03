@@ -10,6 +10,7 @@ import Uploader from '@api/uploader'
 import { updateProfile, fetchProfile } from '@actions/user'
 
 import LazyLoad from '@components/common/Lazyload'
+import { formatDateTime } from '@source/lib/dateTimeUtil'
 
 import { genderOptions, countryOptions } from './const'
 import { getLocale } from '../../../register/locale'
