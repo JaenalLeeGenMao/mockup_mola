@@ -131,7 +131,7 @@ class Watch extends Component {
   }
 
   render() {
-    const { isMobile, vuid, videoId, getMovieDetail } = this.props
+    const { isMobile, vuid, videoId, getMovieDetail, isAutoPlay } = this.props
     const { block, isHeader } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -175,6 +175,7 @@ class Watch extends Component {
                 icon={this.state.imageUrl}
                 name={this.state.name}
                 title={apiFetched ? dataFetched.title : ''}
+                isAutoPlay={isAutoPlay}
                 portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
               />
             </>
@@ -192,6 +193,7 @@ class Watch extends Component {
                   movieDetail={this.props.movieDetail}
                   getMovieDetail={getMovieDetail}
                   vuid={vuid}
+                  isAutoPlay={isAutoPlay}
                 />
               )}
               {!isMobile && (
@@ -201,6 +203,7 @@ class Watch extends Component {
                   movieDetail={this.props.movieDetail}
                   getMovieDetail={getMovieDetail}
                   vuid={vuid}
+                  isAutoPlay={isAutoPlay}
                 />
               )}
             </>

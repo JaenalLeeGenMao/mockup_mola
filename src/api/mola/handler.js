@@ -1,11 +1,11 @@
 import { get, post, delete as axiosDelete } from 'axios'
 import _ from 'lodash'
 import {
-  VIDEOS_ENDPOINT,
-  HOME_PLAYLIST_ENDPOINT,
+  // VIDEOS_ENDPOINT,
+  // HOME_PLAYLIST_ENDPOINT,
   HISTORY_ENDPOINT,
   SEARCH_ENDPOINT,
-  SEARCH_GENRE_ENDPOINT,
+  // SEARCH_GENRE_ENDPOINT,
   RECENT_SEARCH_ENDPOINT,
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
@@ -66,12 +66,12 @@ const getFeaturePlaylist = id => {
       const playlistsFiltered =
         playlists.length > 0
           ? playlists
-              .map(playlist => ({
-                id: playlist.id,
-                type: playlist.type,
-                ...playlist.attributes,
-              }))
-              .filter(playlist => playlist.visibility === 1)
+            .map(playlist => ({
+              id: playlist.id,
+              type: playlist.type,
+              ...playlist.attributes,
+            }))
+            .filter(playlist => playlist.visibility === 1)
           : []
       return {
         meta: {
@@ -105,66 +105,7 @@ const getFeatureBanner = ({ id = '' }) => {
     ...endpoints.setting,
   })
     .then(response => {
-      // const response = {
-      //   data: {
-      //     data: [
-      //       {
-      //         id: 7,
-      //         attributes: {
-      //           name: isMobile ? 'mobile-featured' : 'desktop-featured',
-      //           banners: [
-      //             {
-      //               id: 767,
-      //               type: 'banners',
-      //               attributes: {
-      //                 buttonText: ' ',
-      //                 description: ' ',
-      //                 imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
-      //                 link: ' ',
-      //                 name: ' ',
-      //                 isDark: isMobile ? 1 : 0,
-      //               },
-      //             },
-      //             {
-      //               id: 768,
-      //               type: 'banners',
-      //               attributes: {
-      //                 buttonText: ' ',
-      //                 description: ' ',
-      //                 imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
-      //                 link: ' ',
-      //                 name: ' ',
-      //                 isDark: isMobile ? 1 : 0,
-      //               },
-      //             },
-      //             {
-      //               id: 769,
-      //               type: 'banners',
-      //               attributes: {
-      //                 buttonText: ' ',
-      //                 description: ' ',
-      //                 imageUrl: isMobile ? 'https://mola01.koicdn.com/u/image/057b30fe-e0fb-41dd-90b8-231b071105d4/image.jpeg' : 'https://mola01.koicdn.com/u/image/911b47a8-d224-4288-8cde-1f25dd2b0105/image.jpeg',
-      //                 link: ' ',
-      //                 name: ' ',
-      //                 isDark: isMobile ? 1 : 0,
-      //               },
-      //             },
-      //           ],
-      //         },
-      //       },
-      //     ],
-      //   },
-      // }
       const result = utils.normalizeFeatureBanner(response)
-      // return new Promise(resolve =>
-      //   resolve({
-      //     meta: {
-      //       status: result[0].length > 0 ? 'success' : 'no_result',
-      //       error: '',
-      //     },
-      //     data: [...result[0]] || [],
-      //   })
-      // )
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -192,33 +133,6 @@ const getAllGenreSpo = (id = 'leagues') => {
   })
     .then(response => {
       const result = utils.normalizeHomePlaylist(response)
-      return {
-        meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: [...result[0]] || [],
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Sport')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
-
-const getSportList = (id = 'mola-sport') => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeHomePlaylist(response)
-      // console.log('handler Sport or matches 1', result)
       return {
         meta: {
           status: result[0].length > 0 ? 'success' : 'no_result',
@@ -376,23 +290,23 @@ const getPlaylistPlaylists = id => {
         playlistsFiltered =
           playlists.length > 0
             ? playlists
-                .map(dt => ({
-                  id: dt.id,
-                  type: dt.type,
-                  ...dt.attributes,
-                }))
-                .filter(dt => dt.visibility === 1)
+              .map(dt => ({
+                id: dt.id,
+                type: dt.type,
+                ...dt.attributes,
+              }))
+              .filter(dt => dt.visibility === 1)
             : []
       } else {
         playlistsFiltered =
           data.length > 0
             ? data
-                .map(dt => ({
-                  id: dt.id,
-                  type: dt.type,
-                  ...dt.attributes,
-                }))
-                .filter(dt => dt.visibility === 1)
+              .map(dt => ({
+                id: dt.id,
+                type: dt.type,
+                ...dt.attributes,
+              }))
+              .filter(dt => dt.visibility === 1)
             : []
       }
 
@@ -899,10 +813,10 @@ const getRecommendedArticles = articlesId => {
       const articlesFiltered =
         articles.length > 0
           ? articles.map(article => ({
-              id: article.id,
-              type: article.type,
-              ...article.attributes,
-            }))
+            id: article.id,
+            type: article.type,
+            ...article.attributes,
+          }))
           : []
 
       return {
@@ -966,7 +880,6 @@ export default {
   getAllSubscriptions,
   createOrder,
   createMidtransPayment,
-  getSportList,
   getSportVideo,
   getAllGenreSpo,
   getMatchesPlaylists,

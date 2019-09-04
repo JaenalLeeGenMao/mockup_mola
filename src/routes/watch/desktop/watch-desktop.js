@@ -19,7 +19,9 @@ import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
-// import Link from '@components/Link'
+import UpcomingVideo from './upcoming-video'
+
+// import AgeRestrictionModal from '@components/AgeRestriction'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
 import {
@@ -34,7 +36,7 @@ import {
   infoBarContainer,
   infoBarText,
   infoBarClose,
-  movieDetailNotAllowed,
+  movieDetailNotAllowed
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -45,6 +47,7 @@ const Theoplayer = getComponent('theoplayer')
 import MovieContent from './movie'
 import SportContent from './sport'
 let errorFlag = 0
+
 class WatchDesktop extends Component {
   state = {
     movieDetail: [],
@@ -54,9 +57,13 @@ class WatchDesktop extends Component {
     notice_bar_message: 'Siaran Percobaan',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
+    nextVideoBlocker: false,
+    nextVideoClose: false,
+    timerNextVideo: 0
   }
 
   handleOnReadyStateChange = player => {
+    // console.log("player", player.duration)
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
@@ -140,7 +147,7 @@ class WatchDesktop extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -181,7 +188,7 @@ class WatchDesktop extends Component {
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
-    }`
+      }`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
@@ -230,7 +237,7 @@ class WatchDesktop extends Component {
       // user,
       // getVUID,
     } = this.props
-    
+
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
@@ -247,8 +254,17 @@ class WatchDesktop extends Component {
     }
   }
 
+  handleNextVideo = (isShow = false) => {
+    // console.log("MASUK NEXT VIDEO:", isShow)
+    if (isShow) {
+      this.setState({
+        nextVideoBlocker: true
+      })
+    }
+  }
+
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, potraitPoster } = this.props
+    const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, isAutoPlay } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -256,14 +272,14 @@ class WatchDesktop extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
       const isAllowed = permission.isAllowed
       let watchPermissionErrorCode = permission.errorCode
 
-      const { loc } = this.state
+      const { loc, nextVideoBlocker, nextVideoClose } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
@@ -272,7 +288,7 @@ class WatchDesktop extends Component {
       user.loc = loc
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', nextVideoClose ? null : this.handleNextVideo)
         : {}
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
@@ -334,6 +350,7 @@ class WatchDesktop extends Component {
           )
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
+          const autoPlay = isAutoPlay ? true : false
           return (
             <>
               <Theoplayer
@@ -344,12 +361,34 @@ class WatchDesktop extends Component {
                 handleOnReadyStateChange={this.handleOnReadyStateChange}
                 handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                 {...videoSettings}
-              />
+              >
+                {nextVideoBlocker && !nextVideoClose &&
+                  this.renderNextVideo(dataFetched)
+                }
+              </Theoplayer>
               {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
             </>
           )
         }
       }
+    }
+  }
+
+  handleCancelUpcVideo = (e) => {
+    // console.log("CANCEWL AJAJAJ")
+    this.setState({
+      nextVideoBlocker: false,
+      nextVideoClose: true
+    })
+  }
+
+
+  renderNextVideo = dataFetched => {
+    const nextVideo = dataFetched.upcomingVideos && dataFetched.upcomingVideos.length > 0 ? dataFetched.upcomingVideos[0] : null
+    if (nextVideo) {
+      return (
+        <UpcomingVideo handleCancelVideo={this.handleCancelUpcVideo} />
+      )
     }
   }
 
@@ -422,8 +461,8 @@ class WatchDesktop extends Component {
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                      <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                    )}
                 </div>
               </div>
               <div className={movieDetailBottom}>
