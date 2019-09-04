@@ -14,12 +14,7 @@ class HorizontalPlaylist extends Component {
     allButtonOn: PropTypes.bool,
   }
 
-  // componentDidMount() {
-  //   this.props.initTour()
-  // }
-
   categoryFilterLigaType = () => {
-    // this.props.initTour()
     const {
       filterByLeague,
       matchesPlaylists,
@@ -76,29 +71,27 @@ class HorizontalPlaylist extends Component {
     const allCat = [{ id: 'All', title: 'All' }]
     return (
       <div className={s.match_ligaType}>
-        <span className={`${s.filLeague}`}>
-          <span className={`${s.tourPlaylist} tourPlaylist`}>
-            {allCat.map(dt => {
-              return (
-                <>
-                  <div
-                    key={dt}
-                    className={`${s.playlist_all} ${
-                      dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
-                    }`}
-                    onClick={() => {
-                      handleCategoryFilter('All')
-                    }}
-                  >
-                    All
-                  </div>
-                </>
-              )
-            })}
-            <div className={s.league__wrapper}>
-              <div className={s.league__wrapper_scroller}>{this.categoryFilterLigaType()}</div>
-            </div>
-          </span>
+        <span className={`${s.filLeague} tourPlaylist`}>
+          {allCat.map(dt => {
+            return (
+              <>
+                <div
+                  key={dt}
+                  className={`${s.playlist_all} ${
+                    dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
+                  }`}
+                  onClick={() => {
+                    handleCategoryFilter('All')
+                  }}
+                >
+                  All
+                </div>
+              </>
+            )
+          })}
+          <div className={s.league__wrapper}>
+            <div className={s.league__wrapper_scroller}>{this.categoryFilterLigaType()}</div>
+          </div>
         </span>
       </div>
     )
