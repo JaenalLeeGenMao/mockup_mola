@@ -225,12 +225,35 @@
 }
 
 .detail__desc__text__icon__bottom__text a {
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
   color: #009dff;
   text-align: center;
   font-size: 16px;
   line-height: 1.5;
+}
+
+.detail__desc__text__icon__bottom__text a:after {
+  content: ',';
+
+  /* margin-right: 0.5rem; */
+  color: #fff;
+  text-decoration: none;
+}
+
+.detail__desc__text__icon__bottom__text a:last-of-type:after {
+  content: '';
+  text-decoration: none;
+}
+
+.detail__desc__text__icon__bottom__text a:nth-last-of-type(2):after {
+  content: ' &';
+  color: #fff;
+  text-decoration: none;
+}
+
+.detail__desc__text__icon__bottom__text a>span {
+  text-decoration: underline;
 }
 
 .detail__desc_img__status__icon {

@@ -5,12 +5,9 @@ import home from './home'
 import history from './history'
 import search from './search'
 import movieDetail from './movie-detail'
-import movieLibrary from './movie-library'
-import movieStream from './movie-stream'
 import recommendation from './recommendation'
-import subscribe from './subscribe'
+// import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
-import sport from './sport'
 import matches from './matches'
 import vuid from './vuid'
 import channelsPlaylist from './channels-playlist'
@@ -19,6 +16,7 @@ import feature from './feature'
 import playlist from './playlist'
 import headerMenu from './header-menu'
 import configParams from './config-params'
+import partners from './partners'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -29,13 +27,10 @@ export default combineReducers({
   home,
   history,
   search,
-  movieLibrary,
   movieDetail,
   toastr,
-  movieStream,
   recommendation,
-  subscribe,
-  sport,
+  // subscribe,
   matches,
   vuid,
   channelsPlaylist,
@@ -44,4 +39,5 @@ export default combineReducers({
   playlist,
   headerMenu,
   configParams,
+  partners,
 })

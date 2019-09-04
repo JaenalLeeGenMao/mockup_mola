@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { logoMolaBig } from '@global/imageUrl'
 import styles from './PlatformCheckMobile.css'
@@ -6,11 +8,18 @@ import Header from '@components/Header'
 import { globalTracker } from '@source/lib/globalTracker'
 import BodyClassName from 'react-body-classname'
 import config from '@source/config'
+import { getPartners } from '@actions/partners'
 
 class PlatformCheckMobile extends Component {
   state = {
     result: [],
   }
+
+  componentDidMount() {
+    const { loadPartners } = this.props
+    loadPartners()
+  }
+
   renderHeader() {
     return (
       <div style={{ height: '60px' }}>
@@ -18,9 +27,14 @@ class PlatformCheckMobile extends Component {
       </div>
     )
   }
-  handleRedirectTracker = (link, redirect) => {
+  handleRedirectTracker = link => {
+    // console.log('linknknkn', link)
+
     const { user, videoId } = this.props
-    const path = `${config.endpoints.domain}/blocker/page-redirect/${videoId}/?redirect=${redirect}`
+    let redirect = link.split('/')
+    // console.log('reedddddd', redirect[2])
+
+    const path = `${config.endpoints.domain}/blocker/page-redirect/${videoId}/?redirect=${redirect[2]}`
     const link_redirect = `/page-redirect?link_redirect=${link}`
     const payload = {
       window,
@@ -31,8 +45,59 @@ class PlatformCheckMobile extends Component {
     globalTracker(payload)
     window.open(link_redirect, '_blank')
   }
+
+  // renderCharacter() {
+  //   const nameLink = this.state.data.attributes.name
+  //   {
+  //     nameLink.map((dt, idx) => {
+  //       if (nameLink.length > 0) {
+  //         if (dt.attributes.name === 1) {
+  //           return nameLink
+  //         }
+  //         if (idx === nameLink.length - 1) {
+  //           return '&' + nameLink
+  //         }
+  //         if (idx === nameLink.length - 2) {
+  //           return nameLink
+  //         }
+  //         return nameLink + ','
+  //       }
+  //     })
+  //   }
+  // }
+
+  renderLink = () => {
+    const { partners } = this.props
+    const dataFetch = partners.data
+
+    if (partners.meta.status === 'success') {
+      return (
+        <>
+          {dataFetch.map((dt, idx) => {
+            return (
+              <a key={idx} onClick={() => this.handleRedirectTracker(dt.url || '')}>
+                {' '}
+                <span>{dt.name}</span>
+              </a>
+            )
+          })}
+        </>
+      )
+    } else if (partners.meta.status === 'error') {
+      {
+        return (
+          <>
+            <a onClick={() => this.handleRedirectTracker('https://www.polytronstore.com/video/358', 'polytron.com')}>
+              polytron.com
+            </a>
+          </>
+        )
+      }
+    }
+  }
+
   render() {
-    const { name, portraitPoster, title, titleClass, icon, iconStatus, status, isHeader } = this.props
+    const { name, portraitPoster, icon, iconStatus, status, isHeader, partners } = this.props
 
     return (
       <>
@@ -88,36 +153,30 @@ class PlatformCheckMobile extends Component {
               <div className={styles.detail__desc__text__icon__bottom__text}>
                 atau, untuk pembelian online silahkan kunjungi:
                 <div className={styles.detail__desc__text__icon__bottom__text}>
-                  <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
+                  {this.renderLink()}
+                  {/* {dataFetch.map((dt, idx) => {
+                    // console.log('data', data)
+                    // console.log('link', dt.attributes.link)
+
+                    return (
+                      <a key={idx} onClick={() => this.handleRedirectTracker(dt.url || '')}>
+                        {' '}
+                        <span>{dt.name}</span>
+                      </a>
+                    )
+                  })} */}
+                  {/* <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
                     Blibli.com
-                  </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>,&nbsp;</div>
+                  </a> */}
+
+                  {/* <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
                   <a
                     onClick={() =>
                       this.handleRedirectTracker('https://www.matrixshop.co.id/molamatrix', 'matrixshop.co.id')
                     }
                   >
                     Mola-Matrix
-                  </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>,&nbsp;</div>
-                  <a
-                    onClick={() =>
-                      this.handleRedirectTracker(
-                        'https://www.tokopedia.com/polytron-id/mola-polytron-streaming-device',
-                        'tokopedia.com'
-                      )
-                    }
-                  >
-                    Tokopedia
-                  </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
-                  <a
-                    onClick={() =>
-                      this.handleRedirectTracker('https://www.polytronstore.com/video/358', 'polytronstore.com')
-                    }
-                  >
-                    polytronstore.com
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -130,4 +189,17 @@ class PlatformCheckMobile extends Component {
   }
 }
 
-export default withStyles(styles)(PlatformCheckMobile)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  loadPartners: () => dispatch(getPartners()),
+})
+
+// export default withStyles(styles)(PlatformCheckMobile)
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(PlatformCheckMobile)
+
+// export default compose(withStyles(styles, dtPickerStyle), connect(mapStateToProps))(Register)

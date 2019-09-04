@@ -32,7 +32,7 @@ const routes = [
   '/accounts/register',
   '/accounts/thankyou',
   '/movie-detail',
-  '/movie-library',
+  // '/movie-library',
   '/libraries',
   '/categories',
   '/search',

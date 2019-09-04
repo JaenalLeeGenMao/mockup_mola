@@ -120,3 +120,44 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.dot {
+  /* height: 25px;
+  width: 25px;
+  background-color: blue;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  vertical-align: middle; */
+  height: 17px;
+  width: 17px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 5px 10px 5px 0;
+  vertical-align: middle
+}
+
+.matchStatusText {
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+.teksLegend {
+  vertical-align: middle;
+}
+
+.live {
+  background-color: #12128b;
+}
+
+.replay {
+  background-color: #2c2c2c;
+}
+
+.upcoming {
+  background-color: #ad811e;
+}
+
+.transparent {
+  background-color: transparent;
+}

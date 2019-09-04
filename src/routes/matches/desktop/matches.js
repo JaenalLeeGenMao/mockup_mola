@@ -6,6 +6,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 // import InfiniteScroll from 'react-infinite-scroll-component'
+import Joyride from 'react-joyride'
+import { EVENTS, ACTIONS } from 'react-joyride/lib/constants'
+import { tourSteps } from './const'
 
 import matchListActions from '@actions/matches'
 
@@ -24,6 +27,64 @@ import s from './matches.css'
 // import _unionBy from 'lodash/unionBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
 import Scroll from 'react-scroll'
+const customTourStyle = {
+  // options: {
+  //   arrowColor: 'red'
+  // },
+  buttonNext: {
+    backgroundColor: '#2C56FF',
+    fontSize: '1.3rem',
+    lineHeight: '1',
+    padding: '8px 15px',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    borderRadius: '30px',
+    fontWeight: '600',
+  },
+  buttonBack: {
+    color: '#000000',
+    fontSize: '1.3rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    fontWeight: '600',
+  },
+  buttonClose: {
+    display: 'none',
+  },
+  buttonSkip: {
+    color: '#000000',
+    fontWeight: '600',
+    fontSize: '1.3rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.67px',
+    padding: '0',
+  },
+  tooltipContent: {
+    fontSize: '1.4rem',
+    padding: '0',
+    textAlign: 'left',
+    color: '#858585',
+    lineHeight: '2rem',
+    letterSpacing: '0.5px',
+  },
+  tooltipTitle: {
+    fontSize: '1.5rem',
+    textAlign: 'left',
+    margin: '0px 0px 8px',
+    letterSpacing: '0.59px',
+    textTransform: 'uppercase',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  spotlight: {
+    borderRadius: '5px',
+    backgroundColor: 'rgb(203, 203, 203, 0.7)',
+  },
+  tooltip: {
+    borderRadius: '.4rem',
+  },
+}
 let scroller = Scroll.scroller
 class Matches extends React.Component {
   constructor(props) {
@@ -43,12 +104,17 @@ class Matches extends React.Component {
     expandLeague: true,
     filterByDates: '',
     filterByLeague: 'All',
+    startGuide: false,
+    stepIndex: 0,
+    steps: tourSteps.en,
+    matchesPlaylistsSuccess: false,
     // filterAllLeague: 0,
     selectedWeek: 2, //1 = last week, 2 = this week, 3 = next week,
     selectedDate: null,
     startWeekDate: null,
     hasLive: false,
     noMatch: false,
+    thumbnailLoaded: false,
   }
 
   setDefaultDate = () => {
@@ -69,10 +135,82 @@ class Matches extends React.Component {
     if (this.props.matches.matchesPlaylists.meta.status === 'success') {
       this.setInitialData()
     }
+
+    if (window.innerHeight > 1801) {
+      const tvStyle = Object.assign({}, customTourStyle)
+      tvStyle.tooltip.width = '30rem'
+      // tvStyle.tooltip.height = '18rem'
+      tvStyle.tooltip.padding = '1.6rem'
+      tvStyle.tooltipContent.padding = '0'
+      tvStyle.tooltipContent.minHeight = '1.4rem'
+    }
   }
 
   componentWillMount() {
     // window.addEventListener('scroll', this.onScroll)
+  }
+
+  handleTourCallback = data => {
+    const { type, action, index } = data
+    // console.log('tipe', type)
+    // console.log('aksi', action)
+    // console.log('indeks', index)
+    if (type === EVENTS.TOUR_END) {
+      try {
+        localStorage.setItem('tour-matches', true)
+      } catch (err) {}
+      this.setState({
+        startGuide: false,
+      })
+      const disableScroll = document.getElementsByTagName('body')
+      disableScroll[0].style.overflow = 'visible'
+      const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
+      setTimeout(() => {
+        scroller.scrollTo(formatStartTime, {
+          duration: 500,
+          smooth: true,
+          offset: -150, // Scrolls to element + 50 pixels down the page
+        })
+      }, 500)
+      return true
+    }
+    if (type === EVENTS.STEP_AFTER && action === ACTIONS.NEXT) {
+      this.setState({
+        stepIndex: index + 1,
+      })
+    } else if (type === EVENTS.STEP_AFTER && action === ACTIONS.PREV) {
+      this.setState({
+        stepIndex: index - 1,
+      })
+    }
+    // else {
+    //   if (action === ACTIONS.NEXT && index === 5) {
+    //     this.setState({
+    //       stepIndex: index + 1,
+    //     })
+    //   }
+    // }
+  }
+
+  initTour = () => {
+    this.setState(
+      {
+        matchesPlaylistsSuccess: true,
+      },
+      () => {
+        let isTourDone = true
+        try {
+          isTourDone = localStorage.getItem('tour-matches')
+        } catch (err) {}
+        if (!isTourDone) {
+          this.setState({
+            startGuide: true,
+          })
+          const disableScroll = document.getElementsByTagName('body')
+          disableScroll[0].style.overflow = 'hidden'
+        }
+      }
+    )
   }
 
   getThreeWeeksDate = matches => {
@@ -126,14 +264,16 @@ class Matches extends React.Component {
     const result = this.getThreeWeeksDate(matchTemp)
     let matchesList = result.matchesList
     this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
-    setTimeout(() => {
-      scroller.scrollTo(formatStartTime, {
-        duration: 500,
-        smooth: true,
-        offset: -150, // Scrolls to element + 50 pixels down the page
-      })
-    }, 500)
+    if (!this.state.startGuide && localStorage.getItem('tour-matches')) {
+      const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
+      setTimeout(() => {
+        scroller.scrollTo(formatStartTime, {
+          duration: 500,
+          smooth: true,
+          offset: -150, // Scrolls to element + 50 pixels down the page
+        })
+      }, 500)
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -142,6 +282,7 @@ class Matches extends React.Component {
       this.props.matches.matchesPlaylists.meta.status === 'success'
     ) {
       this.setInitialData()
+      this.initTour()
     }
   }
 
@@ -328,7 +469,7 @@ class Matches extends React.Component {
         {/* this week left menu */}
         {this.state.expandThisWeek && (
           <div className={s.filterContent_container}>
-            <span>{this.renderWeek()}</span>
+            <span className={`${s.tourWeek} tourWeek`}> {this.renderWeek()}</span>
           </div>
         )}
       </>
@@ -404,13 +545,30 @@ class Matches extends React.Component {
     }, 500)
   }
 
+  loadedThumbnail = val => {
+    this.setState({
+      thumbnailLoaded: val,
+    })
+  }
+
   render() {
     const matchPlaylists = this.props.matches.matchesPlaylists
 
-    const { filterByDates, startWeekDate, hasLive } = this.state
+    const { filterByDates, startWeekDate, hasLive, startGuide, steps, stepIndex } = this.state
     const isDark = false
     return (
       <>
+        {/* <Joyride
+          disableOverlayClose={true}
+          stepIndex={stepIndex}
+          continuous
+          showSkipButton
+          steps={steps}
+          run={startGuide}
+          styles={customTourStyle}
+          floaterProps={{ disableAnimation: true }}
+          callback={this.handleTourCallback}
+        /> */}
         <div className={s.headerContainer}>
           <Header stickyOff searchOff isDark={isDark} activeMenu="matches" libraryOff {...this.props} />
         </div>
@@ -431,11 +589,12 @@ class Matches extends React.Component {
                     categoryFilterAll={'All'}
                     allButtonOn
                     allCat
+                    loadedThumbnail={this.loadedThumbnail}
                   />
                   <div className={s.matches_header_bg} />
                   <div className={s.matches_grid}>
                     <span>{this.categoryFilter()}</span>
-                    <span>
+                    <span className={'tourMatchStatus'}>
                       <div className={s.matchlist_wrappercontent_center}>
                         <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
                       </div>
@@ -453,6 +612,19 @@ class Matches extends React.Component {
               </div>
               {/* end data infinite scroll */}
             </div>
+            {this.state.thumbnailLoaded && (
+              <Joyride
+                disableOverlayClose={true}
+                stepIndex={stepIndex}
+                continuous
+                showSkipButton
+                steps={steps}
+                run={startGuide}
+                styles={customTourStyle}
+                floaterProps={{ disableAnimation: true }}
+                callback={this.handleTourCallback}
+              />
+            )}
           </>
         )}
       </>

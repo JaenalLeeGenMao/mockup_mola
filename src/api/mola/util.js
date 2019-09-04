@@ -377,24 +377,6 @@ const normalizeSearchResult = response => {
   return []
 }
 
-const normalizeSearchGenre = response => {
-  const { data } = response.data
-  if (data && data.length > 0) {
-    return data.map(({ attributes: { playlists } }) =>
-      playlists.map(({ id, attributes }) => {
-        const { title, iconUrl, visibility } = attributes
-        return {
-          id,
-          title,
-          iconUrl,
-          visibility,
-        }
-      })
-    )
-  }
-  return []
-}
-
 const normalizeRecentSearch = response => {
   const { data } = response.data
   if (data && data.length > 0) {
@@ -475,67 +457,6 @@ const normalizeVideoDetail = response => {
         menuId,
       }
     })
-  }
-  return {
-    meta: {
-      status: 'no_result',
-    },
-    data: [],
-  }
-}
-
-const normalizeMovieLibrary = response => {
-  const { data } = response.data
-  let result
-  if (data && data.length > 0) {
-    result = data.map(({ attributes: { videos, title: genreTitle, visibility: vis } }) => {
-      if (vis === 1) {
-        return videos.map(({ id, attributes }) => {
-          const { title, visibility } = attributes
-          const thumbnail = _get(attributes, 'images.cover.portrait', '')
-          const description = _get(attributes, 'description', '')
-          const quotes = _get(attributes, 'quotes[0].attributes', '')
-          const isDark = _get(attributes, 'isDark', '0')
-
-          return {
-            genreTitle,
-            id,
-            title,
-            visibility,
-            thumbnail,
-            description,
-            quotes,
-            isDark,
-          }
-        })
-      } else {
-        return {
-          meta: {
-            status: 'no_result',
-          },
-          data: [],
-        }
-      }
-    })
-  }
-  return result[0]
-}
-
-const normalizeMovieLibraryList = response => {
-  const { data } = response.data
-  if (data && data.length > 0) {
-    return data.map(
-      ({ id, type, attributes: { title: genreTitle, visibility, description: videoDesc, images: videoImg } }) => {
-        return {
-          id,
-          visibility,
-          type,
-          genreTitle,
-          videoDesc,
-          thumbnail: videoImg.cover.library.portrait,
-        }
-      }
-    )
   }
   return {
     meta: {
@@ -731,16 +652,30 @@ const normalizeRecommendation = response => {
   return []
 }
 
+const normalizePartners = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(({ id, type, attributes: { name, url, order, createdAt } }) => {
+      return {
+        id,
+        type,
+        name,
+        url,
+        order,
+        createdAt,
+      }
+    })
+  }
+  return []
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
   normalizeHistory,
   normalizeSearchResult,
-  normalizeSearchGenre,
   normalizeRecentSearch,
   normalizeVideoDetail,
-  normalizeMovieLibrary,
-  normalizeMovieLibraryList,
   normalizeFeatureBanner,
   normalizeMatchesList,
   normalizeMatchDetail,
@@ -748,4 +683,5 @@ export default {
   normalizeProgrammeGuides,
   normalizeRecommendation,
   normalizeMatchPlaylists,
+  normalizePartners,
 }

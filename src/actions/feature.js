@@ -14,6 +14,7 @@ const getFeaturePlaylist = id => dispatch => {
       },
       data: [],
     },
+    id,
   })
   return Mola.getFeaturePlaylist(id).then(result => {
     if (result.meta.status === 'error') {
@@ -26,6 +27,7 @@ const getFeaturePlaylist = id => dispatch => {
           },
           data: [],
         },
+        id,
       })
     } else {
       dispatch({
@@ -97,6 +99,7 @@ const getFeatureBanner = pathname => dispatch => {
       },
       data: [],
     },
+    id: pathname,
   })
   return Mola.getFeatureBanner({ id }).then(result => {
     if (result.meta.status === 'error') {
@@ -109,6 +112,7 @@ const getFeatureBanner = pathname => dispatch => {
           },
           data: [],
         },
+        id: pathname,
       })
     } else {
       dispatch({
@@ -130,6 +134,7 @@ const getFeatureArticle = id => dispatch => {
       },
       data: [],
     },
+    id,
   })
   return Mola.getRecommendedArticles(id).then(result => {
     if (result.meta.status === 'error') {
@@ -142,6 +147,7 @@ const getFeatureArticle = id => dispatch => {
           },
           data: [],
         },
+        id,
       })
     } else {
       dispatch({

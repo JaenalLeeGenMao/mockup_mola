@@ -261,7 +261,7 @@ class Home extends Component {
       () => {
         let isTourDone = true
         try {
-          localStorage.getItem('tour-home')
+          isTourDone = localStorage.getItem('tour-home')
         } catch (err) {}
 
         if (!isTourDone) {
@@ -444,6 +444,7 @@ class Home extends Component {
       },
       spotlight: {
         borderRadius: '4rem',
+        backgroundColor: 'rgb(203, 203, 203, 0.7)',
       },
       tooltip: {
         width: screenWidth,

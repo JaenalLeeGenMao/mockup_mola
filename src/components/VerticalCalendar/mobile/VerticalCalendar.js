@@ -92,7 +92,9 @@ class VerticalCalendar extends Component {
     const { calendar, isActiveLive, activeDate } = this.state
     return (
       <span>
-        <div className={`${s.filterContentfilterByDay_container} ${isChannel ? s.container_relative : ''}`}>
+        <div
+          className={`${s.filterContentfilterByDay_container} tourFilterDate ${isChannel ? s.container_relative : ''}`}
+        >
           <span>
             {hasLiveLogo && (
               <div
