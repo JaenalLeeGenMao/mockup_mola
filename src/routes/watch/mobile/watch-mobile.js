@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
 import { post } from 'axios'
+import _isUndefined from 'lodash/isUndefined'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
@@ -13,6 +14,7 @@ import watchPermission from '@source/lib/watchPermission'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
+import OfflineNoticePopup from '@components/OfflineNoticePopup'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
 import {
@@ -49,6 +51,8 @@ class MovieDetail extends Component {
     android_redirect_to_app: false,
     ios_redirect_to_app: false,
     notice_bar_message: 'Siaran Percobaan',
+    isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
+    showOfflinePopup: false,
   }
 
   handleOnVideoVolumeChange = player => {
@@ -150,7 +154,18 @@ class MovieDetail extends Component {
 
     this.getLoc()
     this.getConfig()
+    if (!_isUndefined(window)) {
+      window.addEventListener('online', this.goOnline)
+      window.addEventListener('offline', this.goOffline)
+    }
     // fetchRecommendation(movieId)
+  }
+
+  componentWillUnmount() {
+    if (!_isUndefined(window)) {
+      window.removeEventListener('online', this.goOnline)
+      window.removeEventListener('offline', this.goOffline)
+    }
   }
 
   handlePlayMovie = () => {
@@ -175,6 +190,10 @@ class MovieDetail extends Component {
   handleOnReadyStateChange = player => {
     this.player = player
 
+    if (player && player.buffered.length > 0) {
+      this.detectorConnection(player)
+    }
+
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
         errorFlag = errorFlag + 1
@@ -186,6 +205,42 @@ class MovieDetail extends Component {
         // this.handleVideoError(e);
       }
     })
+  }
+
+  goOnline = () => {
+    if (!this.state.isOnline) {
+      this.setState({
+        isOnline: true,
+      })
+    }
+  }
+
+  goOffline = () => {
+    if (this.state.isOnline) {
+      this.setState({
+        isOnline: false,
+      })
+    }
+  }
+
+  handleCloseOfflinePopup = () => {
+    this.setState({
+      showOfflinePopup: false,
+    })
+  }
+
+  detectorConnection = player => {
+    if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
+      setTimeout(() => {
+        this.setState({
+          showOfflinePopup: true,
+        })
+      }, 3000)
+    } else if (this.state.isOnline && this.state.showOfflinePopup) {
+      this.setState({
+        showOfflinePopup: false,
+      })
+    }
   }
 
   renderVideo = dataFetched => {
@@ -315,7 +370,7 @@ class MovieDetail extends Component {
   }
 
   render() {
-    const { loc } = this.state
+    const { loc, showOfflinePopup } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -381,6 +436,7 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
+        {showOfflinePopup && <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
       </>
     )
   }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _isUndefined from 'lodash/isUndefined'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
@@ -20,6 +21,7 @@ import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
 import PlatformDesktop from '@components/PlatformCheck'
+import OfflineNoticePopup from '@components/OfflineNoticePopup'
 
 import Placeholder from './placeholder'
 import LoaderVideoBox from './loaderVideoBox'
@@ -51,6 +53,8 @@ class Channels extends Component {
     iconStatus: [],
     iconGreen,
     name: '',
+    isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
+    showOfflinePopup: false,
   }
 
   componentDidMount() {
@@ -87,7 +91,11 @@ class Channels extends Component {
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
 
-    window.addEventListener('scroll', this.handleScroll)
+    if (!_isUndefined(window)) {
+      window.addEventListener('online', this.goOnline)
+      window.addEventListener('offline', this.goOffline)
+      window.addEventListener('scroll', this.handleScroll)
+    }
 
     this.theoVolumeInfo = {}
     try {
@@ -142,7 +150,47 @@ class Channels extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    if (!_isUndefined(window)) {
+      window.removeEventListener('online', this.goOnline)
+      window.removeEventListener('offline', this.goOffline)
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+
+  goOnline = () => {
+    if (!this.state.isOnline) {
+      this.setState({
+        isOnline: true,
+      })
+    }
+  }
+
+  goOffline = () => {
+    if (this.state.isOnline) {
+      this.setState({
+        isOnline: false,
+      })
+    }
+  }
+
+  handleCloseOfflinePopup = () => {
+    this.setState({
+      showOfflinePopup: false,
+    })
+  }
+
+  detectorConnection = player => {
+    if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
+      setTimeout(() => {
+        this.setState({
+          showOfflinePopup: true,
+        })
+      }, 3000)
+    } else if (this.state.isOnline && this.state.showOfflinePopup) {
+      this.setState({
+        showOfflinePopup: false,
+      })
+    }
   }
 
   eventVideosTracker = id => {
@@ -212,6 +260,10 @@ class Channels extends Component {
     }
 
     this.player = player
+
+    if (player && player.buffered.length > 0) {
+      this.detectorConnection(player)
+    }
 
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
@@ -320,6 +372,7 @@ class Channels extends Component {
       block,
       toggleInfoBar,
       notice_bar_message,
+      showOfflinePopup,
     } = this.state
     // console.log('status blockednya', block)
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -354,6 +407,7 @@ class Channels extends Component {
         <div>
           <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
         </div>
+        {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
         {channelsPlaylist.meta.status === 'loading' && <LoaderVideoBox />}
         {channelsPlaylist.meta.status === 'success' && (
           <div className={styles.channels_container}>

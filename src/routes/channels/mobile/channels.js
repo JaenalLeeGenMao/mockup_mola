@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
+import _isUndefined from 'lodash/isUndefined'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
@@ -22,6 +23,7 @@ import VerticalCalendar from '@components/VerticalCalendar'
 import MatchList from '@components/MatchList'
 import PlatformCheckMobile from '@components/PlatformCheckMobile'
 import LazyLoad from '@components/common/Lazyload'
+import OfflineNoticePopup from '@components/OfflineNoticePopup'
 
 import Placeholder from './placeholder'
 import { getChannelProgrammeGuides } from '../selectors'
@@ -86,6 +88,11 @@ class Channels extends Component {
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
 
+    if (!_isUndefined(window)) {
+      window.addEventListener('online', this.goOnline)
+      window.addEventListener('offline', this.goOffline)
+    }
+
     this.theoVolumeInfo = {}
     try {
       const theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
@@ -135,6 +142,49 @@ class Channels extends Component {
         }
         this.setState({ name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
       }
+    }
+  }
+
+  componentWillUnmount() {
+    if (!_isUndefined(window)) {
+      window.removeEventListener('online', this.goOnline)
+      window.removeEventListener('offline', this.goOffline)
+    }
+  }
+
+  goOnline = () => {
+    if (!this.state.isOnline) {
+      this.setState({
+        isOnline: true,
+      })
+    }
+  }
+
+  goOffline = () => {
+    if (this.state.isOnline) {
+      this.setState({
+        isOnline: false,
+      })
+    }
+  }
+
+  handleCloseOfflinePopup = () => {
+    this.setState({
+      showOfflinePopup: false,
+    })
+  }
+
+  detectorConnection = player => {
+    if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
+      setTimeout(() => {
+        this.setState({
+          showOfflinePopup: true,
+        })
+      }, 3000)
+    } else if (this.state.isOnline && this.state.showOfflinePopup) {
+      this.setState({
+        showOfflinePopup: false,
+      })
     }
   }
 
@@ -284,6 +334,10 @@ class Channels extends Component {
   handleOnReadyStateChange = player => {
     this.player = player
 
+    if (player && player.buffered.length > 0) {
+      this.detectorConnection(player)
+    }
+
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
         errorFlag = errorFlag + 1
@@ -309,6 +363,7 @@ class Channels extends Component {
       selectedWeek,
       block,
       isHeader,
+      showOfflinePopup,
     } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -422,6 +477,9 @@ class Channels extends Component {
                     />
                   </div>
                 </div>
+              )}
+              {showOfflinePopup && (
+                <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />
               )}
             </>
           )}
