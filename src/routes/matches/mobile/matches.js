@@ -457,13 +457,15 @@ class Matches extends Component {
         )
       } else {
         return (
-          <MatchList
-            noClickAble={true}
-            data={matchDt}
-            formatStartTime={matchDt.dateId}
-            isNoSchedule
-            noScheduleTitle={'No Match'}
-          />
+          <Link>
+            <MatchList
+              noClickAble={true}
+              data={matchDt}
+              formatStartTime={matchDt.dateId}
+              isNoSchedule
+              noScheduleTitle={'No Match'}
+            />
+          </Link>
         )
       }
     })
