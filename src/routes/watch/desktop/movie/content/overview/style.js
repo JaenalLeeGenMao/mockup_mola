@@ -9,9 +9,10 @@ export const contentOverviewSectionLeft = css`
   display: inline-block;
   width: 27.5%;
   vertical-align: top;
+  padding: 0 3rem 0 5rem;
 
   div {
-    width: 70%;
+    width: 100%;
     height: 100%;
     margin: auto;
   }
