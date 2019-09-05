@@ -40,12 +40,16 @@ class Watch extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { getMovieDetail, movieDetail, videoId } = this.props
+    const { getMovieDetail, movieDetail, videoId, recommendation, getRecommendation } = this.props
     const { status } = this.state
 
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
       // this.getLoc()
       getMovieDetail(videoId)
+    }
+
+    if (recommendation.meta.status === 'success' && recommendation.data[0].id == videoId) {
+      getRecommendation(videoId)
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {

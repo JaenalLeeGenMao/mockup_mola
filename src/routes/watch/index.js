@@ -9,14 +9,14 @@ function action({ query, isMobile }) {
   if (resultUrl.length > 0) {
     id = resultUrl[0]
   }
-
+  const isAutoPlay = query.autoplay ? query.autoplay : 0
   return {
     chunks: ['watch'],
     title: '',
     description: '',
     component: (
       <MolaLayout>
-        <Watch isMobile={isMobile} videoId={id} />
+        <Watch isMobile={isMobile} isAutoPlay={isAutoPlay} videoId={id} />
       </MolaLayout>
     ),
   }

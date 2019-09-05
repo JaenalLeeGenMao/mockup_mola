@@ -386,7 +386,13 @@ class WatchDesktop extends Component {
 
   renderNextVideo = () => {
     const { recommendation: { data: recomData } } = this.props
-    const nextVideo = recomData && recomData.length > 0 ? recomData[0] : null
+    let nextVideo = null
+    if (recomData && recomData.length > 0) {
+      if (recomData[0].id !== this.props.videoId) {
+        nextVideo = recomData[0]
+      } else if (recomData.length > 1) nextVideo = recomData[1]
+    }
+
     if (nextVideo) {
       return <UpcomingVideo data={nextVideo} handleCancelVideo={this.handleCancelUpcVideo} />
     }
