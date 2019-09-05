@@ -45,8 +45,10 @@ const handleTimeUpdate = (payload, player) => {
 
   const duration = player.duration
   if (handleNextVideoCallback) {
-    // if (!player.ads.playing && time >= (duration - 11) && !tickerNextVideo.includes(time)) {
-    if (!player.ads.playing && time > 10 && !tickerNextVideo.includes(time)) {
+    // console.log("time", time)
+    // console.log("duration", duration)
+    if (!player.ads.playing && time >= duration - 11 && !tickerNextVideo.includes(time)) {
+      // if (!player.ads.playing && time > 10 && !tickerNextVideo.includes(time)) {
       tickerNextVideo.push(time)
       handleNextVideoCallback(true)
     }
@@ -73,7 +75,7 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) { }
+            } catch (err) {}
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
 
@@ -102,7 +104,7 @@ const handleTimeUpdate = (payload, player) => {
           bitrate = `${currentTrack.activeQuality.bandwidth}`
           try {
             client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-          } catch (err) { }
+          } catch (err) {}
           //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
         }
       }
@@ -135,7 +137,7 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
@@ -213,7 +215,7 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
     drm: videoDt.drm,
     movieUrl: movieUrl,
     deviceId: vuid,
-    handleVideoTimeUpdate: handleTimeUpdate
+    handleVideoTimeUpdate: handleTimeUpdate,
     // theoConfig: [],
   }
 }

@@ -36,7 +36,7 @@ import {
   infoBarContainer,
   infoBarText,
   infoBarClose,
-  movieDetailNotAllowed
+  movieDetailNotAllowed,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -59,7 +59,7 @@ class WatchDesktop extends Component {
     showOfflinePopup: false,
     nextVideoBlocker: false,
     nextVideoClose: false,
-    timerNextVideo: 0
+    timerNextVideo: 0,
   }
 
   handleOnReadyStateChange = player => {
@@ -147,7 +147,7 @@ class WatchDesktop extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) { }
+      } catch (err) {}
     }
   }
 
@@ -188,7 +188,7 @@ class WatchDesktop extends Component {
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
-      }`
+    }`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
@@ -255,10 +255,9 @@ class WatchDesktop extends Component {
   }
 
   handleNextVideo = (isShow = false) => {
-    // console.log("MASUK NEXT VIDEO:", isShow)
     if (isShow) {
       this.setState({
-        nextVideoBlocker: true
+        nextVideoBlocker: true,
       })
     }
   }
@@ -272,7 +271,7 @@ class WatchDesktop extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
@@ -288,7 +287,12 @@ class WatchDesktop extends Component {
       user.loc = loc
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', nextVideoClose ? null : this.handleNextVideo)
+        ? defaultVideoSetting(
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            nextVideoClose ? null : this.handleNextVideo
+          )
         : {}
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
@@ -362,9 +366,7 @@ class WatchDesktop extends Component {
                 handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                 {...videoSettings}
               >
-                {nextVideoBlocker && !nextVideoClose &&
-                  this.renderNextVideo(dataFetched)
-                }
+                {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
               </Theoplayer>
               {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
             </>
@@ -374,21 +376,19 @@ class WatchDesktop extends Component {
     }
   }
 
-  handleCancelUpcVideo = (e) => {
+  handleCancelUpcVideo = e => {
     // console.log("CANCEWL AJAJAJ")
     this.setState({
       nextVideoBlocker: false,
-      nextVideoClose: true
+      nextVideoClose: true,
     })
   }
 
-
-  renderNextVideo = dataFetched => {
-    const nextVideo = dataFetched.upcomingVideos && dataFetched.upcomingVideos.length > 0 ? dataFetched.upcomingVideos[0] : null
+  renderNextVideo = () => {
+    const { recommendation: { data: recomData } } = this.props
+    const nextVideo = recomData && recomData.length > 0 ? recomData[0] : null
     if (nextVideo) {
-      return (
-        <UpcomingVideo handleCancelVideo={this.handleCancelUpcVideo} />
-      )
+      return <UpcomingVideo data={nextVideo} handleCancelVideo={this.handleCancelUpcVideo} />
     }
   }
 
@@ -461,8 +461,8 @@ class WatchDesktop extends Component {
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (
-                      <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                    )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
                 </div>
               </div>
               <div className={movieDetailBottom}>
@@ -484,7 +484,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
+  // fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 

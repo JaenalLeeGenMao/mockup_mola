@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { getVUID } from '@actions/vuid'
 import * as movieDetailActions from '@actions/movie-detail'
+import recommendationActions from '@actions/recommendation'
 // import styles from './watch.css'
 
 import DRMConfig from '@source/lib/DRMConfig'
@@ -30,9 +31,10 @@ class Watch extends Component {
   }
 
   componentDidMount() {
-    const { getMovieDetail, videoId, getVUID, user } = this.props
+    const { getMovieDetail, getRecommendation, videoId, getVUID, user } = this.props
 
     getMovieDetail(videoId)
+    getRecommendation(videoId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
   }
@@ -131,7 +133,7 @@ class Watch extends Component {
   }
 
   render() {
-    const { isMobile, vuid, videoId, getMovieDetail, isAutoPlay } = this.props
+    const { isMobile, vuid, videoId, getMovieDetail, isAutoPlay, recommendation } = this.props
     const { block, isHeader } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -169,6 +171,7 @@ class Watch extends Component {
                 videoId={videoId}
                 movieDetail={this.props.movieDetail}
                 getMovieDetail={getMovieDetail}
+                recommendation={recommendation}
                 vuid={vuid}
                 iconStatus={this.state.iconStatus}
                 status={this.state.status}
@@ -202,6 +205,7 @@ class Watch extends Component {
                   videoId={videoId}
                   movieDetail={this.props.movieDetail}
                   getMovieDetail={getMovieDetail}
+                  recommendation={recommendation}
                   vuid={vuid}
                   isAutoPlay={isAutoPlay}
                 />
@@ -222,6 +226,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
+  getRecommendation: videoId => dispatch(recommendationActions.getRecommendation(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
 })
 

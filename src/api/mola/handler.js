@@ -66,12 +66,12 @@ const getFeaturePlaylist = id => {
       const playlistsFiltered =
         playlists.length > 0
           ? playlists
-            .map(playlist => ({
-              id: playlist.id,
-              type: playlist.type,
-              ...playlist.attributes,
-            }))
-            .filter(playlist => playlist.visibility === 1)
+              .map(playlist => ({
+                id: playlist.id,
+                type: playlist.type,
+                ...playlist.attributes,
+              }))
+              .filter(playlist => playlist.visibility === 1)
           : []
       return {
         meta: {
@@ -290,23 +290,23 @@ const getPlaylistPlaylists = id => {
         playlistsFiltered =
           playlists.length > 0
             ? playlists
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
+                .map(dt => ({
+                  id: dt.id,
+                  type: dt.type,
+                  ...dt.attributes,
+                }))
+                .filter(dt => dt.visibility === 1)
             : []
       } else {
         playlistsFiltered =
           data.length > 0
             ? data
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
+                .map(dt => ({
+                  id: dt.id,
+                  type: dt.type,
+                  ...dt.attributes,
+                }))
+                .filter(dt => dt.visibility === 1)
             : []
       }
 
@@ -547,7 +547,7 @@ const getMovieDetail = ({ id }) => {
 }
 
 const getRecommendation = id => {
-  return get(`${RECOMMENDATION}/${id}`, {
+  return get(`${RECOMMENDATION}?video_id=${id}`, {
     // return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
     ...endpoints.setting,
   })
@@ -562,7 +562,7 @@ const getRecommendation = id => {
       }
     })
     .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Hot Playlists')
+      const errorMessage = error.toString().replace('Error:', 'Mola Recommendation')
       return {
         meta: {
           status: 'error',
@@ -813,10 +813,10 @@ const getRecommendedArticles = articlesId => {
       const articlesFiltered =
         articles.length > 0
           ? articles.map(article => ({
-            id: article.id,
-            type: article.type,
-            ...article.attributes,
-          }))
+              id: article.id,
+              type: article.type,
+              ...article.attributes,
+            }))
           : []
 
       return {
