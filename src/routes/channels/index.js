@@ -13,7 +13,7 @@ async function action({ isMobile, pathname }) {
   // await store.dispatch(fetchChannelPlaylists()).then(() => store.dispatch(fetchChannelSchedule(today)))
   return {
     chunks: ['channels'],
-    title: 'Mola TV - Channels',
+    title: 'Channels',
     description: '',
     image: '',
     url: '',
