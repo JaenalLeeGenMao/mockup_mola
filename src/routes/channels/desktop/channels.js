@@ -110,14 +110,13 @@ class Channels extends Component {
     const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
     const { status } = this.state
 
-    if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
+    if (movieDetail.meta.status !== prevProps.movieDetail.data.status && prevProps.movieId != movieId) {
       const id = movieId ? movieId : prevState.activeChannelId
       fetchVideoByid(id)
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
       const dataFetch = movieDetail.data[0]
-
       const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
 
       if (filterForBlockFind) {
@@ -342,7 +341,6 @@ class Channels extends Component {
       dayMonth: formatDateTime(date, 'DD MMM'),
       timezone: 0,
     }
-
     this.props.fetchChannelSchedule(selectedDate).then(() => {
       const filteredSchedule = this.props.channelSchedule.find(item => item.id == this.state.activeChannelId)
       this.setState({
@@ -401,7 +399,6 @@ class Channels extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
-
     return (
       <>
         <div>
@@ -423,32 +420,33 @@ class Channels extends Component {
                     </div>
                   </div>
                 )}
-              {!block && loadPlayer ? (
-                <Theoplayer
-                  className={customTheoplayer}
-                  showBackBtn={false}
-                  subtitles={this.subtitles()}
-                  handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                  handleOnReadyStateChange={this.handleOnReadyStateChange}
-                  // poster={poster}
-                  {...videoSettings}
-                />
-              ) : block ? (
-                <PlatformDesktop
-                  iconStatus={this.state.iconStatus}
-                  status={this.state.status}
-                  icon={this.state.imageUrl}
-                  name={this.state.name}
-                  title={apiFetched ? dataFetched.title : ''}
-                  portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-                  user={this.props.user}
-                  videoId={activeChannelId}
-                />
-              ) : (
-                <div>Video Not Available</div> // styling later
-              )}
-              {status === 'error' &&
-                !loadPlayer && <div className={styles.video__unavailable}>Video Not Available</div>}
+              {!block &&
+                loadPlayer && (
+                  <Theoplayer
+                    className={customTheoplayer}
+                    showBackBtn={false}
+                    subtitles={this.subtitles()}
+                    handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                    handleOnReadyStateChange={this.handleOnReadyStateChange}
+                    // poster={poster}
+                    {...videoSettings}
+                  />
+                )}
+              {block &&
+                loadPlayer && (
+                  <PlatformDesktop
+                    iconStatus={this.state.iconStatus}
+                    status={this.state.status}
+                    icon={this.state.imageUrl}
+                    name={this.state.name}
+                    title={apiFetched ? dataFetched.title : ''}
+                    portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                    user={this.props.user}
+                    videoId={activeChannelId}
+                  />
+                )}
+              {!loadPlayer &&
+                status !== 'loading' && <div className={styles.video__unavailable}>Video Not Available</div>}
             </div>
             <PrimaryMenu
               activeChannelId={activeChannelId}
