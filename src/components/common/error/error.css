@@ -54,6 +54,13 @@
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .error__wrapper {
     width: 100%;
+    padding-top: 120px;
+  }
+
+  .error__title {
+    line-height: 1.5;
+    font-size: 12px;
+    padding: 20px;
   }
 }
 
