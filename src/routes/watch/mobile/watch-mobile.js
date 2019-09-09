@@ -344,15 +344,18 @@ class MovieDetail extends Component {
         )
       } else {
         return (
-          <Theoplayer
-            className={customTheoplayer}
-            subtitles={this.subtitles()}
-            poster={poster}
-            autoPlay={false}
-            handleOnReadyStateChange={this.handleOnReadyStateChange}
-            {...videoSettings}
-            isMobile
-          />
+          <>
+            <Theoplayer
+              className={customTheoplayer}
+              subtitles={this.subtitles()}
+              poster={poster}
+              autoPlay={false}
+              handleOnReadyStateChange={this.handleOnReadyStateChange}
+              {...videoSettings}
+              isMobile
+            />
+            {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+          </>
         )
       }
     }
@@ -437,7 +440,6 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
         {showOfflinePopup && <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
       </>
     )

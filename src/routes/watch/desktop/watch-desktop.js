@@ -345,15 +345,18 @@ class WatchDesktop extends Component {
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
           return (
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              poster={poster}
-              autoPlay={false}
-              handleOnReadyStateChange={this.handleOnReadyStateChange}
-              handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-              {...videoSettings}
-            />
+            <>
+              <Theoplayer
+                className={customTheoplayer}
+                subtitles={this.subtitles()}
+                poster={poster}
+                autoPlay={false}
+                handleOnReadyStateChange={this.handleOnReadyStateChange}
+                handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                {...videoSettings}
+              />
+              {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+            </>
           )
         }
       }
@@ -440,7 +443,6 @@ class WatchDesktop extends Component {
             </div>
           </>
         )}
-        {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
       </>
     )
   }
