@@ -11,6 +11,7 @@ import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 import watchPermission from '@source/lib/watchPermission'
+import AgeRestrictionModal from '@components/AgeRestriction'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
@@ -436,6 +437,7 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
+        {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
         {showOfflinePopup && <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
       </>
     )
