@@ -487,6 +487,10 @@ class Matches extends React.Component {
     const { matches, noMatch } = this.state
     let flagLive = false
 
+    if (matches.length < 0) {
+      return this.renderNoMatchLeague()
+    }
+
     if (noMatch) {
       return this.renderNoMatchLeague()
     }

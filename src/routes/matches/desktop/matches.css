@@ -500,6 +500,13 @@ body {
   margin: 14rem;
 }
 
+@media screen and (max-width: 709px) and (max-width: 828px) {
+  .matches_grid {
+    grid-template-columns: 0.5fr 1fr 0.6fr;
+    grid-column-gap: 3rem;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .filterContent_container {
     padding: 0 1rem 1rem 2rem;
@@ -543,7 +550,7 @@ body {
   border-radius: 50%;
   display: inline-block;
   margin: 5px 10px;
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 .matchStatusText {
