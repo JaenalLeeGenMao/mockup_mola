@@ -360,8 +360,8 @@ class WatchDesktop extends Component {
               <Theoplayer
                 className={customTheoplayer}
                 subtitles={this.subtitles()}
-                poster={poster}
-                autoPlay={false}
+                poster={autoPlay ? null : poster}
+                autoPlay={autoPlay}
                 handleOnReadyStateChange={this.handleOnReadyStateChange}
                 handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                 {...videoSettings}
