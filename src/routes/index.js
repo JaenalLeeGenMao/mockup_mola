@@ -287,7 +287,7 @@ const track = async store => {
     if (pathname.includes('watch')) {
       if (urlParams.v) {
         let checkEncoded = urlParams.v.split('u0026')
-        let videoId = checkEncoded[0]
+        let videoId = checkEncoded.length > 0 && checkEncoded[0]
         if (videoId.length === 10) {
           let checkRegex = RegExp('^[a-zA-Z0-9\\-]*$')
           let isValidId = checkRegex.test(videoId)
