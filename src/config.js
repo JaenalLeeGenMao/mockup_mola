@@ -48,6 +48,7 @@ const options = {
       domain: 'https://beta.stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
+      analytic: 'https://api.stag.supersoccer.tv',
       asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
       setting: {
         timeout: 10000,
@@ -66,6 +67,7 @@ const options = {
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
+      analytic: 'https://api.sent.tv',
       asset: 'https://mola01.koicdn.com/assets-global',
       setting: {
         timeout: 10000,

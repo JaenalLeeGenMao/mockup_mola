@@ -79,15 +79,15 @@ class UpcomingVideo extends Component {
       <div className={styles.player_container} style={{ width: playerWidth }}>
         <div className={styles.container} style={{ bottom: `calc(${adsHeight}px + 6rem)` }}>
           <div className={styles.poster}>
-            <Lazyload src={data.background.portrait} />
+            <Lazyload src={data.cover_portrait} />
           </div>
           <div className={styles.content}>
             {/* <div className={styles.ContentWrapper}> */}
             <div className={styles.title}>{data.title}</div>
-            <div className={styles.desc}>{data.shortDescription}</div>
+            <div className={styles.desc}>{data.short_description}</div>
             <div className={styles.link}>
-              <Link className={styles.play} to={`/watch?v=${data.id}&autoplay=1`}>
-                <CountDown startSecond={10} onTimeFinish={() => this.redirectToNextVideo(data.id)} />
+              <Link className={styles.play} to={`/watch?v=${data.video_id}&autoplay=1`}>
+                <CountDown startSecond={10} onTimeFinish={() => this.redirectToNextVideo(data.video_id)} />
               </Link>
               <Link className={styles.close} onClick={this.cancelUpcVideo}>
                 Close

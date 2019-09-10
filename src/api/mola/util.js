@@ -227,10 +227,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-            id: league.id,
-            name: league.attributes.name,
-            iconUrl: league.attributes.iconUrl,
-          }
+              id: league.id,
+              name: league.attributes.name,
+              iconUrl: league.attributes.iconUrl,
+            }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -305,7 +305,7 @@ const normalizeHomeVideo = response => {
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) { }
+    } catch (err) {}
   }
   return []
 }
@@ -423,7 +423,7 @@ const normalizeVideoDetail = response => {
           endTime,
           contentType,
           menuId,
-          playlists
+          playlists,
         },
       } = result
       const background = _get(images, 'cover', { portrait: null, landscape: null })
@@ -456,7 +456,7 @@ const normalizeVideoDetail = response => {
         endTime,
         contentType,
         menuId,
-        playlists
+        playlists,
       }
     })
   }
@@ -619,34 +619,16 @@ const normalizeProgrammeGuides = response => {
 }
 
 const normalizeRecommendation = response => {
-  const { data } = response.data
-  if (data && data.length > 0) {
-    return data.map(list => {
-      const {
-        id,
-        type,
-        attributes: { playlists, title, description, shortDescription, images, isDark, streamSourceUrl, year, ads },
-      } = list
-      const background = _get(images, 'cover.background', { portrait: null, landscape: null })
-      const coverBGColor = _get(images, 'cover.backgroundColor', '')
+  const { dataset } = response.data
+  if (dataset && dataset.length > 0) {
+    return dataset.map(dt => {
+      const { video_id, title, short_description, cover_portrait, cover_landscape } = dt
       return {
-        id,
+        video_id,
         title,
-        // visibility,
-        ads,
-        description,
-        shortDescription: shortDescription || '',
-        // images,
-        // iconUrl: iconUrl || '',
-        // coverTitle: coverTitle,
-        background,
-        backgroundColor: coverBGColor || '#000622',
-        isDark: isDark || 0,
-        isActive: false,
-        type,
-        playlists,
-        streamSourceUrl,
-        year,
+        short_description,
+        cover_portrait,
+        cover_landscape,
       }
     })
     // .sort((a, b) => a.sortOrder - b.sortOrder)

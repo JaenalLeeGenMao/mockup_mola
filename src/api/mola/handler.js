@@ -548,7 +548,7 @@ const getMovieDetail = ({ id }) => {
 
 const getRecommendation = id => {
   return get(`${RECOMMENDATION}?video_id=${id}`, {
-    // return get(`${HOME_PLAYLIST_ENDPOINT}/mola-hot`, {
+    // return get(`http://private-08fa1b-mola1.apiary-mock.com/questions`, {
     ...endpoints.setting,
   })
     .then(response => {

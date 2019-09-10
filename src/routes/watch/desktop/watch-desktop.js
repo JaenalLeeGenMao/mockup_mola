@@ -388,7 +388,7 @@ class WatchDesktop extends Component {
     const { recommendation: { data: recomData } } = this.props
     let nextVideo = null
     if (recomData && recomData.length > 0) {
-      if (recomData[0].id !== this.props.videoId) {
+      if (recomData[0].video_id !== this.props.videoId) {
         nextVideo = recomData[0]
       } else if (recomData.length > 1) nextVideo = recomData[1]
     }
