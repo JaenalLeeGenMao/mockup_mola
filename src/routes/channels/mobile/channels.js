@@ -462,9 +462,10 @@ class Channels extends Component {
                           <MatchList key={dt.id} data={dt} noClickAble isChannel />
                           // <Schedule scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} handleSelectChannel={this.handleSelectChannel} {...this.props} />
                         ))}
-                      {programmeGuides.error &&
-                        !programmeGuides.loading &&
-                        !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
+                      {(programmeGuides.error && !programmeGuides.loading && !programmeGuides.data) ||
+                        (!programmeGuides.error &&
+                          !programmeGuides.loading &&
+                          scheduleList.length === 0 && <div className={styles.epg__no__schedule}> No Schedule </div>)}
                     </div>
                   </div>
                   <div className={styles.epg__calendar}>

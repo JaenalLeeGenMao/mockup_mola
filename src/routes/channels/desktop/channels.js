@@ -372,7 +372,6 @@ class Channels extends Component {
       notice_bar_message,
       showOfflinePopup,
     } = this.state
-    // console.log('status blockednya', block)
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -451,7 +450,7 @@ class Channels extends Component {
             <PrimaryMenu
               activeChannelId={activeChannelId}
               handleSelectChannel={this.handleSelectChannel}
-              channelsPlaylist={channelsPlaylist}
+              channelsPlaylist={channelsPlaylist.data}
             />
             <div className={styles.epg__list__container}>
               <SecondaryMenu
@@ -473,9 +472,10 @@ class Channels extends Component {
                       activeChannelId={activeChannelId}
                     />
                   )}
-                {programmeGuides.error &&
-                  !programmeGuides.loading &&
-                  !programmeGuides.data && <div className={styles.epg__no__schedule}> No Schedule </div>}
+                {(programmeGuides.error && !programmeGuides.loading && !programmeGuides.data) ||
+                  (!programmeGuides.error &&
+                    !programmeGuides.loading &&
+                    scheduleList.length === 0 && <div className={styles.epg__no__schedule}> No Schedule </div>)}
                 <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} isChannel />
               </div>
             </div>
