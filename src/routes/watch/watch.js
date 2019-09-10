@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { getVUID } from '@actions/vuid'
 import * as movieDetailActions from '@actions/movie-detail'
+import { getContentTypeName } from '@source/lib/globalUtil'
 import recommendationActions from '@actions/recommendation'
 // import styles from './watch.css'
 
@@ -18,6 +19,7 @@ import iconRed from './assets/merah.png'
 import iconGreen from './assets/hijau.png'
 import Placeholder from './desktop/placeholder'
 import PlaceholderMobile from './mobile/placeholder'
+import Mola from '../../api/mola'
 
 class Watch extends Component {
   state = {
@@ -28,11 +30,14 @@ class Watch extends Component {
     iconGreen,
     status: [],
     isHeader: false,
+    isMatchPassed: false,
   }
 
   componentDidMount() {
     const { getMovieDetail, getRecommendation, videoId, getVUID, user } = this.props
-
+    this.intervalCheckMatch = setInterval(() => {
+      this.checkMatches()
+    }, 50000) // check match endtime every 5 minutes
     getMovieDetail(videoId)
     getRecommendation(videoId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
@@ -98,6 +103,23 @@ class Watch extends Component {
     this.updateMetaTag()
   }
 
+  checkMatches() {
+    Mola.getMovieDetail({ id: this.props.videoId }).then(async result => {
+      const data = result.data[0]
+      const endTime = data.endTime
+      if (getContentTypeName(data.contentType) !== 'live') {
+        clearInterval(this.intervalCheckMatch)
+      } else {
+        if (endTime && endTime < Date.now() / 1000) {
+          this.setState({
+            isMatchPassed: true,
+          })
+          clearInterval(this.intervalCheckMatch)
+        }
+      }
+    })
+  }
+
   updateMetaTag() {
     const { movieDetail } = this.props
     if (movieDetail.data.length > 0) {
@@ -134,6 +156,9 @@ class Watch extends Component {
       'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
     )
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
+    if (this.intervalCheckMatch) {
+      clearInterval(this.intervalCheckMatch)
+    }
   }
 
   render() {
@@ -184,6 +209,7 @@ class Watch extends Component {
                 title={apiFetched ? dataFetched.title : ''}
                 isAutoPlay={isAutoPlay}
                 portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                isMatchPassed={this.state.isMatchPassed}
               />
             </>
           )}
@@ -201,6 +227,7 @@ class Watch extends Component {
                   getMovieDetail={getMovieDetail}
                   vuid={vuid}
                   isAutoPlay={isAutoPlay}
+                  isMatchPassed={this.state.isMatchPassed}
                 />
               )}
               {!isMobile && (
@@ -212,6 +239,7 @@ class Watch extends Component {
                   recommendation={recommendation}
                   vuid={vuid}
                   isAutoPlay={isAutoPlay}
+                  isMatchPassed={this.state.isMatchPassed}
                 />
               )}
             </>

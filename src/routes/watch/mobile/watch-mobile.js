@@ -249,7 +249,7 @@ class MovieDetail extends Component {
   }
 
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId } = this.props
+    const { user, getMovieDetail, videoId, isMatchPassed } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -287,10 +287,6 @@ class MovieDetail extends Component {
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
       const { toggleInfoBar, ios_redirect_to_app, android_redirect_to_app } = this.state
-      let isMatchPassed = false
-      if (dataFetched.endTime < Date.now() / 1000) {
-        isMatchPassed = true
-      }
 
       let isRedirectToApp = false
       if (isApple) {
@@ -349,6 +345,8 @@ class MovieDetail extends Component {
             isMobile={true}
           />
         )
+      } else if (isMatchPassed) {
+        return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
       } else if (!isRedirectToApp) {
         return (
           <>

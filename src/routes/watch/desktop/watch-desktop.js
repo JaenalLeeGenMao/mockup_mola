@@ -200,7 +200,6 @@ class WatchDesktop extends Component {
         .then(response => {
           if (response.status === 200) {
             loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
-
             this.setState({
               loc: loc,
             })
@@ -263,7 +262,18 @@ class WatchDesktop extends Component {
   }
 
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, isAutoPlay } = this.props
+    const {
+      user,
+      getMovieDetail,
+      videoId,
+      blocked,
+      iconStatus,
+      status,
+      icon,
+      name,
+      isAutoPlay,
+      isMatchPassed,
+    } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -352,6 +362,8 @@ class WatchDesktop extends Component {
               isMobile={false}
             />
           )
+        } else if (isMatchPassed) {
+          return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
           const autoPlay = isAutoPlay ? true : false
