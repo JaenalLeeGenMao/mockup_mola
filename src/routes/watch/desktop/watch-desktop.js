@@ -230,24 +230,14 @@ class WatchDesktop extends Component {
       // user,
       // getVUID,
     } = this.props
+    
+    if (!_isUndefined(window)) {
+      window.addEventListener('online', this.goOnline)
+      window.addEventListener('offline', this.goOffline)
+    }
 
     this.getLoc()
     this.getConfig()
-  }
-
-  handlePlayLogin = () => {
-    this.setState({ loginPermission: true })
-    window.addEventListener('online', this.goOnline)
-    window.addEventListener('offline', this.goOffline)
-  }
-
-  renderBlockPermission(poster) {
-    return (
-      <div className={posterWrapper}>
-        <img style={{ height: '100%', width: '100%' }} src={poster} />
-        <span className={playIcon} onClick={this.handlePlayLogin} />
-      </div>
-    )
   }
 
   componentWillUnmount() {
