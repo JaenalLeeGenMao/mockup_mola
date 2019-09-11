@@ -60,6 +60,7 @@ class WatchDesktop extends Component {
     nextVideoBlocker: false,
     nextVideoClose: false,
     timerNextVideo: 0,
+    playerError: false,
   }
 
   handleOnReadyStateChange = player => {
@@ -95,6 +96,10 @@ class WatchDesktop extends Component {
         errorFlag = errorFlag + 1
         if (errorFlag < 2) {
           this.props.getVUID_retry()
+          this.setState({ playerError: true })
+          setTimeout(() => {
+            this.setState({ playerError: false })
+          }, 1000)
         }
       } else {
         // console.log('ERROR content protection', e)
@@ -366,23 +371,25 @@ class WatchDesktop extends Component {
           return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
-          const autoPlay = isAutoPlay ? true : false
-          return (
-            <>
-              <Theoplayer
-                className={customTheoplayer}
-                subtitles={this.subtitles()}
-                poster={autoPlay ? null : poster}
-                autoPlay={autoPlay}
-                handleOnReadyStateChange={this.handleOnReadyStateChange}
-                handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                {...videoSettings}
-              >
-                {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
-              </Theoplayer>
-              {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
-            </>
-          )
+          if (!this.state.playerError) {
+            const autoPlay = isAutoPlay ? true : false
+            return (
+              <>
+                <Theoplayer
+                  className={customTheoplayer}
+                  subtitles={this.subtitles()}
+                  poster={autoPlay ? null : poster}
+                  autoPlay={autoPlay}
+                  handleOnReadyStateChange={this.handleOnReadyStateChange}
+                  handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                  {...videoSettings}
+                >
+                  {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+                </Theoplayer>
+                {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+              </>
+            )
+          }
         }
       }
     }
