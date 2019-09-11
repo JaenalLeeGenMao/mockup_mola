@@ -9,12 +9,19 @@ export const contentOverviewSectionLeft = css`
   display: inline-block;
   width: 27.5%;
   vertical-align: top;
-  padding: 0 3rem 0 5rem;
 
   div {
-    width: 100%;
+    width: 70%;
     height: 100%;
     margin: auto;
+  }
+
+  @media screen and (max-width: 1000px) {
+    padding: 0 3rem 0 5rem;
+
+    div {
+      width: 100%;
+    }
   }
 `
 

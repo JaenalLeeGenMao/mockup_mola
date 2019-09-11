@@ -2,11 +2,10 @@
   display: inline-block;
   width: 27.5%;
   vertical-align: top;
-  padding: 0 3rem 0 5rem;
 }
 
 .detail__left div {
-  width: 100%;
+  width: 70%;
   height: 100%;
   margin: auto;
 }
@@ -31,6 +30,16 @@
   width: 100%;
   height: 100%;
   margin: auto;
+}
+
+@media screen and (max-width: 1000px) {
+  .detail__left {
+    padding: 0 3rem 0 5rem;
+  }
+
+  .detail__left div {
+    width: 100%;
+  }
 }
 
 /** Synopsis style start **/
