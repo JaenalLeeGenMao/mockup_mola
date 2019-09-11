@@ -1,0 +1,571 @@
+@font-face {
+  font-family: 'SourceSans';
+  src: url('../fonts/sourcesanspro.ttf');
+}
+
+
+/* MAIN COLOR of the UI, used for all progress bars */
+.sqp-ui-main-bgcolor {
+  background: red;
+}
+
+/* disable selection on elements */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.sqp-customer-overlay {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  right: 15px;
+  bottom: 50px;
+}
+
+/* generic 'centering' class on X/Y axes */
+.sqp-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.sqp-controls-box {
+  display: inline;
+}
+
+/*  video surface filling the entirity of its parent surface */
+.sqp-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* overlay area on top of the video element, covering its whole surface */
+.sqp-video-overlay {
+  width: 100%;
+  height: 100%;
+  font-family: 'SourceSans', sans-serif;
+  color: #aaa;
+}
+
+/* area of the player overlay in which the notifiation of a buffering event is displayed */
+.sqp-buffering {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0,0,0,0.9);
+  color: #aaa;
+  border-radius: 4px;
+  padding:4px;
+}
+
+.sqp-buffering-value {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 60px;
+  margin-left: -4px;
+  font-family: 'SourceSans', sans-serif;
+}
+
+/* Animation keyframes for the buffering image */
+@keyframes sqp-buffering-img-anim {
+  from {
+    transform:rotate(0deg);
+  }
+
+  to {
+    transform:rotate(359deg);
+  }
+}
+
+/*
+* Animation class for the buffering image
+* This class is automatically added to the buffering image, if any, when a buffering event occurs
+*/
+.sqp-buffering-img-anim {
+  animation: sqp-buffering-img-anim 2s infinite;
+  animation-timing-function: linear;
+}
+
+/*
+* buffering image
+*/
+.sqp-buffering-img {
+  position: relative;
+  width: inherit;
+  height: inherit;
+}
+
+/* area containing video playback controls (by default at the bottom of the video) */
+.sqp-video-controls {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+/* progress bar zone */
+.sqp-progressbar {
+  position: relative;
+  height: 16px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.sqp-progressbar[forLive='true'] {
+  margin-right: 50px;
+}
+
+/* progress bar zone */
+.sqp-progressbar-background {
+  position: relative;
+  height: 4px;
+  top:6px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 1px;
+}
+
+.sqp-progressbar-background:hover {
+  height: 6px;
+  top: 5px;
+  background-color: rgba(255,255,255,0.7);
+}
+
+.sqp-progressbar-background:hover > .sqp-chapters {
+  top: 1px;
+}
+
+/*
+* Progress bar 'progress' zone
+* its width will be controlled by the javascript code and given in '%'
+*/
+.sqp-progressbar-progress {
+  position: absolute;
+  top:0;
+  height: 100%;
+  width: 50%; /* default width at openning, will be overriden with values in % by javascript code */
+  border-radius: 1px;
+}
+
+.sqp-progressbar-progress-2nd {
+  background-color: yellow;
+}
+
+/*
+* playback progress bar endpoint
+* hidden by default (display: node), this element is showed only on mouse hovering,
+* using the animation classes below
+*/
+.sqp-progressbar-progress-endpoint {
+  position: absolute;
+  display: none;
+  top: -3px;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+/* animation for the 'bullet' at the end of the progress bar (makes it appear) */
+@keyframes endpoint-anim {
+  from {
+    width: 0;
+    height: 0;
+    top: 4px;
+    right: 0;
+  }
+
+  to {
+    top: -3px;
+    width: 12px;
+    height: 12px;
+    right: -6px;
+  }
+}
+
+/* activation of the animation for the progress bar endpoint on hovering of the progres bar itself */
+.sqp-progressbar-background:hover > .sqp-progressbar-progress-play > .sqp-progressbar-progress-endpoint {
+  display: inherit;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  animation-name: endpoint-anim ;
+  animation-duration: 0.05s;
+}
+
+.sqp-chapters {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.sqp-chapter {
+  display: inline-block;
+  position: absolute;
+  background: red;
+  height: 16px;
+  width: 16px;
+  margin-left: -8px;
+  margin-top: -6px;
+  -webkit-transform: scaleX(0.7) rotate(45deg);
+}
+
+.sqp-controls-toolbar {
+  width: calc(100% - 8px);
+  padding: 4px;
+}
+
+/* Live Button that appears when playing a Live+TS or (Event+KnowDuration) media */
+.sqp-chapter-live-button {
+  background-color: #ccc;
+  color: #000;
+  position: absolute;
+  border-radius: 1px;
+  margin-top: -7px;
+  margin-left: 10px;
+  font-size: 13px;
+  padding-right: 2px;
+  padding-left: 3px;
+  z-index: 7;
+  left: 100%;
+}
+
+.sqp-chapter-live-button:hover {
+  color: #fff;
+  -webkit-transform: scale(1.1);
+}
+
+/* generic class for all buttons in video controller UI */
+.sqp-button {
+  display: inline-block;
+  width: 50px;
+  height: 32px;
+  background-color: transparent;
+  border: 0;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* hover color for all buttons */
+.sqp-button:hover {
+  color: #fff;
+}
+
+.sqp-quality-btn {
+  width: auto;
+  height: auto;
+}
+
+/* icon size for all UI buttons */
+.sqp-button .icon {
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+}
+
+/* color for disabled button */
+.sqp-button:disabled {
+  color: gray;
+}
+
+/* color for inactive button */
+.sqp-button-inactive {
+  color: #7b7b7b;
+}
+
+/* remove dotted outline on buttons */
+button.sqp-button {
+  outline: none;
+}
+
+/* remove dotted outline on buttons (Firefox) */
+button.sqp-button::-moz-focus-inner {
+  border: 0;
+}
+
+.sqp-right {
+  float: right;
+}
+
+.sqp-player-controls-text {
+  display: inline-block;
+  line-height: 28px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.sqp-player-controls-times-zone {
+  position: absolute;
+  cursor: default;
+}
+
+.sqp-player-controls-times-zone div {
+  display: table-cell;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+/* class applied to time indications in the UI */
+.sqp-time {
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  vertical-align: top;
+}
+
+.sqp-volume-btn {
+  padding-right: 0;
+}
+
+/* specificity for the icon in the volume button */
+.sqp-volume-btn .icon {
+  padding-right: 0;
+}
+
+/* volume bar */
+.sqp-volume-bar {
+  display: inline-block;
+  width: 120px;
+  height: 28px;
+  margin-left: -4px;
+  cursor: pointer;
+  overflow-x: hidden;
+}
+
+/* background of the volume bar */
+.sqp-volume-bar-bg {
+  position: relative;
+  height: 4px;
+  width: inherit;
+  top: 11px;
+  left: 0;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 1px;
+}
+
+.sqp-volume-bar-bg:hover {
+  background-color: rgba(255,255,255,0.7);
+}
+
+/* volume 'progress' on top the background (width is controlled by javascript and given in %) */
+.sqp-volume-bar-level {
+  position: relative;
+  height: inherit;
+  top: 0;
+  left: 0;
+  width: 50%;
+  background-color: white;
+  border-radius: 1px;
+  min-width: 12px;
+}
+
+.sqp-volume-bar-level-endpoint {
+  position: absolute;
+  display: inherit;
+  top: -4px;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 6px;
+}
+
+/*
+-- Classes related to the 'Option' menu (Qualities, Audio and subtitles tracks) --
+*/
+.sqp-optmenu {
+  background-color: rgba(30,30,30,0.9);
+  position: absolute;
+  right: 10px;
+  bottom: 54px;
+  padding-top:4px;
+  padding-bottom:4px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.sqp-optmenu-1st {
+  max-width: 240px;
+}
+
+.sqp-opt-item {
+  display: table-row;
+  vertical-align: middle;
+}
+
+.sqp-opt-title {
+  display: block;
+  cursor: pointer;
+  border-bottom: 1px solid #8a8a8a;
+  padding-bottom: 4px;
+  min-width: 150px;
+}
+
+.sqp-opt-title-2nd {
+  position:absolute;
+  top: 2px;
+  right: 0;
+}
+
+.sqp-opt-title-back {
+  width: 18px;
+  height: 18px;
+  padding-left: 6px;
+  padding-right: 10px;
+  padding-top: 4px;
+}
+
+.sqp-opt-item div {
+  display:table-cell;
+  vertical-align: middle;
+}
+
+.sqp-opt-name {
+  display: table-cell;
+  vertical-align: middle;
+  width: 60px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.sqp-opt-value {
+  display: table-cell;
+  text-align: right;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.sqp-optmenu-2nd .sqp-opt-list-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.sqp-opt-items-list {
+  display: table;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.sqp-opt-value-pick:hover {
+  background-color: rgba(70,70,70,0.9);
+  cursor: pointer;
+}
+
+.sqp-opt-value-pick .pick-arrow {
+  display: table-cell;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-bottom: 4px;
+  padding-right: 4px;
+}
+
+.sqp-opt-value-2nd {
+  display: table-cell;
+  text-align: right;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.opt-item-select {
+  display: table-cell;
+  width: 14px;
+  height: 20px;
+  vertical-align: middle;
+  padding-left: 6px;
+  padding-top: 4px;
+}
+
+.sqp-quality-selected {
+  color: white;
+}
+
+.sqp-opt-select:hover {
+  background-color: rgba(70,70,70,0.9);
+  cursor: pointer;
+}
+
+/*
+ -- Classes related to the 'Tooltip' (hover UI above the playback progress bar) --
+*/
+
+/* tooltip area (its position and content is driven by javascript) */
+.sqp-tooltip {
+  background-color: rgba(30,30,30,0.9);
+  font-size: 10pt;
+  position: absolute;
+  text-align: center;
+  bottom: 54px;
+  padding: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.sqp-subtitle-rendering {
+  overflow: hidden;
+}
+
+/* class related to subtitle rendering */
+.sqp-subtitle-rendering > div {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  text-align: center;
+  bottom: 0;
+  color: white;
+  font-family: 'SourceSans', sans-serif;
+  left: 0 !important;
+}
+
+.sqp-subtitle-element {
+  background-color: black;
+  padding: 2px;
+}
+
+.sqp-all-controls {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.sqp-banner-img {
+  width: 100%;
+}
+
+.sqp-banner-a {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.sqp-banner-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  background-image: url('../images/closeAdBannerButton.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: right;
+}

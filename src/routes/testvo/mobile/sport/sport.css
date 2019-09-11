@@ -1,0 +1,119 @@
+.container__mobile {
+  background: #000311;
+  color: #fff;
+}
+
+.info_bar__container {
+  margin: 0 30px 0 40px;
+}
+
+.info_bar__text {
+  font-size: 16px;
+}
+
+.player__container__mobile {
+  height: calc(18rem + 38px);
+  width: 100vw;
+  margin: auto;
+}
+
+.detail__title {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.detail__title__text {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  color: #fff;
+  font-size: 28px;
+}
+
+.detail__desc {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.detail__desc__read_more {
+  font-size: 0.8rem;
+  vertical-align: sub;
+  letter-spacing: 0.05rem;
+  background: transparent;
+  border: none;
+  color: #b5b5b5;
+}
+
+.expand_collapse {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2YwZjsKICAgICAgICBvcGFjaXR5OiAwOwogICAgICB9CgogICAgICAuY2xzLTIgewogICAgICAgIGZpbGw6ICM3MDcwNzA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnIGlkPSJDaGV2cm9uIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4KSByb3RhdGUoOTApIj4KICAgIDxyZWN0IGlkPSJGcmFtZSIgY2xhc3M9ImNscy0xIiB3aWR0aD0iMTAiIGhlaWdodD0iNiIvPgogICAgPHBhdGggaWQ9IlNoYXBlIiBjbGFzcz0iY2xzLTIiIGQ9Ik0xMCwxQTEsMSwwLDAsMCw4LjI5My4yOTNMNSwzLjU4NiwxLjcwNy4yOTNBMSwxLDAsMSwwLC4yOTMsMS43MDdsNCw0YTEsMSwwLDAsMCwxLjQxNSwwbDQtNEExLDEsMCwwLDAsMTAsMVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIgOCkgcm90YXRlKC05MCkiLz4KICA8L2c+Cjwvc3ZnPgo=);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.container {
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+.inner_box {
+  padding: 15px 15px 30px 15px;
+}
+
+.inner_box p {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  height: 6rem;
+  text-align: left;
+}
+
+.inner_box p.show {
+  line-height: 1.4rem;
+  margin: 0;
+  padding: 0;
+  height: auto;
+}
+
+.inner_box_header {
+  height: 2.4rem;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.inner_box_header span {
+  display: inline-block;
+  transform: translate(0, -10%);
+  color: #969696;
+}
+
+.synopsis__info_read_more {
+  font-size: 0.8rem;
+  vertical-align: sub;
+  letter-spacing: 0.05rem;
+  background: transparent;
+  border: none;
+  color: #b5b5b5;
+}
+
+.synopsisPlaceholder {
+  margin-bottom: 1rem;
+}
+
+.synopsisPlaceholderDirector {
+  margin-bottom: 0;
+  display: inline-block;
+}

@@ -1,0 +1,75 @@
+.player_container {
+  position: relative;
+  height: 100%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  pointer-events: none;
+}
+
+.container {
+  position: absolute;
+  display: flex;
+  bottom: 7rem;
+  right: 2rem;
+  width: 35rem;
+  height: 15.3rem;
+  background-color: #1f1f1f;
+  pointer-events: auto;
+}
+
+.poster {
+  height: 100%;
+  width: 25%;
+  display: block;
+}
+
+.poster img,
+.poster div {
+  height: 100%;
+}
+
+.content {
+  width: 75%;
+  height: 100%;
+  display: block;
+  padding: 1.4rem 1rem 1rem 1rem;
+  box-sizing: border-box;
+}
+
+.title {
+  height: 35%;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  font-weight: bold;
+}
+
+.desc {
+  height: 40%;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: #969696;
+  padding-top: 0.5rem;
+  overflow: hidden;
+}
+
+.link {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  padding-top: 0.5rem;
+  vertical-align: middle;
+  height: 25%;
+  width: 100%;
+}
+
+.close {
+  color: #808080;
+}
+
+.close:hover {
+  color: #fff;
+  cursor: pointer;
+}
