@@ -285,15 +285,25 @@ const track = async store => {
     //tracker.sendPubSub(payload, token)
 
     if (pathname.includes('watch')) {
-      if (token && !inSearchPage) {
-        const payload = {
-          window,
-          videoId: urlParams.v,
-          user: user,
-          event: 'event_videos',
+      if (urlParams.v) {
+        let checkEncoded = urlParams.v.split('u0026')
+        let videoId = checkEncoded.length > 0 && checkEncoded[0]
+        if (videoId.length === 10) {
+          let checkRegex = RegExp('^[a-zA-Z0-9\\-]*$')
+          let isValidId = checkRegex.test(videoId)
+          if (isValidId) {
+            if (token && !inSearchPage) {
+              const payload = {
+                window,
+                videoId: videoId,
+                user: user,
+                event: 'event_videos',
+              }
+              globalTracker(payload)
+            } //tracker.sendPubSub(payload, token)
+          }
         }
-        globalTracker(payload)
-      } //tracker.sendPubSub(payload, token)
+      }
     }
 
     // HOTFIX need to find a way to get refferer in react

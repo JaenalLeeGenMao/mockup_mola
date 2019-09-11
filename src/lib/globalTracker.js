@@ -40,7 +40,28 @@ export const globalTracker = async data => {
   const longitude =
     geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
 
-  const urlParams = queryString.parse(clientWindow.location.search)
+  let urlParams = {}
+  let decodedUrl
+
+  if (clientWindow.location.href.includes('u0026')) {
+    decodedUrl = clientWindow.location.href.replace(/u0026/g, '&')
+    let parts = decodedUrl.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+      urlParams[key] = value
+    })
+  } else {
+    urlParams = queryString.parse(clientWindow.location.search)
+  }
+
+  let linkReferrer = `${window.location.host}${currentLocation.pathname}${currentLocation.search}`
+  if (linkReferrer.includes('u0026')) {
+    linkReferrer = decodedUrl.replace(/https?:\/\//i, '')
+  }
+
+  let linkPath = `${window.location.host}${location.pathname}${location.search}`
+  if (linkPath.includes('u0026')) {
+    linkPath = decodedUrl.replace(/https?:\/\//i, '')
+  }
+
   let adjustedSubs = []
   // Try get user_id & subs
 
@@ -48,9 +69,9 @@ export const globalTracker = async data => {
   const payload = {
     data: {
       project_id: 'molatv',
-      referrer: `${window.location.host}${currentLocation.pathname}${currentLocation.search}`,
+      referrer: linkReferrer,
       host: `${window.location.host}`,
-      path: linkRedirectUrl ? linkRedirectUrl : `${window.location.host}${location.pathname}${location.search}`,
+      path: linkRedirectUrl ? linkRedirectUrl : linkPath,
       session_id: tracker.sessionId(), // Try get+set session_id
       client_id: tracker.clientId(),
       video_id: videoId,

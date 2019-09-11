@@ -51,6 +51,7 @@ class Html extends React.Component {
       appLinkUrl = '',
       type = 'website',
     } = this.props
+    const metaTitle = title ? `Mola TV - ${title}` : 'Mola TV - Broadcaster Resmi Liga Inggris 2019-2022'
     return (
       <html className="no-js" lang="en">
         <head>
@@ -70,13 +71,13 @@ class Html extends React.Component {
             data-react-helmet="true"
             content={`Mola TV Online Movies & Mola Sport Showcase 380 Matches Every Seasons Under MolaSports Brand. ${description}`}
           />
-          <title data-react-helmet="true">{`Mola TV - ${title}`}</title>
+          <title data-react-helmet="true">{metaTitle}</title>
           <meta name="msapplication-TileImage" content={logoLandscapeBlue} />
           <meta name="robots" content="index, follow" />
           <meta name="googlebot" content="index,follow" />
           <meta name="google-site-verification" content="iOSX2B9Y9Mx0cY0ihBPzKY3IyCijmlPx1mMNu0kHz6Q" />
           <meta property="og:site_name" content="molatv" />
-          <meta property="og:title" content={title ? `Mola TV - ${title}` : 'Mola TV'} data-react-helmet="true" />
+          <meta property="og:title" content={metaTitle} data-react-helmet="true" />
           <meta property="og:description" content={description} data-react-helmet="true" />
           <meta property="og:image" content={image} data-react-helmet="true" />
           <meta property="og:url" content={url} data-react-helmet="true" />

@@ -41,10 +41,8 @@ class AgeRestriction extends Component {
         >
           <div className={modalWrapper}>
             <p>
-              You must be at least 18 years of age or have full consent from parent or guardian to use this website. By
-              using this website and by agreeing to this disclaimer you warrant and represent that you are at least 18
-              years of age or have full consent from a parent or guardian. You may also use your parent or guardian
-              email address as the your main email and point of contacting.
+              To view this video, you need to be 18 years or older and have your parent or guardian’s consent to Mola TV
+              terms and conditions.
             </p>
             <div className="buttonsWrapper">
               <div className="declineButton">

@@ -42,7 +42,7 @@ class Feature extends Component {
       // this.props.onHandleResetVideo()
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
-      this.props.onHandleArticle(id)
+      // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -63,7 +63,7 @@ class Feature extends Component {
           // this.props.onHandleResetVideo()
           this.props.onHandlePlaylist(id)
           this.props.onHandleBanner(id)
-          this.props.onHandleArticle(id)
+          // this.props.onHandleArticle(id)
 
           trackedPlaylistIds = []
           // }

@@ -31,14 +31,14 @@ class MovieSuggestion extends React.Component {
   render() {
     const { data, searchText, src } = this.props
     const { show } = this.state
-    const movieData = data.slice(0, 5)
+    // const movieData = data.slice(0, 5) //data slice
     return (
       <div className={s.resultRowWrap}>
         <div className={s.resultTitle}>Movies</div>
         <div className={s.resultContent}>
           <div className={s.movie__wrapper}>
             <div className={s.movie__wrapper__scroller}>
-              {movieData.map(movie => {
+              {data.map(movie => {
                 const movieYear = movie.year ? ` (${movie.year})` : ''
                 const movieTitle = `${movie.title}${movieYear}`
                 const movieTitleRes = getMatchWordSearch(movieTitle, searchText)

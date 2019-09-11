@@ -39,8 +39,17 @@ body {
   margin-left: 20px;
   margin-right: 50px;
   padding-top: 90px;
-  margin-bottom: 50vh;
+
+  /* margin-bottom: 50vh; */
   position: absolute;
+}
+
+.matches__container a {
+  display: block;
+}
+
+.matches__container a:last-child {
+  margin-bottom: 50vh;
 }
 
 .matches_header_bg {
@@ -134,7 +143,7 @@ body {
   border-radius: 50%;
   display: inline-block;
   margin: 5px 10px 5px 0;
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 .matchStatusText {

@@ -110,6 +110,9 @@ class MatchList extends React.Component {
       const images = this.props.data ? this.props.data.images : ''
       const date = this.cardDateFormat(data.startTime, data.endTime, isChannel)
       const matchLive = isMatchLive(data.startTime, data.endTime)
+      const replayMatch = isMatchPassed(data.startTime, data.endTime)
+      const todayMatch = isToday(data.startTime, data.endTime)
+      const upComingMatch = !replayMatch && !matchLive
       const matchTomorrow = isTomorrow(data.startTime)
       const hour =
         data.endTime && data.startTime
@@ -123,7 +126,8 @@ class MatchList extends React.Component {
         : styles.matchList__date
       const isLiveMatch = matchLive ? styles.matchList__live_now : ''
       const isTomorrowMatch = matchTomorrow ? styles.matchList__tomorrow : ''
-      const leftBoxStyle = `${channelOrMatchStyle} ${isLiveMatch} ${isTomorrowMatch}`
+      const isComingMatch = upComingMatch ? styles.matchList__tomorrow : ''
+      const leftBoxStyle = `${channelOrMatchStyle} ${isLiveMatch} ${isTomorrowMatch} ${isComingMatch}`
       return (
         <>
           {toJumpLive && (

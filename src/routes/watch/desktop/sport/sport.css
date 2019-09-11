@@ -32,6 +32,16 @@
   margin: auto;
 }
 
+@media screen and (max-width: 1000px) {
+  .detail__left {
+    padding: 0 3rem 0 5rem;
+  }
+
+  .detail__left div {
+    width: 100%;
+  }
+}
+
 /** Synopsis style start **/
 .detail__right_text {
   font-size: 1.6rem;

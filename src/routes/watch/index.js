@@ -3,7 +3,13 @@ import MolaLayout from '@components/Molalayout'
 import Watch from './watch'
 
 function action({ query, isMobile }) {
-  const id = query.v
+  let id = query.v
+  var resultUrl = id.split('u0026')
+
+  if (resultUrl.length > 0) {
+    id = resultUrl[0]
+  }
+
   return {
     chunks: ['watch'],
     title: '',

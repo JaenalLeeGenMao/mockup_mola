@@ -2,19 +2,23 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
 import { post } from 'axios'
-import config from '@source/config'
+import Moment from 'moment'
+import _isUndefined from 'lodash/isUndefined'
 
+import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
+import watchPermission from '@source/lib/watchPermission'
+
 import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
-import watchPermission from '@source/lib/watchPermission'
-import PlatformDesktop from '@components/PlatformCheck'
 
+import PlatformDesktop from '@components/PlatformCheck'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
-// import AgeRestrictionModal from '@components/AgeRestriction'
+import OfflineNoticePopup from '@components/OfflineNoticePopup'
+import AgeRestrictionModal from '@components/AgeRestriction'
 // import Link from '@components/Link'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
@@ -48,6 +52,8 @@ class WatchDesktop extends Component {
     toggleInfoBar: true,
     countDownStatus: true,
     notice_bar_message: 'Siaran Percobaan',
+    isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
+    showOfflinePopup: false,
   }
 
   handleOnReadyStateChange = player => {
@@ -73,6 +79,10 @@ class WatchDesktop extends Component {
 
     this.player = player
 
+    if (player && player.buffered.length > 0) {
+      this.detectorConnection(player)
+    }
+
     player.addEventListener('contentprotectionerror', e => {
       if (e.error.toLowerCase() == 'error during license server request') {
         errorFlag = errorFlag + 1
@@ -83,6 +93,42 @@ class WatchDesktop extends Component {
         // console.log('ERROR content protection', e)
         // this.handleVideoError(e);
       }
+    })
+  }
+
+  detectorConnection = player => {
+    if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
+      setTimeout(() => {
+        this.setState({
+          showOfflinePopup: true,
+        })
+      }, 3000)
+    } else if (this.state.isOnline && this.state.showOfflinePopup) {
+      this.setState({
+        showOfflinePopup: false,
+      })
+    }
+  }
+
+  goOnline = () => {
+    if (!this.state.isOnline) {
+      this.setState({
+        isOnline: true,
+      })
+    }
+  }
+
+  goOffline = () => {
+    if (this.state.isOnline) {
+      this.setState({
+        isOnline: false,
+      })
+    }
+  }
+
+  handleCloseOfflinePopup = () => {
+    this.setState({
+      showOfflinePopup: false,
     })
   }
 
@@ -184,22 +230,21 @@ class WatchDesktop extends Component {
       // user,
       // getVUID,
     } = this.props
+    
+    if (!_isUndefined(window)) {
+      window.addEventListener('online', this.goOnline)
+      window.addEventListener('offline', this.goOffline)
+    }
 
     this.getLoc()
     this.getConfig()
   }
 
-  handlePlayLogin = () => {
-    this.setState({ loginPermission: true })
-  }
-
-  renderBlockPermission(poster) {
-    return (
-      <div className={posterWrapper}>
-        <img style={{ height: '100%', width: '100%' }} src={poster} />
-        <span className={playIcon} onClick={this.handlePlayLogin} />
-      </div>
-    )
+  componentWillUnmount() {
+    if (!_isUndefined(window)) {
+      window.removeEventListener('online', this.goOnline)
+      window.removeEventListener('offline', this.goOffline)
+    }
   }
 
   renderVideo = dataFetched => {
@@ -290,15 +335,18 @@ class WatchDesktop extends Component {
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
           return (
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              poster={poster}
-              autoPlay={false}
-              handleOnReadyStateChange={this.handleOnReadyStateChange}
-              handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-              {...videoSettings}
-            />
+            <>
+              <Theoplayer
+                className={customTheoplayer}
+                subtitles={this.subtitles()}
+                poster={poster}
+                autoPlay={false}
+                handleOnReadyStateChange={this.handleOnReadyStateChange}
+                handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                {...videoSettings}
+              />
+              {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+            </>
           )
         }
       }
@@ -318,9 +366,9 @@ class WatchDesktop extends Component {
   }
 
   render() {
-    const { isControllerActive, loc } = this.state
+    const { isControllerActive, loc, showOfflinePopup } = this.state
     const { meta: { status: videoStatus }, data } = this.props.movieDetail
-    const { user } = this.props
+    const { user, videoId } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const dataFetched = videoStatus === 'success' && data.length > 0 ? data[0] : undefined
@@ -356,6 +404,7 @@ class WatchDesktop extends Component {
             <div className={headerContainer}>
               <Header {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
+            {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
             <div className={movieDetailContainer}>
               <div className={videoPlayerWrapper}>
                 {toggleInfoBar &&
@@ -384,7 +433,6 @@ class WatchDesktop extends Component {
             </div>
           </>
         )}
-        {/* {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />} */}
       </>
     )
   }
