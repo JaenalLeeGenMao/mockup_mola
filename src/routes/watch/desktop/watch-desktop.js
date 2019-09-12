@@ -237,7 +237,7 @@ class WatchDesktop extends Component {
     const {
       // getMovieDetail,
       // movieId, //passed as props from index.js,
-      // fetchRecommendation,
+      fetchRecommendation,
       // user,
       // getVUID,
     } = this.props
@@ -491,7 +491,12 @@ class WatchDesktop extends Component {
                 </div>
               </div>
               <div className={movieDetailBottom}>
-                {isMovieBool && <MovieContent dataFetched={dataFetched} />}
+                <div>
+                  {isMovieBool && (
+                    <MovieContent dataFetched={dataFetched} fetchRecommendation={this.props.recommendation} />
+                  )}
+                  {!isMovieBool && <SportContent dataFetched={dataFetched} />}
+                </div>
                 {!isMovieBool && <SportContent dataFetched={dataFetched} />}
               </div>
             </div>
@@ -509,7 +514,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  // fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
+  fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 

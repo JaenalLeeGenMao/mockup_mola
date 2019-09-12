@@ -155,7 +155,7 @@ class MovieDetail extends Component {
   // }
 
   componentDidMount() {
-    // const { fetchRecommendation } = this.props
+    const { fetchRecommendation } = this.props
 
     this.getLoc()
     // this.getConfig()
@@ -440,7 +440,9 @@ class MovieDetail extends Component {
                 )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
-              {isMovieBool && <MovieContent dataFetched={dataFetched} />}
+              {isMovieBool && (
+                <MovieContent dataFetched={dataFetched} fetchRecommendation={this.props.recommendation} />
+              )}
               {!isMovieBool && <SportContent dataFetched={dataFetched} />}
             </div>
           </>

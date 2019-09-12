@@ -4,7 +4,16 @@ const VideoThumbnail = getComponent('video-thumbnail')
 
 // import { unavailableImg } from '@global/imageUrl'
 import Link from '@components/Link'
-import { videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionInnerWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail, titleSuggestions, imageWrapper, playIcon } from './style'
+import {
+  videoSuggestionContainer,
+  videoSuggestionWrapper,
+  videoSuggestionInnerWrapper,
+  videoSuggestionPlayer,
+  videoSuggestionPlayerDetail,
+  titleSuggestions,
+  imageWrapper,
+  playIcon,
+} from './style'
 
 const Suggestions = ({ style = {}, videos = [] }) => {
   return (
@@ -12,10 +21,10 @@ const Suggestions = ({ style = {}, videos = [] }) => {
       <div className={videoSuggestionContainer}>
         <div className={videoSuggestionWrapper} style={style}>
           <div className={videoSuggestionInnerWrapper}>
-            {videos.map(({ id, background, title }) => {
-              const imageSource = background.landscape
+            {videos.map(({ video_id, cover_landscape, title }) => {
+              const imageSource = cover_landscape
               return (
-                <Link to={`/watch?v=${id}`} key={id} className={videoSuggestionPlayer}>
+                <Link to={`/watch?v=${video_id}`} key={video_id} className={videoSuggestionPlayer}>
                   <VideoThumbnail
                     thumbnailUrl={imageSource}
                     thumbnailPosition="wrap"
