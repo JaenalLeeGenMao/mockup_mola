@@ -19,6 +19,37 @@ class WatchDesktop extends Component {
     }
   }
 
+  //WARNING: below is only an example of Fairplay license request filter. This implementation is not meant to be generic
+  fairplayLicenseRequestFilter = request => {
+    // process only fairplay licenses, all others will not be touched
+    if (request.drm == 'com.apple.fps') {
+      request.allowCrossSiteCredentials = true
+      console.log('fairplayLicenseRequestFilter', request)
+      // request body is already base-64 encoded
+      var newBody = 'spc=' + request.body
+      newBody += '&assetID=' + request.keyIds[0]
+      // replace request body with newly crafted one
+      request.body = newBody
+      // add the content-type header matching the new body format
+      request.headers['content-type'] = 'application/x-www-form-urlencoded'
+    }
+  }
+
+  //WARNING: below is only an example of Fairplay license response filter. This implementation is not meant to be generic
+  fairplayLicenseResponseFilter = response => {
+    var keyText = response.data.trim()
+    if (keyText.substr(0, 5) === '<ckc>' && keyText.substr(-6) === '</ckc>') {
+      keyText = keyText.slice(5, -6)
+    }
+    console.log(keyText.indexOf('<FAIRPLAY_RESPONSE>'))
+    if (keyText.indexOf('<FAIRPLAY_RESPONSE>') >= 0) {
+      var esidx = keyText.search('</LICENSE>')
+      keyText = keyText.slice(28, esidx)
+      console.log(keyText)
+    }
+    response.data = keyText
+  }
+
   async componentDidMount() {
     console.log('squadeo.Player.version', squadeo.Player.version)
 
@@ -82,80 +113,56 @@ class WatchDesktop extends Component {
       //       'https://cdn-mxs-01.akamaized.net/Content/DASH/VOD/b5558932-2120-4f7c-8b1b-4cdd4eca5a06/fdca642a-e382-c566-1a55-4053f9601a95/manifest_L2.mpd?hdnts=st=1568094637~exp=1568098237~acl=/*~hmac=922051ead091fec40437fe2f8c2bed0d8f5f075f99a0cf7d1872ed2bd0f80f0f',
       //   },
       // }
-      let data = _get(this.props, 'movieDetail.data[0]', '')
-      window.data = data
+      let video = _get(this.props, 'movieDetail.data[0]', '')
+      window.video = video
 
       const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
       let drm = _get(this.props, 'movieDetail.data[0].drm', '')
       let manifestUri = isSafari && drm ? drm.fairplay.streamUrl : drm.widevine.streamUrl
-      // let manifestUri = _get(this.props, 'movieDetail.data[0].streamSourceUrl', '')
+
       // const manifestUri = 'http://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8'
-      // 'https://cdn-mxs-01.akamaized.net/Content/HLS/VOD/255b300c-9b7a-4d57-bcee-a73b55363116/c0de6451-cd85-84e0-fcd7-ea805ff7a6f2/index_L2.m3u8?hdnts=st=1568098172~exp=1568101772~acl=/*~hmac=76811e310e87fa9fbf8bf078ba36519bb261fe2fddf7089cb1ab409581e7ed42'
-      // 'https://cdn-mxs-01.akamaized.net/Content/DASH/VOD/b5558932-2120-4f7c-8b1b-4cdd4eca5a06/fdca642a-e382-c566-1a55-4053f9601a95/manifest_L2.mpd?hdnts=st=1568094346~exp=1568097946~acl=/*~hmac=3cc0fcece49ae74a319e3a9c7bb83dcefc7cc6c0ced18c615fa7e7debaab5648'
-      // player.license = 'https://mola.tv/api/v2/videos/drm/license-url/widevine'
       console.log('manifestUri', manifestUri)
       console.log('license', drm.fairplay.licenseUrl)
       console.log('cert', drm.fairplay.certificateUrl)
 
-      player.reset().then(async function() {
-        player.liveHack = true
-        const deviceId = 'MDFkNzlhNTgtYjRiOC0zYzQ2LTk2ZmMtZDY2OTFlODA1MWEz'
+      const deviceId = 'MDFkNzlhNTgtYjRiOC0zYzQ2LTk2ZmMtZDY2OTFlODA1MWEz'
 
-        if (isSafari) {
-          player.configure({
-            drm: {
-              servers: {
-                'com.widevine.alpha': `${drm.widevine.licenseUrl}?deviceId=${deviceId}`,
-                'com.microsoft.playready': `${drm.playready.licenseUrl}?deviceId=${deviceId}`,
-                'com.apple.fps': `${drm.fairplay.licenseUrl}?deviceId=${deviceId}`,
-              },
+      if (!isSafari) {
+        this.setupPlayer(player, {
+          drm: {
+            servers: {
+              'com.widevine.alpha': `${drm.widevine.licenseUrl}?deviceId=${deviceId}`,
+              'com.microsoft.playready': `${drm.playready.licenseUrl}?deviceId=${deviceId}`,
+              'com.apple.fps': `${drm.fairplay.licenseUrl}?deviceId=${deviceId}`,
             },
-          })
-        } else {
-          const req = await fetch(drm.fairplay.certificateUrl)
-          const cert = await req.arrayBuffer()
-
-          player.configure({
-            drm: {
-              servers: {
-                'com.widevine.alpha': `${drm.widevine.licenseUrl}?deviceId=${deviceId}`,
-                'com.microsoft.playready': `${drm.playready.licenseUrl}?deviceId=${deviceId}`,
-                'com.apple.fps': `${drm.fairplay.licenseUrl}?deviceId=${deviceId}`,
-              },
-              advanced: {
-                'com.apple.fps': {
-                  serverCertificateUrl: cert,
-                },
-              },
-            },
-          })
-        }
-
-        player.registerLicenseRequestFilter(function(request) {
-          // This is the specific header name and value the server wants:
-          console.log('request', request)`${drm.fairplay.certificateUrl}?deviceId=${deviceId}`,
-            (request.allowCrossSiteCredentials = true)
+          },
         })
+      } else {
+        const req = await fetch(drm.fairplay.certificateUrl)
+        const cert = await req.arrayBuffer()
 
-        player.loadVMAP(
-          'https://api.stag.supersoccer.tv/v1/ads/ads-rubik/api/v1/get-preroll-video?params=eyJwcm9qZWN0X2lkIjoiMiIsInZpZGVvX2lkIjoiczFrZmExQVNDNCIsImFwcF9pZCI6Im1vbGFfYWRzIiwic2Vzc2lvbl9pZCI6IndteDR4azg4aDhta2Fob252dHVzcnBlN2dpcTdyOXoiLCJjbGllbnRfaXAiOiIyMTIuMTE3LjYxLjU4IiwidXVpZCI6IjFiYmVkOTI1LWRhOTEtNDQ1OS04OGFkLWU4MGRlMjc3ODZlZSIsInRpbWVfb2Zmc2V0IjoiNyIsImxvYyI6ImhhSmZZNkpKUktOZllURWJvMTloTXRFQWthTmZZVFBSQ0RhaVgzb0w1aGljZGJvMTdybzcyIn0='
-        )
-        // player.configure(config);
-        // Try to load a manifest
-        // This is an asynchronous process, returning a Promise
-        player
-          .load(manifestUri, 0)
-          .then(function() {
-            // player.addSRTTextTrack('en', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-            // player.srtManager_.addSRTTrack('id', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-            // This runs if the asynchronous load is successful
-            console.log('The video has now been loaded')
-          })
-          .catch(this.onError) // onError is executed if the asynchronous load fails
-      })
+        const config = {
+          drm: {
+            servers: {
+              'com.widevine.alpha': `${drm.widevine.licenseUrl}?deviceId=${deviceId}`,
+              'com.microsoft.playready': `${drm.playready.licenseUrl}?deviceId=${deviceId}`,
+              'com.apple.fps': `${drm.fairplay.licenseUrl}?deviceId=${deviceId}`,
+            },
+            advanced: {
+              'com.apple.fps': {
+                serverCertificateUrl: cert,
+              },
+            },
+          },
+        }
+        player.registerLicenseResponseFilter(this.fairplayLicenseResponseFilter)
+        this.setupPlayer(player, config)
+      }
+
       player.on('error', e => console.log(e))
       player.on('ready', function() {
         console.log('Player Controls loaded and ready')
+        this.handleBannerRequest(player)
       })
       // drive bandwdith timer (stop monitoring when player is paused)
       player.on('play', function(e) {
@@ -173,21 +180,49 @@ class WatchDesktop extends Component {
       player.on('ended', function() {
         console.log('Playback ended')
       })
-      window.player = player
-      const banner = new AdBanner(player)
-      banner.closeable = false
-      banner.visibility = false
-      banner.requestURL =
-        'https://api.stag.supersoccer.tv/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=eyJwcm9qZWN0X2lkIjoiNSIsInZpZGVvX2lkIjoiMTA4NzYxMDAxMyIsImFwcF9pZCI6InNlbnRfYWRzIiwic2Vzc2lvbl9pZCI6InZlcmltYXRyaXgtdGVzdCIsImNsaWVudF9pcCI6IjAuMC4wLjAiLCJ1dWlkIjoidmVyaW1hdHJpeC10ZXN0In0='
-      banner.start()
-      window.adbanner = AdBanner
-      window.banner = banner
-      console.log('banner', banner)
-      console.log('AdBanner', AdBanner)
     } catch (e) {
       console.log('Error while creating the player: ', e)
       $('#videoContext').html('Error while creating player')
     }
+  }
+
+  setupPlayer = (player, config) => {
+    player.reset().then(async function() {
+      player.liveHack = true
+      player.configure(config)
+
+      player.loadVMAP(
+        'https://api.stag.supersoccer.tv/v1/ads/ads-rubik/api/v1/get-preroll-video?params=eyJwcm9qZWN0X2lkIjoiMiIsInZpZGVvX2lkIjoiczFrZmExQVNDNCIsImFwcF9pZCI6Im1vbGFfYWRzIiwic2Vzc2lvbl9pZCI6IndteDR4azg4aDhta2Fob252dHVzcnBlN2dpcTdyOXoiLCJjbGllbnRfaXAiOiIyMTIuMTE3LjYxLjU4IiwidXVpZCI6IjFiYmVkOTI1LWRhOTEtNDQ1OS04OGFkLWU4MGRlMjc3ODZlZSIsInRpbWVfb2Zmc2V0IjoiNyIsImxvYyI6ImhhSmZZNkpKUktOZllURWJvMTloTXRFQWthTmZZVFBSQ0RhaVgzb0w1aGljZGJvMTdybzcyIn0='
+      )
+      // player.configure(config);
+      // Try to load a manifest
+      // This is an asynchronous process, returning a Promise
+      player
+        .load(manifestUri, 0)
+        .then(function() {
+          // player.addSRTTextTrack('en', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
+          // player.srtManager_.addSRTTrack('id', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
+          // This runs if the asynchronous load is successful
+          console.log('The video has now been loaded')
+          player.registerLicenseRequestFilter(this.fairplayLicenseRequestFilter)
+        })
+        .catch(this.onError) // onError is executed if the asynchronous load fails
+
+      window.player = player
+    })
+  }
+
+  handleBannerRequest = player => {
+    const banner = new AdBanner(player)
+    banner.closeable = false
+    banner.visibility = false
+    banner.requestURL =
+      'https://api.stag.supersoccer.tv/v1/ads/ads-rubik/api/v1/get-inplayer-banner?params=eyJwcm9qZWN0X2lkIjoiNSIsInZpZGVvX2lkIjoiMTA4NzYxMDAxMyIsImFwcF9pZCI6InNlbnRfYWRzIiwic2Vzc2lvbl9pZCI6InZlcmltYXRyaXgtdGVzdCIsImNsaWVudF9pcCI6IjAuMC4wLjAiLCJ1dWlkIjoidmVyaW1hdHJpeC10ZXN0In0='
+    banner.start()
+    // window.adbanner = AdBanner
+    window.banner = banner
+    // console.log('banner', banner)
+    // console.log('AdBanner', AdBanner)
   }
 
   render() {
