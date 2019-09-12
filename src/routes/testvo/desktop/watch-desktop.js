@@ -53,7 +53,7 @@ class WatchDesktop extends Component {
   async componentDidMount() {
     console.log('squadeo.Player.version', squadeo.Player.version)
 
-    let lngMap = {
+    const lngMap = {
       nl: 'Dutch',
       en: 'English',
       de: 'German',
@@ -80,7 +80,7 @@ class WatchDesktop extends Component {
       }
     }
 
-    var playerConfig = {
+    const playerConfig = {
       base: 'vo/html5player',
       license: 'gKc8YRZTGe/xjaUG2FzquqQO8FYDJQXygubiXyVgv7PXz17bD9GEi3Y4T9GX9/ehIqwhoaD9DKFI/kw+/Uow6w==',
       // qualityLevelFormater: formatQualityLevelForDisplay,
@@ -93,28 +93,7 @@ class WatchDesktop extends Component {
     }
 
     try {
-      var player = squadeo.createPlayerWithControls('videoContext', playerConfig)
-      // let drm = {
-      //   drmEnabled: true,
-      //   fairplay: {
-      //     certificateUrl: 'https://mola01.koicdn.com/fairplay.cer',
-      //     licenseUrl: 'https://mola.tv/api/v2/videos/drm/license-url/fairplay',
-      //     streamUrl:
-      //       'https://cdn-mxs-01.akamaized.net/Content/HLS/VOD/b5558932-2120-4f7c-8b1b-4cdd4eca5a06/fdca642a-e382-c566-1a55-4053f9601a95/index_L2.m3u8?hdnts=st=1568094637~exp=1568098237~acl=/*~hmac=922051ead091fec40437fe2f8c2bed0d8f5f075f99a0cf7d1872ed2bd0f80f0f',
-      //   },
-      //   playready: {
-      //     licenseUrl: 'https://mola.tv/api/v2/videos/drm/license-url/playready',
-      //     streamUrl:
-      //       'https://cdn-mxs-01.akamaized.net/Content/DASH/VOD/b5558932-2120-4f7c-8b1b-4cdd4eca5a06/fdca642a-e382-c566-1a55-4053f9601a95/manifest_L2.mpd?hdnts=st=1568094637~exp=1568098237~acl=/*~hmac=922051ead091fec40437fe2f8c2bed0d8f5f075f99a0cf7d1872ed2bd0f80f0f',
-      //   },
-      //   widevine: {
-      //     licenseUrl: 'https://mola.tv/api/v2/videos/drm/license-url/widevine',
-      //     streamUrl:
-      //       'https://cdn-mxs-01.akamaized.net/Content/DASH/VOD/b5558932-2120-4f7c-8b1b-4cdd4eca5a06/fdca642a-e382-c566-1a55-4053f9601a95/manifest_L2.mpd?hdnts=st=1568094637~exp=1568098237~acl=/*~hmac=922051ead091fec40437fe2f8c2bed0d8f5f075f99a0cf7d1872ed2bd0f80f0f',
-      //   },
-      // }
-      let video = _get(this.props, 'movieDetail.data[0]', '')
-      window.video = video
+      const player = squadeo.createPlayerWithControls('videoContext', playerConfig)
 
       const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
       let drm = _get(this.props, 'movieDetail.data[0].drm', '')
@@ -128,7 +107,8 @@ class WatchDesktop extends Component {
       const deviceId = 'MDFkNzlhNTgtYjRiOC0zYzQ2LTk2ZmMtZDY2OTFlODA1MWEz'
 
       if (!isSafari) {
-        this.setupPlayer(player, {
+        this.handleInitPlayer(player, {
+          manifestUri,
           drm: {
             servers: {
               'com.widevine.alpha': `${drm.widevine.licenseUrl}?deviceId=${deviceId}`,
@@ -142,6 +122,7 @@ class WatchDesktop extends Component {
         const cert = await req.arrayBuffer()
 
         const config = {
+          manifestUri,
           drm: {
             servers: {
               'com.widevine.alpha': `${drm.widevine.licenseUrl}?deviceId=${deviceId}`,
@@ -156,37 +137,45 @@ class WatchDesktop extends Component {
           },
         }
         player.registerLicenseResponseFilter(this.fairplayLicenseResponseFilter)
-        this.setupPlayer(player, config)
+        this.handleInitPlayer(player, config)
       }
 
-      player.on('error', e => console.log(e))
-      player.on('ready', function() {
-        console.log('Player Controls loaded and ready')
-        this.handleBannerRequest(player)
-      })
-      // drive bandwdith timer (stop monitoring when player is paused)
-      player.on('play', function(e) {
-        // console.log(e)
-        // if (typeof bandwidthLogTimer === 'undefined') {
-        //   bandwidthLogTimer = setInterval(logBandwidth, 2000)
-        // }
-      })
-      player.on('pause', function() {
-        // if (bandwidthLogTimer) {
-        //   clearInterval(bandwidthLogTimer)
-        //   bandwidthLogTimer = undefined
-        // }
-      })
-      player.on('ended', function() {
-        console.log('Playback ended')
-      })
+      this.handlePlayerEventListener(player)
+
+      window.video = _get(this.props, 'movieDetail.data[0]', '')
     } catch (e) {
       console.log('Error while creating the player: ', e)
       $('#videoContext').html('Error while creating player')
     }
   }
 
-  setupPlayer = (player, config) => {
+  handlePlayerEventListener = player => {
+    const that = this
+
+    player.on('error', e => console.log(e))
+    player.on('ready', function() {
+      console.log('Player Controls loaded and ready')
+      that.handleInitBanner(player)
+    })
+    // drive bandwdith timer (stop monitoring when player is paused)
+    player.on('play', function(e) {
+      // console.log(e)
+      // if (typeof bandwidthLogTimer === 'undefined') {
+      //   bandwidthLogTimer = setInterval(logBandwidth, 2000)
+      // }
+    })
+    player.on('pause', function() {
+      // if (bandwidthLogTimer) {
+      //   clearInterval(bandwidthLogTimer)
+      //   bandwidthLogTimer = undefined
+      // }
+    })
+    player.on('ended', function() {
+      console.log('Playback ended')
+    })
+  }
+
+  handleInitPlayer = (player, config) => {
     player.reset().then(async function() {
       player.liveHack = true
       player.configure(config)
@@ -198,7 +187,7 @@ class WatchDesktop extends Component {
       // Try to load a manifest
       // This is an asynchronous process, returning a Promise
       player
-        .load(manifestUri, 0)
+        .load(config.manifestUri, 0)
         .then(function() {
           // player.addSRTTextTrack('en', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
           // player.srtManager_.addSRTTrack('id', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
@@ -212,7 +201,7 @@ class WatchDesktop extends Component {
     })
   }
 
-  handleBannerRequest = player => {
+  handleInitBanner = player => {
     const banner = new AdBanner(player)
     banner.closeable = false
     banner.visibility = false
