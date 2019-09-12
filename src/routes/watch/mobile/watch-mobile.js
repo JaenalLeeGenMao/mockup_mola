@@ -48,10 +48,14 @@ class MovieDetail extends Component {
   state = {
     loc: '',
     countDownStatus: true,
-    toggleInfoBar: true,
-    android_redirect_to_app: false,
-    ios_redirect_to_app: false,
-    notice_bar_message: 'Siaran Percobaan',
+    toggleInfoBar: this.props.configParams.data ? this.props.configParams.data.notice_bar_enabled : true,
+    android_redirect_to_app: this.props.configParams.data
+      ? this.props.configParams.data.android_redirect_to_app
+      : false,
+    ios_redirect_to_app: this.props.configParams.data ? this.props.configParams.data.ios_redirect_to_app : false,
+    notice_bar_message: this.props.configParams.data
+      ? this.props.configParams.data.notice_bar_message
+      : 'Siaran Percobaan',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
   }
@@ -137,24 +141,24 @@ class MovieDetail extends Component {
     }
   }
 
-  getConfig = () => {
-    const { configParams } = this.props
-    if (configParams.data) {
-      const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = configParams.data
-      this.setState({
-        android_redirect_to_app,
-        ios_redirect_to_app,
-        toggleInfoBar: notice_bar_enabled,
-        notice_bar_message,
-      })
-    }
-  }
+  // getConfig = () => {
+  //   const { configParams } = this.props
+  //   if (configParams.data) {
+  //     const { android_redirect_to_app, ios_redirect_to_app, notice_bar_enabled, notice_bar_message } = configParams.data
+  //     this.setState({
+  //       android_redirect_to_app,
+  //       ios_redirect_to_app,
+  //       toggleInfoBar: notice_bar_enabled,
+  //       notice_bar_message,
+  //     })
+  //   }
+  // }
 
   componentDidMount() {
     // const { fetchRecommendation } = this.props
 
     this.getLoc()
-    this.getConfig()
+    // this.getConfig()
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
@@ -288,9 +292,11 @@ class MovieDetail extends Component {
         isMatchPassed = true
       }
 
+      let isRedirectToApp = false
       if (isApple) {
         //ios
         if (ios_redirect_to_app) {
+          isRedirectToApp = true
           return (
             <div className={posterWrapper}>
               <img src={poster} />
@@ -300,6 +306,7 @@ class MovieDetail extends Component {
         }
       } else {
         if (android_redirect_to_app) {
+          isRedirectToApp = true
           return (
             <div className={posterWrapper}>
               <img src={poster} />
@@ -342,7 +349,7 @@ class MovieDetail extends Component {
             isMobile={true}
           />
         )
-      } else {
+      } else if (!isRedirectToApp) {
         return (
           <>
             <Theoplayer
