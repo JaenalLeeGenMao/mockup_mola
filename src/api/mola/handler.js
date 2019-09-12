@@ -25,7 +25,7 @@ import utils from './util'
 import { endpoints } from '@source/config'
 
 const getHomePlaylist = () => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/home-new`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/home-new`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -51,7 +51,7 @@ const getHomePlaylist = () => {
 }
 
 const getFeaturePlaylist = id => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -187,7 +187,7 @@ const getFeatureBanner = ({ id = '' }) => {
 
 const getAllGenreSpo = (id = 'leagues') => {
   // link lama: genre-spo change into leagues
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -240,7 +240,7 @@ const getSportList = (id = 'mola-sport') => {
 }
 
 const getMatchesList = (id = 'mola-soc') => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -334,7 +334,7 @@ const getMatchesPlaylists = id => {
 
 const getHomeVideo = ({ id }) => {
   // console.log('ID', id)
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -360,7 +360,7 @@ const getHomeVideo = ({ id }) => {
 }
 
 const getPlaylistPlaylists = id => {
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -422,7 +422,7 @@ const getPlaylistPlaylists = id => {
 
 const getSportVideo = ({ id }) => {
   // console.log('id', id)
-  return get(`${HOME_PLAYLIST_ENDPOINT}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -607,7 +607,7 @@ const deleteRecentSearch = (sessionId, sid, keyword) => {
 }
 
 const getMovieDetail = ({ id }) => {
-  return get(`${VIDEOS_ENDPOINT}/${id}`, {
+  return get(`${VIDEOS_ENDPOINT_NOCACHE}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
