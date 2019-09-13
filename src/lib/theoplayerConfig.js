@@ -62,7 +62,7 @@ const handleTimeUpdate = (payload, player) => {
       if (!ticker.includes(time)) {
         ticker.push(time)
         timeLive = timeLive + 1
-        if (timeLive % 5 === 0) {
+        if (timeLive % 5 === 0 && handlePlayerHeaderToggleCallback) {
           handlePlayerHeaderToggleCallback(timeLive)
         }
       }
