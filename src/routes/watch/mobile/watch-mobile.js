@@ -16,6 +16,7 @@ import AgeRestrictionModal from '@components/AgeRestriction'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
+import PlayerHeader from './player-header'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 
 import {
@@ -173,6 +174,13 @@ class MovieDetail extends Component {
     }
   }
 
+  handlePlayerHeaderToggle = () => {
+    const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
+    console.log(parentWrapper)
+    this.showPlayerHeader = parentWrapper.includes('vjs-user-inactive') ? false : true
+    this.forceUpdate()
+  }
+
   handlePlayMovie = () => {
     const { videoId } = this.props
     const domain = config.endpoints.domain
@@ -269,7 +277,13 @@ class MovieDetail extends Component {
       user.loc = loc
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        ? defaultVideoSetting(
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            null,
+            this.handlePlayerHeaderToggle
+          )
         : {}
 
       const checkAdsSettings =
@@ -358,7 +372,9 @@ class MovieDetail extends Component {
               handleOnReadyStateChange={this.handleOnReadyStateChange}
               {...videoSettings}
               isMobile
-            />
+            >
+              {this.renderPlayerHeader(dataFetched)}
+            </Theoplayer>
             {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
           </>
         )
@@ -376,6 +392,12 @@ class MovieDetail extends Component {
     this.setState({
       toggleInfoBar: false,
     })
+  }
+
+  renderPlayerHeader = dataFetched => {
+    if (dataFetched) {
+      return <PlayerHeader data={dataFetched} show={this.showPlayerHeader} />
+    }
   }
 
   render() {
@@ -432,7 +454,12 @@ class MovieDetail extends Component {
                     </div>
                   </div>
                 )}
-              <div className={videoPlayerContainer}>
+              <div
+                className={videoPlayerContainer}
+                id="video-player-root"
+                onMouseMoveCapture={event => (this.showPlayerHeader = true)}
+                onTouchStartCapture={event => (this.showPlayerHeader = true)}
+              >
                 {loadPlayer ? (
                   <>{this.renderVideo(dataFetched)}</>
                 ) : (

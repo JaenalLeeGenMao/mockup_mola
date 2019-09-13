@@ -20,6 +20,7 @@ import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from './upcoming-video'
+import PlayerHeader from './player-header'
 
 // import AgeRestrictionModal from '@components/AgeRestriction'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
@@ -266,6 +267,13 @@ class WatchDesktop extends Component {
     }
   }
 
+  handlePlayerHeaderToggle = () => {
+    const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
+
+    this.showPlayerHeader = parentWrapper.includes('vjs-user-inactive') ? false : true
+    this.forceUpdate()
+  }
+
   renderVideo = dataFetched => {
     const {
       user,
@@ -306,7 +314,8 @@ class WatchDesktop extends Component {
             user,
             dataFetched,
             vuidStatus === 'success' ? vuid : '',
-            nextVideoClose ? null : this.handleNextVideo
+            nextVideoClose ? null : this.handleNextVideo,
+            this.handlePlayerHeaderToggle
           )
         : {}
       const checkAdsSettings =
@@ -385,6 +394,7 @@ class WatchDesktop extends Component {
                   {...videoSettings}
                 >
                   {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+                  {this.renderPlayerHeader(dataFetched)}
                 </Theoplayer>
                 {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
               </>
@@ -414,6 +424,12 @@ class WatchDesktop extends Component {
 
     if (nextVideo) {
       return <UpcomingVideo data={nextVideo} handleCancelVideo={this.handleCancelUpcVideo} />
+    }
+  }
+
+  renderPlayerHeader = dataFetched => {
+    if (dataFetched) {
+      return <PlayerHeader data={dataFetched} show={this.showPlayerHeader} />
     }
   }
 
@@ -482,7 +498,12 @@ class WatchDesktop extends Component {
                       </div>
                     </div>
                   )}
-                <div className={playerClass}>
+                <div
+                  className={playerClass}
+                  id="video-player-root"
+                  onMouseMoveCapture={event => (this.showPlayerHeader = true)}
+                  onTouchStartCapture={event => (this.showPlayerHeader = true)}
+                >
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (

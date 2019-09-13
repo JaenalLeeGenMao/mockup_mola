@@ -17,6 +17,7 @@ class RedirectToApps extends Component {
       poster,
       customTheoplayer,
       handleOnVideoVolumeChange,
+      children,
     } = this.props
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
@@ -57,7 +58,9 @@ class RedirectToApps extends Component {
             handleOnReadyStateChange={handleOnReadyStateChange}
             handleOnVideoVolumeChange={handleOnVideoVolumeChange}
             {...videoSettings}
-          />
+          >
+            {children}
+          </Theoplayer>
         )
       }
     }
