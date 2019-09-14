@@ -19,6 +19,7 @@ import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import PlayerHeader from './player-header'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
+import UpcomingVideo from '../upcoming-video'
 
 import {
   movieDetailContainer,
@@ -60,6 +61,8 @@ class MovieDetail extends Component {
       : 'Siaran Percobaan',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
+    nextVideoBlocker: false,
+    nextVideoClose: false,
   }
 
   handleOnVideoVolumeChange = player => {
@@ -259,6 +262,14 @@ class MovieDetail extends Component {
     }
   }
 
+  handleNextVideo = (isShow = false) => {
+    if (isShow) {
+      this.setState({
+        nextVideoBlocker: true,
+      })
+    }
+  }
+
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId, isMatchPassed } = this.props
     let theoVolumeInfo = {}
@@ -279,12 +290,21 @@ class MovieDetail extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
+      let handleNextVideo = null
+      if (
+        !nextVideoClose &&
+        getContentTypeName(dataFetched.contentType) !== 'live' &&
+        getContentTypeName(dataFetched.contentType) !== 'trailers'
+      ) {
+        handleNextVideo = this.handleNextVideo
+      }
+
       const defaultVidSetting = dataFetched
         ? defaultVideoSetting(
             user,
             dataFetched,
             vuidStatus === 'success' ? vuid : '',
-            null,
+            handleNextVideo,
             this.handlePlayerHeaderToggle
           )
         : {}
@@ -303,8 +323,13 @@ class MovieDetail extends Component {
 
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-      const { toggleInfoBar, ios_redirect_to_app, android_redirect_to_app } = this.state
-
+      const {
+        toggleInfoBar,
+        ios_redirect_to_app,
+        android_redirect_to_app,
+        nextVideoBlocker,
+        nextVideoClose,
+      } = this.state
       let isRedirectToApp = false
       if (isApple) {
         //ios
@@ -377,11 +402,33 @@ class MovieDetail extends Component {
               isMobile
             >
               {this.renderPlayerHeader(dataFetched)}
+              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
             </Theoplayer>
             {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
           </>
         )
       }
+    }
+  }
+
+  handleCancelUpcVideo = e => {
+    this.setState({
+      nextVideoBlocker: false,
+      nextVideoClose: true,
+    })
+  }
+
+  renderNextVideo = () => {
+    const { recommendation: { data: recomData } } = this.props
+    let nextVideo = null
+    if (recomData && recomData.length > 0) {
+      if (recomData[0].video_id !== this.props.videoId) {
+        nextVideo = recomData[0]
+      } else if (recomData.length > 1) nextVideo = recomData[1]
+    }
+
+    if (nextVideo) {
+      return <UpcomingVideo data={nextVideo} isMobile={true} handleCancelVideo={this.handleCancelUpcVideo} />
     }
   }
 

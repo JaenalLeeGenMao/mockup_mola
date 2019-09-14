@@ -11,6 +11,7 @@ class UpcomingVideo extends Component {
   state = {
     adsHeight: 0,
     adsWidth: 0,
+    isFullscreenMobile: false,
   }
 
   componentDidMount() {
@@ -26,14 +27,17 @@ class UpcomingVideo extends Component {
   }
 
   handleFullScreen = () => {
-    // console.log('MASUKK')
     setTimeout(() => {
       var ads = document.querySelector('.theoplayer-ad-nonlinear-content img')
-      // console.log('ads.clientHeight', ads.clientHeight, ads.clientWidth)
       if (ads) {
         this.setState({
           adsHeight: ads.clientHeight,
           adsWidth: ads.clientWidth,
+          isFullscreenMobile: document.getElementsByClassName('vjs-fullscreen').length,
+        })
+      } else {
+        this.setState({
+          isFullscreenMobile: document.getElementsByClassName('vjs-fullscreen').length,
         })
       }
     }, 300)
@@ -71,30 +75,44 @@ class UpcomingVideo extends Component {
   }
 
   render() {
-    const { data } = this.props
-
-    const { adsWidth, adsHeight } = this.state
+    const { data, isMobile = false } = this.props
+    const { adsWidth, adsHeight, isFullscreenMobile } = this.state
     const playerWidth = adsWidth ? `${adsWidth}px` : '100%'
+    const containerBottom = isMobile && !isFullscreenMobile ? {} : { bottom: `calc(${adsHeight}px + 6rem)` }
     return (
       <div className={styles.player_container} style={{ width: playerWidth }}>
-        <div className={styles.container} style={{ bottom: `calc(${adsHeight}px + 6rem)` }}>
+        <div className={styles.container} style={containerBottom}>
           <div className={styles.poster}>
-            <Lazyload src={data.cover_portrait} />
+            <Lazyload src={isMobile ? data.cover_landscape : data.cover_portrait} />
           </div>
           <div className={styles.content}>
-            {/* <div className={styles.ContentWrapper}> */}
             <div className={styles.title}>{data.title}</div>
             <div className={styles.desc}>{data.short_description}</div>
+            {!isMobile && (
+              <div className={styles.link}>
+                <Link className={styles.play} to={`/watch?v=${data.video_id}&autoplay=1`}>
+                  <CountDown startSecond={10} onTimeFinish={() => this.redirectToNextVideo(data.video_id)} />
+                </Link>
+                <Link className={styles.close} onClick={this.cancelUpcVideo}>
+                  Close
+                </Link>
+              </div>
+            )}
+          </div>
+          {isMobile && (
             <div className={styles.link}>
               <Link className={styles.play} to={`/watch?v=${data.video_id}&autoplay=1`}>
-                <CountDown startSecond={10} onTimeFinish={() => this.redirectToNextVideo(data.video_id)} />
+                <CountDown
+                  isMobile={isMobile}
+                  startSecond={10}
+                  onTimeFinish={() => this.redirectToNextVideo(data.video_id)}
+                />
               </Link>
               <Link className={styles.close} onClick={this.cancelUpcVideo}>
                 Close
               </Link>
             </div>
-            {/* </div> */}
-          </div>
+          )}
         </div>
       </div>
     )

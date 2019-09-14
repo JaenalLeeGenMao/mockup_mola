@@ -11,7 +11,6 @@ import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
 import watchPermission from '@source/lib/watchPermission'
 
-import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 
 import PlatformDesktop from '@components/PlatformCheck'
@@ -19,7 +18,7 @@ import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
-import UpcomingVideo from './upcoming-video'
+import UpcomingVideo from '../upcoming-video'
 import PlayerHeader from './player-header'
 
 // import AgeRestrictionModal from '@components/AgeRestriction'
@@ -53,14 +52,15 @@ class WatchDesktop extends Component {
   state = {
     movieDetail: [],
     loc: '',
-    toggleInfoBar: true,
     countDownStatus: true,
-    notice_bar_message: 'Siaran Percobaan',
+    toggleInfoBar: this.props.configParams.data ? this.props.configParams.data.notice_bar_enabled : true,
+    notice_bar_message: this.props.configParams.data
+      ? this.props.configParams.data.notice_bar_message
+      : 'Siaran Percobaan',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
     nextVideoBlocker: false,
     nextVideoClose: false,
-    timerNextVideo: 0,
     playerError: false,
   }
 
@@ -223,16 +223,16 @@ class WatchDesktop extends Component {
     }
   }
 
-  getConfig = async () => {
-    const { configParams } = this.props
-    if (configParams.data) {
-      const { notice_bar_enabled, notice_bar_message } = configParams.data
-      this.setState({
-        toggleInfoBar: notice_bar_enabled,
-        notice_bar_message,
-      })
-    }
-  }
+  // getConfig = async () => {
+  //   const { configParams } = this.props
+  //   if (configParams.data) {
+  //     const { notice_bar_enabled, notice_bar_message } = configParams.data
+  //     this.setState({
+  //       toggleInfoBar: notice_bar_enabled,
+  //       notice_bar_message,
+  //     })
+  //   }
+  // }
 
   componentDidMount() {
     const {
@@ -243,13 +243,13 @@ class WatchDesktop extends Component {
       // getVUID,
     } = this.props
 
+    this.getLoc()
+    // this.getConfig()
+
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
     }
-
-    this.getLoc()
-    this.getConfig()
   }
 
   componentWillUnmount() {
@@ -309,15 +309,25 @@ class WatchDesktop extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
+      let handleNextVideo = null
+      if (
+        !nextVideoClose &&
+        getContentTypeName(dataFetched.contentType) !== 'live' &&
+        getContentTypeName(dataFetched.contentType) !== 'trailers'
+      ) {
+        handleNextVideo = this.handleNextVideo
+      }
+
       const defaultVidSetting = dataFetched
         ? defaultVideoSetting(
             user,
             dataFetched,
             vuidStatus === 'success' ? vuid : '',
-            nextVideoClose ? null : this.handleNextVideo,
+            handleNextVideo,
             this.handlePlayerHeaderToggle
           )
         : {}
+
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
