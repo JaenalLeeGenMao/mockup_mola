@@ -46,14 +46,13 @@ const handleTimeUpdate = (payload, player) => {
 
   const duration = player.duration
   if (handleNextVideoCallback || handlePlayerHeaderToggleCallback) {
-    // console.log("time", time)
     // console.log("duration", duration)
     if (!player.ads.playing && time >= duration - 11 && !tickerNextVideo.includes(time)) {
-      // if (!player.ads.playing && time > 10 && !tickerNextVideo.includes(time)) {
+      // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
       tickerNextVideo.push(time)
       handleNextVideoCallback(true)
-    } else if (!player.ads.playing && Math.round(duration) % 5 === 0) {
-      handlePlayerHeaderToggleCallback(Math.round(duration))
+    } else if (!player.ads.playing && Math.round(time) % 5 === 0) {
+      handlePlayerHeaderToggleCallback(Math.round(time))
     }
   }
   //Live

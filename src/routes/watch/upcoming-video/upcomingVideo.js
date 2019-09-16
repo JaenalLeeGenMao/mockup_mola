@@ -4,7 +4,7 @@ import Link from '@components/Link'
 import Lazyload from '@components/common/Lazyload/Lazyload'
 import history from '@source/history'
 import CountDown from './countDown'
-
+import { setMultilineEllipsis } from '@source/lib/globalUtil'
 import styles from './upcomingVideo.css'
 
 class UpcomingVideo extends Component {
@@ -15,6 +15,7 @@ class UpcomingVideo extends Component {
   }
 
   componentDidMount() {
+    setMultilineEllipsis('upc-video-text')
     var ads = document.querySelector('.theoplayer-ad-nonlinear-content img')
     if (ads) {
       this.setState({
@@ -78,7 +79,7 @@ class UpcomingVideo extends Component {
     const { data, isMobile = false } = this.props
     const { adsWidth, adsHeight, isFullscreenMobile } = this.state
     const playerWidth = adsWidth ? `${adsWidth}px` : '100%'
-    const containerBottom = isMobile && !isFullscreenMobile ? {} : { bottom: `calc(${adsHeight}px + 6rem)` }
+    const containerBottom = isMobile && !isFullscreenMobile ? {} : { bottom: '7rem' } //{ bottom: `calc(${adsHeight}px + 7rem)` }
     return (
       <div className={styles.player_container} style={{ width: playerWidth }}>
         <div className={styles.container} style={containerBottom}>
@@ -86,8 +87,10 @@ class UpcomingVideo extends Component {
             <Lazyload src={isMobile ? data.cover_landscape : data.cover_portrait} />
           </div>
           <div className={styles.content}>
-            <div className={styles.title}>{data.title}</div>
-            <div className={styles.desc}>{data.short_description}</div>
+            <div className={`${styles.title}`}>{data.title}</div>
+            <div className={styles.desc}>
+              <p className="upc-video-text">{data.short_description}</p>
+            </div>
             {!isMobile && (
               <div className={styles.link}>
                 <Link className={styles.play} to={`/watch?v=${data.video_id}&autoplay=1`}>

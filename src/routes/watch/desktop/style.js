@@ -230,3 +230,8 @@ export const videoPlayerWrapper = css`
   width: 100vw;
   background: #000;
 `
+
+export const videoInnerContainer = css`
+  width: 100%;
+  height: 100%;
+`

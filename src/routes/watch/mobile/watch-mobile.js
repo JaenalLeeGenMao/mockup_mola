@@ -36,6 +36,7 @@ import {
   playIcon,
   movieDetailNotAllowed,
   headerContainer,
+  videoInnerContainer,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -180,7 +181,7 @@ class MovieDetail extends Component {
 
   handlePlayerHeaderToggle = () => {
     const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    console.log(parentWrapper)
+    // console.log(parentWrapper)
     this.showPlayerHeader = parentWrapper.includes('vjs-user-inactive') ? false : true
     this.forceUpdate()
   }
@@ -271,7 +272,7 @@ class MovieDetail extends Component {
   }
 
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, isMatchPassed } = this.props
+    const { user, getMovieDetail, videoId, isMatchPassed, isAutoPlay } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -390,19 +391,22 @@ class MovieDetail extends Component {
       } else if (isMatchPassed) {
         return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
       } else if (!isRedirectToApp) {
+        const autoPlay = isAutoPlay ? true : false
         return (
           <>
             <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
-              poster={poster}
-              autoPlay={false}
+              poster={autoPlay ? null : poster}
+              autoPlay={autoPlay}
               handleOnReadyStateChange={this.handleOnReadyStateChange}
               {...videoSettings}
               isMobile
             >
-              {this.renderPlayerHeader(dataFetched)}
-              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              <div className={videoInnerContainer}>
+                {this.renderPlayerHeader(dataFetched)}
+                {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              </div>
             </Theoplayer>
             {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
           </>

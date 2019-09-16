@@ -36,6 +36,7 @@ import {
   infoBarContainer,
   infoBarText,
   infoBarClose,
+  videoInnerContainer,
   movieDetailNotAllowed,
 } from './style'
 
@@ -403,8 +404,10 @@ class WatchDesktop extends Component {
                   handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                   {...videoSettings}
                 >
-                  {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
-                  {this.renderPlayerHeader(dataFetched)}
+                  <div className={videoInnerContainer}>
+                    {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+                    {this.renderPlayerHeader(dataFetched)}
+                  </div>
                 </Theoplayer>
                 {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
               </>
