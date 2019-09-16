@@ -5,6 +5,7 @@ import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
+import queryString from 'query-string'
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
@@ -317,7 +318,8 @@ class Channels extends Component {
   handlePlayMovie = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    const source = 'redirect-from-browser'
+    let urlParams = queryString.parse(window.location.search)
+    const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = encodeURIComponent(`${domain}/download-app/${movieId}`)
     document.location = `intent://mola.tv/channels/${movieId}?utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
@@ -325,7 +327,8 @@ class Channels extends Component {
   handlePlayMovieApple = () => {
     const { movieId } = this.props
     const domain = config.endpoints.domain
-    const source = 'redirect-from-browser'
+    let urlParams = queryString.parse(window.location.search)
+    const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/channels/${movieId}?utm_source=${source}`
     setTimeout(function () {

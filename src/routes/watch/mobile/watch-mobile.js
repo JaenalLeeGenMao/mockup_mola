@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import _get from 'lodash/get'
 import { post } from 'axios'
 import _isUndefined from 'lodash/isUndefined'
+import queryString from 'query-string'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
@@ -184,7 +185,8 @@ class MovieDetail extends Component {
   handlePlayMovie = () => {
     const { videoId } = this.props
     const domain = config.endpoints.domain
-    const source = 'redirect-from-browser'
+    let urlParams = queryString.parse(window.location.search)
+    const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
     document.location = `intent://mola.tv/watch?v=${videoId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
@@ -192,7 +194,8 @@ class MovieDetail extends Component {
   handlePlayMovieApple = () => {
     const { videoId } = this.props
     const domain = config.endpoints.domain
-    const source = 'redirect-from-browser'
+    let urlParams = queryString.parse(window.location.search)
+    const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}`
     setTimeout(function() {
