@@ -29,6 +29,7 @@ class Reset extends React.Component {
       password: '',
       confirmPassword: '',
       token: '',
+      error: '',
     }
 
     this.onChangeInput = this.onChangeInput.bind(this)
@@ -43,13 +44,26 @@ class Reset extends React.Component {
   }
 
   handleResetPassword = async () => {
-    const { password } = this.state,
+    const { password, confirmPassword, locale } = this.state,
       { runtime: { csrf } } = this.props
 
     const result = await Auth.updateNewPassword({
       password,
       csrf,
     })
+
+    if (password == '' || !password) {
+      this.setState({
+        error: locale['error_input_password'],
+      })
+    }
+
+    if (password !== confirmPassword) {
+      this.setState({
+        error: locale['error_input'],
+      })
+    }
+
     if (result.meta.status === 'success') {
       window.location.href = `${config.endpoints.domain}/accounts/login`
     }
@@ -60,7 +74,7 @@ class Reset extends React.Component {
   }
 
   render() {
-    const { locale, password, confirmPassword } = this.state
+    const { locale, password, confirmPassword, error } = this.state
     return (
       <Fragment>
         <div className={s.wrapper}>
@@ -68,11 +82,29 @@ class Reset extends React.Component {
             <div className={s.container}>
               <p className={s.labelHeader}>Reset password</p>
               <p>{locale['subtitle']}</p>
+              <div>{error && <p className={s.error_input}>{error}</p>}</div>
               <div>
-                <Form className={s.formMobile} id="password" type="password" name="password" onChange={this.onChangeInput} value={password} autoFocus>
+                <Form
+                  className={s.formMobile}
+                  id="password"
+                  type="password"
+                  name="password"
+                  onChange={this.onChangeInput}
+                  value={password}
+                  isError={error !== ''}
+                  autoFocus
+                >
                   {locale['new_password']}
                 </Form>
-                <Form className={s.formMobile} id="confirmPassword" type="password" name="confirmPassword" onChange={this.onChangeInput} value={confirmPassword}>
+                <Form
+                  className={s.formMobile}
+                  id="confirmPassword"
+                  type="password"
+                  name="confirmPassword"
+                  onChange={this.onChangeInput}
+                  isError={error !== ''}
+                  value={confirmPassword}
+                >
                   {`${locale['confirm']} password`}
                 </Form>
                 <div className={s.formGroup}>

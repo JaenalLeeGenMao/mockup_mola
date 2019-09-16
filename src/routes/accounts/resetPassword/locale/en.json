@@ -2,5 +2,7 @@
   "new_password": "New Password",
   "send": "SEND",
   "confirm": "Confirm",
-  "subtitle": "Create new password!"
+  "subtitle": "Create new password!",
+  "error_input": "Please double check your input fields",
+  "error_input_password": "Password cannot be empty"
 }

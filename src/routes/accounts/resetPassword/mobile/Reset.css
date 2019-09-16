@@ -58,6 +58,12 @@ html {
   margin-top: -0.5rem;
 }
 
+.container .error_input {
+  color: red;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
 .formGroup {
   margin-top: 1.5rem;
 }
