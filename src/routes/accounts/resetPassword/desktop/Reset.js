@@ -21,7 +21,6 @@ import s from './Reset.css'
 import { setUserVariable } from '@actions/user'
 
 import { getLocale } from '../locale'
-import { orElse } from 'fp-ts/lib/Either'
 
 class Reset extends React.Component {
   constructor(props) {
@@ -62,7 +61,6 @@ class Reset extends React.Component {
       this.setState({
         error: '',
       })
-
       const result = await Auth.updateNewPassword({
         password,
         csrf,
