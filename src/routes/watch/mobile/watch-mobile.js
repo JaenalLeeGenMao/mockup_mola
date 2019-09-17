@@ -484,6 +484,7 @@ class MovieDetail extends Component {
             <div className={headerContainer}>
               <Header isMobile {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
+            {showOfflinePopup && <OfflineNoticePopup />}
             <div className={movieDetailContainer}>
               {toggleInfoBar &&
                 !isMatchPassed && (
@@ -511,7 +512,6 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {showOfflinePopup && <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
       </>
     )
   }

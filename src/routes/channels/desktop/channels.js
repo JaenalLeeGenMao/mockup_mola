@@ -406,11 +406,11 @@ class Channels extends Component {
         <div>
           <Header stickyOff searchOff isDark={0} activeMenu="channels" libraryOff {...this.props} />
         </div>
-        {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
         {channelsPlaylist.meta.status === 'loading' && <LoaderVideoBox />}
         {channelsPlaylist.meta.status === 'success' && (
           <div className={styles.channels_container} id="video-player-root">
             <div className={!toggleInfoBar ? styles.video_container : styles.video_container_with_infobar}>
+              {showOfflinePopup && <OfflineNoticePopup />}
               {!block &&
                 toggleInfoBar && (
                   <div className={styles.channel__infobar}>

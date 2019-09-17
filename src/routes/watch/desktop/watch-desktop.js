@@ -507,7 +507,7 @@ class WatchDesktop extends Component {
             <div className={headerContainer}>
               <Header {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
-            {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
+            {showOfflinePopup && <OfflineNoticePopup />}
             <div className={movieDetailContainer} id="videoContainer">
               <div className={videoPlayerWrapper} id="videoWrapper">
                 {toggleInfoBar &&
