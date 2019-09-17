@@ -21,6 +21,7 @@ import s from './Reset.css'
 import { setUserVariable } from '@actions/user'
 
 import { getLocale } from '../locale'
+import { orElse } from 'fp-ts/lib/Either'
 
 class Reset extends React.Component {
   constructor(props) {
@@ -48,25 +49,27 @@ class Reset extends React.Component {
     const { password, confirmPassword, locale } = this.state,
       { runtime: { csrf } } = this.props
 
-    const result = await Auth.updateNewPassword({
-      password,
-      csrf,
-    })
-
     if (password == '' || !password) {
       this.setState({
         error: locale['error_input_password'],
       })
     }
-
     if (password !== confirmPassword) {
       this.setState({
         error: locale['error_input'],
       })
-    }
+    } else {
+      this.setState({
+        error: '',
+      })
 
-    if (result.meta.status === 'success') {
-      window.location.href = `${config.endpoints.domain}/accounts/login`
+      const result = await Auth.updateNewPassword({
+        password,
+        csrf,
+      })
+      if (result.meta.status === 'success') {
+        window.location.href = `${config.endpoints.domain}/accounts/login`
+      }
     }
   }
 

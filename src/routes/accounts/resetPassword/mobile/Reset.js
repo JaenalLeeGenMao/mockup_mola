@@ -47,25 +47,26 @@ class Reset extends React.Component {
     const { password, confirmPassword, locale } = this.state,
       { runtime: { csrf } } = this.props
 
-    const result = await Auth.updateNewPassword({
-      password,
-      csrf,
-    })
-
     if (password == '' || !password) {
       this.setState({
         error: locale['error_input_password'],
       })
     }
-
     if (password !== confirmPassword) {
       this.setState({
         error: locale['error_input'],
       })
-    }
-
-    if (result.meta.status === 'success') {
-      window.location.href = `${config.endpoints.domain}/accounts/login`
+    } else {
+      this.setState({
+        error: '',
+      })
+      const result = await Auth.updateNewPassword({
+        password,
+        csrf,
+      })
+      if (result.meta.status === 'success') {
+        window.location.href = `${config.endpoints.domain}/accounts/login`
+      }
     }
   }
 
