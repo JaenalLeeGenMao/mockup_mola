@@ -259,6 +259,21 @@ class WatchDesktop extends Component {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
     }
+
+    if (this.props.movieDetail) {
+      const movieDetail = this.props.movieDetail
+      if (movieDetail.meta.status === 'success') {
+        if (window) {
+          const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+          const videoContainer = document.getElementById('videoContainer').clientHeight
+          const videoWrapper = document.getElementById('videoWrapper').clientHeight
+          document.querySelector('#detailBottom > div').style.height = isSafari
+            ? `${videoContainer - videoWrapper - 60}px`
+            : 'calc(26vh - 60px)'
+          window.addEventListener('resize', this.handleWindowSizeChange)
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -506,8 +521,8 @@ class WatchDesktop extends Component {
               <Header {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
             {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
-            <div className={movieDetailContainer}>
-              <div className={videoPlayerWrapper}>
+            <div className={movieDetailContainer} id="videoContainer">
+              <div className={videoPlayerWrapper} id="videoWrapper">
                 {toggleInfoBar &&
                   !isMatchPassed && (
                     <div className={infoBar}>
@@ -532,14 +547,13 @@ class WatchDesktop extends Component {
                   )}
                 </div>
               </div>
-              <div className={movieDetailBottom}>
+              <div className={movieDetailBottom} id="detailBottom">
                 <div>
                   {isMovieBool && (
                     <MovieContent dataFetched={dataFetched} fetchRecommendation={this.props.recommendation} />
                   )}
                   {!isMovieBool && <SportContent dataFetched={dataFetched} />}
                 </div>
-                {!isMovieBool && <SportContent dataFetched={dataFetched} />}
               </div>
             </div>
           </>
