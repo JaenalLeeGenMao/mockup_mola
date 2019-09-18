@@ -27,7 +27,6 @@ import PlatformCheckMobile from '@components/PlatformCheckMobile'
 import LazyLoad from '@components/common/Lazyload'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 
-import PlayerHeader from './player-header'
 import Placeholder from './placeholder'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
@@ -356,19 +355,6 @@ class Channels extends Component {
     })
   }
 
-  handlePlayerHeaderToggle = () => {
-    const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-
-    this.showPlayerHeader = parentWrapper.includes('vjs-user-inactive') ? false : true
-    this.forceUpdate()
-  }
-
-  renderPlayerHeader = dataFetched => {
-    if (dataFetched) {
-      return <PlayerHeader data={dataFetched} show={this.showPlayerHeader} />
-    }
-  }
-
   render() {
     const {
       scheduleList,
@@ -394,13 +380,7 @@ class Channels extends Component {
 
     const defaultVidSetting =
       status === 'success'
-        ? defaultVideoSetting(
-            user,
-            dataFetched,
-            vuidStatus === 'success' ? vuid : '',
-            null,
-            this.handlePlayerHeaderToggle
-          )
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, null)
         : {}
 
     const videoSettings = {
@@ -447,12 +427,7 @@ class Channels extends Component {
                 </div>
               </div>
 
-              <div
-                className={styles.video_container}
-                id="video-player-root"
-                onMouseMoveCapture={event => (this.showPlayerHeader = true)}
-                onTouchStartCapture={event => (this.showPlayerHeader = true)}
-              >
+              <div className={styles.video_container} id="video-player-root">
                 {!block && loadPlayer ? (
                   <RedirectToApps
                     poster={poster}
@@ -465,9 +440,7 @@ class Channels extends Component {
                     videoSettings={videoSettings}
                     customTheoplayer={customTheoplayer}
                     handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                  >
-                    {this.renderPlayerHeader(dataFetched)}
-                  </RedirectToApps>
+                  />
                 ) : (
                     block && (
                       <PlatformCheckMobile

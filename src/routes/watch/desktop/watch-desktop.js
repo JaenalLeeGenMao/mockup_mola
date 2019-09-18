@@ -63,6 +63,7 @@ class WatchDesktop extends Component {
     nextVideoBlocker: false,
     nextVideoClose: false,
     playerError: false,
+    showPlayerHeader: false,
   }
 
   handleOnReadyStateChange = player => {
@@ -294,8 +295,9 @@ class WatchDesktop extends Component {
   handlePlayerHeaderToggle = () => {
     const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
 
-    this.showPlayerHeader = parentWrapper.includes('vjs-user-inactive') ? false : true
-    this.forceUpdate()
+    this.setState({
+      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+    })
   }
 
   renderVideo = dataFetched => {
@@ -464,8 +466,9 @@ class WatchDesktop extends Component {
   }
 
   renderPlayerHeader = dataFetched => {
+    const { showPlayerHeader } = this.state
     if (dataFetched) {
-      return <PlayerHeader data={dataFetched} show={this.showPlayerHeader} />
+      return <PlayerHeader data={dataFetched} show={showPlayerHeader} />
     }
   }
 
@@ -537,8 +540,16 @@ class WatchDesktop extends Component {
                 <div
                   className={playerClass}
                   id="video-player-root"
-                  onMouseMoveCapture={event => (this.showPlayerHeader = true)}
-                  onTouchStartCapture={event => (this.showPlayerHeader = true)}
+                  onMouseMoveCapture={event => {
+                    if (!showPlayerHeader) {
+                      this.setState({ showPlayerHeader: true })
+                    }
+                  }}
+                  onTouchStartCapture={event => {
+                    if (!showPlayerHeader) {
+                      this.setState({ showPlayerHeader: true })
+                    }
+                  }}
                 >
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>

@@ -24,7 +24,6 @@ import VerticalCalendar from '@components/VerticalCalendar'
 import PlatformDesktop from '@components/PlatformCheck'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 
-import PlayerHeader from './player-header'
 import Placeholder from './placeholder'
 import LoaderVideoBox from './loaderVideoBox'
 import ScheduleCard from './scheduleCard'
@@ -358,20 +357,6 @@ class Channels extends Component {
     })
   }
 
-  handlePlayerHeaderToggle = () => {
-    const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    console.log(parentWrapper)
-    this.showPlayerHeader = parentWrapper.includes('vjs-user-inactive') ? false : true
-    console.log(this.showPlayerHeader)
-    this.forceUpdate()
-  }
-
-  renderPlayerHeader = dataFetched => {
-    if (dataFetched) {
-      return <PlayerHeader data={dataFetched} show={this.showPlayerHeader} />
-    }
-  }
-
   render() {
     const { programmeGuides, channelSchedule, channelsPlaylist, movieId } = this.props
     const {
@@ -399,13 +384,7 @@ class Channels extends Component {
 
     const defaultVidSetting =
       status === 'success'
-        ? defaultVideoSetting(
-            user,
-            dataFetched,
-            vuidStatus === 'success' ? vuid : '',
-            null,
-            this.handlePlayerHeaderToggle
-          )
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, null)
         : {}
 
     const videoSettings = {
@@ -430,12 +409,7 @@ class Channels extends Component {
         {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
         {channelsPlaylist.meta.status === 'loading' && <LoaderVideoBox />}
         {channelsPlaylist.meta.status === 'success' && (
-          <div
-            className={styles.channels_container}
-            id="video-player-root"
-            onMouseMoveCapture={event => (this.showPlayerHeader = true)}
-            onTouchStartCapture={event => (this.showPlayerHeader = true)}
-          >
+          <div className={styles.channels_container} id="video-player-root">
             <div className={!toggleInfoBar ? styles.video_container : styles.video_container_with_infobar}>
               {!block &&
                 toggleInfoBar && (
@@ -458,9 +432,7 @@ class Channels extends Component {
                     handleOnReadyStateChange={this.handleOnReadyStateChange}
                     // poster={poster}
                     {...videoSettings}
-                  >
-                    {this.renderPlayerHeader(dataFetched)}
-                  </Theoplayer>
+                  />
                 )}
               {block &&
                 loadPlayer && (
