@@ -89,6 +89,7 @@ class WatchDesktop extends Component {
     }
 
     this.player = player
+    this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
 
     if (player && player.buffered.length > 0) {
       this.detectorConnection(player)
@@ -292,12 +293,20 @@ class WatchDesktop extends Component {
     }
   }
 
-  handlePlayerHeaderToggle = () => {
+  handlePlayerHeaderToggle = duration => {
     const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-
-    this.setState({
-      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-    })
+    if (this.trackedDuration) {
+      if (duration % 60 === 0) {
+        if (!this.trackedDuration.includes(duration)) {
+          this.trackedDuration.push(duration)
+          this.setState({
+            showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+          })
+        }
+      }
+    } else {
+      this.trackedDuration = []
+    }
   }
 
   renderVideo = dataFetched => {
@@ -485,7 +494,7 @@ class WatchDesktop extends Component {
   }
 
   render() {
-    const { isControllerActive, loc, showOfflinePopup } = this.state
+    const { isControllerActive, loc, showOfflinePopup, showPlayerHeader } = this.state
     const { meta: { status: videoStatus }, data } = this.props.movieDetail
     const { user, videoId } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid

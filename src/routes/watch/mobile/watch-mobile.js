@@ -180,12 +180,20 @@ class MovieDetail extends Component {
     }
   }
 
-  handlePlayerHeaderToggle = () => {
+  handlePlayerHeaderToggle = duration => {
     const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    // console.log(parentWrapper)
-    this.setState({
-      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-    })
+    if (this.trackedDuration) {
+      if (duration % 60 === 0) {
+        if (!this.trackedDuration.includes(duration)) {
+          this.trackedDuration.push(duration)
+          this.setState({
+            showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+          })
+        }
+      }
+    } else {
+      this.trackedDuration = []
+    }
   }
 
   handlePlayMovie = () => {
@@ -211,6 +219,7 @@ class MovieDetail extends Component {
 
   handleOnReadyStateChange = player => {
     this.player = player
+    this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
 
     if (player && player.buffered.length > 0) {
       this.detectorConnection(player)
