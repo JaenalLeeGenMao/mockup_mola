@@ -12,6 +12,9 @@ stages:
     - docker info
     - ./.gitlab/auth_gcloud.sh
     - ./.gitlab/push_docker.sh
+  except:
+    changes:
+      - "*.md"
 
 push_docker_staging:
   stage: push_docker
