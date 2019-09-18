@@ -8,7 +8,7 @@ import Moment from 'moment'
 
 let ticker = [],
   tickerLive = [],
-  tickerNextVideo = []
+  tickerPerSec = []
 var videoData, userData
 let timeLive = -1
 
@@ -44,17 +44,6 @@ const handleTimeUpdate = (payload, player) => {
     video_quality = '',
     client_bandwidth = ''
 
-  const duration = player.duration
-  if (handleNextVideoCallback || handlePlayerHeaderToggleCallback) {
-    // console.log("duration", duration)
-    if (!player.ads.playing && time >= duration - 11 && !tickerNextVideo.includes(time)) {
-      // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
-      tickerNextVideo.push(time)
-      handleNextVideoCallback(true)
-    } else if (!player.ads.playing && Math.round(time) % 5 === 0) {
-      handlePlayerHeaderToggleCallback(Math.round(time))
-    }
-  }
   //Live
   if (getContentTypeName(videoData.contentType) == 'linear' || getContentTypeName(videoData.contentType) == 'live') {
     if (!player.ads.playing) {
@@ -96,29 +85,46 @@ const handleTimeUpdate = (payload, player) => {
       }
     }
   } else {
-    if (time % 60 === 0 && !player.ads.playing) {
-      var calcTime = time
-      var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
-        currentTrack
-      for (var i = 0; i < vTracks.length; i++) {
-        currentTrack = vTracks.item(i)
-        if (currentTrack.enabled && currentTrack.activeQuality) {
-          // console.log("Resolution:", currentTrack.activeQuality.height)
-          // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
-          video_quality = `${currentTrack.activeQuality.height}`
-          bitrate = `${currentTrack.activeQuality.bandwidth}`
-          try {
-            client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-          } catch (err) {}
-          //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+    const duration = player.duration
+    if (!tickerPerSec.includes(time)) {
+      tickerPerSec.push(time)
+      if (handleNextVideoCallback) {
+        if (!player.ads.playing && time >= duration - 11) {
+          // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
+          handleNextVideoCallback(true)
         }
       }
-      if (!ticker.includes(calcTime)) {
-        ticker.push(calcTime)
+      if (handlePlayerHeaderToggleCallback) {
+        if (!player.ads.playing && time % 5 === 0) {
+          // console.log("header toggle:", time)
+          handlePlayerHeaderToggleCallback(time)
+        }
+      }
 
+      if (time % 60 === 0 && !player.ads.playing) {
+        // var calcTime = time
+        var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
+          currentTrack
+        for (var i = 0; i < vTracks.length; i++) {
+          currentTrack = vTracks.item(i)
+          if (currentTrack.enabled && currentTrack.activeQuality) {
+            // console.log("Resolution:", currentTrack.activeQuality.height)
+            // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
+            video_quality = `${currentTrack.activeQuality.height}`
+            bitrate = `${currentTrack.activeQuality.bandwidth}`
+            try {
+              client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+            } catch (err) {}
+            //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+          }
+        }
+        // if (!ticker.includes(calcTime)) {
+        // ticker.push(calcTime)
+        // console.log("calcTime", calcTime)
         Tracker.sessionId()
-        const heartbeat = calcTime !== 0
+        const heartbeat = time !== 0
         handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
+        // }
       }
     }
   }
@@ -155,7 +161,7 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, handle
   userData = user
   ticker = []
   tickerLive = []
-  tickerNextVideo = []
+  tickerPerSec = []
   timeLive = -1
 
   handleNextVideoCallback = handleNextVideo

@@ -255,7 +255,6 @@ class WatchDesktop extends Component {
     } = this.props
 
     this.getLoc()
-    // this.getConfig()
 
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
@@ -294,19 +293,25 @@ class WatchDesktop extends Component {
   }
 
   handlePlayerHeaderToggle = duration => {
+    // console.log("duration", duration)
     const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    if (this.trackedDuration) {
-      if (duration % 60 === 0) {
-        if (!this.trackedDuration.includes(duration)) {
-          this.trackedDuration.push(duration)
-          this.setState({
-            showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-          })
-        }
-      }
-    } else {
-      this.trackedDuration = []
-    }
+    this.setState({
+      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+    })
+    // if (this.trackedDuration) {
+    //   if (duration % 60 === 0) {
+    //     if (!this.trackedDuration.includes(duration)) {
+    //       this.trackedDuration.push(duration)
+    //       console.log("this.trackedDuration.includes(duration)", this.trackedDuration.includes(duration))
+    //       console.log("masuk sini?", duration, ' : ', this.trackedDuration)
+    //       // this.setState({
+    //       //   showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+    //       // })
+    //     }
+    //   }
+    // } else {
+    //   this.trackedDuration = []
+    // }
   }
 
   renderVideo = dataFetched => {
