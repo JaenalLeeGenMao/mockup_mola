@@ -86,18 +86,21 @@ const handleTimeUpdate = (payload, player) => {
     }
   } else {
     const duration = player.duration
+
     if (!tickerPerSec.includes(time)) {
+      // console.log("time", time, tickerPerSec)
       tickerPerSec.push(time)
       if (handleNextVideoCallback) {
         if (!player.ads.playing && time >= duration - 11) {
           // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
           handleNextVideoCallback(true)
+          tickerPerSec.push(time)
         }
       }
       if (handlePlayerHeaderToggleCallback) {
         if (!player.ads.playing && time % 5 === 0) {
-          // console.log("header toggle:", time)
           handlePlayerHeaderToggleCallback(time)
+          tickerPerSec.push(time)
         }
       }
 
@@ -120,7 +123,7 @@ const handleTimeUpdate = (payload, player) => {
         }
         // if (!ticker.includes(calcTime)) {
         // ticker.push(calcTime)
-        // console.log("calcTime", calcTime)
+        // console.log("calcTime", time)
         Tracker.sessionId()
         const heartbeat = time !== 0
         handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })

@@ -431,7 +431,7 @@ class WatchDesktop extends Component {
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
           if (!this.state.playerError) {
-            const autoPlay = isAutoPlay ? true : false
+            const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
             return (
               <>
                 <Theoplayer
@@ -448,7 +448,7 @@ class WatchDesktop extends Component {
                     {this.renderPlayerHeader(dataFetched)}
                   </div>
                 </Theoplayer>
-                {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+                {dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
               </>
             )
           }

@@ -182,18 +182,21 @@ class MovieDetail extends Component {
 
   handlePlayerHeaderToggle = duration => {
     const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    if (this.trackedDuration) {
-      if (duration % 60 === 0) {
-        if (!this.trackedDuration.includes(duration)) {
-          this.trackedDuration.push(duration)
-          this.setState({
-            showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-          })
-        }
-      }
-    } else {
-      this.trackedDuration = []
-    }
+    this.setState({
+      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+    })
+    // if (this.trackedDuration) {
+    //   if (duration % 60 === 0) {
+    //     if (!this.trackedDuration.includes(duration)) {
+    //       this.trackedDuration.push(duration)
+    //       this.setState({
+    //         showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
+    //       })
+    //     }
+    //   }
+    // } else {
+    //   this.trackedDuration = []
+    // }
   }
 
   handlePlayMovie = () => {
