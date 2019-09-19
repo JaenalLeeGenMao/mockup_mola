@@ -379,7 +379,7 @@ class MovieDetail extends Component {
       } else if (isMatchPassed) {
         return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
       } else if (!isRedirectToApp) {
-        const autoPlay = isAutoPlay ? true : false
+        const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
         return (
           <>
             <Theoplayer

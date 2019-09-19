@@ -419,7 +419,7 @@ class WatchDesktop extends Component {
                     {this.renderPlayerHeader(dataFetched)}
                   </div>
                 </Theoplayer>
-                {dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+                {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
               </>
             )
           }
