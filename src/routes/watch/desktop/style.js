@@ -51,9 +51,12 @@ export const movieDetailContainer = css`
 
 export const movieDetailBottom = css`
   height: 100%;
-  overflow: auto;
-  max-height: calc(100% - 5.5rem);
+  max-height: 100%;
   margin-top: 1.5rem;
+
+  & > div {
+    overflow: auto;
+  }
 `
 
 export const movieDetailNotAvailableContainer = css`
@@ -88,6 +91,7 @@ export const controllerContainer = css`
   text-align: center;
   bottom: 0;
   width: 100%;
+  background-color: #000000;
 
   div {
     display: inline-block;
@@ -229,4 +233,9 @@ export const headerContainer = css`
 export const videoPlayerWrapper = css`
   width: 100vw;
   background: #000;
+`
+
+export const videoInnerContainer = css`
+  width: 100%;
+  height: 100%;
 `

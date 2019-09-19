@@ -2,7 +2,6 @@ import { css } from 'react-emotion'
 
 export const contentOverviewContainer = css`
   display: flex;
-  min-height: 20vh;
 `
 
 export const contentOverviewSectionLeft = css`

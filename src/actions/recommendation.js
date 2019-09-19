@@ -4,7 +4,7 @@ import types from '../constants'
 
 const getRecommendation = (id = 'cSz5OZmGKS') => dispatch => {
   dispatch({
-    type: types.GET_RECOMMENDATION_PLAYLIST_LOADING,
+    type: types.GET_RECOMMENDATION_LOADING,
     payload: {
       meta: {
         status: 'loading',
@@ -16,12 +16,12 @@ const getRecommendation = (id = 'cSz5OZmGKS') => dispatch => {
   return Mola.getRecommendation(id).then(result => {
     if (result.meta.status === 'error') {
       dispatch({
-        type: types.GET_RECOMMENDATION_PLAYLIST_ERROR,
+        type: types.GET_RECOMMENDATION_ERROR,
         payload: result,
       })
     } else {
       dispatch({
-        type: types.GET_RECOMMENDATION_PLAYLIST_SUCCESS,
+        type: types.GET_RECOMMENDATION_SUCCESS,
         payload: result,
       })
     }

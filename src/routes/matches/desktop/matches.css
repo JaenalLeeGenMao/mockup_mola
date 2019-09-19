@@ -526,6 +526,7 @@ body {
 @media screen and (min-width: 1500px) {
   .matches_grid {
     grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-column-gap: 7rem;
   }
 
   .matches_grid > span:first-child {

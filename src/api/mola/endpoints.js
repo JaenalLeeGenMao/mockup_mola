@@ -19,7 +19,8 @@ export const CAMPAIGN_ENDPOINT = `${endpoints.api}/campaigns/banner-positions`
 export const ADD_DEVICE_ENDPOINT = `${endpoints.api}/videos/drm/add-device`
 export const CHANNELS_PLAYLIST_ENDPOINT = `${endpoints.api}/videos/cache/playlists`
 export const PROGRAMME_GUIDES = `${endpoints.api}/videos/cache/program-guides`
-export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
+// export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
+export const RECOMMENDATION = `${endpoints.analytic}/v1/analytics/prophet/recommend-video`
 export const HEADERMENU = 'http://mola01.koicdn.com/dev/json'
 
 export const ARTICLES_ENDPOINT = `${endpoints.api}/articles/articles`

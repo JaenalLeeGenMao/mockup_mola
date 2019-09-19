@@ -107,7 +107,15 @@ class Forgot extends React.Component {
                   <p>{locale['forget_password_subtitle']}:</p>
                   <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                   <div>
-                    <Form className={s.formMobile} id="email" type="text" name="email" onChange={this.onChangeInput} value={email} autoFocus>
+                    <Form
+                      className={s.formMobile}
+                      id="email"
+                      type="text"
+                      name="email"
+                      onChange={this.onChangeInput}
+                      value={email}
+                      autoFocus
+                    >
                       Email
                     </Form>
                     <div className={s.formGroup}>
@@ -120,8 +128,16 @@ class Forgot extends React.Component {
                 <div className={s.containerBack}>
                   <p className={s.labelHeader}>{locale['verify_account']} !</p>
                   <p>{locale['verify_account_label']}</p>
+                  <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                   <div className={`${s.formGroup} ${s.form__otp}`} style={{ marginTop: '15px', marginBottom: '20px' }}>
-                    <Form id="token" type="text" name="token" onChange={this.onChangeInput} value={token} className={s.form__otp__input}>
+                    <Form
+                      id="token"
+                      type="text"
+                      name="token"
+                      onChange={this.onChangeInput}
+                      value={token}
+                      className={s.form__otp__input}
+                    >
                       {locale['enter_otp']}
                     </Form>
                     <button className={s.verify__button} onClick={this.handleVerificationToken}>

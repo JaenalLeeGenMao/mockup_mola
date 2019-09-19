@@ -5,11 +5,11 @@ import styles from './primaryMenu.css'
 
 class PrimaryMenu extends Component {
   render() {
-    const { channelsPlaylist, handleSelectChannel, activeChannelId } = this.props
+    const { channelsPlaylist = [], handleSelectChannel, activeChannelId } = this.props
     return (
       <>
         <div className={styles.epg__logo__container}>
-          {channelsPlaylist.data.map(item => (
+          {channelsPlaylist.map(item => (
             <div
               key={item.id}
               className={

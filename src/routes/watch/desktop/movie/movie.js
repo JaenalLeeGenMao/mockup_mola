@@ -2,7 +2,12 @@ import React, { Component } from 'react'
 // import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import { getContentTypeName } from '@source/lib/globalUtil'
-import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
+import {
+  Overview as ContentOverview,
+  Review as ContentReview,
+  Trailer as ContentTrailer,
+  Suggestions as ContentSuggestions,
+} from './content'
 import { controllerContainer } from '../style'
 const Controller = ({ isActive = 'overview', onClick, hiddenController }) => {
   const controllerList = ['overview', 'trailers', 'review', 'suggestions']
@@ -32,7 +37,7 @@ class MovieContent extends Component {
   }
 
   render() {
-    const { dataFetched } = this.props
+    const { dataFetched, fetchRecommendation } = this.props
     const { isControllerActive } = this.state
     const isMovie = dataFetched && getContentTypeName(dataFetched.contentType) === 'movie' ? true : false
 
@@ -44,8 +49,9 @@ class MovieContent extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
-
-    hiddenController.push('suggestions')
+    if (fetchRecommendation && fetchRecommendation.data.length === 0) {
+      hiddenController.push('suggestions')
+    }
     return (
       <>
         {!isMovie && <ContentOverview data={dataFetched} />}
@@ -54,8 +60,12 @@ class MovieContent extends Component {
             {isControllerActive === 'overview' && <ContentOverview data={dataFetched} />}
             {isControllerActive === 'trailers' && <ContentTrailer data={dataFetched.trailers} />}
             {isControllerActive === 'review' && <ContentReview data={dataFetched} />}
-            {/* {isControllerActive === 'suggestions' && <ContentSuggestions videos={this.props.recommendation.data} />} */}
-            <Controller isActive={isControllerActive} onClick={this.handleControllerClick} hiddenController={hiddenController} />
+            {isControllerActive === 'suggestions' && <ContentSuggestions videos={fetchRecommendation.data} />}
+            <Controller
+              isActive={isControllerActive}
+              onClick={this.handleControllerClick}
+              hiddenController={hiddenController}
+            />
           </>
         )}
       </>

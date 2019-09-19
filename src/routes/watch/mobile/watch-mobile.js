@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import _get from 'lodash/get'
 import { post } from 'axios'
 import _isUndefined from 'lodash/isUndefined'
+import queryString from 'query-string'
 
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
@@ -16,7 +17,9 @@ import AgeRestrictionModal from '@components/AgeRestriction'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
+import PlayerHeader from '../player-header'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
+import UpcomingVideo from '../upcoming-video'
 
 import {
   movieDetailContainer,
@@ -33,6 +36,7 @@ import {
   playIcon,
   movieDetailNotAllowed,
   headerContainer,
+  videoInnerContainer,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -58,6 +62,8 @@ class MovieDetail extends Component {
       : 'Siaran Percobaan',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
+    nextVideoBlocker: false,
+    nextVideoClose: false,
   }
 
   handleOnVideoVolumeChange = player => {
@@ -155,7 +161,7 @@ class MovieDetail extends Component {
   // }
 
   componentDidMount() {
-    // const { fetchRecommendation } = this.props
+    const { fetchRecommendation } = this.props
 
     this.getLoc()
     // this.getConfig()
@@ -176,7 +182,8 @@ class MovieDetail extends Component {
   handlePlayMovie = () => {
     const { videoId } = this.props
     const domain = config.endpoints.domain
-    const source = 'redirect-from-browser'
+    let urlParams = queryString.parse(window.location.search)
+    const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
     document.location = `intent://mola.tv/watch?v=${videoId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
@@ -184,7 +191,8 @@ class MovieDetail extends Component {
   handlePlayMovieApple = () => {
     const { videoId } = this.props
     const domain = config.endpoints.domain
-    const source = 'redirect-from-browser'
+    let urlParams = queryString.parse(window.location.search)
+    const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}`
     setTimeout(function() {
@@ -194,6 +202,7 @@ class MovieDetail extends Component {
 
   handleOnReadyStateChange = player => {
     this.player = player
+    this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
 
     if (player && player.buffered.length > 0) {
       this.detectorConnection(player)
@@ -248,8 +257,16 @@ class MovieDetail extends Component {
     }
   }
 
+  handleNextVideo = (isShow = false) => {
+    if (isShow) {
+      this.setState({
+        nextVideoBlocker: true,
+      })
+    }
+  }
+
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId } = this.props
+    const { user, getMovieDetail, videoId, isMatchPassed, isAutoPlay } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -268,8 +285,17 @@ class MovieDetail extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
+      let handleNextVideo = null
+      if (
+        !nextVideoClose &&
+        getContentTypeName(dataFetched.contentType) !== 'live' &&
+        getContentTypeName(dataFetched.contentType) !== 'trailers'
+      ) {
+        handleNextVideo = this.handleNextVideo
+      }
+
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
         : {}
 
       const checkAdsSettings =
@@ -286,12 +312,13 @@ class MovieDetail extends Component {
 
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-      const { toggleInfoBar, ios_redirect_to_app, android_redirect_to_app } = this.state
-      let isMatchPassed = false
-      if (dataFetched.endTime < Date.now() / 1000) {
-        isMatchPassed = true
-      }
-
+      const {
+        toggleInfoBar,
+        ios_redirect_to_app,
+        android_redirect_to_app,
+        nextVideoBlocker,
+        nextVideoClose,
+      } = this.state
       let isRedirectToApp = false
       if (isApple) {
         //ios
@@ -349,22 +376,51 @@ class MovieDetail extends Component {
             isMobile={true}
           />
         )
+      } else if (isMatchPassed) {
+        return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
       } else if (!isRedirectToApp) {
+        const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
         return (
           <>
             <Theoplayer
               className={customTheoplayer}
               subtitles={this.subtitles()}
-              poster={poster}
-              autoPlay={false}
+              poster={autoPlay ? null : poster}
+              autoPlay={autoPlay}
               handleOnReadyStateChange={this.handleOnReadyStateChange}
               {...videoSettings}
               isMobile
-            />
+            >
+              <div className={videoInnerContainer}>
+                {this.renderPlayerHeader(dataFetched)}
+                {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              </div>
+            </Theoplayer>
             {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
           </>
         )
       }
+    }
+  }
+
+  handleCancelUpcVideo = e => {
+    this.setState({
+      nextVideoBlocker: false,
+      nextVideoClose: true,
+    })
+  }
+
+  renderNextVideo = () => {
+    const { recommendation: { data: recomData } } = this.props
+    let nextVideo = null
+    if (recomData && recomData.length > 0) {
+      if (recomData[0].video_id !== this.props.videoId) {
+        nextVideo = recomData[0]
+      } else if (recomData.length > 1) nextVideo = recomData[1]
+    }
+
+    if (nextVideo) {
+      return <UpcomingVideo data={nextVideo} isMobile={true} handleCancelVideo={this.handleCancelUpcVideo} />
     }
   }
 
@@ -378,6 +434,12 @@ class MovieDetail extends Component {
     this.setState({
       toggleInfoBar: false,
     })
+  }
+
+  renderPlayerHeader = dataFetched => {
+    if (dataFetched) {
+      return <PlayerHeader data={dataFetched} />
+    }
   }
 
   render() {
@@ -434,7 +496,7 @@ class MovieDetail extends Component {
                     </div>
                   </div>
                 )}
-              <div className={videoPlayerContainer}>
+              <div className={videoPlayerContainer} id="video-player-root">
                 {loadPlayer ? (
                   <>{this.renderVideo(dataFetched)}</>
                 ) : (
@@ -442,7 +504,9 @@ class MovieDetail extends Component {
                 )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
-              {isMovieBool && <MovieContent dataFetched={dataFetched} />}
+              {isMovieBool && (
+                <MovieContent dataFetched={dataFetched} fetchRecommendation={this.props.recommendation} />
+              )}
               {!isMovieBool && <SportContent dataFetched={dataFetched} />}
             </div>
           </>

@@ -114,7 +114,16 @@ class Forgot extends React.Component {
                   <p>{locale['forget_password_subtitle']}:</p>
                   <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
                   <div>
-                    <TextInput id="email" type="text" name="email" placeholder="Email" onChange={this.onChangeInput} onKeyUp={this.handleKeyUp} value={email} autoFocus>
+                    <TextInput
+                      id="email"
+                      type="text"
+                      name="email"
+                      placeholder="Email"
+                      onChange={this.onChangeInput}
+                      onKeyUp={this.handleKeyUp}
+                      value={email}
+                      autoFocus
+                    >
                       Email
                     </TextInput>
                     <div className={s.formGroup}>
@@ -127,7 +136,11 @@ class Forgot extends React.Component {
                 <div className={s.containerBack}>
                   <p className={s.labelHeader}>{locale['verify_account']} !</p>
                   <p>{locale['verify_account_label']}</p>
-                  <div className={`${s.formGroup} ${s.form__otp}`} style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+                  <div>{isError && <p className={s.errorMsg}>{errMsg}</p>}</div>
+                  <div
+                    className={`${s.formGroup} ${s.form__otp}`}
+                    style={{ marginTop: '1.5rem', marginBottom: '2rem' }}
+                  >
                     <div className={s.verify__otp_input}>
                       <TextInput id="token" type="text" name="token" onChange={this.onChangeInput} value={token}>
                         {locale['enter_otp']}

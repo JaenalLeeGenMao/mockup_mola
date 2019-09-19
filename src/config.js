@@ -41,13 +41,14 @@ const options = {
     port: 3000,
     endpoints: {
       clientUrl: '',
-      serverUrl: 'https://beta.stag.mola.tv',
-      api: 'https://beta.stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
-      apiArticles: 'https://beta.stag.mola.tv/api/v2/articles',
-      auth: 'https://beta.stag.mola.tv/accounts/_',
-      domain: 'https://beta.stag.mola.tv',
+      serverUrl: 'https://stag.mola.tv',
+      api: 'https://stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://stag.mola.tv/api/v2',
+      apiArticles: 'https://stag.mola.tv/api/v2/articles',
+      auth: 'https://stag.mola.tv/accounts/_',
+      domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
       ads: 'https://api.stag.supersoccer.tv',
+      analytic: 'https://api.stag.supersoccer.tv',
       asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
       setting: {
         timeout: 10000,
@@ -66,6 +67,7 @@ const options = {
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
       ads: 'https://api-beta.sent.tv',
+      analytic: 'https://api.sent.tv',
       asset: 'https://mola01.koicdn.com/assets-global',
       setting: {
         timeout: 10000,

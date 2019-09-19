@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { getVUID } from '@actions/vuid'
 import * as movieDetailActions from '@actions/movie-detail'
+import { getContentTypeName } from '@source/lib/globalUtil'
+import recommendationActions from '@actions/recommendation'
 // import styles from './watch.css'
 
 import DRMConfig from '@source/lib/DRMConfig'
@@ -17,6 +19,7 @@ import iconRed from './assets/merah.png'
 import iconGreen from './assets/hijau.png'
 import Placeholder from './desktop/placeholder'
 import PlaceholderMobile from './mobile/placeholder'
+import Mola from '../../api/mola'
 
 class Watch extends Component {
   state = {
@@ -27,23 +30,30 @@ class Watch extends Component {
     iconGreen,
     status: [],
     isHeader: false,
+    isMatchPassed: false,
   }
 
   componentDidMount() {
-    const { getMovieDetail, videoId, getVUID, user } = this.props
-
+    const { getMovieDetail, getRecommendation, videoId, getVUID, user } = this.props
+    this.intervalCheckMatch = setInterval(() => {
+      this.checkMatches()
+    }, 50000) // check match endtime every 5 minutes
     getMovieDetail(videoId)
+    getRecommendation(videoId)
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
   }
 
   componentDidUpdate(prevProps) {
-    const { getMovieDetail, movieDetail, videoId } = this.props
+    const { getMovieDetail, movieDetail, videoId, recommendation, getRecommendation } = this.props
     const { status } = this.state
-
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
       // this.getLoc()
       getMovieDetail(videoId)
+    }
+
+    if (recommendation.meta.status === 'success' && recommendation.data[0].video_id == videoId) {
+      getRecommendation(videoId)
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
@@ -92,6 +102,23 @@ class Watch extends Component {
     this.updateMetaTag()
   }
 
+  checkMatches() {
+    Mola.getMovieDetail({ id: this.props.videoId }).then(async result => {
+      const data = result.data[0]
+      const endTime = data.endTime
+      if (getContentTypeName(data.contentType) !== 'live') {
+        clearInterval(this.intervalCheckMatch)
+      } else {
+        if (endTime && endTime < Date.now() / 1000) {
+          this.setState({
+            isMatchPassed: true,
+          })
+          clearInterval(this.intervalCheckMatch)
+        }
+      }
+    })
+  }
+
   updateMetaTag() {
     const { movieDetail } = this.props
     if (movieDetail.data.length > 0) {
@@ -128,10 +155,13 @@ class Watch extends Component {
       'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
     )
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
+    if (this.intervalCheckMatch) {
+      clearInterval(this.intervalCheckMatch)
+    }
   }
 
   render() {
-    const { isMobile, vuid, videoId, getMovieDetail } = this.props
+    const { isMobile, vuid, videoId, getMovieDetail, isAutoPlay, recommendation } = this.props
     const { block, isHeader } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
@@ -169,13 +199,16 @@ class Watch extends Component {
                 videoId={videoId}
                 movieDetail={this.props.movieDetail}
                 getMovieDetail={getMovieDetail}
+                recommendation={recommendation}
                 vuid={vuid}
                 iconStatus={this.state.iconStatus}
                 status={this.state.status}
                 icon={this.state.imageUrl}
                 name={this.state.name}
                 title={apiFetched ? dataFetched.title : ''}
+                isAutoPlay={isAutoPlay}
                 portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                isMatchPassed={this.state.isMatchPassed}
               />
             </>
           )}
@@ -192,6 +225,8 @@ class Watch extends Component {
                   movieDetail={this.props.movieDetail}
                   getMovieDetail={getMovieDetail}
                   vuid={vuid}
+                  isAutoPlay={isAutoPlay}
+                  isMatchPassed={this.state.isMatchPassed}
                 />
               )}
               {!isMobile && (
@@ -200,7 +235,10 @@ class Watch extends Component {
                   videoId={videoId}
                   movieDetail={this.props.movieDetail}
                   getMovieDetail={getMovieDetail}
+                  recommendation={recommendation}
                   vuid={vuid}
+                  isAutoPlay={isAutoPlay}
+                  isMatchPassed={this.state.isMatchPassed}
                 />
               )}
             </>
@@ -219,6 +257,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getMovieDetail: videoId => dispatch(movieDetailActions.getMovieDetail(videoId)),
+  getRecommendation: videoId => dispatch(recommendationActions.getRecommendation(videoId)),
   getVUID: deviceId => dispatch(getVUID(deviceId)),
 })
 

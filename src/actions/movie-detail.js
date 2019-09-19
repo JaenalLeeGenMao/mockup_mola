@@ -12,7 +12,7 @@ export const getMovieDetail = id => dispatch => {
       data: [],
     },
   })
-  return Mola.getMovieDetail({ id }).then(result => {
+  return Mola.getMovieDetail({ id }).then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MOVIE_DETAIL_ERROR,

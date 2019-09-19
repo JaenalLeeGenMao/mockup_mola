@@ -160,3 +160,8 @@ export const infoBarText = css`
 export const headerContainer = css`
   height: 60px;
 `
+
+export const videoInnerContainer = css`
+  width: 100%;
+  height: 100%;
+`

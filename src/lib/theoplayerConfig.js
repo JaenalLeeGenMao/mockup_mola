@@ -7,9 +7,12 @@ import { getContentTypeName } from '@source/lib/globalUtil'
 import Moment from 'moment'
 
 let ticker = [],
-  tickerLive = []
+  tickerLive = [],
+  tickerPerSec = []
 var videoData, userData
 let timeLive = -1
+
+let handleNextVideoCallback
 
 const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandwidth }) => {
   const { clientIp, uid, referrer } = userData
@@ -35,19 +38,13 @@ const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandw
 }
 
 const handleTimeUpdate = (payload, player) => {
+  const time = Math.round(payload)
+  let bitrate = '',
+    video_quality = '',
+    client_bandwidth = ''
+
   //Live
   if (getContentTypeName(videoData.contentType) == 'linear' || getContentTypeName(videoData.contentType) == 'live') {
-    // console.log('this.liveVidId', this.liveVidId)
-    // console.log('videoData.id', videoData.id)
-    // this.liveVidId = videoData.id
-    // if (this.liveVidId != videoData.id) {
-    //   timeLive = -1
-    // }
-    const time = Math.round(payload)
-    let bitrate = '',
-      video_quality = '',
-      client_bandwidth = ''
-
     if (!player.ads.playing) {
       if (!ticker.includes(time)) {
         ticker.push(time)
@@ -76,7 +73,7 @@ const handleTimeUpdate = (payload, player) => {
             tickerLive.push(timeLive)
             Tracker.sessionId()
             const heartbeat = timeLive !== 0
-            // console.log('masuk SINI TIMELIVE', timeLive)
+            // console.log('masuk SINI TIMELIVE', timeLive, tickerLive)
             // console.log('dt:', video_quality, bitrate, client_bandwidth)
             handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
           }
@@ -84,49 +81,41 @@ const handleTimeUpdate = (payload, player) => {
       }
     }
   } else {
-    const time = Math.round(payload)
-    let bitrate = '',
-      video_quality = '',
-      client_bandwidth = ''
-
-    // console.log("time", time)
-    // console.log("buffer start", player.buffered.start(0))
-    // console.log("buffer end", player.buffered.end(0))
-    // console.log("buffer length", player.buffered.length)
-
-    if (time % 60 === 0 && !player.ads.playing) {
-      var calcTime = time
-      /* NOTE:
-        these two types (live video) return currentTime callback
-        from theoplayer starting from 60s
-        so we need to substract 60s from the currentTime
-        2 = channel
-        3 = live match
-        untuk live match type nya bisa berubah setelah matchnya selesai, jadinya
-        cek berdasarkan streamsourceurl, karena kalau live di urlnya ada text 'Live'
-      */
-
-      var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
-        currentTrack
-      for (var i = 0; i < vTracks.length; i++) {
-        currentTrack = vTracks.item(i)
-        if (currentTrack.enabled && currentTrack.activeQuality) {
-          // console.log("Resolution:", currentTrack.activeQuality.height)
-          // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
-          video_quality = `${currentTrack.activeQuality.height}`
-          bitrate = `${currentTrack.activeQuality.bandwidth}`
-          try {
-            client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-          } catch (err) {}
-          //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+    const duration = player.duration
+    if (!tickerPerSec.includes(time) && !player.ads.playing) {
+      tickerPerSec.push(time)
+      if (handleNextVideoCallback) {
+        if (time >= duration - 11) {
+          // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
+          handleNextVideoCallback(true)
+          tickerPerSec.push(time)
         }
       }
-      if (!ticker.includes(calcTime)) {
-        ticker.push(calcTime)
 
+      if (time % 60 === 0) {
+        // var calcTime = time
+        var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
+          currentTrack
+        for (var i = 0; i < vTracks.length; i++) {
+          currentTrack = vTracks.item(i)
+          if (currentTrack.enabled && currentTrack.activeQuality) {
+            // console.log("Resolution:", currentTrack.activeQuality.height)
+            // console.log("bandwidth/bit rate:", currentTrack.activeQuality.bandwidth / 1024 / 1000)
+            video_quality = `${currentTrack.activeQuality.height}`
+            bitrate = `${currentTrack.activeQuality.bandwidth}`
+            try {
+              client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
+            } catch (err) {}
+            //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+          }
+        }
+        // if (!ticker.includes(calcTime)) {
+        // ticker.push(calcTime)
+        // console.log("calcTime", time)
         Tracker.sessionId()
-        const heartbeat = calcTime !== 0
+        const heartbeat = time !== 0
         handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
+        // }
       }
     }
   }
@@ -157,13 +146,16 @@ const uuidADS = () => {
   })
 }
 
-export const defaultVideoSetting = (user, videoDt, vuid) => {
+export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
   const baseUrl = endpoints.ads
   videoData = videoDt
   userData = user
   ticker = []
   tickerLive = []
+  tickerPerSec = []
   timeLive = -1
+  // console.log('KEPANGGIL??')
+  handleNextVideoCallback = handleNextVideo
 
   var movieUrl = videoDt.streamSourceUrl
 

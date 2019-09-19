@@ -159,6 +159,10 @@ const config = {
             '@babel/plugin-syntax-import-meta',
             ['@babel/plugin-proposal-class-properties', { loose: false }],
             '@babel/plugin-proposal-json-strings',
+
+            // Optional chaining obj?.foo?.bar ?? 'unavailable'
+            '@babel/plugin-proposal-optional-chaining',
+            '@babel/plugin-proposal-nullish-coalescing-operator',
           ],
         },
       },

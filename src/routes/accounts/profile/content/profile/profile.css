@@ -31,6 +31,11 @@
   width: 100%;
 }
 
+.profile_form_wrapper > div > div:first-child,
+.profile_form_wrapper > div > div > div:first-child > div {
+  color: white;
+}
+
 .profile_form_wrapper > div > div input {
   width: 91%;
 }

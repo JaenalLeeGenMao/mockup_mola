@@ -114,13 +114,14 @@ class MatchList extends React.Component {
       const todayMatch = isToday(data.startTime, data.endTime)
       const upComingMatch = !replayMatch && !matchLive
       const matchTomorrow = isTomorrow(data.startTime)
-      const hour =
+
+      const totalMinutes =
         data.endTime && data.startTime
-          ? new Date(data.endTime * 1000).getHours() - new Date(data.startTime * 1000).getHours()
-          : ''
-      const minutes = data.startTime
-        ? new Date(data.endTime * 1000).getMinutes() - new Date(data.startTime * 1000).getMinutes()
-        : ''
+          ? (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60
+          : 0
+      const hour = totalMinutes >= 60 ? (totalMinutes - totalMinutes % 60) / 60 : 0
+      const minutes = totalMinutes >= 60 ? totalMinutes % 60 : totalMinutes
+
       const channelOrMatchStyle = isChannel
         ? `${styles.channel__display__duration} ${styles.matchList__date}`
         : styles.matchList__date

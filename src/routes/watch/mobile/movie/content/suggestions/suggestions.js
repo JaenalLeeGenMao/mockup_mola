@@ -5,21 +5,34 @@ const VideoThumbnail = getComponent('video-thumbnail')
 import LazyLoad from '@components/common/Lazyload'
 import { unavailableImg } from '@global/imageUrl'
 import Link from '@components/Link'
-import { videoSuggestionTitle, videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionPlayerDetail, titleSuggestions, titleWrapper, videoSuggestionIcon } from './style'
+import {
+  videoSuggestionTitle,
+  videoSuggestionContainer,
+  videoSuggestionWrapper,
+  videoSuggestionPlayerDetail,
+  titleSuggestions,
+  titleWrapper,
+  videoSuggestionIcon,
+} from './style'
 
 const Suggestions = ({ style = {}, videos = [] }) => {
   return (
     <>
-      <h2 className={videoSuggestionTitle}>
-        <span className={videoSuggestionIcon} />Suggestions
-      </h2>
+      <div className={videoSuggestionTitle}>
+        {/* <span className={videoSuggestionIcon}>Suggestions </span> */}
+        <span>Suggestions </span>
+      </div>
       <LazyLoad containerClassName={videoSuggestionContainer}>
         <div className={videoSuggestionWrapper} style={style}>
-          {videos.map(({ id, background, title }) => {
-            const imageSource = background.landscape || unavailableImg
+          {videos.map(({ video_id, cover_landscape, title }) => {
+            const imageSource = cover_landscape || unavailableImg
             return (
-              <Link to={`/watch?v=${id}`} key={id}>
-                <VideoThumbnail thumbnailUrl={imageSource} thumbnailPosition="top" className={videoSuggestionPlayerDetail}>
+              <Link to={`/watch?v=${video_id}`} key={video_id}>
+                <VideoThumbnail
+                  thumbnailUrl={imageSource}
+                  thumbnailPosition="top"
+                  className={videoSuggestionPlayerDetail}
+                >
                   <div className={titleWrapper}>
                     <div className={titleSuggestions}> {title} </div>
                   </div>

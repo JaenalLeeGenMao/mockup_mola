@@ -11,7 +11,6 @@ import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
 import watchPermission from '@source/lib/watchPermission'
 
-import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 
 import PlatformDesktop from '@components/PlatformCheck'
@@ -19,7 +18,10 @@ import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
-// import Link from '@components/Link'
+import UpcomingVideo from '../upcoming-video'
+import PlayerHeader from '../player-header'
+
+// import AgeRestrictionModal from '@components/AgeRestriction'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
 
 import {
@@ -34,6 +36,7 @@ import {
   infoBarContainer,
   infoBarText,
   infoBarClose,
+  videoInnerContainer,
   movieDetailNotAllowed,
 } from './style'
 
@@ -45,18 +48,25 @@ const Theoplayer = getComponent('theoplayer')
 import MovieContent from './movie'
 import SportContent from './sport'
 let errorFlag = 0
+
 class WatchDesktop extends Component {
   state = {
     movieDetail: [],
     loc: '',
-    toggleInfoBar: true,
     countDownStatus: true,
-    notice_bar_message: 'Siaran Percobaan',
+    toggleInfoBar: this.props.configParams.data ? this.props.configParams.data.notice_bar_enabled : true,
+    notice_bar_message: this.props.configParams.data
+      ? this.props.configParams.data.notice_bar_message
+      : 'Siaran Percobaan',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
+    nextVideoBlocker: false,
+    nextVideoClose: false,
+    playerError: false,
   }
 
   handleOnReadyStateChange = player => {
+    // console.log("player", player.duration)
     const playerButton = document.querySelector('.vjs-button')
     /** handle keyboard pressed */
     document.onkeyup = event => {
@@ -78,6 +88,7 @@ class WatchDesktop extends Component {
     }
 
     this.player = player
+    this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
 
     if (player && player.buffered.length > 0) {
       this.detectorConnection(player)
@@ -88,6 +99,10 @@ class WatchDesktop extends Component {
         errorFlag = errorFlag + 1
         if (errorFlag < 2) {
           this.props.getVUID_retry()
+          this.setState({ playerError: true })
+          setTimeout(() => {
+            this.setState({ playerError: false })
+          }, 1000)
         }
       } else {
         // console.log('ERROR content protection', e)
@@ -193,7 +208,6 @@ class WatchDesktop extends Component {
         .then(response => {
           if (response.status === 200) {
             loc = typeof response.data.data.loc !== 'undefined' ? response.data.data.loc : ''
-
             this.setState({
               loc: loc,
             })
@@ -211,33 +225,55 @@ class WatchDesktop extends Component {
     }
   }
 
-  getConfig = async () => {
-    const { configParams } = this.props
-    if (configParams.data) {
-      const { notice_bar_enabled, notice_bar_message } = configParams.data
-      this.setState({
-        toggleInfoBar: notice_bar_enabled,
-        notice_bar_message,
-      })
-    }
+  // getConfig = async () => {
+  //   const { configParams } = this.props
+  //   if (configParams.data) {
+  //     const { notice_bar_enabled, notice_bar_message } = configParams.data
+  //     this.setState({
+  //       toggleInfoBar: notice_bar_enabled,
+  //       notice_bar_message,
+  //     })
+  //   }
+  // }
+
+  handleWindowSizeChange = () => {
+    const bottomHeight = document.getElementById('detailBottom').clientHeight
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    document.querySelector('#detailBottom > div').style.height = isSafari
+      ? `${bottomHeight - 60}px`
+      : 'calc(26vh - 60px)'
   }
 
   componentDidMount() {
     const {
       // getMovieDetail,
       // movieId, //passed as props from index.js,
-      // fetchRecommendation,
+      fetchRecommendation,
       // user,
       // getVUID,
     } = this.props
-    
+
+    this.getLoc()
+
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
     }
 
-    this.getLoc()
-    this.getConfig()
+    if (this.props.movieDetail) {
+      const movieDetail = this.props.movieDetail
+      if (movieDetail.meta.status === 'success') {
+        if (window) {
+          const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+          const videoContainer = document.getElementById('videoContainer').clientHeight
+          const videoWrapper = document.getElementById('videoWrapper').clientHeight
+          document.querySelector('#detailBottom > div').style.height = isSafari
+            ? `${videoContainer - videoWrapper - 60}px`
+            : 'calc(26vh - 60px)'
+          window.addEventListener('resize', this.handleWindowSizeChange)
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -247,8 +283,27 @@ class WatchDesktop extends Component {
     }
   }
 
+  handleNextVideo = (isShow = false) => {
+    if (isShow) {
+      this.setState({
+        nextVideoBlocker: true,
+      })
+    }
+  }
+
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, blocked, iconStatus, status, icon, name, potraitPoster } = this.props
+    const {
+      user,
+      getMovieDetail,
+      videoId,
+      blocked,
+      iconStatus,
+      status,
+      icon,
+      name,
+      isAutoPlay,
+      isMatchPassed,
+    } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -263,7 +318,7 @@ class WatchDesktop extends Component {
       const isAllowed = permission.isAllowed
       let watchPermissionErrorCode = permission.errorCode
 
-      const { loc } = this.state
+      const { loc, nextVideoBlocker, nextVideoClose } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
@@ -271,9 +326,19 @@ class WatchDesktop extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
+      let handleNextVideo = null
+      if (
+        !nextVideoClose &&
+        getContentTypeName(dataFetched.contentType) !== 'live' &&
+        getContentTypeName(dataFetched.contentType) !== 'trailers'
+      ) {
+        handleNextVideo = this.handleNextVideo
+      }
+
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '')
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
         : {}
+
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
@@ -332,24 +397,62 @@ class WatchDesktop extends Component {
               isMobile={false}
             />
           )
+        } else if (isMatchPassed) {
+          return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
-          return (
-            <>
-              <Theoplayer
-                className={customTheoplayer}
-                subtitles={this.subtitles()}
-                poster={poster}
-                autoPlay={false}
-                handleOnReadyStateChange={this.handleOnReadyStateChange}
-                handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                {...videoSettings}
-              />
-              {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
-            </>
-          )
+          if (!this.state.playerError) {
+            const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
+            return (
+              <>
+                <Theoplayer
+                  className={customTheoplayer}
+                  subtitles={this.subtitles()}
+                  poster={autoPlay ? null : poster}
+                  autoPlay={autoPlay}
+                  handleOnReadyStateChange={this.handleOnReadyStateChange}
+                  handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                  {...videoSettings}
+                >
+                  <div className={videoInnerContainer}>
+                    {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+                    {this.renderPlayerHeader(dataFetched)}
+                  </div>
+                </Theoplayer>
+                {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+              </>
+            )
+          }
         }
       }
+    }
+  }
+
+  handleCancelUpcVideo = e => {
+    // console.log("CANCEWL AJAJAJ")
+    this.setState({
+      nextVideoBlocker: false,
+      nextVideoClose: true,
+    })
+  }
+
+  renderNextVideo = () => {
+    const { recommendation: { data: recomData } } = this.props
+    let nextVideo = null
+    if (recomData && recomData.length > 0) {
+      if (recomData[0].video_id !== this.props.videoId) {
+        nextVideo = recomData[0]
+      } else if (recomData.length > 1) nextVideo = recomData[1]
+    }
+
+    if (nextVideo) {
+      return <UpcomingVideo data={nextVideo} handleCancelVideo={this.handleCancelUpcVideo} />
+    }
+  }
+
+  renderPlayerHeader = dataFetched => {
+    if (dataFetched) {
+      return <PlayerHeader data={dataFetched} />
     }
   }
 
@@ -405,8 +508,8 @@ class WatchDesktop extends Component {
               <Header {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
             {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
-            <div className={movieDetailContainer}>
-              <div className={videoPlayerWrapper}>
+            <div className={movieDetailContainer} id="videoContainer">
+              <div className={videoPlayerWrapper} id="videoWrapper">
                 {toggleInfoBar &&
                   !isMatchPassed && (
                     <div className={infoBar}>
@@ -418,7 +521,7 @@ class WatchDesktop extends Component {
                       </div>
                     </div>
                   )}
-                <div className={playerClass}>
+                <div className={playerClass} id="video-player-root">
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (
@@ -426,9 +529,13 @@ class WatchDesktop extends Component {
                   )}
                 </div>
               </div>
-              <div className={movieDetailBottom}>
-                {isMovieBool && <MovieContent dataFetched={dataFetched} />}
-                {!isMovieBool && <SportContent dataFetched={dataFetched} />}
+              <div className={movieDetailBottom} id="detailBottom">
+                <div>
+                  {isMovieBool && (
+                    <MovieContent dataFetched={dataFetched} fetchRecommendation={this.props.recommendation} />
+                  )}
+                  {!isMovieBool && <SportContent dataFetched={dataFetched} />}
+                </div>
               </div>
             </div>
           </>
