@@ -50,3 +50,12 @@ Format note:
   * Improvements:
 
     * styling icon scroll on horizontal playlists (league list) on matches page
+    
+* 1.1.0 + #10728 (Aang - 20/09/2019)
+  * Improvements:
+
+    * remade offline notice popup in watch video and channels
+    
+  * Bug fixes:
+
+    * bug fixing time duration in channels should not showing a decimal number
