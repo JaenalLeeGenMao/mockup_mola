@@ -154,7 +154,7 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
   tickerLive = []
   tickerPerSec = []
   timeLive = -1
-  console.log('KEPANGGIL??')
+  // console.log('KEPANGGIL??')
   handleNextVideoCallback = handleNextVideo
 
   var movieUrl = videoDt.streamSourceUrl
