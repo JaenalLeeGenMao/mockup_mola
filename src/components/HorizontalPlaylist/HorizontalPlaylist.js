@@ -106,42 +106,46 @@ class HorizontalPlaylist extends Component {
     return (
       <div className={s.match_ligaType}>
         <span className={`${s.filLeague} tourPlaylist`}>
-          <button
-            className={s.btnPrevHori}
-            id="prev"
-            onClick={() => {
-              this.handleScroll('prev')
-            }}
-          />
+          {allCat.map(dt => {
+            return (
+              <>
+                <div
+                  key={dt}
+                  className={`${s.playlist_all} ${
+                    dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
+                  }`}
+                  onClick={() => {
+                    handleCategoryFilter('All')
+                  }}
+                >
+                  All
+                </div>
+              </>
+            )
+          })}
+          <div className={s.btnPrevContainer}>
+            <span
+              className={s.btnPrevHori}
+              id="prev"
+              onClick={() => {
+                this.handleScroll('prev')
+              }}
+            />
+          </div>
           <div className={s.league__wrapper}>
             <div className={s.league__wrapper_scroller} id="league__wrapper_scroller">
-              {allCat.map(dt => {
-                return (
-                  <>
-                    <div
-                      key={dt}
-                      className={`${s.playlist_all} ${
-                        dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
-                      }`}
-                      onClick={() => {
-                        handleCategoryFilter('All')
-                      }}
-                    >
-                      All
-                    </div>
-                  </>
-                )
-              })}
               {this.categoryFilterLigaType()}
             </div>
           </div>
-          <button
-            className={s.btnNextHori}
-            id="next"
-            onClick={() => {
-              this.handleScroll('next')
-            }}
-          />
+          <div className={s.btnNextContainer}>
+            <span
+              className={s.btnNextHori}
+              id="next"
+              onClick={() => {
+                this.handleScroll('next')
+              }}
+            />
+          </div>
         </span>
       </div>
     )
