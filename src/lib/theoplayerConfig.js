@@ -86,25 +86,23 @@ const handleTimeUpdate = (payload, player) => {
     }
   } else {
     const duration = player.duration
-
-    if (!tickerPerSec.includes(time)) {
-      // console.log("time", time, tickerPerSec)
+    if (!tickerPerSec.includes(time) && !player.ads.playing) {
       tickerPerSec.push(time)
       if (handleNextVideoCallback) {
-        if (!player.ads.playing && time >= duration - 11) {
+        if (time >= duration - 11) {
           // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
           handleNextVideoCallback(true)
           tickerPerSec.push(time)
         }
       }
       if (handlePlayerHeaderToggleCallback) {
-        if (!player.ads.playing && time % 5 === 0) {
+        if (time % 5 === 0) {
           handlePlayerHeaderToggleCallback(time)
           tickerPerSec.push(time)
         }
       }
 
-      if (time % 60 === 0 && !player.ads.playing) {
+      if (time % 60 === 0) {
         // var calcTime = time
         var vTracks = player && player.videoTracks && player.videoTracks.length > 0 ? player.videoTracks : [],
           currentTrack
