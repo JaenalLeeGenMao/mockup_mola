@@ -13,7 +13,6 @@ var videoData, userData
 let timeLive = -1
 
 let handleNextVideoCallback
-let handlePlayerHeaderToggleCallback
 
 const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandwidth }) => {
   const { clientIp, uid, referrer } = userData
@@ -50,9 +49,6 @@ const handleTimeUpdate = (payload, player) => {
       if (!ticker.includes(time)) {
         ticker.push(time)
         timeLive = timeLive + 1
-        if (timeLive % 5 === 0 && handlePlayerHeaderToggleCallback) {
-          handlePlayerHeaderToggleCallback(timeLive)
-        }
       }
       // console.log('timeLive', timeLive, tickerLive, ticker)
       // console.log('timeLive', timeLive)
@@ -92,12 +88,6 @@ const handleTimeUpdate = (payload, player) => {
         if (time >= duration - 11) {
           // if (!player.ads.playing && time > 2 && !tickerNextVideo.includes(time)) {
           handleNextVideoCallback(true)
-          tickerPerSec.push(time)
-        }
-      }
-      if (handlePlayerHeaderToggleCallback) {
-        if (time % 5 === 0) {
-          handlePlayerHeaderToggleCallback(time)
           tickerPerSec.push(time)
         }
       }
@@ -156,7 +146,7 @@ const uuidADS = () => {
   })
 }
 
-export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, handlePlayerHeaderToggle) => {
+export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
   const baseUrl = endpoints.ads
   videoData = videoDt
   userData = user
@@ -166,7 +156,6 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, handle
   timeLive = -1
 
   handleNextVideoCallback = handleNextVideo
-  handlePlayerHeaderToggleCallback = handlePlayerHeaderToggle
 
   var movieUrl = videoDt.streamSourceUrl
 

@@ -1,5 +1,5 @@
 .player_container {
-  position: relative;
+  position: absolute;
   height: 100%;
   bottom: 0;
   left: 50%;
@@ -26,4 +26,16 @@
   width: 35rem;
   font-size: 2rem;
   line-height: 3.2rem;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .player_header__title {
+    width: 20rem;
+    font-size: 1.2rem;
+    line-height: 1.825rem;
+  }
 }

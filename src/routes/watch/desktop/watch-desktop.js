@@ -19,7 +19,7 @@ import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from '../upcoming-video'
-import PlayerHeader from './player-header'
+import PlayerHeader from '../player-header'
 
 // import AgeRestrictionModal from '@components/AgeRestriction'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
@@ -63,7 +63,6 @@ class WatchDesktop extends Component {
     nextVideoBlocker: false,
     nextVideoClose: false,
     playerError: false,
-    showPlayerHeader: false,
   }
 
   handleOnReadyStateChange = player => {
@@ -292,28 +291,6 @@ class WatchDesktop extends Component {
     }
   }
 
-  handlePlayerHeaderToggle = duration => {
-    // console.log("duration", duration)
-    const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    this.setState({
-      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-    })
-    // if (this.trackedDuration) {
-    //   if (duration % 60 === 0) {
-    //     if (!this.trackedDuration.includes(duration)) {
-    //       this.trackedDuration.push(duration)
-    //       console.log("this.trackedDuration.includes(duration)", this.trackedDuration.includes(duration))
-    //       console.log("masuk sini?", duration, ' : ', this.trackedDuration)
-    //       // this.setState({
-    //       //   showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-    //       // })
-    //     }
-    //   }
-    // } else {
-    //   this.trackedDuration = []
-    // }
-  }
-
   renderVideo = dataFetched => {
     const {
       user,
@@ -359,13 +336,7 @@ class WatchDesktop extends Component {
       }
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(
-            user,
-            dataFetched,
-            vuidStatus === 'success' ? vuid : '',
-            handleNextVideo,
-            this.handlePlayerHeaderToggle
-          )
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
         : {}
 
       const checkAdsSettings =
@@ -480,9 +451,8 @@ class WatchDesktop extends Component {
   }
 
   renderPlayerHeader = dataFetched => {
-    const { showPlayerHeader } = this.state
     if (dataFetched) {
-      return <PlayerHeader data={dataFetched} show={showPlayerHeader} />
+      return <PlayerHeader data={dataFetched} />
     }
   }
 
@@ -499,7 +469,7 @@ class WatchDesktop extends Component {
   }
 
   render() {
-    const { isControllerActive, loc, showOfflinePopup, showPlayerHeader } = this.state
+    const { isControllerActive, loc, showOfflinePopup } = this.state
     const { meta: { status: videoStatus }, data } = this.props.movieDetail
     const { user, videoId } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -551,20 +521,7 @@ class WatchDesktop extends Component {
                       </div>
                     </div>
                   )}
-                <div
-                  className={playerClass}
-                  id="video-player-root"
-                  onMouseMoveCapture={event => {
-                    if (!showPlayerHeader) {
-                      this.setState({ showPlayerHeader: true })
-                    }
-                  }}
-                  onTouchStartCapture={event => {
-                    if (!showPlayerHeader) {
-                      this.setState({ showPlayerHeader: true })
-                    }
-                  }}
-                >
+                <div className={playerClass} id="video-player-root">
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (

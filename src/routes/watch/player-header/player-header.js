@@ -9,6 +9,7 @@ class PlayerHeader extends Component {
     controllerHeight: 0,
     controllerWidth: 0,
     isFullscreen: false,
+    isShow: false,
   }
 
   componentDidMount() {
@@ -21,6 +22,24 @@ class PlayerHeader extends Component {
     }
     window.addEventListener('resize', this.handleResize)
     this.loadFullscreenEvent()
+    this.loadSubtreeModifiedEvent()
+  }
+
+  loadSubtreeModifiedEvent = () => {
+    const that = this
+    const _playerElement = document.getElementById('video-player-root')
+    _playerElement.addEventListener('DOMSubtreeModified', () => {
+      const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
+      if (parentWrapper.includes('vjs-paused')) {
+        that.setState({
+          isShow: true,
+        })
+      } else {
+        that.setState({
+          isShow: parentWrapper.includes('vjs-user-inactive') ? false : true,
+        })
+      }
+    })
   }
 
   handleFullScreen = () => {
@@ -61,8 +80,8 @@ class PlayerHeader extends Component {
   }
 
   render() {
-    const { data, show } = this.props,
-      { isFullscreen } = this.state
+    const { data } = this.props,
+      { isFullscreen, isShow } = this.state
 
     const { controllerWidth, controllerHeight } = this.state
     const playerWidth = controllerWidth ? `${controllerWidth}px` : '100%'
@@ -72,7 +91,7 @@ class PlayerHeader extends Component {
           id="playerHeader"
           className={styles.container}
           style={{
-            opacity: isFullscreen && show ? 1 : 0,
+            opacity: isFullscreen && isShow ? 1 : 0,
           }}
         >
           <h1 className={styles.player_header__title}>{data.title}</h1>

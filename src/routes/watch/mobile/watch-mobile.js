@@ -17,7 +17,7 @@ import AgeRestrictionModal from '@components/AgeRestriction'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
-import PlayerHeader from './player-header'
+import PlayerHeader from '../player-header'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 import UpcomingVideo from '../upcoming-video'
 
@@ -64,7 +64,6 @@ class MovieDetail extends Component {
     showOfflinePopup: false,
     nextVideoBlocker: false,
     nextVideoClose: false,
-    showPlayerHeader: false,
   }
 
   handleOnVideoVolumeChange = player => {
@@ -178,25 +177,6 @@ class MovieDetail extends Component {
       window.removeEventListener('online', this.goOnline)
       window.removeEventListener('offline', this.goOffline)
     }
-  }
-
-  handlePlayerHeaderToggle = duration => {
-    const parentWrapper = _get(document.getElementsByClassName('video-container'), '[0].className', '')
-    this.setState({
-      showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-    })
-    // if (this.trackedDuration) {
-    //   if (duration % 60 === 0) {
-    //     if (!this.trackedDuration.includes(duration)) {
-    //       this.trackedDuration.push(duration)
-    //       this.setState({
-    //         showPlayerHeader: parentWrapper.includes('vjs-user-inactive') ? false : true,
-    //       })
-    //     }
-    //   }
-    // } else {
-    //   this.trackedDuration = []
-    // }
   }
 
   handlePlayMovie = () => {
@@ -315,13 +295,7 @@ class MovieDetail extends Component {
       }
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(
-            user,
-            dataFetched,
-            vuidStatus === 'success' ? vuid : '',
-            handleNextVideo,
-            this.handlePlayerHeaderToggle
-          )
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
         : {}
 
       const checkAdsSettings =
@@ -463,14 +437,13 @@ class MovieDetail extends Component {
   }
 
   renderPlayerHeader = dataFetched => {
-    const { showPlayerHeader } = this.state
     if (dataFetched) {
-      return <PlayerHeader data={dataFetched} show={showPlayerHeader} />
+      return <PlayerHeader data={dataFetched} />
     }
   }
 
   render() {
-    const { loc, showOfflinePopup, showPlayerHeader } = this.state
+    const { loc, showOfflinePopup } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -523,20 +496,7 @@ class MovieDetail extends Component {
                     </div>
                   </div>
                 )}
-              <div
-                className={videoPlayerContainer}
-                id="video-player-root"
-                onMouseMoveCapture={event => {
-                  if (!showPlayerHeader) {
-                    this.setState({ showPlayerHeader: true })
-                  }
-                }}
-                onTouchStartCapture={event => {
-                  if (!showPlayerHeader) {
-                    this.setState({ showPlayerHeader: true })
-                  }
-                }}
-              >
+              <div className={videoPlayerContainer} id="video-player-root">
                 {loadPlayer ? (
                   <>{this.renderVideo(dataFetched)}</>
                 ) : (
