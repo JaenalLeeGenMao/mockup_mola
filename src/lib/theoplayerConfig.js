@@ -73,7 +73,7 @@ const handleTimeUpdate = (payload, player) => {
             tickerLive.push(timeLive)
             Tracker.sessionId()
             const heartbeat = timeLive !== 0
-            // console.log('masuk SINI TIMELIVE', timeLive)
+            // console.log('masuk SINI TIMELIVE', timeLive, tickerLive)
             // console.log('dt:', video_quality, bitrate, client_bandwidth)
             handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
           }
@@ -154,7 +154,7 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
   tickerLive = []
   tickerPerSec = []
   timeLive = -1
-
+  console.log('KEPANGGIL??')
   handleNextVideoCallback = handleNextVideo
 
   var movieUrl = videoDt.streamSourceUrl
