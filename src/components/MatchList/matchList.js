@@ -119,8 +119,8 @@ class MatchList extends React.Component {
         data.endTime && data.startTime
           ? (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60
           : 0
-      const hour = totalMinutes >= 60 ? (totalMinutes - totalMinutes % 60) / 60 : 0
-      const minutes = totalMinutes >= 60 ? totalMinutes % 60 : totalMinutes
+      const hour = totalMinutes >= 60 ? Math.round((totalMinutes - totalMinutes % 60) / 60) : 0
+      const minutes = totalMinutes >= 60 ? Math.round(totalMinutes % 60) : Math.round(totalMinutes)
 
       const channelOrMatchStyle = isChannel
         ? `${styles.channel__display__duration} ${styles.matchList__date}`
