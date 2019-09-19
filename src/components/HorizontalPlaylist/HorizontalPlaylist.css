@@ -79,7 +79,7 @@
 }
 
 .league__wrapper {
-  /* width: 100%; */
+  width: 100%;
   overflow: hidden;
 }
 
@@ -87,9 +87,40 @@
   display: flex;
   overflow-x: auto;
   height: calc(100% + 30px);
+  overflow-y: hidden;
 }
 
 .genre__wrapper {
   width: calc(100% + 20px);
   line-height: 1.25;
+}
+
+.btnPrevHori {
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxMCAyNCI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6bm9uZTt9LmJ7Y2xpcC1wYXRoOnVybCgjYSk7fS5je2ZpbGw6I2I1YjViNTt9PC9zdHlsZT48Y2xpcFBhdGggaWQ9ImEiPjxyZWN0IGNsYXNzPSJhIiB3aWR0aD0iMTAiIGhlaWdodD0iMjQiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGFzcz0iYiI+PHBhdGggY2xhc3M9ImMiIGQ9Ik0xNDEtOTJsMy45MjQsMTAuMzA5YTEuMjU5LDEuMjU5LDAsMCwxLS42MjEsMS41NTdoMGExLjI2LDEuMjYsMCwwLDEtMS42MTItLjQyOEwxMzUtOTJsNy42OTEtMTEuNDM5YTEuMjYsMS4yNiwwLDAsMSwxLjYxMi0uNDI4aDBhMS4yNTksMS4yNTksMCwwLDEsLjYyMSwxLjU1N1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzUgMTA0KSIvPjwvZz48L3N2Zz4=);
+  width: 2rem;
+  height: 2rem;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  display: none;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.btnNextHori {
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxMCAyNCI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6bm9uZTt9LmJ7Y2xpcC1wYXRoOnVybCgjYSk7fS5je2ZpbGw6I2I1YjViNTt9PC9zdHlsZT48Y2xpcFBhdGggaWQ9ImEiPjxyZWN0IGNsYXNzPSJhIiB3aWR0aD0iMTAiIGhlaWdodD0iMjQiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGFzcz0iYiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCkiPjxwYXRoIGNsYXNzPSJjIiBkPSJNMjU1LTkybC0zLjkyNCwxMC4zMDlhMS4yNTksMS4yNTksMCwwLDAsLjYyMSwxLjU1N2gwYTEuMjYsMS4yNiwwLDAsMCwxLjYxMi0uNDI4TDI2MS05MmwtNy42OTEtMTEuNDM5YTEuMjYsMS4yNiwwLDAsMC0xLjYxMi0uNDI4aDBhMS4yNTksMS4yNTksMCwwLDAtLjYyMSwxLjU1N1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNTEgMTA0KSIvPjwvZz48L3N2Zz4=);
+  width: 2rem;
+  height: 2rem;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  margin: 0.5rem 0 0.5rem 1rem;
+  display: none;
+}
+
+.filLeague:hover .btnPrevHori {
+  display: inline-block;
+}
+
+.filLeague:hover .btnNextHori {
+  display: inline-block;
 }
