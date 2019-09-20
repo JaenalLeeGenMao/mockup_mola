@@ -28,13 +28,16 @@ v1.1.0
 
 ### Version
 
-* v1.1.0
-Improvements:
-- fix title shown on video with event DOMSubtreeModified, now title is responsive according to video controller and analytics behaviour changed to the default(now working correctly) #10671 (Jaenal - 19/09/2019)
-- add function scroll horizontal playlists(league list) with icon prev next on matches page #10679 (Ayu - 19/09/2019)
-- styling position next prev on horizontal playlists (league list) on matches page #10693 (Ayu - 19/09/2019)
-- styling icon scroll on horizontal playlists (league list) on matches page #10713 (Ayu - 19/09/2019)
-- remade offline notice popup in watch video and channels #10728 (Aang - 20/09/2019)
+v1.1.0
 
-Bug fixes:
--bug fixing time duration in channels should not showing a decimal number #10728 (Aang - 20/09/2019)
+* Improvements:
+
+    * fix title shown on video with event DOMSubtreeModified, now title is responsive according to video controller and analytics behaviour changed to the default(now working correctly) #10671 (Jaenal - 19/09/2019)
+    * add function scroll horizontal playlists(league list) with icon prev next on matches page #10679 (Ayu - 19/09/2019)
+    * styling position next prev on horizontal playlists (league list) on matches page #10693 (Ayu - 19/09/2019)
+    * styling icon scroll on horizontal playlists (league list) on matches page #10713 (Ayu - 19/09/2019)
+    * remade offline notice popup in watch video and channels #10728 (Aang - 20/09/2019)
+
+* Bug fixes:
+
+    * bug fixing time duration in channels should not showing a decimal number #10728 (Aang - 20/09/2019)
