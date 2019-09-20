@@ -3,7 +3,8 @@
 Format note:
 
 ```
--> <Major>.<Minor>.<Patch> + (#BUILD_FROM_PIPELINE) (Author - Date(DD/MM/YYY))
+<Major>.<Minor>.<Patch> + (#BUILD_FROM_PIPELINE) (Author - Date(DD/MM/YYY))
+Description should be clear and specific, mention page and what changes added
 ```
 
 ### Example
