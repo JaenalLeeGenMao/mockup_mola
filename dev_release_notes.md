@@ -37,6 +37,7 @@ v1.1.0
     * styling position next prev on horizontal playlists (league list) on matches page #10693 (Ayu - 19/09/2019)
     * styling icon scroll on horizontal playlists (league list) on matches page #10713 (Ayu - 19/09/2019)
     * remade offline notice popup in watch video and channels #10728 (Aang - 20/09/2019)
+    * Force user to refresh the browser on error during server license server request #10760 (Arga Tahta - 20/09/2019)
 
 * Bug fixes:
 
