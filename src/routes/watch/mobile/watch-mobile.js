@@ -64,6 +64,7 @@ class MovieDetail extends Component {
     showOfflinePopup: false,
     nextVideoBlocker: false,
     nextVideoClose: false,
+    errorLicense: false,
   }
 
   handleOnVideoVolumeChange = player => {
@@ -213,6 +214,9 @@ class MovieDetail extends Component {
         errorFlag = errorFlag + 1
         if (errorFlag < 2) {
           this.props.getVUID_retry()
+        } else if (errorFlag > 6) {
+          //every error license will execute six times
+          this.setState({ errorLicense: true })
         }
       } else {
         // console.log('ERROR content protection', e)
@@ -379,26 +383,34 @@ class MovieDetail extends Component {
       } else if (isMatchPassed) {
         return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
       } else if (!isRedirectToApp) {
-        const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
-        return (
-          <>
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={this.subtitles()}
-              poster={autoPlay ? null : poster}
-              autoPlay={autoPlay}
-              handleOnReadyStateChange={this.handleOnReadyStateChange}
-              {...videoSettings}
-              isMobile
-            >
-              <div className={videoInnerContainer}>
-                {this.renderPlayerHeader(dataFetched)}
-                {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
-              </div>
-            </Theoplayer>
-            {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
-          </>
-        )
+        if (!this.state.errorLicense) {
+          const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
+          return (
+            <>
+              <Theoplayer
+                className={customTheoplayer}
+                subtitles={this.subtitles()}
+                poster={autoPlay ? null : poster}
+                autoPlay={autoPlay}
+                handleOnReadyStateChange={this.handleOnReadyStateChange}
+                {...videoSettings}
+                isMobile
+              >
+                <div className={videoInnerContainer}>
+                  {this.renderPlayerHeader(dataFetched)}
+                  {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+                </div>
+              </Theoplayer>
+              {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+            </>
+          )
+        } else {
+          return (
+            <div className={movieDetailNotAvailableContainer}>
+              Error during license server request. Please refresh the browser.
+            </div>
+          )
+        }
       }
     }
   }
@@ -484,6 +496,7 @@ class MovieDetail extends Component {
             <div className={headerContainer}>
               <Header isMobile {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
+            {showOfflinePopup && <OfflineNoticePopup />}
             <div className={movieDetailContainer}>
               {toggleInfoBar &&
                 !isMatchPassed && (
@@ -511,7 +524,6 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
-        {showOfflinePopup && <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
       </>
     )
   }

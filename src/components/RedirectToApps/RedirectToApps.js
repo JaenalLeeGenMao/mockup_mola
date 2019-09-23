@@ -18,6 +18,7 @@ class RedirectToApps extends Component {
       customTheoplayer,
       handleOnVideoVolumeChange,
       children,
+      errorLicense,
     } = this.props
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
@@ -31,15 +32,21 @@ class RedirectToApps extends Component {
           </div>
         )
       } else {
-        return (
-          <Theoplayer
-            className={customTheoplayer}
-            subtitles={subtitles}
-            handleOnReadyStateChange={handleOnReadyStateChange}
-            handleOnVideoVolumeChange={handleOnVideoVolumeChange}
-            {...videoSettings}
-          />
-        )
+        if (!errorLicense) {
+          return (
+            <Theoplayer
+              className={customTheoplayer}
+              subtitles={subtitles}
+              handleOnReadyStateChange={handleOnReadyStateChange}
+              handleOnVideoVolumeChange={handleOnVideoVolumeChange}
+              {...videoSettings}
+            />
+          )
+        } else {
+          return (
+            <div className={styles.error_license}>Error during license server request. Please refresh the browser.</div>
+          )
+        }
       }
     } else {
       //android
@@ -51,17 +58,23 @@ class RedirectToApps extends Component {
           </div>
         )
       } else {
-        return (
-          <Theoplayer
-            className={customTheoplayer}
-            subtitles={subtitles}
-            handleOnReadyStateChange={handleOnReadyStateChange}
-            handleOnVideoVolumeChange={handleOnVideoVolumeChange}
-            {...videoSettings}
-          >
-            {children}
-          </Theoplayer>
-        )
+        if (!errorLicense) {
+          return (
+            <Theoplayer
+              className={customTheoplayer}
+              subtitles={subtitles}
+              handleOnReadyStateChange={handleOnReadyStateChange}
+              handleOnVideoVolumeChange={handleOnVideoVolumeChange}
+              {...videoSettings}
+            >
+              {children}
+            </Theoplayer>
+          )
+        } else {
+          return (
+            <div className={styles.error_license}>Error during license server request. Please refresh the browser.</div>
+          )
+        }
       }
     }
   }

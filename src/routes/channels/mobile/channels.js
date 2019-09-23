@@ -53,6 +53,7 @@ class Channels extends Component {
     iconStatus: [],
     iconGreen,
     name: '',
+    errorLicense: false,
   }
 
   componentDidMount() {
@@ -101,7 +102,7 @@ class Channels extends Component {
       if (theoVolumeInfo != null) {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -288,7 +289,7 @@ class Channels extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) { }
+      } catch (err) {}
     }
   }
 
@@ -330,7 +331,7 @@ class Channels extends Component {
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/channels/${movieId}?utm_source=${source}`
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.href = url
     }, 250)
   }
@@ -347,6 +348,9 @@ class Channels extends Component {
         errorFlag = errorFlag + 1
         if (errorFlag < 2) {
           this.props.getVUID_retry()
+        } else if (errorFlag > 6) {
+          //every error license will execute six times
+          this.setState({ errorLicense: true })
         }
       } else {
         // console.log('ERROR content protection', e)
@@ -368,6 +372,7 @@ class Channels extends Component {
       block,
       isHeader,
       showOfflinePopup,
+      errorLicense,
     } = this.state
     const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
@@ -412,6 +417,7 @@ class Channels extends Component {
           />
         </div>
         <div className={styles.channels_container}>
+          {showOfflinePopup && <OfflineNoticePopup />}
           {channelsPlaylist.meta.status === 'success' && (
             <>
               <div className={styles.channels_top_wrapper}>
@@ -440,21 +446,22 @@ class Channels extends Component {
                     videoSettings={videoSettings}
                     customTheoplayer={customTheoplayer}
                     handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                    errorLicense={errorLicense}
                   />
                 ) : (
-                    block && (
-                      <PlatformCheckMobile
-                        iconStatus={this.state.iconStatus}
-                        status={this.state.status}
-                        icon={this.state.imageUrl}
-                        name={this.state.name}
-                        portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-                        user={this.props.user}
-                        videoId={activeChannelId}
-                        isHeader={isHeader}
-                      />
-                    )
-                  )}
+                  block && (
+                    <PlatformCheckMobile
+                      iconStatus={this.state.iconStatus}
+                      status={this.state.status}
+                      icon={this.state.imageUrl}
+                      name={this.state.name}
+                      portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                      user={this.props.user}
+                      videoId={activeChannelId}
+                      isHeader={isHeader}
+                    />
+                  )
+                )}
               </div>
 
               {!block && (
@@ -484,9 +491,6 @@ class Channels extends Component {
                     />
                   </div>
                 </div>
-              )}
-              {showOfflinePopup && (
-                <OfflineNoticePopup isMobile handleCloseOfflinePopup={this.handleCloseOfflinePopup} />
               )}
             </>
           )}

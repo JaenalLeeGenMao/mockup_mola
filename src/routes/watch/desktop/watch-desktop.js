@@ -62,7 +62,7 @@ class WatchDesktop extends Component {
     showOfflinePopup: false,
     nextVideoBlocker: false,
     nextVideoClose: false,
-    playerError: false,
+    errorLicense: false,
   }
 
   handleOnReadyStateChange = player => {
@@ -99,10 +99,9 @@ class WatchDesktop extends Component {
         errorFlag = errorFlag + 1
         if (errorFlag < 2) {
           this.props.getVUID_retry()
-          this.setState({ playerError: true })
-          setTimeout(() => {
-            this.setState({ playerError: false })
-          }, 1000)
+        } else if (errorFlag > 6) {
+          //every error license will execute six times
+          this.setState({ errorLicense: true })
         }
       } else {
         // console.log('ERROR content protection', e)
@@ -401,7 +400,7 @@ class WatchDesktop extends Component {
           return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
         } else if (dataFetched.streamSourceUrl) {
           // Else render, only if there's streamSourceUrl
-          if (!this.state.playerError) {
+          if (!this.state.errorLicense) {
             const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
             return (
               <>
@@ -421,6 +420,12 @@ class WatchDesktop extends Component {
                 </Theoplayer>
                 {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
               </>
+            )
+          } else {
+            return (
+              <div className={movieDetailNotAvailableContainer}>
+                Error during license server request. Please refresh the browser.
+              </div>
             )
           }
         }
@@ -507,7 +512,7 @@ class WatchDesktop extends Component {
             <div className={headerContainer}>
               <Header {...this.props} activeMenuId={dataFetched.menuId} />
             </div>
-            {showOfflinePopup && <OfflineNoticePopup handleCloseOfflinePopup={this.handleCloseOfflinePopup} />}
+            {showOfflinePopup && <OfflineNoticePopup />}
             <div className={movieDetailContainer} id="videoContainer">
               <div className={videoPlayerWrapper} id="videoWrapper">
                 {toggleInfoBar &&
