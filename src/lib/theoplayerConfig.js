@@ -65,7 +65,7 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) {}
+            } catch (err) { }
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
 
@@ -105,13 +105,12 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) {}
+            } catch (err) { }
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
         }
-        // if (!ticker.includes(calcTime)) {
-        // ticker.push(calcTime)
-        // console.log("calcTime", time)
+
+        akamaiHandleBitRateSwitch(bitrate);
         Tracker.sessionId()
         const heartbeat = time !== 0
         handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
@@ -139,7 +138,7 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)

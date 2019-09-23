@@ -62,6 +62,7 @@ class Watch extends Component {
           window.debugStore.movieDetail = this.props.movieDetail
         }
       }
+      setAkamaiMediaAnalyticsData('title', movieDetail.data[0].title);
       const dataFetch = movieDetail.data[0]
 
       const filterForBlockFind = dataFetch.platforms.find(dt => dt.id === 1 && dt.status === 1)
