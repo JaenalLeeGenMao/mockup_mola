@@ -52,14 +52,14 @@ export const globalTracker = async data => {
     urlParams = queryString.parse(clientWindow.location.search)
   }
 
-  let linkReferrer = `${window.location.host}${currentLocation.pathname}${currentLocation.search}`
+  let linkReferrer = `${currentLocation.pathname}${currentLocation.search}`
   if (linkReferrer.includes('u0026')) {
-    linkReferrer = decodedUrl.replace(/https?:\/\//i, '')
+    linkReferrer = decodedUrl.replace(/^.*\/\/[^\/]+/, '')
   }
 
-  let linkPath = `${window.location.host}${location.pathname}${location.search}`
+  let linkPath = `${location.pathname}${location.search}`
   if (linkPath.includes('u0026')) {
-    linkPath = decodedUrl.replace(/https?:\/\//i, '')
+    linkPath = decodedUrl.replace(/^.*\/\/[^\/]+/, '')
   }
 
   let adjustedSubs = []
