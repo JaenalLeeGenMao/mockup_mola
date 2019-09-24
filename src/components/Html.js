@@ -50,10 +50,13 @@ class Html extends React.Component {
       twitter_card_type = 'summary',
       appLinkUrl = '',
       type = 'website',
-      akamai_analytic_enabled = false
+      akamai_analytic_enabled = false,
     } = this.props
 
-    const metaTitle = title ? `Mola TV - ${title}` : 'Mola TV - Broadcaster Resmi Liga Inggris 2019-2022'
+    const metaTitle =
+      title && title.indexOf('Untitled Page') < 0
+        ? `Mola TV - ${title}`
+        : 'Mola TV - Broadcaster Resmi Liga Inggris 2019-2022'
     return (
       <html className="no-js" lang="en">
         <head>
@@ -112,9 +115,9 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
                 'OneSignal.push(function() {' +
                 'OneSignal.init({' +
                 `appId: ${
-                config.env == 'production'
-                  ? '"5d6c228d-12ee-4b17-9946-cd772f84f314"'
-                  : '"679fe5dc-5170-4cda-8302-f9cbccc9f38c"'
+                  config.env == 'production'
+                    ? '"5d6c228d-12ee-4b17-9946-cd772f84f314"'
+                    : '"679fe5dc-5170-4cda-8302-f9cbccc9f38c"'
                 },` +
                 '});' +
                 '});',
@@ -305,9 +308,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
           {/*** Test Akamai Media Analytic Start - only on dev ***/}
-          {akamai_analytic_enabled &&
-            <script type="text/javascript" src="../analytic.js" crossOrigin="true" ></script>
-          }
+          {akamai_analytic_enabled && <script type="text/javascript" src="../analytic.js" crossOrigin="true" />}
           {/*** Test Akamai Media Analytic End - only on dev ***/}
           {scripts.map(script => <script key={script} src={script} />)}
           <script
@@ -315,7 +316,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               __html:
                 'window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;' +
                 `ga('create',${
-                config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"
+                  config.env === 'production' ? "'UA-140128558-1'" : "'UA-140128558-2'"
                 },'auto');ga('send','pageview')`,
             }}
           />
