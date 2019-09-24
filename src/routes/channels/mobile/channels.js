@@ -102,7 +102,7 @@ class Channels extends Component {
       if (theoVolumeInfo != null) {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -289,7 +289,7 @@ class Channels extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -331,7 +331,7 @@ class Channels extends Component {
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/channels/${movieId}?utm_source=${source}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -374,7 +374,7 @@ class Channels extends Component {
       showOfflinePopup,
       errorLicense,
     } = this.state
-    const { channelsPlaylist, programmeGuides, movieId, channelSchedule } = this.props
+    const { channelsPlaylist, programmeGuides, movieId, channelSchedule, configParams } = this.props
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
@@ -383,9 +383,13 @@ class Channels extends Component {
     const { user } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
+    const videoSettingProps = {
+      akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+    }
+
     const defaultVidSetting =
       status === 'success'
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, null)
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, videoSettingProps)
         : {}
 
     const videoSettings = {
@@ -449,19 +453,19 @@ class Channels extends Component {
                     errorLicense={errorLicense}
                   />
                 ) : (
-                  block && (
-                    <PlatformCheckMobile
-                      iconStatus={this.state.iconStatus}
-                      status={this.state.status}
-                      icon={this.state.imageUrl}
-                      name={this.state.name}
-                      portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-                      user={this.props.user}
-                      videoId={activeChannelId}
-                      isHeader={isHeader}
-                    />
-                  )
-                )}
+                    block && (
+                      <PlatformCheckMobile
+                        iconStatus={this.state.iconStatus}
+                        status={this.state.status}
+                        icon={this.state.imageUrl}
+                        name={this.state.name}
+                        portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+                        user={this.props.user}
+                        videoId={activeChannelId}
+                        isHeader={isHeader}
+                      />
+                    )
+                  )}
               </div>
 
               {!block && (

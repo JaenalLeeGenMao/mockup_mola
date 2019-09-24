@@ -9,7 +9,6 @@ import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
 import Tracker from '@source/lib/tracker'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
-import recommendationActions from '@actions/recommendation'
 import { getVUID_retry } from '@actions/vuid'
 import watchPermission from '@source/lib/watchPermission'
 import AgeRestrictionModal from '@components/AgeRestriction'
@@ -75,7 +74,7 @@ class MovieDetail extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -118,7 +117,7 @@ class MovieDetail extends Component {
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
-    }`
+      }`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
@@ -162,15 +161,11 @@ class MovieDetail extends Component {
   // }
 
   componentDidMount() {
-    const { fetchRecommendation } = this.props
-
     this.getLoc()
-    // this.getConfig()
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
     }
-    // fetchRecommendation(movieId)
   }
 
   componentWillUnmount() {
@@ -196,7 +191,7 @@ class MovieDetail extends Component {
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}`
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = url
     }, 250)
   }
@@ -270,7 +265,7 @@ class MovieDetail extends Component {
   }
 
   renderVideo = dataFetched => {
-    const { user, getMovieDetail, videoId, isMatchPassed, isAutoPlay } = this.props
+    const { user, getMovieDetail, videoId, isMatchPassed, isAutoPlay, configParams } = this.props
     let theoVolumeInfo = {}
 
     try {
@@ -278,7 +273,7 @@ class MovieDetail extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
 
     if (dataFetched) {
       const { loc } = this.state
@@ -298,8 +293,12 @@ class MovieDetail extends Component {
         handleNextVideo = this.handleNextVideo
       }
 
+      const videoSettingProps = {
+        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+      }
+
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo, videoSettingProps)
         : {}
 
       const checkAdsSettings =
@@ -513,8 +512,8 @@ class MovieDetail extends Component {
                 {loadPlayer ? (
                   <>{this.renderVideo(dataFetched)}</>
                 ) : (
-                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {isMovieBool && (
@@ -536,7 +535,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 

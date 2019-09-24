@@ -50,7 +50,9 @@ class Html extends React.Component {
       twitter_card_type = 'summary',
       appLinkUrl = '',
       type = 'website',
+      akamai_analytic_enabled = false
     } = this.props
+
     const metaTitle = title ? `Mola TV - ${title}` : 'Mola TV - Broadcaster Resmi Liga Inggris 2019-2022'
     return (
       <html className="no-js" lang="en">
@@ -298,13 +300,15 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
              `,
             }}
           />
-          {/*** Test Akamai Media Analytic Start - only on dev ***/}
-          <script type="text/javascript" src="../analytic.js" ></script>
-          {/*** TTest Akamai Media Analytic End - only on dev ***/}
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
+          {/*** Test Akamai Media Analytic Start - only on dev ***/}
+          {akamai_analytic_enabled &&
+            <script type="text/javascript" src="../analytic.js" crossOrigin="true" ></script>
+          }
+          {/*** Test Akamai Media Analytic End - only on dev ***/}
           {scripts.map(script => <script key={script} src={script} />)}
           <script
             dangerouslySetInnerHTML={{

@@ -154,7 +154,7 @@ class WatchDesktop extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -195,7 +195,7 @@ class WatchDesktop extends Component {
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
-    }`
+      }`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
@@ -302,6 +302,7 @@ class WatchDesktop extends Component {
       name,
       isAutoPlay,
       isMatchPassed,
+      configParams
     } = this.props
     let theoVolumeInfo = {}
 
@@ -310,7 +311,7 @@ class WatchDesktop extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
@@ -334,8 +335,12 @@ class WatchDesktop extends Component {
         handleNextVideo = this.handleNextVideo
       }
 
+      const videoSettingProps = {
+        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+      }
+
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
+        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo, videoSettingProps)
         : {}
 
       const checkAdsSettings =
@@ -530,8 +535,8 @@ class WatchDesktop extends Component {
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                      <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                    )}
                 </div>
               </div>
               <div className={movieDetailBottom} id="detailBottom">
