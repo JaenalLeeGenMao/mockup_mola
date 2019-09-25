@@ -110,6 +110,27 @@ class WatchDesktop extends Component {
     })
   }
 
+  handleOnVideoPlaying = (status, player) => {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    let i = 0
+    if (isSafari && player.textTracks && player.textTracks.length > 0) {
+      // to hide empty subtitle in safari
+      player.textTracks.map(element => {
+        if (!element.id) {
+          if (player.textTracks.length > 1) {
+            const el = document.getElementsByClassName('theo-menu-item vjs-menu-item theo-text-track-menu-item')
+            el[i].style.display = 'none'
+          } else {
+            const subtitle = document.querySelector('.vjs-icon-subtitles')
+            subtitle.style.display = 'none'
+          }
+        } else {
+          i++
+        }
+      })
+    }
+  }
+
   detectorConnection = player => {
     if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
       setTimeout(() => {
@@ -154,7 +175,7 @@ class WatchDesktop extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) { }
+      } catch (err) {}
     }
   }
 
@@ -195,7 +216,7 @@ class WatchDesktop extends Component {
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
     const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
       config.env === 'production' ? 'sent_ads' : 'mola_ads'
-      }`
+    }`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
@@ -302,7 +323,7 @@ class WatchDesktop extends Component {
       name,
       isAutoPlay,
       isMatchPassed,
-      configParams
+      configParams,
     } = this.props
     let theoVolumeInfo = {}
 
@@ -311,7 +332,7 @@ class WatchDesktop extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
@@ -336,11 +357,17 @@ class WatchDesktop extends Component {
       }
 
       const videoSettingProps = {
-        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
       }
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo, videoSettingProps)
+        ? defaultVideoSetting(
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            handleNextVideo,
+            videoSettingProps
+          )
         : {}
 
       const checkAdsSettings =
@@ -416,6 +443,7 @@ class WatchDesktop extends Component {
                   autoPlay={autoPlay}
                   handleOnReadyStateChange={this.handleOnReadyStateChange}
                   handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                  handleOnVideoPlaying={this.handleOnVideoPlaying}
                   {...videoSettings}
                 >
                   <div className={videoInnerContainer}>
@@ -535,8 +563,8 @@ class WatchDesktop extends Component {
                   {loadPlayer ? (
                     <>{this.renderVideo(dataFetched)}</>
                   ) : (
-                      <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                    )}
+                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                  )}
                 </div>
               </div>
               <div className={movieDetailBottom} id="detailBottom">

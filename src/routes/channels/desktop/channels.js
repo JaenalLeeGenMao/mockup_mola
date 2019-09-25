@@ -105,7 +105,7 @@ class Channels extends Component {
       if (theoVolumeInfo != null) {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -282,6 +282,27 @@ class Channels extends Component {
     })
   }
 
+  handleOnVideoPlaying = (status, player) => {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    let i = 0
+    if (isSafari && player.textTracks && player.textTracks.length > 0) {
+      // to hide empty subtitle in safari
+      player.textTracks.map(element => {
+        if (!element.id) {
+          if (player.textTracks.length > 1) {
+            const el = document.getElementsByClassName('theo-menu-item vjs-menu-item theo-text-track-menu-item')
+            el[i].style.display = 'none'
+          } else {
+            const subtitle = document.querySelector('.vjs-icon-subtitles')
+            subtitle.style.display = 'none'
+          }
+        } else {
+          i++
+        }
+      })
+    }
+  }
+
   handleOnVideoVolumeChange = player => {
     if (player) {
       const playerVolumeInfo = {
@@ -290,7 +311,7 @@ class Channels extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) { }
+      } catch (err) {}
     }
   }
 
@@ -388,7 +409,7 @@ class Channels extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const videoSettingProps = {
-      akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+      akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
     }
 
     const defaultVidSetting =
@@ -440,6 +461,7 @@ class Channels extends Component {
                     subtitles={this.subtitles()}
                     handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                     handleOnReadyStateChange={this.handleOnReadyStateChange}
+                    handleOnVideoPlaying={this.handleOnVideoPlaying}
                     // poster={poster}
                     {...videoSettings}
                   />
