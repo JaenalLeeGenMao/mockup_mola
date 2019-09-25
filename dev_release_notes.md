@@ -52,3 +52,6 @@ v1.2.0
 * Improvements:
   * Update recommendation api url and response data for /watch page next video autoplay and suggestion section on desktop and mobile web #6a500835 (Irene - 24/09/2019)
   * Update validation if video title is 'Untitled Page' for facebook seo when blocked, previously only validate if title is null. This is when sharing /watch url on facebook post, can only be tested with production url #95b08e0f (Irene - 24/09/2019)
+
+* Bug Fixes:
+  * fix bug in safari should not showing empty toogle subtitle in watch and channels #10885 (Aang - 25/-09/209)
