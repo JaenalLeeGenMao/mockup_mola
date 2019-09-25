@@ -128,7 +128,7 @@ export const videoPlayerContainer = css`
   margin: auto;
 
   @media screen and (min-height: 600px) and (max-height: 768px) {
-    display: block;
+    display: flex;
     height: 82vh;
   }
 `
@@ -140,7 +140,7 @@ export const videoPlayerContainer__nobar = css`
   margin: auto;
 
   @media screen and (min-height: 600px) and (max-height: 768px) {
-    display: block;
+    display: flex;
     height: 82vh;
   }
 `
@@ -300,7 +300,8 @@ export const videoPlayerInfoWrapper = css`
   .player__info_grid_desc {
     grid-area: desc;
     padding: 0.67rem 2rem;
-    overflow: scroll;
+    overflow-y: auto;
+    overscroll-behavior-y: auto;
 
     p {
       font-size: 1.4rem;
