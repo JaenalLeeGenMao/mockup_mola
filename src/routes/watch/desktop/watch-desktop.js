@@ -4,6 +4,7 @@ import _get from 'lodash/get'
 import { post } from 'axios'
 import Moment from 'moment'
 import _isUndefined from 'lodash/isUndefined'
+import ReactTooltip from 'react-tooltip'
 
 import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
@@ -31,6 +32,9 @@ import {
   videoPlayerWrapper,
   videoPlayerContainer,
   videoPlayerContainer__nobar,
+  videoPlayerInfoWrapper,
+  PeopleWrapper,
+  customTooltipTheme,
   movieDetailBottom,
   infoBar,
   infoBarContainer,
@@ -45,8 +49,8 @@ import { customTheoplayer } from './theoplayer-style'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
-import MovieContent from './movie'
-import SportContent from './sport'
+// let MissChat
+import { Suggestions as ContentSuggestions } from './movie/content'
 let errorFlag = 0
 
 class WatchDesktop extends Component {
@@ -257,9 +261,7 @@ class WatchDesktop extends Component {
   handleWindowSizeChange = () => {
     const bottomHeight = document.getElementById('detailBottom').clientHeight
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    document.querySelector('#detailBottom > div').style.height = isSafari
-      ? `${bottomHeight - 60}px`
-      : 'calc(26vh - 60px)'
+    document.querySelector('#detailBottom').style.height = isSafari ? `${bottomHeight - 60}px` : 'calc(26vh - 60px)'
   }
 
   componentDidMount() {
@@ -540,8 +542,8 @@ class WatchDesktop extends Component {
     let drmStreamUrl = '',
       isDRM = false
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (videoStatus === 'success' && dataFetched.drm && dataFetched.drm.widevine && dataFetched.drm.fairplay) {
-      drmStreamUrl = isSafari ? dataFetched.drm.fairplay.streamUrl : dataFetched.drm.widevine.streamUrl
+    if (videoStatus === 'success') {
+      drmStreamUrl = isSafari ? dataFetched?.drm?.fairplay?.streamUrl : dataFetched?.drm?.widevine?.streamUrl
     }
     isDRM = drmStreamUrl ? true : false
 
@@ -553,7 +555,9 @@ class WatchDesktop extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
-    const isMovieBool = isMovie(dataFetched.contentType)
+
+    const isLiveMatch = getContentTypeName(dataFetched.contentType) === 'live'
+    // const isLiveMatch = true
 
     const { toggleInfoBar, notice_bar_message } = this.state
     let isMatchPassed = false
@@ -592,11 +596,9 @@ class WatchDesktop extends Component {
                 </div>
               </div>
               <div className={movieDetailBottom} id="detailBottom">
-                <div>
-                  {isMovieBool && (
-                    <MovieContent dataFetched={dataFetched} fetchRecommendation={this.props.recommendation} />
-                  )}
-                  {!isMovieBool && <SportContent dataFetched={dataFetched} />}
+                <div className="recommendationWrapper">
+                  {this.props.recommendation.data.length > 0 && <p className="title">Related Video</p>}
+                  <ContentSuggestions videos={this.props.recommendation.data} />
                 </div>
               </div>
             </div>
