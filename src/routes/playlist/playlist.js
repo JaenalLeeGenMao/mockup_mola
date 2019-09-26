@@ -163,13 +163,13 @@ class Playlist extends React.Component {
                             onClick={() => this.handleOnClick(video.id)}
                             description={video.title ? video.title : ''}
                             contentType={matchLive ? video.contentType : 4}
-                            src={`${video.background.landscape}?w=540` ? `${video.background.landscape}?w=540` : ''}
+                            src={`${video.background.landscape}?w=540`}
                           />
                         ) : (
                           <VideoCard
                             onClick={() => this.handleOnClick(video.id)}
                             description={video.title ? video.title : ''}
-                            src={`${video.background.portrait}?w=540` ? `${video.background.portrait}?w=540` : ''}
+                            src={`${video.background.portrait}?w=540`}
                           />
                         )}
                       </LazyLoad>
