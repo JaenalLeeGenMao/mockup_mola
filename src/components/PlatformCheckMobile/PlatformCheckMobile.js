@@ -105,7 +105,7 @@ class PlatformCheckMobile extends Component {
         {isHeader && this.renderHeader()}
         {/* <div className={styles.matches_header_bg} /> */}
         <div className={styles.bg}>
-          <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster})` }}>
+          <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster}?w=800)` }}>
             {!portraitPoster && (
               <div className={styles.player__container}>
                 <div className={styles.img__wrapper}>

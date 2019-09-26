@@ -21,7 +21,7 @@ class PrimaryMenu extends Component {
                 handleSelectChannel(item.id)
               }}
             >
-              <img alt="" className={styles.epg__logo__img} src={item.thumbnailImg} />
+              <img alt="" className={styles.epg__logo__img} src={`${item.thumbnailImg}?w=100`} />
             </div>
           ))}
         </div>
