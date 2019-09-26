@@ -54,6 +54,7 @@ v1.2.0
   * Update validation if video title is 'Untitled Page' for facebook seo when blocked, previously only validate if title is null. This is when sharing /watch url on facebook post, can only be tested with production url #95b08e0f (Irene - 24/09/2019)
   * add resizer for some image in channels #10939 (Aang - 26/09/2019)
   * add resizer for images in landing page #10936 (Jaenal - 26/09/2019)
+  * remove domain from path and referrer payload for analytics #16077 (Elkana - 26/09/2019)
 
 * Bug Fixes:
   * fix bug in safari should not showing empty toogle subtitle in watch and channels #10885 (Aang - 25/-09/209)
