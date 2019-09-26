@@ -1,3 +1,5 @@
+@import '../../../../components/variables.css';
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -40,7 +42,7 @@
   width: 1.5rem;
   height: 1.5rem;
   background-color: transparent;
-  border: 3px solid #2c56ff;
+  border: 3px solid var(--primary-color);
 }
 
 /* .menu__bot_active {

@@ -156,7 +156,7 @@ body {
   text-align: center;
   font-size: 1.8rem;
   border-radius: 0.5rem;
-  background-color: #466bff;
+  background-color: var(--primary-color);
   color: #fff;
 }
 

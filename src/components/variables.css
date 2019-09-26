@@ -29,4 +29,86 @@
   --screen-sm-min: 768px; /* Small screen / tablet */
   --screen-md-min: 992px; /* Medium screen / desktop */
   --screen-lg-min: 1280px; /* Large screen / wide desktop */
+
+  /* TypoGraphy */
+  --bold-font-style: 700;
+  --semiBold-font-style: 600;
+  --regular-font-style: 500;
+  --light-font-style: 400;
+
+  /* Brand Color */
+
+  /* base */
+  --body-color: #1f1f1f;
+
+  /* primary */
+  --primary-color: #2c56ff;
+  --primary-hover-color: #2242c4;
+  --primary-active-color: #1733a3;
+
+  /* secondary */
+  --secondary-color: #fff;
+  --secondary-hover-color: #ededed;
+  --secondary-active-color: #e2e0e0;
+
+  /* gold */
+  --gold-color: #ad811e;
+  --gold-hover-color: #9f7720;
+  --gold-active-color: #8b691f;
+
+  /* Base Color */
+  --header-color: #000;
+  --body-color: #1f1f1f;
+
+  /* States Color */
+  --success-color: #4be168;
+  --error-color: #e14b4b;
+  --warning-color: #f0a053;
+  --info-color: #5d79ea;
+
+  /* Text Styles - font-size */
+
+  /* Large Screen */
+  --ls-h1-fs: 7.4rem;
+  --ls-h2-fs: 6.6rem;
+  --ls-h3-fs: 5.2rem;
+  --ls-h4-fs: 3.6rem;
+  --ls-h5-fs: 3.2rem;
+  --ls-h6-fs: 2.9rem;
+  --ls-sh1-fs: 2.6rem;
+  --ls-sh2-fs: 2.3rem;
+  --ls-sh3-fs: 2rem;
+  --ls-p-fs: 1.8rem;
+  --ls-qu-fs: 2.6rem;
+
+  /* Small Screen */
+  --ss-h1-fs: 2.9rem;
+  --ss-h2-fs: 2.6rem;
+  --ss-h3-fs: 2.3rem;
+  --ss-h4-fs: 2rem;
+  --ss-h5-fs: 1.8rem;
+  --ss-h6-fs: 1.6rem;
+  --ss-sh1-fs: 1.4rem;
+  --ss-sh2-fs: 1.2rem;
+  --ss-p-fs: 1.1rem;
+  --ss-qu-fs: 1.4rem;
+}
+
+/* media query for mobile */
+@media (max-width: 640px) {
+  :root {
+    /* Text Styles */
+
+    /* Small Screen */
+    --ss-h1-fs: 2.9rem;
+    --ss-h2-fs: 2.6rem;
+    --ss-h3-fs: 2.3rem;
+    --ss-h4-fs: 2rem;
+    --ss-h5-fs: 1.8rem;
+    --ss-h6-fs: 1.6rem;
+    --ss-sh1-fs: 1.4rem;
+    --ss-sh2-fs: 1.2rem;
+    --ss-p-fs: 1.1rem;
+    --ss-qu-fs: 1.4rem;
+  }
 }
