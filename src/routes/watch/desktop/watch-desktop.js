@@ -263,13 +263,7 @@ class WatchDesktop extends Component {
   }
 
   componentDidMount() {
-    const {
-      // getMovieDetail,
-      // movieId, //passed as props from index.js,
-      fetchRecommendation,
-      // user,
-      // getVUID,
-    } = this.props
+    const { user, videoId, movieDetail, configParams } = this.props
 
     this.getLoc()
 
@@ -278,9 +272,41 @@ class WatchDesktop extends Component {
       window.addEventListener('offline', this.goOffline)
     }
 
-    if (this.props.movieDetail) {
-      const movieDetail = this.props.movieDetail
+    if (movieDetail) {
       if (movieDetail.meta.status === 'success') {
+        const { nextVideoClose } = this.state
+        const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+
+        const dataFetched = movieDetail.data.length > 0 ? movieDetail.data[0] : undefined
+
+        let handleNextVideo = null
+        if (
+          !nextVideoClose &&
+          getContentTypeName(dataFetched.contentType) !== 'live' &&
+          getContentTypeName(dataFetched.contentType) !== 'trailers'
+        ) {
+          handleNextVideo = this.handleNextVideo
+        }
+
+        const videoSettingProps = {
+          akamai_analytic_enabled:
+            configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
+        }
+
+        const defaultVidSetting = dataFetched
+          ? defaultVideoSetting(
+              user,
+              dataFetched,
+              vuidStatus === 'success' ? vuid : '',
+              handleNextVideo,
+              videoSettingProps
+            )
+          : {}
+
+        this.setState({
+          defaultVidSetting: defaultVidSetting,
+        })
+
         if (window) {
           const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
           const videoContainer = document.getElementById('videoContainer').clientHeight
@@ -337,7 +363,7 @@ class WatchDesktop extends Component {
       const isAllowed = permission.isAllowed
       let watchPermissionErrorCode = permission.errorCode
 
-      const { loc, nextVideoBlocker, nextVideoClose } = this.state
+      const { loc, nextVideoBlocker, nextVideoClose, defaultVidSetting } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
       const poster = dataFetched ? dataFetched.background.landscape : ''
@@ -345,28 +371,28 @@ class WatchDesktop extends Component {
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
 
-      let handleNextVideo = null
-      if (
-        !nextVideoClose &&
-        getContentTypeName(dataFetched.contentType) !== 'live' &&
-        getContentTypeName(dataFetched.contentType) !== 'trailers'
-      ) {
-        handleNextVideo = this.handleNextVideo
-      }
+      // let handleNextVideo = null
+      // if (
+      //   !nextVideoClose &&
+      //   getContentTypeName(dataFetched.contentType) !== 'live' &&
+      //   getContentTypeName(dataFetched.contentType) !== 'trailers'
+      // ) {
+      //   handleNextVideo = this.handleNextVideo
+      // }
 
-      const videoSettingProps = {
-        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
-      }
+      // const videoSettingProps = {
+      //   akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
+      // }
 
-      const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(
-            user,
-            dataFetched,
-            vuidStatus === 'success' ? vuid : '',
-            handleNextVideo,
-            videoSettingProps
-          )
-        : {}
+      // const defaultVidSetting = dataFetched
+      //   ? defaultVideoSetting(
+      //     user,
+      //     dataFetched,
+      //     vuidStatus === 'success' ? vuid : '',
+      //     handleNextVideo,
+      //     videoSettingProps
+      //   )
+      //   : {}
 
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
@@ -428,7 +454,7 @@ class WatchDesktop extends Component {
           )
         } else if (isMatchPassed) {
           return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
-        } else if (dataFetched.streamSourceUrl) {
+        } else if (dataFetched.streamSourceUrl && defaultVidSetting) {
           // Else render, only if there's streamSourceUrl
           if (!this.state.errorLicense) {
             const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
@@ -588,7 +614,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  fetchRecommendation: movieId => dispatch(recommendationActions.getRecommendation(movieId)),
   getVUID_retry: () => dispatch(getVUID_retry()),
 })
 
