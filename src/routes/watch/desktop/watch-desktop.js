@@ -258,12 +258,6 @@ class WatchDesktop extends Component {
   //   }
   // }
 
-  handleWindowSizeChange = () => {
-    const bottomHeight = document.getElementById('detailBottom').clientHeight
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    document.querySelector('#detailBottom').style.height = isSafari ? `${bottomHeight - 60}px` : 'calc(26vh - 60px)'
-  }
-
   componentDidMount() {
     const { user, videoId, movieDetail, configParams } = this.props
 
@@ -593,14 +587,58 @@ class WatchDesktop extends Component {
                   ) : (
                     <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                   )}
+                  <div className={`${videoPlayerInfoWrapper} ${isLiveMatch ? 'live' : ''}`}>
+                    <div className="player__info_grid_title">
+                      <h1>{dataFetched.title}</h1>
+                      <div>
+                        {videoDuration && <span>{videoDuration}</span>}
+                        {dataFetched.genre.length > 0 && <span>{dataFetched.genre[0]}</span>}
+                        {dataFetched.suitableAge && <span className="border">{dataFetched.suitableAge}+</span>}
+                      </div>
+                    </div>
+                    <div className="player__info_grid_desc">
+                      <p>{dataFetched.description}</p>
+                    </div>
+                    <div className="player__info_grid_cast">
+                      {dataFetched.people.length > 0 && (
+                        <>
+                          <strong>Cast & Crew</strong>
+                          <div className={customTooltipTheme}>
+                            {dataFetched.people.map(person => {
+                              return (
+                                <>
+                                  <PeopleWrapper
+                                    data-tip={person.attributes.name}
+                                    data-for={person.attributes.name}
+                                    src={person.attributes.imageUrl}
+                                  />
+                                  <ReactTooltip
+                                    id={person.attributes.name}
+                                    aria-haspopup="true"
+                                    effect="solid"
+                                    className="grey"
+                                  >
+                                    <p>{person.attributes.name}</p>
+                                  </ReactTooltip>
+                                </>
+                              )
+                            })}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div className="player__info_grid_chat">{isLiveMatch && <div> </div>}</div>
+                  </div>
                 </div>
               </div>
-              <div className={movieDetailBottom} id="detailBottom">
-                <div className="recommendationWrapper">
-                  {this.props.recommendation.data.length > 0 && <p className="title">Related Video</p>}
-                  <ContentSuggestions videos={this.props.recommendation.data} />
+              {this.props.recommendation.data.length > 0 && (
+                <div className={movieDetailBottom} id="detailBottom">
+                  <div className="recommendationWrapper">
+                    <p className="title">Related Video</p>
+                    <ContentSuggestions videos={this.props.recommendation.data} contentType={dataFetched.contentType} />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </>
         )}

@@ -38,7 +38,7 @@ export const posterWrapper = css`
 `
 
 export const movieDetailContainer = css`
-  background: #000311;
+  background: #1f1f1f;
   color: #fff;
   width: 100vw;
   height: calc(100vh - 6rem);
@@ -325,7 +325,7 @@ export const videoPlayerInfoWrapper = css`
 
   .player__info_grid_chat {
     grid-area: chat;
-    background: blue;
+    background: #393a40;
   }
 `
 

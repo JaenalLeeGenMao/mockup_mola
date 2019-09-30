@@ -630,6 +630,7 @@ const normalizeRecommendation = response => {
         short_description: shortDescription,
         cover_portrait: background.portrait,
         cover_landscape: background.landscape,
+        ...dt.attributes,
       }
     })
   }
