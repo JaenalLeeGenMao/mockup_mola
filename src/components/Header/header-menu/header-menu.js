@@ -36,9 +36,9 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
-              <Link onClick={onProfileClick} className={styles.popup__menu_image_wrapper}>
+              {/* <Link onClick={onProfileClick} className={styles.popup__menu_image_wrapper}>
                 {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
-              </Link>
+              </Link> */}
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
             <Link onClick={onProfileClick}>{locale['profile']}</Link>
