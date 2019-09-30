@@ -340,19 +340,7 @@ class WatchDesktop extends Component {
   }
 
   renderVideo = dataFetched => {
-    const {
-      user,
-      getMovieDetail,
-      videoId,
-      blocked,
-      iconStatus,
-      status,
-      icon,
-      name,
-      isAutoPlay,
-      isMatchPassed,
-      configParams,
-    } = this.props
+    const { user, getMovieDetail, videoId, blocked, isAutoPlay, isMatchPassed, configParams } = this.props
     let theoVolumeInfo = {}
 
     try {

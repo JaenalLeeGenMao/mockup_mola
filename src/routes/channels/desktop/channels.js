@@ -33,9 +33,6 @@ import ChannelCalendar from './channelCalendar'
 import { getChannelProgrammeGuides } from '../selectors'
 import { customTheoplayer } from './theoplayer-style'
 
-import iconRed from './assets/merah.png'
-import iconGreen from './assets/hijau.png'
-
 import styles from './channels.css'
 
 let errorFlag = 0
@@ -50,10 +47,6 @@ class Channels extends Component {
     toggleInfoBar: true,
     imageUrl: [],
     block: false,
-    status: [],
-    iconStatus: [],
-    iconGreen,
-    name: '',
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
     errorLicense: false,
@@ -124,28 +117,7 @@ class Channels extends Component {
       if (filterForBlockFind) {
         this.setState({ block: false })
       } else {
-        const filterForBlock = dataFetch.platforms
-        // console.log('status blocker dong', filterForBlock)
-        const isBlocked = filterForBlock.length > 0
-        let stat = []
-        let state = []
-        let img = []
-        let st = status
-
-        if (isBlocked) {
-          filterForBlock.forEach(dt => {
-            st.push(dt.status)
-            if (dt.status === 1) {
-              stat.push(iconGreen)
-            } else {
-              stat.push(iconRed)
-            }
-
-            state.push(dt.name)
-            img.push(dt.imageUrl)
-          })
-        }
-        this.setState({ name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
+        this.setState({ block: true })
       }
     }
   }
@@ -466,19 +438,7 @@ class Channels extends Component {
                     {...videoSettings}
                   />
                 )}
-              {block &&
-                loadPlayer && (
-                  <PlatformDesktop
-                    iconStatus={this.state.iconStatus}
-                    status={this.state.status}
-                    icon={this.state.imageUrl}
-                    name={this.state.name}
-                    title={apiFetched ? dataFetched.title : ''}
-                    portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-                    user={this.props.user}
-                    videoId={activeChannelId}
-                  />
-                )}
+              {block && loadPlayer && <PlatformDesktop isChannel {...this.props} videoId={activeChannelId} />}
               {!loadPlayer &&
                 status !== 'loading' && <div className={styles.video__unavailable}>Video Not Available</div>}
               {!block &&
