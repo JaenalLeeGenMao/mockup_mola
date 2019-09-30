@@ -63,7 +63,7 @@ class Watch extends Component {
         }
       }
       if (configParams && configParams.data && configParams.data.akamai_analytic_enabled) {
-        setAkamaiMediaAnalyticsData('title', movieDetail.data[0].title);
+        setAkamaiMediaAnalyticsData('title', movieDetail.data[0].title)
       }
       const dataFetch = movieDetail.data[0]
 

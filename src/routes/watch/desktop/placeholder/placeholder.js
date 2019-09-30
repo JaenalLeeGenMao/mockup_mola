@@ -6,29 +6,32 @@ import styles from './placeholder.css'
 class Placeholder extends Component {
   render() {
     return (
-      <>
-        <div className={styles.placeholder__watch__box} />
-        <div className={styles.placeholder__container__watch}>
-          <div className={styles.placeholder__filter__left}>
-            <div className={`${styles.placeholder__header} ${styles.placeholder__line__left}`} />
-            <div className={styles.placeholder__line__left} />
-            <div className={styles.placeholder__line__left} />
-            <div className={styles.placeholder__line__left} />
+      <div className={styles.placeholder__container}>
+        <div className={styles.placeholder__watch_box} />
+        <div className={styles.placeholder__watch_detail}>
+          <div style={{ padding: '0px 2rem 1.34rem' }}>
+            <div className={styles.placeholder__long} />
+            <div className={styles.placeholder__medium} />
+            <br />
+            <div className={styles.placeholder__quarter_long} />
+            <br />
+            <div className={styles.placeholder__long} />
+            <div className={styles.placeholder__quarter_long} />
+            <div className={styles.placeholder__medium} />
+            <div className={styles.placeholder__quarter_long} />
+            <div className={styles.placeholder__long} />
+            <div className={styles.placeholder__short} />
           </div>
-          <div className={styles.placeholder__filter__center}>
-            <div className={`${styles.placeholder__header} ${styles.placeholder__line__center}`} />
-            <div className={styles.placeholder__line__center} />
-            <div className={styles.placeholder__line__center} />
-            <div className={styles.placeholder__line__center} />
-          </div>
-          <div className={styles.placeholder__filter__right}>
-            <div className={`${styles.placeholder__header} ${styles.placeholder__line__right}`} />
-            <div className={styles.placeholder__line__right} />
-            <div className={styles.placeholder__line__right} />
-            <div className={styles.placeholder__line__right} />
+          <div style={{ padding: '0px 2rem 1.34rem' }}>
+            <div className={styles.placeholder__short} />
+            <div style={{ display: 'flex' }}>
+              <div className={styles.placeholder__cast} />
+              <div className={styles.placeholder__cast_121} />
+              <div className={styles.placeholder__cast_74} />
+            </div>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
