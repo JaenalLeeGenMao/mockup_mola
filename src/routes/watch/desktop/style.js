@@ -267,8 +267,12 @@ export const videoPlayerInfoWrapper = css`
     'desc'
     'cast'
     'chat';
-  grid-template-rows: 1fr 5fr 1.5fr 1fr;
+  grid-template-rows: 1fr 8fr 1fr;
   grid-template-columns: 1fr;
+
+  &.live {
+    grid-template-rows: 1fr 8fr 1fr 1fr;
+  }
 
   .player__info_grid_title {
     grid-area: title;
@@ -313,6 +317,7 @@ export const videoPlayerInfoWrapper = css`
   .player__info_grid_cast {
     grid-area: cast;
     overflow: hidden;
+    height: 10rem;
 
     strong {
       color: #989898;
