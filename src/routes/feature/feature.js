@@ -193,7 +193,7 @@ class Feature extends Component {
                       key={obj.id}
                       onClick={() => this.handleOnClick(obj)}
                       alt={obj.title}
-                      src={obj.background.landscape}
+                      src={`${obj.background.landscape}?w=720`}
                       // onLoad={this.updateOnImageLoad}
                       containerClassName={bannerContainer}
                     />
@@ -271,7 +271,9 @@ class Feature extends Component {
                                     description={obj.title}
                                     contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
                                     src={
-                                      obj.type === 'playlists' ? obj.images.cover.landscape : obj.background.landscape
+                                      obj.type === 'playlists'
+                                        ? `${obj.images.cover.landscape}?w=720`
+                                        : `${obj.background.landscape}?w=720`
                                     }
                                     // onLoad={this.updateOnImageLoad}
                                     onClick={() => this.handleOnClick(obj)}
@@ -299,7 +301,7 @@ class Feature extends Component {
                                     key={obj.id}
                                     onClick={() => this.handleOnClick(obj)}
                                     alt={obj.title}
-                                    src={obj.imageUrl}
+                                    src={`${obj.imageUrl}?w=720`}
                                     title={obj.title}
                                     contentType={obj.type}
                                     createdAt={obj.createdAt}

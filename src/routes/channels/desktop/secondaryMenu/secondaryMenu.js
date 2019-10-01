@@ -29,7 +29,9 @@ class SecondaryMenu extends Component {
                 }}
               >
                 <span className={s.imgContainer__PL}>
-                  {genre.thumbnailImg && <img className={s.filterimg__PremierLeague} src={genre.thumbnailImg} />}
+                  {genre.thumbnailImg && (
+                    <img className={s.filterimg__PremierLeague} src={`${genre.thumbnailImg}?w=40`} />
+                  )}
                 </span>
                 <span value={genre.id} className={filterByLeague == genre.id ? s.selectednameleague : s.nameleague}>
                   {genre.title}

@@ -373,7 +373,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
-  molaCache.get('headerMenu', function(err, value) {
+  molaCache.get('headerMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -403,7 +403,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -420,7 +420,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function(err, value) {
+  molaCache.get('configParams', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -450,7 +450,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 900, function(err, success) {
+      molaCache.set('configParams', configParams, 900, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -773,6 +773,12 @@ app.get('*', async (req, res, next) => {
     const responseHeaderMenu = await getHeaderMenus()
     const responseConfigParams = await getConfigParams()
 
+    const mediaAnalyticUrl = {
+      development: 'http://ma1435-r.analytics.edgesuite.net/config/beacon-25308.xml',
+      staging: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25436.xml',
+      production: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25462.xml'
+    }
+
     const initialState = {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
@@ -814,7 +820,8 @@ app.get('*', async (req, res, next) => {
           token: errorToken,
           gtoken: errorGtoken,
         },
-      },
+        mediaAnalyticUrl: mediaAnalyticUrl[config.env]
+      }
     }
 
     // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
@@ -856,6 +863,8 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route }
 
+    data.akamai_analytic_enabled = responseConfigParams ? _get(responseConfigParams, 'akamai_analytic_enabled', false) : false
+
     /*** ###Articles Detail data and SEO ### ***/
     data.url = config.endpoints.domain + req.path
     data.image = config.endpoints.domain + '/mola.png'
@@ -869,7 +878,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function(err, value) {
+      molaCache.get(videoId, function (err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -915,7 +924,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function(err, success) {
+        molaCache.set(videoId, videoObj, 2700, function (err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true

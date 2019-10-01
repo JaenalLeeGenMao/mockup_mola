@@ -9,7 +9,7 @@ import Moment from 'moment'
 let ticker = [],
   tickerLive = [],
   tickerPerSec = []
-var videoData, userData
+var videoData, userData, akamai_analytic_enabled
 let timeLive = -1
 
 let handleNextVideoCallback
@@ -65,8 +65,12 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) {}
+            } catch (err) { }
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
+          }
+
+          if (akamai_analytic_enabled) {
+            akamaiHandleBitRateSwitch(bitrate);
           }
 
           if (!tickerLive.includes(timeLive)) {
@@ -105,13 +109,15 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) {}
+            } catch (err) { }
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
         }
-        // if (!ticker.includes(calcTime)) {
-        // ticker.push(calcTime)
-        // console.log("calcTime", time)
+
+        if (akamai_analytic_enabled) {
+          akamaiHandleBitRateSwitch(bitrate);
+        }
+
         Tracker.sessionId()
         const heartbeat = time !== 0
         handleOnTimePerMinute({ action: 'timeupdate', heartbeat, player, bitrate, video_quality, client_bandwidth })
@@ -139,14 +145,14 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
 }
 
-export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
+export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, props) => {
   const baseUrl = endpoints.ads
   videoData = videoDt
   userData = user
@@ -154,6 +160,7 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo) => {
   tickerLive = []
   tickerPerSec = []
   timeLive = -1
+  akamai_analytic_enabled = props.akamai_analytic_enabled || false
   // console.log('KEPANGGIL??')
   handleNextVideoCallback = handleNextVideo
 

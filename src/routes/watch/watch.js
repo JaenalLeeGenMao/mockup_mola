@@ -45,7 +45,7 @@ class Watch extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { getMovieDetail, movieDetail, videoId, recommendation, getRecommendation } = this.props
+    const { getMovieDetail, movieDetail, videoId, recommendation, getRecommendation, configParams } = this.props
     const { status } = this.state
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
       // this.getLoc()
@@ -61,6 +61,9 @@ class Watch extends Component {
         if (window.debugStore) {
           window.debugStore.movieDetail = this.props.movieDetail
         }
+      }
+      if (configParams && configParams.data && configParams.data.akamai_analytic_enabled) {
+        setAkamaiMediaAnalyticsData('title', movieDetail.data[0].title);
       }
       const dataFetch = movieDetail.data[0]
 

@@ -110,6 +110,27 @@ class WatchDesktop extends Component {
     })
   }
 
+  handleOnVideoPlaying = (status, player) => {
+    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
+    let i = 0
+    if (isSafari && player.textTracks && player.textTracks.length > 0) {
+      // to hide empty subtitle in safari
+      player.textTracks.map(element => {
+        if (!element.id) {
+          if (player.textTracks.length > 1) {
+            const el = document.getElementsByClassName('theo-menu-item vjs-menu-item theo-text-track-menu-item')
+            el[i].style.display = 'none'
+          } else {
+            const subtitle = document.querySelector('.vjs-icon-subtitles')
+            subtitle.style.display = 'none'
+          }
+        } else {
+          i++
+        }
+      })
+    }
+  }
+
   detectorConnection = player => {
     if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
       setTimeout(() => {
@@ -302,6 +323,7 @@ class WatchDesktop extends Component {
       name,
       isAutoPlay,
       isMatchPassed,
+      configParams,
     } = this.props
     let theoVolumeInfo = {}
 
@@ -334,8 +356,18 @@ class WatchDesktop extends Component {
         handleNextVideo = this.handleNextVideo
       }
 
+      const videoSettingProps = {
+        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
+      }
+
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo)
+        ? defaultVideoSetting(
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            handleNextVideo,
+            videoSettingProps
+          )
         : {}
 
       const checkAdsSettings =
@@ -411,6 +443,7 @@ class WatchDesktop extends Component {
                   autoPlay={autoPlay}
                   handleOnReadyStateChange={this.handleOnReadyStateChange}
                   handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                  handleOnVideoPlaying={this.handleOnVideoPlaying}
                   {...videoSettings}
                 >
                   <div className={videoInnerContainer}>

@@ -619,19 +619,19 @@ const normalizeProgrammeGuides = response => {
 }
 
 const normalizeRecommendation = response => {
-  const { dataset } = response.data
-  if (dataset && dataset.length > 0) {
-    return dataset.map(dt => {
-      const { video_id, title, short_description, cover_portrait, cover_landscape } = dt
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(dt => {
+      const { title, shortDescription, images } = dt.attributes
+      const background = _get(images, 'cover', { portrait: null, landscape: null })
       return {
-        video_id,
+        video_id: dt.id,
         title,
-        short_description,
-        cover_portrait,
-        cover_landscape,
+        short_description: shortDescription,
+        cover_portrait: background.portrait,
+        cover_landscape: background.landscape,
       }
     })
-    // .sort((a, b) => a.sortOrder - b.sortOrder)
   }
   return []
 }

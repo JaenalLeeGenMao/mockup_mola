@@ -547,8 +547,7 @@ const getMovieDetail = ({ id }) => {
 }
 
 const getRecommendation = id => {
-  return get(`${RECOMMENDATION}?video_id=${id}`, {
-    // return get(`http://private-08fa1b-mola1.apiary-mock.com/questions`, {
+  return get(`${RECOMMENDATION}/${id}`, {
     ...endpoints.setting,
   })
     .then(response => {

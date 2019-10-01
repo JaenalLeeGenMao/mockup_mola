@@ -71,7 +71,7 @@ class PlatformCheck extends Component {
     const { name, portraitPoster, icon, iconStatus, status } = this.props
     return (
       <>
-        <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster})` }}>
+        <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster}?w=1000)` }}>
           {!portraitPoster && (
             <div className={styles.player__container}>
               <div className={styles.img__wrapper}>
