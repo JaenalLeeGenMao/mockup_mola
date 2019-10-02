@@ -50,6 +50,7 @@ v1.2.0
   * Add Akamai Media Analytic and read data like number of audience, when video is watched and ended, bitrate, and buffer time from player on /watch page on desktop and mobile web #4d7b071b #5d0fe434 #56e64a56 (Irene - 23-24/09/2019)
 
 * Improvements:
+
   * Update recommendation api url and response data for /watch page next video autoplay and suggestion section on desktop and mobile web #6a500835 (Irene - 24/09/2019)
   * Update validation if video title is 'Untitled Page' for facebook seo when blocked, previously only validate if title is null. This is when sharing /watch url on facebook post, can only be tested with production url #95b08e0f (Irene - 24/09/2019)
   * add resizer for some image in channels #10939 (Aang - 26/09/2019)
@@ -58,3 +59,8 @@ v1.2.0
 
 * Bug Fixes:
   * fix bug in safari should not showing empty toogle subtitle in watch and channels #10885 (Aang - 25/-09/209)
+
+v1.3.0 + **1745** (Septian - 02/10/2019)
+
+* Improvements:
+  * Change ads app_id from sent_ads to mola_ads
