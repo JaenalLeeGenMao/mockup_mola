@@ -15,8 +15,8 @@
   right: 2rem;
   width: 35rem;
   height: 15.3rem;
-  max-height: 153px;
-  max-width: 350px;
+  max-height: 15.3rem;
+  max-width: 35rem;
   background-color: #1f1f1f;
   pointer-events: auto;
 }
@@ -109,6 +109,8 @@
     width: calc(100% - 10px);
     height: calc(100% - 60px);
     margin: 0 5px;
+    max-height: 153px;
+    max-width: 350px;
   }
 
   .poster {
@@ -165,6 +167,8 @@
 @media screen and (max-width: 320px) {
   .container {
     height: calc(100% - 60px);
+    max-height: 153px;
+    max-width: 350px;
   }
 
   .title {
