@@ -65,12 +65,12 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) { }
+            } catch (err) {}
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
 
           if (akamai_analytic_enabled) {
-            akamaiHandleBitRateSwitch(bitrate);
+            akamaiHandleBitRateSwitch(bitrate)
           }
 
           if (!tickerLive.includes(timeLive)) {
@@ -109,13 +109,13 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) { }
+            } catch (err) {}
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
         }
 
         if (akamai_analytic_enabled) {
-          akamaiHandleBitRateSwitch(bitrate);
+          akamaiHandleBitRateSwitch(bitrate)
         }
 
         Tracker.sessionId()
@@ -145,7 +145,7 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
@@ -202,7 +202,7 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, props)
   const payload = {
     project_id: '2',
     video_id: videoData.id,
-    app_id: config.env === 'production' ? 'sent_ads' : 'mola_ads',
+    app_id: 'mola_ads',
     session_id: Tracker.sessionId(window),
     client_ip: user.clientIp,
     uuid: uuidADS(),
