@@ -74,7 +74,7 @@ class MovieDetail extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) { }
+      } catch (err) {}
     }
   }
 
@@ -115,9 +115,7 @@ class MovieDetail extends Component {
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[0] : ''
     const longitude =
       geolocation && geolocation.length > 0 && geolocation.split(',').length == 2 ? geolocation.split(',')[1] : ''
-    const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=${
-      config.env === 'production' ? 'sent_ads' : 'mola_ads'
-      }`
+    const locationUrl = `${config.endpoints.ads}/v1/ads/sentadv-ads-manager/api/v1/sign-location?app_id=mola_ads`
     const body = {
       lat: parseFloat(latitude),
       long: parseFloat(longitude),
@@ -191,7 +189,7 @@ class MovieDetail extends Component {
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${videoId}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}`
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.href = url
     }, 250)
   }
@@ -273,7 +271,7 @@ class MovieDetail extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
 
     if (dataFetched) {
       const { loc } = this.state
@@ -294,11 +292,17 @@ class MovieDetail extends Component {
       }
 
       const videoSettingProps = {
-        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+        akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
       }
 
       const defaultVidSetting = dataFetched
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', handleNextVideo, videoSettingProps)
+        ? defaultVideoSetting(
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            handleNextVideo,
+            videoSettingProps
+          )
         : {}
 
       const checkAdsSettings =
@@ -512,8 +516,8 @@ class MovieDetail extends Component {
                 {loadPlayer ? (
                   <>{this.renderVideo(dataFetched)}</>
                 ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
+                )}
               </div>
               <h1 className={videoTitle}>{dataFetched.title}</h1>
               {isMovieBool && (
