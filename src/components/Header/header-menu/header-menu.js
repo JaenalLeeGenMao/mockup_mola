@@ -8,7 +8,7 @@ import _ from 'lodash'
 import LazyLoad from '@components/common/Lazyload'
 import Footer from '@components/Footer'
 import Link from '@components/Link'
-import Notifications from '@components/Header/notifications'
+// import Notifications from '@components/Header/notifications'
 
 import { getLocale } from '../locale'
 

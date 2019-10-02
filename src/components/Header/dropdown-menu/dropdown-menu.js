@@ -3,22 +3,13 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './dropdown-menu.css'
 import _ from 'lodash'
 import BodyClassName from 'react-body-classname'
-import Notifications from '@components/Header/notifications'
+// import Notifications from '@components/Header/notifications'
 
 class DropdownList extends Component {
   state = {
     isOpenDropdown: false,
     selectedId: 0,
-    width: 0,
     indicatorNewNotif: false,
-  }
-
-  componentDidMount() {
-    this.handleWindowSizeChange()
-  }
-
-  componentWillUnMount() {
-    // document.removeEventListener('mousedown', this.handleClickDropdown)
   }
 
   handleClickDropdown = e => {
@@ -40,10 +31,6 @@ class DropdownList extends Component {
     if (onClick) {
       onClick(id)
     }
-  }
-
-  handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth })
   }
 
   handleShowNotifIndicator = val => {
@@ -91,7 +78,7 @@ class DropdownList extends Component {
         updatedAt: 1541000818,
       },
     }
-    const { isOpenDropdown, selectedId, width, indicatorNewNotif } = this.state
+    const { isOpenDropdown, selectedId, indicatorNewNotif } = this.state
     const { dataList, className, labelClassName, activeId, pathname = '/', newNotif, isMobile } = this.props
     return (
       <div className={`${s.dropdown_container} ${className ? className : ''}`}>

@@ -163,7 +163,6 @@ class Notifications extends Component {
           updatedAt: 1541000818,
         },
       }
-      console.log(newNotif)
       return (
         <div
           className={`${this.props.className}`}
