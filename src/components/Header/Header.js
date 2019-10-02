@@ -58,7 +58,7 @@ class Header extends Component {
   render() {
     const { pathname, headerMenu, user, activeMenuId } = this.props
     const { width, isLandscape } = this.state
-    let isMobileView = width < 778
+    let isMobileView = width < 875
     if (/iPad/i.test(navigator.userAgent)) {
       isMobileView = true
     }

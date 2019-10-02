@@ -636,6 +636,50 @@ const normalizeRecommendation = response => {
   return []
 }
 
+const normalizeNotifications = response => {
+  const { data } = response.data
+  // const { notifications } = data
+  if (data && data.length > 0) {
+    // const { total } = data
+    const result = data.map(notification => {
+      const {
+        id,
+        type,
+        attributes: {
+          imageUrl,
+          linkUrl,
+          title,
+          message,
+          status,
+          projectId,
+          refId,
+          startTime,
+          endTime,
+          createdAt,
+          updatedAt,
+        },
+      } = notification
+      return {
+        id,
+        type,
+        imageUrl,
+        linkUrl,
+        title,
+        message,
+        status,
+        projectId,
+        refId,
+        startTime,
+        endTime,
+        createdAt,
+        updatedAt,
+      }
+    })
+    return result
+  }
+  return []
+}
+
 const normalizePartners = response => {
   const { data } = response.data
   if (data && data.length > 0) {
@@ -667,5 +711,6 @@ export default {
   normalizeProgrammeGuides,
   normalizeRecommendation,
   normalizeMatchPlaylists,
+  normalizeNotifications,
   normalizePartners,
 }

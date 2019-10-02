@@ -1,0 +1,6 @@
+{
+  "name": "LoadingNotifications",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./loading-notifications.js"
+}

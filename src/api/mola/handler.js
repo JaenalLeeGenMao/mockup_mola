@@ -18,6 +18,7 @@ import {
   ARTICLES_RECOMMENDED_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT_NOCACHE,
   VIDEOS_ENDPOINT_NOCACHE,
+  NOTIFICATION_ENDPOINT,
   PARTNERS_ENDPOINT,
 } from './endpoints'
 import utils from './util'
@@ -723,6 +724,53 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
 //     })
 // }
 
+const getNotifications = (limit = 5, time = '') => {
+  // console.log('JALAN HANDLER', `${NOTIFICATION_ENDPOINT}/in-app?app_id=molatv&limit=${limit}&time=${time}`)
+  return get(`${NOTIFICATION_ENDPOINT}/in-app?app_id=molatv&limit=${limit}&time=${time}`, { ...endpoints.setting })
+    .then(response => {
+      const result = utils.normalizeNotifications(response)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: result || [],
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: error.toString(),
+        },
+      }
+    })
+}
+
+const getTotalNotifications = () => {
+  // console.log('JALAN HANDLER', NOTIFICATION_ENDPOINT)
+  return get(`${NOTIFICATION_ENDPOINT}/total`, { ...endpoints.setting })
+    .then(response => {
+      const { data } = response.data
+      const { total } = data.attributes
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: total || 0,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error: error.toString(),
+        },
+      }
+    })
+}
+
 const getChannelsList = (id = 'channels-m') => {
   return get(`${CHANNELS_PLAYLIST_ENDPOINT}/${id}`, {
     ...endpoints.setting,
@@ -890,4 +938,6 @@ export default {
   getPlaylistPlaylists,
   getRecommendedArticles,
   getPartners,
+  getNotifications,
+  getTotalNotifications,
 }

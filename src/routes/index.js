@@ -166,6 +166,10 @@ const routes = {
       path: '/live-support',
       load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
+    // {
+    //   path: '/notifications',
+    //   load: () => import(/* webpackChunkName: 'notifications' */ './notifications'),
+    // },
     {
       path: '/error/smart',
       load: () => import(/* webpackChunkName: 'smart' */ './error/smart'),
