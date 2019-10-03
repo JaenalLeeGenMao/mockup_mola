@@ -72,7 +72,7 @@ class DropdownList extends Component {
       <>
         {thumbnails && (
           <span className={s.dropdown_img}>
-            <img src={thumbnails} />
+            <img src={`${thumbnails}?w=70`} />
           </span>
         )}
         <span>{title}</span>
@@ -108,7 +108,7 @@ class DropdownList extends Component {
               >
                 {dt.thumbnails && (
                   <span className={s.dropdown_img}>
-                    <img src={dt.thumbnails} />
+                    <img src={`${dt.thumbnails}?w=70`} />
                   </span>
                 )}
                 <span>{dt.title}</span>

@@ -151,7 +151,7 @@ class MatchList extends React.Component {
                 {images &&
                   !isChannel && (
                     <div className={styles.matchList__leagueImg}>
-                      <img className={styles.matchList__league_logo} src={images.thumbnails.cover} />
+                      <img className={styles.matchList__league_logo} src={`${images.thumbnails.cover}?w=60`} />
                     </div>
                   )}
               </div>

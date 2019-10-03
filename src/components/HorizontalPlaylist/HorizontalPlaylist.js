@@ -23,6 +23,14 @@ class HorizontalPlaylist extends Component {
     this.isFarRightReach = false
   }
 
+  handlePrevButton() {
+    document.getElementById('next').style.visibility = 'visible'
+  }
+
+  handleNextButton() {
+    document.getElementById('prev').style.visibility = 'visible'
+  }
+
   componentDidMount() {
     //function hover show and hide button
     var leagueList = document.getElementById('filLeague')
@@ -31,7 +39,6 @@ class HorizontalPlaylist extends Component {
     leagueList.onmouseover = () => {
       document.getElementById('prev').style.visibility = this.isFarLeftReach ? 'hidden' : 'visible'
       document.getElementById('next').style.visibility = this.isFarRightReach ? 'hidden' : 'visible'
-      // console.log('see result isfarright', this.isFarRightReach)
       // console.dir(defEelementValue)
 
       if (defEelementValue.offsetWidth > defEelementValue.scrollWidth) {
@@ -135,7 +142,7 @@ class HorizontalPlaylist extends Component {
                             className={`${s.img} ${genre.id == filterByLeague ? s.selected_img : s.img}`}
                             data-tip={genre.title}
                             data-for={genre.title}
-                            src={genre.thumbnails}
+                            src={`${genre.thumbnails}?w=60`}
                             onLoad={() => {
                               loadedThumbnail(true)
                             }}
@@ -170,7 +177,12 @@ class HorizontalPlaylist extends Component {
     return (
       <div className={s.match_ligaType}>
         <span className={`${s.filLeague} tourPlaylist`} id="filLeague">
-          <div className={s.btnPrevContainer}>
+          <div
+            className={s.btnPrevContainer}
+            onClick={() => {
+              this.handlePrevButton()
+            }}
+          >
             <div className={s.btnPrevHori} id="prev" />
           </div>
           <div className={s.league__wrapper} id="league__wrapper">
@@ -196,7 +208,13 @@ class HorizontalPlaylist extends Component {
             </div>
           </div>
           <div className={s.btnNextContainer}>
-            <div className={s.btnNextHori} id="next" />
+            <div
+              className={s.btnNextHori}
+              id="next"
+              onClick={() => {
+                this.handleNextButton()
+              }}
+            />
           </div>
         </span>
       </div>
