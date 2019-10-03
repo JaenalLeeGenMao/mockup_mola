@@ -21,6 +21,7 @@ import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from '../upcoming-video'
 import PlayerHeader from '../player-header'
+// import ChatUtils from '@components/ChatUtils'
 
 // import AgeRestrictionModal from '@components/AgeRestriction'
 // import { Overview as ContentOverview, Review as ContentReview, Trailer as ContentTrailer, Suggestions as ContentSuggestions } from './content'
@@ -62,12 +63,14 @@ class WatchDesktop extends Component {
     notice_bar_message: this.props.configParams.data
       ? this.props.configParams.data.notice_bar_message
       : 'Siaran Percobaan',
+    // enableChat: false,
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
     nextVideoBlocker: false,
     nextVideoClose: false,
+    showPlayerHeader: false,
     errorLicense: false,
-    defaultVidSetting: {},
+    defaultVidSetting: null,
   }
 
   handleOnReadyStateChange = player => {
@@ -304,15 +307,19 @@ class WatchDesktop extends Component {
           defaultVidSetting: defaultVidSetting,
         })
 
-        if (window) {
-          const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-          const videoContainer = document.getElementById('videoContainer').clientHeight
-          const videoWrapper = document.getElementById('videoWrapper').clientHeight
-          document.querySelector('#detailBottom > div').style.height = isSafari
-            ? `${videoContainer - videoWrapper - 60}px`
-            : 'calc(26vh - 60px)'
-          window.addEventListener('resize', this.handleWindowSizeChange)
-        }
+        // if (!_isUndefined(movieDetail.data[0]) && getContentTypeName(movieDetail.data[0].contentType) === 'live') {
+        //   const payload = movieDetail.data[0]
+        //   if (payload.startTime && payload.endTime) {
+        //     const start = Moment(payload.startTime, 'X')
+        //     const end = Moment(payload.endTime, 'X')
+
+        //     if (Moment().unix() >= start.unix() && Moment().unix() <= end.unix()) {
+        //       this.setState({
+        //         enableChat: true,
+        //       })
+        //     }
+        //   }
+        // }
       }
     }
   }
@@ -380,16 +387,7 @@ class WatchDesktop extends Component {
       if (blocked) {
         return (
           <>
-            <PlatformDesktop
-              iconStatus={iconStatus}
-              status={status}
-              icon={icon}
-              name={name}
-              // title={apiFetched ? dataFetched.title : ''}
-              portraitPoster={poster ? dataFetched.background.landscape : ''}
-              user={this.props.user}
-              videoId={this.props.videoId}
-            />
+            <PlatformDesktop {...this.props} />
           </>
         )
       } else {
@@ -505,7 +503,7 @@ class WatchDesktop extends Component {
   }
 
   render() {
-    const { isControllerActive, loc, showOfflinePopup } = this.state
+    const { isControllerActive, loc, showOfflinePopup, showPlayerHeader } = this.state
     const { meta: { status: videoStatus }, data } = this.props.movieDetail
     const { user, videoId } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
@@ -537,7 +535,34 @@ class WatchDesktop extends Component {
       isMatchPassed = true
     }
 
-    const playerClass = toggleInfoBar && !isMatchPassed ? videoPlayerContainer : videoPlayerContainer__nobar
+    let playerClass
+    if (isLiveMatch) {
+      playerClass = videoPlayerContainer__nobar
+    } else {
+      playerClass = toggleInfoBar && !isMatchPassed ? videoPlayerContainer : videoPlayerContainer__nobar
+    }
+    let ACCESS_TOKEN = ''
+    let CHANNEL_URL = undefined
+    if (!_isUndefined(user) && !_isUndefined(user.token)) {
+      ACCESS_TOKEN = user.token
+    }
+    // if (dataFetched && enableChat) {
+    //   CHANNEL_URL = dataFetched.id.replace(/-/g, '_')
+    // }
+    const totalMinutes =
+      data.endTime && data.startTime ? (new Date(data.endTime).getTime() - new Date(data.startTime).getTime()) / 60 : 0
+    const hour = totalMinutes >= 60 ? Math.round((totalMinutes - totalMinutes % 60) / 60) : 0
+    const minutes = totalMinutes >= 60 ? Math.round(totalMinutes % 60) : Math.round(totalMinutes)
+
+    let videoDuration
+    if (dataFetched.duration) {
+      if (Math.floor(dataFetched.duration / 60) === 0) {
+        videoDuration = `${dataFetched.duration % 60}m`
+      } else {
+        videoDuration = `${Math.floor(dataFetched.duration / 60)}h${dataFetched.duration % 60}m`
+      }
+    }
+
     return (
       <>
         {dataFetched && (
@@ -605,7 +630,9 @@ class WatchDesktop extends Component {
                         </>
                       )}
                     </div>
-                    <div className="player__info_grid_chat">{isLiveMatch && <div> </div>}</div>
+                    <div className="player__info_grid_chat">
+                      {/* <>{isLiveMatch && <ChatUtils CHANNEL_URL={CHANNEL_URL} ACCESS_TOKEN={ACCESS_TOKEN} />}</> */}
+                    </div>
                   </div>
                 </div>
               </div>
