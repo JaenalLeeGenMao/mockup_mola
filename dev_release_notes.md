@@ -3,7 +3,8 @@
 Format note:
 
 ```
-<Major>.<Minor>.<Patch> + (#IMAGE_NUMBER from new-design-dev) (Author - Date(DD/MM/YYY))
+Date naik ke ready to beta / branch develop(DD/MM/YYY)
+<Major>.<Minor>.<Patch> + (#IMAGE_NUMBER from new-design-dev) (Author)
 Description should be clear and specific, mention page and what changes added
 ```
 
@@ -102,14 +103,22 @@ v1.2.0 + **1713** (Elkana)
 
 * remove domain from path and referrer payload for analytics #16077 (Improvements)
 
-**27/09/2019**
+**02/10/2019**
 
 v1.3.0 + **1733** (Irene)
 
 * add universal/global styling (css) for color and font-size and currently just implemented in home page (Improvements)
 * update calling defaultvideosetting from render to didmount so on redux call will not rerender tracker on /watch page (Improvements)
 
-**02/10/2019**
+v1.3.0 + **1743** (Irene)
+
+* Fix styling upcoming video on big screen (Improvements)
+
+v1.3.0 + **1746** (Irene)
+
+* Fix countdown circle styling on upcoming video on big screen (Improvements)
+
+**03/10/2019**
 
 v1.3.0 + **1719** (Jaenal)
 
@@ -143,14 +152,10 @@ v1.3.0 + **1743** (Septian)
 
 * Change ads app_id from sent_ads to mola_ads (Improvements)
 
-v1.3.0 + **1743** (Irene)
-
-* Fix styling upcoming video on big screen (Improvements)
-
-v1.3.0 + **1746** (Irene)
-
-* Fix countdown circle styling on upcoming video on big screen (Improvements)
-
 v1.3.0 + **1751** (Jaenal)
 
 * remove unused code in watch page and resizer for suggestions (Improvements)
+
+v1.3.0 + **1753** (Irene)
+
+* add resizer for poster image in home page desktop and mobile
