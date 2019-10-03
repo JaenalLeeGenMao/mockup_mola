@@ -67,6 +67,7 @@ class WatchDesktop extends Component {
     nextVideoBlocker: false,
     nextVideoClose: false,
     errorLicense: false,
+    defaultVidSetting: {},
   }
 
   handleOnReadyStateChange = player => {
@@ -362,33 +363,10 @@ class WatchDesktop extends Component {
       const { loc, nextVideoBlocker, nextVideoClose, defaultVidSetting } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-      const poster = dataFetched ? dataFetched.background.landscape : ''
+      const poster = dataFetched ? `${dataFetched.background.landscape}?w=1080` : ''
 
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
-
-      // let handleNextVideo = null
-      // if (
-      //   !nextVideoClose &&
-      //   getContentTypeName(dataFetched.contentType) !== 'live' &&
-      //   getContentTypeName(dataFetched.contentType) !== 'trailers'
-      // ) {
-      //   handleNextVideo = this.handleNextVideo
-      // }
-
-      // const videoSettingProps = {
-      //   akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
-      // }
-
-      // const defaultVidSetting = dataFetched
-      //   ? defaultVideoSetting(
-      //     user,
-      //     dataFetched,
-      //     vuidStatus === 'success' ? vuid : '',
-      //     handleNextVideo,
-      //     videoSettingProps
-      //   )
-      //   : {}
 
       const checkAdsSettings =
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
