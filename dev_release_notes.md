@@ -123,6 +123,10 @@ v1.3.0 + **1735** (Jaenal)
 
 * Update suggestion design of watch desktop simalar to feature page (Improvements)
 
+v1.3.0 + **1736** (Sabiq)
+
+* remove temporary icon photo profile on page screen (Bug Fixes)
+
 v1.3.0 + **1738** (Jaenal)
 
 * Update loading placeholder on watch desktop new design (Improvements
