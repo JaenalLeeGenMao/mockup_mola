@@ -131,6 +131,10 @@ v1.3.0 + **1738** (Jaenal)
 
 * Update loading placeholder on watch desktop new design (Improvements
 
+v1.3.0 + **1739** (Arga)
+
+* Optimize platform blocker code (Improvements)
+
 v1.3.0 + **1740** (Jaenal)
 
 * improve watchpage casters with fix height (Improvements)
