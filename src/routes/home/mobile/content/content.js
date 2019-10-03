@@ -42,6 +42,11 @@ class Content extends Component {
       },
     }
 
+    let widthParam = ''
+    if (window) {
+      widthParam = '?w=' + window.innerWidth
+    }
+
     return (
       <Slider
         id={index}
@@ -57,8 +62,13 @@ class Content extends Component {
             <div key={id} className={styles.img__wrapper}>
               <picture>
                 <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
-                <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
-                <img src={isLandscape ? background.landscape : background.portrait} />
+                <source
+                  srcSet={isLandscape ? `${background.landscape}${widthParam}` : `${background.portrait}${widthParam}`}
+                  type="image/jpeg"
+                />
+                <img
+                  src={isLandscape ? `${background.landscape}${widthParam}` : `${background.portrait}${widthParam}`}
+                />
               </picture>
               <div className={styles.content__gradient} />
             </div>
@@ -67,8 +77,15 @@ class Content extends Component {
               <div key={id} className="grid-slick" isdark={isDark}>
                 <picture>
                   <source srcSet={isLandscape ? background.landscapeWebp : background.portraitWebp} type="image/webp" />
-                  <source srcSet={isLandscape ? background.landscape : background.portrait} type="image/jpeg" />
-                  <img src={isLandscape ? background.landscape : background.portrait} />
+                  <source
+                    srcSet={
+                      isLandscape ? `${background.landscape}${widthParam}` : `${background.portrait}${widthParam}`
+                    }
+                    type="image/jpeg"
+                  />
+                  <img
+                    src={isLandscape ? `${background.landscape}${widthParam}` : `${background.portrait}${widthParam}`}
+                  />
                 </picture>
               </div>
             </a>

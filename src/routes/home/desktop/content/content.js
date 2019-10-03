@@ -38,8 +38,8 @@ class Content extends Component {
             <div key={id} className="grid-slick" isdark={isDark}>
               <picture>
                 <source srcSet={background.landscapeWebp} type="image/webp" />
-                <source srcSet={background.landscape} type="image/jpeg" />
-                <img src={background.landscape} />
+                <source srcSet={`${background.landscape}?w=1920`} type="image/jpeg" />
+                <img src={`${background.landscape}?w=1920`} />
               </picture>
             </div>
           )
