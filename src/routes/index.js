@@ -135,6 +135,10 @@ const routes = {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch'),
     },
+    // {
+    //   path: '/testvo',
+    //   load: () => import(/* webpackChunkName: 'testvo' */ './testvo'),
+    // },
     {
       path: '/channels',
       load: () => import(/* webpackChunkName: 'channels' */ './channels'),

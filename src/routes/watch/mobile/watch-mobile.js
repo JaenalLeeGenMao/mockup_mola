@@ -278,7 +278,7 @@ class MovieDetail extends Component {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-      const poster = dataFetched ? `${dataFetched.background.landscape}?w=1080` : ''
+      const poster = dataFetched ? `${dataFetched.background.landscape}?w=720` : ''
 
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
