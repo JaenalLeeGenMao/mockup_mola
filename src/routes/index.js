@@ -140,10 +140,6 @@ const routes = {
     //   load: () => import(/* webpackChunkName: 'testvo' */ './testvo'),
     // },
     {
-      path: '/testvo',
-      load: () => import(/* webpackChunkName: 'testvo' */ './testvo'),
-    },
-    {
       path: '/channels',
       load: () => import(/* webpackChunkName: 'channels' */ './channels'),
       children: [
