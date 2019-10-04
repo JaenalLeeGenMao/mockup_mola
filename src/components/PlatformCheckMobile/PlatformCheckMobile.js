@@ -114,7 +114,7 @@ class PlatformCheckMobile extends Component {
                   <div className={styles.detail__desc_img__status__icon} key={idx}>
                     <img
                       key={idx}
-                      src={s.imageUrl}
+                      src={`${s.imageUrl}?w=60`}
                       className={`${s.status === 0 ? styles.status__img__false : styles.status__img__true}`}
                     />
                     <p
