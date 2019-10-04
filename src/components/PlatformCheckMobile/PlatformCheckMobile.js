@@ -81,6 +81,13 @@ class PlatformCheckMobile extends Component {
     }
   }
 
+  onMpsClick = id => {
+    if (id === 4) {
+      const url = _.get(this.props.configParams.data, 'platform_mps_link', 'https://www.mola.tv/not-found')
+      window.open(url, '_blank')
+    }
+  }
+
   render() {
     const movieDetail = this.props.movieDetail.data[0]
     const name = _.get(movieDetail, 'title', '')
@@ -111,22 +118,29 @@ class PlatformCheckMobile extends Component {
             <div className={styles.detail__desc__icon}>
               {platforms.map((s, idx) => {
                 return (
-                  <div className={styles.detail__desc_img__status__icon} key={idx}>
+                  <div
+                    className={styles.detail__desc_img__status__icon}
+                    onClick={() => this.onMpsClick(s.id)}
+                    key={idx}
+                  >
                     <img
                       key={idx}
                       src={`${s.imageUrl}?w=60`}
                       className={`${s.status === 0 ? styles.status__img__false : styles.status__img__true}`}
                     />
-                    <p
-                      className={`${
-                        s.status === 0
-                          ? styles.detail__desc_img__status__info__true
-                          : styles.detail__desc_img__status__info__false
-                      }`}
-                      key={idx}
-                    >
-                      {s.name}
-                    </p>
+                    <div className={styles.flex_column_center}>
+                      <p
+                        className={`${
+                          s.status === 0
+                            ? styles.detail__desc_img__status__info__true
+                            : styles.detail__desc_img__status__info__false
+                        }`}
+                        key={idx}
+                      >
+                        {s.name}
+                      </p>
+                      {s.id === 4 ? <p className={styles.text_info}>Info Selengkapnya</p> : ''}
+                    </div>
                     <img
                       className={styles.detail__desc_img__status__color}
                       key={idx}
