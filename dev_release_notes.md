@@ -164,3 +164,7 @@ v1.3.0 + **1763** (ayu)
 
 * Update League Filter New Design [Matches Page] #72
 * add resizer image icon matches page w=70 for mobile and w=60 for desktop and styling filter matches new design.
+
+v1.3.0 + **1765** (Jaenal)
+
+* adjust banner images on landing page to 1080 and remove chat styling(Improvements)
