@@ -14,7 +14,7 @@ stages:
     - ./.gitlab/push_docker.sh
   except:
     changes:
-      - "*.md"
+      - "qa_release_notes.md"
 
 push_docker_staging:
   stage: push_docker
