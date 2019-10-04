@@ -408,7 +408,7 @@ class Profile extends React.Component {
                 popperClassName={s.birthdate_popper}
                 isError={error !== ''}
                 id="birthdate"
-                selected={birthdate}
+                selected={birthdate ? new Date(birthdate) : ''}
                 onChange={this.handleDtPickerChange}
                 placeholderText="dd/mm/yyyy"
                 label="Tanggal Lahir"

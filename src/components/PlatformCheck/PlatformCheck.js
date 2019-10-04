@@ -71,6 +71,13 @@ class PlatformCheck extends Component {
     }
   }
 
+  onMpsClick = id => {
+    if (id === 4) {
+      const url = _.get(this.props.configParams.data, 'platform_mps_link', 'https://www.mola.tv/not-found')
+      window.open(url, '_blank')
+    }
+  }
+
   render() {
     const movieDetail = this.props.movieDetail.data[0]
     const name = _.get(movieDetail, 'title', '')
@@ -92,40 +99,48 @@ class PlatformCheck extends Component {
           <div className={styles.gradient} />
           <div className={styles.detail__information}>
             <div className={styles.detail__desc}>
-              <div className={styles.detail__desc__text}>Tayangan ini dapat disaksikan di:</div>
+              <div className={styles.detail__desc__text}>Tayangan ini hanya dapat disaksikan di:</div>
             </div>
             <div className={styles.detail__container}>
-              <div className={styles.detail__desc__icon}>
-                <div className={styles.detail__desc_img}>
-                  {platforms.map((s, idx) => {
-                    return (
-                      <div className={styles.detail__desc_img__status__icon} key={idx}>
-                        <img
-                          key={idx}
-                          src={s.imageUrl}
-                          className={`${s.status === 0 ? styles.status__img__false : styles.status__img__true}`}
-                        />
-                        <img
-                          className={styles.detail__desc_img__status__color}
-                          key={idx}
-                          src={s.status === 0 ? crossIcon : checkIcon}
-                        />
+              <div className={styles.detail__desc_img}>
+                {platforms.map((s, idx) => {
+                  return (
+                    <div
+                      className={styles.detail__desc_img__status__icon}
+                      onClick={() => this.onMpsClick(s.id)}
+                      key={idx}
+                    >
+                      <img
+                        key={idx}
+                        src={`${s.imageUrl}?w=100`}
+                        className={`${s.status === 0 ? styles.status__img__false : styles.status__img__true}`}
+                      />
+
+                      <div className={styles.flex_column_center}>
                         <p className={styles.detail__desc_img__status__info} key={idx}>
                           {s.name}
                         </p>
+                        {s.id === 4 ? <p className={styles.text_info}>Info Selengkapnya</p> : ''}
                       </div>
-                    )
-                  })}
+                      <img
+                        className={styles.detail__desc_img__status__color}
+                        key={idx}
+                        src={s.status === 0 ? crossIcon : checkIcon}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+              {/* <div className={styles.detail__desc__text__icon__bottom} /> */}
+              <div className={styles.detail__desc__text__bottom}>
+                <div className={styles.detail__desc__text__icon__bottom__text}>
+                  Mola Polytron Streaming &amp; Mola Matrix bisa diperoleh di:
+                  <div className={styles.detail__desc__text__icon__bottom__text__up}>Electronic City</div>
                 </div>
-              </div>
-              <div className={styles.detail__desc__text__icon__bottom} />
-              <div className={styles.detail__desc__text__icon__bottom__text}>
-                Mola Polytron Streaming &amp; Mola Matrix bisa diperoleh di:
-                <div className={styles.detail__desc__text__icon__bottom__text__up}>Electronic City</div>
-              </div>
-              <div className={styles.detail__desc__text__icon__bottom__text}>
-                atau, untuk pembelian online silahkan kunjungi:
-                <div className={styles.detail__desc__text__icon__bottom__text}>{this.renderLink()}</div>
+                <div className={styles.detail__desc__text__icon__bottom__text}>
+                  atau, untuk pembelian online silahkan kunjungi:
+                  <div className={styles.detail__desc__text__icon__bottom__text}>{this.renderLink()}</div>
+                </div>
               </div>
             </div>
           </div>
