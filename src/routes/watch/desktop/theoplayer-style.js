@@ -2,6 +2,14 @@ import { css } from 'react-emotion'
 
 export const customTheoplayer = css`
    {
+    &.theoplayer-skin {
+      font-size: 1.2rem;
+    }
+
+    &.theoplayer-skin.vjs-fullscreen {
+      font-size: 1.8rem;
+    }
+
     &.video-container,
     &.video-container.video-js.vjs-fluid {
       width: 100%;
