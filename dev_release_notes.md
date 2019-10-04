@@ -158,13 +158,17 @@ v1.3.0 + **1751** (Jaenal)
 
 v1.3.0 + **1753** (Irene)
 
-* add resizer for poster image in home page desktop and mobile
+* Add resizer for poster image in home page desktop and mobile  (Improvements)
 
 v1.3.0 + **1763** (ayu)
 
-* Update League Filter New Design [Matches Page] #72
-* add resizer image icon matches page w=70 for mobile and w=60 for desktop and styling filter matches new design.
+* Update League Filter New Design [Matches Page] #72 (Improvements)
+* add resizer image icon matches page w=70 for mobile and w=60 for desktop and styling filter matches new design.  (Improvements)
 
 v1.3.0 + **1765** (Jaenal)
 
-* adjust banner images on landing page to 1080 and remove chat styling(Improvements)
+* adjust banner images on landing page to 1080 and remove chat styling (Improvements)
+
+v1.3.0 + **1767** (Irene)
+
+* Update styling upcoming video autoplay (popup) title and theoplayer font-size on 4k big screen desktop (Improvements)
