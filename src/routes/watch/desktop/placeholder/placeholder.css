@@ -1,128 +1,85 @@
-.placeholder__watch__box {
-  display: block;
-
-  /* width: 95vw; */
-  width: 100vw;
-  height: 68vh;
-  margin: 0 auto;
-
-  /* border-radius: 5px; */
-  animation: pulse 2s infinite ease-in-out;
-}
-
-.placeholder__container__watch {
+.placeholder__container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  padding-top: 6rem;
+}
+
+.placeholder__watch_box {
+  display: inline-block;
   width: 100%;
-  padding-top: 5vh;
-  border-radius: 5px;
-  margin: 0 auto;
-}
-
-.placeholder__container__watch .placeholder__primary__watch {
-  width: 30rem;
-  height: 16rem;
-  margin: 1.5rem 1.5rem 0.5rem 1.5rem;
+  height: calc(88vh - 6rem);
   animation: pulse 2s infinite ease-in-out;
 }
 
-.placeholder__container__watch .placeholder__primary__watch:nth-child(2n) {
-  width: 70rem;
-  height: 16rem;
-  margin: 1.5rem 1.5rem 0.5rem 1.5rem;
+.placeholder__watch_detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30vw;
+  height: calc(88vh - 6rem);
+}
+
+.placeholder__long {
+  width: 84%;
+  height: 1.2rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
   animation: pulse 2s infinite ease-in-out;
 }
 
-.placeholder__container__watch .placeholder__primary__watch:nth-child(3n) {
-  width: 30rem;
-  height: 16rem;
-  margin: 1.5rem 1.5rem 0.5rem 1.5rem;
+.placeholder__quarter_long {
+  width: 66%;
+  height: 1.2rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
+  animation: pulse_74 2s infinite ease-in-out;
+}
+
+.placeholder__medium {
+  width: 59%;
+  height: 1.2rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
   animation: pulse 2s infinite ease-in-out;
 }
 
-.placeholder__filter__left {
+.placeholder__quarter_short {
+  width: 33%;
+  height: 1.2rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.placeholder__short {
   width: 25%;
-}
-
-.placeholder__filter__center {
-  width: 50%;
-}
-
-.placeholder__filter__right {
-  width: 25%;
-}
-
-.placeholder__line__left {
-  height: 1.5rem;
-  width: 90%;
-  border-radius: 8px;
+  height: 1.2rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
   animation: pulse 2s infinite ease-in-out;
-  margin-bottom: 1.5rem;
-  margin-right: 15rem;
-  margin-left: 11%;
 }
 
-.placeholder__filter__left .placeholder__line__left:nth-child(2n) {
-  width: 82%;
-}
-
-.placeholder__filter__left .placeholder__line__left:nth-child(3n) {
-  width: 63%;
-}
-
-.placeholder__filter__left .placeholder__line__left:nth-child(4n) {
-  width: 82%;
-}
-
-.placeholder__line__center {
-  height: 1.5rem;
-  width: 68%;
-  border-radius: 8px;
+.placeholder__cast {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 3rem;
+  margin: 0 1rem 1rem 0;
   animation: pulse 2s infinite ease-in-out;
-  margin-bottom: 1.5rem;
-  margin-left: 17%;
-  margin-right: 17%;
 }
 
-.placeholder__filter__center .placeholder__line__center:nth-child(2n) {
-  width: 55%;
-  margin-left: 25%;
+.placeholder__cast_121 {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 3rem;
+  margin: 0 1rem 1rem 0;
+  animation: pulse_121 2s infinite ease-in-out;
 }
 
-.placeholder__filter__center .placeholder__line__center:nth-child(3n) {
-  width: 68%;
-  margin-left: 17%;
-}
-
-.placeholder__filter__center .placeholder__line__center:nth-child(4n) {
-  width: 55%;
-  margin-left: 25%;
-}
-
-.placeholder__line__right {
-  height: 1.5rem;
-  width: 90%;
-  border-radius: 8px;
-  animation: pulse 2s infinite ease-in-out;
-  margin-bottom: 1.5rem;
-  margin-right: 6%;
-}
-
-.placeholder__filter__right .placeholder__line__right:nth-child(2n) {
-  width: 82%;
-  margin-left: 8%;
-}
-
-.placeholder__filter__right .placeholder__line__right:nth-child(3n) {
-  width: 63%;
-  margin-left: 27%;
-}
-
-.placeholder__filter__right .placeholder__line__right:nth-child(4n) {
-  width: 82%;
-  margin-left: 8%;
+.placeholder__cast_74 {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 3rem;
+  margin: 0 1rem 1rem 0;
+  animation: pulse_74 2s infinite ease-in-out;
 }
 
 @keyframes pulse {
@@ -136,5 +93,33 @@
 
   100% {
     background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+@keyframes pulse_121 {
+  0% {
+    background-color: rgba(121, 121, 121, 0.1);
+  }
+
+  50% {
+    background-color: rgba(121, 121, 121, 0.3);
+  }
+
+  100% {
+    background-color: rgba(121, 121, 121, 0.1);
+  }
+}
+
+@keyframes pulse_74 {
+  0% {
+    background-color: rgba(74, 74, 74, 0.1);
+  }
+
+  50% {
+    background-color: rgba(74, 74, 74, 0.3);
+  }
+
+  100% {
+    background-color: rgba(74, 74, 74, 0.1);
   }
 }

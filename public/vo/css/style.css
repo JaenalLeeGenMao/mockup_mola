@@ -1,0 +1,58 @@
+
+/* reset default values */
+*{margin:0;padding:0;}
+
+#content {
+  padding: 4px;
+}
+
+#testControls {
+  padding: 20px;
+}
+
+#videoSection {
+  height: 400px;
+  width: 100%;
+}
+
+/* the video context fills the totallity of its parent surface */
+#videoContext {
+  position: relative;
+  height: 100%;
+  background-color: #000;
+  width: 640px;
+  margin: 0 auto;
+}
+
+/* redefine width of videoContext when in fullscreen to get fullscreen video (browser-depending modificator) */
+#videoContext:-ms-fullscreen {
+  width: 100% !important;
+}
+
+#videoContext:fullscreen {
+  width: 100% !important;
+}
+
+#videoContext:-webkit-full-screen {
+  width: 100% !important;
+}
+
+/*  the video surface fills the totallity of its parent surface */
+#video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#videoControls {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: -webkit-linear-gradient(bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.svg-icon {
+  width: inherit;
+  height: inherit;
+}

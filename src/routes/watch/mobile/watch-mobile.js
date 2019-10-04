@@ -12,6 +12,7 @@ import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import { getVUID_retry } from '@actions/vuid'
 import watchPermission from '@source/lib/watchPermission'
 import AgeRestrictionModal from '@components/AgeRestriction'
+import PlatformCheckMobile from '@components/PlatformCheckMobile'
 
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
@@ -277,7 +278,7 @@ class MovieDetail extends Component {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
-      const poster = dataFetched ? dataFetched.background.landscape : ''
+      const poster = dataFetched ? `${dataFetched.background.landscape}?w=720` : ''
 
       const adsFlag = dataFetched ? _get(dataFetched, 'ads', null) : null
       user.loc = loc
@@ -490,6 +491,10 @@ class MovieDetail extends Component {
     let isMatchPassed = false
     if (dataFetched && dataFetched.endTime < Date.now() / 1000) {
       isMatchPassed = true
+    }
+
+    if (this.props.blocked) {
+      return <PlatformCheckMobile showHeader {...this.props} />
     }
 
     return (

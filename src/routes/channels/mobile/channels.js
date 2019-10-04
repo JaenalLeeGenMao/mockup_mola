@@ -33,8 +33,6 @@ import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
 
 let errorFlag = 0
-import iconRed from './assets/merah.png'
-import iconGreen from './assets/hijau.png'
 
 class Channels extends Component {
   state = {
@@ -48,11 +46,6 @@ class Channels extends Component {
     startWeekDate: moment().startOf('isoWeek'),
     selectedWeek: '',
     block: false,
-    isHeader: false,
-    status: [],
-    iconStatus: [],
-    iconGreen,
-    name: '',
     errorLicense: false,
   }
 
@@ -102,7 +95,7 @@ class Channels extends Component {
       if (theoVolumeInfo != null) {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -122,28 +115,7 @@ class Channels extends Component {
       if (filterForBlockFind) {
         this.setState({ block: false })
       } else {
-        const filterForBlock = dataFetch.platforms
-        // console.log('status blocker dong', filterForBlock)
-        const isBlocked = filterForBlock.length > 0
-        let stat = []
-        let state = []
-        let img = []
-        let st = status
-
-        if (isBlocked) {
-          filterForBlock.forEach(dt => {
-            st.push(dt.status)
-            if (dt.status === 1) {
-              stat.push(iconGreen)
-            } else {
-              stat.push(iconRed)
-            }
-
-            state.push(dt.name)
-            img.push(dt.imageUrl)
-          })
-        }
-        this.setState({ name: state, imageUrl: img, status: st, block: true, iconStatus: stat })
+        this.setState({ block: true })
       }
     }
   }
@@ -289,7 +261,7 @@ class Channels extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) { }
+      } catch (err) {}
     }
   }
 
@@ -331,7 +303,7 @@ class Channels extends Component {
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
     const url = `${domain}/download-app/${movieId}`
     document.location = `molaapp://mola.tv/channels/${movieId}?utm_source=${source}`
-    setTimeout(function () {
+    setTimeout(function() {
       window.location.href = url
     }, 250)
   }
@@ -384,7 +356,7 @@ class Channels extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const videoSettingProps = {
-      akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false
+      akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
     }
 
     const defaultVidSetting =
@@ -453,19 +425,8 @@ class Channels extends Component {
                     errorLicense={errorLicense}
                   />
                 ) : (
-                    block && (
-                      <PlatformCheckMobile
-                        iconStatus={this.state.iconStatus}
-                        status={this.state.status}
-                        icon={this.state.imageUrl}
-                        name={this.state.name}
-                        portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-                        user={this.props.user}
-                        videoId={activeChannelId}
-                        isHeader={isHeader}
-                      />
-                    )
-                  )}
+                  block && <PlatformCheckMobile {...this.props} />
+                )}
               </div>
 
               {!block && (

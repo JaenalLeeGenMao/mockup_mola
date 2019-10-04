@@ -135,6 +135,10 @@ const routes = {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch'),
     },
+    // {
+    //   path: '/testvo',
+    //   load: () => import(/* webpackChunkName: 'testvo' */ './testvo'),
+    // },
     {
       path: '/channels',
       load: () => import(/* webpackChunkName: 'channels' */ './channels'),
@@ -166,6 +170,10 @@ const routes = {
       path: '/live-support',
       load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
+    // {
+    //   path: '/notifications',
+    //   load: () => import(/* webpackChunkName: 'notifications' */ './notifications'),
+    // },
     {
       path: '/error/smart',
       load: () => import(/* webpackChunkName: 'smart' */ './error/smart'),

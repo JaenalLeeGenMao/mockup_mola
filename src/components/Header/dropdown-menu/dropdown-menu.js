@@ -3,21 +3,18 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './dropdown-menu.css'
 import _ from 'lodash'
 import BodyClassName from 'react-body-classname'
+// import Notifications from '@components/Header/notifications'
 
 class DropdownList extends Component {
   state = {
     isOpenDropdown: false,
     selectedId: 0,
-  }
-
-  componentDidMount() {}
-
-  componentWillUnMount() {
-    // document.removeEventListener('mousedown', this.handleClickDropdown)
+    indicatorNewNotif: false,
   }
 
   handleClickDropdown = e => {
     const { isOpenDropdown } = this.state
+    // console.log('jalamn', isOpenDropdown)
 
     this.setState({
       isOpenDropdown: !isOpenDropdown,
@@ -34,6 +31,12 @@ class DropdownList extends Component {
     if (onClick) {
       onClick(id)
     }
+  }
+
+  handleShowNotifIndicator = val => {
+    this.setState({
+      indicatorNewNotif: val,
+    })
   }
 
   // getSelectedMenu = dataList => {
@@ -56,9 +59,27 @@ class DropdownList extends Component {
   // }
 
   render() {
-    const { isOpenDropdown, selectedId } = this.state
-    const { dataList, className, labelClassName, activeId, pathname = '/' } = this.props
-
+    const notifications = {
+      type: 'menu',
+      id: 99,
+      attributes: {
+        title: {
+          en: 'Notifications',
+        },
+        alt: {
+          en: '',
+        },
+        positionId: 'menubar',
+        url: 'https://mola.tv/notifications',
+        sortOrder: 80,
+        visibility: true,
+        icon: '',
+        createdAt: 1541000818,
+        updatedAt: 1541000818,
+      },
+    }
+    const { isOpenDropdown, selectedId, indicatorNewNotif } = this.state
+    const { dataList, className, labelClassName, activeId, pathname = '/', newNotif, isMobile } = this.props
     return (
       <div className={`${s.dropdown_container} ${className ? className : ''}`}>
         {isOpenDropdown && <BodyClassName className={s.overflow_hidden} />}
@@ -67,7 +88,9 @@ class DropdownList extends Component {
             {this.getSelectedMenu(dataList)}
           </label> */}
           {/* <IoIosArrowDown className={s.select_icon} /> */}
-          <div className={s.dropdown__icon_burger_menu} onClick={this.handleClickDropdown} />
+          <div className={s.dropdown__icon_burger_menu} onClick={this.handleClickDropdown}>
+            {indicatorNewNotif && <div className={s.notification_new_mark__burger} />}
+          </div>
         </div>
         {dataList.length > 0 && (
           <>
@@ -105,6 +128,13 @@ class DropdownList extends Component {
                       </div>
                     )
                   })}
+                  {/* <Notifications
+                    handleShowNotifIndicator={this.handleShowNotifIndicator}
+                    className={`${s.dropdown_list_item} ${s.notif}`}
+                    indicatorClassName={`${s.notificatation_new__mark}`}
+                    showIndicatorClassName={`${s.show}`}
+                    isMobileView={this.props.isMobile}
+                  /> */}
                 </div>
               </div>
             </div>

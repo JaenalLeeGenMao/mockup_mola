@@ -10,6 +10,11 @@ import BodyClassName from 'react-body-classname'
 import config from '@source/config'
 import { getPartners } from '@actions/partners'
 
+import checkIcon from '../../global/assets-global/images/check.png'
+import crossIcon from '../../global/assets-global/images/cross.png'
+
+import _ from 'lodash'
+
 class PlatformCheckMobile extends Component {
   state = {
     result: [],
@@ -46,26 +51,6 @@ class PlatformCheckMobile extends Component {
     window.open(link_redirect, '_blank')
   }
 
-  // renderCharacter() {
-  //   const nameLink = this.state.data.attributes.name
-  //   {
-  //     nameLink.map((dt, idx) => {
-  //       if (nameLink.length > 0) {
-  //         if (dt.attributes.name === 1) {
-  //           return nameLink
-  //         }
-  //         if (idx === nameLink.length - 1) {
-  //           return '&' + nameLink
-  //         }
-  //         if (idx === nameLink.length - 2) {
-  //           return nameLink
-  //         }
-  //         return nameLink + ','
-  //       }
-  //     })
-  //   }
-  // }
-
   renderLink = () => {
     const { partners } = this.props
     const dataFetch = partners.data
@@ -97,16 +82,19 @@ class PlatformCheckMobile extends Component {
   }
 
   render() {
-    const { name, portraitPoster, icon, iconStatus, status, isHeader, partners } = this.props
+    const movieDetail = this.props.movieDetail.data[0]
+    const name = _.get(movieDetail, 'title', '')
+    const landscapePoster = _.get(movieDetail, 'background.landscape', '')
+    const platforms = _.get(movieDetail, 'platforms', [])
 
     return (
       <>
         <BodyClassName className={styles.overflow_hidden} />
-        {isHeader && this.renderHeader()}
+        {this.props.showHeader && this.renderHeader()}
         {/* <div className={styles.matches_header_bg} /> */}
         <div className={styles.bg}>
-          <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster}?w=800)` }}>
-            {!portraitPoster && (
+          <div className={styles.container} style={{ backgroundImage: `url(${landscapePoster}?w=800)` }}>
+            {!landscapePoster && (
               <div className={styles.player__container}>
                 <div className={styles.img__wrapper}>
                   <img src={logoMolaBig} />
@@ -121,25 +109,29 @@ class PlatformCheckMobile extends Component {
               <div className={styles.detail__desc__text}>Tayangan ini dapat disaksikan di:</div>
             </div>
             <div className={styles.detail__desc__icon}>
-              {icon.map((s, idx) => {
+              {platforms.map((s, idx) => {
                 return (
                   <div className={styles.detail__desc_img__status__icon} key={idx}>
                     <img
                       key={idx}
-                      src={s}
-                      className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
+                      src={s.imageUrl}
+                      className={`${s.status === 0 ? styles.status__img__false : styles.status__img__true}`}
                     />
                     <p
                       className={`${
-                        status[idx]
+                        s.status === 0
                           ? styles.detail__desc_img__status__info__true
                           : styles.detail__desc_img__status__info__false
                       }`}
                       key={idx}
                     >
-                      {name[idx]}
+                      {s.name}
                     </p>
-                    <img className={styles.detail__desc_img__status__color} key={idx} src={iconStatus[idx]} />
+                    <img
+                      className={styles.detail__desc_img__status__color}
+                      key={idx}
+                      src={s.status === 0 ? crossIcon : checkIcon}
+                    />
                   </div>
                 )
               })}

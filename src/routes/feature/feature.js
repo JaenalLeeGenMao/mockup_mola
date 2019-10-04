@@ -193,7 +193,7 @@ class Feature extends Component {
                       key={obj.id}
                       onClick={() => this.handleOnClick(obj)}
                       alt={obj.title}
-                      src={`${obj.background.landscape}?w=720`}
+                      src={`${obj.background.landscape}?w=1080`}
                       // onLoad={this.updateOnImageLoad}
                       containerClassName={bannerContainer}
                     />

@@ -12,6 +12,7 @@ import * as channels from './channels'
 import * as feature from './feature'
 import * as playlist from './playlist'
 import * as partners from './partners'
+import * as notifications from './notifications'
 
 const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE'
 export default {
@@ -29,4 +30,5 @@ export default {
   ...feature,
   ...playlist,
   ...partners,
+  ...notifications,
 }

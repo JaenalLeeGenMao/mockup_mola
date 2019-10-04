@@ -630,8 +630,53 @@ const normalizeRecommendation = response => {
         short_description: shortDescription,
         cover_portrait: background.portrait,
         cover_landscape: background.landscape,
+        ...dt.attributes,
       }
     })
+  }
+  return []
+}
+
+const normalizeNotifications = response => {
+  const { data } = response.data
+  // const { notifications } = data
+  if (data && data.length > 0) {
+    // const { total } = data
+    const result = data.map(notification => {
+      const {
+        id,
+        type,
+        attributes: {
+          imageUrl,
+          linkUrl,
+          title,
+          message,
+          status,
+          projectId,
+          refId,
+          startTime,
+          endTime,
+          createdAt,
+          updatedAt,
+        },
+      } = notification
+      return {
+        id,
+        type,
+        imageUrl,
+        linkUrl,
+        title,
+        message,
+        status,
+        projectId,
+        refId,
+        startTime,
+        endTime,
+        createdAt,
+        updatedAt,
+      }
+    })
+    return result
   }
   return []
 }
@@ -667,5 +712,6 @@ export default {
   normalizeProgrammeGuides,
   normalizeRecommendation,
   normalizeMatchPlaylists,
+  normalizeNotifications,
   normalizePartners,
 }

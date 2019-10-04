@@ -29,7 +29,7 @@ const Suggestions = ({ style = {}, videos = [] }) => {
             return (
               <Link to={`/watch?v=${video_id}`} key={video_id}>
                 <VideoThumbnail
-                  thumbnailUrl={imageSource}
+                  thumbnailUrl={`${imageSource}?w=360`}
                   thumbnailPosition="top"
                   className={videoSuggestionPlayerDetail}
                 >

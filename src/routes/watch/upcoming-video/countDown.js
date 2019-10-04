@@ -54,7 +54,7 @@ class UpcomingCountDown extends Component {
   render() {
     const { isMobile } = this.props
     const viewBox = isMobile ? '0 1 120 120' : '-5 3 120 120'
-    const size = isMobile ? '16.5' : '22'
+    const size = isMobile ? '16.5' : '2.2rem'
     return (
       <div className={styles.container}>
         <div className={styles.animation_container}>

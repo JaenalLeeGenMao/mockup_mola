@@ -8,6 +8,7 @@ import _ from 'lodash'
 import LazyLoad from '@components/common/Lazyload'
 import Footer from '@components/Footer'
 import Link from '@components/Link'
+// import Notifications from '@components/Header/notifications'
 
 import { getLocale } from '../locale'
 
@@ -15,7 +16,6 @@ import styles from './header-menu.css'
 import history from '@source/history'
 // import { IoIosArrowDown } from 'react-icons/io'
 import DropdownMenu from '../dropdown-menu'
-// import { connect } from 'tls'
 
 import { get } from 'axios'
 
@@ -36,9 +36,9 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
-              <Link onClick={onProfileClick} className={styles.popup__menu_image_wrapper}>
+              {/* <Link onClick={onProfileClick} className={styles.popup__menu_image_wrapper}>
                 {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
-              </Link>
+              </Link> */}
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
             <Link onClick={onProfileClick}>{locale['profile']}</Link>
@@ -61,6 +61,10 @@ class HeaderMenu extends Component {
     locale: getLocale(),
     headerMenuList: [],
     toggle: false /* Toggle profile */,
+    newNotif: {
+      status: false,
+      totalNewNotif: 0,
+    },
   }
 
   handleProfileClick = () => {
@@ -111,7 +115,7 @@ class HeaderMenu extends Component {
 
   render() {
     const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu }, activeMenuId } = this.props
-    const { toggle } = this.state
+    const { toggle, newNotif } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
 
     return (
@@ -218,6 +222,7 @@ class HeaderMenu extends Component {
                       )
                     }
                   })}
+                  {/* <Notifications /> */}
                 </>
               )}
             </div>
@@ -233,22 +238,24 @@ class HeaderMenu extends Component {
                   dataList={headerMenuList}
                   activeId={activeMenuId}
                   onClick={this.handleNavigation}
+                  newNotif={newNotif}
+                  {...this.props}
                 />
               </div>
             )}
             {/* <div
-                  className={`${styles.header__menu_wrapper_m} tourHamburger ${
-                    isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                  }`}
-                >
-                  <DropdownMenu
-                    className={styles.header_menu_dropdown_container}
-                    pathname={pathname}
-                    dataList={headerMenuList}
-                    activeId={activeMenuDropdown}
-                    onClick={this.handleNavigation}
-                  />
-                </div> */}
+              className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                isLandscape ? styles.header_menu_select_wrapper__ls : ''
+              }`}
+            >
+              <DropdownMenu
+                className={styles.header_menu_dropdown_container}
+                pathname={pathname}
+                dataList={headerMenuList}
+                activeId={activeMenuDropdown}
+                onClick={this.handleNavigation}
+              />
+            </div> */}
             {toggle && (
               <PopupMenu
                 onClick={this.handleToggle}

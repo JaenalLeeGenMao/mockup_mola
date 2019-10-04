@@ -1,0 +1,45 @@
+.detail__left {
+  display: inline-block;
+  width: 27.5%;
+  vertical-align: top;
+  padding: 0 3rem 0 5rem;
+}
+
+.detail__left div {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.detail__left_title {
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  font-size: 2.8rem;
+}
+
+.detail__right {
+  display: inline-block;
+  width: 40%;
+  vertical-align: top;
+  margin-top: 1rem;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+.detail__right div {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+/** Synopsis style start **/
+.detail__right_text {
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  line-height: 1.3;
+  text-align: justify;
+}
+
+/** Synopsis style end **/

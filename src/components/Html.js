@@ -303,6 +303,18 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
              `,
             }}
           />
+          {/*** Test VO Start - only on dev ***/}
+          {/* <link rel="stylesheet" href="../vo/css/style.css" /> */}
+          {/* <link rel="stylesheet" href="../vo/html5player/css/squadeo-playback-ui.css" /> */}
+          {/* <link rel="stylesheet" href="../vo/html5player/css/ui_ads.css" /> */}
+
+          {/* <script src="../vo/js/jquery-3.1.1.min.js" /> */}
+          {/* <script src="../vo/html5player/js/squadeo.min.js" /> */}
+          {/* <script src="../vo/html5player/js/squadeo-ui.min.js" /> */}
+          {/* <script src="../vo/js/squadeo-testpage.js"></script> */}
+          {/* <script src="../vo/js/load_vop_logic.js"></script> */}
+          {/* <script src="../vo/js/adBanner.js" /> */}
+          {/*** Test VO End - only on dev***/}
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />

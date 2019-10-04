@@ -362,7 +362,7 @@ class Profile extends React.Component {
         <div className={`${s.profile__container} ${isError ? errClass : ''}`}>
           <div className={s.register__content_title} />
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: !isToggled ? 'none' : 'block' }}>
-            <div style={{ position: 'relative' }}>
+            {/* <div style={{ position: 'relative' }}>
               <div onClick={this.handleProfileClick} className={s.profile_image_wrapper}>
                 {!photo && <p>Edit</p>}
                 {photo && <img alt="" src={photo} />}
@@ -374,7 +374,7 @@ class Profile extends React.Component {
                 accept="image/*"
                 onChange={this.handleFileSelect}
               />
-            </div>
+            </div> */}
             <FormContent
               isError={error !== ''}
               type="text"
@@ -444,9 +444,9 @@ class Profile extends React.Component {
             </div>
           </LazyLoad>
           <LazyLoad containerClassName={s.sideCenter} containerStyle={{ display: isToggled ? 'none' : 'block' }}>
-            <div style={{ position: 'relative' }}>
+            {/* <div style={{ position: 'relative' }}>
               <div className={s.profile_image_wrapper}>{photo && <img alt="" src={user.photo} />}</div>
-            </div>
+            </div> */}
             <FormPlaceholder id="defaultID" label="ID Pengguna" value={uid} />
             <FormPlaceholder id="changeName" label="Nama Pengguna" value={user.name} />
             <FormPlaceholder id="changeEmail" label="Email" value={user.email} />

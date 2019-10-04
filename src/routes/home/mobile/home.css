@@ -184,7 +184,7 @@ body {
   text-align: center;
   font-size: 16px;
   border-radius: 0.5rem;
-  background-color: #466bff;
+  background-color: var(--primary-color);
   color: #fff;
 }
 

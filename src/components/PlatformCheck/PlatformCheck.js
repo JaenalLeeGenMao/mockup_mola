@@ -7,6 +7,10 @@ import styles from './PlatformCheck.css'
 import { globalTracker } from '@source/lib/globalTracker'
 import config from '@source/config'
 import { getPartners } from '@actions/partners'
+import _ from 'lodash'
+
+import checkIcon from '../../global/assets-global/images/check.png'
+import crossIcon from '../../global/assets-global/images/cross.png'
 
 class PlatformCheck extends Component {
   state = {
@@ -68,11 +72,17 @@ class PlatformCheck extends Component {
   }
 
   render() {
-    const { name, portraitPoster, icon, iconStatus, status } = this.props
+    const movieDetail = this.props.movieDetail.data[0]
+    const name = _.get(movieDetail, 'title', '')
+    const poster = this.props.isChannel
+      ? _.get(movieDetail, 'background.landscape', '')
+      : _.get(movieDetail, 'background.portrait', '')
+    const platforms = _.get(movieDetail, 'platforms', [])
+
     return (
       <>
-        <div className={styles.container} style={{ backgroundImage: `url(${portraitPoster}?w=1000)` }}>
-          {!portraitPoster && (
+        <div className={styles.container} style={{ backgroundImage: `url(${poster}?w=1000)` }}>
+          {!poster && (
             <div className={styles.player__container}>
               <div className={styles.img__wrapper}>
                 <img src={logoMolaBig} />
@@ -87,17 +97,21 @@ class PlatformCheck extends Component {
             <div className={styles.detail__container}>
               <div className={styles.detail__desc__icon}>
                 <div className={styles.detail__desc_img}>
-                  {icon.map((s, idx) => {
+                  {platforms.map((s, idx) => {
                     return (
                       <div className={styles.detail__desc_img__status__icon} key={idx}>
                         <img
                           key={idx}
-                          src={s}
-                          className={`${status[idx] ? styles.status__img__true : styles.status__img__false}`}
+                          src={s.imageUrl}
+                          className={`${s.status === 0 ? styles.status__img__false : styles.status__img__true}`}
                         />
-                        <img className={styles.detail__desc_img__status__color} key={idx} src={iconStatus[idx]} />
+                        <img
+                          className={styles.detail__desc_img__status__color}
+                          key={idx}
+                          src={s.status === 0 ? crossIcon : checkIcon}
+                        />
                         <p className={styles.detail__desc_img__status__info} key={idx}>
-                          {name[idx]}
+                          {s.name}
                         </p>
                       </div>
                     )
@@ -112,38 +126,6 @@ class PlatformCheck extends Component {
               <div className={styles.detail__desc__text__icon__bottom__text}>
                 atau, untuk pembelian online silahkan kunjungi:
                 <div className={styles.detail__desc__text__icon__bottom__text}>{this.renderLink()}</div>
-                {/* <div className={styles.detail__desc__text__icon__bottom__text}>
-                  <a onClick={() => this.handleRedirectTracker('https://www.blibli.com/promosi/molatv', 'blibli.com')}>
-                    Blibli.com
-                  </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>,&nbsp;</div>
-                  <a
-                    onClick={() =>
-                      this.handleRedirectTracker('https://www.matrixshop.co.id/molamatrix', 'matrixshop.co.id')
-                    }
-                  >
-                    Mola-Matrix
-                  </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>,&nbsp;</div>
-                  <a
-                    onClick={() =>
-                      this.handleRedirectTracker(
-                        'https://www.tokopedia.com/polytron-id/mola-polytron-streaming-device',
-                        'tokopedia.com'
-                      )
-                    }
-                  >
-                    Tokopedia
-                  </a>
-                  <div className={styles.detail__desc__text__icon__bottom__text__and}>&nbsp;&amp;&nbsp;</div>
-                  <a
-                    onClick={() =>
-                      this.handleRedirectTracker('https://www.polytronstore.com/video/358', 'polytronstore.com')
-                    }
-                  >
-                    polytronstore.com
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>

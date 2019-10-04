@@ -28,6 +28,7 @@ export const videoSuggestionPlayer = css`
   width: calc(100% / 7);
   height: 100%;
   padding: 0.8rem;
+  transition: all ease .5s;
 
   &:first-child {
     padding-left: 1.6rem;
@@ -35,6 +36,10 @@ export const videoSuggestionPlayer = css`
 
   &:last-child {
     padding-right: 1.6rem;
+  }
+
+  &:hover {
+    transform: scale(1.1);
   }
 }
 `

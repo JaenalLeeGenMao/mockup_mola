@@ -9,14 +9,12 @@ import recommendationActions from '@actions/recommendation'
 
 import DRMConfig from '@source/lib/DRMConfig'
 import { updateCustomMeta } from '@source/DOMUtils'
-import PlatformCheckMobile from '@components/PlatformCheckMobile'
 import MovieDetailError from '@components/common/error'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
 import WatchDesktop from './desktop'
 import WatchMobile from './mobile'
-import iconRed from './assets/merah.png'
-import iconGreen from './assets/hijau.png'
+
 import Placeholder from './desktop/placeholder'
 import PlaceholderMobile from './mobile/placeholder'
 import Mola from '../../api/mola'
@@ -27,7 +25,6 @@ class Watch extends Component {
     name: '',
     imageUrl: [],
     block: false,
-    iconGreen,
     status: [],
     isHeader: false,
     isMatchPassed: false,
@@ -63,7 +60,7 @@ class Watch extends Component {
         }
       }
       if (configParams && configParams.data && configParams.data.akamai_analytic_enabled) {
-        setAkamaiMediaAnalyticsData('title', movieDetail.data[0].title);
+        setAkamaiMediaAnalyticsData('title', movieDetail.data[0].title)
       }
       const dataFetch = movieDetail.data[0]
 
@@ -72,33 +69,9 @@ class Watch extends Component {
       if (filterForBlockFind) {
         this.setState({ block: false })
       } else {
-        const filterForBlock = dataFetch.platforms
-        const isBlocked = filterForBlock.length > 0
-        let stat = []
-        let state = []
-        let img = []
-        let st = status
-
-        if (isBlocked) {
-          filterForBlock.forEach(dt => {
-            st.push(dt.status)
-            if (dt.status === 1) {
-              stat.push(iconGreen)
-            } else {
-              stat.push(iconRed)
-            }
-
-            state.push(dt.name)
-            img.push(dt.imageUrl)
-          })
-        }
         this.setState({
           isHeader: true,
-          name: state,
-          imageUrl: img,
-          status: st,
           block: true,
-          iconStatus: stat,
         })
       }
     }
@@ -174,25 +147,9 @@ class Watch extends Component {
       <>
         {status === 'loading' && !isMobile && <> {<Placeholder />} </>}
         {status === 'loading' && isMobile && <> {<PlaceholderMobile />} </>}
-        {isMobile &&
-          block && (
-            <PlatformCheckMobile
-              dataFetched={apiFetched ? data[0] : ''}
-              iconStatus={this.state.iconStatus}
-              status={this.state.status}
-              icon={this.state.imageUrl}
-              name={this.state.name}
-              title={apiFetched ? dataFetched.title : ''}
-              portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-              user={this.props.user}
-              videoId={this.props.videoId}
-              isHeader={isHeader}
-            />
-          )}
 
         {!isMobile &&
-          dataFetched &&
-          block && (
+          dataFetched && (
             <>
               <Helmet>
                 <title>{dataFetched.title}</title>
@@ -204,10 +161,6 @@ class Watch extends Component {
                 getMovieDetail={getMovieDetail}
                 recommendation={recommendation}
                 vuid={vuid}
-                iconStatus={this.state.iconStatus}
-                status={this.state.status}
-                icon={this.state.imageUrl}
-                name={this.state.name}
                 title={apiFetched ? dataFetched.title : ''}
                 isAutoPlay={isAutoPlay}
                 portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
@@ -217,33 +170,20 @@ class Watch extends Component {
           )}
 
         {dataFetched &&
-          !block && (
+          isMobile && (
             <>
               <Helmet>
                 <title>{dataFetched.title}</title>
               </Helmet>
-              {isMobile && (
-                <WatchMobile
-                  videoId={videoId}
-                  movieDetail={this.props.movieDetail}
-                  getMovieDetail={getMovieDetail}
-                  vuid={vuid}
-                  isAutoPlay={isAutoPlay}
-                  isMatchPassed={this.state.isMatchPassed}
-                />
-              )}
-              {!isMobile && (
-                <WatchDesktop
-                  blocked={block}
-                  videoId={videoId}
-                  movieDetail={this.props.movieDetail}
-                  getMovieDetail={getMovieDetail}
-                  recommendation={recommendation}
-                  vuid={vuid}
-                  isAutoPlay={isAutoPlay}
-                  isMatchPassed={this.state.isMatchPassed}
-                />
-              )}
+              <WatchMobile
+                blocked={block}
+                videoId={videoId}
+                movieDetail={this.props.movieDetail}
+                getMovieDetail={getMovieDetail}
+                vuid={vuid}
+                isAutoPlay={isAutoPlay}
+                isMatchPassed={this.state.isMatchPassed}
+              />
             </>
           )}
         {status === 'error' && <MovieDetailError message={error} />}
