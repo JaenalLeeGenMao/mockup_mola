@@ -47,9 +47,6 @@ class Watch extends Component {
     if (movieDetail.meta.status === 'success' && movieDetail.data[0].id != videoId) {
       // this.getLoc()
       getMovieDetail(videoId)
-    }
-
-    if (recommendation.meta.status === 'success' && recommendation.data[0].video_id == videoId) {
       getRecommendation(videoId)
     }
 
