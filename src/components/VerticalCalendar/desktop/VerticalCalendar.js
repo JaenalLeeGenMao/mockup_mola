@@ -119,7 +119,7 @@ class VerticalCalendar extends Component {
                         this.handleOnClick(dt.strTimestamp)
                       }}
                     >
-                      {today === formatStartTime && <span className={s.live__dot} />}
+                      {hasLiveLogo && today === formatStartTime && <span className={s.live__dot} />}
                       {isSelected && <span className={s.selectedFilter}>{dt.title}</span>}
                       {!isSelected && <>{dt.title}</>}
                     </div>
