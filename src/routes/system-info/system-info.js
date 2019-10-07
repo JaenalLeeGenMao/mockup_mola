@@ -19,7 +19,6 @@ class SystemInfo extends Component {
       parserInfo = parser(navigator.userAgent)
 
     const currentDateTime = new Date().toString()
-    console.log('currentDateTime', currentDateTime)
     return (
       <div>
         <Header stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
