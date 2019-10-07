@@ -71,7 +71,7 @@ Improvements:
 
 **07/10/2019**
 
-V.1.3.0 + **1786**
+V1.3.0 + **1786**
 
 
 Improvements:
@@ -80,9 +80,19 @@ Improvements:
 * Show user (client) current date time on /system-info page desktop and mobile (irene)
 
 
-V.1.3.0 + **1790**
+V1.3.0 + **1790**
 
 
 Bug Fixes:
 * Fix validation to recall recommendation api (related video and upcoming video) on video detail page (/watch) desktop and mobile. Previously when navigate to next video or other video, the recommendation is still the same (irene)
 
+V1.3.0 + **1795**
+
+Bug Fixes:
+* Fix platform blocker styling in video detail page (/channel) both for dekstop and mobile (arga) 
+
+ 
+ V1.3.0 + **1799**
+ 
+ Improvements:
+* Only Show blue dot (next to date filter) if today has live match on video detail page (/matches) both for dekstop and mobile (Irene) 
