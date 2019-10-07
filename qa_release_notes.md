@@ -57,3 +57,32 @@ Improvements:
 
 Bug Fixes:
 *  Remove temporary icon photo profile on page screen desktop and mobile (Sabiq)
+
+
+**04/10/2019**
+
+V1.3.0 + **1776**
+
+
+Improvements:
+*  Add resizer for platform blocker used in video detail page (/channels and /watch) for desktop (w=100) and mobile (w=60) (aang)
+*  Fix account detail page (/accounts/profile?tab=security) when back to profile page (/accounts/profile) on desktop and mobile (arga)
+*  Update Styling Platform blocker to add clickable MPS icon ‘info selengkapnya’ and redesign platform blocker on mobile and desktop (arga)
+
+*07/10/2019**
+
+V.1.3.0 + **1786***
+
+
+Improvements:
+* Adjust caster styling and suggestion card styling when hover video detail page (/watch) on desktop (jaenal) 
+* Update countdown style for video detail page (/watch) new design on desktop and mobile (irene)
+* Show user (client) current date time on /system-info page desktop and mobile (irene)
+
+
+V.1.3.0 + **1790***
+
+
+Bug Fixes:
+* Fix validation to recall recommendation api (related video and upcoming video) on video detail page (/watch) desktop and mobile. Previously when navigate to next video or other video, the recommendation is still the same (irene)
+
