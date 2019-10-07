@@ -23,7 +23,7 @@ import Placeholder from './placeholder'
 import { BannerPlaceholder } from './placeholder/banner-placeholder'
 import { contentTypeList, banners as dummyDataBanners } from './const'
 
-import { container, bannerContainer, carouselMargin, carouselHeader } from './style'
+import { container, bannerContainer, carouselHeader } from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
@@ -235,6 +235,7 @@ class Feature extends Component {
                               ? contentTypeList[contentTypeName].slideToScroll
                               : contentTypeList[contentTypeName].slideToShow
                           }
+                          slidesToScroll={Math.trunc(slideToShow)}
                           transitionMode={'scroll'}
                           framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                         >
@@ -292,6 +293,7 @@ class Feature extends Component {
                                 sliderCoin={true}
                                 dragging={true}
                                 slidesToShow={isMobile ? 1 : 3.5}
+                                slidesToScroll={Math.trunc(contentTypeList['articles'].slideToShow)}
                                 transitionMode={'scroll'}
                                 withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                                 framePadding={!isMobile ? '0rem' : '0rem 5px'}

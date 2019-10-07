@@ -30,17 +30,6 @@ export const bannerContainer = css`
   border-radius: .25rem;
 }
 `
-export const carouselMargin = css`
-  // div.slider-frame {
-  //   margin: 0 !important;
-  // }
-
-  // @media screen and (max-width: 960px) {
-  //   div.slider-frame {
-  //     margin: 0 1rem !important;
-  //   }
-  // }
-`
 
 export const carouselHeader = css`
   display: flex;
