@@ -69,9 +69,9 @@ Improvements:
 *  Fix account detail page (/accounts/profile?tab=security) when back to profile page (/accounts/profile) on desktop and mobile (arga)
 *  Update Styling Platform blocker to add clickable MPS icon ‘info selengkapnya’ and redesign platform blocker on mobile and desktop (arga)
 
-*07/10/2019**
+**07/10/2019**
 
-V.1.3.0 + **1786***
+V.1.3.0 + **1786**
 
 
 Improvements:
@@ -80,7 +80,7 @@ Improvements:
 * Show user (client) current date time on /system-info page desktop and mobile (irene)
 
 
-V.1.3.0 + **1790***
+V.1.3.0 + **1790**
 
 
 Bug Fixes:
