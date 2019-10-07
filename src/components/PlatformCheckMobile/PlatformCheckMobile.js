@@ -85,6 +85,9 @@ class PlatformCheckMobile extends Component {
     if (id === 4) {
       const url = _.get(this.props.configParams.data, 'platform_mps_link', 'https://www.mola.tv/not-found')
       window.open(url, '_blank')
+    } else if (id === 5) {
+      const url = _.get(this.props.configParams.data, 'platform_smarttv_link', 'https://www.mola.tv/not-found')
+      window.open(url, '_blank')
     }
   }
 
@@ -139,7 +142,7 @@ class PlatformCheckMobile extends Component {
                       >
                         {s.name}
                       </p>
-                      {s.id === 4 ? <p className={styles.text_info}>Info Selengkapnya</p> : ''}
+                      {s.id === 4 || s.id === 5 ? <p className={styles.text_info}>Info Selengkapnya</p> : ''}
                     </div>
                     <img
                       className={styles.detail__desc_img__status__color}
