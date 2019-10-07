@@ -17,6 +17,8 @@ class SystemInfo extends Component {
   render() {
     const { info = null } = this.state,
       parserInfo = parser(navigator.userAgent)
+
+    const currentDateTime = new Date().toString()
     return (
       <div>
         <Header stickyOff rightMenuOff libraryOff leftMenuOff {...this.props} />
@@ -39,6 +41,7 @@ class SystemInfo extends Component {
                 <div>IP {info.ip}</div>
               </>
             )}
+            <div>Date Time {currentDateTime}</div>
             <div>Version 1.3.0</div>
           </div>
         </div>

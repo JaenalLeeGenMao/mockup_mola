@@ -3,8 +3,7 @@
 .countDown__wrapper {
   position: relative;
   height: 100%;
-
-  /* max-height: calc(100vh - 15rem); */
+  width: 100%;
   background-color: black;
   color: white;
 }

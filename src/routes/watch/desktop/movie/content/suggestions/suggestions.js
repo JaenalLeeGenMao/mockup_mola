@@ -30,8 +30,9 @@ const Suggestions = ({ style = {}, videos = [], contentType = '' }) => {
       autoplay={false}
       sliderCoin={true}
       dragging={true}
-      withoutControls={true}
+      withoutControls={videos.length <= 6}
       slidesToShow={6.5}
+      slidesToScroll={6}
       transitionMode={'scroll'}
     >
       {videos.map(obj => {

@@ -61,7 +61,7 @@ export const movieDetailBottom = css`
   }
 
   .recommendationWrapper {
-    padding: 1rem 0 0 3rem;
+    padding: 1rem;
 
     .title {
       color: #989898;
@@ -386,12 +386,18 @@ export const customTooltipTheme = css`
     background-color: rgba(102, 102, 102, 1) !important;
     box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.16) !important;
     opacity: 1 !important;
+    border-radius: 0.3rem !important;
+    padding: 0.8rem 2.1rem !important;
 
     &.place-top {
       &:after {
         border-top-color: rgba(102, 102, 102, 1) !important;
         border-top-style: solid !important;
-        border-top-width: 0.6rem !important;
+        border-top-width: 0.8rem !important;
+        border-left: 0.6rem solid transparent;
+        border-right: 0.6rem solid transparent;
+        bottom: -0.6rem;
+        margin-left: -0.8rem;
       }
     }
 
@@ -399,7 +405,11 @@ export const customTooltipTheme = css`
       &:after {
         border-bottom-color: rgba(102, 102, 102, 1) !important;
         border-bottom-style: solid !important;
-        border-bottom-width: 0.6rem !important;
+        border-bottom-width: 0.8rem !important;
+        border-left: 0.6rem solid transparent;
+        border-right: 0.6rem solid transparent;
+        top: -0.6rem;
+        margin-left: -0.8rem;
       }
     }
 
@@ -407,7 +417,11 @@ export const customTooltipTheme = css`
       &:after {
         border-right-color: rgba(102, 102, 102, 1) !important;
         border-right-style: solid !important;
-        border-right-width: 0.6rem !important;
+        border-right-width: 0.8rem !important;
+        border-top: 0.6rem solid transparent;
+        border-bottom: 0.6rem solid transparent;
+        left: -0.6rem;
+        margin-top: -0.4rem;
       }
     }
 
@@ -415,7 +429,11 @@ export const customTooltipTheme = css`
       &:after {
         border-left-color: rgba(102, 102, 102, 1) !important;
         border-left-style: solid !important;
-        border-left-width: 0.6rem !important;
+        border-left-width: 0.8rem !important;
+        border-top: 0.6rem solid transparent;
+        border-bottom: 0.6rem solid transparent;
+        right: -0.6rem;
+        margin-top: -0.4rem;
       }
     }
   }
