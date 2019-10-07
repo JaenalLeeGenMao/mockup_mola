@@ -119,7 +119,7 @@ class VerticalCalendar extends Component {
                   }
                 } else {
                   if (today === formatStartTime) {
-                    activeClass = s.live__flex
+                    activeClass = hasLiveLogo ? s.live__flex : s.active_date
                   } else if (
                     (!activeDate &&
                       (dt.strTimestamp == selectedDate || dt.title == selectedDate) &&
@@ -147,7 +147,7 @@ class VerticalCalendar extends Component {
                         this.handleOnClick(dt.strTimestamp)
                       }}
                     >
-                      {today === formatStartTime && <span className={s.live__dot} />}
+                      {hasLiveLogo && today === formatStartTime && <span className={s.live__dot} />}
                       {dt.day}
                     </div>
                   </Link>
