@@ -21,6 +21,9 @@ class HorizontalPlaylist extends Component {
     super(props)
     this.isFarLeftReach = true
     this.isFarRightReach = false
+    this.state = {
+      viewResize: 0,
+    }
   }
 
   handlePrevButton() {
@@ -35,6 +38,11 @@ class HorizontalPlaylist extends Component {
     //function hover show and hide button
     var leagueList = document.getElementById('filLeague')
     var defEelementValue = document.getElementById('league__wrapper_scroller')
+
+    if (window) {
+      this.updateWindowDimensions()
+      window.addEventListener('resize', this.updateWindowDimensions)
+    }
 
     leagueList.onmouseover = () => {
       document.getElementById('prev').style.visibility = this.isFarLeftReach ? 'hidden' : 'visible'
@@ -75,8 +83,8 @@ class HorizontalPlaylist extends Component {
       // console.log('checking start')
       var slideTimer = setInterval(() => {
         if (direction == 'left') {
+          // console.dir(element)
           element.scrollLeft -= step
-
           if (element.scrollLeft == 0) {
             this.isFarLeftReach = true
             document.getElementById('prev').style.visibility = 'hidden'
@@ -91,7 +99,6 @@ class HorizontalPlaylist extends Component {
           leagueList = document.getElementById('filLeague')
           defEelementValue = document.getElementById('league__wrapper_scroller')
 
-          // console.dir(element)
           if (element.scrollLeft + element.offsetWidth >= element.scrollWidth) {
             this.isFarRightReach = true
             document.getElementById('next').style.visibility = 'hidden'
@@ -108,6 +115,22 @@ class HorizontalPlaylist extends Component {
         }
       }, speed)
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions = () => {
+    if (window.innerWidth < 1200) {
+      this.isFarRightReach = false
+      // console.log('uk small')
+    } else {
+      // console.log('uk big')
+      this.isFarRightReach = true
+      document.getElementById('next').style.visibility = 'hidden'
+    }
+    this.setState({ viewResize: window.innerWidth })
   }
 
   categoryFilterLigaType = () => {
