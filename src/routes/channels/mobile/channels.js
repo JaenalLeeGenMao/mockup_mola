@@ -79,6 +79,7 @@ class Channels extends Component {
       this.setDefaultVideoSetup(id)
       this.eventVideosTracker(id)
       this.setFirstRenderSchedule(id)
+      this.setRerenderSchedule()
     })
   }
 
@@ -88,6 +89,7 @@ class Channels extends Component {
     if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
       const id = movieId ? movieId : prevState.activeChannelId
       this.setDefaultVideoSetup(id)
+      this.setRerenderSchedule()
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
@@ -153,6 +155,23 @@ class Channels extends Component {
         })
       }
     })
+  }
+
+  setRerenderSchedule = () => {
+    if (this.state.scheduleList.length > 0 && _get(this.state.scheduleList, '[1]')) {
+      const time = this.state.scheduleList[1].start
+      const filteredSchedule = this.state.scheduleList.slice(1)
+      setTimeout(() => {
+        this.setState(
+          {
+            scheduleList: filteredSchedule,
+          },
+          () => {
+            this.setRerenderSchedule()
+          }
+        )
+      }, new Date(time).getTime() - new Date().getTime())
+    }
   }
 
   goOnline = () => {
