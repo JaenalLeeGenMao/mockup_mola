@@ -6,7 +6,7 @@ export const videoSuggestionContainer = css`
   background: transparent;
   border-radius: 0.25rem;
   width: calc(100% - 40px);
-  margin: 0 20px 20px 20px;
+  margin: 0 20px 160px 20px;
   overflow: hidden;
 }
 `

@@ -5,6 +5,9 @@ import { post } from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import queryString from 'query-string'
 
+import { globalTracker } from '@source/lib/globalTracker'
+import { playStoreBadge, appStoreBadge } from '@global/imageUrl'
+
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import config from '@source/config'
 import Tracker from '@source/lib/tracker'
@@ -37,6 +40,7 @@ import {
   movieDetailNotAllowed,
   headerContainer,
   videoInnerContainer,
+  videoBlockerPlatform,
 } from './style'
 
 import { customTheoplayer } from './theoplayer-style'
@@ -65,6 +69,9 @@ class MovieDetail extends Component {
     nextVideoBlocker: false,
     nextVideoClose: false,
     errorLicense: false,
+    store_url: '',
+    ios_store_url: '',
+    badgeUrl: '',
   }
 
   handleOnVideoVolumeChange = player => {
@@ -161,9 +168,27 @@ class MovieDetail extends Component {
 
   componentDidMount() {
     this.getLoc()
+    this.getConfig()
+    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const badgeUrl = isApple ? appStoreBadge : playStoreBadge
+    this.setState({
+      badgeUrl: badgeUrl,
+    })
+
     if (!_isUndefined(window)) {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
+    }
+  }
+
+  getConfig = async () => {
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { store_url, ios_store_url } = configParams.data
+      this.setState({
+        store_url,
+        ios_store_url,
+      })
     }
   }
 
@@ -419,6 +444,58 @@ class MovieDetail extends Component {
     }
   }
 
+  handleStoreTracker = () => {
+    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const payload = {
+      window,
+      user: this.props.user,
+      linkRedirectUrl: isApple ? 'redirect-to-appstore' : 'redirect-to-playstore',
+      event: 'event_pages',
+    }
+    globalTracker(payload)
+  }
+
+  renderBlockerPlatformFooter() {
+    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const { ios_redirect_to_app, android_redirect_to_app } = this.state
+    const { store_url, ios_store_url } = this.state
+
+    const storeUrl = isApple ? ios_store_url : store_url
+
+    if (isApple) {
+      //ios
+      if (ios_redirect_to_app) {
+        return (
+          <div className={videoBlockerPlatform}>
+            <div className="wrap__info">
+              <p className="text__info">
+                Untuk menyaksikan tayangan ini, silakan unduh aplikasi Mola TV melalui tombol di bawah ini
+              </p>
+              <a onClick={this.handleStoreTracker} href={storeUrl}>
+                <img src={this.state.badgeUrl} alt="img-blocker-platform" className="img__info" />
+              </a>
+            </div>
+          </div>
+        )
+      }
+    } else {
+      if (android_redirect_to_app) {
+        return (
+          <div className={videoBlockerPlatform}>
+            <div className="wrap__info">
+              <p className="text__info">
+                Untuk menyaksikan tayangan ini, silakan unduh aplikasi Mola TV melalui tombol di bawah ini
+              </p>
+              <a onClick={this.handleStoreTracker} href={storeUrl}>
+                <img src={this.state.badgeUrl} alt="img-blocker-platform" className="img__info" />
+              </a>
+            </div>
+          </div>
+        )
+      }
+    }
+  }
+
   handleCancelUpcVideo = e => {
     this.setState({
       nextVideoBlocker: false,
@@ -532,6 +609,8 @@ class MovieDetail extends Component {
             </div>
           </>
         )}
+
+        <>{this.renderBlockerPlatformFooter()}</>
       </>
     )
   }
