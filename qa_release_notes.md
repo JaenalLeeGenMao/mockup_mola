@@ -96,3 +96,11 @@ Bug Fixes:
  
  Improvements:
 * Only Show blue dot (next to date filter) if today has live match on video detail page (/matches) both for dekstop and mobile (Irene) 
+
+**09/10/2019**
+
+v1.3.1 + **1803**
+
+New feature:
+* If redirect to apps parameter is true, add floating button which user can redirect to Play Store or Apps Store. The icon Play Store and Apps Store are detected based on user device agent. (Trisno)
+
