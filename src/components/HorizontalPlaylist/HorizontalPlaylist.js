@@ -174,18 +174,18 @@ class HorizontalPlaylist extends Component {
                     </span>
                   </div>
                 )}
-                <div className={s.tooltipContainer}>
-                  <ReactTooltip
-                    id={genre.title}
-                    place="bottom"
-                    aria-haspopup="true"
-                    effect="solid"
-                    className={s.blueTooltip}
-                  >
-                    <p>{genre.title}</p>
-                  </ReactTooltip>
-                </div>
+                {/* <div className={s.tooltipContainer}> */}
+                <ReactTooltip
+                  id={genre.title}
+                  place="bottom"
+                  aria-haspopup="true"
+                  effect="solid"
+                  className={s.blueTooltip}
+                >
+                  <p>{genre.title}</p>
+                </ReactTooltip>
               </div>
+              {/* </div> */}
             </>
           )
         })}
