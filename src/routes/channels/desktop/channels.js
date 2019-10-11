@@ -50,39 +50,13 @@ class Channels extends Component {
     isOnline: navigator && typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
     showOfflinePopup: false,
     errorLicense: false,
+    defaultVidSetting: null,
   }
 
   componentDidMount() {
-    const { fetchChannelSchedule, fetchChannelsPlaylist, movieId, fetchVideoByid, user, getVUID } = this.props
-    const selectedDate = {
-      fullDate: moment().format('YYYYMMDD'),
-      timezone: 0,
-    }
+    const { fetchChannelsPlaylist, movieId, user, getVUID } = this.props
+
     this.getConfig()
-    fetchChannelsPlaylist('channels-m').then(() => {
-      const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
-      const id =
-        video && video.id
-          ? video.id
-          : this.props.channelsPlaylist.data.length > 0 ? this.props.channelsPlaylist.data[0].id : ''
-      fetchVideoByid(id)
-      this.eventVideosTracker(id)
-      fetchChannelSchedule(selectedDate).then(() => {
-        const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
-        const time =
-          filteredSchedule && filteredSchedule.videos.length > 0
-            ? filteredSchedule.videos[0].startTime
-            : Date.now() / 1000
-
-        this.setState({
-          activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
-          activeChannelId: id,
-          activeDate: formatDateTime(time, 'DD MMM'),
-          scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
-        })
-      })
-    })
-
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     getVUID(deviceId)
 
@@ -99,15 +73,27 @@ class Channels extends Component {
         this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
     } catch (err) {}
+
+    fetchChannelsPlaylist('channels-m').then(() => {
+      const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
+      const id =
+        video && video.id
+          ? video.id
+          : this.props.channelsPlaylist.data.length > 0 ? this.props.channelsPlaylist.data[0].id : ''
+      this.setDefaultVideoSetup(id)
+      this.eventVideosTracker(id)
+      this.setFirstRenderSchedule(id)
+      this.setRerenderSchedule()
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { channelsPlaylist, channelSchedule, movieDetail, movieId, fetchVideoByid } = this.props
-    const { status } = this.state
+    const { movieDetail, movieId } = this.props
 
     if (movieDetail.meta.status !== prevProps.movieDetail.data.status && prevProps.movieId != movieId) {
       const id = movieId ? movieId : prevState.activeChannelId
-      fetchVideoByid(id)
+      this.setDefaultVideoSetup(id)
+      this.setRerenderSchedule()
     }
 
     if (prevProps.movieDetail.data.length == 0 && movieDetail.data.length !== prevProps.movieDetail.data.length) {
@@ -127,6 +113,68 @@ class Channels extends Component {
       window.removeEventListener('online', this.goOnline)
       window.removeEventListener('offline', this.goOffline)
       window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+
+  setFirstRenderSchedule = id => {
+    const selectedDate = {
+      fullDate: moment().format('YYYYMMDD'),
+      timezone: 0,
+    }
+    this.props.fetchChannelSchedule(selectedDate).then(() => {
+      const filteredSchedule = this.props.channelSchedule.find(item => item.id == id)
+      const time =
+        filteredSchedule && filteredSchedule.videos.length > 0
+          ? filteredSchedule.videos[0].startTime
+          : Date.now() / 1000
+
+      this.setState({
+        activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+        activeChannelId: id,
+        activeDate: formatDateTime(time, 'DD MMM'),
+        scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+      })
+    })
+  }
+
+  setDefaultVideoSetup = id => {
+    this.props.fetchVideoByid(id).then(() => {
+      if (this.props.movieDetail && this.props.movieDetail.meta.status === 'success') {
+        const { user, movieDetail, configParams } = this.props
+        const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+        const dataFetched = movieDetail.data.length > 0 ? movieDetail.data[0] : undefined
+        const videoSettingProps = {
+          akamai_analytic_enabled:
+            configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
+        }
+        const defaultVidSetting = defaultVideoSetting(
+          user,
+          dataFetched,
+          vuidStatus === 'success' ? vuid : '',
+          null,
+          videoSettingProps
+        )
+        this.setState({
+          defaultVidSetting: defaultVidSetting,
+        })
+      }
+    })
+  }
+
+  setRerenderSchedule = () => {
+    if (this.state.scheduleList.length > 0 && _get(this.state.scheduleList, '[1]')) {
+      const time = this.state.scheduleList[1].start
+      const filteredSchedule = this.state.scheduleList.slice(1)
+      setTimeout(() => {
+        this.setState(
+          {
+            scheduleList: filteredSchedule,
+          },
+          () => {
+            this.setRerenderSchedule()
+          }
+        )
+      }, new Date(time).getTime() - new Date().getTime())
     }
   }
 
@@ -323,6 +371,7 @@ class Channels extends Component {
       this.setState(setState)
     } else {
       this.setState({
+        defaultVidSetting: null,
         block: false,
         ...setState,
       })
@@ -355,39 +404,25 @@ class Channels extends Component {
   }
 
   render() {
-    const { programmeGuides, channelSchedule, channelsPlaylist, movieId, configParams } = this.props
+    const { programmeGuides, channelsPlaylist } = this.props
     const {
       activeChannelId,
       scheduleList,
-      channelCategory,
-      expandLeague,
-      limit,
       activeDate,
-      hasMore,
       hidePlaylist,
       block,
       toggleInfoBar,
       notice_bar_message,
       showOfflinePopup,
       errorLicense,
+      defaultVidSetting,
     } = this.state
     const { meta: { status, error }, data } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
 
-    const poster = apiFetched ? dataFetched.background.landscape : ''
-
     const { user } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-
-    const videoSettingProps = {
-      akamai_analytic_enabled: configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
-    }
-
-    const defaultVidSetting =
-      status === 'success'
-        ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, videoSettingProps)
-        : {}
 
     const videoSettings = {
       ...this.theoVolumeInfo,
@@ -426,7 +461,8 @@ class Channels extends Component {
                 )}
               {!block &&
                 !errorLicense &&
-                loadPlayer && (
+                loadPlayer &&
+                defaultVidSetting && (
                   <Theoplayer
                     className={customTheoplayer}
                     showBackBtn={false}
