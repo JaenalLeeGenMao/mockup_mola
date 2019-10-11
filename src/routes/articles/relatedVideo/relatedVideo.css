@@ -1,0 +1,34 @@
+.recentTopPicksContainer {
+  height: 10rem;
+  width: 100%;
+
+  /* background-color: #2B2B2B; */
+}
+
+.topPicksContainer {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding-top: 2rem;
+  grid-gap: 2rem;
+}
+
+.topPicksContainer_mobile {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding-top: 1.5rem;
+  grid-gap: 2rem;
+}
+
+.topPicksTitle {
+  color: #cbcbcb;
+  font-size: 1.8rem;
+  width: 100%;
+}
+
+.coverItem {
+  height: 30rem;
+}
+
+.coverItem_mobile {
+  height: 18rem;
+}

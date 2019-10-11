@@ -29,32 +29,32 @@ let SEOtitle = 'Mola Articles',
 async function action({ isMobile, store, pathname, query }) {
   const articleId = _.get(pathname.split('/'), '[2]', ''),
     featureId = ''
+  console.log(isMobile)
+  // try {
+  //   const response = await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
+  //     timeout: 5000,
+  //     maxRedirects: 1,
+  //   })
 
-  try {
-    const response = await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
-      timeout: 5000,
-      maxRedirects: 1,
-    })
+  //   if (response.status === 200) {
+  //     const article = _.get(response, 'data.data', {}),
+  //       title = _.get(article, 'attributes.title'),
+  //       metaTitle = _.get(article, 'attributes.metaTitle'),
+  //       metaDescription = _.get(article, 'attributes.metaDescription'),
+  //       summary = _.get(article, 'attributes.summary'),
+  //       keywords = _.get(article, 'attributes.metaKeywords'),
+  //       imageUrl = _.get(article, 'attributes.imageUrl', '')
 
-    if (response.status === 200) {
-      const article = _.get(response, 'data.data', {}),
-        title = _.get(article, 'attributes.title'),
-        metaTitle = _.get(article, 'attributes.metaTitle'),
-        metaDescription = _.get(article, 'attributes.metaDescription'),
-        summary = _.get(article, 'attributes.summary'),
-        keywords = _.get(article, 'attributes.metaKeywords'),
-        imageUrl = _.get(article, 'attributes.imageUrl', '')
-
-      SEOtitle = metaTitle || title
-      SEOdescription = metaDescription || summary
-      SEOkeywords = keywords.length > 0 ? keywords.join(',') : ''
-      SEOimage = imageUrl || ''
-    }
-  } catch {
-    err => {
-      // console.log('Error SEO articles', err)
-    }
-  }
+  //     SEOtitle = metaTitle || title
+  //     SEOdescription = metaDescription || summary
+  //     SEOkeywords = keywords.length > 0 ? keywords.join(',') : ''
+  //     SEOimage = imageUrl || ''
+  //   }
+  // } catch {
+  //   err => {
+  //     // console.log('Error SEO articles', err)
+  //   }
+  // }
 
   return {
     title: SEOtitle,
@@ -64,7 +64,7 @@ async function action({ isMobile, store, pathname, query }) {
     chunks: ['articles'],
     component: (
       <MolaLayout>
-        <Article articleId={articleId} playlistId={featureId} />
+        <Article articleId={articleId} playlistId={featureId} isMobile={isMobile} />
       </MolaLayout>
     ),
   }

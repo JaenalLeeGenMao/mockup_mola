@@ -44,6 +44,7 @@ import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import _forEach from 'lodash/forEach'
 import NodeCache from 'node-cache'
+import utils from './api/mola/util'
 // const videoCache = new NodeCache()
 const molaCache = new NodeCache()
 
@@ -125,14 +126,14 @@ app.get('/ping', (req, res) => {
   res.send('PONG')
 })
 
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
+app.use(
+  '/api',
+  proxy(`${config.endpoints.domain}/api/`, {
+    proxyReqPathResolver: (req, res) => {
+      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+    },
+  })
+)
 
 // app.use(
 //   '/accounts/_',
@@ -813,6 +814,47 @@ app.get('*', async (req, res, next) => {
       production: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25462.xml',
     }
 
+    const pathSplit = req.path.split('/')
+    const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
+
+    let articlesDetailData = {
+      meta: {
+        status: 'loading',
+        error: ''
+      },
+      data: null
+    }
+
+    if (firstPath === 'articles') {
+      let articleId = pathSplit[2]
+      const articleResponse = await Axios.get(
+        `${config.endpoints.apiArticles}/articles/${articleId}`,
+        {
+          timeout: 5000,
+          maxRedirects: 1,
+        }
+      )
+        .then(response => {
+          const dataArticlesDetail = utils.normalizeArticles(response)
+          articlesDetailData = {
+            meta: {
+              status: 'success'
+            },
+            data: dataArticlesDetail
+          }
+        })
+        .catch(err => {
+          articlesDetailData = {
+            meta: {
+              status: 'error',
+              error: 'Error SEO articles' + err
+            },
+            data: null
+          }
+        })
+
+    }
+
     const initialState = {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
@@ -854,8 +896,9 @@ app.get('*', async (req, res, next) => {
           token: errorToken,
           gtoken: errorGtoken,
         },
-        mediaAnalyticUrl: mediaAnalyticUrl[config.env],
+        mediaAnalyticUrl: mediaAnalyticUrl[config.env]
       },
+      articlesDetail: articlesDetailData
     }
 
     // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
@@ -904,8 +947,8 @@ app.get('*', async (req, res, next) => {
     /*** ###Articles Detail data and SEO ### ***/
     data.url = config.endpoints.domain + req.path
     data.image = config.endpoints.domain + '/mola.png'
-    const pathSplit = req.path.split('/')
-    const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
+    // const pathSplit = req.path.split('/')
+    // const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
     if (firstPath === 'watch') {
       let videoId = '',
@@ -977,7 +1020,59 @@ app.get('*', async (req, res, next) => {
         data.twitter_card_type = videoObj.twitter_card_type
         data.appLinkUrl = videoObj.appLinkUrl
       }
+    } else if (firstPath === 'articles') {
+      const articleId = pathSplit[pathSplit.length - 1]
+      let articlesData = {}
+      let hasCache = false
+      molaCache.get('articlesData', function (err, value) {
+        if (!err) {
+          if (value == undefined) {
+            // key not found
+            hasCache = false
+            // console.log('cache value is undefined', err)
+          } else {
+            hasCache = true
+            articlesData = value
+            // console.log('cache value is: ', value)
+            //{ my: "Special", variable: 42 }
+            // ... do something ...
+          }
+        }
+      })
+      if (!hasCache) {
+        const articleResponse = Axios.get(
+          `${config.endpoints.apiArticles}/articles/${articleId}`,
+          {
+            timeout: 5000,
+            maxRedirects: 1,
+          }
+        )
+          .then(response => {
+            if (response.status === 200) {
+              const result = utils.normalizeArticles(response)
+              data.title = result.title
+              data.description = result.summary
+              data.image = result.imageUrl
+              data.type = result.type
+              molaCache.set('articlesData', result, 2700, function (err, success) {
+                if (!err && success) {
+                  console.log('success set cache node cache', articlesData, result)
+                  // true
+                  // ... do something ...
+                } else {
+                  console.log('failed set cache node cache', articlesData, ', err:', err)
+                }
+              })
+            }
+          })
+      } else {
+        data.title = articlesData.title
+        data.description = articlesData.summary
+        data.image = articlesData.imageUrl
+        data.type = articlesData.type
+      }
     }
+
     // else if (pathSplit.includes('articles')) {
     //   const pathnameArr = req.path.split('articles/')
     //   const articleId = pathnameArr[1]

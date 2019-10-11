@@ -1,0 +1,98 @@
+.wrapper {
+  padding-top: 4.5rem;
+  background: #212121;
+}
+
+.video_player_wrapper {
+  width: 100vw;
+  height: 30vh;
+}
+
+/* .playerStyle {
+  width: 100vw;
+  height: 20rem;
+} */
+
+.main_content {
+  padding: 2rem
+}
+
+.title {
+  font-size: 26px;
+  color:#fff;
+  font-weight: bold;
+}
+
+.publishInfo {
+  display: block;
+  color: #9d9d9d;
+  font-size: 12px;
+  margin-top: 1.4rem;
+}
+
+.social_share_section {
+  margin-top: 1.5rem;
+}
+
+.caption_section {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.caption_indicator {
+  width: 10px;
+  background: #2c56ff;
+  margin-right: 1.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.caption_text {
+  font-style: italic;
+  color: #fff;
+}
+
+.react_markdown_wrapper {
+  margin-top: 2rem;
+  color: #ccc
+}
+
+.react_markdown_wrapper p {
+  margin-bottom: 1rem;
+}
+
+.react_markdown_wrapper a {
+  color: #2c56ff;
+}
+
+.tag_section {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.tag_box {
+  background: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tag_text {
+  color: #9d9d9d;
+  font-weight: bolder;
+}
+
+.section_box_wrapper {
+  margin-top: 2rem
+}
+
+.title_text_box {
+  font-size: 1.4rem;
+  color: #969696;
+  margin-bottom: 0.5rem;
+}
+
+.related_video_section {
+  padding: 2rem;
+}

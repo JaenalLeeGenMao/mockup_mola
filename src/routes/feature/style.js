@@ -14,6 +14,15 @@ export const container = css`
     font-weight: 400;
   }
 
+  .article-section-text {
+    color: rgb(203, 203, 203);
+    font-size: 1.28rem;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 400;
+    padding: 0px 0.5rem;
+  }
+
   @media screen and (max-width: 960px) {
     margin: 0;
     max-width: 100vw;

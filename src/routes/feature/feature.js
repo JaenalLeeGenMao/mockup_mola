@@ -9,7 +9,10 @@ import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
 import ArticleCard from '@components/article-card'
+import ArticleCardNew from '@components/article-card/articleCardNew'
 import VideoCard from '@components/video-card'
+
+import ArticlesCard from '../articles/articleCard/articleCard'
 
 import featureActions from '@actions/feature'
 
@@ -43,7 +46,7 @@ class Feature extends Component {
       // this.props.onHandleResetVideo()
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
-      // this.props.onHandleArticle(id)
+      this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -64,7 +67,7 @@ class Feature extends Component {
           // this.props.onHandleResetVideo()
           this.props.onHandlePlaylist(id)
           this.props.onHandleBanner(id)
-          // this.props.onHandleArticle(id)
+          this.props.onHandleArticle(id)
 
           trackedPlaylistIds = []
           // }
@@ -139,7 +142,7 @@ class Feature extends Component {
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
     if (this.props.feature[id]) {
       const { playlists, videos, banners, articles } = this.props.feature[id]
-
+      // const { articles } = this.props.feature['featured']
       const isLoading = playlists.meta.status === 'loading',
         isError = playlists.meta.status === 'error',
         isSuccess = playlists.meta.status === 'success'
@@ -208,8 +211,8 @@ class Feature extends Component {
                   playlists.data.length === videos.data.length &&
                   videos.data.map((video, carouselIndex) => {
                     const contentTypeName = getContentTypeName(
-                        _.get(playlists, `data[${carouselIndex}].contentType`, '')
-                      ),
+                      _.get(playlists, `data[${carouselIndex}].contentType`, '')
+                    ),
                       playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
                       viewMorePlaylistId = _.get(playlists, `data[${carouselIndex}].viewMorePlaylistId`, ''),
                       slideToShow = isMobile
@@ -288,7 +291,7 @@ class Feature extends Component {
                         {carouselIndex === 1 &&
                           articles.data.length > 0 && (
                             <div className={container} style={{ margin: 0 }}>
-                              <h3>Articles</h3>
+                              <h3 className="article-section-text">ARTICLES</h3>
                               <Carousel
                                 wrap={articles.length === 1 ? false : true}
                                 autoplay={false}
@@ -301,18 +304,19 @@ class Feature extends Component {
                                 framePadding={!isMobile ? '0rem' : '0rem 5px'}
                               >
                                 {articles.data.map(obj => (
-                                  <ArticleCard
-                                    key={obj.id}
-                                    onClick={() => this.handleOnClick(obj)}
-                                    alt={obj.title}
-                                    src={`${obj.imageUrl}?w=720`}
-                                    title={obj.title}
-                                    contentType={obj.type}
-                                    createdAt={obj.createdAt}
-                                    description={obj.imageCaption}
-                                    // onLoad={this.updateOnImageLoad}
-                                    // containerClassName={bannerContainer}
-                                  />
+                                  <ArticleCardNew data={obj} key={obj.id} isMobile={this.props.isMobile} />
+                                  // <ArticleCard
+                                  //   key={obj.id}
+                                  //   onClick={() => this.handleOnClick(obj)}
+                                  //   alt={obj.title}
+                                  //   src={`${obj.imageUrl}`}
+                                  //   title={obj.title}
+                                  //   contentType={obj.type}
+                                  //   createdAt={obj.createdAt}
+                                  //   description={obj.imageCaption}
+                                  // // onLoad={this.updateOnImageLoad}
+                                  // // containerClassName={bannerContainer}
+                                  // />
                                 ))}
                               </Carousel>
                             </div>

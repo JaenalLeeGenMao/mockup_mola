@@ -5,11 +5,11 @@ export const articleContainer = css`
   display: inline-block;
   border-radius: .25rem;
   transition: all ease 500ms;
-  height: 12vh;
+  height: 15rem;
   margin: 1rem auto;
 
   @media screen and (max-width: 960px) {
-    height: 14.5vh;
+    height: 15rem;
   }
 
   :hover {

@@ -18,6 +18,7 @@ import headerMenu from './header-menu'
 import configParams from './config-params'
 import partners from './partners'
 import notifications from './notifications'
+import articlesDetail from './articles'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -42,4 +43,5 @@ export default combineReducers({
   configParams,
   partners,
   notifications,
+  articlesDetail,
 })

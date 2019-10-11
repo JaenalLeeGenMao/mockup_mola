@@ -16,6 +16,7 @@ import {
   RECOMMENDATION,
   HEADERMENU,
   ARTICLES_RECOMMENDED_ENDPOINT,
+  ARTICLES_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT_NOCACHE,
   VIDEOS_ENDPOINT_NOCACHE,
   NOTIFICATION_ENDPOINT,
@@ -67,12 +68,12 @@ const getFeaturePlaylist = id => {
       const playlistsFiltered =
         playlists.length > 0
           ? playlists
-              .map(playlist => ({
-                id: playlist.id,
-                type: playlist.type,
-                ...playlist.attributes,
-              }))
-              .filter(playlist => playlist.visibility === 1)
+            .map(playlist => ({
+              id: playlist.id,
+              type: playlist.type,
+              ...playlist.attributes,
+            }))
+            .filter(playlist => playlist.visibility === 1)
           : []
       return {
         meta: {
@@ -291,23 +292,23 @@ const getPlaylistPlaylists = id => {
         playlistsFiltered =
           playlists.length > 0
             ? playlists
-                .map(dt => ({
-                  id: dt.id,
-                  type: dt.type,
-                  ...dt.attributes,
-                }))
-                .filter(dt => dt.visibility === 1)
+              .map(dt => ({
+                id: dt.id,
+                type: dt.type,
+                ...dt.attributes,
+              }))
+              .filter(dt => dt.visibility === 1)
             : []
       } else {
         playlistsFiltered =
           data.length > 0
             ? data
-                .map(dt => ({
-                  id: dt.id,
-                  type: dt.type,
-                  ...dt.attributes,
-                }))
-                .filter(dt => dt.visibility === 1)
+              .map(dt => ({
+                id: dt.id,
+                type: dt.type,
+                ...dt.attributes,
+              }))
+              .filter(dt => dt.visibility === 1)
             : []
       }
 
@@ -860,10 +861,10 @@ const getRecommendedArticles = articlesId => {
       const articlesFiltered =
         articles.length > 0
           ? articles.map(article => ({
-              id: article.id,
-              type: article.type,
-              ...article.attributes,
-            }))
+            id: article.id,
+            type: article.type,
+            ...article.attributes,
+          }))
           : []
 
       return {
@@ -873,6 +874,31 @@ const getRecommendedArticles = articlesId => {
           error: '',
         },
         data: articlesFiltered,
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Articles')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getArticlesDetail = (articleId) => {
+  return get(`${ARTICLES_ENDPOINT}/${articleId}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      const result = utils.normalizeArticles(response)
+      return {
+        meta: {
+          status: 'success'
+        },
+        data: result
       }
     })
     .catch(error => {
@@ -937,6 +963,7 @@ export default {
   getHeaderMenu,
   getPlaylistPlaylists,
   getRecommendedArticles,
+  getArticlesDetail,
   getPartners,
   getNotifications,
   getTotalNotifications,
