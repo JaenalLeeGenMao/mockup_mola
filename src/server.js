@@ -395,7 +395,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
-  molaCache.get('headerMenu', function (err, value) {
+  molaCache.get('headerMenu', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -425,7 +425,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -442,7 +442,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function (err, value) {
+  molaCache.get('configParams', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -472,7 +472,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 900, function (err, success) {
+      molaCache.set('configParams', configParams, 300, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -820,39 +820,73 @@ app.get('*', async (req, res, next) => {
     let articlesDetailData = {
       meta: {
         status: 'loading',
-        error: ''
+        error: '',
       },
-      data: null
+      data: null,
     }
 
     if (firstPath === 'articles') {
       let articleId = pathSplit[2]
-      const articleResponse = await Axios.get(
-        `${config.endpoints.apiArticles}/articles/${articleId}`,
-        {
+      let articlesData = null
+      let hasCache = false
+      molaCache.get('articlesData', function(err, value) {
+        if (!err) {
+          if (value == undefined) {
+            // key not found
+            hasCache = false
+            // console.log('cache value is undefined', err)
+          } else {
+            hasCache = true
+            articlesData = value
+            // console.log('cache value is: ', value)
+            //{ my: "Special", variable: 42 }
+            // ... do something ...
+          }
+        }
+      })
+
+      if (!hasCache) {
+        const articleResponse = Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
           timeout: 5000,
           maxRedirects: 1,
+        })
+          .then(response => {
+            if (response.status === 200) {
+              const result = utils.normalizeArticles(response)
+              articlesDetailData = {
+                meta: {
+                  status: 'success',
+                },
+                data: result,
+              }
+              molaCache.set('articlesData', result, 2700, function(err, success) {
+                if (!err && success) {
+                  console.log('success set cache node cache', articlesData, result)
+                  // true
+                  // ... do something ...
+                } else {
+                  console.log('failed set cache node cache', articlesData, ', err:', err)
+                }
+              })
+            }
+          })
+          .catch(err => {
+            articlesDetailData = {
+              meta: {
+                status: 'error',
+                error: 'Error SEO articles' + err,
+              },
+              data: null,
+            }
+          })
+      } else {
+        articlesDetailData = {
+          meta: {
+            status: 'success',
+          },
+          data: articlesData,
         }
-      )
-        .then(response => {
-          const dataArticlesDetail = utils.normalizeArticles(response)
-          articlesDetailData = {
-            meta: {
-              status: 'success'
-            },
-            data: dataArticlesDetail
-          }
-        })
-        .catch(err => {
-          articlesDetailData = {
-            meta: {
-              status: 'error',
-              error: 'Error SEO articles' + err
-            },
-            data: null
-          }
-        })
-
+      }
     }
 
     const initialState = {
@@ -896,9 +930,9 @@ app.get('*', async (req, res, next) => {
           token: errorToken,
           gtoken: errorGtoken,
         },
-        mediaAnalyticUrl: mediaAnalyticUrl[config.env]
+        mediaAnalyticUrl: mediaAnalyticUrl[config.env],
       },
-      articlesDetail: articlesDetailData
+      articlesDetail: articlesDetailData,
     }
 
     // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
@@ -957,7 +991,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function (err, value) {
+      molaCache.get(videoId, function(err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -1003,7 +1037,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function (err, success) {
+        molaCache.set(videoId, videoObj, 2700, function(err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
@@ -1021,110 +1055,12 @@ app.get('*', async (req, res, next) => {
         data.appLinkUrl = videoObj.appLinkUrl
       }
     } else if (firstPath === 'articles') {
-      const articleId = pathSplit[pathSplit.length - 1]
-      let articlesData = {}
-      let hasCache = false
-      molaCache.get('articlesData', function (err, value) {
-        if (!err) {
-          if (value == undefined) {
-            // key not found
-            hasCache = false
-            // console.log('cache value is undefined', err)
-          } else {
-            hasCache = true
-            articlesData = value
-            // console.log('cache value is: ', value)
-            //{ my: "Special", variable: 42 }
-            // ... do something ...
-          }
-        }
-      })
-      if (!hasCache) {
-        const articleResponse = Axios.get(
-          `${config.endpoints.apiArticles}/articles/${articleId}`,
-          {
-            timeout: 5000,
-            maxRedirects: 1,
-          }
-        )
-          .then(response => {
-            if (response.status === 200) {
-              const result = utils.normalizeArticles(response)
-              data.title = result.title
-              data.description = result.summary
-              data.image = result.imageUrl
-              data.type = result.type
-              molaCache.set('articlesData', result, 2700, function (err, success) {
-                if (!err && success) {
-                  console.log('success set cache node cache', articlesData, result)
-                  // true
-                  // ... do something ...
-                } else {
-                  console.log('failed set cache node cache', articlesData, ', err:', err)
-                }
-              })
-            }
-          })
-      } else {
-        data.title = articlesData.title
-        data.description = articlesData.summary
-        data.image = articlesData.imageUrl
-        data.type = articlesData.type
-      }
+      const articlesData = initialState.articlesDetail.data
+      data.title = articlesData.title
+      data.description = articlesData.summary
+      data.image = articlesData.imageUrl
+      data.type = articlesData.type
     }
-
-    // else if (pathSplit.includes('articles')) {
-    //   const pathnameArr = req.path.split('articles/')
-    //   const articleId = pathnameArr[1]
-
-    //   const articleResponse = Axios.get(
-    //     `${config.endpoints.apiArticles}/articles/${articleId}`,
-    //     {
-    //       timeout: 5000,
-    //       maxRedirects: 1,
-    //     }
-    //   )
-    //     .then(response => {
-    //       if (response.status === 200) {
-    //         const article = _get(response, 'data.data', {}),
-    //           title = _get(article, 'attributes.title'),
-    //           metaTitle = _get(article, 'attributes.metaTitle'),
-    //           metaDescription = _get(article, 'attributes.metaDescription'),
-    //           summary = _get(article, 'attributes.summary'),
-    //           keywords = _get(article, 'attributes.metaKeywords'),
-    //           imageUrl = _get(article, 'attributes.imageUrl', '')
-
-    //         if (article && article !== undefined) {
-    //           if (metaTitle) {
-    //             data.title = metaTitle
-    //           } else if (title) {
-    //             data.title = title
-    //           }
-
-    //           if (metaDescription) {
-    //             data.description = metaDescription
-    //           } else if (summary) {
-    //             data.description = summary
-    //           }
-    //           data.keywords = keywords.length > 0 ? keywords.join(',') : ''
-    //           data.image = imageUrl ? imageUrl : ''
-    //         } else {
-    //           data.title = 'Mola Article'
-    //           data.description =
-    //             'Read daily news of Mola, highlights and many more'
-    //         }
-
-    //         data.type = 'article'
-
-    //         return article
-    //       }
-    //       return null
-    //     })
-    //     .catch(err => {
-    //       console.log('Error SEO articles', err)
-    //       return null
-    //     })
-    // }
     /*** ### End Of Articles Detail ***/
 
     /*** SEO - end  ***/
