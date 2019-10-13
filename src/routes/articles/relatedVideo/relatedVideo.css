@@ -32,3 +32,19 @@
 .coverItem_mobile {
   height: 18rem;
 }
+
+.wrapper_card:hover {
+  cursor: pointer;
+}
+
+.related_video_wrapper {
+  height: 30rem !important;
+  display: block;
+  overflow: hidden;
+}
+
+.related_video_wrapper_mobile {
+  height: 20rem !important;
+  display: block;
+  overflow: hidden;
+}

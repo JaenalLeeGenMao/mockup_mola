@@ -4,7 +4,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { get } from 'axios'
 import ReactMarkdown from 'react-markdown'
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet'
 import { getVUID } from '@actions/vuid'
 import DRMConfig from '@source/lib/DRMConfig'
 
@@ -29,7 +29,7 @@ import { CustomBackground, articleContainer, playerStyle } from './style'
 const { getComponent } = require('@supersoccer/gandalf')
 const Theoplayer = getComponent('theoplayer')
 
-const normalizeRelatedVideo = (data) => {
+const normalizeRelatedVideo = data => {
   return data.map(result => {
     const {
       id,
@@ -38,14 +38,9 @@ const normalizeRelatedVideo = (data) => {
         title,
         year,
         // thumbnail,
-        images: {
-          cover: {
-            background: {
-              portrait: coverUrl
-            }
-          },
-        },
-      }, e
+        images: { cover: { background: { portrait: coverUrl } } },
+      },
+      e,
     } = result
     if (type == 'videos') {
       return {
@@ -86,56 +81,71 @@ class Article extends Component {
     const { category } = this.state
     this.updateWindowDimensions()
     window.addEventListener('resize', this.updateWindowDimensions)
-    if (articlesDetail.meta.status !== 'success') {
-      await this.props.fetchArticlesDetail(articleId)
-    }
-    get(`${ARTICLES_RELATED_ENDPOINT}/${articleId}`)
-      .then((response) => {
-        if (response.status === 200) {
-          let result = utils.normalizeArticlesRelated(response)
-          this.setState({
-            related: {
-              isLoading: false,
-              data: result
-            }
-          })
-        }
-      })
+    // if (articlesDetail.meta.status === 'loading') {
+    //   await this.props.fetchArticlesDetail(articleId)
+    // }
+    get(`${ARTICLES_RELATED_ENDPOINT}/${articleId}`).then(response => {
+      if (response.status === 200) {
+        let result = utils.normalizeArticlesRelated(response)
+        this.setState({
+          related: {
+            isLoading: false,
+            data: result,
+          },
+        })
+      }
+    })
     const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
     await this.props.getVUID(deviceId)
-    if (headerMenu.data.length) {
-      headerMenu.data.map((h) => {
+    if (headerMenu.data.length && articlesDetail.data) {
+      headerMenu.data.map(h => {
         if (h.id === articlesDetail.data.menuId) {
           let category = h.attributes.title.en
           if (category === 'Premiere League') {
             category = 'epl'
           }
           this.setState({
-            categoryArticles: category.toLowerCase()
+            categoryArticles: category.toLowerCase(),
           })
         }
       })
     }
 
     if (category) {
-      get(`${ARTICLES_RECOMMENDED_ENDPOINT}/${category}`)
-        .then((response) => {
-          if (response.status === 200) {
-            let result = utils.normalizeArticlesRelated(response)
-            this.setState({
-              related: {
-                isLoading: false,
-                data: result
-              }
-            })
-          }
-        })
+      get(`${ARTICLES_RECOMMENDED_ENDPOINT}/${category}`).then(response => {
+        if (response.status === 200) {
+          let result = utils.normalizeArticlesRelated(response)
+          this.setState({
+            related: {
+              isLoading: false,
+              data: result,
+            },
+          })
+        }
+      })
     }
 
     this.setState({
-      currentLocation: window.location.href
+      currentLocation: window.location.href,
     })
 
+    if (articlesDetail.meta.status === 'success') {
+      const { video } = articlesDetail.data
+      const videoData = video && video.length ? video[0] : null
+      if (videoData && !this.state.videoSetting) {
+        const videoSettingProps = {
+          akamai_analytic_enabled: false,
+        }
+        const dataFetched = { id: videoData.id, type: videoData.type, ...videoData.attributes }
+        const vuidStatus = this.props.vuid.meta.status
+        let defaultVidSetting = dataFetched
+          ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, videoSettingProps)
+          : {}
+        this.setState({
+          videoSetting: defaultVidSetting,
+        })
+      }
+    }
 
     // fetchArticlesDetail(articleId)
     // if (window) {
@@ -175,33 +185,7 @@ class Article extends Component {
     // }
   }
 
-  componentDidUpdate() {
-    const { user, articlesDetail, vuid } = this.props
-    if (articlesDetail.meta.status === 'success') {
-      const { video } = articlesDetail.data
-      const videoData = (video && video.length) ? video[0] : null
-      if (videoData && !this.state.videoSetting) {
-        const videoSettingProps = {
-          akamai_analytic_enabled:
-            false
-        }
-        const dataFetched = { id: videoData.id, type: videoData.type, ...videoData.attributes }
-        const vuidStatus = this.props.vuid.meta.status
-        let defaultVidSetting = dataFetched
-          ? defaultVideoSetting(
-            user,
-            dataFetched,
-            vuidStatus === 'success' ? vuid : '',
-            null,
-            videoSettingProps
-          )
-          : {}
-        this.setState({
-          videoSetting: defaultVidSetting
-        })
-      }
-    }
-  }
+  componentDidUpdate() {}
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions)
@@ -213,7 +197,7 @@ class Article extends Component {
 
   render() {
     const { playlistId, articleId, user, vuid, articlesDetail } = this.props
-    const articlesStatus = articlesDetail.meta.status
+    const articlesStatus = _.get(articlesDetail, 'meta.status', '')
     // { article, related } = this.state,
     // imageUrl = _.get(article, 'data.attributes.imageUrl', ''),
     // title = _.get(article, 'data.attributes.title'),
@@ -240,15 +224,8 @@ class Article extends Component {
     let dataFetched = null
     let relatedVideoData = null
 
-    if (articlesDetail.meta.status === 'success') {
-      const {
-        menuId,
-        author,
-        updatedAt,
-        readTime,
-        imageCaption,
-        relatedVideos
-      } = articlesDetail.data
+    if (articlesStatus === 'success') {
+      const { menuId, author, updatedAt, readTime, imageCaption, relatedVideos } = articlesDetail.data
       menuActive = menuId ? menuId : ''
       formattedAuthor = author ? `${author} - ` : ''
       formattedDate = updatedAt ? moment(updatedAt).format('DD MMMM YYYY, HH:mm') : ''
@@ -257,152 +234,115 @@ class Article extends Component {
       if (relatedVideos && relatedVideos.length) {
         relatedVideoData = normalizeRelatedVideo(relatedVideos)
       }
-      // const { video } = articlesDetail.data
-      // const videoData = video[0]
-      // if (videoData) {
-      // dataFetched = { id: videoData.id, type: videoData.type, ...videoData.attributes }
-      // const videoSettingProps = {
-      //   akamai_analytic_enabled:
-      //     false
-      // }
-      // const vuidStatus = this.props.vuid.meta.status
-      // defaultVidSetting = dataFetched
-      //   ? defaultVideoSetting(
-      //     user,
-      //     dataFetched,
-      //     vuidStatus === 'success' ? vuid : '',
-      //     null,
-      //     videoSettingProps
-      //   )
-      //   : {}
-      //}
     }
-    // console.log('article', article)
-    // console.log('related', related)
-    // console.log(detail)
     return (
       <>
-        {
-          (articlesDetail.data)
-          &&
-          (
-            <Helmet>
-              <title>{articlesDetail.data.title}</title>
-              <meta name="description" content={articlesDetail.data.metaDescription} />
-            </Helmet>
-          )
-        }
+        {articlesDetail.data && (
+          <Helmet>
+            <title>{articlesDetail.data.title}</title>
+            <meta name="description" content={articlesDetail.data.metaDescription} />
+          </Helmet>
+        )}
         <div className={articleContainer}>
           <Header isMobile={isMobile} libraryOff isDark={false} activeMenuId={menuActive} {...this.props} />
           {articlesStatus === 'success' && (
             <>
-              {
-                (this.props.isMobile || isMobile)
-                  ?
-                  <ArticlesMobile {...this.props} relatedVideoData={relatedVideoData} {...this.state} videoSetting={this.state.videoSetting} formattedAuthor={formattedAuthor} formattedDate={formattedDate} formattedReadTime={formattedReadTime} formattedCaption={formattedCaption} />
-                  :
-                  <>
-                    <div className="top-section">
-                      {
-                        (articlesDetail.data.video && this.state.videoSetting)
-                          ?
-                          (<div className="video-player-wrapper">
-                            <Theoplayer
-                              className={playerStyle}
-                              poster={articlesDetail.data.video[0].attributes.images.cover.background.landscape}
-                              autoPlay={false}
-                              {...this.state.videoSetting} />
-                          </div>)
-                          :
-                          (<BackgroundGradient url={articlesDetail.data.imageUrl} />)
-                      }
-                      <div className="related-article-section">
-                        {
-                          (!this.state.related.isLoading & this.state.related.data.length)
-                          &&
-                          (
-                            <>
-                              <div className="related-article-title">Related Articles</div>
-                              {
-                                this.state.related.data.map((related) => <ArticleCard key={related.id} data={related} />)
-                              }
-                            </>
-                          )
-                        }
+              {this.props.isMobile || isMobile ? (
+                <ArticlesMobile
+                  {...this.props}
+                  relatedVideoData={relatedVideoData}
+                  {...this.state}
+                  videoSetting={this.state.videoSetting}
+                  formattedAuthor={formattedAuthor}
+                  formattedDate={formattedDate}
+                  formattedReadTime={formattedReadTime}
+                  formattedCaption={formattedCaption}
+                />
+              ) : (
+                <>
+                  <div className="top-section">
+                    {articlesDetail.data.video && this.state.videoSetting ? (
+                      <div className="video-player-wrapper">
+                        <Theoplayer
+                          className={playerStyle}
+                          poster={articlesDetail.data.video[0].attributes.images.cover.background.landscape}
+                          autoPlay={false}
+                          {...this.state.videoSetting}
+                        />
                       </div>
+                    ) : (
+                      <BackgroundGradient url={articlesDetail.data.imageUrl} />
+                    )}
+                    <div className="related-article-section">
+                      {!this.state.related.isLoading & this.state.related.data.length && (
+                        <>
+                          <div className="related-article-title">Related Articles</div>
+                          {this.state.related.data.map(related => <ArticleCard key={related.id} data={related} />)}
+                        </>
+                      )}
                     </div>
+                  </div>
 
-                    <div className="mainContent">
-                      <div className="content-container">
-                        <div className="detail-wrapper">
-                          <h1 className="title">{articlesDetail.data.title}</h1>
-                          <span className="publishInfo">
-                            {formattedAuthor}
-                            {formattedDate}
-                            {formattedReadTime}
-                          </span>
-                          <div className="social-share-section"><SocialShare url={this.state.currentLocation} /></div>
-                          {formattedCaption &&
-                            <div className="caption-wrapper">
-                              <div className="indicator-caption"></div>
-                              <i className="caption"><q>{articlesDetail.data.summary}</q></i>
-                            </div>
-                          }
-                          {/* <p className="detail">{detail}</p> */}
-                          <div className="markdown-wrapper"><ReactMarkdown source={articlesDetail.data.content} escapeHtml={true} /></div>
-                          <div className="tag-section">
-                            {
-                              (articlesDetail.data.tags && articlesDetail.data.tags.length)
-                              &&
-                              (
-                                <>
-                                  {
-                                    articlesDetail.data.tags.map((tag, idx) => {
-                                      return (
-                                        <div className="tag-box" key={idx}>
-                                          <p className="tag-text">{tag}</p>
-                                        </div>
-                                      )
-                                    })
-                                  }
-                                </>
-                              )
-                            }
+                  <div className="mainContent">
+                    <div className="content-container">
+                      <div className="detail-wrapper">
+                        <h1 className="title">{articlesDetail.data.title}</h1>
+                        <span className="publishInfo">
+                          {formattedAuthor}
+                          {formattedDate}
+                          {formattedReadTime}
+                        </span>
+                        <div className="social-share-section">
+                          <SocialShare url={this.state.currentLocation} />
+                        </div>
+                        {formattedCaption && (
+                          <div className="caption-wrapper">
+                            <div className="indicator-caption" />
+                            <i className="caption">
+                              <q>{articlesDetail.data.summary}</q>
+                            </i>
                           </div>
+                        )}
+                        {/* <p className="detail">{detail}</p> */}
+                        <div className="markdown-wrapper">
+                          <ReactMarkdown source={articlesDetail.data.content} escapeHtml={true} />
                         </div>
-                        <div className="latest-wrapper">
-
-                          {
-                            (!this.state.latest.isLoading & this.state.latest.data.length)
-                            &&
-                            (
+                        <div className="tag-section">
+                          {articlesDetail.data.tags &&
+                            articlesDetail.data.tags.length && (
                               <>
-                                <div className="related-article-title">Latest Articles</div>
-                                {
-                                  this.state.latest.data.map(latest => <ArticleCard key={latest.id} />)
-                                }
+                                {articlesDetail.data.tags.map((tag, idx) => {
+                                  return (
+                                    <div className="tag-box" key={idx}>
+                                      <p className="tag-text">{tag}</p>
+                                    </div>
+                                  )
+                                })}
                               </>
-                            )
-                          }
-
+                            )}
                         </div>
                       </div>
-                    </div>
-                    <div className="related-video-section">
-                      {
-                        (relatedVideoData && relatedVideoData.length)
-                        &&
-                        (<RelatedVideo title="Related Video" data={relatedVideoData} />)
-                      }
-                    </div>
-                  </>
 
-              }
+                      {!this.state.latest.isLoading & this.state.latest.data.length && (
+                        <div className="latest-wrapper">
+                          <div className="related-article-title">Latest Articles</div>
+                          {this.state.latest.data.map(latest => <ArticleCard key={latest.id} />)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {relatedVideoData &&
+                    relatedVideoData.length && (
+                      <div className="related-video-section">
+                        <RelatedVideo title="Related Video" data={relatedVideoData} />
+                      </div>
+                    )}
+                </>
+              )}
             </>
           )}
-          {
-            articlesStatus === 'error' && <ArticlesDetailError message={articlesDetail.meta.error} />
-          }
+          {articlesStatus === 'error' && <ArticlesDetailError message={articlesDetail.meta.error} />}
         </div>
       </>
     )
@@ -417,7 +357,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   getVUID: deviceId => dispatch(getVUID(deviceId)),
-  fetchArticlesDetail: articleId => dispatch(articlesAction.getArticlesDetail(articleId))
+  fetchArticlesDetail: articleId => dispatch(articlesAction.getArticlesDetail(articleId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Article)

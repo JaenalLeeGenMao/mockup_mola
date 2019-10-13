@@ -827,64 +827,81 @@ app.get('*', async (req, res, next) => {
 
     if (firstPath === 'articles') {
       let articleId = pathSplit[2]
-      let articlesData = null
-      let hasCache = false
-      molaCache.get('articlesData', function(err, value) {
-        if (!err) {
-          if (value == undefined) {
-            // key not found
-            hasCache = false
-            // console.log('cache value is undefined', err)
-          } else {
-            hasCache = true
-            articlesData = value
-            // console.log('cache value is: ', value)
-            //{ my: "Special", variable: 42 }
-            // ... do something ...
-          }
-        }
-      })
-
-      if (!hasCache) {
-        const articleResponse = Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
-          timeout: 5000,
-          maxRedirects: 1,
-        })
-          .then(response => {
-            if (response.status === 200) {
-              const result = utils.normalizeArticles(response)
-              articlesDetailData = {
-                meta: {
-                  status: 'success',
-                },
-                data: result,
-              }
-              molaCache.set('articlesData', result, 2700, function(err, success) {
-                if (!err && success) {
-                  console.log('success set cache node cache', articlesData, result)
-                  // true
-                  // ... do something ...
-                } else {
-                  console.log('failed set cache node cache', articlesData, ', err:', err)
-                }
-              })
-            }
-          })
-          .catch(err => {
-            articlesDetailData = {
-              meta: {
-                status: 'error',
-                error: 'Error SEO articles' + err,
-              },
-              data: null,
-            }
-          })
-      } else {
+      if (!articleId) {
         articlesDetailData = {
           meta: {
-            status: 'success',
+            status: 'error',
+            error: 'article detail error 404 cannot be found',
           },
-          data: articlesData,
+          data: null,
+        }
+      } else {
+        let articlesData = null
+        let hasCache = false
+        molaCache.get(articleId, function(err, value) {
+          if (!err) {
+            if (value == undefined) {
+              // key not found
+              hasCache = false
+              // console.log('cache value is undefined', err)
+            } else {
+              hasCache = true
+              articlesData = value
+              // console.log('cache value is: ', value)
+              //{ my: "Special", variable: 42 }
+              // ... do something ...
+            }
+          }
+        })
+        if (!hasCache) {
+          await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
+            timeout: 5000,
+            maxRedirects: 1,
+          })
+            .then(response => {
+              if (response.status == 200) {
+                const result = utils.normalizeArticles(response)
+                articlesDetailData = {
+                  meta: {
+                    status: 'success',
+                  },
+                  data: result,
+                }
+                molaCache.set(articleId, result, 2700, function(err, success) {
+                  if (!err && success) {
+                    console.log('success set cache node cache', articleId, result)
+                    // true
+                    // ... do something ...
+                  } else {
+                    console.log('failed set cache node cache', articleId, ', err:', err)
+                  }
+                })
+              } else {
+                articlesDetailData = {
+                  meta: {
+                    status: 'error',
+                    error: `Error SEO articles request failed with status ${response.status}`,
+                  },
+                  data: null,
+                }
+              }
+            })
+            .catch(err => {
+              articlesDetailData = {
+                meta: {
+                  status: 'error',
+                  error: 'Error SEO articles' + err,
+                },
+                data: null,
+              }
+            })
+        } else {
+          articlesDetailData = {
+            meta: {
+              status: 'success',
+            },
+            data: articlesData,
+          }
         }
       }
     }
@@ -1055,11 +1072,14 @@ app.get('*', async (req, res, next) => {
         data.appLinkUrl = videoObj.appLinkUrl
       }
     } else if (firstPath === 'articles') {
-      const articlesData = initialState.articlesDetail.data
-      data.title = articlesData.title
-      data.description = articlesData.summary
-      data.image = articlesData.imageUrl
-      data.type = articlesData.type
+      const { status } = initialState.articlesDetail.meta
+      if (status === 'success') {
+        const articlesData = initialState.articlesDetail.data
+        data.title = articlesData.title
+        data.description = articlesData.summary
+        data.image = articlesData.imageUrl
+        data.type = articlesData.type
+      }
     }
     /*** ### End Of Articles Detail ***/
 

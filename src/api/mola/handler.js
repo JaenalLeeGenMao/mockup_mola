@@ -68,12 +68,12 @@ const getFeaturePlaylist = id => {
       const playlistsFiltered =
         playlists.length > 0
           ? playlists
-            .map(playlist => ({
-              id: playlist.id,
-              type: playlist.type,
-              ...playlist.attributes,
-            }))
-            .filter(playlist => playlist.visibility === 1)
+              .map(playlist => ({
+                id: playlist.id,
+                type: playlist.type,
+                ...playlist.attributes,
+              }))
+              .filter(playlist => playlist.visibility === 1)
           : []
       return {
         meta: {
@@ -292,23 +292,23 @@ const getPlaylistPlaylists = id => {
         playlistsFiltered =
           playlists.length > 0
             ? playlists
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
+                .map(dt => ({
+                  id: dt.id,
+                  type: dt.type,
+                  ...dt.attributes,
+                }))
+                .filter(dt => dt.visibility === 1)
             : []
       } else {
         playlistsFiltered =
           data.length > 0
             ? data
-              .map(dt => ({
-                id: dt.id,
-                type: dt.type,
-                ...dt.attributes,
-              }))
-              .filter(dt => dt.visibility === 1)
+                .map(dt => ({
+                  id: dt.id,
+                  type: dt.type,
+                  ...dt.attributes,
+                }))
+                .filter(dt => dt.visibility === 1)
             : []
       }
 
@@ -861,10 +861,10 @@ const getRecommendedArticles = articlesId => {
       const articlesFiltered =
         articles.length > 0
           ? articles.map(article => ({
-            id: article.id,
-            type: article.type,
-            ...article.attributes,
-          }))
+              id: article.id,
+              type: article.type,
+              ...article.attributes,
+            }))
           : []
 
       return {
@@ -888,17 +888,28 @@ const getRecommendedArticles = articlesId => {
     })
 }
 
-const getArticlesDetail = (articleId) => {
+const getArticlesDetail = articleId => {
   return get(`${ARTICLES_ENDPOINT}/${articleId}`, {
     ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeArticles(response)
-      return {
-        meta: {
-          status: 'success'
-        },
-        data: result
+      console.log(response, 'responseee')
+      if (response.status === 200) {
+        const result = utils.normalizeArticles(response)
+        return {
+          meta: {
+            status: 'success',
+          },
+          data: result,
+        }
+      } else {
+        return {
+          meta: {
+            status: 'error',
+            error: `Mola Articles request failed with status ${response.status}`,
+          },
+          data: [],
+        }
       }
     })
     .catch(error => {

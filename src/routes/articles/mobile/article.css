@@ -14,12 +14,12 @@
 } */
 
 .main_content {
-  padding: 2rem
+  padding: 2rem;
 }
 
 .title {
   font-size: 26px;
-  color:#fff;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -53,7 +53,7 @@
 
 .react_markdown_wrapper {
   margin-top: 2rem;
-  color: #ccc
+  color: #ccc;
 }
 
 .react_markdown_wrapper p {
@@ -84,7 +84,7 @@
 }
 
 .section_box_wrapper {
-  margin-top: 2rem
+  margin-top: 2rem;
 }
 
 .title_text_box {
@@ -94,5 +94,5 @@
 }
 
 .related_video_section {
-  padding: 2rem;
+  padding: 0 2rem 0.5rem 2rem;
 }

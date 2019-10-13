@@ -29,7 +29,21 @@ let SEOtitle = 'Mola Articles',
 async function action({ isMobile, store, pathname, query }) {
   const articleId = _.get(pathname.split('/'), '[2]', ''),
     featureId = ''
-  console.log(isMobile)
+  const articlesDetail = store.getState().articlesDetail
+  if (articlesDetail.meta.status === 200) {
+    const article = _.get(articlesDetail, 'data', {}),
+      title = _.get(article, 'title'),
+      metaTitle = _.get(article, 'metaTitle'),
+      metaDescription = _.get(article, 'metaDescription'),
+      summary = _.get(article, 'summary'),
+      keywords = _.get(article, 'metaKeywords'),
+      imageUrl = _.get(article, 'imageUrl', '')
+
+    SEOtitle = metaTitle || title
+    SEOdescription = metaDescription || summary
+    SEOkeywords = keywords.length > 0 ? keywords.join(',') : ''
+    SEOimage = imageUrl || ''
+  }
   // try {
   //   const response = await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
   //     timeout: 5000,
