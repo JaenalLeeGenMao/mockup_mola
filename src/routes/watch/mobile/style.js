@@ -49,9 +49,9 @@ export const videoPlayerContainer = css`
 `
 
 export const videoTitle = css`
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: normal;
   padding: 0 15px;
 `
 
@@ -180,7 +180,8 @@ export const videoBlockerPlatform = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 30px 0;
+    width: 100%;
     flex-direction: column;
     position: fixed;
     bottom: 0;
@@ -193,6 +194,7 @@ export const videoBlockerPlatform = css`
     letter-spacing: 0;
     color: #ffffff;
     opacity: 1;
+    margin: 0 10px;
   }
 
   .img__info {
