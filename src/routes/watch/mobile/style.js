@@ -180,7 +180,8 @@ export const videoBlockerPlatform = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 30px 0;
+    width: 100%;
     flex-direction: column;
     position: fixed;
     bottom: 0;
@@ -193,6 +194,7 @@ export const videoBlockerPlatform = css`
     letter-spacing: 0;
     color: #ffffff;
     opacity: 1;
+    margin: 0 10px;
   }
 
   .img__info {

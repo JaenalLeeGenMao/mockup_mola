@@ -52,6 +52,8 @@ import MovieContent from './movie'
 import SportContent from './sport'
 
 let errorFlag = 0
+const defaultTextDownloadApp =
+  'Untuk menyaksikan tayangan ini, silakan unduh aplikasi Mola TV melalui tombol di bawah ini'
 class MovieDetail extends Component {
   state = {
     loc: '',
@@ -61,6 +63,8 @@ class MovieDetail extends Component {
       ? this.props.configParams.data.android_redirect_to_app
       : false,
     ios_redirect_to_app: this.props.configParams.data ? this.props.configParams.data.ios_redirect_to_app : false,
+    android_text_download_app: _get(this.props, 'configParams.data.android_text_download_app', defaultTextDownloadApp),
+    ios_text_download_app: _get(this.props, 'configParams.data.ios_text_download_app', defaultTextDownloadApp),
     notice_bar_message: this.props.configParams.data
       ? this.props.configParams.data.notice_bar_message
       : 'Siaran Percobaan',
@@ -458,40 +462,30 @@ class MovieDetail extends Component {
   renderBlockerPlatformFooter() {
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
     const { ios_redirect_to_app, android_redirect_to_app } = this.state
-    const { store_url, ios_store_url } = this.state
+    const { store_url, ios_store_url, android_text_download_app, ios_text_download_app } = this.state
 
     const storeUrl = isApple ? ios_store_url : store_url
+    const downloadText = isApple ? ios_text_download_app : android_text_download_app
+
+    const renderTemplate = (
+      <div className={videoBlockerPlatform}>
+        <div className="wrap__info">
+          <p className="text__info">{downloadText}</p>
+          <a onClick={this.handleStoreTracker} href={storeUrl}>
+            <img src={this.state.badgeUrl} alt="img-blocker-platform" className="img__info" />
+          </a>
+        </div>
+      </div>
+    )
 
     if (isApple) {
       //ios
       if (ios_redirect_to_app) {
-        return (
-          <div className={videoBlockerPlatform}>
-            <div className="wrap__info">
-              <p className="text__info">
-                Untuk menyaksikan tayangan ini, silakan unduh aplikasi Mola TV melalui tombol di bawah ini
-              </p>
-              <a onClick={this.handleStoreTracker} href={storeUrl}>
-                <img src={this.state.badgeUrl} alt="img-blocker-platform" className="img__info" />
-              </a>
-            </div>
-          </div>
-        )
+        return renderTemplate
       }
     } else {
       if (android_redirect_to_app) {
-        return (
-          <div className={videoBlockerPlatform}>
-            <div className="wrap__info">
-              <p className="text__info">
-                Untuk menyaksikan tayangan ini, silakan unduh aplikasi Mola TV melalui tombol di bawah ini
-              </p>
-              <a onClick={this.handleStoreTracker} href={storeUrl}>
-                <img src={this.state.badgeUrl} alt="img-blocker-platform" className="img__info" />
-              </a>
-            </div>
-          </div>
-        )
+        return renderTemplate
       }
     }
   }
