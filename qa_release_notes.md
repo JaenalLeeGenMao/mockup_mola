@@ -114,6 +114,21 @@ Improvements:
 * Set up a realtime EPG Schedule on video detail page (/channel) both for desktop and mobile. Previous EPG was still visible even though the channel has ended (Aang)
 * Remove chache on enpoints channel playlist, program guides and search game both for desktop and mobile (Aang)
 * Fix responsive arrow when resizing desktop and if greater than 1200px the icon will not show (Ayu)
+
+Bug Fixes:
 * Styling the line height icon "readmore" from 1.4 to 1.5 on movies detail page for mobile. Previously the line height stil the same (Ayu)
-* Fix eror console “Error while trying to use the following icon from the Manifest: https://mola.tv/mola.png (Resource size is not correct - typo in the Manifest?”. Previously when logging into mola and clicking inspect, an error appeared in the console. (Ayu)
+* Fix eror console “Error while trying to use the following icon from the Manifest: https://mola.tv/mola.png (Resource size is not correct - typo in the Manifest?)”. Previously when logging into mola and clicking inspect, an error appeared in the console. (Ayu)
 * Fix league category scroller on video detail page (/ matches) for desktop (take out styling overflow_x from tooltip). Previously appeared a white line on the scrollbar in mozila windows (Ayu)
+
+**14/10/2019**
+
+V1.4.0 + **1816**
+
+Bug Fixes:
+* Fixing the realtime EPG is not working when first time opened video detail page (/channel) (Aang)
+
+V1.4.0 + **1824**
+
+Improvements:
+* Update font size of video titles on video detail page (/watch) from 28 px to 22 px and homepage from 26 px to 22 px for mobile only (Irene) 
+* Update read text config params from API (from misty) “untuk menyaksikan tayangan ini, silahkan unduh aplikasi Mola TV melalui tombol di bawah ini” on video detail page (/watch) for mobile. Previously read from static text. (Trisno)
