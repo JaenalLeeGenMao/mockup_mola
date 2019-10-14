@@ -49,9 +49,9 @@ export const videoPlayerContainer = css`
 `
 
 export const videoTitle = css`
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: normal;
   padding: 0 15px;
 `
 
