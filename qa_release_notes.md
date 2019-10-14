@@ -99,8 +99,21 @@ Bug Fixes:
 
 **09/10/2019**
 
-v1.3.1 + **1803**
+V1.3.1 + **1803**
 
 New feature:
 * If redirect to apps parameter is true, add floating button which user can redirect to Play Store or Apps Store. The icon Play Store and Apps Store are detected based on user device agent. (Trisno)
 
+**11/10/2019**
+
+V1.4.0 + **1812**
+
+Improvements:
+
+* Update calling default video setting from render to did mount and did update on video detail page (/channels) both for desktop and mobile (Aang)
+* Set up a realtime EPG Schedule on video detail page (/channel) both for desktop and mobile. Previous EPG was still visible even though the channel has ended (Aang)
+* Remove chache on enpoints channel playlist, program guides and search game both for desktop and mobile (Aang)
+* Fix responsive arrow when resizing desktop and if greater than 1200px the icon will not show (Ayu)
+* Styling the line height icon "readmore" from 1.4 to 1.5 on movies detail page for mobile. Previously the line height stil the same (Ayu)
+* Fix eror console “Error while trying to use the following icon from the Manifest: https://mola.tv/mola.png (Resource size is not correct - typo in the Manifest?”. Previously when logging into mola and clicking inspect, an error appeared in the console. (Ayu)
+* Fix league category scroller on video detail page (/ matches) for desktop (take out styling overflow_x from tooltip). Previously appeared a white line on the scrollbar in mozila windows (Ayu)
