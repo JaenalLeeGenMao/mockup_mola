@@ -83,7 +83,6 @@ class Channels extends Component {
       this.setDefaultVideoSetup(id)
       this.eventVideosTracker(id)
       this.setFirstRenderSchedule(id)
-      this.setRerenderSchedule()
     })
   }
 
@@ -128,12 +127,17 @@ class Channels extends Component {
           ? filteredSchedule.videos[0].startTime
           : Date.now() / 1000
 
-      this.setState({
-        activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
-        activeChannelId: id,
-        activeDate: formatDateTime(time, 'DD MMM'),
-        scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
-      })
+      this.setState(
+        {
+          activeChannel: filteredSchedule && filteredSchedule.title ? filteredSchedule.title : '',
+          activeChannelId: id,
+          activeDate: formatDateTime(time, 'DD MMM'),
+          scheduleList: filteredSchedule && filteredSchedule.videos ? filteredSchedule.videos : [],
+        },
+        () => {
+          this.setRerenderSchedule()
+        }
+      )
     })
   }
 
