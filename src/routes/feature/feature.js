@@ -21,6 +21,7 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 
 import Placeholder from './placeholder'
 import { BannerPlaceholder } from './placeholder/banner-placeholder'
+import VideoPlaceholder from './placeholder/videoPlaceholder'
 import { contentTypeList, banners as dummyDataBanners } from './const'
 
 import { container, bannerContainer, carouselHeader } from './style'
@@ -200,6 +201,7 @@ class Feature extends Component {
                   ))}
                 </Carousel>
               )}
+              {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />}
               <LazyLoad containerClassName={container}>
                 {playlists.data.length > 0 &&
                   videos.data.length > 0 &&
