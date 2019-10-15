@@ -42,7 +42,7 @@ class SystemInfo extends Component {
               </>
             )}
             <div>Date Time {currentDateTime}</div>
-            <div>Version 1.3.0</div>
+            <div>Version 1.4.0</div>
           </div>
         </div>
       </div>
