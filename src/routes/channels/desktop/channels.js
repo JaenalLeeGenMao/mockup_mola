@@ -23,6 +23,7 @@ import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
 import PlatformDesktop from '@components/PlatformCheck'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
+import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
 
 import Placeholder from './placeholder'
 import LoaderVideoBox from './loaderVideoBox'
@@ -442,6 +443,8 @@ class Channels extends Component {
     isDRM = drmStreamUrl ? true : false
 
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
+    const poster = dataFetched ? `${dataFetched.background.landscape}?w=1080` : ''
+
     return (
       <>
         <div>
@@ -463,7 +466,7 @@ class Channels extends Component {
                     </div>
                   </div>
                 )}
-              {!block &&
+              {/* {!block &&
                 !errorLicense &&
                 loadPlayer &&
                 defaultVidSetting && (
@@ -477,9 +480,10 @@ class Channels extends Component {
                     // poster={poster}
                     {...videoSettings}
                   />
-                )}
+                )} */}
               {block && loadPlayer && <PlatformDesktop isChannel {...this.props} videoId={activeChannelId} />}
-              {!loadPlayer &&
+              {!block && loadPlayer && <RedirectToAppsDesktop {...this.props} poster={poster} />}
+              {/* {!loadPlayer &&
                 status !== 'loading' && <div className={styles.video__unavailable}>Video Not Available</div>}
               {!block &&
                 errorLicense &&
@@ -488,7 +492,7 @@ class Channels extends Component {
                     {' '}
                     Error during license server request. Please refresh the browser.
                   </div>
-                )}
+                )} */}
             </div>
             <PrimaryMenu
               activeChannelId={activeChannelId}
