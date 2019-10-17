@@ -132,3 +132,11 @@ V1.4.0 + **1824**
 Improvements:
 * Update font size of video titles on video detail page (/watch) from 28 px to 22 px and homepage from 26 px to 22 px for mobile only (Irene) 
 * Update read text config params from API (from misty) “untuk menyaksikan tayangan ini, silahkan unduh aplikasi Mola TV melalui tombol di bawah ini” on video detail page (/watch) for mobile. Previously read from static text. (Trisno)
+
+**17/10/2019**
+
+V1.4.1 + **1828**
+
+New Feature:
+* Add video player blocker (read configuration from config app param desktop_video_blocker: true) on video detail page (/watch and /channel) for desktop. 
+previously the video player could be played (Arga) 
