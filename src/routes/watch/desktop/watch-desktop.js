@@ -14,13 +14,15 @@ import watchPermission from '@source/lib/watchPermission'
 
 import { getVUID_retry } from '@actions/vuid'
 
-import PlatformDesktop from '@components/PlatformCheck'
+import PlatformDesktop from '@components/PlatformCheckNew'
+import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from '../upcoming-video'
 import PlayerHeader from '../player-header'
+
 // import ChatUtils from '@components/ChatUtils'
 
 // import AgeRestrictionModal from '@components/AgeRestriction'
@@ -341,6 +343,7 @@ class WatchDesktop extends Component {
 
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId, blocked, isAutoPlay, isMatchPassed, configParams } = this.props
+
     let theoVolumeInfo = {}
 
     try {
@@ -396,7 +399,6 @@ class WatchDesktop extends Component {
             )
           }
         }
-
         // Show countdown if it is a live match
         if (
           this.state.countDownStatus &&
@@ -490,11 +492,17 @@ class WatchDesktop extends Component {
     })
   }
 
+  renderRedirectBlocker = poster => {
+    return <RedirectToAppsDesktop {...this.props} poster={poster} />
+  }
+
   render() {
     const { isControllerActive, loc, showOfflinePopup, showPlayerHeader } = this.state
     const { meta: { status: videoStatus }, data } = this.props.movieDetail
     const { user, videoId } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+    const { blocked } = this.props
+    const isDesktopVideoBlocker = this.props.configParams.data.desktop_video_blocker ? true : false
 
     const dataFetched = videoStatus === 'success' && data.length > 0 ? data[0] : undefined
     let drmStreamUrl = '',
@@ -513,6 +521,7 @@ class WatchDesktop extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
+    const poster = dataFetched ? `${dataFetched.background.landscape}?w=1080` : ''
 
     const isLiveMatch = getContentTypeName(dataFetched.contentType) === 'live'
     // const isLiveMatch = true
@@ -574,7 +583,13 @@ class WatchDesktop extends Component {
                   )}
                 <div className={playerClass} id="video-player-root">
                   {loadPlayer ? (
-                    <>{this.renderVideo(dataFetched)}</>
+                    <>
+                      {isDesktopVideoBlocker ? (
+                        <PlatformDesktop isDesktopVideoBlocker={isDesktopVideoBlocker} {...this.props} />
+                      ) : (
+                        this.renderVideo(dataFetched)
+                      )}
+                    </>
                   ) : (
                     <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
                   )}
