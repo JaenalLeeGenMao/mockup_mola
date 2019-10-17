@@ -14,7 +14,7 @@ import crossIcon from '../../global/assets-global/images/cross.png'
 
 const fixedPlatforms = [
   {
-    id: 1,
+    id: 4,
     name: 'Mola Polytron Streaming',
     imageUrl: 'https://res-mola01.koicdn.com/image/5cecf70b-f0cf-4e54-98e1-8c63ca4d03ff/image.png',
     order: 1,
@@ -22,7 +22,7 @@ const fixedPlatforms = [
     createdAt: '2019-08-01T12:59:00Z',
   },
   {
-    id: 3,
+    id: 5,
     name: 'Mola Polytron Smart TV',
     imageUrl: 'https://res-mola01.koicdn.com/image/dc08c572-4e02-472f-9add-dd4c12037416/image.png',
     order: 3,
