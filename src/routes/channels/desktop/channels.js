@@ -21,9 +21,9 @@ import { globalTracker } from '@source/lib/globalTracker'
 import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
-import PlatformDesktop from '@components/PlatformCheck'
+import PlatformDesktop from '@components/PlatformCheckNew'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
-import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
+// import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
 
 import Placeholder from './placeholder'
 import LoaderVideoBox from './loaderVideoBox'
@@ -434,6 +434,8 @@ class Channels extends Component {
       ...defaultVidSetting,
     }
 
+    const isDesktopVideoBlocker = this.props.configParams.data.desktop_video_blocker ? true : false
+
     let drmStreamUrl = '',
       isDRM = false
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
@@ -466,7 +468,8 @@ class Channels extends Component {
                     </div>
                   </div>
                 )}
-              {/* {!block &&
+              {!isDesktopVideoBlocker &&
+                !block &&
                 !errorLicense &&
                 loadPlayer &&
                 defaultVidSetting && (
@@ -480,19 +483,33 @@ class Channels extends Component {
                     // poster={poster}
                     {...videoSettings}
                   />
-                )} */}
-              {block && loadPlayer && <PlatformDesktop isChannel {...this.props} videoId={activeChannelId} />}
-              {!block && loadPlayer && <RedirectToAppsDesktop {...this.props} poster={poster} />}
-              {/* {!loadPlayer &&
+                )}
+
+              {/* {need to be optimize later} */}
+              {isDesktopVideoBlocker &&
+                loadPlayer && (
+                  <PlatformDesktop
+                    isDesktopVideoBlocker={isDesktopVideoBlocker}
+                    {...this.props}
+                    videoId={activeChannelId}
+                  />
+                )}
+              {!isDesktopVideoBlocker &&
+                block &&
+                loadPlayer && <PlatformDesktop {...this.props} videoId={activeChannelId} />}
+
+              {!isDesktopVideoBlocker &&
+                !loadPlayer &&
                 status !== 'loading' && <div className={styles.video__unavailable}>Video Not Available</div>}
-              {!block &&
+              {!isDesktopVideoBlocker &&
+                !block &&
                 errorLicense &&
                 loadPlayer && (
                   <div className={styles.video__unavailable}>
                     {' '}
                     Error during license server request. Please refresh the browser.
                   </div>
-                )} */}
+                )}
             </div>
             <PrimaryMenu
               activeChannelId={activeChannelId}
