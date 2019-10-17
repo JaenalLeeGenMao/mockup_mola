@@ -23,6 +23,10 @@ ARG OAUTH_APP_KEY_WEB
 ARG OAUTH_APP_SECRET_WEB
 ARG OAUTH_APP_KEY_MOBILE
 ARG OAUTH_APP_SECRET_MOBILE
+
+run echo "test dong auth $AUTH_ENDPOINT"
+run echo "oauth app key $OAUTH_APP_KEY_WEB"
+
 # Build!
 COPY . .
 RUN node_modules/.bin/babel-node tools/run build -- --release --docker
