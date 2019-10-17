@@ -48,8 +48,28 @@ const molaCache = new NodeCache()
 
 const oauth = {
   // endpoint: process.env.OAUTH_ENDPOINT,
-  appKey: process.env.OAUTH_APP_KEY,
-  appSecret: process.env.OAUTH_APP_KEY_SECRET,
+  appKey: process.env.OAUTH_APP_KEY_WEB,
+  appSecret: process.env.OAUTH_APP_SECRET_WEB,
+  appId: 'molatv',
+  xAppId: 2,
+  scope: [
+    'https://internal.supersoccer.tv/users/users.profile.read',
+    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
+    'https://api.supersoccer.tv/orders/orders.create',
+    'https://api.supersoccer.tv/videos/videos.read',
+    'https://api.supersoccer.tv/orders/orders.read',
+    'paymentmethods:read.internal',
+    'payments:payment.dopay',
+    'userdata:preference.read',
+    'userdata:preference.insert',
+  ].join(' '),
+}
+
+const oauthApp = {
+  // endpoint: process.env.OAUTH_ENDPOINT,
+  appKeyMobile: process.env.OAUTH_APP_KEY_MOBILE,
+  appSecretMobile: process.env.OAUTH_APP_SECRET_MOBILE,
   appId: 'molatv',
   xAppId: 2,
   scope: [
@@ -137,6 +157,8 @@ const {
 } = config
 
 const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
+
+const { appKeyMobile, appSecretMobile } = oauthApp
 
 // let count = 0
 // var inboxInterval;
@@ -541,8 +563,8 @@ app.get('/oauth/app-callback', async (req, res) => {
             'User-Agent': 'request',
           },
           json: {
-            app_key: 'LDZJgphCc7',
-            app_secret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+            app_key: appKeyMobile,
+            app_secret: appSecretMobile,
             grant_type: 'authorization_code',
             redirect_uri: `${domain}/oauth/app-callback`,
             code,
