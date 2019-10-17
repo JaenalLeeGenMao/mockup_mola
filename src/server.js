@@ -373,7 +373,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
-  molaCache.get('headerMenu', function (err, value) {
+  molaCache.get('headerMenu', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -403,7 +403,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -420,7 +420,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function (err, value) {
+  molaCache.get('configParams', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -450,7 +450,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 900, function (err, success) {
+      molaCache.set('configParams', configParams, 900, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -543,9 +543,8 @@ app.get('/oauth/app-callback', async (req, res) => {
   const state = req.query.state
   // const storedState = req.cookies.wstate
   const sid = req.cookies.SID
-
   if (code && state) {
-    let _at = await new Promise(resolve => {
+    await new Promise((resolve, reject) => {
       request.post(
         {
           ...config.endpoints.setting,
@@ -565,14 +564,19 @@ app.get('/oauth/app-callback', async (req, res) => {
         (error, response, body) => {
           if (error || response.statusCode !== 200) {
             console.error(error, response.statusCode, body)
-            return reject({ error, statusCode: response.statusCode, body })
+            reject({ error, statusCode: response.statusCode, body })
           }
           res.header('_at', body.access_token)
-          return resolve(response)
+          resolve(response)
         }
       )
     })
-    return res.json(_at)
+      .then(response => {
+        res.json(response)
+      })
+      .catch(error => {
+        res.json(error)
+      })
   } else {
     return res.status(401)
   }
@@ -776,7 +780,7 @@ app.get('*', async (req, res, next) => {
     const mediaAnalyticUrl = {
       development: 'http://ma1435-r.analytics.edgesuite.net/config/beacon-25308.xml',
       staging: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25436.xml',
-      production: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25462.xml'
+      production: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25462.xml',
     }
 
     const initialState = {
@@ -820,8 +824,8 @@ app.get('*', async (req, res, next) => {
           token: errorToken,
           gtoken: errorGtoken,
         },
-        mediaAnalyticUrl: mediaAnalyticUrl[config.env]
-      }
+        mediaAnalyticUrl: mediaAnalyticUrl[config.env],
+      },
     }
 
     // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
@@ -863,7 +867,9 @@ app.get('*', async (req, res, next) => {
 
     const data = { ...route }
 
-    data.akamai_analytic_enabled = responseConfigParams ? _get(responseConfigParams, 'akamai_analytic_enabled', false) : false
+    data.akamai_analytic_enabled = responseConfigParams
+      ? _get(responseConfigParams, 'akamai_analytic_enabled', false)
+      : false
 
     /*** ###Articles Detail data and SEO ### ***/
     data.url = config.endpoints.domain + req.path
@@ -878,7 +884,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function (err, value) {
+      molaCache.get(videoId, function(err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -924,7 +930,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function (err, success) {
+        molaCache.set(videoId, videoObj, 2700, function(err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
