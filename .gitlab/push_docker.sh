@@ -25,9 +25,7 @@ docker build \
   --build-arg OAUTH_APP_KEY_WEB \
   --build-arg OAUTH_APP_SECRET_WEB \
   --build-arg OAUTH_APP_KEY_MOBILE \
-  --build-arg OAUTH_APP_SECRET_MOBILE \
-
-  .
+  --build-arg OAUTH_APP_SECRET_MOBILE .
 
 mkdir /temp-assets
 docker_temp=$(docker create ${IMAGE_NAME})
