@@ -19,6 +19,14 @@ docker build \
   --build-arg REACT_APP_ENV \
   --build-arg NODE_ENV \
   --build-arg CDN_PATH \
+  --build-arg VIDEO_ENDPOINT \
+  --build-arg AUTH_ENDPOINT \
+  --build-arg SUBSCRIPTION_API_URL \
+  --build-arg OAUTH_APP_KEY_WEB \
+  --build-arg OAUTH_APP_SECRET_WEB \
+  --build-arg OAUTH_APP_KEY_MOBILE \
+  --build-arg OAUTH_APP_SECRET_MOBILE \
+
   .
 
 mkdir /temp-assets

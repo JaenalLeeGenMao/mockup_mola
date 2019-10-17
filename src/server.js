@@ -7,6 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 import newrelic from 'newrelic'
+
 import path from 'path'
 import express from 'express'
 import csurf from 'csurf'
@@ -45,6 +46,9 @@ import _forEach from 'lodash/forEach'
 import NodeCache from 'node-cache'
 // const videoCache = new NodeCache()
 const molaCache = new NodeCache()
+
+const dotenv = require('dotenv')
+dotenv.config()
 
 const oauth = {
   // endpoint: process.env.OAUTH_ENDPOINT,
@@ -472,6 +476,8 @@ const getConfigParams = async () => {
 // set a cookie
 app.use('*', async (req, res, next) => {
   // check if client sent cookie
+  console.log('=========', oauth)
+
   const cookie = req.cookies
   if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
     res.cookie('SID', req.cookies.SID, {
