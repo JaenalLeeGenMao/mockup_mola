@@ -4,6 +4,12 @@
   transition: all ease 500ms;
 }
 
+.wrapper_mobile {
+  margin-bottom: 2rem;
+  display: flex;
+  transition: all ease 500ms;
+}
+
 .wrapper:hover {
   pointer-events: auto;
   cursor: pointer;

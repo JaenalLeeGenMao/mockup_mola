@@ -12,11 +12,15 @@ export const CustomBackground = styled('div')`
   opacity: ${props => props.opacity || 1};
 `
 
-export const playerStyle = css` 
-  height: 57rem !important;
+export const playerStyle = css`
+  // height: 33.1vw !important;
 
   &.vjs-has-started {
-    height: 54rem !important;
+    // height: 33.1vw !important;
+  }
+
+  &.video-container .theo-primary-color {
+    color: #fff !important;
   }
 `
 
@@ -29,24 +33,31 @@ export const articleContainer = css`
     display: flex;
     margin-left: 5rem;
     margin-right: 5rem;
-    padding-top: 8rem;
-    padding-bottom: 2rem;
+    padding-top: 7.4rem;
+    padding-bottom: 1.4rem;
   }
 
   .video-player-wrapper {
-    width: 89rem;
-    height: 54rem;
+    width: 76.4vw;
   }
 
   .related-article-section {
-    width: 42rem;
-    margin-left: 3rem;
+    width: 40vw;
+    height: 33.1vw;
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-between;
+  }
+
+  .related-article-section > div:not(:last-child) {
+    margin-bottom: calc(33.1vw / 35);
   }
 
   .related-article-title {
     font-size: 2.3rem;
-    color: #CBCBCB;
-    margin-bottom: 2rem;
+    color: #cbcbcb;
+    // margin-bottom: 2rem;
   }
 
   .social-share-section {
@@ -58,6 +69,12 @@ export const articleContainer = css`
     background: #292929;
   }
 
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   .mainContent {
     position: relative;
     // margin: 0 auto;
@@ -66,7 +83,6 @@ export const articleContainer = css`
     padding-top: 3rem;
     // max-width: 1280px;
     background: #212121;
-    
 
     .title {
       color: white;
@@ -95,14 +111,14 @@ export const articleContainer = css`
       margin-top: 2.8rem;
       // background: #000000;
       border-radius: 0.3rem;
-      color: #FFFFFF
+      color: #ffffff;
     }
 
     .indicator-caption {
-      width: .8rem;
-      background: #2C56FF;
+      width: 0.8rem;
+      background: #2c56ff;
       margin-top: 3.3rem;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
 
     .detail {
@@ -118,13 +134,14 @@ export const articleContainer = css`
     }
 
     .detail-wrapper {
-      width: 89rem;
+      width: 76.4vw;
     }
 
     .markdown-wrapper {
-      font-size: 2.4rem;
-      color: #CCCCCC;
+      font-size: 1.9rem;
+      color: #cccccc;
       margin-top: 2rem;
+      line-height: 2.5rem;
     }
 
     .markdown-wrapper p {
@@ -132,18 +149,18 @@ export const articleContainer = css`
     }
 
     .markdown-wrapper a {
-      color: #2C56FF;
+      color: #2c56ff;
     }
 
     .related-article-card {
       width: 40rem;
       height: 15rem;
-      border: 1px solid blue
+      border: 1px solid blue;
     }
 
     .latest-wrapper {
       margin-left: 3rem;
-      width: 42rem;
+      width: 40vw;
     }
 
     .tag-section {

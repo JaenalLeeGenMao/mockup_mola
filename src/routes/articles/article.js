@@ -77,58 +77,9 @@ class Article extends Component {
   }
 
   async componentDidMount() {
-    const { playlistId, articleId, user, fetchArticlesDetail, articlesDetail, vuid, headerMenu } = this.props
-    const { category } = this.state
+    const { articleId, user, articlesDetail, vuid, headerMenu } = this.props
     this.updateWindowDimensions()
     window.addEventListener('resize', this.updateWindowDimensions)
-    // if (articlesDetail.meta.status === 'loading') {
-    //   await this.props.fetchArticlesDetail(articleId)
-    // }
-    get(`${ARTICLES_RELATED_ENDPOINT}/${articleId}`).then(response => {
-      if (response.status === 200) {
-        let result = utils.normalizeArticlesRelated(response)
-        this.setState({
-          related: {
-            isLoading: false,
-            data: result,
-          },
-        })
-      }
-    })
-    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
-    await this.props.getVUID(deviceId)
-    if (headerMenu.data.length && articlesDetail.data) {
-      headerMenu.data.map(h => {
-        if (h.id === articlesDetail.data.menuId) {
-          let category = h.attributes.title.en
-          if (category === 'Premiere League') {
-            category = 'epl'
-          }
-          this.setState({
-            categoryArticles: category.toLowerCase(),
-          })
-        }
-      })
-    }
-
-    if (category) {
-      get(`${ARTICLES_RECOMMENDED_ENDPOINT}/${category}`).then(response => {
-        if (response.status === 200) {
-          let result = utils.normalizeArticlesRelated(response)
-          this.setState({
-            related: {
-              isLoading: false,
-              data: result,
-            },
-          })
-        }
-      })
-    }
-
-    this.setState({
-      currentLocation: window.location.href,
-    })
-
     if (articlesDetail.meta.status === 'success') {
       const { video } = articlesDetail.data
       const videoData = video && video.length ? video[0] : null
@@ -146,43 +97,51 @@ class Article extends Component {
         })
       }
     }
+    get(`${ARTICLES_RELATED_ENDPOINT}/${articleId}`).then(response => {
+      if (response.status === 200) {
+        let result = utils.normalizeArticlesRelated(response)
+        this.setState({
+          related: {
+            isLoading: false,
+            data: result.slice(0, 3),
+          },
+        })
+      }
+    })
+    const deviceId = user.uid ? user.uid : DRMConfig.getOrCreateDeviceId()
+    await this.props.getVUID(deviceId)
+    if (headerMenu.data.length && articlesDetail.data) {
+      let category = ''
+      headerMenu.data.map(h => {
+        if (h.id === articlesDetail.data.menuId) {
+          category = h.attributes.title.en
+          if (category === 'Premier League') {
+            category = 'epl'
+          }
+          this.setState({
+            categoryArticles: category.toLowerCase(),
+          })
+        }
+      })
+    }
 
-    // fetchArticlesDetail(articleId)
-    // if (window) {
-    //   this.updateWindowDimensions()
-    //   window.addEventListener('resize', this.updateWindowDimensions)
-    //   this.setState({
-    //     currentLocation: window.location.href
-    //   })
-    // }
-    // if (window) {
-    //   this.updateWindowDimensions()
-    //   window.addEventListener('resize', this.updateWindowDimensions)
-    //   this.setState({
-    //     currentLocation: window.location.href
-    //   })
-    //   get(`${ARTICLES_ENDPOINT}/${articleId}`).then(response => {
-    //     if (response.status === 200) {
-    //       this.setState({
-    //         article: {
-    //           isLoading: false,
-    //           data: _.get(response, 'data.data', {}),
-    //         },
-    //       })
-    //     }
-    //   })
-    //   get(`${ARTICLES_RELATED_ENDPOINT}/${articleId}`).then(response => {
-    //     if (response.status === 200) {
-    //       this.setState({
-    //         isLoading: false,
-    //         related: {
-    //           isLoading: false,
-    //           data: _.get(response, 'data.data.attributes.articles', {}),
-    //         },
-    //       })
-    //     }
-    //   })
-    // }
+    if (this.state.categoryArticles) {
+      get(`${ARTICLES_RECOMMENDED_ENDPOINT}/${this.state.categoryArticles}`).then(response => {
+        if (response.status === 200) {
+          let result = utils.normalizeArticlesRelated(response)
+          this.setState({
+            latest: {
+              isLoading: false,
+              data: result.slice(0, 3),
+            },
+          })
+        }
+      })
+    }
+
+    this.setState({
+      currentLocation: window.location.href,
+    })
   }
 
   componentDidUpdate() {}
@@ -274,12 +233,15 @@ class Article extends Component {
                       <BackgroundGradient url={articlesDetail.data.imageUrl} />
                     )}
                     <div className="related-article-section">
-                      {!this.state.related.isLoading & this.state.related.data.length && (
-                        <>
-                          <div className="related-article-title">Related Articles</div>
-                          {this.state.related.data.map(related => <ArticleCard key={related.id} data={related} />)}
-                        </>
-                      )}
+                      {!this.state.related.isLoading &&
+                        this.state.related.data.length && (
+                          <>
+                            <div className="related-article-title">Related Articles</div>
+                            {/* <div className="card-list"> */}
+                            {this.state.related.data.map(related => <ArticleCard key={related.id} data={related} />)}
+                            {/* </div> */}
+                          </>
+                        )}
                     </div>
                   </div>
 
@@ -295,7 +257,7 @@ class Article extends Component {
                         <div className="social-share-section">
                           <SocialShare url={this.state.currentLocation} />
                         </div>
-                        {formattedCaption && (
+                        {articlesDetail.data.summary && (
                           <div className="caption-wrapper">
                             <div className="indicator-caption" />
                             <i className="caption">
@@ -307,33 +269,32 @@ class Article extends Component {
                         <div className="markdown-wrapper">
                           <ReactMarkdown source={articlesDetail.data.content} escapeHtml={true} />
                         </div>
-                        <div className="tag-section">
-                          {articlesDetail.data.tags &&
-                            articlesDetail.data.tags.length && (
-                              <>
-                                {articlesDetail.data.tags.map((tag, idx) => {
-                                  return (
-                                    <div className="tag-box" key={idx}>
-                                      <p className="tag-text">{tag}</p>
-                                    </div>
-                                  )
-                                })}
-                              </>
-                            )}
-                        </div>
+                        {/* <div className="tag-section">
+                            {articlesDetail.data.tags &&
+                              articlesDetail.data.tags.length && (
+                                <>
+                                  {articlesDetail.data.tags.map((tag, idx) => {
+                                    return (
+                                      <div className="tag-box" key={idx}>
+                                        <p className="tag-text">{tag}</p>
+                                      </div>
+                                    )
+                                  })}
+                                </>
+                              )}
+                          </div> */}
                       </div>
-
                       {!this.state.latest.isLoading & this.state.latest.data.length && (
-                        <div className="latest-wrapper">
+                        <div className="related-article-section">
                           <div className="related-article-title">Latest Articles</div>
-                          {this.state.latest.data.map(latest => <ArticleCard key={latest.id} />)}
+                          {this.state.latest.data.map(latest => <ArticleCard key={latest.id} data={latest} />)}
                         </div>
                       )}
                     </div>
                   </div>
 
                   {relatedVideoData &&
-                    relatedVideoData.length && (
+                    relatedVideoData.length > 0 && (
                       <div className="related-video-section">
                         <RelatedVideo title="Related Video" data={relatedVideoData} />
                       </div>

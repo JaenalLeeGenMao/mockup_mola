@@ -5,6 +5,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import LazyLoad from '@components/common/Lazyload'
 import Carousel from '@components/carousel'
 
+import VideoCard from '@components/video-card'
+import Link from '@components/Link'
+
 import s from './relatedVideo.css'
 import { placeholderBlankPortrait } from '@global/imageUrl'
 
@@ -36,17 +39,9 @@ class RelatedVideo extends React.Component {
             this.props.data.map(movie => {
               const movieUrl = movie.coverUrl ? movie.coverUrl : placeholderBlankPortrait
               return (
-                <div className={s.wrapper_card} key={movie.id} onClick={() => this.handleCLick(movie.id)}>
-                  <LazyLoad
-                    key={movie.id}
-                    containerClassName={s.movieImg}
-                    onEmptyShowDefault
-                    onErrorShowDefault
-                    errorImgClassName={s.movieErrorImg}
-                    src={movieUrl}
-                    className={`${this.props.isMobile ? s.coverItem_mobile : s.coverItem}`}
-                  />
-                </div>
+                <Link to={`/watch?v=${movie.id}`} key={movie.id}>
+                  <VideoCard key={movie.id} alt={movie.title} description={movie.title} src={`${movieUrl}`} />
+                </Link>
               )
             })}
         </Carousel>

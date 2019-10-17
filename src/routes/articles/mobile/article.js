@@ -26,10 +26,7 @@ class Articles extends Component {
             />
           </div>
         ) : (
-          <BackgroundGradient
-            isMobile={true}
-            url={'https://res-sstv01.cheedn.com/image/248f1ef1-f612-4911-83ed-dab67701cb32/image.jpeg'}
-          />
+          <BackgroundGradient isMobile={true} url={`${this.props.articlesDetail.data.imageUrl}`} />
         )}
         <div className={s.main_content}>
           <div className={s.title}>{this.props.articlesDetail.data.title}</div>
@@ -53,7 +50,7 @@ class Articles extends Component {
           <div className={s.react_markdown_wrapper}>
             <ReactMarkdown source={this.props.articlesDetail.data.content} escapeHtml={true} />
           </div>
-          <div className={s.tag_section}>
+          {/* <div className={s.tag_section}>
             {this.props.articlesDetail.data.tags &&
               this.props.articlesDetail.data.tags.length && (
                 <>
@@ -66,7 +63,7 @@ class Articles extends Component {
                   })}
                 </>
               )}
-          </div>
+          </div> */}
           {!this.props.related.isLoading &&
             this.props.related.data.length > 0 && (
               <div className={s.section_box_wrapper}>

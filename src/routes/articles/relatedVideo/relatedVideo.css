@@ -38,13 +38,19 @@
 }
 
 .related_video_wrapper {
-  height: 30rem !important;
+  /* height: 30rem !important; */
   display: block;
   overflow: hidden;
 }
 
 .related_video_wrapper_mobile {
-  height: 20rem !important;
+  /* height: 20rem !important; */
   display: block;
   overflow: hidden;
+}
+
+.related_video_container {
+  display: block;
+  overflow: hidden;
+  height: 100%;
 }

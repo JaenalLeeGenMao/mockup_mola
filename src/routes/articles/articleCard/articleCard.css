@@ -1,5 +1,5 @@
 .wrapper {
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   display: flex;
 }
 
@@ -8,8 +8,14 @@
 }
 
 .image_card {
-  height: 15.2rem;
-  width: 14rem;
+  width: 100%;
+  height: 100%;
+}
+
+.image_card_wrapper {
+  /* height: 15.2rem; */
+  width: 14vw;
+  height: 9.4vw;
 }
 
 .time {
@@ -31,9 +37,9 @@
   padding: 0 1rem;
 }
 
-.image_card_mobile {
+.image_card_wrapper_mobile {
   height: 9rem;
-  width: 9rem;
+  width: 15rem;
 }
 
 .time_mobile {

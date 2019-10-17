@@ -87,6 +87,10 @@
   margin-top: 2rem;
 }
 
+.section_box_wrapper > div {
+  margin-bottom: 0.7rem;
+}
+
 .title_text_box {
   font-size: 1.4rem;
   color: #969696;

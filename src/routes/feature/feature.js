@@ -158,6 +158,8 @@ class Feature extends Component {
         errorObj = { code: getErrorCode(articles.meta.error), description: 'Article request failed' }
       }
 
+      Math.trunc(contentTypeList['articles'].slideToShow)
+
       return (
         <>
           <Helmet>
@@ -211,8 +213,8 @@ class Feature extends Component {
                   playlists.data.length === videos.data.length &&
                   videos.data.map((video, carouselIndex) => {
                     const contentTypeName = getContentTypeName(
-                      _.get(playlists, `data[${carouselIndex}].contentType`, '')
-                    ),
+                        _.get(playlists, `data[${carouselIndex}].contentType`, '')
+                      ),
                       playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
                       viewMorePlaylistId = _.get(playlists, `data[${carouselIndex}].viewMorePlaylistId`, ''),
                       slideToShow = isMobile
@@ -293,12 +295,12 @@ class Feature extends Component {
                             <div className={container} style={{ margin: 0 }}>
                               <h3 className="article-section-text">ARTICLES</h3>
                               <Carousel
-                                wrap={articles.length === 1 ? false : true}
+                                wrap={false}
                                 autoplay={false}
                                 sliderCoin={true}
                                 dragging={true}
-                                slidesToShow={isMobile ? 1 : 3.5}
-                                slidesToScroll={Math.trunc(contentTypeList['articles'].slideToShow)}
+                                slidesToShow={isMobile ? 1.2 : 3.5}
+                                slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
                                 transitionMode={'scroll'}
                                 withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                                 framePadding={!isMobile ? '0rem' : '0rem 5px'}
