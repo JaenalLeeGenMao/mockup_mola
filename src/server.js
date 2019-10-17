@@ -47,27 +47,11 @@ import NodeCache from 'node-cache'
 const molaCache = new NodeCache()
 
 const oauth = {
-  endpoint:
-    config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
-  appKey: 'wIHGzJhset',
-  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
-  scope: [
-    'https://internal.supersoccer.tv/users/users.profile.read',
-    'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/subscriptions/subscriptions.read' /* DARI VINCENT */,
-    'https://api.supersoccer.tv/orders/orders.create',
-    'https://api.supersoccer.tv/videos/videos.read',
-    'https://api.supersoccer.tv/orders/orders.read',
-    'paymentmethods:read.internal',
-    'payments:payment.dopay',
-    'userdata:preference.read',
-    'userdata:preference.insert',
-  ].join(' '),
-}
-
-const oauthApp = {
-  appKey: 'LDZJgphCc7',
-  appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+  // endpoint: process.env.OAUTH_ENDPOINT,
+  appKey: process.env.OAUTH_APP_KEY,
+  appSecret: process.env.OAUTH_APP_KEY_SECRET,
+  appId: 'molatv',
+  xAppId: 2,
   scope: [
     'https://internal.supersoccer.tv/users/users.profile.read',
     'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
@@ -210,6 +194,7 @@ const extendToken = async token => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'x-app-id': xAppId,
+        'User-Agent': 'request',
       },
       body: JSON.stringify({
         app_key: appKey,
@@ -501,10 +486,11 @@ app.get('/oauth/callback', async (req, res) => {
       request.post(
         {
           ...config.endpoints.setting,
-          url: `${oauthEndpoint}/token`,
+          url: `${AUTH_API_URL}/v1/token`,
           timeout: 5000,
           headers: {
-            Cookie: `SID=${sid}`,
+            'x-app-id': xAppId,
+            'User-Agent': 'request',
           },
           json: {
             app_key: appKey,
@@ -548,10 +534,11 @@ app.get('/oauth/app-callback', async (req, res) => {
       request.post(
         {
           ...config.endpoints.setting,
-          url: `${oauthEndpoint}/token`,
+          url: `${AUTH_API_URL}/v1/token`,
           timeout: 5000,
           headers: {
-            Cookie: `SID=${sid}`,
+            'x-app-id': xAppId,
+            'User-Agent': 'request',
           },
           json: {
             app_key: 'LDZJgphCc7',

@@ -6,9 +6,9 @@ const env = (process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'production'
 // const env = 'development'
 
 const serverApi = {
-  VIDEO_API_URL: env === 'staging' ? 'http://videos.global' : 'http://videos.core.sstv.local', //'https://stag.mola.tv/api/v2/videos',
-  AUTH_API_URL: env === 'staging' ? 'http://accounts-api.global' : 'http://accounts-api.accounts.sstv.local', //'https://stag.mola.tv/accounts',
-  SUBSCRIPTION_API_URL: env === 'staging' ? 'http://subscriptions.global' : 'http://subscriptions.core.sstv.local', //'https://stag.mola.tv/api/v2/subscriptions',
+  VIDEO_API_URL: process.env.VIDEO_ENDPOINT,
+  AUTH_API_URL: process.env.AUTH_ENDPOINT,
+  SUBSCRIPTION_API_URL: process.env.SUBSCRIPTION_ENDPOINT,
   appId: 'molatv',
   xAppId: 2,
 }
