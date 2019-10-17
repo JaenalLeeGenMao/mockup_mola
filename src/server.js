@@ -164,7 +164,7 @@ const { appKeyMobile, appSecretMobile } = oauthApp
 // var inboxInterval;
 // set a cookie
 const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
-const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+const OAUTH_LOGOUT_URL = `${AUTH_API_URL}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 let userinfo = ''
 
 /*
@@ -371,7 +371,7 @@ const requestCode = async (req, res) => {
     })
   }
 
-  const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
+  const oAuthAuthorizationEndpoint = `${AUTH_API_URL}/authorize?${qs}`
   console.log('oAuth==>', oAuthAuthorizationEndpoint)
 
   return oAuthAuthorizationEndpoint
