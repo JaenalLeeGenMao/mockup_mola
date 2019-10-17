@@ -54,6 +54,9 @@ const oauth = {
   // endpoint: process.env.OAUTH_ENDPOINT,
   // appKey: process.env.OAUTH_APP_KEY_WEB,
   // appSecret: process.env.OAUTH_APP_SECRET_WEB,
+  endpoint:
+    config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
+
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   appId: 'molatv',
@@ -174,7 +177,7 @@ const { appKeyMobile, appSecretMobile } = oauthApp
 // var inboxInterval;
 // set a cookie
 const OAUTH_USER_INFO_URL = `${AUTH_API_URL}/v1/profile`
-const OAUTH_LOGOUT_URL = `${AUTH_API_URL}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
+const OAUTH_LOGOUT_URL = `${oauthEndpoint}/logout?app_key=${appKey}&redirect_uri=${encodeURIComponent(domain)}`
 let userinfo = ''
 
 /*
@@ -381,7 +384,7 @@ const requestCode = async (req, res) => {
     })
   }
 
-  const oAuthAuthorizationEndpoint = `${AUTH_API_URL}/authorize?${qs}`
+  const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
   console.log('oAuth==>', oAuthAuthorizationEndpoint)
 
   return oAuthAuthorizationEndpoint
