@@ -52,8 +52,10 @@ dotenv.config()
 
 const oauth = {
   // endpoint: process.env.OAUTH_ENDPOINT,
-  appKey: process.env.OAUTH_APP_KEY_WEB,
-  appSecret: process.env.OAUTH_APP_SECRET_WEB,
+  // appKey: process.env.OAUTH_APP_KEY_WEB,
+  // appSecret: process.env.OAUTH_APP_SECRET_WEB,
+  appKey: 'wIHGzJhset',
+  appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
   appId: 'molatv',
   xAppId: 2,
   scope: [
@@ -70,10 +72,14 @@ const oauth = {
   ].join(' '),
 }
 
+// console.log('ganteng', config)
+
 const oauthApp = {
   // endpoint: process.env.OAUTH_ENDPOINT,
-  appKeyMobile: process.env.OAUTH_APP_KEY_MOBILE,
-  appSecretMobile: process.env.OAUTH_APP_SECRET_MOBILE,
+  // appKeyMobile: process.env.OAUTH_APP_KEY_MOBILE,
+  // appSecretMobile: process.env.OAUTH_APP_SECRET_MOBILE,
+  appKeyMobile: 'LDZJgphCc7',
+  appSecretMobile: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
   appId: 'molatv',
   xAppId: 2,
   scope: [
