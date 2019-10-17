@@ -32,10 +32,15 @@ class DownloadApp extends Component {
 
   handleStoreTracker = () => {
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const { meta: { status }, data } = this.props.movieDetail
+    const apiFetched = status === 'success' && data.length > 0
+    const dataFetched = apiFetched ? data[0] : undefined
+
+    const videoId = dataFetched ? dataFetched.id : ''
     const payload = {
       window,
       user: this.props.user,
-      linkRedirectUrl: isApple ? 'redirect-to-appstore' : 'redirect-to-playstore',
+      linkRedirectUrl: isApple ? `redirect-to-appstore/${videoId}` : `redirect-to-playstore/${videoId}`,
       event: 'event_pages',
     }
     globalTracker(payload)
