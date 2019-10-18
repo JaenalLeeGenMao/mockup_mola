@@ -395,7 +395,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
-  molaCache.get('headerMenu', function(err, value) {
+  molaCache.get('headerMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -425,7 +425,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -442,7 +442,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function(err, value) {
+  molaCache.get('configParams', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -472,7 +472,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 300, function(err, success) {
+      molaCache.set('configParams', configParams, 300, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -578,7 +578,7 @@ app.get('/oauth/app-callback', async (req, res) => {
   }
 
   try {
-    const _at = await new Promise(resolve => {
+    const _at = await new Promise((resolve, reject) => {
       request.post(
         {
           ...config.endpoints.setting,
@@ -598,18 +598,26 @@ app.get('/oauth/app-callback', async (req, res) => {
         },
         (error, response, body) => {
           if (error || response.statusCode !== 200) {
-            console.error(error, response.statusCode, body)
-            reject({ error, statusCode: response.statusCode, body })
+            const statusCode = response ? response.statusCode : 400
+            console.error(error, statusCode, body)
+            return reject({ error, statusCode: statusCode, body })
           }
           res.header('_at', body.access_token)
           resolve(response)
         }
       )
     })
+    // .then(response => {
+    //   res.json(response)
+    // })
+    // .catch(error => {
+    //   console.log(`[/oauth/app-callback] error while fetching /oauth2/v1/token. err: ${e}`)
+    //   res.json(error)
+    // })
     return res.json(_at)
   } catch (e) {
     console.log(`[/oauth/app-callback] error while fetching /oauth2/v1/token. err: ${e}`)
-    return res.status(401)
+    return res.json(e)
   }
 })
 
@@ -838,7 +846,7 @@ app.get('*', async (req, res, next) => {
       } else {
         let articlesData = null
         let hasCache = false
-        molaCache.get(articleId, function(err, value) {
+        molaCache.get(articleId, function (err, value) {
           if (!err) {
             if (value == undefined) {
               // key not found
@@ -867,7 +875,7 @@ app.get('*', async (req, res, next) => {
                   },
                   data: result,
                 }
-                molaCache.set(articleId, result, 2700, function(err, success) {
+                molaCache.set(articleId, result, 2700, function (err, success) {
                   if (!err && success) {
                     console.log('success set cache node cache', articleId, result)
                     // true
@@ -1008,7 +1016,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function(err, value) {
+      molaCache.get(videoId, function (err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -1054,7 +1062,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function(err, success) {
+        molaCache.set(videoId, videoObj, 2700, function (err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
