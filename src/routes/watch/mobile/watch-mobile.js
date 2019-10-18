@@ -208,7 +208,7 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     let urlParams = queryString.parse(window.location.search)
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
-    const url = encodeURIComponent(`${domain}/download-app/${videoId}`)
+    const url = encodeURIComponent(`${domain}/download-app/${videoId}?utm_source=${source}`)
     document.location = `intent://mola.tv/watch?v=${videoId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
@@ -217,7 +217,7 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     let urlParams = queryString.parse(window.location.search)
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
-    const url = `${domain}/download-app/${videoId}`
+    const url = `${domain}/download-app/${videoId}?utm_source=${source}`
     document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}`
     setTimeout(function() {
       window.location.href = url
@@ -449,11 +449,12 @@ class MovieDetail extends Component {
   }
 
   handleStoreTracker = () => {
+    let urlParams = queryString.parse(window.location.search)
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
     const payload = {
       window,
       user: this.props.user,
-      linkRedirectUrl: isApple ? 'redirect-to-appstore' : 'redirect-to-playstore',
+      linkRedirectUrl: isApple ? `redirect-to-appstore/${urlParams.v}` : `redirect-to-playstore/${urlParams.v}`,
       event: 'event_pages',
     }
     globalTracker(payload)

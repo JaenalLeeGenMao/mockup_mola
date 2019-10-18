@@ -16,6 +16,7 @@ import {
   RECOMMENDATION,
   HEADERMENU,
   ARTICLES_RECOMMENDED_ENDPOINT,
+  ARTICLES_ENDPOINT,
   HOME_PLAYLIST_ENDPOINT_NOCACHE,
   VIDEOS_ENDPOINT_NOCACHE,
   NOTIFICATION_ENDPOINT,
@@ -887,6 +888,41 @@ const getRecommendedArticles = articlesId => {
     })
 }
 
+const getArticlesDetail = articleId => {
+  return get(`${ARTICLES_ENDPOINT}/${articleId}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      if (response.status === 200) {
+        const result = utils.normalizeArticles(response)
+        return {
+          meta: {
+            status: 'success',
+          },
+          data: result,
+        }
+      } else {
+        return {
+          meta: {
+            status: 'error',
+            error: `Mola Articles request failed with status ${response.status}`,
+          },
+          data: [],
+        }
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola Articles')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
 const getPartners = () => {
   return get(`${PARTNERS_ENDPOINT}`, {
     ...endpoints.setting,
@@ -937,6 +973,7 @@ export default {
   getHeaderMenu,
   getPlaylistPlaylists,
   getRecommendedArticles,
+  getArticlesDetail,
   getPartners,
   getNotifications,
   getTotalNotifications,

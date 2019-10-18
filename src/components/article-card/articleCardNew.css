@@ -1,0 +1,59 @@
+.wrapper {
+  margin-bottom: 2rem;
+  display: flex;
+  transition: all ease 500ms;
+}
+
+.wrapper_mobile {
+  margin-bottom: 2rem;
+  display: flex;
+  transition: all ease 500ms;
+}
+
+.wrapper:hover {
+  pointer-events: auto;
+  cursor: pointer;
+  transform: scale(1.075);
+}
+
+.image_card {
+  height: 15.2rem;
+  width: 14rem;
+}
+
+.time {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #989898;
+}
+
+.title {
+  margin-top: 1.5rem;
+  font-size: 1.7rem;
+  color: #fff;
+}
+
+.description_wrapper {
+  background: #333;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.image_card_mobile {
+  height: 9rem;
+  width: 9rem;
+}
+
+.time_mobile {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #989898;
+}
+
+.title_mobile {
+  font-size: 27.2px;
+  font-size: 1.2rem;
+  color: #fff;
+}

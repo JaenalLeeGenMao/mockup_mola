@@ -7,6 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 import newrelic from 'newrelic'
+
 import path from 'path'
 import express from 'express'
 import csurf from 'csurf'
@@ -43,14 +44,24 @@ import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import _forEach from 'lodash/forEach'
 import NodeCache from 'node-cache'
+import utils from './api/mola/util'
 // const videoCache = new NodeCache()
 const molaCache = new NodeCache()
 
+const dotenv = require('dotenv')
+dotenv.config()
+
 const oauth = {
+  // endpoint: process.env.OAUTH_ENDPOINT,
+  // appKey: process.env.OAUTH_APP_KEY_WEB,
+  // appSecret: process.env.OAUTH_APP_SECRET_WEB,
   endpoint:
     config.env === 'staging' ? 'https://stag.mola.tv/accounts/_/oauth2/v1' : 'https://mola.tv/accounts/_/oauth2/v1',
+
   appKey: 'wIHGzJhset',
   appSecret: 'vyxtMDxcrPcdl8BSIrUUD9Nt9URxADDWCmrSpAOMVli7gBICm59iMCe7iyyiyO9x',
+  appId: 'molatv',
+  xAppId: 2,
   scope: [
     'https://internal.supersoccer.tv/users/users.profile.read',
     'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
@@ -65,9 +76,17 @@ const oauth = {
   ].join(' '),
 }
 
+// console.log('ganteng', config)
+
 const oauthApp = {
-  appKey: 'LDZJgphCc7',
-  appSecret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+  // endpoint: process.env.OAUTH_ENDPOINT,
+  // appKeyMobile: process.env.OAUTH_APP_KEY_MOBILE,
+  // appSecretMobile: process.env.OAUTH_APP_SECRET_MOBILE,
+
+  appKeyMobile: 'LDZJgphCc7',
+  appSecretMobile: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+  appId: 'molatv',
+  xAppId: 2,
   scope: [
     'https://internal.supersoccer.tv/users/users.profile.read',
     'https://internal.supersoccer.tv/subscriptions/users.read.global' /* DARI VINCENT */,
@@ -154,6 +173,8 @@ const {
 
 const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 
+const { appKeyMobile, appSecretMobile } = oauthApp
+
 // let count = 0
 // var inboxInterval;
 // set a cookie
@@ -210,6 +231,7 @@ const extendToken = async token => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'x-app-id': xAppId,
+        'User-Agent': 'request',
       },
       body: JSON.stringify({
         app_key: appKey,
@@ -373,7 +395,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
-  molaCache.get('headerMenu', function(err, value) {
+  molaCache.get('headerMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -403,7 +425,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -420,7 +442,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function(err, value) {
+  molaCache.get('configParams', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -450,7 +472,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 900, function(err, success) {
+      molaCache.set('configParams', configParams, 300, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -465,6 +487,8 @@ const getConfigParams = async () => {
 // set a cookie
 app.use('*', async (req, res, next) => {
   // check if client sent cookie
+  console.log('=========', oauth)
+
   const cookie = req.cookies
   if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
     res.cookie('SID', req.cookies.SID, {
@@ -497,37 +521,42 @@ app.get('/oauth/callback', async (req, res) => {
   const sid = req.cookies.SID
 
   if (code && state && storedState && state === storedState) {
-    await new Promise((resolve, reject) => {
-      request.post(
-        {
-          ...config.endpoints.setting,
-          url: `${oauthEndpoint}/token`,
-          timeout: 5000,
-          headers: {
-            Cookie: `SID=${sid}`,
+    try {
+      await new Promise((resolve, reject) => {
+        request.post(
+          {
+            ...config.endpoints.setting,
+            url: `${AUTH_API_URL}/oauth2/v1/token`,
+            timeout: 5000,
+            headers: {
+              'x-app-id': xAppId,
+              'User-Agent': 'request',
+            },
+            json: {
+              app_key: appKey,
+              app_secret: appSecret,
+              grant_type: 'authorization_code',
+              redirect_uri: `${domain}/oauth/callback`,
+              code,
+            },
           },
-          json: {
-            app_key: appKey,
-            app_secret: appSecret,
-            grant_type: 'authorization_code',
-            redirect_uri: `${domain}/oauth/callback`,
-            code,
-          },
-        },
-        (error, response, body) => {
-          if (error || response.statusCode !== 200) {
-            console.error(error, response.statusCode, body)
-            return reject({ error, statusCode: response.statusCode, body })
+          (error, response, body) => {
+            if (error || response.statusCode !== 200) {
+              console.error(error, response.statusCode, body)
+              return reject({ error, statusCode: response.statusCode, body })
+            }
+            res.cookie('_at', body.access_token, {
+              maxAge: body.expires_in * 1000,
+              httpOnly: true,
+              // secure: !__DEV__,
+            })
+            return resolve()
           }
-          res.cookie('_at', body.access_token, {
-            maxAge: body.expires_in * 1000,
-            httpOnly: true,
-            // secure: !__DEV__,
-          })
-          return resolve()
-        }
-      )
-    })
+        )
+      })
+    } catch (e) {
+      console.log(`[/oauth/callback] error while fetching /oauth2/v1/token. err: ${e}`)
+    }
   }
 
   if (req.cookies.redirectwatch) {
@@ -543,19 +572,25 @@ app.get('/oauth/app-callback', async (req, res) => {
   const state = req.query.state
   // const storedState = req.cookies.wstate
   const sid = req.cookies.SID
-  if (code && state) {
-    await new Promise((resolve, reject) => {
+
+  if (!code || !state) {
+    return res.status(401)
+  }
+
+  try {
+    const _at = await new Promise((resolve, reject) => {
       request.post(
         {
           ...config.endpoints.setting,
-          url: `${oauthEndpoint}/token`,
+          url: `${AUTH_API_URL}/oauth2/v1/token`,
           timeout: 5000,
           headers: {
-            Cookie: `SID=${sid}`,
+            'x-app-id': xAppId,
+            'User-Agent': 'request',
           },
           json: {
-            app_key: 'LDZJgphCc7',
-            app_secret: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
+            app_key: appKeyMobile,
+            app_secret: appSecretMobile,
             grant_type: 'authorization_code',
             redirect_uri: `${domain}/oauth/app-callback`,
             code,
@@ -563,22 +598,26 @@ app.get('/oauth/app-callback', async (req, res) => {
         },
         (error, response, body) => {
           if (error || response.statusCode !== 200) {
-            console.error(error, response.statusCode, body)
-            reject({ error, statusCode: response.statusCode, body })
+            const statusCode = response ? response.statusCode : 400
+            console.error(error, statusCode, body)
+            return reject({ error, statusCode: statusCode, body })
           }
           res.header('_at', body.access_token)
           resolve(response)
         }
       )
     })
-      .then(response => {
-        res.json(response)
-      })
-      .catch(error => {
-        res.json(error)
-      })
-  } else {
-    return res.status(401)
+    // .then(response => {
+    //   res.json(response)
+    // })
+    // .catch(error => {
+    //   console.log(`[/oauth/app-callback] error while fetching /oauth2/v1/token. err: ${e}`)
+    //   res.json(error)
+    // })
+    return res.json(_at)
+  } catch (e) {
+    console.log(`[/oauth/app-callback] error while fetching /oauth2/v1/token. err: ${e}`)
+    return res.json(e)
   }
 })
 
@@ -783,6 +822,98 @@ app.get('*', async (req, res, next) => {
       production: 'https://ma1439-r.analytics.edgekey.net/config/beacon-25462.xml',
     }
 
+    const pathSplit = req.path.split('/')
+    const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
+
+    let articlesDetailData = {
+      meta: {
+        status: 'loading',
+        error: '',
+      },
+      data: null,
+    }
+
+    if (firstPath === 'articles') {
+      let articleId = pathSplit[2]
+      if (!articleId) {
+        articlesDetailData = {
+          meta: {
+            status: 'error',
+            error: 'article detail error 404 cannot be found',
+          },
+          data: null,
+        }
+      } else {
+        let articlesData = null
+        let hasCache = false
+        molaCache.get(articleId, function (err, value) {
+          if (!err) {
+            if (value == undefined) {
+              // key not found
+              hasCache = false
+              // console.log('cache value is undefined', err)
+            } else {
+              hasCache = true
+              articlesData = value
+              // console.log('cache value is: ', value)
+              //{ my: "Special", variable: 42 }
+              // ... do something ...
+            }
+          }
+        })
+        if (!hasCache) {
+          await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
+            timeout: 5000,
+            maxRedirects: 1,
+          })
+            .then(response => {
+              if (response.status == 200) {
+                const result = utils.normalizeArticles(response)
+                articlesDetailData = {
+                  meta: {
+                    status: 'success',
+                  },
+                  data: result,
+                }
+                molaCache.set(articleId, result, 2700, function (err, success) {
+                  if (!err && success) {
+                    console.log('success set cache node cache', articleId, result)
+                    // true
+                    // ... do something ...
+                  } else {
+                    console.log('failed set cache node cache', articleId, ', err:', err)
+                  }
+                })
+              } else {
+                articlesDetailData = {
+                  meta: {
+                    status: 'error',
+                    error: `Error SEO articles request failed with status ${response.status}`,
+                  },
+                  data: null,
+                }
+              }
+            })
+            .catch(err => {
+              articlesDetailData = {
+                meta: {
+                  status: 'error',
+                  error: 'Error SEO articles' + err,
+                },
+                data: null,
+              }
+            })
+        } else {
+          articlesDetailData = {
+            meta: {
+              status: 'success',
+            },
+            data: articlesData,
+          }
+        }
+      }
+    }
+
     const initialState = {
       user: req.user || {
         uid: uid === 'undefined' ? '' : uid,
@@ -826,6 +957,7 @@ app.get('*', async (req, res, next) => {
         },
         mediaAnalyticUrl: mediaAnalyticUrl[config.env],
       },
+      articlesDetail: articlesDetailData,
     }
 
     // Auth.requestGuestToken({ csrf: initialState.runtime.csrf, appKey: payload.app_key }).then(response => console.log(response))
@@ -874,8 +1006,8 @@ app.get('*', async (req, res, next) => {
     /*** ###Articles Detail data and SEO ### ***/
     data.url = config.endpoints.domain + req.path
     data.image = config.endpoints.domain + '/mola.png'
-    const pathSplit = req.path.split('/')
-    const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
+    // const pathSplit = req.path.split('/')
+    // const firstPath = pathSplit.length > 1 ? pathSplit[1] : ''
     /*** SEO - start  ***/
     if (firstPath === 'watch') {
       let videoId = '',
@@ -884,7 +1016,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function(err, value) {
+      molaCache.get(videoId, function (err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -924,13 +1056,13 @@ app.get('*', async (req, res, next) => {
           videoObj = {
             title: data.title,
             description: data.description,
-            image: data.image,
+            image: `${data.image}?w=600`,
             type: data.type,
             twitter_card_type: data.twitter_card_type,
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function(err, success) {
+        molaCache.set(videoId, videoObj, 2700, function (err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
@@ -947,59 +1079,16 @@ app.get('*', async (req, res, next) => {
         data.twitter_card_type = videoObj.twitter_card_type
         data.appLinkUrl = videoObj.appLinkUrl
       }
+    } else if (firstPath === 'articles') {
+      const { status } = initialState.articlesDetail.meta
+      if (status === 'success') {
+        const articlesData = initialState.articlesDetail.data
+        data.title = articlesData.title
+        data.description = articlesData.summary
+        data.image = `${articlesData.imageUrl}?w=300&h=300`
+        data.type = articlesData.type
+      }
     }
-    // else if (pathSplit.includes('articles')) {
-    //   const pathnameArr = req.path.split('articles/')
-    //   const articleId = pathnameArr[1]
-
-    //   const articleResponse = Axios.get(
-    //     `${config.endpoints.apiArticles}/articles/${articleId}`,
-    //     {
-    //       timeout: 5000,
-    //       maxRedirects: 1,
-    //     }
-    //   )
-    //     .then(response => {
-    //       if (response.status === 200) {
-    //         const article = _get(response, 'data.data', {}),
-    //           title = _get(article, 'attributes.title'),
-    //           metaTitle = _get(article, 'attributes.metaTitle'),
-    //           metaDescription = _get(article, 'attributes.metaDescription'),
-    //           summary = _get(article, 'attributes.summary'),
-    //           keywords = _get(article, 'attributes.metaKeywords'),
-    //           imageUrl = _get(article, 'attributes.imageUrl', '')
-
-    //         if (article && article !== undefined) {
-    //           if (metaTitle) {
-    //             data.title = metaTitle
-    //           } else if (title) {
-    //             data.title = title
-    //           }
-
-    //           if (metaDescription) {
-    //             data.description = metaDescription
-    //           } else if (summary) {
-    //             data.description = summary
-    //           }
-    //           data.keywords = keywords.length > 0 ? keywords.join(',') : ''
-    //           data.image = imageUrl ? imageUrl : ''
-    //         } else {
-    //           data.title = 'Mola Article'
-    //           data.description =
-    //             'Read daily news of Mola, highlights and many more'
-    //         }
-
-    //         data.type = 'article'
-
-    //         return article
-    //       }
-    //       return null
-    //     })
-    //     .catch(err => {
-    //       console.log('Error SEO articles', err)
-    //       return null
-    //     })
-    // }
     /*** ### End Of Articles Detail ***/
 
     /*** SEO - end  ***/

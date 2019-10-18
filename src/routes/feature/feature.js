@@ -9,7 +9,10 @@ import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
 import ArticleCard from '@components/article-card'
+import ArticleCardNew from '@components/article-card/articleCardNew'
 import VideoCard from '@components/video-card'
+
+import ArticlesCard from '../articles/articleCard/articleCard'
 
 import featureActions from '@actions/feature'
 
@@ -21,6 +24,7 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 
 import Placeholder from './placeholder'
 import { BannerPlaceholder } from './placeholder/banner-placeholder'
+import VideoPlaceholder from './placeholder/videoPlaceholder'
 import { contentTypeList, banners as dummyDataBanners } from './const'
 
 import { container, bannerContainer, carouselHeader } from './style'
@@ -42,7 +46,7 @@ class Feature extends Component {
       // this.props.onHandleResetVideo()
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
-      // this.props.onHandleArticle(id)
+      this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -63,7 +67,7 @@ class Feature extends Component {
           // this.props.onHandleResetVideo()
           this.props.onHandlePlaylist(id)
           this.props.onHandleBanner(id)
-          // this.props.onHandleArticle(id)
+          this.props.onHandleArticle(id)
 
           trackedPlaylistIds = []
           // }
@@ -138,7 +142,7 @@ class Feature extends Component {
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
     if (this.props.feature[id]) {
       const { playlists, videos, banners, articles } = this.props.feature[id]
-
+      // const { articles } = this.props.feature['featured']
       const isLoading = playlists.meta.status === 'loading',
         isError = playlists.meta.status === 'error',
         isSuccess = playlists.meta.status === 'success'
@@ -153,6 +157,8 @@ class Feature extends Component {
       } else if (articles.meta.error) {
         errorObj = { code: getErrorCode(articles.meta.error), description: 'Article request failed' }
       }
+
+      Math.trunc(contentTypeList['articles'].slideToShow)
 
       return (
         <>
@@ -200,6 +206,7 @@ class Feature extends Component {
                   ))}
                 </Carousel>
               )}
+              {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />}
               <LazyLoad containerClassName={container}>
                 {playlists.data.length > 0 &&
                   videos.data.length > 0 &&
@@ -286,31 +293,32 @@ class Feature extends Component {
                         {carouselIndex === 1 &&
                           articles.data.length > 0 && (
                             <div className={container} style={{ margin: 0 }}>
-                              <h3>Articles</h3>
+                              <h3 className="article-section-text">ARTICLES</h3>
                               <Carousel
-                                wrap={articles.length === 1 ? false : true}
+                                wrap={false}
                                 autoplay={false}
                                 sliderCoin={true}
                                 dragging={true}
-                                slidesToShow={isMobile ? 1 : 3.5}
-                                slidesToScroll={Math.trunc(contentTypeList['articles'].slideToShow)}
+                                slidesToShow={isMobile ? 1.2 : 3.5}
+                                slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
                                 transitionMode={'scroll'}
                                 withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                                 framePadding={!isMobile ? '0rem' : '0rem 5px'}
                               >
                                 {articles.data.map(obj => (
-                                  <ArticleCard
-                                    key={obj.id}
-                                    onClick={() => this.handleOnClick(obj)}
-                                    alt={obj.title}
-                                    src={`${obj.imageUrl}?w=720`}
-                                    title={obj.title}
-                                    contentType={obj.type}
-                                    createdAt={obj.createdAt}
-                                    description={obj.imageCaption}
-                                    // onLoad={this.updateOnImageLoad}
-                                    // containerClassName={bannerContainer}
-                                  />
+                                  <ArticleCardNew data={obj} key={obj.id} isMobile={this.props.isMobile} />
+                                  // <ArticleCard
+                                  //   key={obj.id}
+                                  //   onClick={() => this.handleOnClick(obj)}
+                                  //   alt={obj.title}
+                                  //   src={`${obj.imageUrl}`}
+                                  //   title={obj.title}
+                                  //   contentType={obj.type}
+                                  //   createdAt={obj.createdAt}
+                                  //   description={obj.imageCaption}
+                                  // // onLoad={this.updateOnImageLoad}
+                                  // // containerClassName={bannerContainer}
+                                  // />
                                 ))}
                               </Carousel>
                             </div>

@@ -227,10 +227,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-              id: league.id,
-              name: league.attributes.name,
-              iconUrl: league.attributes.iconUrl,
-            }
+            id: league.id,
+            name: league.attributes.name,
+            iconUrl: league.attributes.iconUrl,
+          }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -305,7 +305,7 @@ const normalizeHomeVideo = response => {
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) {}
+    } catch (err) { }
   }
   return []
 }
@@ -698,6 +698,48 @@ const normalizePartners = response => {
   return []
 }
 
+const normalizeArticles = response => {
+  const { data } = response.data
+  if (data) {
+    const { id, type } = data
+    const { title, author, imageUrl, imageCaption, summary, content, tags, video, metaDescription, updatedAt, menuId, relatedVideos } = data.attributes
+    return {
+      id,
+      type,
+      title,
+      author,
+      imageUrl,
+      imageCaption,
+      summary,
+      content,
+      tags,
+      video,
+      metaDescription,
+      updatedAt,
+      menuId,
+      relatedVideos
+    }
+  }
+  return []
+  // console.log(response, 'mau di normalize')
+}
+
+const normalizeArticlesRelated = response => {
+  const { data } = response.data
+  const articles = data.attributes.articles
+  if (articles && articles.length > 0) {
+    return articles.map(({ id, attributes: { updatedAt, title, imageUrl } }) => {
+      return {
+        id,
+        updatedAt,
+        title,
+        imageUrl
+      }
+    })
+  }
+  return []
+}
+
 export default {
   normalizeHomePlaylist,
   normalizeHomeVideo,
@@ -714,4 +756,6 @@ export default {
   normalizeMatchPlaylists,
   normalizeNotifications,
   normalizePartners,
+  normalizeArticles,
+  normalizeArticlesRelated
 }

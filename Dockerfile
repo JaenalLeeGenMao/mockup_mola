@@ -13,6 +13,20 @@ RUN yarn install --no-progress --production=false
 ARG REACT_APP_ENV
 ARG NODE_ENV
 ARG CDN_PATH
+ARG REACT_APP_ENV
+ARG NODE_ENV
+ARG CDN_PATH
+ARG VIDEO_ENDPOINT
+ARG AUTH_ENDPOINT
+ARG SUBSCRIPTION_API_URL
+ARG OAUTH_APP_KEY_WEB
+ARG OAUTH_APP_SECRET_WEB
+ARG OAUTH_APP_KEY_MOBILE
+ARG OAUTH_APP_SECRET_MOBILE
+
+RUN echo "test dong auth $AUTH_ENDPOINT"
+RUN echo "oauth app key $OAUTH_APP_KEY_WEB"
+
 # Build!
 COPY . .
 RUN node_modules/.bin/babel-node tools/run build -- --release --docker

@@ -1,0 +1,14 @@
+.background_wrapper {
+  height: 33.1vw;
+  width: 76.4vw;
+}
+
+.background_wrapper_mobile {
+  height: 20.2rem;
+  width: 100vw;
+}
+
+.image_cover {
+  height: 100%;
+  width: 100%;
+}

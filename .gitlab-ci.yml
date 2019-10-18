@@ -26,6 +26,13 @@ push_docker_staging:
     REACT_APP_ENV: staging
     GCS_PATH: gs://sstv-staging-cdn/mola
     CDN_PATH: https://cdn.stag.supersoccer.tv/mola
+    VIDEO_ENDPOINT: $VIDEO_ENDPOINT
+    AUTH_ENDPOINT: $AUTH_ENDPOINT
+    SUBSCRIPTION_API_URL: $SUBSCRIPTION_ENDPOINT
+    OAUTH_APP_KEY_WEB: $OAUTH_APP_KEY_WEB
+    OAUTH_APP_SECRET_WEB: $OAUTH_APP_SECRET_WEB
+    OAUTH_APP_KEY_MOBILE: $OAUTH_APP_KEY_MOBILE
+    OAUTH_APP_SECRET_MOBILE: $OAUTH_APP_SECRET_MOBILE
   only:
     - beta@apps/mola/mola-web
     - develop@apps/mola/mola-web
@@ -41,5 +48,12 @@ push_docker_production:
     REACT_APP_ENV: production
     GCS_PATH: gs://koicdn-com/mola01
     CDN_PATH: https://mola01.koicdn.com
+    VIDEO_ENDPOINT: $VIDEO_ENDPOINT
+    AUTH_ENDPOINT: $AUTH_ENDPOINT
+    SUBSCRIPTION_API_URL: $SUBSCRIPTION_ENDPOINT
+    OAUTH_APP_KEY_WEB: $OAUTH_APP_KEY_WEB
+    OAUTH_APP_SECRET_WEB: $OAUTH_APP_SECRET_WEB
+    OAUTH_APP_KEY_MOBILE: $OAUTH_APP_KEY_MOBILE
+    OAUTH_APP_SECRET_MOBILE: $OAUTH_APP_SECRET_MOBILE
   only:
     - master@apps/mola/mola-web

@@ -22,17 +22,17 @@ class ArticleCard extends Component {
 
   render() {
     const {
-        id,
-        title,
-        src,
-        contentType = '',
-        createdAt,
-        description,
-        onClick = () => {},
-        containerClassName = '',
-        className = '',
-        transitionMode = 'scroll',
-      } = this.props,
+      id,
+      title,
+      src,
+      contentType = '',
+      createdAt,
+      description,
+      onClick = () => { },
+      containerClassName = '',
+      className = '',
+      transitionMode = 'scroll',
+    } = this.props,
       { show } = this.state,
       date = moment(createdAt).format('DD MMM YYYY')
 
@@ -49,13 +49,12 @@ class ArticleCard extends Component {
       }
 
     // setMultilineEllipsis('info_content')
-
     return (
       <div onClick={() => onClick()} className={`${articleContainer} ${containerClassName}`}>
         <img
           className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${
             !show ? '' : 'hide'
-          }`}
+            }`}
           src={placeholderBlankLandscape}
         />
         <div className="imageWrapper">
@@ -65,18 +64,18 @@ class ArticleCard extends Component {
             handleCallback={this.handleTitleShow}
           />
         </div>
-        {show &&
+        {/* {show &&
           whitelistContentTypes[`${contentTypeName}`] && (
-            <>
-              <div className={articleGradient} />
-              <div className={icons}>
-                {/* <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} /> */}
-                <h3>{date}</h3>
+            <> */}
+        {/* <div className={articleGradient} />
+              <div className={icons}> */}
+        {/* <span className={`${whitelistContentTypes[`${contentTypeName}`]}`} /> */}
+        {/* <h3>{date}</h3>
                 <p className="info_content">{description}</p>
                 <div />
-              </div>
-            </>
-          )}
+              </div> */}
+        {/* </>
+          )} */}
       </div>
     )
   }
