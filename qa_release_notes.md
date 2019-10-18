@@ -140,3 +140,8 @@ V1.4.1 + **1828**
 New Feature:
 * Add video player blocker (read configuration from config app param desktop_video_blocker: true) on video detail page (/watch and /channel) for desktop. 
 previously the video player could be played (Arga) 
+
+V1.4.1 + **1834**
+
+Bug Fixes:
+* Fix error when calling /oauth/app-callback from mobile app. Previously if error then the web app will break, fix is changing the code to handle if return error then don't break but show error object (Irene)
