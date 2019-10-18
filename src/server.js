@@ -1048,7 +1048,7 @@ app.get('*', async (req, res, next) => {
           videoObj = {
             title: data.title,
             description: data.description,
-            image: data.image,
+            image: `${data.image}?w=600`,
             type: data.type,
             twitter_card_type: data.twitter_card_type,
             appLinkUrl: data.appLinkUrl,
