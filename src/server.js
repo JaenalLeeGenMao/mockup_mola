@@ -1077,7 +1077,7 @@ app.get('*', async (req, res, next) => {
         const articlesData = initialState.articlesDetail.data
         data.title = articlesData.title
         data.description = articlesData.summary
-        data.image = `${articlesData.imageUrl}?w=96&h=96`
+        data.image = `${articlesData.imageUrl}?w=300&h=300`
         data.type = articlesData.type
       }
     }
