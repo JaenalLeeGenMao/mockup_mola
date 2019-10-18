@@ -81,6 +81,7 @@ const oauthApp = {
   // endpoint: process.env.OAUTH_ENDPOINT,
   // appKeyMobile: process.env.OAUTH_APP_KEY_MOBILE,
   // appSecretMobile: process.env.OAUTH_APP_SECRET_MOBILE,
+
   appKeyMobile: 'LDZJgphCc7',
   appSecretMobile: '7NPI1ATIGGDpGrAKKfyroNNkGkMuTNhfBoew6ghy00rAjsANLvehhZi4EAbEta2D',
   appId: 'molatv',
@@ -393,7 +394,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
-  molaCache.get('headerMenu', function(err, value) {
+  molaCache.get('headerMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -423,7 +424,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -440,7 +441,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function(err, value) {
+  molaCache.get('configParams', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -470,7 +471,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 900, function(err, success) {
+      molaCache.set('configParams', configParams, 900, function (err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -519,38 +520,42 @@ app.get('/oauth/callback', async (req, res) => {
   const sid = req.cookies.SID
 
   if (code && state && storedState && state === storedState) {
-    await new Promise((resolve, reject) => {
-      request.post(
-        {
-          ...config.endpoints.setting,
-          url: `${AUTH_API_URL}/v1/token`,
-          timeout: 5000,
-          headers: {
-            'x-app-id': xAppId,
-            'User-Agent': 'request',
+    try {
+      await new Promise((resolve, reject) => {
+        request.post(
+          {
+            ...config.endpoints.setting,
+            url: `${AUTH_API_URL}/oauth2/v1/token`,
+            timeout: 5000,
+            headers: {
+              'x-app-id': xAppId,
+              'User-Agent': 'request',
+            },
+            json: {
+              app_key: appKey,
+              app_secret: appSecret,
+              grant_type: 'authorization_code',
+              redirect_uri: `${domain}/oauth/callback`,
+              code,
+            },
           },
-          json: {
-            app_key: appKey,
-            app_secret: appSecret,
-            grant_type: 'authorization_code',
-            redirect_uri: `${domain}/oauth/callback`,
-            code,
-          },
-        },
-        (error, response, body) => {
-          if (error || response.statusCode !== 200) {
-            console.error(error, response.statusCode, body)
-            return reject({ error, statusCode: response.statusCode, body })
+          (error, response, body) => {
+            if (error || response.statusCode !== 200) {
+              console.error(error, response.statusCode, body)
+              return reject({ error, statusCode: response.statusCode, body })
+            }
+            res.cookie('_at', body.access_token, {
+              maxAge: body.expires_in * 1000,
+              httpOnly: true,
+              // secure: !__DEV__,
+            })
+            return resolve()
           }
-          res.cookie('_at', body.access_token, {
-            maxAge: body.expires_in * 1000,
-            httpOnly: true,
-            // secure: !__DEV__,
-          })
-          return resolve()
-        }
-      )
-    })
+        )
+      })
+    } catch (e) {
+      console.log(`[/oauth/callback] error while fetching /oauth2/v1/token. err: ${e}`)
+    }
   }
 
   if (req.cookies.redirectwatch) {
@@ -566,12 +571,17 @@ app.get('/oauth/app-callback', async (req, res) => {
   const state = req.query.state
   // const storedState = req.cookies.wstate
   const sid = req.cookies.SID
-  if (code && state) {
-    await new Promise((resolve, reject) => {
+
+  if (!code || !state) {
+    return res.status(401)
+  }
+
+  try {
+    const _at = await new Promise(resolve => {
       request.post(
         {
           ...config.endpoints.setting,
-          url: `${AUTH_API_URL}/v1/token`,
+          url: `${AUTH_API_URL}/oauth2/v1/token`,
           timeout: 5000,
           headers: {
             'x-app-id': xAppId,
@@ -595,13 +605,9 @@ app.get('/oauth/app-callback', async (req, res) => {
         }
       )
     })
-      .then(response => {
-        res.json(response)
-      })
-      .catch(error => {
-        res.json(error)
-      })
-  } else {
+    return res.json(_at)
+  } catch (e) {
+    console.log(`[/oauth/app-callback] error while fetching /oauth2/v1/token. err: ${e}`)
     return res.status(401)
   }
 })
@@ -908,7 +914,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function(err, value) {
+      molaCache.get(videoId, function (err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -954,7 +960,7 @@ app.get('*', async (req, res, next) => {
             appLinkUrl: data.appLinkUrl,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function(err, success) {
+        molaCache.set(videoId, videoObj, 2700, function (err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
