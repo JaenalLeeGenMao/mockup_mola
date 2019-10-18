@@ -893,7 +893,6 @@ const getArticlesDetail = articleId => {
     ...endpoints.setting,
   })
     .then(response => {
-      console.log(response, 'responseee')
       if (response.status === 200) {
         const result = utils.normalizeArticles(response)
         return {
