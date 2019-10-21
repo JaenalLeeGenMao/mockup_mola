@@ -158,10 +158,20 @@ Improvements:
 * Send Video ID (redirect-to-appstore/videoId or redirect-to-playstore/videoId for analityc) when first time click store badge download on app store / play store for mobile only. previously only redirect-to-appstore or redirect-to-playstore and videoId was not included. (Elkana)
 * Update thumbnail images for og:image resolution to 600px because some thumbnail image is not show up when sharing on whatsapp (share /watch page) (Irene)
 * Blocking all video player with switcher to remove blocker on video detail page (/watch and /channels) desktop only (Arga)
+* Add new API url on config js (Sabiq)
 
 Bug Fixes:
-* Add new API url on config js (Improvements)
 * Fix error when login calling oauth web and mobile. Previously if login error then the web app will break, fix is changing the code to handle error, and changes enpoint oauth2/v1/token (Sabiq)
 * Update code on /oauth/app-callback, merged with sabiq new code (Irene)
 
- 
+**21/10/2019**
+
+V1.5.0 + **1864** 
+
+New Feature:
+* Add the chat icon feature directly on the home page to start chatting with customer service agents. (Ferdy)
+
+
+Improvements: 
+* Add dns-prefetch and preconnect for third party domain (//mola01.koicdn.com, //res-mola01.koicdn.com, //cdn01.mola.tv, //cdn02.mola.tv, //bam.nr-data.net, //js-agent.newrelic.com) to improve page speed in every pages (Irene)
+* Read error when calling header menu api and store in window.debugStore.headerMenu (Irene)
