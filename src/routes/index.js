@@ -200,8 +200,12 @@ const routes = {
       const targetHide = document.getElementsByClassName('embeddedServiceHelpButton')[0]
       if (e.target.innerText === 'Offline') {
         targetHide.style.visibility = 'hidden'
-      } else if (e.target.innerHTML === 'Online' && route.chunks[0] === 'home') {
-        targetHide.style.visibility = 'visible'
+      } else if (e.target.innerHTML === 'Online') {
+        if (window) {
+          if (window.location.pathname === '/') {
+            targetHide.style.visibility = 'visible'
+          }
+        }
       }
     }
 
