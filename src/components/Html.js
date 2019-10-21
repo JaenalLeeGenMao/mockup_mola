@@ -247,6 +247,10 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             .embeddedServiceSidebarDialogState #dialogTextBody {
               color: #fff !important;
             }
+
+            .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.agent.plaintextContent {
+              background: #171717 !important;
+            }
               
             /*landscape*/
             @media (min-width: 481px) and (max-width: 767px) {
