@@ -123,6 +123,23 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
                 '});',
             }}
           />
+
+          <link rel="preconnect" href="//mola01.koicdn.com" as="script" async="" />
+          <link rel="preconnect" href="//res-mola01.koicdn.com" as="script" async="" />
+          <link rel="preconnect" href="//cdn01.mola.tv" as="script" async="" />
+          <link rel="preconnect" href="//cdn02.mola.tv" as="script" async="" />
+          <link rel="preconnect" href="//bam.nr-data.net" as="script" async="" />
+          <link rel="preconnect" href="//js-agent.newrelic.com" as="script" async="" />
+          <link rel="preconnect" href="//cdn.onesignal.com" as="script" async="" />
+
+          <link rel="dns-prefetch" href="//mola01.koicdn.com" as="script" async="" />
+          <link rel="dns-prefetch" href="//res-mola01.koicdn.com" as="script" async="" />
+          <link rel="dns-prefetch" href="//cdn01.mola.tv" as="script" async="" />
+          <link rel="dns-prefetch" href="//cdn02.mola.tv" as="script" async="" />
+          <link rel="dns-prefetch" href="//bam.nr-data.net" as="script" async="" />
+          <link rel="dns-prefetch" href="//js-agent.newrelic.com" as="script" async="" />
+          <link rel="dns-prefetch" href="//cdn.onesignal.com" as="script" async="" />
+
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="shortcut icon" type="image/png/ico" href="/mola.png" />
           <link rel="icon" type="image/png/ico" href="/mola.png" />
