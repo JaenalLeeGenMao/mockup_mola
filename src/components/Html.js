@@ -380,7 +380,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
 
                 embedded_svc.init(
                   'https://mola-support.my.salesforce.com',
-                  'https://sstvandmolatv.force.com',
+                  'https://mstcx.force.com',
                   gslbBaseURL,
                   '00D2v000001ux1Q',
                   'Mola_TV',
