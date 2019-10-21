@@ -395,6 +395,7 @@ const requestCode = async (req, res) => {
 const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
+  let headerError = ''
   molaCache.get('headerMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
@@ -419,9 +420,10 @@ const getHeaderMenus = async () => {
         maxRedirects: 1,
       })
       response = await rawResponse.json()
-      console.log('RESPONSE HEADER', response)
+      // console.log('RESPONSE HEADER', response)
       headerArr = response && response.data ? response.data : []
     } catch (err) {
+      headerError = 'Error Get Header Menu' + err
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
@@ -429,13 +431,14 @@ const getHeaderMenus = async () => {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
+          headerError = 'failed set cache node cache headermenu, err:' + err
           console.log('failed set cache node cache headermenu', 'err:', err)
         }
       })
     }
   }
 
-  return headerArr
+  return { headerMenu: headerArr, headerError: headerError }
 }
 
 const getConfigParams = async () => {
@@ -935,7 +938,8 @@ app.get('*', async (req, res, next) => {
         clientIp: ip,
       },
       headerMenu: {
-        data: responseHeaderMenu ? responseHeaderMenu : null,
+        data: responseHeaderMenu ? responseHeaderMenu.headerMenu : null,
+        error: responseHeaderMenu ? responseHeaderMenu.headerError : null,
       },
       configParams: {
         data: responseConfigParams ? responseConfigParams : '',
