@@ -195,7 +195,6 @@ class Register extends Component {
         error: '',
       })
       let dated = new Date(birthdate)
-      console.log('data', dated)
       const frmtDate = formatDateTime(dated.getTime() / 1000, 'YYYY-MM-DD')
 
       const payload = {
@@ -206,7 +205,6 @@ class Register extends Component {
         phone,
         csrf,
       }
-      console.log('pusing', payload)
       const result = await Auth.createNewUser(payload)
       // const result = {
       //   email: 'qahyne@getnada.com',

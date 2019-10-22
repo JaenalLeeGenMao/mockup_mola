@@ -183,16 +183,10 @@ const getMatchesList = (id = 'mola-soc') => {
     })
 }
 
-const getMatchDetail = id => {
-  return post(
-    `${VIDEOS_ENDPOINT_NOCACHE}/?relationships=1`,
-    {
-      videos: id,
-    },
-    {
-      ...endpoints.setting,
-    }
-  )
+const getMatchDetail = ids => {
+  return get(`${VIDEOS_ENDPOINT_NOCACHE}?${ids}`, {
+    ...endpoints.setting,
+  })
     .then(response => {
       const result = utils.normalizeMatchDetail(response)
       // console.log('handler: after normalize match detail', result)
@@ -216,16 +210,10 @@ const getMatchDetail = id => {
     })
 }
 
-const getMatchesPlaylists = id => {
-  return post(
-    `${HOME_PLAYLIST_ENDPOINT_NOCACHE}`,
-    {
-      playlists: id,
-    },
-    {
-      ...endpoints.setting,
-    }
-  )
+const getMatchesPlaylists = ids => {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}?${ids}`, {
+    ...endpoints.setting,
+  })
     .then(response => {
       const result = utils.normalizeMatchPlaylists(response)
       return {
