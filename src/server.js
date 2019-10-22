@@ -466,10 +466,10 @@ const getConfigParams = async () => {
 
   if (!hasCache) {
     try {
-      const configUrl = `${configUrl.endpoint}/app-params?app_id=${configUrl.appId}`
+      const configParamUrl = `${configUrl.endpoint}/app-params?app_id=${configUrl.appId}`
       let response = null
 
-      const rawResponse = await fetch(`${configUrl}`, {
+      const rawResponse = await fetch(`${configParamUrl}`, {
         timeout: 5000,
         maxRedirects: 1,
       })
