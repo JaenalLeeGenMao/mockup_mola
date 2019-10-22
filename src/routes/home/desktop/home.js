@@ -215,14 +215,21 @@ class Home extends Component {
       var target = e.target
       var isPlaylist = target.parentElement.getElementsByClassName('is-home-playlist').length
       var domainRedirect = __this.state.activeSlide.link.split('/')
+
       if (isPlaylist <= 0 && target.classList.contains('is-home-gradient')) {
-        __this.state.activeSlide.link && domainRedirect[2].includes('mola.tv')
-          ? __this.state.activeSlide.link.includes('link_redirect')
-            ? domainRedirect[5].includes('mola.tv')
-              ? (window.location.href = __this.state.activeSlide.link)
-              : window.open(__this.state.activeSlide.link, '_blank')
-            : (window.location.href = __this.state.activeSlide.link)
-          : window.open(__this.state.activeSlide.link, '_blank')
+        if (__this.state.activeSlide.link && domainRedirect[2].includes('mola.tv')) {
+          if (__this.state.activeSlide.link.includes('link_redirect')) {
+            if (domainRedirect[5].includes('mola.tv')) {
+              window.location.href = __this.state.activeSlide.link
+            } else {
+              window.open(__this.state.activeSlide.link, '_blank')
+            }
+          } else {
+            window.location.href = __this.state.activeSlide.link
+          }
+        } else {
+          window.open(__this.state.activeSlide.link, '_blank')
+        }
       }
 
       const payload = {
