@@ -169,9 +169,33 @@ Bug Fixes:
 V1.5.0 + **1864** 
 
 New Feature:
+* Enable live support and change new script salesforce for live chat support feature (Ferdy)
 * Add the chat icon feature directly on the home page to start chatting with customer service agents. (Ferdy)
 
 
 Improvements: 
 * Add dns-prefetch and preconnect for third party domain (//mola01.koicdn.com, //res-mola01.koicdn.com, //cdn01.mola.tv, //cdn02.mola.tv, //bam.nr-data.net, //js-agent.newrelic.com) to improve page speed in every pages (Irene)
 * Read error when calling header menu api and store in window.debugStore.headerMenu (Irene)
+* Change url (change-url-live-cs) for live chat with costumer support Agent. (Ferdy)
+* Change the path detection mechanism from window location. (Ferdy)
+
+
+**22/10/2019**
+
+V1.5.0 + **1867** 
+
+Improvement:
+* Change config api from external api to internal api (http://config.core.sstv.local) for header menu and app-params. Because on mola beta the external api call from server is blocked, so need to use internal api. Previously on beta the header menu and config app param is not shown. (Irene)
+
+V1.5.0 + **1870** 
+
+Improvement:
+*  Add app_id=molatv to internal api call for header menu and app param (Irene)
+
+V1.5.0 + **1873** 
+
+Improvement:
+* (Code improvement) Change variable name for config app param url so not overriding internal config url variable. (Irene)
+
+ 
+
