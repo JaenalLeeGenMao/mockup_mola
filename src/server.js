@@ -102,7 +102,7 @@ const oauthApp = {
 }
 
 const configUrl = {
-  endpoint: 'http://config.core.sstv.local',
+  endpoint: 'http://config.core.sstv.local', //'http://10.220.0.12' ,
   appId: 'molatv',
 }
 
