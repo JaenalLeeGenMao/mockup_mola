@@ -677,7 +677,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMatches: id => dispatch(matchListActions.getAllMatches(id)),
+  // getMatches: id => dispatch(matchListActions.getAllMatches(id)),
   getAllGenreSpo: id => dispatch(matchListActions.getAllGenreSpo(id)),
 })
 

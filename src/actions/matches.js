@@ -20,9 +20,16 @@ const getAllMatches = id => dispatch => {
         payload: result,
       })
     } else {
-      let allMatchDetailId = []
-      result.data.map(matchDetail => {
-        allMatchDetailId.push(matchDetail.id)
+      let allMatchDetailId = ''
+      result.data.map((matchDetail, idx) => {
+        // allMatchDetailId.push(matchDetail.id)
+        if (result && result.data.length > 0) {
+          if (idx === result.data.length - 1) {
+            allMatchDetailId += 'ids=' + matchDetail.id
+          } else {
+            allMatchDetailId += 'ids=' + matchDetail.id + '&'
+          }
+        }
       })
       let matchDetailList = []
       matchDetailList = await Mola.getMatchDetail(allMatchDetailId)
@@ -60,12 +67,18 @@ const getAllGenreSpo = id => dispatch => {
         payload: result,
       })
     } else {
-      let genrePlaylistId = []
-      result.data = result.data.filter(dt => {
-        genrePlaylistId.push(dt.id)
+      let genrePlaylistId = ''
+      result.data = result.data.filter((dt, idx) => {
+        // genrePlaylistId.push(dt.id)
+        if (result && result.data.length > 0) {
+          if (idx === result.data.length - 1) {
+            genrePlaylistId += 'ids=' + dt.id
+          } else {
+            genrePlaylistId += 'ids=' + dt.id + '&'
+          }
+        }
         return dt.visibility === 1
       })
-      // console.log('genrePlaylistId', genrePlaylistId)
       const genreSportList = {
         genreSpo: result.data,
       }
