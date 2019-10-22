@@ -101,7 +101,10 @@ const oauthApp = {
   ].join(' '),
 }
 
-const configApi = 'http://config.core.sstv.local'
+const configUrl = {
+  endpoint: 'http://config.core.sstv.local', //'http://10.220.0.12' ,
+  appId: 'molatv',
+}
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
@@ -414,7 +417,7 @@ const getHeaderMenus = async () => {
 
   if (!hasCache) {
     try {
-      const headerUrl = `${configApi}/ui/menu`
+      const headerUrl = `${configUrl.endpoint}/ui/menu?app_id=${configUrl.appId}`
       let response = null
 
       const rawResponse = await fetch(`${headerUrl}`, {
@@ -463,7 +466,7 @@ const getConfigParams = async () => {
 
   if (!hasCache) {
     try {
-      const configUrl = `${configApi}/app-params`
+      const configUrl = `${configUrl.endpoint}/app-params?app_id=${configUrl.appId}`
       let response = null
 
       const rawResponse = await fetch(`${configUrl}`, {
