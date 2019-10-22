@@ -12,9 +12,11 @@ class Content extends Component {
   handleClickMobile = link => {
     var domainRedirect = link.split('/')
 
-    link && domainRedirect[2].includes('mola.tv') && domainRedirect[3] === 'banner'
-      ? window.open(link, '_blank')
-      : domainRedirect[2].includes('mola.tv') ? (window.location.href = link) : window.open(link, '_blank')
+    link && domainRedirect[2].includes('mola.tv')
+      ? link.includes('link_redirect')
+        ? domainRedirect[5].includes('mola.tv') ? (window.location.href = link) : window.open(link, '_blank')
+        : (window.location.href = link)
+      : window.open(link, '_blank')
 
     const payload = {
       window,
