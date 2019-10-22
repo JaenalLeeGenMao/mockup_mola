@@ -144,7 +144,7 @@ class HeaderMenu extends Component {
                         <Link
                           key={dts.id}
                           title={title}
-                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          className={`tourCategory${dts.id} ${isActive ? styles.header_menu__active : ''}`}
                           to={relMenuUrl}
                         >
                           {title}
@@ -174,7 +174,7 @@ class HeaderMenu extends Component {
                             <Link
                               key={dts.id}
                               title={title}
-                              className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                              className={`tourCategory${dts.id} ${isActive ? styles.header_menu__active : ''}`}
                               to={relMenuUrl}
                             >
                               {title}
@@ -203,7 +203,7 @@ class HeaderMenu extends Component {
                         <Link
                           key={dts.id}
                           title={title}
-                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          className={`tourCategory${dts.id} ${isActive ? styles.header_menu__active : ''}`}
                           to={relMenuUrl}
                         >
                           {title}
@@ -214,7 +214,7 @@ class HeaderMenu extends Component {
                         <Link
                           key={dts.id}
                           title={title}
-                          className={`tourCategory${title} ${isActive ? styles.header_menu__active : ''}`}
+                          className={`tourCategory${dts.id} ${isActive ? styles.header_menu__active : ''}`}
                           onClick={this.handleToggle}
                         >
                           {title}

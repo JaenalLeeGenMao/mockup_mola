@@ -67,7 +67,7 @@ export const tourSteps = {
       },
     },
     {
-      target: '.tourCategoryChannels',
+      target: '.tourCategory6',
       title: 'Channels',
       content: <div>Enjoy {"Mola's"} TV experience here.</div>,
       placement: 'bottom',
@@ -79,7 +79,7 @@ export const tourSteps = {
       },
     },
     {
-      target: '.tourCategoryMatches',
+      target: '.tourCategory7',
       title: 'Matches',
       content: <div>Click here to check on matches schedules.</div>,
       placement: 'bottom',
