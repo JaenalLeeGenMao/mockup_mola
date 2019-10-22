@@ -101,6 +101,8 @@ const oauthApp = {
   ].join(' '),
 }
 
+const configApi = 'http://config.core.sstv.local'
+
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason)
   // send entire app down. Process manager will restart it
@@ -412,7 +414,7 @@ const getHeaderMenus = async () => {
 
   if (!hasCache) {
     try {
-      const headerUrl = `${domain}/api/v2/config/ui/menu`
+      const headerUrl = `${configApi}/ui/menu`
       let response = null
 
       const rawResponse = await fetch(`${headerUrl}`, {
@@ -461,7 +463,7 @@ const getConfigParams = async () => {
 
   if (!hasCache) {
     try {
-      const configUrl = `${domain}/api/v2/config/app-params`
+      const configUrl = `${configApi}/app-params`
       let response = null
 
       const rawResponse = await fetch(`${configUrl}`, {
