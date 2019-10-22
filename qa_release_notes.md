@@ -197,5 +197,8 @@ V1.5.0 + **1873**
 Improvement:
 * (Code improvement) Change variable name for config app param url so not overriding internal config url variable. (Irene)
 
- 
+V1.5.0 + **1876**
+
+Improvement:
+* Add toggle to enable/disable live chat support (from config param misty) for the live chat features (Ferdy)
 
