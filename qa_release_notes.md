@@ -202,3 +202,10 @@ V1.5.0 + **1876**
 Improvement:
 * Add toggle to enable/disable live chat support (from config param misty) for the live chat features (Ferdy)
 
+V1.5.0 + **1879**
+
+Improvement:
+* Replace POST method to GET. For speed up in matches playlists with a set of query string (Aang)
+
+
+
