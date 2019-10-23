@@ -184,7 +184,7 @@ const getMatchesList = (id = 'mola-soc') => {
 }
 
 const getMatchDetail = ids => {
-  return get(`${VIDEOS_ENDPOINT_NOCACHE}?${ids}`, {
+  return get(`${VIDEOS_ENDPOINT_NOCACHE}?${ids}&summary=1`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -211,7 +211,7 @@ const getMatchDetail = ids => {
 }
 
 const getMatchesPlaylists = ids => {
-  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}?${ids}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}?${ids}&summary=1`, {
     ...endpoints.setting,
   })
     .then(response => {
