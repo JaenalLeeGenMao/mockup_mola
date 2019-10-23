@@ -168,7 +168,7 @@ Bug Fixes:
 
 V1.5.0 + **1864** 
 
-New Feature:
+New Features:
 * Enable live support and change new script salesforce for live chat support feature (Ferdy)
 * Add the chat icon feature directly on the home page to start chatting with customer service agents. (Ferdy)
 
@@ -207,5 +207,10 @@ V1.5.0 + **1879**
 Improvement:
 * Replace POST method to GET. For speed up in matches playlists with a set of query string (Aang)
 
+V1.5.0 + **1882** 
+
+Bug Fixes:
+* Open a new tab if click on the home banner and the redirect link is an external link both for desktop and mobile (Elkana)
+* Fix error class on home onboarding (user journey) for desktop only (Elkana)
 
 
