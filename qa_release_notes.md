@@ -213,4 +213,10 @@ Bug Fixes:
 * Open a new tab if click on the home banner and the redirect link is an external link both for desktop and mobile (Elkana)
 * Fix error class on home onboarding (user journey) for desktop only (Elkana)
 
+**23/10/2019**
+
+V1.5.0 + **1885**
+
+Improvement:
+* Add parameter &summary=1 for new batch playlist endpoint (Irene)
 
