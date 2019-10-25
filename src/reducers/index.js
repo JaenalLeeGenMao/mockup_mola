@@ -16,6 +16,7 @@ import feature from './feature'
 import playlist from './playlist'
 import headerMenu from './header-menu'
 import configParams from './config-params'
+import partnerRedeem from './partner-redeem'
 import partners from './partners'
 import notifications from './notifications'
 import articlesDetail from './articles'
@@ -44,4 +45,5 @@ export default combineReducers({
   partners,
   notifications,
   articlesDetail,
+  partnerRedeem,
 })

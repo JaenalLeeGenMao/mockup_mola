@@ -81,6 +81,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'thankyou' */ './accounts/thankyou'),
     },
     {
+      path: '/accounts/bca-subscribe',
+      load: () => import(/* webpackChunkName: 'bca-subscribe' */ './accounts/bca-subscribe'),
+    },
+    {
       path: '/accounts/consent',
       load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
     },
