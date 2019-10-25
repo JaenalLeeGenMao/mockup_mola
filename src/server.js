@@ -173,7 +173,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 const {
   serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId },
-  endpoints: { domain },
+  endpoints: { domain, redeem: REEDEM_API_URL },
 } = config
 
 const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
@@ -492,6 +492,29 @@ const getConfigParams = async () => {
   return configParams
 }
 
+const postBcaRedeem = async (uid, voucher) => {
+  // if (debugMode && !debuggingRequests.getUserSubscription) {
+  //   return ''
+  // }
+
+  try {
+    const rawResponse = await fetch(REEDEM_API_URL, {
+      method: 'POST',
+      timeout: 5000,
+      body: JSON.stringify({
+        uid,
+        voucher_code: voucher,
+      }),
+    })
+
+    const content = await rawResponse.json()
+    return content
+  } catch (err) {
+    console.error('error bca redeem', err)
+    return { error: err }
+  }
+}
+
 // set a cookie
 app.use('*', async (req, res, next) => {
   // check if client sent cookie
@@ -567,8 +590,10 @@ app.get('/oauth/callback', async (req, res) => {
     }
   }
 
-  if (req.cookies.redirectwatch) {
-    const redirect = `/watch?v=${req.cookies.redirectwatch}`
+  const redirectWatchCookie = req.cookies.redirectWatch
+  if (redirectWatchCookie) {
+    const redirect = `/watch?v=${redirectWatchCookie}`
+    res.clearCookie(req.cookies.redirectWatch)
     return res.redirect(domain + redirect)
   }
 
@@ -667,7 +692,38 @@ app.get('/signout', (req, res) => {
   return res.redirect(domain || 'http://jaenal.mola.tv')
 })
 
-//
+app.get('/activate/bca/:voucher', async (req, res) => {
+  const { cookies, path, params } = req
+
+  const voucherCode = params.voucher
+
+  res.cookie('bcavoucher', voucherCode, {
+    maxAge: 7 * 24 * 3600 * 1000,
+    httpOnly: true,
+  })
+  //if user has login
+  if (cookies._at && cookies.SID) {
+    const uid = jwt.decode(req.cookies.SID).uid
+    try {
+      const redeemResponse = await postBcaRedeem(uid, voucherCode)
+      const redeemStatus = redeemResponse.status
+      if (redeemStatus) {
+        res.clearCookie('bcavoucher')
+        // go to success redeem page
+      } else {
+        res.clearCookie('bcavoucher')
+        // go to failed redeem page
+      }
+    } catch (error) {
+      res.clearCookie('bcavoucher')
+      // go to failed redeem page
+    }
+  } else {
+    return res.redirect('/accounts/login')
+    // go to login page
+  }
+})
+
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
@@ -800,6 +856,10 @@ app.get('*', async (req, res, next) => {
           })
         }
       }
+    }
+
+    if (accessToken && req.cookies.bcavoucher) {
+      return res.redirect(domain + `/activate/bca/${req.cookies.bcavoucher}`)
     }
 
     const uid = req.cookies.SID ? jwt.decode(req.cookies.SID).uid : ''
