@@ -120,35 +120,11 @@ const normalizeMatchPlaylists = response => {
       videoData =
         videos &&
         videos.map(video => {
-          const {
-            id,
-            attributes: {
-              title,
-              type,
-              description,
-              streamSourceUrl,
-              shortDescription,
-              isDark,
-              iconUrl,
-              sortOrder,
-              startTime,
-              endTime,
-              homeTeam,
-              awayTeam,
-            },
-          } = video
+          const { id, attributes: { title, type, startTime, endTime, homeTeam, awayTeam } } = video
           return {
             id,
             type,
             title,
-            description,
-            streamSourceUrl,
-            shortDescription: shortDescription || '',
-            sortOrder,
-            iconUrl: iconUrl || '',
-            isDark: isDark || 0,
-            isActive: false,
-            images,
             startTime,
             endTime,
             homeTeam,
@@ -189,12 +165,12 @@ const normalizeMatchDetail = response => {
           homeTeam,
           awayTeam,
           league,
-          description,
+          // description,
           streamSourceUrl,
           permission,
           platforms,
           // subtitles,
-          shortDescription,
+          // shortDescription,
           displayOrder,
           isDark,
           isHighlight,
@@ -209,12 +185,12 @@ const normalizeMatchDetail = response => {
         id,
         type,
         title,
-        description,
+        // description,
         streamSourceUrl,
         permission,
         platforms,
         // subtitles,
-        shortDescription,
+        // shortDescription,
         displayOrder,
         isDark,
         isHighlight,
@@ -227,10 +203,10 @@ const normalizeMatchDetail = response => {
         isDark: isDark || 0,
         league: league
           ? {
-            id: league.id,
-            name: league.attributes.name,
-            iconUrl: league.attributes.iconUrl,
-          }
+              id: league.id,
+              name: league.attributes.name,
+              iconUrl: league.attributes.iconUrl,
+            }
           : null,
         homeTeam: homeTeam && homeTeam.length > 0 ? { id: homeTeam[0].id, ...homeTeam[0].attributes } : null,
         awayTeam: awayTeam && awayTeam.length > 0 ? { id: awayTeam[0].id, ...awayTeam[0].attributes } : null,
@@ -305,7 +281,7 @@ const normalizeHomeVideo = response => {
         // .sort((a, b) => a.displayOrder - b.displayOrder)
       )
       return result
-    } catch (err) { }
+    } catch (err) {}
   }
   return []
 }
@@ -702,7 +678,20 @@ const normalizeArticles = response => {
   const { data } = response.data
   if (data) {
     const { id, type } = data
-    const { title, author, imageUrl, imageCaption, summary, content, tags, video, metaDescription, updatedAt, menuId, relatedVideos } = data.attributes
+    const {
+      title,
+      author,
+      imageUrl,
+      imageCaption,
+      summary,
+      content,
+      tags,
+      video,
+      metaDescription,
+      updatedAt,
+      menuId,
+      relatedVideos,
+    } = data.attributes
     return {
       id,
       type,
@@ -717,7 +706,7 @@ const normalizeArticles = response => {
       metaDescription,
       updatedAt,
       menuId,
-      relatedVideos
+      relatedVideos,
     }
   }
   return []
@@ -733,7 +722,7 @@ const normalizeArticlesRelated = response => {
         id,
         updatedAt,
         title,
-        imageUrl
+        imageUrl,
       }
     })
   }
@@ -757,5 +746,5 @@ export default {
   normalizeNotifications,
   normalizePartners,
   normalizeArticles,
-  normalizeArticlesRelated
+  normalizeArticlesRelated,
 }
