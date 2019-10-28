@@ -698,7 +698,7 @@ app.get('/activate/bca/:voucher', async (req, res) => {
   const voucherCode = params.voucher
 
   res.cookie('bcavoucher', voucherCode, {
-    maxAge: 7 * 24 * 3600 * 1000,
+    maxAge: 3600 * 1000,
     httpOnly: true,
   })
   //if user has login
@@ -709,13 +709,16 @@ app.get('/activate/bca/:voucher', async (req, res) => {
       const redeemStatus = redeemResponse.status
       if (redeemStatus) {
         res.clearCookie('bcavoucher')
+        res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=1') // 1 = success
         // go to success redeem page
       } else {
         res.clearCookie('bcavoucher')
+        res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=0') // 0 = failed
         // go to failed redeem page
       }
     } catch (error) {
       res.clearCookie('bcavoucher')
+      res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=0')
       // go to failed redeem page
     }
   } else {
