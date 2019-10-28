@@ -408,7 +408,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             }}
           />
 
-          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" crossOrigin="true" />
+          <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
         </body>
       </html>
     )
