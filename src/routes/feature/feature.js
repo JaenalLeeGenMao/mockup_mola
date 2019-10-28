@@ -46,7 +46,7 @@ class Feature extends Component {
       // this.props.onHandleResetVideo()
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
-      this.props.onHandleArticle(id)
+      // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -67,7 +67,7 @@ class Feature extends Component {
           // this.props.onHandleResetVideo()
           this.props.onHandlePlaylist(id)
           this.props.onHandleBanner(id)
-          this.props.onHandleArticle(id)
+          // this.props.onHandleArticle(id)
 
           trackedPlaylistIds = []
           // }
@@ -352,7 +352,7 @@ const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
   onHandleVideo: ({ id, playlist, index }) => dispatch(featureActions.getFeatureVideo({ id, playlist, index })),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
-  onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
+  // onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
   onHandleResetVideo: () => dispatch(featureActions.resetFeatureVideos()),
 })
 
