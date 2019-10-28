@@ -51,7 +51,7 @@ const options = {
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
-      redeem: 'https://mock.lukitomo.com/api/v2/promos/partner/redeem',
+      redeem: 'https://new.stag.mola.tv/api/v2/promos/partner/redeem',
       ads: 'https://api.stag.supersoccer.tv',
       analytic: 'https://api.stag.supersoccer.tv',
       asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
