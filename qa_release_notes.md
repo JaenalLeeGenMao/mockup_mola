@@ -151,9 +151,11 @@ Bug Fixes:
 
 V1.5.0 + **1856** 
 
+New Feature:
+* Add clickable articles card on video detail page catalog (/epl, /movies, /kids and /sports) when user click it will redirect to articles details page both for mobile and desktop. Previously there was no clickable card articles. (Ferdy)
+
 Improvements:
 * Add placeholder when first time opening video detail page (/epl, /movies, /kids and /sport) on the video loading page both for desktop and mobile. Previously there was no placeholder. (Ayu)
-* Add clickable articles card on video detail page catalog (/epl, /movies, /kids and /sports) when user click it will redirect to articles details page both for mobile and desktop. Previously there was no clickable card articles. (Ferdy)
 * Keep utm_source when first time open video detail page (/watch and /channel) and click play the page will display download page (/download-app) for mobile only. Previous no utm-source redirect (Elkana) 
 * Send Video ID (redirect-to-appstore/videoId or redirect-to-playstore/videoId for analityc) when first time click store badge download on app store / play store for mobile only. previously only redirect-to-appstore or redirect-to-playstore and videoId was not included. (Elkana)
 * Update thumbnail images for og:image resolution to 600px because some thumbnail image is not show up when sharing on whatsapp (share /watch page) (Irene)
