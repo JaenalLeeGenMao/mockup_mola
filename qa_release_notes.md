@@ -230,7 +230,9 @@ V1.5.0 + **1892**
 Disable Feature:
 * Disable articles on video detail page (/epl, /movies, /kids and /sports) both for mobile and desktop (Ferdy)
 
-V1.5.0 + **1896**
+**28/10/2019**
+
+V1.6.0 + **1896**
 
 Improvement:
 * remove unnecessary attribute (description, short description, and streamsource) in Tayangan Langsung page (/matches) (Irene)
