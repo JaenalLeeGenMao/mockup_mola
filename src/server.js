@@ -761,6 +761,7 @@ app.get('/activate/bca/:voucher', async (req, res) => {
         // go to failed redeem page
       }
     } catch (error) {
+      console.log('error redem status bca redeem ', error)
       res.clearCookie('bcavoucher')
       res.redirect('/accounts/bca-subscribe?redeemstatus=0')
       // go to failed redeem page
