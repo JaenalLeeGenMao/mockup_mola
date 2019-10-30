@@ -230,3 +230,13 @@ V1.5.0 + **1892**
 Disable Feature:
 * Disable articles on video detail page (/epl, /movies, /kids and /sports) both for mobile and desktop (Ferdy)
 
+**28/10/2019**
+
+V1.6.0 + **1896**
+
+Improvement:
+* remove unnecessary attribute (description, short description, and streamsource) in Tayangan Langsung page (/matches) (Irene)
+
+Bug Fix:
+* remove crossOrigin attribute in google-analytic script. Previously get error 'Access to script at 'https://www.google-analytics.com/analytics.js' from origin 'https://mola.tv' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. (Irene)
+
