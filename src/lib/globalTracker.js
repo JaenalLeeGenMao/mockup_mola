@@ -84,7 +84,7 @@ export const globalTracker = async data => {
       client: 'mola-web',
       screen_resolution: `${window.screen.width}x${window.screen.height}`,
       current_subscription_id: adjustedSubs,
-      hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss', true),
+      hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss', true),
       utm_source: urlParams.utm_source || undefined,
       utm_medium: urlParams.utm_medium || undefined,
       utm_campaign: urlParams.utm_campaign || undefined,
@@ -121,6 +121,7 @@ export const globalTracker = async data => {
   // get the token
   const token = await tracker.getOrCreateToken()
   // Post to ds-feeder if there's token && not in search page
+  // console.log('cek isi payload', payload)
   return tracker.sendPubSub(payload, token)
 
   // const paths = pathname.split('/')
