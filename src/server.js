@@ -188,6 +188,8 @@ const {
   endpoints: { domain, redeem: REEDEM_API_URL },
 } = config
 
+// console.log('kucing', config)
+
 const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 
 const { appKeyMobile, appSecretMobile } = oauthApp
@@ -537,11 +539,16 @@ const postBcaRedeem = async (uid, voucher) => {
     const rawResponse = await fetch(REEDEM_API_URL, {
       method: 'POST',
       timeout: 5000,
+      headers: {
+        'x-app-id': xAppId,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         uid,
         voucher_code: voucher,
       }),
     })
+    // console.log('sabiq', rawResponse)
 
     const content = await rawResponse.json()
     return content
@@ -743,18 +750,19 @@ app.get('/activate/bca/:voucher', async (req, res) => {
     try {
       const redeemResponse = await postBcaRedeem(uid, voucherCode)
       const redeemStatus = redeemResponse.status
+
       if (redeemStatus) {
         res.clearCookie('bcavoucher')
-        res.redirect(domain +'/accounts/bca-subscribe?redeemstatus=1') // 1 = success
+        res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=1') // 1 = success
         // go to success redeem page
       } else {
         res.clearCookie('bcavoucher')
-        res.redirect(domain +'/accounts/bca-subscribe?redeemstatus=0') // 0 = failed
+        res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=0') // 0 = failed
         // go to failed redeem page
       }
     } catch (error) {
       res.clearCookie('bcavoucher')
-      res.redirect(domain +'/accounts/bca-subscribe?redeemstatus=0')
+      res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=0')
       // go to failed redeem page
     }
   } else {
