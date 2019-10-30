@@ -753,16 +753,16 @@ app.get('/activate/bca/:voucher', async (req, res) => {
 
       if (redeemStatus) {
         res.clearCookie('bcavoucher')
-        res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=1') // 1 = success
+        res.redirect('/accounts/bca-subscribe?redeemstatus=1') // 1 = success
         // go to success redeem page
       } else {
         res.clearCookie('bcavoucher')
-        res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=0') // 0 = failed
+        res.redirect('/accounts/bca-subscribe?redeemstatus=0') // 0 = failed
         // go to failed redeem page
       }
     } catch (error) {
       res.clearCookie('bcavoucher')
-      res.redirect(domain + '/accounts/bca-subscribe?redeemstatus=0')
+      res.redirect('/accounts/bca-subscribe?redeemstatus=0')
       // go to failed redeem page
     }
   } else {
