@@ -27,10 +27,6 @@
   padding: 1rem 19rem 1rem 19rem;
 }
 
-.playlist_all {
-  margin: 2rem;
-}
-
 .contentLogoAndName {
   display: flex;
   margin: 0 1.5rem 0 1.5rem;
@@ -68,6 +64,7 @@
   color: white;
   text-align: right;
   margin: 1rem 2.5rem 1rem 1rem;
+  display: inline-flex;
 }
 
 .playlist__container {
@@ -76,6 +73,7 @@
   color: #a7a7a7;
   text-align: right;
   margin: 1rem 2.5rem 1rem 1rem;
+  display: inline-flex;
 }
 
 .hidePlaylist {
@@ -89,18 +87,18 @@
 .league__wrapper {
   width: 100%;
   overflow: hidden;
+  text-align: center;
 }
 
 .league__wrapper_scroller {
-  display: flex;
   overflow-x: auto;
   height: calc(100% + 30px);
   overflow-y: hidden;
 }
 
-.genre__wrapper {
-  width: calc(100% + 20px);
+.genreCategory__wrapper {
   line-height: 1.25;
+  display: inline-flex;
 }
 
 .btnPrevHori {

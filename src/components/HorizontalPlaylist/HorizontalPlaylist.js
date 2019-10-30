@@ -142,13 +142,31 @@ class HorizontalPlaylist extends Component {
       categoryFilterType = 'League',
       loadedThumbnail,
     } = this.props
+    const allCat = [{ id: 'All', title: 'All' }]
 
     return (
       <>
-        {matchesPlaylists.data.map(genre => {
-          return (
-            <>
-              <div className={s.genre__wrapper}>
+        <div className={s.genreCategory__wrapper}>
+          {allCat.map(dt => {
+            return (
+              <>
+                <div
+                  key={dt}
+                  className={`${s.genreCategory__wrapper} ${
+                    dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
+                  }`}
+                  onClick={() => {
+                    handleCategoryFilter('All')
+                  }}
+                >
+                  All
+                </div>
+              </>
+            )
+          })}
+          {matchesPlaylists.data.map(genre => {
+            return (
+              <>
                 {expandLeague && (
                   <div
                     className={s.contentLogoAndName}
@@ -184,18 +202,16 @@ class HorizontalPlaylist extends Component {
                 >
                   <p>{genre.title}</p>
                 </ReactTooltip>
-              </div>
-              {/* </div> */}
-            </>
-          )
-        })}
+              </>
+            )
+          })}
+        </div>
       </>
     )
   }
 
   render() {
     const { categoryFilterAll = 'All', handleCategoryFilter, filterByLeague } = this.props
-    const allCat = [{ id: 'All', title: 'All' }]
 
     return (
       <div className={s.match_ligaType}>
@@ -210,23 +226,6 @@ class HorizontalPlaylist extends Component {
           </div>
           <div className={s.league__wrapper} id="league__wrapper">
             <div className={s.league__wrapper_scroller} id="league__wrapper_scroller">
-              {allCat.map(dt => {
-                return (
-                  <>
-                    <div
-                      key={dt}
-                      className={`${s.playlist_all} ${
-                        dt.id == filterByLeague ? s.selected_playlist : s.playlist__container
-                      }`}
-                      onClick={() => {
-                        handleCategoryFilter('All')
-                      }}
-                    >
-                      All
-                    </div>
-                  </>
-                )
-              })}
               {this.categoryFilterLigaType()}
             </div>
           </div>
