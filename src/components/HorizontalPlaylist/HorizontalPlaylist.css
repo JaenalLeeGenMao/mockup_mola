@@ -24,7 +24,7 @@
 .filLeague {
   display: flex;
   justify-content: center;
-  padding: 1rem 19rem 1rem 19rem;
+  padding: 0.6rem 19rem 1rem 19rem;
 }
 
 .contentLogoAndName {
@@ -107,12 +107,10 @@
   height: 4rem;
   background-size: 1.7rem 1.7rem;
   background-repeat: no-repeat;
+  background-position: center;
   border: none;
   cursor: pointer;
   visibility: hidden;
-
-  /* position: relative;
-  top: calc(50% - 10px); */
 }
 
 .btnNextHori {
@@ -121,25 +119,25 @@
   height: 4rem;
   background-size: 1.7rem 1.7rem;
   background-repeat: no-repeat;
+  background-position: center;
   border: none;
   cursor: pointer;
   visibility: hidden;
-
-  /* position: relative;
-  top: calc(50% - 10px); */
 }
 
 .btnPrevContainer {
   width: 4rem;
   height: 4rem;
-  padding-top: 0.8rem;
+
+  /* padding-top: 0.8rem; */
 }
 
 .btnNextContainer {
   width: 4rem;
   height: 4rem;
-  padding-left: 2rem;
-  padding-top: 0.8rem;
+
+  /* padding-left: 2rem;
+  padding-top: 0.8rem; */
 }
 
 .tooltipContainer {

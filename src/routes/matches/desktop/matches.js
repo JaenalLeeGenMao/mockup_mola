@@ -129,7 +129,22 @@ class Matches extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getAllGenreSpo()
+    const startDate = new Date(
+      moment()
+        .subtract(1, 'weeks')
+        .startOf('isoWeek')
+    )
+
+    const endDate = new Date(
+      moment()
+        .add(1, 'weeks')
+        .endOf('isoWeek')
+    )
+
+    const formatStartDate = formatDateTime(startDate.getTime() / 1000, 'YYYYMMDD')
+    const formatEndDate = formatDateTime(endDate.getTime() / 1000, 'YYYYMMDD')
+
+    this.props.getLeaguesAndMatch('leagues', formatStartDate, formatEndDate)
     this.setDefaultDate()
 
     if (this.props.matches.matchesPlaylists.meta.status === 'success') {
@@ -642,7 +657,7 @@ function mapStateToProps(state) {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getAllGenreSpo: id => dispatch(matchListActions.getAllGenreSpo(id)),
+  getLeaguesAndMatch: (id, startDate, endDate) => dispatch(matchListActions.getLeaguesAndMatch(id, startDate, endDate)),
 })
 
 export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)

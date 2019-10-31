@@ -153,6 +153,24 @@ const normalizeMatchPlaylists = response => {
   return []
 }
 
+const normalizeLeagueList = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(result => {
+      const { id, attributes: { title, images } } = result
+
+      const thumbnailImg = _get(images, 'thumbnails.cover', '')
+
+      return {
+        id,
+        title,
+        thumbnailImg,
+      }
+    })
+  }
+  return []
+}
+
 const normalizeMatchDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
@@ -743,6 +761,7 @@ export default {
   normalizeProgrammeGuides,
   normalizeRecommendation,
   normalizeMatchPlaylists,
+  normalizeLeagueList,
   normalizeNotifications,
   normalizePartners,
   normalizeArticles,

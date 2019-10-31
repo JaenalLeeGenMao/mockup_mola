@@ -107,7 +107,7 @@ class MatchList extends React.Component {
     } = this.props
 
     if (!isNoSchedule) {
-      const images = this.props.data ? this.props.data.images : ''
+      const iconPlaylistUrl = this.props.data ? this.props.data.iconPlaylistUrl : ''
       const date = this.cardDateFormat(data.startTime, data.endTime, isChannel)
       const matchLive = isMatchLive(data.startTime, data.endTime)
       const replayMatch = isMatchPassed(data.startTime, data.endTime)
@@ -148,10 +148,10 @@ class MatchList extends React.Component {
                     {minutes > 0 && <div> {minutes}min. </div>}
                   </div>
                 )}
-                {images &&
+                {iconPlaylistUrl &&
                   !isChannel && (
                     <div className={styles.matchList__leagueImg}>
-                      <img className={styles.matchList__league_logo} src={`${images.thumbnails.cover}?w=60`} />
+                      <img className={styles.matchList__league_logo} src={`${iconPlaylistUrl}?w=60`} />
                     </div>
                   )}
               </div>

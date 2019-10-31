@@ -128,23 +128,23 @@ const getFeatureBanner = ({ id = '' }) => {
     })
 }
 
-const getAllGenreSpo = (id = 'leagues') => {
+const getLeaguesList = (id = 'leagues') => {
   // link lama: genre-spo change into leagues
-  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/league-list?id=${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
-      const result = utils.normalizeHomePlaylist(response)
+      const result = utils.normalizeLeagueList(response)
       return {
         meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result[0]] || [],
+        data: result || [],
       }
     })
     .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Sport')
+      const errorMessage = error.toString().replace('Error:', 'Mola Matches')
       return {
         meta: {
           status: 'error',
@@ -183,35 +183,35 @@ const getMatchesList = (id = 'mola-soc') => {
     })
 }
 
-const getMatchDetail = ids => {
-  return get(`${VIDEOS_ENDPOINT_NOCACHE}?${ids}&summary=1`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeMatchDetail(response)
-      // console.log('handler: after normalize match detail', result)
-      return {
-        meta: {
-          status: result.length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: result || null,
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
+// const getMatchDetail = ids => {
+//   return get(`${VIDEOS_ENDPOINT_NOCACHE}?${ids}&summary=1`, {
+//     ...endpoints.setting,
+//   })
+//     .then(response => {
+//       const result = utils.normalizeMatchDetail(response)
+//       // console.log('handler: after normalize match detail', result)
+//       return {
+//         meta: {
+//           status: result.length > 0 ? 'success' : 'no_result',
+//           error: '',
+//         },
+//         data: result || null,
+//       }
+//     })
+//     .catch(error => {
+//       const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
+//       return {
+//         meta: {
+//           status: 'error',
+//           error: errorMessage,
+//         },
+//         data: [],
+//       }
+//     })
+// }
 
-const getMatchesPlaylists = ids => {
-  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}?${ids}&summary=1`, {
+const getMatchesPlaylists = (ids, startDate, endDate) => {
+  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/league-list/matches?from=${startDate}&to=${endDate}&${ids}&summary=1`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -225,7 +225,7 @@ const getMatchesPlaylists = ids => {
       }
     })
     .catch(error => {
-      const errorMessage = error.toString().replace('Error: Mola Genre Category')
+      const errorMessage = error.toString().replace('Error: Mola Matches List')
       return {
         meta: {
           status: 'error',
@@ -547,7 +547,7 @@ const getRecommendation = id => {
           status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: [...result] || [],
+        data: result || [],
       }
     })
     .catch(error => {
@@ -952,10 +952,10 @@ export default {
   createOrder,
   createMidtransPayment,
   getSportVideo,
-  getAllGenreSpo,
+  getLeaguesList,
   getMatchesPlaylists,
   getMatchesList,
-  getMatchDetail,
+  // getMatchDetail,
   getChannelsList,
   getProgrammeGuides,
   getHeaderMenu,
