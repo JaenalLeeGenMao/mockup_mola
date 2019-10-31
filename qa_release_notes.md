@@ -232,7 +232,7 @@ Disable Feature:
 
 **28/10/2019**
 
-V1.6.0 + **1896**
+V1.5.1 + **1896**
 
 Improvement:
 * remove unnecessary attribute (description, short description, and streamsource) in Tayangan Langsung page (/matches) (Irene)
