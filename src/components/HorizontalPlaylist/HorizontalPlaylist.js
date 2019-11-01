@@ -122,9 +122,13 @@ class HorizontalPlaylist extends Component {
   }
 
   updateWindowDimensions = () => {
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1500) {
       this.isFarRightReach = false
-      // console.log('uk small')
+      // uk mntr
+    }
+    if (window.innerWidth < 3841) {
+      this.isFarRightReach = false
+      // uk big tv
     } else {
       // console.log('uk big')
       this.isFarRightReach = true
