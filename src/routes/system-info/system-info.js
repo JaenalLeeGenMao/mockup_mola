@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { get } from 'axios'
 import parser from 'ua-parser-js'
 import Header from '@components/Header'
+import pkg from '../../../package.json'
 import { SystemInfoWrapper, SystemInfoContainer } from './style'
 
 class SystemInfo extends Component {
@@ -42,7 +43,7 @@ class SystemInfo extends Component {
               </>
             )}
             <div>Date Time {currentDateTime}</div>
-            <div>Version 1.5.0</div>
+            <div>Version {pkg.version}</div>
           </div>
         </div>
       </div>
