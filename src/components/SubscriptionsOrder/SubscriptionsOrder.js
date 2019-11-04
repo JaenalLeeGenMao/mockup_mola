@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+// import { connect } from 'react-redux'
+// import { compose } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import { logoMolaBig } from '@global/imageUrl'
+// import { logoMolaBig } from '@global/imageUrl'
 import history from '@source/history'
 
 import styles from './SubscriptionsOrder.css'
 import config from '@source/config'
-import { values } from 'fp-ts/lib/Map'
+// import { values } from 'fp-ts/lib/Map'
 
 const getFormattedPrice = number => number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
 
@@ -48,7 +48,7 @@ class SubscriptionsOrder extends Component {
   }
 
   render() {
-    const { name, portraitPoster, icon, iconStatus, status, monthName, priceName } = this.props
+    const { monthName, priceName } = this.props
     const { code } = this.state
 
     console.log('month', this.props.monthName)

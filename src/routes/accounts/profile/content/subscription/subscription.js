@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { toastr } from 'react-redux-toastr'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -13,14 +13,14 @@ import history from '@source/history'
 
 import '@global/style/css/reactReduxToastr.css'
 
-import { logoBlue, logoMobile } from '@global/imageUrl'
+import { logoBlue } from '@global/imageUrl'
 
 import LazyLoad from '@components/common/Lazyload'
 import OrderList from '@components/SubscriptionsOrder'
 
 import s from './subscription.css'
 
-const getFormattedPrice = number => number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+// const getFormattedPrice = number => number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
 
 class Subscription extends Component {
   constructor(props) {
@@ -67,9 +67,11 @@ class Subscription extends Component {
   }
 
   render() {
-    const { isMobile, onClick, user, subscribe, getUserSubscriptions } = this.props
-    const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
-    const { isToggled, subsDong, isHidden } = this.state
+    // const { isMobile, onClick, user, subscribe, getUserSubscriptions } = this.props
+    const { user, subscribe } = this.props
+    // const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
+    // const { isToggled, subsDong, isHidden } = this.state
+    const { subsDong, isHidden } = this.state
 
     const { data, meta } = this.props.subscribe
 
@@ -93,7 +95,7 @@ class Subscription extends Component {
                 </>
               ))}
           {meta.status === 'success' &&
-            data.length > 0 &&
+            data.length > 1 &&
             data.map((subscription, index) => {
               const expiry = new Date(subscription.ExpireAt),
                 today = new Date(),

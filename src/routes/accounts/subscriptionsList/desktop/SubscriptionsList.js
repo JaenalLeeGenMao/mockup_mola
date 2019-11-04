@@ -1,21 +1,21 @@
 import React, { Fragment } from 'react'
-import { toastr } from 'react-redux-toastr'
+// import { toastr } from 'react-redux-toastr'
 import { connect } from 'react-redux'
-import moment from 'moment'
+// import moment from 'moment'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import { updatePassword } from '@actions/resetPassword'
 import subscribeActions from '@actions/subscribe'
-import Mola from '@api/mola'
+// import Mola from '@api/mola'
 
-import '@global/style/css/reactReduxToastr.css'
+// import '@global/style/css/reactReduxToastr.css'
 
-import { logoBlue, logoMobile } from '@global/imageUrl'
+// import { logoBlue, logoMobile } from '@global/imageUrl'
 
-import LazyLoad from '@components/common/Lazyload'
+// import LazyLoad from '@components/common/Lazyload'
 import OrderList from '@components/SubscriptionsOrder'
-import history from '@source/history'
+// import history from '@source/history'
 import Header from '@components/Header'
 
 import s from './SubscriptionsList.css'
@@ -123,13 +123,10 @@ class SubscriptionsList extends React.Component {
   }
 
   render() {
-    const { gg } = this.data.kucing[0]
-    console.log('masuk')
-    console.log(gg)
-    console.log('ini data', this.data.kucing)
-    const { isMobile, onClick, user, subscribe, monthName } = this.props
-    const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
-    const { isToggled, subsDong, isHidden } = this.state
+    // const { gg } = this.data.kucing[0]
+    // const { isMobile, onClick, user, subscribe, monthName } = this.props
+    // const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
+    const { subsDong, isHidden } = this.state
 
     console.log('ini data', this.data.kucing)
 

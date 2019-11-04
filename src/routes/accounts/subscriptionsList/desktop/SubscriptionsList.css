@@ -1,4 +1,5 @@
 /* stylelint-disable */
+
 /* @import '../../../../global/style/css/reactReduxToastr.css'; */
 
 .subscriptions__main_container {
@@ -20,6 +21,7 @@
 
 .subscription__container_wrapper {
   height: 100vh;
+
   /* overflow-y: hidden; */
   position: relative;
 }
@@ -162,9 +164,11 @@
 .subscription_button_active {
   color: white;
   background: #343434;
+
   /* border: none; */
   border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
+
   /* margin-right: 2.5rem; */
   font-size: 1.42rem;
 }
@@ -178,9 +182,11 @@
   color: #343434;
   background: transparent;
   box-shadow: 0 0 0 0.1rem #a7a7a7;
+
   /* border: none; */
   border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
+
   /* margin-right: 2.5rem; */
   font-size: 1.42rem;
 }
