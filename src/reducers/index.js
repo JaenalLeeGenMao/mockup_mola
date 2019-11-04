@@ -6,7 +6,7 @@ import history from './history'
 import search from './search'
 import movieDetail from './movie-detail'
 import recommendation from './recommendation'
-// import subscribe from './subscribe'
+import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
 import matches from './matches'
 import vuid from './vuid'
@@ -33,7 +33,7 @@ export default combineReducers({
   movieDetail,
   toastr,
   recommendation,
-  // subscribe,
+  subscribe,
   matches,
   vuid,
   channelsPlaylist,

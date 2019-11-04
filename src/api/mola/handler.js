@@ -21,6 +21,7 @@ import {
   VIDEOS_ENDPOINT_NOCACHE,
   NOTIFICATION_ENDPOINT,
   PARTNERS_ENDPOINT,
+  USER_SUBSCRIPTION,
 } from './endpoints'
 import utils from './util'
 
@@ -563,7 +564,8 @@ const getRecommendation = id => {
 }
 
 const getAllSubscriptions = token => {
-  return get(`${SUBSCRIPTION_ENDPOINT}`, {
+  // console.log('ini subscription', token)
+  return get(`${SUBSCRIPTION_ENDPOINT}?platformId=1`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -573,6 +575,7 @@ const getAllSubscriptions = token => {
     ...endpoints.setting,
   })
     .then(response => {
+      // console.log('ini response handler', response)
       return {
         meta: {
           status: 'success',
@@ -582,7 +585,43 @@ const getAllSubscriptions = token => {
       }
     })
     .catch(error => {
+      // console.log('masuk error', error)
       const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const getUserSubscriptions = uid => {
+  // console.log('ini subscription', uid)
+  return get(`${USER_SUBSCRIPTION}/${uid}`, {
+    // headers: {
+    //   Accept: 'application/json',
+    //   'Content-Type': 'application/json',
+    // },
+    // params: {
+    //   app_id: 2,
+    // },
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('ini response handler', response)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: response.data,
+      }
+    })
+    .catch(error => {
+      // console.log('masuk error', error)
+      const errorMessage = error.toString().replace('Error:', 'Mola User Subscriptions')
       return {
         meta: {
           status: 'error',
@@ -965,4 +1004,5 @@ export default {
   getPartners,
   getNotifications,
   getTotalNotifications,
+  getUserSubscriptions,
 }

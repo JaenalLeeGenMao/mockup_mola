@@ -12,7 +12,7 @@ import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import ContentProfile from './content/profile'
 import ContentSecurity from './content/security'
-// import ContentSubscription from './content/subscription'
+import ContentSubscription from './content/subscription'
 
 import { getPaymentDesc } from './util'
 
@@ -101,9 +101,12 @@ class Profile extends Component {
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
-              {/* <div onClick={() => this.handleTabClick('subscription')} className={tab === 'subscription' ? styles.active : ''}>
-                Status
-              </div> */}
+              <div
+                onClick={() => this.handleTabClick('subscription')}
+                className={tab === 'subscription' ? styles.active : ''}
+              >
+                Subscriptions
+              </div>
               {/* <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
                 Setelan
               </div> */}
@@ -128,12 +131,12 @@ class Profile extends Component {
               isMobile={this.props.isMobile}
             />
           )}
-          {/* {tab === 'subscription' && (
+          {tab === 'subscription' && (
             <ContentSubscription
               onClick={() => this.setState({ switch: !this.state.switch })}
               isMobile={this.props.isMobile}
             />
-          )} */}
+          )}
           {/* {tab === 'setting' && <div>setting</div>} */}
           {!this.state.whitelistedTabs.includes(tab) && (
             <ContentProfile

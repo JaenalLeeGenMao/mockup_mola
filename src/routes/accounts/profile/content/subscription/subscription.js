@@ -9,9 +9,14 @@ import { updatePassword } from '@actions/resetPassword'
 import subscribeActions from '@actions/subscribe'
 import Mola from '@api/mola'
 
+import history from '@source/history'
+
 import '@global/style/css/reactReduxToastr.css'
 
+import { logoBlue, logoMobile } from '@global/imageUrl'
+
 import LazyLoad from '@components/common/Lazyload'
+import OrderList from '@components/SubscriptionsOrder'
 
 import s from './subscription.css'
 
@@ -22,22 +27,22 @@ class Subscription extends Component {
     super(props)
     this.state = {
       isToggled: false,
+      subsDong: false,
+      isHidden: true,
     }
   }
 
   componentDidMount() {
-    const { user, getAllSubscriptions } = this.props
+    const { user, getAllSubscriptions, getUserSubscriptions } = this.props
 
     /* Semua subscription MOLA */
     getAllSubscriptions(user.token)
+    getUserSubscriptions(user.uid)
+    // getUserSubscriptions('AcJTxG4iZX7cz9BY5u5RhPmkGEgFsu')
   }
 
   handleClick = async ({ id, attributes }) => {
     const { user } = this.props
-
-    // this.setState({
-    //   isToggled: !this.state.isToggled,
-    // })
 
     toastr.light('Notification', 'Generating new order, please keep this window open!')
     const order = await Mola.createOrder({ ...user, subscriptionId: id, price: attributes.price })
@@ -57,116 +62,77 @@ class Subscription extends Component {
     // this.props.onClick()
   }
 
+  handleClickSubs = () => {
+    history.push('/accounts/subscriptionsList')
+  }
+
   render() {
-    const { isMobile, onClick, user, subscribe } = this.props
+    const { isMobile, onClick, user, subscribe, getUserSubscriptions } = this.props
     const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
-    // const { isToggled } = this.state
+    const { isToggled, subsDong, isHidden } = this.state
+
+    const { data, meta } = this.props.subscribe
 
     return (
       <div>
         <div className={s.subscription__container}>
-          {user.subscriptions.length > 0 &&
-            user.subscriptions.map((subscription, index) => {
-              const expiry = new Date(subscription.attributes.expireAt),
+          {meta.status === 'error' &&
+            (meta.status !== 'loading' &&
+              data.length == 0 && (
+                <>
+                  <div className={s.subscription_user_info_wrapper_no}>
+                    <img alt="molatv" src={logoBlue} className={s.header__logo} />
+                    <h1>Aww :(</h1>
+                    <h2>Tampaknya Anda Belum Memiliki Paket Apapun </h2>
+                  </div>
+                  {/* <div className={s.subscription_button_wrapper_no}>
+                    <button className={s.subscription_button_active} onClick={() => this.handleClickSubs()}>
+                      {isHidden ? 'Mulai Berlangganan' : null}
+                    </button>
+                  </div> */}
+                </>
+              ))}
+          {meta.status === 'success' &&
+            data.length > 0 &&
+            data.map((subscription, index) => {
+              const expiry = new Date(subscription.ExpireAt),
                 today = new Date(),
-                formattedExpiry = moment(expiry).format('DD/MM/YY'),
-                subs = subscription.attributes.subscriptions
-
+                formattedExpiry = moment(expiry).format('DD/MMM/YYYY'),
+                subs = subscription
+              // console.log('ini subs', subs)
               return (
-                <Fragment key={index}>
-                  {subs.length > 0 &&
-                    subs.map(sub => (
-                      <LazyLoad
-                        key={sub.id}
-                        containerClassName={s.sideCenter}
-                        containerStyle={{ display: today < expiry ? 'block' : 'none' }}
+                // <Fragment key={index}>
+                <>
+                  <LazyLoad
+                    key={index}
+                    containerClassName={s.sideCenter}
+                    containerStyle={{ display: today < expiry ? 'block' : 'none' }}
+                  >
+                    <div className={s.subscription__wrapper_active}>
+                      <div className={s.subscription__section_left_active}>
+                        <h1>1 MONTH PLAN BCA</h1>
+                        <div className={s.subscription_expiry}>Ends Of {formattedExpiry}</div>
+                      </div>
+                      <div className={s.subscription__section_right_active}>
+                        <p>Activate</p>
+                      </div>
+                    </div>
+
+                    {/* <div className={s.subscription_button_wrapper}> */}
+                    {/* <button
+                        className={s.subscription_button_active}
+                        onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}
                       >
-                        <div className={s.subscription__wrapper_active}>
-                          <div className={s.subscription__section_left_active}>
-                            <h1>PREMIUM</h1>
-                            <div className={s.icon_cinema} />
-                          </div>
-                          <div className={s.subscription__section_right_active}>
-                            <h1>
-                              <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub
-                                .attributes.priceUnit === 'm'
-                                ? 'bulan'
-                                : 'tahun'}
-                            </h1>
-                            <p>
-                              {sub.attributes.title} - {sub.attributes.description}
-                            </p>
-                          </div>
-                          <div className={s.icon_tick} />
-                        </div>
-                        <div className={s.subscription_expiry}>
-                          Paketmu akan berakhir secara otomatis pada {formattedExpiry}.
-                        </div>
-                        <div className={s.subscription_button_wrapper}>
-                          <button
-                            className={s.subscription_button_active}
-                            onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}
-                          >
-                            {new Date(expiry - today).getDate()} days left
-                          </button>
-                        </div>
-                      </LazyLoad>
-                    ))}
-                </Fragment>
+                        {new Date(expiry - today).getDate()} days left
+                      </button> */}
+                    {/* </div> */}
+                  </LazyLoad>
+                  {/* </Fragment> */}
+                </>
               )
             })}
 
-          {user.subscriptions.length === 0 &&
-            subscribe.meta.status &&
-            subscribe.data.length > 0 &&
-            subscribe.data.map((sub, index) => (
-              <LazyLoad
-                key={sub.id}
-                containerClassName={s.sideCenter}
-                // containerStyle={{ display: isToggled ? 'none' : 'block' }}
-              >
-                <div className={s.subscription__wrapper}>
-                  <div className={s.subscription__section_left}>
-                    <h1>PREMIUM</h1>
-                    <div className={s.icon_cinema_active} />
-                  </div>
-                  <div className={s.subscription__section_right}>
-                    <h1>
-                      <span>{sub.attributes.currency}</span> {getFormattedPrice(sub.attributes.price)}/{sub.attributes
-                        .priceUnit === 'm'
-                        ? 'bulan'
-                        : 'tahun'}
-                    </h1>
-                    <p>
-                      {sub.attributes.title} - {sub.attributes.description}
-                    </p>
-                  </div>
-                  {!isMobile && <div className={s.icon_tick} style={{ opacity: 0 }} />}
-                </div>
-                <div className={s.subscription_user_info_wrapper}>
-                  <h1>Data Pengguna</h1>
-                  <div>
-                    <p>Name Pengguna</p>
-                    <p>
-                      {firstName} {lastName}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Email</p>
-                    <p>{email}</p>
-                  </div>
-                  <div>
-                    <p>Nomor Telephone</p>
-                    <p>{phoneNumber}</p>
-                  </div>
-                </div>
-                <div className={s.subscription_button_wrapper}>
-                  <button className={s.subscription_button_active} onClick={() => this.handleClick(sub)}>
-                    Mulai berlangganan
-                  </button>
-                </div>
-              </LazyLoad>
-            ))}
+          {!isHidden && subsDong && <OrderList />}
         </div>
       </div>
     )
@@ -177,12 +143,14 @@ const mapStateToProps = state => {
   return {
     user: state.user,
     subscribe: state.subscribe,
+    userSubscription: state.userSubscription,
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
     getAllSubscriptions: token => dispatch(subscribeActions.getAllSubscriptions(token)),
+    getUserSubscriptions: uid => dispatch(subscribeActions.getUserSubscriptions(uid)),
   }
 }
 
