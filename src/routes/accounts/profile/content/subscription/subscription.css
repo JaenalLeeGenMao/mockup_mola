@@ -45,8 +45,7 @@
 .subscription__section_left_active {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-right: 3rem;
+  line-height: 1.5;
 }
 
 /* .subscription__wrapper:hover,
@@ -58,7 +57,7 @@
   font-size: 1.68rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
-  text-align: center;
+  text-align: left;
   color: white;
   margin: 0;
 }
@@ -67,7 +66,7 @@
   font-size: 1.68rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
-  text-align: center;
+  text-align: left;
   color: white;
   margin: 0;
 }
@@ -186,10 +185,11 @@
 }
 
 .subscription_expiry {
-  left: 0;
+  /* left: 0; */
   position: relative;
   font-size: 1.2rem;
-  margin: 1rem 0.5rem 0 -4.5rem;
+
+  /* margin: 1rem 0.5rem 0 -4.5rem; */
   color: gray;
 }
 

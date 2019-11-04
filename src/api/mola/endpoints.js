@@ -13,7 +13,7 @@ export const SEARCH_GENRE_ENDPOINT = `${endpoints.api}/videos/playlists/genre`
 export const RECENT_SEARCH_ENDPOINT = `${SEARCH_ENDPOINT}histories`
 
 export const SUBSCRIPTION_ENDPOINT = `${endpoints.api}/subscriptions/subscriptions`
-export const USER_SUBSCRIPTION = `${endpoints.api}/subscriptions/user-subscriptions`
+export const USER_SUBSCRIPTION = `${endpoints.api}/subscriptions/user`
 export const ORDER_ENDPOINT = `${endpoints.api}/orders/`
 export const PAYMENT_ENDPOINT = `${endpoints.api}/payments/api/v1/dopay`
 export const CAMPAIGN_ENDPOINT = `${endpoints.api}/campaigns/banner-positions`

@@ -610,13 +610,14 @@ const getUserSubscriptions = uid => {
     ...endpoints.setting,
   })
     .then(response => {
+      const result = utils.normalizeGetUserSubscriptions(response)
       // console.log('ini response handler', response)
       return {
         meta: {
-          status: 'success',
+          status: result.length > 0 ? 'success' : 'no_result',
           error: '',
         },
-        data: response.data,
+        data: [...result] || [],
       }
     })
     .catch(error => {

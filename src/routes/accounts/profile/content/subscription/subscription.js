@@ -27,7 +27,7 @@ class Subscription extends Component {
     super(props)
     this.state = {
       isToggled: false,
-      subsDong: false,
+      isSubscribe: false,
       isHidden: true,
     }
   }
@@ -36,7 +36,7 @@ class Subscription extends Component {
     const { user, getAllSubscriptions, getUserSubscriptions } = this.props
 
     /* Semua subscription MOLA */
-    getAllSubscriptions(user.token)
+    // getAllSubscriptions(user.token)
     getUserSubscriptions(user.uid)
     // getUserSubscriptions('AcJTxG4iZX7cz9BY5u5RhPmkGEgFsu')
   }
@@ -71,48 +71,44 @@ class Subscription extends Component {
     const { user, subscribe } = this.props
     // const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
     // const { isToggled, subsDong, isHidden } = this.state
-    const { subsDong, isHidden } = this.state
+    const { isSubscribe, isHidden } = this.state
 
     const { data, meta } = this.props.subscribe
 
     return (
       <div>
         <div className={s.subscription__container}>
-          {meta.status === 'error' &&
-            (meta.status !== 'loading' &&
-              data.length == 0 && (
-                <>
-                  <div className={s.subscription_user_info_wrapper_no}>
-                    <img alt="molatv" src={logoBlue} className={s.header__logo} />
-                    <h1>Aww :(</h1>
-                    <h2>Tampaknya Anda Belum Memiliki Paket Apapun </h2>
-                  </div>
-                  {/* <div className={s.subscription_button_wrapper_no}>
+          {meta.status === 'error' && (
+            <>
+              <div className={s.subscription_user_info_wrapper_no}>
+                <img alt="molatv" src={logoBlue} className={s.header__logo} />
+                <h1>Aww :(</h1>
+                <h2>Tampaknya Anda Belum Memiliki Paket Apapun </h2>
+              </div>
+              {/* <div className={s.subscription_button_wrapper_no}>
                     <button className={s.subscription_button_active} onClick={() => this.handleClickSubs()}>
                       {isHidden ? 'Mulai Berlangganan' : null}
                     </button>
                   </div> */}
-                </>
-              ))}
+            </>
+          )}
           {meta.status === 'success' &&
-            data.length > 1 &&
             data.map((subscription, index) => {
-              const expiry = new Date(subscription.ExpireAt),
+              const expiry = new Date(subscription.expireAt),
                 today = new Date(),
                 formattedExpiry = moment(expiry).format('DD/MMM/YYYY'),
-                subs = subscription
-              // console.log('ini subs', subs)
+                title = subscription.subscriptionList[0].title
               return (
                 // <Fragment key={index}>
                 <>
                   <LazyLoad
                     key={index}
                     containerClassName={s.sideCenter}
-                    containerStyle={{ display: today < expiry ? 'block' : 'none' }}
+                    // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
                   >
                     <div className={s.subscription__wrapper_active}>
                       <div className={s.subscription__section_left_active}>
-                        <h1>1 MONTH PLAN BCA</h1>
+                        <h1>{title}</h1>
                         <div className={s.subscription_expiry}>Ends Of {formattedExpiry}</div>
                       </div>
                       <div className={s.subscription__section_right_active}>
@@ -134,7 +130,7 @@ class Subscription extends Component {
               )
             })}
 
-          {!isHidden && subsDong && <OrderList />}
+          {/* {!isHidden && isSubscribe && <OrderList />} */}
         </div>
       </div>
     )
