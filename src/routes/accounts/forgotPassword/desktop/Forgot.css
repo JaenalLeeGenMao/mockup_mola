@@ -10,7 +10,8 @@
 @import '../../../../components/variables.css';
 
 .wrapper {
-  background-image: url('../../../../global/style/icons/BG-bottomRight.png'), url('../../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
+  background-image: url('../../../../global/style/icons/BG-bottomRight.png'),
+    url('../../../../global/style/icons//BG-bottomLeft.png'), linear-gradient(#0e1d3d, #000);
   background-position: right bottom, left bottom, left top;
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-size: 50%, 50%, cover;
@@ -112,7 +113,7 @@
   font-size: 1.6rem;
   cursor: pointer;
   letter-spacing: 0.191rem;
-  opacity: 100%;
+  opacity: 1;
   font-weight: 500;
 }
 
@@ -170,7 +171,7 @@
   font-size: 1.6rem;
   cursor: pointer;
   letter-spacing: 0.191rem;
-  opacity: 100%;
+  opacity: 1;
   font-weight: 500;
 }
 
@@ -186,7 +187,8 @@
 }
 
 .errorMsg {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif !important;
   font-size: 1.2rem !important;
   color: red !important;
   margin-top: 12px;
