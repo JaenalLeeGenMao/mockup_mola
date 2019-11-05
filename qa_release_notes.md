@@ -258,9 +258,22 @@ Improvements:
 * Simplify responsive arrow icon validation on video detail page (/matches) for monitor and big tv. (Ayu)
 
 Bug Fixes:
-* fixing endpoint redeem bca voucher, fix is changing endpoints and add x-app-id then content-type (Sabiq)
-* fix endpoint user subscriptions, fix is changing endpoints and normalize data (Sabiq)
+* Fixing endpoint redeem bca voucher, fix is changing endpoints and add x-app-id then content-type (Sabiq)
+* Fix endpoint user subscriptions, fix is changing endpoints and normalize data (Sabiq)
 * Upload default image for club image (home team and away team's logo in Tayangan Langsung page) to beta and production. Currently only uploaded to staging. Only can be tested if home team or away team's logo is not found/error from api (Irene)
 * Temporarily remove related videos section on not-found page (404 page) to prevent errors until api is available/known (Irene)
+
+V1.6.0 + **1924** 
+
+Improvements:
+* Remove "status berlangganan" on profile, previously show "status berlangganan", fix is comment the code (Sabiq)
+* Update Hit Timestamp from 12 hours to 24 hours format (for analityc) on video tracker (Elkana)
+
+Bug Fxes:
+* Fixing forgot password , previously if forgot password error the web will break, fix is changing the code to handle error (Sabiq)
+* Fix styling forgot password, previously button on forgot pasword not show, fix is changes opacity (Sabiq)
+
+
+
 
 
