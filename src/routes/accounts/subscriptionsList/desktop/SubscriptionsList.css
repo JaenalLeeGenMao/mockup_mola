@@ -1,51 +1,98 @@
 /* stylelint-disable */
-@import '../../../../../global/style/css/reactReduxToastr.css';
 
-.subscription__container {
-  display: flex;
-  flex-direction: column;
+/* @import '../../../../global/style/css/reactReduxToastr.css'; */
+
+.subscriptions__main_container {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.subscription__title {
+  color: white;
+  font-size: 64px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+  top: 10%;
+}
+
+.subscription__container_wrapper {
+  height: 100vh;
+
+  /* overflow-y: hidden; */
+  position: relative;
 }
 
 .subscription__wrapper {
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
+  -ms-flex-align: center;
   align-items: center;
   background: #2b2b2b;
+  padding: 0.6rem 1.75rem 1rem 1rem;
+  margin: 11rem 0 0 0;
+  height: 60%;
+  width: 50%;
+}
 
-  /* border-radius: 0.8rem; */
-  padding: 1.6rem 2.75rem;
-  margin: 0.5rem;
+.subscription__wrapper_line {
+  top: 0;
+  position: relative;
+  border-bottom: 1rem solid white;
+  margin: 2rem 0 2rem 0;
+}
+
+.subscription__wrapper:first-child {
+  margin: 11rem 5rem 0 25rem;
+}
+
+.subscription__wrapper:last-child {
+  margin: 11rem 25rem 0 5rem;
 }
 
 .subscription__wrapper_active {
   display: flex;
-  -ms-flex-direction: row;
   flex-direction: row;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-between;
-  -ms-flex-align: center;
+  justify-content: space-evenly;
   align-items: center;
-  -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-
-  /* border-radius: 0.8rem; */
-  padding: 25.6px 44px;
+  background: #fff;
+  border-radius: 0.8rem;
   padding: 1.6rem 2.75rem;
-  margin: 8px;
   margin: 0.5rem;
-  background: #343434;
+  box-shadow: 0 0 0.5rem 0.25rem #2c56ff;
 }
 
-.subscription__section_left,
-.subscription__section_left_active {
+.subscription__section_plan,
+.subscription__section_plan_active {
   display: flex;
   flex-direction: column;
-  line-height: 1.5;
+  align-items: center;
+}
+
+.subscription__section_plan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subscription__section_plan h1 {
+  font-size: 1.68rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  color: #a7a7a7;
+  margin: 0;
+  margin-bottom: 5rem;
 }
 
 /* .subscription__wrapper:hover,
@@ -53,68 +100,76 @@
   box-shadow: 0 0 0.5rem 0.35rem #2c56ff;
 } */
 
-.subscription__section_left h1 {
+.subscription__section_plan_active h1 {
   font-size: 1.68rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
-  text-align: left;
-  color: white;
+  text-align: center;
+  color: #2c56ff;
   margin: 0;
 }
 
-.subscription__section_left_active h1 {
-  font-size: 1.68rem;
-  font-weight: 400;
-  letter-spacing: 0.1rem;
-  text-align: left;
-  color: white;
-  margin: 0;
-}
-
-.subscription__section_right,
-.subscription__section_right_active {
-  padding-left: 2rem;
+.subscription__section_list,
+.subscription__section_list_active {
+  text-align: center;
   vertical-align: middle;
 }
 
-.subscription__section_right span,
-.subscription__section_right_active span {
-  text-transform: uppercase;
+.subscription__section_list span,
+.subscription__section_list_active span {
+  /* text-transform: uppercase; */
+  position: relative;
 }
 
-.subscription__section_right h1 {
+.subscription__section_list h1 {
   font-size: 1.96rem;
   letter-spacing: 0.1rem;
   color: white;
   font-weight: 400;
 }
 
-.subscription__section_right_active h1 {
+.subscription__section_list_active h1 {
   font-size: 1.96rem;
   letter-spacing: 0.1rem;
-  color: greenyellow;
+  color: #2b2b2b;
   font-weight: 400;
 }
 
-.subscription__section_right p {
-  font-size: 2rem;
-  color: greenyellow;
+.subscription__section_list p {
+  font-size: 1rem;
+  color: #a7a7a7;
   margin: 0.67rem 0;
 }
 
-.subscription__section_right_active p {
+.subscription__section_list_active p {
   font-size: 1.42rem;
-  color: greenyellow;
+  color: #2b2b2b;
   margin: 0.67rem 0;
+}
+
+.subscriptions__section_detail {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  font-size: 1.42rem;
+  color: white;
+  text-align: center;
+}
+
+.subscriptions__section_detail p {
+  font-size: 1.42rem;
+  color: white;
+  text-align: center;
 }
 
 .subscription_button_active {
   color: white;
-  background: #2c56ff;
-  border: none;
+  background: #343434;
+
+  /* border: none; */
   border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
-  margin-right: 2.5rem;
+
+  /* margin-right: 2.5rem; */
   font-size: 1.42rem;
 }
 
@@ -124,19 +179,22 @@
 }
 
 .subscription_button {
-  color: #a7a7a7;
+  color: #343434;
   background: transparent;
   box-shadow: 0 0 0 0.1rem #a7a7a7;
-  border: none;
+
+  /* border: none; */
   border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
-  margin-right: 2.5rem;
+
+  /* margin-right: 2.5rem; */
   font-size: 1.42rem;
 }
 
 .subscription_button:hover {
   background: #1d1d1d;
   cursor: pointer;
+  border: none;
 }
 
 .subscription_user_info_wrapper {
@@ -185,16 +243,13 @@
 }
 
 .subscription_expiry {
-  /* left: 0; */
-  position: relative;
-  font-size: 1.2rem;
-
-  /* margin: 1rem 0.5rem 0 -4.5rem; */
-  color: gray;
+  font-size: 1.78rem;
+  margin: 1rem 0.5rem 0 0.5rem;
+  color: white;
 }
 
 .subscription_button_wrapper {
-  text-align: left;
+  text-align: center;
   padding: 2rem 0;
 }
 
@@ -241,7 +296,7 @@
 
 .header__logo {
   position: relative;
-  width: 16rem;
+  width: 20rem;
   margin: 2rem;
   height: auto;
   transition: 1s ease-out;
@@ -250,18 +305,11 @@
 
 @media only screen and (max-width: 1024px) {
   .sideCenter {
-    /* width: 100%;
+    width: 100%;
     height: 80vh;
     padding: 0 14px;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly; */
-    width: 100%;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-pack: space-evenly;
     justify-content: space-evenly;
   }
 

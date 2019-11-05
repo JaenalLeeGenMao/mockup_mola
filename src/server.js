@@ -51,6 +51,18 @@ const molaCache = new NodeCache()
 const dotenv = require('dotenv')
 dotenv.config()
 
+const debugMode = __DEV__
+
+// false to disable request , true to enable request
+const debuggingRequests = {
+  getGuestToken: false,
+  getExtendGuestToken: false,
+  getUserInfo: false,
+  getUserSubscription: false,
+  getConfigParams: true,
+  getHeaderMenu: true,
+}
+
 const oauth = {
   // endpoint: process.env.OAUTH_ENDPOINT,
   // appKey: process.env.OAUTH_APP_KEY_WEB,
@@ -102,7 +114,7 @@ const oauthApp = {
 }
 
 const configUrl = {
-  endpoint: 'http://config.core.sstv.local', //'http://10.220.0.12' ,
+  endpoint: !debugMode ? 'http://config.core.sstv.local' : 'http://10.220.0.12',
   appId: 'molatv',
 }
 
@@ -159,7 +171,7 @@ app.use(
     cookie: {
       path: '/accounts',
       httpOnly: true,
-      secure: !__DEV__,
+      secure: !debugMode,
     },
   })
 )
@@ -173,8 +185,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 const {
   serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId },
-  endpoints: { domain },
+  endpoints: { domain, redeem: REEDEM_API_URL },
 } = config
+
+// console.log('kucing', config)
 
 const { appKey, appSecret, endpoint: oauthEndpoint } = oauth
 
@@ -228,6 +242,9 @@ app.get('/sign-location', async (req, res) => {
 })
 */
 const extendToken = async token => {
+  if (debugMode && !debuggingRequests.getExtendGuestToken) {
+    return ''
+  }
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/token/extend`, {
       method: 'POST',
@@ -256,6 +273,10 @@ const extendToken = async token => {
 const requestGuestToken = async res => {
   // console.log(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`)
   // console.log(domain)
+  if (debugMode && !debuggingRequests.getGuestToken) {
+    return ''
+  }
+
   try {
     const rawResponse = await fetch(`${AUTH_API_URL}/v1/guest/token?app_key=${appKey}`, {
       method: 'GET',
@@ -293,6 +314,10 @@ const requestGuestToken = async res => {
 }
 
 const getUserInfo = async sid => {
+  if (debugMode && !debuggingRequests.getUserInfo) {
+    return ''
+  }
+
   try {
     const rawResponse = await fetch(OAUTH_USER_INFO_URL, {
       method: 'GET',
@@ -305,6 +330,7 @@ const getUserInfo = async sid => {
 
     const content = await rawResponse.json()
     userinfo = content
+    console.log('GET USER INFO', content.data)
     return content.data
   } catch (err) {
     console.error('error get user info:', err)
@@ -313,6 +339,10 @@ const getUserInfo = async sid => {
 }
 
 const getUserSubscription = async (userId, accessToken) => {
+  if (debugMode && !debuggingRequests.getUserSubscription) {
+    return ''
+  }
+
   try {
     const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
       method: 'GET',
@@ -398,6 +428,10 @@ const requestCode = async (req, res) => {
 }
 
 const getHeaderMenus = async () => {
+  if (debugMode && !debuggingRequests.getHeaderMenu) {
+    return ''
+  }
+
   let hasCache = false
   let headerArr = []
   let headerError = ''
@@ -447,6 +481,10 @@ const getHeaderMenus = async () => {
 }
 
 const getConfigParams = async () => {
+  if (debugMode && !debuggingRequests.getConfigParams) {
+    return ''
+  }
+
   let hasCache = false
   let configParams = null
 
@@ -490,6 +528,34 @@ const getConfigParams = async () => {
     }
   }
   return configParams
+}
+
+const postBcaRedeem = async (uid, voucher) => {
+  // if (debugMode && !debuggingRequests.getUserSubscription) {
+  //   return ''
+  // }
+
+  try {
+    const rawResponse = await fetch(REEDEM_API_URL, {
+      method: 'POST',
+      timeout: 5000,
+      headers: {
+        'x-app-id': xAppId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uid,
+        voucher_code: voucher,
+      }),
+    })
+    // console.log('sabiq', rawResponse)
+
+    const content = await rawResponse.json()
+    return content
+  } catch (err) {
+    console.error('error bca redeem', err)
+    return { error: err }
+  }
 }
 
 // set a cookie
@@ -567,8 +633,10 @@ app.get('/oauth/callback', async (req, res) => {
     }
   }
 
-  if (req.cookies.redirectwatch) {
-    const redirect = `/watch?v=${req.cookies.redirectwatch}`
+  const redirectWatchCookie = req.cookies.redirectWatch
+  if (redirectWatchCookie) {
+    const redirect = `/watch?v=${redirectWatchCookie}`
+    res.clearCookie(req.cookies.redirectWatch)
     return res.redirect(domain + redirect)
   }
 
@@ -667,7 +735,43 @@ app.get('/signout', (req, res) => {
   return res.redirect(domain || 'http://jaenal.mola.tv')
 })
 
-//
+app.get('/activate/bca/:voucher', async (req, res) => {
+  const { cookies, path, params } = req
+
+  const voucherCode = params.voucher
+
+  res.cookie('bcavoucher', voucherCode, {
+    maxAge: 3600 * 1000,
+    httpOnly: true,
+  })
+  //if user has login
+  if (cookies._at && cookies.SID) {
+    const uid = jwt.decode(req.cookies.SID).uid
+    try {
+      const redeemResponse = await postBcaRedeem(uid, voucherCode)
+      const redeemStatus = redeemResponse.status
+
+      if (redeemStatus) {
+        res.clearCookie('bcavoucher')
+        res.redirect('/accounts/bca-subscribe?redeemstatus=1') // 1 = success
+        // go to success redeem page
+      } else {
+        res.clearCookie('bcavoucher')
+        res.redirect('/accounts/bca-subscribe?redeemstatus=0') // 0 = failed
+        // go to failed redeem page
+      }
+    } catch (error) {
+      console.log('error redem status bca redeem ', error)
+      res.clearCookie('bcavoucher')
+      res.redirect('/accounts/bca-subscribe?redeemstatus=0')
+      // go to failed redeem page
+    }
+  } else {
+    return res.redirect('/accounts/login')
+    // go to login page
+  }
+})
+
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
@@ -773,7 +877,7 @@ app.get('*', async (req, res, next) => {
       }
 
       /* Must login before accessing these features */
-      if (!__DEV__ && whitelisted.includes(req.url)) {
+      if (!debugMode && whitelisted.includes(req.url)) {
         if (req.path !== '/accounts/consent') {
           return res.redirect('/accounts/login')
         }
@@ -800,6 +904,10 @@ app.get('*', async (req, res, next) => {
           })
         }
       }
+    }
+
+    if (accessToken && req.cookies.bcavoucher) {
+      return res.redirect(domain + `/activate/bca/${req.cookies.bcavoucher}`)
     }
 
     const uid = req.cookies.SID ? jwt.decode(req.cookies.SID).uid : ''
@@ -1115,7 +1223,7 @@ app.get('*', async (req, res, next) => {
     const addChunk = chunk => {
       if (chunks[chunk]) {
         chunks[chunk].forEach(asset => scripts.add(asset))
-      } else if (__DEV__) {
+      } else if (debugMode) {
         throw new Error(`Chunk with name '${chunk}' cannot be found`)
       }
     }

@@ -5,7 +5,7 @@ import * as search from './search'
 import * as user from './user'
 import * as movieDetail from './movie-detail'
 import * as recommendation from './recommendation'
-// import * as subscribe from './subscribe'
+import * as subscribe from './subscribe'
 import * as matches from './matches'
 import * as vuid from './vuid'
 import * as channels from './channels'
@@ -24,7 +24,7 @@ export default {
   ...user,
   ...movieDetail,
   ...recommendation,
-  // ...subscribe,
+  ...subscribe,
   ...matches,
   ...vuid,
   ...channels,

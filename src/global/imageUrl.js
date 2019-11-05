@@ -53,3 +53,5 @@ export const viewAllMovieImgWebp = 'https://cdn01.sent.tv/tEiP59aSTAek9XzGLM04_s
 export const logoMolaBig = `${imgBaseUrl}/logo-mola-big.png`
 export const playStoreBadge = `${imgBaseUrl}/google-play-badge@2x_2.png`
 export const appStoreBadge = `${imgBaseUrl}/app-store-badge@2x.png`
+export const iconMolaSuccess = `${imgBaseUrl}/icon_fail.png`
+export const iconMolaFailed = `${imgBaseUrl}/icon_success.png`

@@ -6,7 +6,7 @@ import history from './history'
 import search from './search'
 import movieDetail from './movie-detail'
 import recommendation from './recommendation'
-// import subscribe from './subscribe'
+import subscribe from './subscribe'
 import { reducer as toastr } from 'react-redux-toastr'
 import matches from './matches'
 import vuid from './vuid'
@@ -16,6 +16,7 @@ import feature from './feature'
 import playlist from './playlist'
 import headerMenu from './header-menu'
 import configParams from './config-params'
+import partnerRedeem from './partner-redeem'
 import partners from './partners'
 import notifications from './notifications'
 import articlesDetail from './articles'
@@ -32,7 +33,7 @@ export default combineReducers({
   movieDetail,
   toastr,
   recommendation,
-  // subscribe,
+  subscribe,
   matches,
   vuid,
   channelsPlaylist,
@@ -44,4 +45,5 @@ export default combineReducers({
   partners,
   notifications,
   articlesDetail,
+  partnerRedeem,
 })

@@ -153,6 +153,24 @@ const normalizeMatchPlaylists = response => {
   return []
 }
 
+const normalizeLeagueList = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(result => {
+      const { id, attributes: { title, images } } = result
+
+      const thumbnailImg = _get(images, 'thumbnails.cover', '')
+
+      return {
+        id,
+        title,
+        thumbnailImg,
+      }
+    })
+  }
+  return []
+}
+
 const normalizeMatchDetail = response => {
   const { data } = response.data
   if (data && data.length > 0) {
@@ -594,21 +612,43 @@ const normalizeProgrammeGuides = response => {
   return []
 }
 
-const normalizeRecommendation = response => {
+const normalizeGetUserSubscriptions = response => {
   const { data } = response.data
+  // const { notifications } = data
   if (data && data.length > 0) {
-    return data.map(dt => {
-      const { title, shortDescription, images } = dt.attributes
-      const background = _get(images, 'cover', { portrait: null, landscape: null })
+    // const { total } = data
+    const result = data.map(userSubscribe => {
+      const {
+        id,
+        attributes: {
+          userId,
+          startedAt,
+          expireAt,
+          status,
+          orderId,
+          reference,
+          referenceId,
+          subscriptions, //array
+        },
+      } = userSubscribe
+
+      const subscriptionList = subscriptions.map(subList => {
+        const { id: subscriptionId, attributes: { title, description, permission } } = subList
+        return {
+          title,
+          description,
+          permission,
+        }
+      })
+
       return {
-        video_id: dt.id,
-        title,
-        short_description: shortDescription,
-        cover_portrait: background.portrait,
-        cover_landscape: background.landscape,
-        ...dt.attributes,
+        id,
+        userId,
+        expireAt,
+        subscriptionList,
       }
     })
+    return result
   }
   return []
 }
@@ -653,6 +693,25 @@ const normalizeNotifications = response => {
       }
     })
     return result
+  }
+  return []
+}
+
+const normalizeRecommendation = response => {
+  const { data } = response.data
+  if (data && data.length > 0) {
+    return data.map(dt => {
+      const { title, shortDescription, images } = dt.attributes
+      const background = _get(images, 'cover', { portrait: null, landscape: null })
+      return {
+        video_id: dt.id,
+        title,
+        short_description: shortDescription,
+        cover_portrait: background.portrait,
+        cover_landscape: background.landscape,
+        ...dt.attributes,
+      }
+    })
   }
   return []
 }
@@ -743,8 +802,10 @@ export default {
   normalizeProgrammeGuides,
   normalizeRecommendation,
   normalizeMatchPlaylists,
+  normalizeLeagueList,
   normalizeNotifications,
   normalizePartners,
   normalizeArticles,
   normalizeArticlesRelated,
+  normalizeGetUserSubscriptions,
 }

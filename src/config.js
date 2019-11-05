@@ -33,6 +33,7 @@ const options = {
       auth: '/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
+      redeem: 'http://promos.payment.sstv.local/external/voucher/redeem',
       ads: 'https://api.stag.supersoccer.tv',
       setting: {
         timeout: 10000,
@@ -50,6 +51,7 @@ const options = {
       auth: 'https://stag.mola.tv/accounts/_',
       domain: 'https://stag.mola.tv',
       uploader: 'https://up.stag.mola.tv',
+      redeem: 'http://promos.payment.sstv.local/external/voucher/redeem',
       ads: 'https://api.stag.supersoccer.tv',
       analytic: 'https://api.stag.supersoccer.tv',
       asset: 'https://cdn.stag.supersoccer.tv/mola/assets-global',
@@ -69,6 +71,7 @@ const options = {
       auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',
       uploader: 'https://up.mola.tv',
+      redeem: 'http://promos.payment.sstv.local/external/voucher/redeem',
       ads: 'https://api-beta.sent.tv',
       analytic: 'https://api.sent.tv',
       asset: 'https://mola01.koicdn.com/assets-global',

@@ -2,54 +2,7 @@
 import Mola from '@api/mola'
 import types from '../constants'
 
-const getAllMatches = id => dispatch => {
-  dispatch({
-    type: types.GET_MATCHES_PLAYLIST_LOADING,
-    payload: {
-      meta: {
-        status: 'loading',
-        error: '',
-      },
-      data: [],
-    },
-  })
-  return Mola.getMatchesList(id).then(async result => {
-    if (result.meta.status === 'error') {
-      dispatch({
-        type: types.GET_MATCHES_PLAYLIST_ERROR,
-        payload: result,
-      })
-    } else {
-      let allMatchDetailId = ''
-      result.data.map((matchDetail, idx) => {
-        // allMatchDetailId.push(matchDetail.id)
-        if (result && result.data.length > 0) {
-          if (idx === result.data.length - 1) {
-            allMatchDetailId += 'ids=' + matchDetail.id
-          } else {
-            allMatchDetailId += 'ids=' + matchDetail.id + '&'
-          }
-        }
-      })
-      let matchDetailList = []
-      matchDetailList = await Mola.getMatchDetail(allMatchDetailId)
-
-      if (matchDetailList.meta.status === 'success') {
-        dispatch({
-          type: types.GET_MATCHES_PLAYLIST_SUCCESS,
-          payload: matchDetailList,
-        })
-      } else {
-        dispatch({
-          type: types.GET_MATCHES_PLAYLIST_ERROR,
-          payload: matchDetailList,
-        })
-      }
-    }
-  })
-}
-
-const getAllGenreSpo = id => dispatch => {
+const getLeaguesAndMatch = (id, startDate, endDate) => dispatch => {
   dispatch({
     type: types.GET_MATCHES_GENRESPO_LOADING,
     payload: {
@@ -60,7 +13,7 @@ const getAllGenreSpo = id => dispatch => {
       data: [],
     },
   })
-  return Mola.getAllGenreSpo(id).then(async result => {
+  return Mola.getLeaguesList(id, startDate, endDate).then(async result => {
     if (result.meta.status === 'error') {
       dispatch({
         type: types.GET_MATCHES_GENRESPO_ERROR,
@@ -84,7 +37,7 @@ const getAllGenreSpo = id => dispatch => {
       }
       // console.log('genre', genreSportList)
       let matchesPlaylists = []
-      matchesPlaylists = await Mola.getMatchesPlaylists(genrePlaylistId)
+      matchesPlaylists = await Mola.getMatchesPlaylists(genrePlaylistId, startDate, endDate)
       // console.log('see matchesPlaylist', matchesPlaylists)
       const matchesList = {
         matchesPlaylists,
@@ -106,6 +59,5 @@ const getAllGenreSpo = id => dispatch => {
 }
 
 export default {
-  getAllMatches,
-  getAllGenreSpo,
+  getLeaguesAndMatch,
 }

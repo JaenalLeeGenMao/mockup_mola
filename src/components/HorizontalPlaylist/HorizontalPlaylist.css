@@ -24,11 +24,7 @@
 .filLeague {
   display: flex;
   justify-content: center;
-  padding: 1rem 19rem 1rem 19rem;
-}
-
-.playlist_all {
-  margin: 2rem;
+  padding: 0.6rem 19rem 1rem 19rem;
 }
 
 .contentLogoAndName {
@@ -68,6 +64,7 @@
   color: white;
   text-align: right;
   margin: 1rem 2.5rem 1rem 1rem;
+  display: inline-flex;
 }
 
 .playlist__container {
@@ -76,6 +73,7 @@
   color: #a7a7a7;
   text-align: right;
   margin: 1rem 2.5rem 1rem 1rem;
+  display: inline-flex;
 }
 
 .hidePlaylist {
@@ -89,18 +87,18 @@
 .league__wrapper {
   width: 100%;
   overflow: hidden;
+  text-align: center;
 }
 
 .league__wrapper_scroller {
-  display: flex;
   overflow-x: auto;
   height: calc(100% + 30px);
   overflow-y: hidden;
 }
 
-.genre__wrapper {
-  width: calc(100% + 20px);
+.genreCategory__wrapper {
   line-height: 1.25;
+  display: inline-flex;
 }
 
 .btnPrevHori {
@@ -109,12 +107,10 @@
   height: 4rem;
   background-size: 1.7rem 1.7rem;
   background-repeat: no-repeat;
+  background-position: center;
   border: none;
   cursor: pointer;
   visibility: hidden;
-
-  /* position: relative;
-  top: calc(50% - 10px); */
 }
 
 .btnNextHori {
@@ -123,25 +119,25 @@
   height: 4rem;
   background-size: 1.7rem 1.7rem;
   background-repeat: no-repeat;
+  background-position: center;
   border: none;
   cursor: pointer;
   visibility: hidden;
-
-  /* position: relative;
-  top: calc(50% - 10px); */
 }
 
 .btnPrevContainer {
   width: 4rem;
   height: 4rem;
-  padding-top: 0.8rem;
+
+  /* padding-top: 0.8rem; */
 }
 
 .btnNextContainer {
   width: 4rem;
   height: 4rem;
-  padding-left: 2rem;
-  padding-top: 0.8rem;
+
+  /* padding-left: 2rem;
+  padding-top: 0.8rem; */
 }
 
 .tooltipContainer {

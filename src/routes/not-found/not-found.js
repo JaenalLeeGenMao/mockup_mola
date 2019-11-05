@@ -53,7 +53,7 @@ class NotFound extends React.Component {
         <HomeError status={400} message={'Sorry, the page you were trying to view does not exist.'} />
         {this.props.recommendation.meta.status === 'success' && (
           <LazyLoad>
-            <RelatedVideos videos={this.props.recommendation.data} containerClassName={styles.video_container} className={styles.video_wrapper} detailClassName={styles.video_detail_wrapper} />
+            {/* <RelatedVideos videos={this.props.recommendation.data} containerClassName={styles.video_container} className={styles.video_wrapper} detailClassName={styles.video_detail_wrapper} /> */}
           </LazyLoad>
         )}
       </Fragment>
