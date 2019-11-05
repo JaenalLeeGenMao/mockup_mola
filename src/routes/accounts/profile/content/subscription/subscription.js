@@ -37,8 +37,8 @@ class Subscription extends Component {
 
     /* Semua subscription MOLA */
     // getAllSubscriptions(user.token)
-    // getUserSubscriptions(user.uid)
-    getUserSubscriptions('Fbulm80CnjrOpMcwjyaRjcenIJCOcC')
+    getUserSubscriptions(user.uid)
+    // getUserSubscriptions('Fbulm80CnjrOpMcwjyaRjcenIJCOcC')
   }
 
   handleClick = async ({ id, attributes }) => {
