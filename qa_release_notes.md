@@ -240,3 +240,27 @@ Improvement:
 Bug Fix:
 * remove crossOrigin attribute in google-analytic script. Previously get error 'Access to script at 'https://www.google-analytics.com/analytics.js' from origin 'https://mola.tv' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. (Irene)
 
+**05/11/2019**
+
+V1.6.0 + **1916**
+
+New Features: 
+* Add BCA subscription feature while access to /activate/bca/{voucher-code}. (Arga) 
+* add tab subscription mola bca (Sabiq)
+
+Improvements:
+
+* Update Hit Timestamp from 12 hours to 24 hours format (for analityc) (Elkana)
+* Remove GAP from the vertical league category filter list styling on video detail page (/matches) following data league for desktop only. Previous width = 800 no matter how much league data, GAP will widen when league data decreases. (Ayu)
+* Update matches page (Tayangan Langsung) to use new endpoint for leagues list and respective match list both for desktop and mobile (Irene)
+* Update styling league list filter (horizontal leagues) and arrow to be on center (Irene)
+* Update the arrow size of the league list icon on video detail page (/matches) and it will appear for monitor and big tv. (Ayu)
+* Simplify responsive arrow icon validation on video detail page (/matches) for monitor and big tv. (Ayu)
+
+Bug Fixes:
+* fixing endpoint redeem bca voucher, fix is changing endpoints and add x-app-id then content-type (Sabiq)
+* fix endpoint user subscriptions, fix is changing endpoints and normalize data (Sabiq)
+* Upload default image for club image (home team and away team's logo in Tayangan Langsung page) to beta and production. Currently only uploaded to staging. Only can be tested if home team or away team's logo is not found/error from api (Irene)
+* Temporarily remove related videos section on not-found page (404 page) to prevent errors until api is available/known (Irene)
+
+
