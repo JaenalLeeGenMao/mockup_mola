@@ -83,7 +83,7 @@ export const handleTracker = async (data, props) => {
       // current_duration: currentDuration,
       // total_duration: totalDuration,
       // currentSubscriptionId: adjustedSubs,
-      hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss', true),
+      hit_timestamp: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss', true),
       latitude,
       longitude,
       video_quality,

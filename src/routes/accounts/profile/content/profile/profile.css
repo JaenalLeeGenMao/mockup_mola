@@ -210,7 +210,7 @@
   }
 
   .profile_form_wrapper label {
-    color: #130808;
+    /* color: #130808; */
     font-weight: lighter;
     font-size: 0.9rem;
     margin: 1rem 0;

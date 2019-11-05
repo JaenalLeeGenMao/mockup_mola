@@ -38,7 +38,7 @@ class Subscription extends Component {
     /* Semua subscription MOLA */
     // getAllSubscriptions(user.token)
     getUserSubscriptions(user.uid)
-    // getUserSubscriptions('AcJTxG4iZX7cz9BY5u5RhPmkGEgFsu')
+    // getUserSubscriptions('Fbulm80CnjrOpMcwjyaRjcenIJCOcC')
   }
 
   handleClick = async ({ id, attributes }) => {
@@ -96,7 +96,7 @@ class Subscription extends Component {
             data.map((subscription, index) => {
               const expiry = new Date(subscription.expireAt),
                 today = new Date(),
-                formattedExpiry = moment(expiry).format('DD/MMM/YYYY'),
+                formattedExpiry = moment(expiry).format('DD MMM YYYY'),
                 title = subscription.subscriptionList[0].title
               return (
                 // <Fragment key={index}>
@@ -112,7 +112,7 @@ class Subscription extends Component {
                         <div className={s.subscription_expiry}>Ends Of {formattedExpiry}</div>
                       </div>
                       <div className={s.subscription__section_right_active}>
-                        <p>Activate</p>
+                        <p>Active</p>
                       </div>
                     </div>
 
