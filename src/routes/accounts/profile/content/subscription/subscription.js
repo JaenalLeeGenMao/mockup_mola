@@ -109,7 +109,7 @@ class Subscription extends Component {
                     <div className={s.subscription__wrapper_active}>
                       <div className={s.subscription__section_left_active}>
                         <h1>{title}</h1>
-                        <div className={s.subscription_expiry}>Ends Of {formattedExpiry}</div>
+                        <div className={s.subscription_expiry}>Ends On {formattedExpiry}</div>
                       </div>
                       <div className={s.subscription__section_right_active}>
                         <p>Active</p>
