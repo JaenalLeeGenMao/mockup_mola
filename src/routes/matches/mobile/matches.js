@@ -50,6 +50,7 @@ class Matches extends Component {
     selectedDate: null,
     startWeekDate: null,
     hasLive: false,
+    noMatch: false,
     startGuide: false,
     stepIndex: 0,
     steps: tourSteps.en,
@@ -268,7 +269,15 @@ class Matches extends Component {
     const date = new Date(moment().startOf('date'))
     const swdTimestamp = date.getTime() / 1000
 
+    let flag = true
+    for (let i = 0; i < result.matchesList.length; i++) {
+      if (result.matchesList[i].id) {
+        flag = false
+      }
+    }
+
     this.setState({
+      noMatch: flag,
       matches: matchesList,
       filterByLeague: value,
       selectedWeek: 2,
@@ -285,6 +294,10 @@ class Matches extends Component {
         offset: -150,
       })
     }, 500)
+  }
+
+  renderNoMatchLeague = () => {
+    return <div className={styles.noMatch}>Tidak Ada Pertandingan</div>
   }
 
   handleFilterByDate = value => {
@@ -435,9 +448,17 @@ class Matches extends Component {
   // }
 
   renderMatchCard = () => {
-    const { matches } = this.state
+    const { matches, noMatch } = this.state
 
     let flagLive = false
+
+    if (matches.length < 0) {
+      return this.renderNoMatchLeague()
+    }
+    if (noMatch) {
+      return this.renderNoMatchLeague()
+    }
+
     return matches.map((matchDt, index) => {
       if (matchDt.id) {
         let flag = true

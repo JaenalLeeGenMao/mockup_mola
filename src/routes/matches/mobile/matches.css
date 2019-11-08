@@ -146,6 +146,12 @@ body {
   vertical-align: middle;
 }
 
+.noMatch {
+  color: white;
+  font-size: 1.3rem;
+  margin: 12rem 4rem 4rem 4rem;
+}
+
 .matchStatusText {
   vertical-align: middle;
   font-size: 1rem;
