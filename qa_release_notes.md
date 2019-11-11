@@ -274,6 +274,19 @@ Bug Fxes:
 * Fix styling forgot password, previously button on forgot pasword not show, fix is changes opacity (Sabiq)
 
 
+**11/11/2019**
+
+V1.7.0 + **1942**
+
+Improvements:
+
+* Add validation no match on video detail page (/matches) mobile only, if there is no match and will display "Tidak ada pertandingan" (Ayu)
+* Hide tab subscritptions, when user doesn't have subscriptions package (Sabiq)
+
+Bug Fixes:
+
+* Fix error Cannot read property 'preventDefault' of undefined when click on Profile menu on mobile web menu (Irene)
+* Fix styling reset password on desktop, previously button on reset pasword ('/accounts/resetPassword') not show, fix is changes opacity (Sabiq)
 
 
 
