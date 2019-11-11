@@ -288,5 +288,9 @@ Bug Fixes:
 * Fix error Cannot read property 'preventDefault' of undefined when click on Profile menu on mobile web menu (Irene)
 * Fix styling reset password on desktop, previously button on reset pasword ('/accounts/resetPassword') not show, fix is changes opacity (Sabiq)
 
+V1.7.0 + **1945**
 
+Bug Fix:
+
+* Fix error when share videopage on facebook not load image, title and description (Irene)
 
