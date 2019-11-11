@@ -1170,6 +1170,8 @@ app.get('*', async (req, res, next) => {
           data.type = 'video.other'
           data.twitter_card_type = 'summary_large_image'
           data.appLinkUrl = appLink
+          data.url = config.endpoints.domain + req.path + '?v=' + videoId
+
           videoObj = {
             title: data.title,
             description: data.description,
@@ -1177,6 +1179,7 @@ app.get('*', async (req, res, next) => {
             type: data.type,
             twitter_card_type: data.twitter_card_type,
             appLinkUrl: data.appLinkUrl,
+            url: data.url,
           }
         }
         molaCache.set(videoId, videoObj, 2700, function (err, success) {
@@ -1195,6 +1198,7 @@ app.get('*', async (req, res, next) => {
         data.type = videoObj.type
         data.twitter_card_type = videoObj.twitter_card_type
         data.appLinkUrl = videoObj.appLinkUrl
+        data.url = videoObj.url
       }
     } else if (firstPath === 'articles') {
       const { status } = initialState.articlesDetail.meta
