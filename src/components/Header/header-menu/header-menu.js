@@ -90,7 +90,7 @@ class HeaderMenu extends Component {
     window.location.href = '/signout'
   }
 
-  handleNavigation = id => {
+  handleNavigation = (e, id) => {
     const { menu: { data: headerMenu } } = this.props
     const filteredMenu = headerMenu
       ? headerMenu.filter(dt => {
@@ -106,7 +106,7 @@ class HeaderMenu extends Component {
       // const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
 
       if (filteredMenu[0].id == 9) {
-        this.handleToggle()
+        this.handleToggle(e)
       } else {
         history.push(relMenuUrl)
       }
