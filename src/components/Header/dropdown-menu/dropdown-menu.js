@@ -21,7 +21,7 @@ class DropdownList extends Component {
     })
   }
 
-  handleClickDropdownAction = id => {
+  handleClickDropdownAction = (e, id) => {
     const { onClick } = this.props
     this.setState({
       selectedId: id,
@@ -29,7 +29,7 @@ class DropdownList extends Component {
     })
 
     if (onClick) {
-      onClick(id)
+      onClick(e, id)
     }
   }
 
@@ -122,7 +122,7 @@ class DropdownList extends Component {
                         className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
                         isActive={isActive}
                         key={dts.id}
-                        onClick={() => this.handleClickDropdownAction(dts.id)}
+                        onClick={e => this.handleClickDropdownAction(e, dts.id)}
                       >
                         <span>{title}</span>
                       </div>

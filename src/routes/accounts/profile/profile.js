@@ -13,6 +13,8 @@ import LazyLoad from '@components/common/Lazyload'
 import ContentProfile from './content/profile'
 import ContentSecurity from './content/security'
 import ContentSubscription from './content/subscription'
+import _get from 'lodash/get'
+import subscribeActions from '@actions/subscribe'
 
 import { getPaymentDesc } from './util'
 
@@ -24,6 +26,13 @@ class Profile extends Component {
     switch: false,
   }
   componentDidMount() {
+    const { getUserSubscriptions, user } = this.props
+
+    getUserSubscriptions(user.uid)
+    // getUserSubscriptions('E1tNwQpJZ0VP5TzsjDf7U6rZ4qV9Ulol')
+
+    const { data } = this.props.subscribe
+
     const { query } = this.props,
       tab = this.state.whitelistedTabs.includes(query.tab)
 
@@ -82,6 +91,8 @@ class Profile extends Component {
   }
 
   renderTabs() {
+    const { data, meta } = this.props.subscribe
+    const metaStatus = _get(meta, 'status', null)
     const { query } = this.props,
       tab = query.tab
 
@@ -101,12 +112,14 @@ class Profile extends Component {
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
-              <div
-                onClick={() => this.handleTabClick('subscription')}
-                className={tab === 'subscription' ? styles.active : ''}
-              >
-                Subscriptions
-              </div>
+              {metaStatus === 'success' && (
+                <div
+                  onClick={() => this.handleTabClick('subscription')}
+                  className={tab === 'subscription' ? styles.active : ''}
+                >
+                  Subscriptions
+                </div>
+              )}
               {/* <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
                 Setelan
               </div> */}
@@ -119,6 +132,7 @@ class Profile extends Component {
   }
 
   renderContents() {
+    const { data, meta } = this.props.subscribe
     const { query } = this.props,
       tab = query.tab
 
@@ -135,6 +149,7 @@ class Profile extends Component {
             <ContentSubscription
               onClick={() => this.setState({ switch: !this.state.switch })}
               isMobile={this.props.isMobile}
+              data={this.props.subscribe.data}
             />
           )}
           {/* {tab === 'setting' && <div>setting</div>} */}
@@ -164,7 +179,15 @@ const mapStateToProps = state => {
   return {
     ...state,
     toaster: state.toastr.toastrs,
+    subscribe: state.subscribe,
+    user: state.user,
   }
 }
 
-export default compose(withStyles(styles), connect(mapStateToProps, null))(Profile)
+const mapDispatchToProps = dispatch => {
+  return {
+    getUserSubscriptions: uid => dispatch(subscribeActions.getUserSubscriptions(uid)),
+  }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps, null))(Profile)

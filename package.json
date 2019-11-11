@@ -1,12 +1,17 @@
 {
   "name": "mola-web",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "private": true,
   "engines": {
     "node": ">=7.40.0",
     "npm": ">=3.10.10"
   },
-  "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ],
   "dependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.4.4",
     "@babel/plugin-proposal-optional-chaining": "7.6.0",
@@ -188,9 +193,19 @@
     "webpack-node-externals": "1.6.0"
   },
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --no-ignore --fix", "prettier --single-quote --write", "git add --force"],
-    "*.{json,md,graphql}": ["prettier --write", "git add --force"],
-    "*.{css,less,styl,scss,sass,sss}": ["stylelint --fix", "git add --force"]
+    "*.{js,jsx}": [
+      "eslint --no-ignore --fix",
+      "prettier --single-quote --write",
+      "git add --force"
+    ],
+    "*.{json,md,graphql}": [
+      "prettier --write",
+      "git add --force"
+    ],
+    "*.{css,less,styl,scss,sass,sss}": [
+      "stylelint --fix",
+      "git add --force"
+    ]
   },
   "scripts": {
     "precommit": "lint-staged",
