@@ -54,7 +54,7 @@
 } */
 
 .subscription__section_left h1 {
-  font-size: 1.68rem;
+  font-size: 1.5rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
   text-align: left;
@@ -63,7 +63,7 @@
 }
 
 .subscription__section_left_active h1 {
-  font-size: 1.68rem;
+  font-size: 1.5rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
   text-align: left;
@@ -246,6 +246,17 @@
   height: auto;
   transition: 1s ease-out;
   color: white;
+}
+
+.subscription_detail_title {
+  /* left: 0; */
+  position: relative;
+  font-size: 1.2rem;
+
+  /* margin: 1rem 0.5rem 0 -4.5rem; */
+  color: gray;
+  margin: 0.5rem;
+  text-align: left;
 }
 
 @media only screen and (max-width: 1024px) {

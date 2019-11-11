@@ -6,7 +6,7 @@ import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import { updatePassword } from '@actions/resetPassword'
-import subscribeActions from '@actions/subscribe'
+// import subscribeActions from '@actions/subscribe'
 import Mola from '@api/mola'
 
 import history from '@source/history'
@@ -34,11 +34,8 @@ class Subscription extends Component {
 
   componentDidMount() {
     const { user, getAllSubscriptions, getUserSubscriptions } = this.props
-
     /* Semua subscription MOLA */
     // getAllSubscriptions(user.token)
-    getUserSubscriptions(user.uid)
-    // getUserSubscriptions('Fbulm80CnjrOpMcwjyaRjcenIJCOcC')
   }
 
   handleClick = async ({ id, attributes }) => {
@@ -68,67 +65,65 @@ class Subscription extends Component {
 
   render() {
     // const { isMobile, onClick, user, subscribe, getUserSubscriptions } = this.props
-    const { user, subscribe } = this.props
+    const { user, subscribe, data, meta } = this.props
     // const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
     // const { isToggled, subsDong, isHidden } = this.state
     const { isSubscribe, isHidden } = this.state
 
-    const { data, meta } = this.props.subscribe
-
     return (
       <div>
         <div className={s.subscription__container}>
-          {meta.status === 'error' && (
+          {/* {meta.status === 'error' && (
             <>
               <div className={s.subscription_user_info_wrapper_no}>
                 <img alt="molatv" src={logoBlue} className={s.header__logo} />
                 <h1>Aww :(</h1>
                 <h2>Tampaknya Anda Belum Memiliki Paket Apapun </h2>
               </div>
-              {/* <div className={s.subscription_button_wrapper_no}>
+              <div className={s.subscription_button_wrapper_no}>
                     <button className={s.subscription_button_active} onClick={() => this.handleClickSubs()}>
                       {isHidden ? 'Mulai Berlangganan' : null}
                     </button>
-                  </div> */}
+                  </div>
             </>
-          )}
-          {meta.status === 'success' &&
-            data.map((subscription, index) => {
-              const expiry = new Date(subscription.expireAt),
-                today = new Date(),
-                formattedExpiry = moment(expiry).format('DD MMM YYYY'),
-                title = subscription.subscriptionList[0].title
-              return (
-                // <Fragment key={index}>
-                <>
-                  <LazyLoad
-                    key={index}
-                    containerClassName={s.sideCenter}
-                    // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
-                  >
-                    <div className={s.subscription__wrapper_active}>
-                      <div className={s.subscription__section_left_active}>
-                        <h1>{title}</h1>
-                        <div className={s.subscription_expiry}>Ends On {formattedExpiry}</div>
-                      </div>
-                      <div className={s.subscription__section_right_active}>
-                        <p>Active</p>
-                      </div>
+          )} */}
+          <div className={s.subscription_detail_title}>Active Package</div>
+          {data.map((subscription, index) => {
+            const expiry = new Date(subscription.expireAt),
+              today = new Date(),
+              formattedExpiry = moment(expiry).format('DD MMM YYYY'),
+              title = subscription.subscriptionList[0].title
+            return (
+              // <Fragment key={index}>
+              <>
+                <LazyLoad
+                  key={index}
+                  containerClassName={s.sideCenter}
+                  // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
+                >
+                  <div className={s.subscription__wrapper_active}>
+                    <div className={s.subscription__section_left_active}>
+                      <h1>{title}</h1>
+                      <div className={s.subscription_expiry}>Valid Until {formattedExpiry}</div>
                     </div>
+                    <div className={s.subscription__section_right_active}>
+                      <p>Active</p>
+                    </div>
+                  </div>
 
-                    {/* <div className={s.subscription_button_wrapper}> */}
-                    {/* <button
+                  {/* <div className={s.subscription_button_wrapper}> */}
+                  {/* <button
                         className={s.subscription_button_active}
                         onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}
                       >
                         {new Date(expiry - today).getDate()} days left
                       </button> */}
-                    {/* </div> */}
-                  </LazyLoad>
-                  {/* </Fragment> */}
-                </>
-              )
-            })}
+                  {/* </div> */}
+                </LazyLoad>
+                {/* </Fragment> */}
+              </>
+            )
+          })}
 
           {/* {!isHidden && isSubscribe && <OrderList />} */}
         </div>
@@ -140,14 +135,14 @@ class Subscription extends Component {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    subscribe: state.subscribe,
+    // subscribe: state.subscribe,
     userSubscription: state.userSubscription,
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     handleUpdatePassword: params => dispatch(updatePassword(params)),
-    getAllSubscriptions: token => dispatch(subscribeActions.getAllSubscriptions(token)),
+    // getAllSubscriptions: token => dispatch(subscribeActions.getAllSubscriptions(token)),
     getUserSubscriptions: uid => dispatch(subscribeActions.getUserSubscriptions(uid)),
   }
 }
