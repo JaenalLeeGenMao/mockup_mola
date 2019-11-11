@@ -184,7 +184,7 @@ app.get('/page-redirect', (req, res) => {
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 const {
-  serverApi: { VIDEO_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId },
+  serverApi: { VIDEO_API_URL, ARTICLE_API_URL, AUTH_API_URL, SUBSCRIPTION_API_URL, appId, xAppId },
   endpoints: { domain, redeem: REEDEM_API_URL },
 } = config
 
@@ -978,7 +978,7 @@ app.get('*', async (req, res, next) => {
           }
         })
         if (!hasCache) {
-          await Axios.get(`${config.endpoints.apiArticles}/articles/${articleId}`, {
+          await Axios.get(`${ARTICLE_API_URL}/external/articles/${articleId}?app_id=${appId}`, {
             timeout: 5000,
             maxRedirects: 1,
           })
