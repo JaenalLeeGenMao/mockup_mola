@@ -32,7 +32,6 @@ class Profile extends Component {
     // getUserSubscriptions('E1tNwQpJZ0VP5TzsjDf7U6rZ4qV9Ulol')
 
     const { data } = this.props.subscribe
-    console.log(data, 'hide and seek')
 
     const { query } = this.props,
       tab = this.state.whitelistedTabs.includes(query.tab)
