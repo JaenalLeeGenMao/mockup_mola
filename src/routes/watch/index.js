@@ -1,10 +1,11 @@
 import React from 'react'
 import MolaLayout from '@components/Molalayout'
+import WatchError from '@components/common/error'
 import Watch from './watch'
 
 function action({ query, isMobile }) {
   let id = query.v
-  var resultUrl = id.split('u0026')
+  var resultUrl = id ? id.split('u0026') : []
 
   if (resultUrl.length > 0) {
     id = resultUrl[0]
@@ -16,7 +17,11 @@ function action({ query, isMobile }) {
     description: '',
     component: (
       <MolaLayout>
-        <Watch isMobile={isMobile} isAutoPlay={isAutoPlay} videoId={id} />
+        {id ? (
+          <Watch isMobile={isMobile} isAutoPlay={isAutoPlay} videoId={id} />
+        ) : (
+          <WatchError status={404} message={'Sorry, the page you were trying to view does not exist.'} />
+        )}
       </MolaLayout>
     ),
   }
