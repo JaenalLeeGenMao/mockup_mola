@@ -5,8 +5,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 100vh;
 }
 
 .subscription__wrapper {
@@ -16,7 +15,6 @@
   flex-wrap: nowrap;
   align-items: center;
   background: #2b2b2b;
-
   border-radius: 0.2rem;
   padding: 1.6rem 2.75rem;
   margin: 0 2rem 0.5rem 2rem;
@@ -32,7 +30,6 @@
   align-items: center;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-
   border-radius: 0.2rem;
   padding: 25.6px 44px;
   padding: 1.6rem 2.75rem;
@@ -210,7 +207,8 @@
 .sideCenter {
   position: relative;
   width: 100%;
-  height: 100%;
+
+  /* height: 100%; */
 }
 
 .icon_cinema {
@@ -254,13 +252,21 @@
 
 .subscription_detail_title {
   /* left: 0; */
-  position: relative;
+  position: absolute;
   font-size: 1.2rem;
 
   /* margin: 1rem 0.5rem 0 -4.5rem; */
   color: gray;
   margin: 0 2rem 0.5rem 2rem;
   text-align: left;
+  top: 20vh;
+}
+
+.subscription_detail_packet {
+  /* left: 0; */
+  position: absolute;
+  width: 50%;
+  top: 23vh;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -278,6 +284,12 @@
     flex-direction: column;
     -ms-flex-pack: space-evenly;
     justify-content: space-evenly;
+  }
+
+  .subscription_detail_packet {
+    position: relative;
+    width: 100%;
+    top: 0;
   }
 
   .subscription_detail_title {

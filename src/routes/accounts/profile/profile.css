@@ -6,13 +6,23 @@
   width: auto;
 }
 
+.profile__main_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
 .profile__container {
   display: inline-block;
 }
 
 .profile__tabs_container {
   position: fixed;
-  top: 35vh;
+
+  /* top: 35vh; */
   width: 30%;
   text-align: center;
   color: #a7a7a7;
@@ -20,6 +30,7 @@
   font-size: 2.125rem;
   font-weight: 300;
   z-index: 10;
+
   /* position: absolute;
   top: 15vh;
   width: 100%;
@@ -32,8 +43,10 @@
 
 .profile__contents_container {
   position: absolute;
+
   /* top: 25vh; */
-  top: 20vh;
+
+  /* top: 20vh; */
   width: 100%;
   text-align: center;
   color: #a7a7a7;
@@ -48,6 +61,7 @@
   width: 40%;
   margin: 4rem;
   text-align: left;
+
   /* display: inline-block;
   width: 40%;
   text-align: left;
@@ -78,6 +92,7 @@
 .profile__contents_dropdown {
   display: flex;
   position: fixed;
+
   /* bottom: 41rem; */
   z-index: 1;
   top: 10vh;

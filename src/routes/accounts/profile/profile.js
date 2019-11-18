@@ -226,7 +226,6 @@ class Profile extends Component {
     const { data, meta } = this.props.subscribe
     const { selectedTab } = this.state
 
-    const metaStatus = _get(meta, 'status', null)
     const filterList = [
       { id: 1, title: 'Profile', value: 'profile' },
       { id: 2, title: 'Security', value: 'security' },
@@ -243,7 +242,7 @@ class Profile extends Component {
           {this.props.isMobile && (
             <DropdownList
               className={styles.profile__contents_dropdown_container}
-              dataList={metaStatus === 'success' ? filterList : filterListNoSub}
+              dataList={this.state.showSubscriptionTab ? filterList : filterListNoSub}
               onClick={this.handleSelectClick}
               activeId={this.state.isActiveMenu}
             />
@@ -327,10 +326,12 @@ class Profile extends Component {
     return (
       <div>
         <Header className={styles.placeholder__header} {...this.props} activeMenuId={9} />
-        {!this.props.isMobile && this.renderTabs()}
-        {!this.props.isMobile && this.renderContents()}
-        {this.props.isMobile && this.renderContentsMobile()}
-        {this.props.isMobile && this.renderMenuTab()}
+        <div className={styles.profile__main_container}>
+          {!this.props.isMobile && this.renderTabs()}
+          {!this.props.isMobile && this.renderContents()}
+          {this.props.isMobile && this.renderContentsMobile()}
+          {this.props.isMobile && this.renderMenuTab()}
+        </div>
       </div>
     )
   }
