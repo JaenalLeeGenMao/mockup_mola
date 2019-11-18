@@ -20,7 +20,6 @@ import _get from 'lodash/get'
 import { getPaymentDesc } from './util'
 
 import styles from './profile.css'
-import subscription from './content/subscription/subscription'
 
 class Profile extends Component {
   state = {
@@ -34,7 +33,7 @@ class Profile extends Component {
     const { getUserSubscriptions, user } = this.props
 
     getUserSubscriptions(user.uid)
-    // getUserSubscriptions('E1tNwQpJZ0VP5TzsjDf7U6rZkk4qV9U')
+    // getUserSubscriptions('E1tNwQpJZ0VP5TzsjDf7U6rZkk4qV9Uk')
 
     const { data } = this.props.subscribe
 
@@ -109,7 +108,7 @@ class Profile extends Component {
     let showSubscription = false
 
     if (data.length > 0) {
-      showSubscription = data.filter(x => x.subscriptionList[0].subscriptionId != 24)
+      showSubscription = data.find(x => x.subscriptionList[0].subscriptionId != 24)
 
       if (showSubscription) {
         this.setState({
