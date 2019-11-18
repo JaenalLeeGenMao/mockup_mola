@@ -294,6 +294,9 @@
 
   .subscription_detail_title {
     font-size: 12px;
+    top: 0;
+    position: relative;
+    margin: 0 0 1.5rem 2rem;
   }
 
   .subscription_button,
