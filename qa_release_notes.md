@@ -294,3 +294,11 @@ Bug Fix:
 
 * Fix error when share videopage on facebook not load image, title and description (Irene)
 
+**14/11/2019**
+
+V1.7.1 + **1946** (jaenal)
+
+Bug Fix:
+
+* Fixing redirect on video detail page (/watch?v={videoId}), previously video detail page (/watch) was NotFound (Jaenal)
+
