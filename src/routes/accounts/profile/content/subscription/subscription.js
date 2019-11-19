@@ -88,42 +88,44 @@ class Subscription extends Component {
             </>
           )} */}
           <div className={s.subscription_detail_title}>Active Package</div>
-          {data.map((subscription, index) => {
-            const expiry = new Date(subscription.expireAt),
-              today = new Date(),
-              formattedExpiry = moment(expiry).format('DD MMM YYYY'),
-              title = subscription.subscriptionList[0].title
-            return (
-              // <Fragment key={index}>
-              <>
-                <LazyLoad
-                  key={index}
-                  containerClassName={s.sideCenter}
-                  // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
-                >
-                  <div className={s.subscription__wrapper_active}>
-                    <div className={s.subscription__section_left_active}>
-                      <h1>{title}</h1>
-                      <div className={s.subscription_expiry}>Valid Until {formattedExpiry}</div>
+          <div className={s.subscription_detail_packet}>
+            {data.map((subscription, index) => {
+              const expiry = new Date(subscription.expireAt),
+                today = new Date(),
+                formattedExpiry = moment(expiry).format('DD MMM YYYY'),
+                title = subscription.subscriptionList[0].title
+              return (
+                // <Fragment key={index}>
+                <>
+                  <LazyLoad
+                    key={index}
+                    containerClassName={s.sideCenter}
+                    // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
+                  >
+                    <div className={s.subscription__wrapper_active}>
+                      <div className={s.subscription__section_left_active}>
+                        <h1>{title}</h1>
+                        <div className={s.subscription_expiry}>Valid Until {formattedExpiry}</div>
+                      </div>
+                      <div className={s.subscription__section_right_active}>
+                        <p>Active</p>
+                      </div>
                     </div>
-                    <div className={s.subscription__section_right_active}>
-                      <p>Active</p>
-                    </div>
-                  </div>
 
-                  {/* <div className={s.subscription_button_wrapper}> */}
-                  {/* <button
+                    {/* <div className={s.subscription_button_wrapper}> */}
+                    {/* <button
                         className={s.subscription_button_active}
                         onClick={() => console.log(`${new Date(expiry - today).getDate()} days left`)}
                       >
                         {new Date(expiry - today).getDate()} days left
                       </button> */}
-                  {/* </div> */}
-                </LazyLoad>
-                {/* </Fragment> */}
-              </>
-            )
-          })}
+                    {/* </div> */}
+                  </LazyLoad>
+                  {/* </Fragment> */}
+                </>
+              )
+            })}
+          </div>
 
           {/* {!isHidden && isSubscribe && <OrderList />} */}
         </div>

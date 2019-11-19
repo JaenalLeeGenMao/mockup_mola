@@ -13,8 +13,9 @@ import LazyLoad from '@components/common/Lazyload'
 import ContentProfile from './content/profile'
 import ContentSecurity from './content/security'
 import ContentSubscription from './content/subscription'
-import _get from 'lodash/get'
 import subscribeActions from '@actions/subscribe'
+import DropdownList from '@components/DropdownList'
+import _get from 'lodash/get'
 
 import { getPaymentDesc } from './util'
 
@@ -24,12 +25,15 @@ class Profile extends Component {
   state = {
     whitelistedTabs: ['security', 'subscription', 'setting'],
     switch: false,
+    isTabMobile: false,
+    isActiveMenu: '',
+    showSubscriptionTab: false,
   }
   componentDidMount() {
     const { getUserSubscriptions, user } = this.props
 
     getUserSubscriptions(user.uid)
-    // getUserSubscriptions('E1tNwQpJZ0VP5TzsjDf7U6rZ4qV9Ulol')
+    // getUserSubscriptions('E1tNwQpJZ0VP5TzsjDf7U6rZkk4qV9Uk')
 
     const { data } = this.props.subscribe
 
@@ -52,8 +56,17 @@ class Profile extends Component {
     })
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { query } = this.props
+
+    const { data, meta } = this.props.subscribe
+    const metaStatus = _get(meta, 'status', null)
+
+    if (data.length !== prevProps.subscribe.data.length) {
+      if (metaStatus === 'success') {
+        this.checkStatus()
+      }
+    }
 
     /* Notify user with payment details (.e.g success / failed) */
     if (this.flag && query.status_code) {
@@ -90,11 +103,33 @@ class Profile extends Component {
     history.push(`/accounts/profile${tab ? `?tab=${tab}` : ''}`)
   }
 
+  checkStatus() {
+    const { data, meta } = this.props.subscribe
+    let showSubscription = false
+
+    if (data.length > 0) {
+      showSubscription = data.find(x => x.subscriptionList[0].subscriptionId != 24)
+
+      if (showSubscription) {
+        this.setState({
+          showSubscriptionTab: true,
+        })
+      } else {
+        this.setState({
+          showSubscriptionTab: false,
+        })
+      }
+    }
+  }
+
   renderTabs() {
     const { data, meta } = this.props.subscribe
-    const metaStatus = _get(meta, 'status', null)
+    // const metaStatus = _get(meta, 'status', null)
+
     const { query } = this.props,
       tab = query.tab
+
+    const { isTabMobile } = this.state
 
     return (
       <div className={styles.profile__tabs_container}>
@@ -112,7 +147,7 @@ class Profile extends Component {
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
                 Keamanan
               </div>
-              {metaStatus === 'success' && (
+              {this.state.showSubscriptionTab && (
                 <div
                   onClick={() => this.handleTabClick('subscription')}
                   className={tab === 'subscription' ? styles.active : ''}
@@ -132,12 +167,31 @@ class Profile extends Component {
   }
 
   renderContents() {
-    const { data, meta } = this.props.subscribe
+    const filterList = [
+      { id: 1, title: 'Profile', value: 'profile' },
+      { id: 2, title: 'Security', value: 'security' },
+      { id: 3, title: 'Subscriptions', value: 'subscription' },
+    ]
+
     const { query } = this.props,
       tab = query.tab
 
+    const { data, meta } = this.props.subscribe
+    const { selectedTab } = this.state
+
+    const metaStatus = _get(meta, 'status', null)
+
     return (
       <div className={styles.profile__contents_container}>
+        {this.props.isMobile && (
+          <DropdownList
+            className={styles.matches_dropdown_container}
+            dataList={filterList}
+            activeId={selectedTab}
+            onClick={this.handleSelectClick}
+          />
+        )}
+
         <div className={styles.profile__contents_wrapper}>
           {tab === 'security' && (
             <ContentSecurity
@@ -164,12 +218,119 @@ class Profile extends Component {
     )
   }
 
+  renderContentsMobile() {
+    const { query } = this.props,
+      tab = query.tab
+
+    const { data, meta } = this.props.subscribe
+    const { selectedTab } = this.state
+
+    const filterList = [
+      { id: 1, title: 'Profile', value: 'profile' },
+      { id: 2, title: 'Security', value: 'security' },
+      { id: 3, title: 'Subscriptions', value: 'subscription' },
+    ]
+    const filterListNoSub = [
+      { id: 1, title: 'Profile', value: 'profile' },
+      { id: 2, title: 'Security', value: 'security' },
+    ]
+
+    return (
+      <>
+        <div className={styles.profile__contents_dropdown}>
+          {this.props.isMobile && (
+            <DropdownList
+              className={styles.profile__contents_dropdown_container}
+              dataList={this.state.showSubscriptionTab ? filterList : filterListNoSub}
+              onClick={this.handleSelectClick}
+              activeId={this.state.isActiveMenu}
+            />
+          )}
+        </div>
+      </>
+    )
+  }
+
+  handleSelectClick = value => {
+    const { data, meta } = this.props.subscribe
+    const { isActiveMenu } = this.state
+
+    const metaStatus = _get(meta, 'status', null)
+
+    this.setState({
+      isActiveMenu: value,
+    })
+  }
+
+  renderMenuTab() {
+    switch (this.state.isActiveMenu) {
+      case 1:
+        return (
+          <>
+            <div className={styles.profile__contents_container}>
+              <div className={styles.profile__contents_wrapper}>
+                <ContentProfile
+                  onClick={() => this.setState({ switch: !this.state.switch })}
+                  isMobile={this.props.isMobile}
+                />
+              </div>
+            </div>
+          </>
+        )
+
+      case 2:
+        return (
+          <>
+            <div className={styles.profile__contents_container}>
+              <div className={styles.profile__contents_wrapper}>
+                <ContentSecurity
+                  onClick={() => this.setState({ switch: !this.state.switch })}
+                  isMobile={this.props.isMobile}
+                />
+              </div>
+            </div>
+          </>
+        )
+
+      case 3:
+        return (
+          <>
+            <div className={styles.profile__contents_container}>
+              <div className={styles.profile__contents_wrapper}>
+                <ContentSubscription
+                  data={this.props.subscribe.data}
+                  onClick={() => this.setState({ switch: !this.state.switch })}
+                  isMobile={this.props.isMobile}
+                />
+              </div>
+            </div>
+          </>
+        )
+
+      default:
+        return (
+          <>
+            <div className={styles.profile__contents_container}>
+              <ContentProfile
+                onClick={() => this.setState({ switch: !this.state.switch })}
+                isMobile={this.props.isMobile}
+              />
+            </div>
+          </>
+        )
+    }
+  }
+
   render() {
     return (
       <div>
         <Header className={styles.placeholder__header} {...this.props} activeMenuId={9} />
-        {this.renderTabs()}
-        {this.renderContents()}
+        <div className={styles.profile__main_container}>
+          {!this.props.isMobile && this.renderTabs()}
+          {!this.props.isMobile && this.renderContents()}
+          {this.props.isMobile && this.renderContentsMobile()}
+          {this.props.isMobile && this.renderMenuTab()}
+        </div>
       </div>
     )
   }

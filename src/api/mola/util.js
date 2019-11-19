@@ -635,6 +635,7 @@ const normalizeGetUserSubscriptions = response => {
       const subscriptionList = subscriptions.map(subList => {
         const { id: subscriptionId, attributes: { title, description, permission } } = subList
         return {
+          subscriptionId,
           title,
           description,
           permission,
