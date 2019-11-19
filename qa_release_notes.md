@@ -296,9 +296,21 @@ Bug Fix:
 
 **14/11/2019**
 
-V1.7.1 + **1946** (jaenal)
+V1.7.1 + **1946** 
 
 Bug Fix:
 
 * Fixing redirect on video detail page (/watch?v={videoId}), previously video detail page (/watch) was NotFound (Jaenal)
 
+**18/11/2019**
+
+V1.8.0 + **1955**
+
+improvement:
+
+* redesign ui profile web and mobile desk (Sabiq)
+
+Bug fixes:
+
+* Fix styling tab subscription (Sabiq)
+* Changes mekanisme hide tab subscription using subscriptionId (Sabiq)
