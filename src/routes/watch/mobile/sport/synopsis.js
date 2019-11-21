@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-
-import { setMultilineEllipsis, unsetMultilineEllipsis } from '@source/lib/globalUtil'
+import ReactMarkdown from 'react-markdown'
+import { setMultilineEllipsis } from '@source/lib/globalUtil'
 
 import styles from './sport.css'
 
@@ -13,35 +13,47 @@ class Synopsis extends Component {
   componentDidMount() {
     const { content } = this.props
     setMultilineEllipsis('synopsis__info_content')
-    unsetMultilineEllipsis('synopsis__info_desc', content)
   }
 
   handleClick = () => {
-    this.setState({ show: true })
+    this.setState(
+      prevState => ({
+        show: !prevState.show,
+      }),
+      () => {
+        if (!this.state.show) {
+          setMultilineEllipsis('synopsis__info_content')
+        }
+      }
+    )
   }
 
   render() {
     const { content } = this.props,
       { show } = this.state
 
-    if (show) {
-      unsetMultilineEllipsis('synopsis__info_content', content)
-    }
-
     return (
       <>
         <div className={styles.inner_box}>
           <div className={styles.inner_box_header}>
-            <span>info</span>
+            <span>Info</span>
           </div>
           {content && (
             <>
-              <p className={`synopsis__info_content ${show ? styles.show : ''}`}>{content}</p>
               {!show && (
-                <button className={styles.synopsis__info_read_more} onClick={this.handleClick}>
-                  Read More <div className={styles.expand_collapse} />
-                </button>
+                <div className={`${styles.synopsis__info_content} synopsis__info_content`}>
+                  <ReactMarkdown source={content} escapeHtml={true} />
+                </div>
               )}
+              {show && (
+                <div className={`${styles.synopsis__info_content} ${styles.show}`}>
+                  <ReactMarkdown source={content} escapeHtml={true} />
+                </div>
+              )}
+              <button className={styles.synopsis__info_read_more} onClick={this.handleClick}>
+                {!show ? 'Read More' : 'Read Less'}
+                <div className={`${styles.expand_collapse} ${show ? styles.less_btn : ''} `} />
+              </button>
             </>
           )}
           {!content && <div>Tidak Ada Deskripsi</div>}

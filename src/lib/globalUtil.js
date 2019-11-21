@@ -44,7 +44,7 @@ export const unsetMultilineEllipsis = (className, text) => {
 }
 
 export const isMovie = contentType => {
-  if (contentType == 7 || contentType == 8) {
+  if (contentType == 1 || contentType == 7 || contentType == 8) {
     return true
   }
 

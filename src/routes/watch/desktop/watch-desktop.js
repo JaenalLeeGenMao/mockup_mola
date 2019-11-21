@@ -5,6 +5,7 @@ import { post } from 'axios'
 import Moment from 'moment'
 import _isUndefined from 'lodash/isUndefined'
 import ReactTooltip from 'react-tooltip'
+import ReactMarkdown from 'react-markdown'
 
 import config from '@source/config'
 import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
@@ -603,7 +604,7 @@ class WatchDesktop extends Component {
                       </div>
                     </div>
                     <div className="player__info_grid_desc">
-                      <p>{dataFetched.description}</p>
+                      <ReactMarkdown source={dataFetched.description} escapeHtml={true} />
                     </div>
                     <div className="player__info_grid_cast">
                       {dataFetched.people.length > 0 && (
