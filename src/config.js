@@ -12,6 +12,7 @@ const serverApi = {
   VIDEO_API_URL: 'http://videos.core.sstv.local',
   AUTH_API_URL: 'http://accounts-api.accounts.sstv.local',
   SUBSCRIPTION_API_URL: ' http://subscriptions.core.sstv.local',
+  ARTICLE_API_URL: 'http://articles.core.sstv.local',
   appId: 'molatv',
   xAppId: 2,
 }
