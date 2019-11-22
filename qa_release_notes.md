@@ -314,3 +314,16 @@ Bug fixes:
 
 * Fix styling tab subscription (Sabiq)
 * Changes mekanisme hide tab subscription using subscriptionId (Sabiq)
+
+**21/11/2019**
+
+V1.8.0  + **1962**
+
+Improvements:
+
+* Add react-markdown on description mobile and desktop web to read paragraph (Irene)
+* Add Read Less button on description on mobile web (Irene)
+* Add validation ismovie has content type vod on global util because now all video with content type = movie is changed to vod (Aang)
+* Article server call use external call (changes on server.js) but right now article feature is disabled (Ferdy)
+* Add margin to description mobile sport so not overlap with app/playstore logo (Irene)
+* Update config.js add article_api_url F article server call use external call (changes on server.js) but right now article feature is disabled (Ferdy)
