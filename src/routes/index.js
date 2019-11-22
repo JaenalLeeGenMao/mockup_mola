@@ -97,6 +97,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
     },
     {
+      path: '/accounts/login-bca',
+      load: () => import(/* webpackChunkName: 'login-bca' */ './accounts/login-bca'),
+    },
+    {
       path: '/system-info',
       load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
     },
