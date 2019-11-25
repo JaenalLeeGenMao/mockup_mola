@@ -435,7 +435,7 @@ const getHeaderMenus = async () => {
   let hasCache = false
   let headerArr = []
   let headerError = ''
-  molaCache.get('headerMenu', function (err, value) {
+  molaCache.get('headerMenu', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -466,7 +466,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function (err, success) {
+      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -488,7 +488,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function (err, value) {
+  molaCache.get('configParams', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -518,7 +518,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 300, function (err, success) {
+      molaCache.set('configParams', configParams, 300, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
@@ -735,7 +735,7 @@ app.get('/signout', (req, res) => {
   return res.redirect(domain || 'http://jaenal.mola.tv')
 })
 
-app.get('/activate/bca/:voucher', async (req, res) => {
+app.get('/p/:voucher', async (req, res) => {
   const { cookies, path, params } = req
 
   const voucherCode = params.voucher
@@ -767,7 +767,7 @@ app.get('/activate/bca/:voucher', async (req, res) => {
       // go to failed redeem page
     }
   } else {
-    return res.redirect('/accounts/login')
+    return res.redirect('/accounts/login-bca')
     // go to login page
   }
 })
@@ -962,7 +962,7 @@ app.get('*', async (req, res, next) => {
       } else {
         let articlesData = null
         let hasCache = false
-        molaCache.get(articleId, function (err, value) {
+        molaCache.get(articleId, function(err, value) {
           if (!err) {
             if (value == undefined) {
               // key not found
@@ -991,7 +991,7 @@ app.get('*', async (req, res, next) => {
                   },
                   data: result,
                 }
-                molaCache.set(articleId, result, 2700, function (err, success) {
+                molaCache.set(articleId, result, 2700, function(err, success) {
                   if (!err && success) {
                     console.log('success set cache node cache', articleId, result)
                     // true
@@ -1133,7 +1133,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function (err, value) {
+      molaCache.get(videoId, function(err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -1182,7 +1182,7 @@ app.get('*', async (req, res, next) => {
             url: data.url,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function (err, success) {
+        molaCache.set(videoId, videoObj, 2700, function(err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
