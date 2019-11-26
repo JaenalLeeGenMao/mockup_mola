@@ -336,4 +336,14 @@ Improvements:
 * Add new login redemption page, when user want to redeem code and not login both for mobile and desktop web. (Sabiq)
 * Changes activation code path, to mola.tv/p/code. (Sabiq)
 
+V1.8.1 + **1966**
 
+Improvement:
+* Hotfix remove All on league filter on /matches, call api per league click (desktop and mobile web) and add /cache on this 2 endpoints
+https://mola.tv/api/v2/videos/cache/playlists/league-list 
+https://mola.tv/api/v2/videos/cache/playlists/league-list/matches (irene)
+
+V1.8.1 + **1967**
+
+Improvement:
+* Update versioning to 1.8.1 on package.json (Irene)
