@@ -697,7 +697,7 @@ class Matches extends Component {
       <Fragment>
         {leagueList.meta.status === 'loading' && <> {<MatchesPlaceholder />} </>}
         {this.renderHeader()}
-        {(matchesPlaylists.meta.status === 'error' || leagueList.meta.status === 'error') && (
+        {leagueList.meta.status === 'error' && (
           <MatchesError
             status={matchesPlaylists.meta.status}
             message={'Something went wrong, please try again later'}
@@ -705,14 +705,14 @@ class Matches extends Component {
         )}
         {leagueList.meta.status === 'success' && (
           <>
+            <div className={styles.matches_header_bg} />
+            <div className={styles.filter__container}>
+              {this.renderFilterLeague()}
+              {this.renderFilterWeek()}
+            </div>
             {matchesPlaylists.meta.status !== 'loading' &&
               matchesPlaylists.meta.status !== 'error' && (
                 <>
-                  <div className={styles.matches_header_bg} />
-                  <div className={styles.filter__container}>
-                    {this.renderFilterLeague()}
-                    {this.renderFilterWeek()}
-                  </div>
                   <LazyLoad containerClassName={`${styles.matches__container} tourMatchStatus`}>
                     {this.renderMatchCard()}
                   </LazyLoad>
@@ -730,7 +730,14 @@ class Matches extends Component {
                   </LazyLoad>
                 </>
               )}
-            {matchesPlaylists.meta.status === 'loading' && <> {<MatchesPlaceholder />} </>}
+            )}
+            {matchesPlaylists.meta.status === 'loading' && <MatchesPlaceholder />}
+            {matchesPlaylists.meta.status === 'error' && (
+              <MatchesError
+                status={matchesPlaylists.meta.status}
+                message={'Something went wrong, please try again later'}
+              />
+            )}
           </>
         )}
         <Joyride

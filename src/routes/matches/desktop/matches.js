@@ -616,9 +616,7 @@ class Matches extends React.Component {
           <Header stickyOff searchOff activeMenu="matches" libraryOff {...this.props} />
         </div>
         {leagueList.meta.status === 'loading' && <Placeholder />}
-        {(leagueList.meta.status === 'error' || matchesPlaylists.meta.status === 'error') && (
-          <Error message={'Something went wrong, please try again later'} />
-        )}
+        {leagueList.meta.status === 'error' && <Error message={'Something went wrong, please try again later'} />}
         {leagueList.meta.status === 'success' && (
           <>
             <div className={s.root}>
@@ -640,6 +638,9 @@ class Matches extends React.Component {
                     />
                     <div className={s.matches_header_bg} />
                   </>
+                  {matchesPlaylists.meta.status === 'error' && (
+                    <Error message={'Something went wrong, please try again later'} />
+                  )}
                   {matchesPlaylists.meta.status === 'loading' && <PlaceholderContent />}
                   {matchesPlaylists.meta.status !== 'loading' &&
                     matchesPlaylists.meta.status !== 'error' && (
