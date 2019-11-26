@@ -907,7 +907,7 @@ app.get('*', async (req, res, next) => {
     }
 
     if (accessToken && req.cookies.bcavoucher) {
-      return res.redirect(domain + `/activate/bca/${req.cookies.bcavoucher}`)
+      return res.redirect(domain + `/p/${req.cookies.bcavoucher}`)
     }
 
     const uid = req.cookies.SID ? jwt.decode(req.cookies.SID).uid : ''
