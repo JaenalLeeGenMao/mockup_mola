@@ -140,12 +140,11 @@ class HorizontalPlaylist extends Component {
       categoryFilterType = 'League',
       loadedThumbnail,
     } = this.props
-    const allCat = [{ id: 'All', title: 'All' }]
-
+    // const allCat = [{ id: 'All', title: 'All' }]
     return (
       <>
         <div className={s.genreCategory__wrapper}>
-          {allCat.map(dt => {
+          {/* {allCat.map(dt => {
             return (
               <>
                 <div
@@ -161,7 +160,7 @@ class HorizontalPlaylist extends Component {
                 </div>
               </>
             )
-          })}
+          })} */}
           {matchesPlaylists.data.map(genre => {
             return (
               <>

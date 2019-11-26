@@ -20,8 +20,8 @@ const Error = ({
   let imageUri
   switch (status) {
     case 400:
-      title = 'This is not the web page you are looking for'
-      imageUri = notFound
+      title = 'Oops, Sorry :('
+      imageUri = commonError
       break
     case 403:
       title = 'This page is forbidden'
