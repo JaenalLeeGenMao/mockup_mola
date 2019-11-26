@@ -22,7 +22,10 @@ import LazyLoad from '@components/common/Lazyload'
 import VerticalCalendar from '@components/VerticalCalendar'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
 
-import Placeholder from './placeholder'
+import Placeholder from './placeholder/placeholder'
+import PlaceholderContent from './placeholder/placeholderContent'
+import Error from '@components/common/error'
+
 import s from './matches.css'
 // import _unionBy from 'lodash/unionBy'
 // import { IoIosReturnLeft } from 'react-icons/io'
@@ -86,6 +89,22 @@ const customTourStyle = {
   },
 }
 let scroller = Scroll.scroller
+
+const startDate = new Date(
+  moment()
+    .subtract(1, 'weeks')
+    .startOf('isoWeek')
+)
+
+const endDate = new Date(
+  moment()
+    .add(1, 'weeks')
+    .endOf('isoWeek')
+)
+
+const formatStartDate = formatDateTime(startDate.getTime() / 1000, 'YYYYMMDD')
+const formatEndDate = formatDateTime(endDate.getTime() / 1000, 'YYYYMMDD')
+
 class Matches extends React.Component {
   constructor(props) {
     super(props)
@@ -103,7 +122,7 @@ class Matches extends React.Component {
     expandVideoType: true,
     expandLeague: true,
     filterByDates: '',
-    filterByLeague: 'All',
+    filterByLeague: 'league-epl',
     startGuide: false,
     stepIndex: 0,
     steps: tourSteps.en,
@@ -129,21 +148,6 @@ class Matches extends React.Component {
   }
 
   componentDidMount() {
-    const startDate = new Date(
-      moment()
-        .subtract(1, 'weeks')
-        .startOf('isoWeek')
-    )
-
-    const endDate = new Date(
-      moment()
-        .add(1, 'weeks')
-        .endOf('isoWeek')
-    )
-
-    const formatStartDate = formatDateTime(startDate.getTime() / 1000, 'YYYYMMDD')
-    const formatEndDate = formatDateTime(endDate.getTime() / 1000, 'YYYYMMDD')
-
     this.props.getLeaguesAndMatch('leagues', formatStartDate, formatEndDate)
     this.setDefaultDate()
 
@@ -243,14 +247,14 @@ class Matches extends React.Component {
     }
 
     let matchesList = []
-    let hasLive = false
+    // let hasLive = false
     threeWeeksDate.map(weeksDate => {
       let hasMatch = false
       sortMatches.map((matchDt, index) => {
         const formatStartTime = formatDateTime(matchDt.startTime, 'YYMMDD')
-        if (!hasLive) {
-          hasLive = isMatchLive(matchDt.startTime, matchDt.endTime)
-        }
+        // if (!hasLive) {
+        //   hasLive = isMatchLive(matchDt.startTime, matchDt.endTime)
+        // }
         if (formatStartTime === weeksDate.dateId) {
           hasMatch = true
           matchesList.push(matchDt)
@@ -261,24 +265,27 @@ class Matches extends React.Component {
       }
     })
 
-    return { matchesList, hasLive }
+    return matchesList
   }
 
   setInitialData = () => {
-    let matchTemp = []
+    // let matchTemp = []
     const { data } = this.props.matches.matchesPlaylists
-    data.forEach(dt => {
-      if (dt.id) {
-        const vidDt = dt.videos
-        for (let i = 0; i < vidDt.length; i++) {
-          matchTemp.push(vidDt[i])
-        }
-      }
-    })
+    const matchData = data.length > 0 ? data[0].videos : null
+    // data.forEach(dt => {
+    //   if (dt.id) {
+    //     const vidDt = dt.videos
+    //     for (let i = 0; i < vidDt.length; i++) {
+    //       matchTemp.push(vidDt[i])
+    //     }
+    //   }
+    // })
+    const filteredMatches = this.getThreeWeeksDate(matchData)
+    // let filteredMatches = filteredResult.matchesList
 
-    const result = this.getThreeWeeksDate(matchTemp)
-    let matchesList = result.matchesList
-    this.setState({ allMatches: matchesList, matches: matchesList, hasLive: result.hasLive })
+    // this.setState({ allMatches: matchesList, matches: filteredMatches, hasLive: result.hasLive })
+    this.setState({ matches: filteredMatches })
+
     if (!this.state.startGuide && localStorage.getItem('tour-matches')) {
       const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
       setTimeout(() => {
@@ -301,20 +308,20 @@ class Matches extends React.Component {
     }
   }
 
-  handleFilterByLeague = value => {
-    const { data } = this.props.matches.matchesPlaylists
+  // handleFilterByLeague = value => {
+  //   const { data } = this.props.matches.matchesPlaylists
 
-    let filterResult = []
-    data.forEach(dt => {
-      if (value === dt.id) {
-        const vidDt = dt.videos
-        for (let i = 0; i < vidDt.length; i++) {
-          filterResult.push(vidDt[i])
-        }
-      }
-    })
-    return filterResult
-  }
+  //   let filterResult = []
+  //   data.forEach(dt => {
+  //     if (value === dt.id) {
+  //       const vidDt = dt.videos
+  //       for (let i = 0; i < vidDt.length; i++) {
+  //         filterResult.push(vidDt[i])
+  //       }
+  //     }
+  //   })
+  //   return filterResult
+  // }
 
   // handleFilterAllLeague = (value, matches) => {
   //   const { data } = this.props.matches.matchesPlaylists
@@ -337,53 +344,6 @@ class Matches extends React.Component {
 
   handleDateFilter = value => {
     this.setState({ filterByDates: value })
-  }
-
-  handleCategoryFilter = value => {
-    let filterLeagueRes = []
-    const { allMatches } = this.state
-
-    let matchesList = []
-    let result
-
-    const startWeekDate = moment().startOf('isoWeek')
-    const date = new Date(moment().startOf('date'))
-    const swdTimestamp = date.getTime() / 1000
-
-    if (value == 'All') {
-      filterLeagueRes = allMatches
-    } else {
-      filterLeagueRes = this.handleFilterByLeague(value, allMatches)
-    }
-
-    result = this.getThreeWeeksDate(filterLeagueRes)
-    matchesList = result.matchesList
-    let flag = true
-    for (let i = 0; i < result.matchesList.length; i++) {
-      //kalau ada minimal 1 pertandingan
-      if (result.matchesList[i].id) {
-        flag = false
-      }
-    }
-
-    this.setState({
-      noMatch: flag,
-      matches: matchesList,
-      filterByLeague: value,
-      selectedWeek: 2,
-      filterByDates: swdTimestamp,
-      startWeekDate: startWeekDate,
-      hasLive: result.hasLive,
-    })
-
-    const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
-    setTimeout(() => {
-      scroller.scrollTo(formatStartTime, {
-        duration: 500,
-        smooth: true,
-        offset: -150,
-      })
-    }, 500)
   }
 
   renderNoMatchLeague = () => {
@@ -497,10 +457,76 @@ class Matches extends React.Component {
       </>
     )
   }
+  handleCategoryFilter = value => {
+    // let filterLeagueRes = []
+    // const { allMatches } = this.state
+    this.props.getMatchesPlaylists(value, formatStartDate, formatEndDate)
+
+    // const filteredResult = this.getThreeWeeksDate(filterLeagueRes)
+    // let filteredMatches = filteredResult.matchesList
+
+    // // this.setState({ allMatches: matchesList, matches: filteredMatches, hasLive: result.hasLive })
+    // this.setState({ matches: filteredMatches, hasLive: result.hasLive })
+
+    // console.log("MASUK", value)
+    // let matchesList = []
+    // let result
+
+    const startWeekDate = moment().startOf('isoWeek')
+    const date = new Date(moment().startOf('date'))
+    const swdTimestamp = date.getTime() / 1000
+
+    // if (value == 'All') {
+    //   filterLeagueRes = allMatches
+    // } else {
+    //   filterLeagueRes = this.handleFilterByLeague(value, allMatches)
+    // }
+
+    // result = this.getThreeWeeksDate(filterLeagueRes)
+    // matchesList = result.matchesList
+    // let flag = true
+    // for (let i = 0; i < result.matchesList.length; i++) {
+    //   //kalau ada minimal 1 pertandingan
+    //   if (result.matchesList[i].id) {
+    //     flag = false
+    //   }
+    // }
+
+    this.setState({
+      // noMatch: flag,
+      // matches: matchesList,
+      filterByLeague: value,
+      selectedWeek: 2,
+      filterByDates: swdTimestamp,
+      startWeekDate: startWeekDate,
+      // hasLive: result.hasLive,
+    })
+
+    const formatStartTime = formatDateTime(Date.now() / 1000, 'YYMMDD')
+    setTimeout(() => {
+      scroller.scrollTo(formatStartTime, {
+        duration: 500,
+        smooth: true,
+        offset: -150,
+      })
+    }, 500)
+  }
 
   renderMatchCard = () => {
-    const { matches, noMatch } = this.state
+    const { data } = this.props.matches.matchesPlaylists
+
+    let noMatch = true
     let flagLive = false
+
+    const matchData = data.length > 0 ? data[0].videos : null
+    const matches = this.getThreeWeeksDate(matchData)
+
+    for (let i = 0; i < matches.length; i++) {
+      //kalau ada minimal 1 pertandingan
+      if (matches[i].id) {
+        noMatch = false
+      }
+    }
 
     if (matches.length < 0) {
       return this.renderNoMatchLeague()
@@ -571,10 +597,8 @@ class Matches extends React.Component {
   }
 
   render() {
-    const matchPlaylists = this.props.matches.matchesPlaylists
-
-    const { filterByDates, startWeekDate, hasLive, startGuide, steps, stepIndex } = this.state
-    const isDark = false
+    const { matchesPlaylists, leagueList } = this.props.matches
+    const { filterByDates, startWeekDate, startGuide, steps, stepIndex } = this.state
     return (
       <>
         {/* <Joyride
@@ -589,44 +613,53 @@ class Matches extends React.Component {
           callback={this.handleTourCallback}
         /> */}
         <div className={s.headerContainer}>
-          <Header stickyOff searchOff isDark={isDark} activeMenu="matches" libraryOff {...this.props} />
+          <Header stickyOff searchOff activeMenu="matches" libraryOff {...this.props} />
         </div>
-        {matchPlaylists.meta.status === 'loading' && <Placeholder />}
-        {matchPlaylists.meta.status === 'success' && (
+        {leagueList.meta.status === 'loading' && <Placeholder />}
+        {(leagueList.meta.status === 'error' || matchesPlaylists.meta.status === 'error') && (
+          <Error message={'Something went wrong, please try again later'} />
+        )}
+        {leagueList.meta.status === 'success' && (
           <>
             <div className={s.root}>
               <div className={s.matchlist_container} id="containercard">
                 {/* start data infinite scroll*/}
                 <div className={s.matchlist_wrapper}>
-                  <HorizontalPlaylist
-                    handleCategoryFilter={this.handleCategoryFilter}
-                    matchesPlaylists={this.props.matches.matchesPlaylists}
-                    filterByLeague={this.state.filterByLeague}
-                    // filterAllLeague={this.state.filterAllLeague}
-                    expandLeague={this.state.expandLeague}
-                    categoryFilterType={'League'}
-                    categoryFilterAll={'All'}
-                    allButtonOn
-                    allCat
-                    loadedThumbnail={this.loadedThumbnail}
-                  />
-                  <div className={s.matches_header_bg} />
-                  <div className={s.matches_grid}>
-                    <span>{this.categoryFilter()}</span>
-                    <span className={'tourMatchStatus'}>
-                      <div className={s.matchlist_wrappercontent_center}>
-                        <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
-                      </div>
-                    </span>
-                    <VerticalCalendar
-                      handleCategoryFilter={this.handleDateFilter}
-                      selectedDate={filterByDates}
-                      startOfWeek={startWeekDate}
-                      hasLiveLogo={hasLive}
-                      handleJumpToLive={this.handleJumpToLive}
-                      isChannel={false}
+                  <>
+                    <HorizontalPlaylist
+                      handleCategoryFilter={this.handleCategoryFilter}
+                      matchesPlaylists={leagueList}
+                      filterByLeague={this.state.filterByLeague}
+                      // filterAllLeague={this.state.filterAllLeague}
+                      expandLeague={this.state.expandLeague}
+                      categoryFilterType={'League'}
+                      categoryFilterAll={'All'}
+                      allButtonOn
+                      allCat
+                      loadedThumbnail={this.loadedThumbnail}
                     />
-                  </div>
+                    <div className={s.matches_header_bg} />
+                  </>
+                  {matchesPlaylists.meta.status === 'loading' && <PlaceholderContent />}
+                  {matchesPlaylists.meta.status !== 'loading' &&
+                    matchesPlaylists.meta.status !== 'error' && (
+                      <div className={s.matches_grid}>
+                        <span>{this.categoryFilter()}</span>
+                        <span className={'tourMatchStatus'}>
+                          <div className={s.matchlist_wrappercontent_center}>
+                            <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
+                          </div>
+                        </span>
+                        <VerticalCalendar
+                          handleCategoryFilter={this.handleDateFilter}
+                          selectedDate={filterByDates}
+                          startOfWeek={startWeekDate}
+                          hasLiveLogo={matchesPlaylists.hasLive}
+                          handleJumpToLive={this.handleJumpToLive}
+                          isChannel={false}
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
               {/* end data infinite scroll */}
@@ -658,6 +691,8 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
   getLeaguesAndMatch: (id, startDate, endDate) => dispatch(matchListActions.getLeaguesAndMatch(id, startDate, endDate)),
+  getMatchesPlaylists: (id, startDate, endDate) =>
+    dispatch(matchListActions.getMatchesPlaylists(id, startDate, endDate)),
 })
 
 export default compose(withStyles(s), connect(mapStateToProps, mapDispatchToProps))(Matches)

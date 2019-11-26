@@ -2,7 +2,7 @@ import { get, post, delete as axiosDelete } from 'axios'
 import _ from 'lodash'
 import {
   // VIDEOS_ENDPOINT,
-  // HOME_PLAYLIST_ENDPOINT,
+  HOME_PLAYLIST_ENDPOINT,
   HISTORY_ENDPOINT,
   SEARCH_ENDPOINT,
   // SEARCH_GENRE_ENDPOINT,
@@ -131,7 +131,7 @@ const getFeatureBanner = ({ id = '' }) => {
 
 const getLeaguesList = (id = 'leagues') => {
   // link lama: genre-spo change into leagues
-  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/league-list?id=${id}`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/league-list?id=${id}`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -156,63 +156,8 @@ const getLeaguesList = (id = 'leagues') => {
     })
 }
 
-const getMatchesList = (id = 'mola-soc') => {
-  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/${id}`, {
-    ...endpoints.setting,
-  })
-    .then(response => {
-      // console.log('response handler matcheslist', response)
-      const result = utils.normalizeMatchesList(response)
-      // console.log('after normalize matchlist', result)
-      return {
-        meta: {
-          status: result[0].length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: [...result[0]] || [],
-      }
-    })
-    .catch(error => {
-      const errorMessage = error.toString().replace('Error:', 'Mola Sports')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
-
-// const getMatchDetail = ids => {
-//   return get(`${VIDEOS_ENDPOINT_NOCACHE}?${ids}&summary=1`, {
-//     ...endpoints.setting,
-//   })
-//     .then(response => {
-//       const result = utils.normalizeMatchDetail(response)
-//       // console.log('handler: after normalize match detail', result)
-//       return {
-//         meta: {
-//           status: result.length > 0 ? 'success' : 'no_result',
-//           error: '',
-//         },
-//         data: result || null,
-//       }
-//     })
-//     .catch(error => {
-//       const errorMessage = error.toString().replace('Error:', 'Mola Match Detail')
-//       return {
-//         meta: {
-//           status: 'error',
-//           error: errorMessage,
-//         },
-//         data: [],
-//       }
-//     })
-// }
-
 const getMatchesPlaylists = (ids, startDate, endDate) => {
-  return get(`${HOME_PLAYLIST_ENDPOINT_NOCACHE}/league-list/matches?from=${startDate}&to=${endDate}&${ids}&summary=1`, {
+  return get(`${HOME_PLAYLIST_ENDPOINT}/league-list/matches?from=${startDate}&to=${endDate}&${ids}&summary=1`, {
     ...endpoints.setting,
   })
     .then(response => {
@@ -994,8 +939,6 @@ export default {
   getSportVideo,
   getLeaguesList,
   getMatchesPlaylists,
-  getMatchesList,
-  // getMatchDetail,
   getChannelsList,
   getProgrammeGuides,
   getHeaderMenu,

@@ -121,6 +121,7 @@ const normalizeMatchPlaylists = response => {
         videos &&
         videos.map(video => {
           const { id, attributes: { title, type, startTime, endTime, homeTeam, awayTeam } } = video
+
           return {
             id,
             type,
@@ -159,12 +160,12 @@ const normalizeLeagueList = response => {
     return data.map(result => {
       const { id, attributes: { title, images } } = result
 
-      const thumbnailImg = _get(images, 'thumbnails.cover', '')
+      const thumbnails = _get(images, 'thumbnails.cover', '')
 
       return {
         id,
         title,
-        thumbnailImg,
+        thumbnails,
       }
     })
   }

@@ -17,6 +17,11 @@
   margin-bottom: 5rem;
 }
 
+.placeholder__top__blank {
+  width: 100%;
+  margin-bottom: 7rem;
+}
+
 .placeholder__content {
   color: white;
   display: grid;
