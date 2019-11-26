@@ -327,3 +327,13 @@ Improvements:
 * Article server call use external call (changes on server.js) but right now article feature is disabled (Ferdy)
 * Add margin to description mobile sport so not overlap with app/playstore logo (Irene)
 * Update config.js add article_api_url F article server call use external call (changes on server.js) but right now article feature is disabled (Ferdy)
+
+**25/11/2019** 
+
+V1.8.0 + **1965**
+
+Improvements:
+* Add new login redemption page, when user want to redeem code and not login both for mobile and desktop web. (Sabiq)
+* Changes activation code path, to mola.tv/p/code. (Sabiq)
+
+
