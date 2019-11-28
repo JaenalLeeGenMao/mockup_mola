@@ -1,31 +1,51 @@
+variables:
+  DOCKER_HOST: 'tcp://localhost:2375'
+
 stages:
-  #   - test
-  #   - build
+  - build
   - push_docker
 
-.job_template: &push_docker
+.push_docker: &push_docker
   image: google/cloud-sdk
+  stage: push_docker
   services:
     - docker:18.09-dind
-  script:
-    - export DOCKER_HOST="tcp://localhost:2375"
-    - docker info
+  after_script:
+    - ./.gitlab/prepare_files.sh
     - ./.gitlab/auth_gcloud.sh
     - ./.gitlab/push_docker.sh
   except:
     changes:
-      - "qa_release_notes.md"
+      - 'dev_release_notes.md'
+      - 'qa_release_notes.md'
 
-push_docker_staging:
-  stage: push_docker
-  <<: *push_docker
+.build: &build
+  image: node:8-alpine
+  stage: build
+  artifacts:
+    paths:
+      - ./build
+    expire_in: 5 mins
+  script:
+    - apk --no-cache --update add g++ make bash zlib-dev libpng-dev
+    - yarn install --no-progress --production=false
+    - node_modules/.bin/babel-node tools/run build -- --release --docker
+
+cache:
+  key: vendor
+  paths:
+    - node_modules/
+
+build_staging:
+  <<: *build
+  only:
+    - beta@apps/mola/mola-web
+    - develop@apps/mola/mola-web
+    - new-design-dev@apps/mola/mola-web
   variables:
-    GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_STAG
-    GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_STAG
+    ENV: staging
     NODE_ENV: staging
     REACT_APP_ENV: staging
-    GCS_PATH: gs://sstv-staging-cdn/mola
-    CDN_PATH: https://cdn.stag.supersoccer.tv/mola
     VIDEO_ENDPOINT: $VIDEO_ENDPOINT
     AUTH_ENDPOINT: $AUTH_ENDPOINT
     SUBSCRIPTION_API_URL: $SUBSCRIPTION_ENDPOINT
@@ -33,27 +53,45 @@ push_docker_staging:
     OAUTH_APP_SECRET_WEB: $OAUTH_APP_SECRET_WEB
     OAUTH_APP_KEY_MOBILE: $OAUTH_APP_KEY_MOBILE
     OAUTH_APP_SECRET_MOBILE: $OAUTH_APP_SECRET_MOBILE
+
+build_production:
+  <<: *build
+  only:
+    - master@apps/mola/mola-web
+  variables:
+    ENV: production
+    NODE_ENV: production
+    REACT_APP_ENV: production
+    VIDEO_ENDPOINT: $VIDEO_ENDPOINT
+    AUTH_ENDPOINT: $AUTH_ENDPOINT
+    SUBSCRIPTION_API_URL: $SUBSCRIPTION_ENDPOINT
+    OAUTH_APP_KEY_WEB: $OAUTH_APP_KEY_WEB
+    OAUTH_APP_SECRET_WEB: $OAUTH_APP_SECRET_WEB
+    OAUTH_APP_KEY_MOBILE: $OAUTH_APP_KEY_MOBILE
+    OAUTH_APP_SECRET_MOBILE: $OAUTH_APP_SECRET_MOBILE
+
+push_docker_staging:
+  <<: *push_docker
+  script:
+    - echo "Pushing docker image to staging..."
+  variables:
+    GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_STAG
+    GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_STAG
+	GCS_PATH: gs://sstv-staging-cdn/mola
+    CDN_PATH: https://cdn.stag.supersoccer.tv/mola
   only:
     - beta@apps/mola/mola-web
     - develop@apps/mola/mola-web
     - new-design-dev@apps/mola/mola-web
 
 push_docker_production:
-  stage: push_docker
   <<: *push_docker
+  script:
+    - echo "Pushing docker image to production..."
   variables:
     GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_PROD
     GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_PROD
-    NODE_ENV: production
-    REACT_APP_ENV: production
-    GCS_PATH: gs://koicdn-com/mola01
+	GCS_PATH: gs://koicdn-com/mola01
     CDN_PATH: https://mola01.koicdn.com
-    VIDEO_ENDPOINT: $VIDEO_ENDPOINT
-    AUTH_ENDPOINT: $AUTH_ENDPOINT
-    SUBSCRIPTION_API_URL: $SUBSCRIPTION_ENDPOINT
-    OAUTH_APP_KEY_WEB: $OAUTH_APP_KEY_WEB
-    OAUTH_APP_SECRET_WEB: $OAUTH_APP_SECRET_WEB
-    OAUTH_APP_KEY_MOBILE: $OAUTH_APP_KEY_MOBILE
-    OAUTH_APP_SECRET_MOBILE: $OAUTH_APP_SECRET_MOBILE
   only:
     - master@apps/mola/mola-web
