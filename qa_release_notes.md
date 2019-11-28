@@ -347,3 +347,11 @@ V1.8.1 + **1967**
 
 Improvement:
 * Update versioning to 1.8.1 on package.json (Irene)
+
+V1.8.2 + **1971** 
+
+Improvement:
+* Update versioning to 1.8.2 on package.json (Irene)
+
+Bug Fix:
+* Fix redirect path to bca /p/code when users succes reedem code (Sabiq)
