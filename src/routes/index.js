@@ -109,6 +109,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'terms' */ './terms'),
     },
     {
+      path: '/get-app',
+      load: () => import(/* webpackChunkName: 'get-app' */ './get-app'),
+    },
+    {
       path: '/conditions',
       load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },
@@ -303,7 +307,7 @@ const track = async store => {
     const user = store.getState().user
 
     // Check if current path is in search page
-    const inSearchPage = currentLocation.pathname === '/search'
+    const inSearchPage = currentLocation.pathname === '/search' || currentLocation.pathname === '/get-app'
 
     // get the token
     const token = await tracker.getOrCreateToken()
