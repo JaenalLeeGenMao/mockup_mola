@@ -77,7 +77,7 @@ push_docker_staging:
   variables:
     GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_STAG
     GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_STAG
-	GCS_PATH: gs://sstv-staging-cdn/mola
+    GCS_PATH: gs://sstv-staging-cdn/mola
     CDN_PATH: https://cdn.stag.supersoccer.tv/mola
   only:
     - beta@apps/mola/mola-web
@@ -91,7 +91,7 @@ push_docker_production:
   variables:
     GCLOUD_SERVICE_KEY: $GCR_SSTV_KEY_PROD
     GCLOUD_PROJECT_ID: $GCR_SSTV_PROJECT_PROD
-	GCS_PATH: gs://koicdn-com/mola01
+    GCS_PATH: gs://koicdn-com/mola01
     CDN_PATH: https://mola01.koicdn.com
   only:
     - master@apps/mola/mola-web
