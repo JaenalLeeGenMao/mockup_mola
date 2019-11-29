@@ -3,9 +3,17 @@ import { connect } from 'react-redux'
 import { globalTracker } from '@source/lib/globalTracker'
 
 class GetApp extends Component {
+  state = {
+    store_url: '',
+    ios_store_url: '',
+  }
+
   async componentDidMount() {
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
     const isAndroid = /Android/.test(navigator.userAgent)
+    await this.getConfig()
+    const { store_url, ios_store_url } = this.state
+
     const payload = {
       window,
       user: this.props.user,
@@ -14,15 +22,26 @@ class GetApp extends Component {
     if (isApple) {
       payload.linkRedirectUrl = 'get-app/appstore'
       await globalTracker(payload)
-      document.location = 'https://apps.apple.com/us/app/mola-tv/id1473256917?ls=1'
+      document.location = ios_store_url
     } else if (isAndroid) {
       payload.linkRedirectUrl = 'get-app/playstore'
       await globalTracker(payload)
-      document.location = 'https://play.google.com/store/apps/details?id=tv.mola.app'
+      document.location = store_url
     } else {
       payload.linkRedirectUrl = 'get-app/web-desktop'
       await globalTracker(payload)
-      document.location = 'https://mola.tv'
+      document.location = '/'
+    }
+  }
+
+  getConfig = async () => {
+    const { configParams } = this.props
+    if (configParams.data) {
+      const { store_url, ios_store_url } = configParams.data
+      this.setState({
+        store_url,
+        ios_store_url,
+      })
     }
   }
 
