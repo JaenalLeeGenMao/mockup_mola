@@ -45,7 +45,9 @@ class LoginBca extends Component {
   }
 
   handleLogin = async () => {
-    const { runtime: { csrf } } = this.props
+    const {
+      runtime: { csrf },
+    } = this.props
 
     if (!this.validateEmail(emailInputRef.value)) {
       emailInputRef.focus()
@@ -171,10 +173,15 @@ class LoginBca extends Component {
         <div className={styles.login__content_wrapper}>
           <div className={styles.login__content_form}>
             <div className={styles.login__content_title}>
-              <h1>Aktivasi Paket Mola TV!</h1>
+              <img
+                src="https://res-mola01.koicdn.com/image/f4e02c8b-05d4-46b0-abdd-8b8355b11aaa/image.png"
+                width="100"
+                alt="Logo Hadiah dari Mola"
+              />
+              <h1>Selamat!</h1>
               <p>
-                Pastikan Anda sudah terdaftar sebagai MOLA user lalu masukkan email dan password akun MOLA untuk
-                mengaktifkan paket ini.
+                Anda berhak menikmati paket langganan Liga Inggris selama 1 bulan*), hanya dengan masuk ke akun Mola TV
+                Anda.
               </p>
             </div>
             <div>
@@ -251,6 +258,28 @@ class LoginBca extends Component {
               <button onClick={() => this.handleLoginSocMed('line')}>
                 <img className={styles.login__content_social_logo} src={line} />
               </button> */}
+            </div>
+
+            <div className={styles.login__content_signup}>
+              <p>
+                Don’t have an account ?{' '}
+                <a href="/accounts/register" target="_blank">
+                  Sign up now
+                </a>
+              </p>
+            </div>
+
+            <div className={styles.login__content_terms}>
+              <p>
+                *) Masa promosi hanya berlaku selama 1 bulan, dan dapat diteruskan dengan biaya Rp 125,000 per bulan.{' '}
+                <a
+                  href="https://www.bca.co.id/molatv?utm_campaign=Mola%20TV&utm_source=Mola%20TV%20App&utm_medium=CTW&utm_term=Promo%20BCA&utm_content=Buka%20Tabungan"
+                  target="_blank"
+                >
+                  Syarat & Ketentuan
+                </a>{' '}
+                berlaku.
+              </p>
             </div>
           </div>
         </div>
