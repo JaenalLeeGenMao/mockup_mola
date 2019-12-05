@@ -194,7 +194,17 @@ class LoginBca extends Component {
 
     return (
       <>
-        <Modal showCloseIcon={false} styles={styleModal} open={this.state.open} onClose={this.onCloseModal} center>
+        <Modal
+          modalId={styles.modal_login}
+          showCloseIcon={false}
+          styles={styleModal}
+          open={this.state.open}
+          onClose={this.onCloseModal}
+          center
+        >
+          <span className={styles.cloas_modal_button} onClick={() => this.onCloseModal()}>
+            +
+          </span>
           <div>
             {error && (
               <div className={styles.login__error_notif_new}>
@@ -306,15 +316,24 @@ class LoginBca extends Component {
               </div>
 
               <div className={styles.login__content_terms_listing}>
-                <h4>Syarat dan Ketentuan</h4>
-                <ol>
-                  <li>Periode promosi akan berakhir 1 (satu) bulan setelah Anda melakukan login pertama.</li>
-                  <li>
-                    Saat masa promosi berakhir, Anda tetap bisa menikmati layanan Paket Premium MOLA TV dengan hanya Rp.
-                    125,000 per bulan.
-                  </li>
-                  <li>Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.</li>
-                </ol>
+                <div>
+                  <h4>Syarat dan Ketentuan</h4>
+                  <ol>
+                    <li>Periode promosi akan berakhir 1 (satu) bulan setelah Anda melakukan login pertama.</li>
+                    <li>
+                      Saat masa promosi berakhir, Anda tetap bisa menikmati layanan Paket Premium MOLA TV hanya dengan
+                      Rp125,000 per bulan.
+                    </li>
+                    <li>Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.</li>
+                  </ol>
+                </div>
+
+                <div>
+                  <img
+                    src="https://res-mola01.koicdn.com/image/e7a13410-3465-4cb0-ab25-b763a0b3db94/image.png"
+                    alt="logo-selamat"
+                  />
+                </div>
               </div>
             </div>
           </div>
