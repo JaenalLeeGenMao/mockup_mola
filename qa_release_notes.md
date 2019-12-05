@@ -355,3 +355,11 @@ Improvement:
 
 Bug Fix:
 * Fix redirect path to bca /p/code when users succes reedem code (Sabiq)
+
+**28/11/2019**
+
+V1.8.3 + **1992**
+
+Improvement:
+* add /get-app routes and tracker for analytics (Elkana)
+
