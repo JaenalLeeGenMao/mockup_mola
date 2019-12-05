@@ -1,3 +1,85 @@
+.login__content_terms_listing {
+  margin-top: 50px;
+}
+
+.login__content_terms_listing > h4 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 10px;
+  font-weight: normal;
+  text-align: center;
+}
+
+.login__content_terms_listing > ol {
+  padding: 0 10px;
+}
+
+.login__content_terms_listing > ol > li {
+  margin-bottom: 10px;
+}
+
+.enter__promo {
+}
+
+.enter__promo a {
+  display: block;
+  background: #2c56ff 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-decoration: none;
+  text-align: center;
+  color: #fff;
+  padding: 16px;
+  font-size: 1.1rem;
+}
+
+.enter__promo a > p {
+  font-weight: bold;
+}
+
+.enter__promo a > small {
+}
+
+.btn__bca__login {
+}
+
+.btn__bca__register {
+  background: #363636 !important;
+  border: 2px solid #5576fe;
+}
+
+.login__content_signup {
+  margin: 20px 0;
+}
+
+.login__content_signup p {
+  font-size: 14px;
+  text-align: center;
+}
+
+.login__content_signup p a {
+  color: #5576fe;
+  text-decoration: none;
+}
+
+.login__content_terms {
+  margin-top: 70px;
+  margin-bottom: 20px;
+}
+
+.login__content_terms p {
+  text-align: center;
+  letter-spacing: 0;
+  color: #c8c8c8;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.login__content_terms p a {
+  color: #5576fe;
+  text-decoration: none;
+}
+
 .login__container {
   position: relative;
   display: flex;
@@ -35,6 +117,7 @@
 .login__content_title {
   font-size: 2rem;
   margin-bottom: 3rem;
+  text-align: center;
 }
 
 .login__content_title h1 {
@@ -42,6 +125,11 @@
   margin: 0.67em 0;
 
   /* line-height: 1.5; */
+}
+
+.login__content_title > h4 {
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 .login__content_title p {
@@ -227,6 +315,26 @@
   padding: 0 0.5rem 0 0;
 }
 
+.login__error_notif_new {
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-left: 0.5rem #dc3b3d solid;
+  border-color: #dc3b3d;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  background: #df4a4a26;
+  font-size: 13px;
+  margin: 0 0 2rem 0;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.login__error_notif_new img {
+  padding: 0 0.5rem 0 0;
+}
+
 .login__label_title {
   font-size: 14px;
   color: #989898;
@@ -306,6 +414,7 @@
   .login__content_title {
     font-size: 1.4rem;
     margin-bottom: 2rem;
+    text-align: center;
   }
 
   .login__content_title h1 {
