@@ -171,8 +171,11 @@ class LoginBca extends Component {
         <div className={styles.login__content_wrapper}>
           <div className={styles.login__content_form}>
             <div className={styles.login__content_title}>
-              <h1>Redeem to Mola TV Account</h1>
-              <p>Please continue with your registered email and password, to activate your package.</p>
+              <h1>Aktivasi Paket Mola TV!</h1>
+              <p>
+                Pastikan Anda sudah terdaftar sebagai MOLA user lalu masukkan email dan password akun MOLA untuk
+                mengaktifkan paket ini.
+              </p>
             </div>
             <div>
               {error && (
@@ -234,7 +237,7 @@ class LoginBca extends Component {
 
             <div className={styles.login__content_separator}>
               <div className={styles.login__content_line} />
-              <p>or</p>
+              <p>atau</p>
               <div className={styles.login__content_line} />
             </div>
             <div className={styles.login__content_social_wrapper}>
