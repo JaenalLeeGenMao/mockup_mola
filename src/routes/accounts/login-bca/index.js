@@ -12,6 +12,7 @@ import React from 'react'
 // import LoginDesktop from './desktop/Login'
 
 import LoginBca from './login-bca'
+import ReaderPromo from './reader-promo'
 
 import Molalayout from '@components/Molalayout'
 
@@ -25,7 +26,7 @@ function action({ isMobile }) {
     chunks: ['login-bca'],
     component: (
       <Molalayout>
-        <LoginBca isMobile={isMobile} />
+        <ReaderPromo isMobile={isMobile} />
       </Molalayout>
     ),
   }
