@@ -19,6 +19,7 @@ import styles from './login-bca.css'
 import _isUndefined from 'lodash/isUndefined'
 import { logoBlue, logoMobile, logoHorizontal } from '@global/imageUrl'
 import iconLoginFailed from '../../../global/assets-global/images/error_login.png'
+import iconLogoHadiah from '../../../global/assets-global/images/icon_hadiah.png'
 
 const { getComponent } = require('@supersoccer/gandalf')
 const TextInput = getComponent('text-input')
@@ -56,9 +57,7 @@ class LoginBca extends Component {
   }
 
   handleLogin = async () => {
-    const {
-      runtime: { csrf },
-    } = this.props
+    const { runtime: { csrf } } = this.props
 
     if (!this.validateEmail(emailInputRef.value)) {
       emailInputRef.focus()
@@ -290,11 +289,15 @@ class LoginBca extends Component {
           <div className={styles.login__content_wrapper}>
             <div className={styles.login__content_form}>
               <div className={styles.login__content_title}>
-                <img
-                  src="https://res-mola01.koicdn.com/image/f4e02c8b-05d4-46b0-abdd-8b8355b11aaa/image.png"
-                  width="100"
-                  alt="Logo Hadiah dari Mola"
-                />
+                <div className={styles.login__content_images}>
+                  <img
+                    // src="https://res-mola01.koicdn.com/image/f4e02c8b-05d4-46b0-abdd-8b8355b11aaa/image.png"
+                    src={iconLogoHadiah}
+                    width="77.71"
+                    alt="Logo Hadiah dari Mola"
+                  />
+                </div>
+
                 <h1>Selamat!</h1>
                 <h4>Anda kini sudah bisa menikmati paket Premium MOLA TV!</h4>
 
@@ -322,18 +325,18 @@ class LoginBca extends Component {
                     <li>Periode promosi akan berakhir 1 (satu) bulan setelah Anda melakukan login pertama.</li>
                     <li>
                       Saat masa promosi berakhir, Anda tetap bisa menikmati layanan Paket Premium MOLA TV hanya dengan
-                      Rp125,000 per bulan.
+                      Rp125,000 per bulan. Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.
                     </li>
-                    <li>Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.</li>
+                    {/* <li>Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.</li> */}
                   </ol>
                 </div>
 
-                <div>
+                {/* <div>
                   <img
                     src="https://res-mola01.koicdn.com/image/e7a13410-3465-4cb0-ab25-b763a0b3db94/image.png"
                     alt="logo-selamat"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
