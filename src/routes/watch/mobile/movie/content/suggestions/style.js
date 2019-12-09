@@ -8,6 +8,9 @@ export const videoSuggestionContainer = css`
   width: calc(100% - 40px);
   margin: 0 20px 160px 20px;
   overflow: hidden;
+  @supports (-webkit-overflow-scrolling: touch) {
+    height: 24rem;
+  }
 }
 `
 
