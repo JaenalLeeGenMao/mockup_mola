@@ -85,6 +85,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'bca-subscribe' */ './accounts/bca-subscribe'),
     },
     {
+      path: '/promo/bca',
+      load: () => import(/* webpackChunkName: 'bca-promo' */ './accounts/bca-promo'),
+    },
+    {
       path: '/accounts/ordered',
       load: () => import(/* webpackChunkName: 'ordered' */ './accounts/ordered'),
     },
