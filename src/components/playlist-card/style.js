@@ -5,6 +5,8 @@ export const playlistContainer = css`
   display: inline-block;
   border-radius: 0.25rem;
   transition: all ease 500ms;
+  width: 100%;
+  overflow: hidden;
 
   :hover {
     pointer-events: auto;
@@ -52,6 +54,10 @@ export const playlistContainer = css`
 
   .imageWrapper {
     position: relative;
+    display: inline-block;
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
   }
 
   .bannerImage.hide,
@@ -81,10 +87,12 @@ export const playlistContainer = css`
 export const icons = css`
   position: absolute;
   z-index: 2;
-  bottom: 0.75rem;
-  left: 0.75rem;
-  padding: 0.1rem;
-  // opacity: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  // opacity: 0
   // transition: all ease 500ms;
 
   .playIcon {

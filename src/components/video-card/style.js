@@ -5,6 +5,8 @@ export const videoContainer = css`
   display: inline-block;
   border-radius: .25rem;
   transition: all ease 500ms;
+  width: 100%;
+  overflow: hidden;
 
   :hover {
     pointer-events: auto;
@@ -43,6 +45,10 @@ export const videoContainer = css`
 
   .imageWrapper {
     position: relative;
+    display: inline-block;
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
   }
 
   .bannerImage {
@@ -79,6 +85,7 @@ export const icons = css`
   bottom: 7.5%;
   left: 0.75rem;
   padding: 0.1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
   // opacity: 0;
   // transition: all ease 500ms;
 
