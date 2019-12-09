@@ -1,0 +1,152 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+@import '../../../../components/variables.css';
+
+html {
+  font-size: 62.5% !important;
+}
+
+.wrapper {
+  --font-size-paragraph: 1.2rem;
+  --margin-bottom: 15px;
+
+  overflow-y: scroll;
+  position: relative;
+}
+
+.root {
+  position: relative;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  line-height: 2rem;
+}
+
+.container {
+  text-align: center;
+  color: white;
+}
+
+.container h1 {
+  font-size: 14px;
+}
+
+.container__logo_failed img {
+  width: 40%;
+}
+
+.container__logo_text {
+  width: 100%;
+}
+
+.header_text {
+  display: block;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.1rem;
+
+  /* text-align: center; */
+  font-size: 2rem;
+  margin-bottom: var(--margin-bottom);
+}
+
+.banner {
+  position: relative;
+  display: block;
+  margin-bottom: var(--margin-bottom);
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+}
+
+.paragraph_bold {
+  position: relative;
+  display: block;
+  font-weight: 500;
+  color: white;
+  margin-bottom: var(--margin-bottom);
+  font-size: 1.5rem;
+}
+
+.paragraph {
+  position: relative;
+  display: block;
+  color: #c8c8c8;
+  margin-bottom: var(--margin-bottom);
+  font-size: var(--font-size-paragraph);
+}
+
+.code {
+  color: white;
+  position: relative;
+  display: block;
+  border: 1px solid #2c56ff;
+  border-radius: 4px;
+  height: 53px;
+  width: 100%;
+  margin-bottom: var(--margin-bottom);
+  margin-top: 20px;
+}
+
+.copy_button {
+  display: inline-block;
+  position: absolute;
+  background-color: #2c56ff;
+  border: 1px solid #2c56ff;
+  border-radius: 4px;
+  right: 15px;
+  top: 23%;
+  padding-left: 10px;
+  font-weight: 400;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.voucher_code {
+  display: inline-block;
+  position: absolute;
+  left: 15px;
+  top: 30%;
+  font-size: 1.5rem;
+}
+
+.bca_link {
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: var(--margin-bottom);
+}
+
+.mola_logo {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mola_logo img {
+  width: 14rem;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1025px) {
+  .wrapper {
+    margin: auto;
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .wrapper {
+    margin: auto;
+    width: 30%;
+  }
+}

@@ -55,3 +55,5 @@ export const playStoreBadge = `${imgBaseUrl}/google-play-badge@2x_2.png`
 export const appStoreBadge = `${imgBaseUrl}/app-store-badge@2x.png`
 export const iconMolaSuccess = `${imgBaseUrl}/icon_fail.png`
 export const iconMolaFailed = `${imgBaseUrl}/icon_success.png`
+
+export const bcaButton = `${imgBaseUrl}/bca-button.png`
