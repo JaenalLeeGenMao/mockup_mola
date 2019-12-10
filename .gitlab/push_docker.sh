@@ -11,11 +11,11 @@ gcloud auth configure-docker --quiet
 docker build --tag $IMAGE_NAME .
 
 # FOR TESTING
-echo $IMAGE_NAME
+docker ps
 
 # Push docker image
 docker push $IMAGE_NAME
 
 # Push Assets to CDN
-gsutil -m -h -q "Cache-Control:public,max-age=31556952" cp -r build/public/assets/* ${GCS_PATH}/assets/
-gsutil -m -h -q "Cache-Control:public,max-age=31556952" cp -r src/global/assets-global/* ${GCS_PATH}/assets-global/
+gsutil -m -h "Cache-Control:public,max-age=31556952" -q cp -r build/public/assets/* ${GCS_PATH}/assets/
+gsutil -m -h "Cache-Control:public,max-age=31556952" -q cp -r src/global/assets-global/* ${GCS_PATH}/assets-global/
