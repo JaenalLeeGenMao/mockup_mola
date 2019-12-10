@@ -1,33 +1,15 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-// import { iconMolaSuccess, iconMolaFailed } from '@global/imageUrl'
-import bcaUrl from '../../../../../src/global/assets-global/images/bca-button.png'
 import { logoHorizontal } from '@global/imageUrl'
-
 import Link from '@components/Link'
-
-import Header from '@components/Header'
-
-import s from './bcaPromo.css'
-
 import LazyLoad from '@components/common/Lazyload'
-import history from '@source/history'
+import s from './bcaPromo.css'
+import bcaUrl from '../../../../../src/global/assets-global/images/bca-button.png'
 
 import { getLocale } from '../locale'
-import _isUndefined from 'lodash/isUndefined'
 
 class BcaPromo extends React.Component {
   constructor(props) {
@@ -37,6 +19,9 @@ class BcaPromo extends React.Component {
       locale: getLocale(),
       voucher_code: 'MOLATV',
       copied: false,
+      bannerUrl: 'https://res-mola01.koicdn.com/image/bee0657a-b792-4e02-b609-db50a6b6e9f7/image.jpeg',
+      bcaRedirectLink:
+        'https://www.bca.co.id/molatv?utm_campaign=Mola%20TV&utm_source=Mola%20TV%20App&utm_medium=CTW&utm_term=Promo%20BCA&utm_content=Buka%20Tabungan',
     }
   }
 
@@ -59,14 +44,13 @@ class BcaPromo extends React.Component {
             <div className={s.root}>
               <div className={s.header_text}>Selamat Datang di MOLA TV</div>
               <div className={s.banner}>
-                <img src={'https://res-mola01.koicdn.com/image/98b3f8c9-f8c4-4497-8dbc-e557cb83a37d/image.jpeg'} />
+                <img src={this.state.bannerUrl} />
               </div>
               <div className={s.paragraph_bold}>
                 Ingin bisa bebas streaming seluruh pertandingan Liga Inggris di MOLA TV selama sebulan?
               </div>
               <div className={s.paragraph}>
                 <p>
-                  {' '}
                   Anda hanya perlu membuka tabungan baru di BCA mobile untuk mengaktifkan paket Premium MOLA TV, dimana
                   Anda bisa menyaksikan 10 Pertandingan Liga Inggris di aplikasi MOLA TV setiap minggunya
                 </p>
@@ -84,7 +68,12 @@ class BcaPromo extends React.Component {
                 <p> Jangan lupa masukkan kode promo saat melakukan pengisian data untuk mengaktifkan penawaran ini</p>
               </div>
               <div className={s.bca_link}>
-                <img src={bcaUrl} />
+                <img
+                  src={bcaUrl}
+                  onClick={() => {
+                    window.location.href = this.state.bcaRedirectLink
+                  }}
+                />
               </div>
             </div>
           </LazyLoad>

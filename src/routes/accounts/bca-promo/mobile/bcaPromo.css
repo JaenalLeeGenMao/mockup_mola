@@ -50,10 +50,11 @@ html {
   font-weight: bold;
   color: white;
   letter-spacing: 0.1rem;
+  text-align: center;
 
   /* text-align: center; */
   font-size: 2rem;
-  margin-bottom: var(--margin-bottom);
+  margin-bottom: 25px;
 }
 
 .banner {
