@@ -30,7 +30,7 @@ class GetApp extends Component {
     } else {
       payload.linkRedirectUrl = 'get-app/web-desktop'
       await globalTracker(payload)
-      document.location = '/'
+      document.location = '/get-app-desktop'
     }
   }
 

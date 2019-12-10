@@ -117,6 +117,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'get-app' */ './get-app'),
     },
     {
+      path: '/get-app-desktop',
+      load: () => import(/* webpackChunkName: 'get-app-desktop' */ './get-app-desktop'),
+    },
+    {
       path: '/conditions',
       load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },
