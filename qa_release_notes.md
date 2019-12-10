@@ -363,3 +363,15 @@ V1.8.3 + **1992**
 Improvement:
 * add /get-app routes and tracker for analytics (Elkana)
 
+
+**06/12/2019**
+
+V1.8.3 + **1994**
+
+Improvement:
+* Add wording for BCA Promo (Karim)
+
+V1.8.3 + **1996**
+
+Improvement:
+* Improved Display of BCA Promo (Trisno) 
