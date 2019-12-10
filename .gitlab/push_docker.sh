@@ -11,7 +11,7 @@ gcloud auth configure-docker --quiet
 docker build --tag $IMAGE_NAME .
 
 # FOR TESTING
-docker ps
+docker images
 
 # Push docker image
 docker push $IMAGE_NAME
