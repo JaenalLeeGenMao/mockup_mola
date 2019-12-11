@@ -124,6 +124,21 @@
   background: #121212;
 }
 
+.login__wrapper_loading {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-self: center;
+  position: absolute;
+  top: 0;
+  height: 100vh;
+}
+
+.login__wrapper_loading p {
+  color: #c8c8c8;
+  font-size: 1.6rem;
+}
+
 .login__header_wrapper,
 .login__footer_wrapper,
 .login__content_wrapper {
@@ -380,6 +395,10 @@
 }
 
 @media screen and (max-width: 640px) {
+  .login__wrapper_loading p {
+    font-size: 16px;
+  }
+
   .header__shadow {
     height: 58px;
   }
@@ -458,6 +477,7 @@
   .login__content_title h1 {
     font-size: 26px;
     color: #fff;
+
     /* margin: 0.67em 0; */
     margin: 0.1rem 0.1rem;
 
@@ -539,4 +559,54 @@
 .loading__page {
   width: 100%;
   height: 92%;
+}
+
+.loading__page_valid {
+  width: 100%;
+  margin-bottom: 1.1rem;
+}
+
+.loading__ring_validate_promo {
+  display: block;
+  position: relative;
+  width: 80px;
+  height: 50px;
+  margin-right: auto;
+  margin-left: auto;
+  bottom: 50%;
+}
+
+.loading__ring_validate_promo div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  margin: 11px;
+  border: 3px solid #174ad6;
+  border-radius: 50%;
+  animation: loading__ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #174ad6 transparent transparent transparent;
+}
+
+.loading__ring_validate_promo div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.loading__ring_validate_promo div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.loading__ring_validate_promo div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes loading__ring_validate_promo {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
