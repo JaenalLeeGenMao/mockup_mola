@@ -13,6 +13,7 @@ import history from '@source/history'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
 import Link from '@components/Link'
+import Mola from '../../../api/mola'
 
 import { getLocale } from './locale'
 import styles from './login-bca.css'
@@ -33,6 +34,32 @@ class LoginBca extends Component {
     locale: getLocale(),
     isLoading: false,
     open: false,
+    validPromo: false,
+  }
+
+  componentDidMount() {
+    this.getApiReadPromoBca()
+  }
+
+  getApiReadPromoBca() {
+    const uriSearch = location.search
+    let voucher = ''
+    if (!_isUndefined(uriSearch) && uriSearch !== '') {
+      const urlParams = new URLSearchParams(uriSearch)
+      voucher = urlParams.get('voucher')
+    }
+    Mola.getApiPromoValidate(voucher)
+      .then(result => {
+        // console.log('result', result)
+        this.setState({
+          validPromo: true,
+        })
+      })
+      .catch(err => {
+        // console.log('error', err)
+
+        history.push('404')
+      })
   }
 
   onOpenModal = () => {
@@ -173,7 +200,7 @@ class LoginBca extends Component {
   }
 
   render() {
-    const { locale, error, isLoading } = this.state
+    const { locale, error, isLoading, validPromo } = this.state
     let styleModal = {
       modal: {
         background: '#000',
@@ -281,66 +308,90 @@ class LoginBca extends Component {
           </div>
         </Modal>
 
-        <div className={styles.login__container}>
-          <div className={styles.login__header_wrapper}>
-            <div className={styles.header__shadow} />
-            <img alt="molatv" src={logoHorizontal} className={styles.header__logo} />
+        {!validPromo && (
+          <div className={styles.login__container}>
+            <div className={styles.login__header_wrapper}>
+              <div className={styles.header__shadow} />
+              <img alt="molatv" src={logoHorizontal} className={styles.header__logo} />
+            </div>
+
+            <div className={styles.login__wrapper_loading}>
+              <div className={styles.loading__page_valid}>
+                <div className={styles.loading__ring_validate_promo}>
+                  <div />
+                  <div />
+                  <div />
+                  <div />
+                </div>
+              </div>
+
+              <p>Mohon Tunggu ...</p>
+            </div>
           </div>
-          <div className={styles.login__content_wrapper}>
-            <div className={styles.login__content_form}>
-              <div className={styles.login__content_title}>
-                <div className={styles.login__content_images}>
-                  <img
-                    // src="https://res-mola01.koicdn.com/image/f4e02c8b-05d4-46b0-abdd-8b8355b11aaa/image.png"
-                    src={iconLogoHadiah}
-                    width="77.71"
-                    alt="Logo Hadiah dari Mola"
-                  />
+        )}
+
+        {validPromo && (
+          <div className={styles.login__container}>
+            <div className={styles.login__header_wrapper}>
+              <div className={styles.header__shadow} />
+              <img alt="molatv" src={logoHorizontal} className={styles.header__logo} />
+            </div>
+            <div className={styles.login__content_wrapper}>
+              <div className={styles.login__content_form}>
+                <div className={styles.login__content_title}>
+                  <div className={styles.login__content_images}>
+                    <img
+                      // src="https://res-mola01.koicdn.com/image/f4e02c8b-05d4-46b0-abdd-8b8355b11aaa/image.png"
+                      src={iconLogoHadiah}
+                      width="77.71"
+                      alt="Logo Hadiah dari Mola"
+                    />
+                  </div>
+
+                  <h1>Selamat!</h1>
+                  <h4>Anda kini sudah bisa menikmati paket Premium MOLA TV!</h4>
+
+                  <p>
+                    Aktifkan paket Anda sekarang untuk bisa bebas menyaksikan seluruh pertandingan LIGA INGGRIS di MOLA
+                    TV selama sebulan!
+                  </p>
                 </div>
 
-                <h1>Selamat!</h1>
-                <h4>Anda kini sudah bisa menikmati paket Premium MOLA TV!</h4>
-
-                <p>
-                  Aktifkan paket Anda sekarang untuk bisa bebas menyaksikan seluruh pertandingan LIGA INGGRIS di MOLA TV
-                  selama sebulan!
-                </p>
-              </div>
-
-              <div className={styles.enter__promo}>
-                <a href="javascript:void(0)" onClick={this.onOpenModal} className={styles.btn__bca__login}>
-                  <p>Sudah punya akun MOLA TV?</p>
-                  <small> Login sekarang untuk aktifkan paket Anda</small>
-                </a>
-                <a href="/accounts/register" target="_blank" className={styles.btn__bca__register}>
-                  <p>Belum punya akun MOLA TV?</p>
-                  <small>Buat akun sekarang, sangat mudah!</small>
-                </a>
-              </div>
-
-              <div className={styles.login__content_terms_listing}>
-                <div>
-                  <h4>Syarat dan Ketentuan</h4>
-                  <ol>
-                    <li>Periode promosi akan berakhir 1 (satu) bulan setelah Anda melakukan login pertama.</li>
-                    <li>
-                      Saat masa promosi berakhir, Anda tetap bisa menikmati layanan Paket Premium MOLA TV hanya dengan
-                      Rp125,000 per bulan. Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.
-                    </li>
-                    {/* <li>Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.</li> */}
-                  </ol>
+                <div className={styles.enter__promo}>
+                  <a href="javascript:void(0)" onClick={this.onOpenModal} className={styles.btn__bca__login}>
+                    <p>Sudah punya akun MOLA TV?</p>
+                    <small> Login sekarang untuk aktifkan paket Anda</small>
+                  </a>
+                  <a href="/accounts/register" target="_blank" className={styles.btn__bca__register}>
+                    <p>Belum punya akun MOLA TV?</p>
+                    <small>Buat akun sekarang, sangat mudah!</small>
+                  </a>
                 </div>
 
-                {/* <div>
+                <div className={styles.login__content_terms_listing}>
+                  <div>
+                    <h4>Syarat dan Ketentuan</h4>
+                    <ol>
+                      <li>Periode promosi akan berakhir 1 (satu) bulan setelah Anda melakukan login pertama.</li>
+                      <li>
+                        Saat masa promosi berakhir, Anda tetap bisa menikmati layanan Paket Premium MOLA TV hanya dengan
+                        Rp125,000 per bulan. Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.
+                      </li>
+                      {/* <li>Pembayaran paket dapat dilakukan melalui menu di aplikasi MOLA TV.</li> */}
+                    </ol>
+                  </div>
+
+                  {/* <div>
                   <img
                     src="https://res-mola01.koicdn.com/image/e7a13410-3465-4cb0-ab25-b763a0b3db94/image.png"
                     alt="logo-selamat"
                   />
                 </div> */}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </>
     )
   }

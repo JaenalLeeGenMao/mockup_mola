@@ -22,6 +22,7 @@ import {
   NOTIFICATION_ENDPOINT,
   PARTNERS_ENDPOINT,
   USER_SUBSCRIPTION,
+  VALIDATE_PROMO_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 
@@ -920,6 +921,21 @@ const getPartners = () => {
     })
 }
 
+const getApiPromoValidate = voucher => {
+  // console.log('ini subscription', token)
+  return get(`${VALIDATE_PROMO_ENDPOINT}/${voucher}`, {
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('ini response handler', response)
+      return response
+    })
+    .catch(error => {
+      // console.log('masuk error', error)
+      throw new Error(error)
+    })
+}
+
 export default {
   getHomePlaylist,
   getFeaturePlaylist,
@@ -949,4 +965,5 @@ export default {
   getNotifications,
   getTotalNotifications,
   getUserSubscriptions,
+  getApiPromoValidate,
 }
