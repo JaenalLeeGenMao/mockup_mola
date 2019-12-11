@@ -10,7 +10,7 @@
 }
 
 .login__content_terms_listing {
-  margin-top: 50px;
+  margin-top: 40px;
   color: #fff;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .login__content_terms_listing > div:last-child {
-  text-align: center;
+  text-align: left;
   margin-top: 20px;
 }
 
@@ -38,7 +38,8 @@
 }
 
 .login__content_terms_listing ol > li {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  font-size: 11px;
 }
 
 .enter__promo a {
@@ -49,16 +50,18 @@
   text-decoration: none;
   text-align: center;
   color: #fff;
-  padding: 16px;
+  padding: 11px 25px;
   font-size: 1.1rem;
 }
 
 .enter__promo a > p {
-  font-weight: bold;
   font-size: 1.5rem;
+  font-weight: 200;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 .enter__promo a > small {
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 .btn__bca__login {
@@ -68,8 +71,19 @@
   background: transparent linear-gradient(90deg, #ffffff1a 0%, #ffffff26 100%) 0% 0% no-repeat padding-box !important;
 }
 
+.btn__bca__register > p {
+  color: #c8c8c8;
+}
+
 .login__content_signup {
   margin: 20px 0;
+}
+
+.login__content_images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
 }
 
 .login__content_signup p {
@@ -142,14 +156,18 @@
 
 .login__content_title h1 {
   font-size: 2rem;
-  margin: 0.67em 0;
+  margin: 0.1rem 0.1rem;
 
   /* line-height: 1.5; */
 }
 
 .login__content_title > h4 {
+  font-weight: 200;
   font-size: 16px;
   margin-bottom: 30px;
+  color: #c8c8c8;
+  text-align: center;
+  padding: 0 3rem;
 }
 
 .login__content_title p {
@@ -433,24 +451,43 @@
 
   .login__content_title {
     font-size: 1.4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 15px;
     text-align: center;
   }
 
   .login__content_title h1 {
-    font-size: 18px;
+    font-size: 26px;
     color: #fff;
-    margin: 0.67em 0;
+    /* margin: 0.67em 0; */
+    margin: 0.1rem 0.1rem;
 
     /* line-height: 1.5; */
   }
 
   .login__content_title p {
-    font-size: 14px;
+    font-size: 13px;
     color: #c8c8c8;
     margin: 0.67em 0;
 
     /* line-height: 1.5; */
+  }
+
+  .enter__promo a > p {
+    font-size: 20px;
+    font-weight: 200;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+
+  .enter__promo a > small {
+    font-size: 12px;
+  }
+
+  .login__content_terms_listing h4 {
+    font-size: 13px;
+  }
+
+  .login__content_terms_listing ol > li {
+    font-size: 11px;
   }
 }
 
