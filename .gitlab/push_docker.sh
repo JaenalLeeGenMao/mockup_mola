@@ -5,7 +5,8 @@ REPOSITORY_ADDRESS="${REPOSITORY_HOST}/${GCLOUD_PROJECT_ID}/${CI_PROJECT_NAMESPA
 IMAGE_NAME="${REPOSITORY_ADDRESS}:${CI_PIPELINE_IID}"
 
 # Auth gcloud
-gcloud auth configure-docker --quiet
+# gcloud auth configure-docker --quiet
+docker login -u _json_key -p "${GCLOUD_SERVICE_KEY}" https://${REPOSITORY_HOST}
 
 # Build Docker!
 docker build --tag $IMAGE_NAME .
