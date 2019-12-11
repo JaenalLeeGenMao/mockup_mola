@@ -767,7 +767,7 @@ app.get('/p/:voucher', async (req, res) => {
       // go to failed redeem page
     }
   } else {
-    return res.redirect('/accounts/login-bca')
+    return res.redirect('/accounts/login-bca?voucher=' + voucherCode)
     // go to login page
   }
 })

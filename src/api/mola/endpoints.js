@@ -28,6 +28,7 @@ export const ARTICLES_ENDPOINT = `${endpoints.api}/articles/articles`
 export const ARTICLES_RECOMMENDED_ENDPOINT = `${endpoints.api}/articles/lists`
 export const ARTICLES_RELATED_ENDPOINT = `${endpoints.api}/articles/related`
 export const PARTNERS_ENDPOINT = `${endpoints.api}/config/partners`
+export const VALIDATE_PROMO_ENDPOINT = `${endpoints.api}/promos/voucher/validate`
 
 // export const MOVIE_DETAIL_ENDPOINT = 'https://private-e3227-molawebapi4.apiary-mock.com/videos';
 // export const MOVIE_STREAMING = 'https://private-e3227-molawebapi4.apiary-mock.com/videos';
