@@ -46,6 +46,8 @@ build_staging:
     ENV: staging
     NODE_ENV: staging
     REACT_APP_ENV: staging
+    GCS_PATH: gs://sstv-staging-cdn/mola
+    CDN_PATH: https://cdn.stag.supersoccer.tv/mola
 
 build_production:
   <<: *build
@@ -55,6 +57,8 @@ build_production:
     ENV: production
     NODE_ENV: production
     REACT_APP_ENV: production
+    GCS_PATH: gs://koicdn-com/mola01
+    CDN_PATH: https://mola01.koicdn.com
 
 push_docker_staging:
   <<: *push_docker
