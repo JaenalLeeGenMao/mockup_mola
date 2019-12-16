@@ -8,6 +8,7 @@ import Link from '@components/Link'
 import LazyLoad from '@components/common/Lazyload'
 import s from './bcaPromo.css'
 import bcaUrl from '../../../../../src/global/assets-global/images/bca-button.png'
+import { globalTracker } from '@source/lib/globalTracker'
 
 import { getLocale } from '../locale'
 
@@ -33,6 +34,18 @@ class BcaPromo extends React.Component {
         </Link>
       </div>
     )
+  }
+
+  handleRedirectTracker = link => {
+    const { user, videoId } = this.props
+    const payload = {
+      window,
+      user: user,
+      linkRedirectUrl: link,
+      event: 'event_pages',
+    }
+    globalTracker(payload)
+    window.open(link, '_blank')
   }
 
   render() {
@@ -68,12 +81,7 @@ class BcaPromo extends React.Component {
                 <p> Jangan lupa masukkan kode promo saat melakukan pengisian data untuk mengaktifkan penawaran ini</p>
               </div>
               <div className={s.bca_link}>
-                <img
-                  src={bcaUrl}
-                  onClick={() => {
-                    window.location.href = this.state.bcaRedirectLink
-                  }}
-                />
+                <img src={bcaUrl} onClick={() => this.handleRedirectTracker(this.state.bcaRedirectLink || '')} />
               </div>
             </div>
           </LazyLoad>
