@@ -118,14 +118,47 @@ class DropdownList extends Component {
                     const title = _.get(dts, 'attributes.title.en', '')
 
                     return (
-                      <div
-                        className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
-                        isActive={isActive}
-                        key={dts.id}
-                        onClick={e => this.handleClickDropdownAction(e, dts.id)}
-                      >
-                        <span>{title}</span>
-                      </div>
+                      <>
+                        {dts.id == 1 ? (
+                          <>
+                            <div
+                              className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
+                              isActive={isActive}
+                              key={dts.id}
+                              onClick={e => this.handleClickDropdownAction(e, dts.id)}
+                            >
+                              <span>{title}</span>
+                            </div>
+                            <div
+                              className={`${s.dropdown_list_item}`}
+                              isActive={isActive}
+                              key={'promo-bca'}
+                              onClick={() => {
+                                window.location.href = '/promo/bca?utm_source=molatv&utm_medium=web-sidebar'
+                              }}
+                            >
+                              <span>Promo BCA</span>
+                            </div>
+                          </>
+                        ) : (
+                          <div
+                            className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
+                            isActive={isActive}
+                            key={dts.id}
+                            onClick={e => this.handleClickDropdownAction(e, dts.id)}
+                          >
+                            <span>{title}</span>
+                          </div>
+                        )}
+                      </>
+                      // <div
+                      //   className={`${s.dropdown_list_item} ${isActive ? s.active : ''}`}
+                      //   isActive={isActive}
+                      //   key={dts.id}
+                      //   onClick={e => this.handleClickDropdownAction(e, dts.id)}
+                      // >
+                      //   <span>{title}</span>
+                      // </div>
                     )
                   })}
                   {/* <Notifications
