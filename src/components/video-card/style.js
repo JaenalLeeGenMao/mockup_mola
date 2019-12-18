@@ -69,7 +69,7 @@ export const videoContainer = css`
     border-radius: .25rem;
     position: relative;
     z-index: 1;
-    width: 40vw;
+    width: 100%;
   }
 
   .bannerImage3d.hide {

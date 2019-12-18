@@ -59,7 +59,7 @@ class BannerCarousel extends Component {
         } /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
-        cellSpacing={isMobile ? viewportWidth * 0.025 : viewportWidth * 0.0125}
+        cellSpacing={this.props.cellSpacing}
         className={`${carouselContainer} ${this.props.className}`}
         disableEdgeSwiping={true}
         dragging={this.props.dragging}

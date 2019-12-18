@@ -20,9 +20,10 @@ import {
   playIcon,
 } from './style'
 
-const Suggestions = ({ style = {}, videos = [], contentType = '' }) => {
+const Suggestions = ({ style = {}, videos = [], contentType = '', isMobile = false }) => {
   const contentTypeName = getContentTypeName(contentType),
-    isPortrait = contentTypeName === 'movie' || contentTypeName === 'vod' ? true : false
+    isPortrait = contentTypeName === 'movie' || contentTypeName === 'vod' ? true : false,
+    viewportWidth = window ? window.innerWidth : 200
   return (
     <Carousel
       className={videoSuggestionContainer}
@@ -31,6 +32,7 @@ const Suggestions = ({ style = {}, videos = [], contentType = '' }) => {
       sliderCoin={true}
       dragging={true}
       withoutControls={videos.length <= 6}
+      cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
       slidesToShow={6.5}
       slidesToScroll={6}
       transitionMode={'scroll'}

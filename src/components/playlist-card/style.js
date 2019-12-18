@@ -71,11 +71,7 @@ export const playlistContainer = css`
     border-radius: 0.25rem;
     position: relative;
     z-index: 1;
-    width: 40vw;
-
-    @media screen and (max-width: 960px) {
-      width: 77.5vw;
-    }
+    width: 100%;
   }
 
   .bannerImage3d.hide {

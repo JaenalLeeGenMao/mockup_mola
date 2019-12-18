@@ -22,7 +22,6 @@ export const carouselContainer = css`
 
   li.slide-current {
     // margin: auto 1.15% !important;
-    margin: auto .875% !important;
     padding: 0px !important;
   }
 

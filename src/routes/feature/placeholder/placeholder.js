@@ -45,7 +45,8 @@ class Placeholder extends Component {
   // }
 
   render() {
-    const { isMobile } = this.props
+    const { isMobile } = this.props,
+      { viewportWidth } = this.state
 
     return (
       <div className={container}>
@@ -56,6 +57,7 @@ class Placeholder extends Component {
           sliderCoin={true}
           dragging={false}
           withoutControls={true}
+          cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
           slidesToShow={isMobile ? 1.25 : 2.25}
           transitionMode={'scroll3d'}
           // framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 1rem'}
@@ -80,6 +82,7 @@ class Placeholder extends Component {
             sliderCoin={true}
             dragging={true}
             withoutControls={true}
+            cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
             slideToScroll={isMobile ? 1.3 : 4}
             slidesToShow={isMobile ? 1.3 : 4.5}
             transitionMode={'scroll'}
@@ -102,6 +105,7 @@ class Placeholder extends Component {
             sliderCoin={true}
             dragging={true}
             withoutControls={true}
+            cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
             slideToScroll={isMobile ? 1.6 : 6}
             slidesToShow={isMobile ? 1.6 : 6.5}
             transitionMode={'scroll'}
@@ -124,6 +128,7 @@ class Placeholder extends Component {
             sliderCoin={true}
             dragging={true}
             withoutControls={true}
+            cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
             slideToScroll={isMobile ? 2.8 : 7.5}
             slidesToShow={isMobile ? 2.8 : 7.5}
             transitionMode={'scroll'}

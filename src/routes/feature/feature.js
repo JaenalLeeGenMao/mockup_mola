@@ -138,7 +138,8 @@ class Feature extends Component {
   // }
 
   render() {
-    const isMobile = this.state.viewportWidth <= 960,
+    const { viewportWidth } = this.state,
+      isMobile = viewportWidth <= 960,
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
     if (this.props.feature[id]) {
       const { playlists, videos, banners, articles } = this.props.feature[id]
@@ -191,6 +192,7 @@ class Feature extends Component {
                   withoutControls={
                     banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
                   }
+                  cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
                   framePadding="0rem"
                 >
                   {banners.data.map(obj => (
@@ -244,6 +246,7 @@ class Feature extends Component {
                           }
                           slidesToScroll={Math.trunc(slideToShow)}
                           transitionMode={'scroll'}
+                          cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
                           framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                         >
                           {video.data.length > 0 &&
@@ -303,6 +306,7 @@ class Feature extends Component {
                                 slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
                                 transitionMode={'scroll'}
                                 withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
+                                cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
                                 framePadding={!isMobile ? '0rem' : '0rem 5px'}
                               >
                                 {articles.data.map(obj => (
