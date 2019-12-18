@@ -51,6 +51,7 @@ class Html extends React.Component {
       appLinkUrl = '',
       type = 'website',
       akamai_analytic_enabled = false,
+      bcaScript = '',
     } = this.props
 
     const metaTitle =
@@ -407,6 +408,29 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               }`,
             }}
           />
+
+          {bcaScript && (
+            <>
+              <script
+                id="BCAScript"
+                dangerouslySetInnerHTML={{
+                  __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-MMSV5JR');`,
+                }}
+              />
+              <noscript id="BCANoScript">
+                <iframe
+                  src="https://www.googletagmanager.com/ns.html?id=GTM-MMSV5JR"
+                  height="0"
+                  width="0"
+                  style={{ display: 'none', visibility: 'hidden' }}
+                />
+              </noscript>
+            </>
+          )}
 
           <script src="https://www.google-analytics.com/analytics.js" async="" defer="" />
         </body>

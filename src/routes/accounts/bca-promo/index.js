@@ -29,6 +29,7 @@ function action({ isMobile }) {
         <BcaPromoMobile />
       </Molalayout>
     ),
+    bcaScript: true,
   }
 }
 
