@@ -375,3 +375,43 @@ V1.8.3 + **1996**
 
 Improvement:
 * Improved Display of BCA Promo (Trisno) 
+
+**09/12/2019**
+
+V.1.8.4 + **1997**
+
+Improvement:
+* Update new CI (Jaenal)
+
+**10/12/2019**
+
+V1.8.4 + **2006**
+
+Improvements:
+* Add BCA Promotion page (Arga)
+* Add new banner link and redirect BCA (Arga)
+
+
+**11/12/2019**
+
+V.1.8.5 + **2016**
+
+Improvements:
+* Fix Playlist card consistent with placeholder (Jaenal)
+* Fix styling suggestion and correction typo on term and conditions page for web view iphone devices only (Ayu)
+* Add /get-app page for desktop (Elkana)
+* Fix Deployment Script (Risal)
+* Add validate promo BCA (Sabiq)
+
+
+V.1.8.5 + **2017**
+
+Improvement:
+* Update CI (Rahadian)
+
+**12/12/2019**
+
+V1.8.5 + **2018**
+
+Improvement:
+* Update BCA Promo (bcaPromo.css) (Arga)
