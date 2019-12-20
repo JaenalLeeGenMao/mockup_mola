@@ -488,16 +488,33 @@ class Register extends Component {
         /> */}
         <div className={`${styles.register__content_input} ${error ? styles.register__content_input_error : ''}`}>
           <DatePicker
+            id="birthdate"
             // value={birthdate}
             selected={this.state.birthdate}
             onChange={this.handleDtPickerChange}
+            onChangeRaw={event => {
+              if (isNaN(+event.target.value)) {
+                event.target.value = ''
+                this.setState({
+                  birthdate: '',
+                })
+              } else if (event.target.value.length < 10) {
+                this.setState({
+                  birthdate: new Date(),
+                })
+              }
+            }}
             isError={error !== ''}
             // errorClassName={styles.register__content_input_error}
             placeholder="Tanggal Lahir"
             label="Tanggal Lahir"
-            placeholderText="dd-mm-yyyy"
-            type="input"
+            placeholderText="dd/mm/yyyy"
             dateFormat="dd/MM/yyyy"
+            showMonthDropdown
+            showYearDropdown
+            // dropdownMode="select"
+            fixedHeight
+            // showWeekNumbers
           />
         </div>
 
