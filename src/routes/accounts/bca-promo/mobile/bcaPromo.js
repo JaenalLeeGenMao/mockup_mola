@@ -73,7 +73,7 @@ class BcaPromo extends React.Component {
                 <div style={{ display: 'inline' }}>
                   <div className={s.voucher_code}>{this.state.voucher_code}</div>
                   <CopyToClipboard text={this.state.voucher_code} onCopy={() => alert('Copied the text: MOLATV')}>
-                    <div className={s.copy_button}>SALIN</div>
+                    <div className={s.copy_button}>GUNAKAN</div>
                   </CopyToClipboard>
                 </div>
               </div>
