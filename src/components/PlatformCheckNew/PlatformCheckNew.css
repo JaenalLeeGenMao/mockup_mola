@@ -12,8 +12,9 @@
 }
 
 .player__container {
-  height: 0;
-  width: 100vw;
+  position: absolute;
+  left: 0;
+  right: 0;
   margin: auto;
   display: flex;
   justify-content: center;

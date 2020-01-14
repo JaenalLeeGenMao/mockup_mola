@@ -486,14 +486,13 @@ class Channels extends Component {
                 )}
 
               {/* {need to be optimize later} */}
-              {isDesktopVideoBlocker &&
-                loadPlayer && (
-                  <PlatformDesktop
-                    isDesktopVideoBlocker={isDesktopVideoBlocker}
-                    {...this.props}
-                    videoId={activeChannelId}
-                  />
-                )}
+              {isDesktopVideoBlocker && (
+                <PlatformDesktop
+                  isDesktopVideoBlocker={isDesktopVideoBlocker}
+                  {...this.props}
+                  videoId={activeChannelId}
+                />
+              )}
               {!isDesktopVideoBlocker &&
                 block &&
                 loadPlayer && <PlatformDesktop {...this.props} videoId={activeChannelId} />}
