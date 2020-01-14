@@ -415,3 +415,31 @@ V1.8.5 + **2018**
 
 Improvement:
 * Update BCA Promo (bcaPromo.css) (Arga)
+
+V1.8.6 + **2021**
+
+Improvement:
+* Hotfix build variable CDN (Jaenal)
+
+**16/12/2019**
+
+V1.8.6 + **2024**
+
+Improvement:
+* Add promo BCA menu (Elkana)
+
+**18/12/2019**
+
+V1.8.6 + **2027**
+
+Improvement:
+* Add BCA script tracker for google ads (request by Gabriel and Arend) (Jaenal)
+
+**19/12/2019**
+
+V1.6.0 + **2030**
+
+Improvement:
+* Fix carousel cellSpacing default value (Jaenal)
+
+ 
