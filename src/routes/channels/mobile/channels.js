@@ -85,7 +85,7 @@ class Channels extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { movieDetail, movieId } = this.props
 
-    if (movieDetail.meta.status === 'success' && prevProps.movieId != movieId) {
+    if (movieDetail.meta.status !== prevProps.movieDetail.data.status && prevProps.movieId != movieId) {
       const id = movieId ? movieId : prevState.activeChannelId
       this.setDefaultVideoSetup(id)
       this.setRerenderSchedule()
@@ -417,6 +417,7 @@ class Channels extends Component {
     }
     isDRM = drmStreamUrl ? true : false
 
+    const isDesktopVideoBlocker = this.props.configParams.data.desktop_video_blocker ? true : false
     const loadPlayer = status === 'success' && ((isDRM && vuidStatus === 'success') || !isDRM)
 
     return (
@@ -450,23 +451,35 @@ class Channels extends Component {
               </div>
 
               <div className={styles.video_container} id="video-player-root">
-                {!block && loadPlayer && defaultVidSetting ? (
-                  <RedirectToApps
-                    poster={poster}
-                    android_redirect_to_app={android_redirect_to_app}
-                    ios_redirect_to_app={ios_redirect_to_app}
-                    subtitles={this.subtitles()}
-                    handlePlayMovieApple={this.handlePlayMovieApple}
-                    handlePlayMovie={this.handlePlayMovie}
-                    handleOnReadyStateChange={this.handleOnReadyStateChange}
-                    videoSettings={videoSettings}
-                    customTheoplayer={customTheoplayer}
-                    handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                    errorLicense={errorLicense}
+                {!isDesktopVideoBlocker &&
+                  !block &&
+                  loadPlayer &&
+                  defaultVidSetting && (
+                    <RedirectToApps
+                      poster={poster}
+                      android_redirect_to_app={android_redirect_to_app}
+                      ios_redirect_to_app={ios_redirect_to_app}
+                      subtitles={this.subtitles()}
+                      handlePlayMovieApple={this.handlePlayMovieApple}
+                      handlePlayMovie={this.handlePlayMovie}
+                      handleOnReadyStateChange={this.handleOnReadyStateChange}
+                      videoSettings={videoSettings}
+                      customTheoplayer={customTheoplayer}
+                      handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+                      errorLicense={errorLicense}
+                    />
+                  )}
+                {/* {need to be optimize later} */}
+                {isDesktopVideoBlocker && (
+                  <PlatformCheckMobile
+                    isDesktopVideoBlocker={isDesktopVideoBlocker}
+                    {...this.props}
+                    videoId={activeChannelId}
                   />
-                ) : (
-                  block && <PlatformCheckMobile {...this.props} />
                 )}
+                {!isDesktopVideoBlocker &&
+                  block &&
+                  loadPlayer && <PlatformCheckMobile {...this.props} videoId={activeChannelId} />}
               </div>
 
               {!block && (

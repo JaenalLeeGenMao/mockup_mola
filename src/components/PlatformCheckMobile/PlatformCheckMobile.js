@@ -15,6 +15,33 @@ import crossIcon from '../../global/assets-global/images/cross.png'
 
 import _ from 'lodash'
 
+const fixedPlatforms = [
+  {
+    id: 4,
+    name: 'Mola Polytron Streaming',
+    imageUrl: 'https://res-mola01.koicdn.com/image/5cecf70b-f0cf-4e54-98e1-8c63ca4d03ff/image.png',
+    order: 1,
+    status: 1,
+    createdAt: '2019-08-01T12:59:00Z',
+  },
+  {
+    id: 5,
+    name: 'Mola Polytron Smart TV',
+    imageUrl: 'https://res-mola01.koicdn.com/image/dc08c572-4e02-472f-9add-dd4c12037416/image.png',
+    order: 3,
+    status: 1,
+    createdAt: '2019-08-01T12:59:00Z',
+  },
+  {
+    id: 2,
+    name: 'Mola Matrix',
+    imageUrl: 'https://res-mola01.koicdn.com/image/1ed08980-d0ce-4d64-889e-508930f5a021/image.png',
+    order: 2,
+    status: 1,
+    createdAt: '2019-08-01T12:59:00Z',
+  },
+]
+
 class PlatformCheckMobile extends Component {
   state = {
     result: [],
@@ -95,7 +122,11 @@ class PlatformCheckMobile extends Component {
     const movieDetail = this.props.movieDetail.data[0]
     const name = _.get(movieDetail, 'title', '')
     const landscapePoster = _.get(movieDetail, 'background.landscape', '')
-    const platforms = _.get(movieDetail, 'platforms', [])
+    let platforms = _.get(movieDetail, 'platforms', [])
+
+    if (this.props.isDesktopVideoBlocker) {
+      platforms = fixedPlatforms
+    }
 
     return (
       <>
