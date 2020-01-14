@@ -19,10 +19,10 @@ exports.config = {
    * Your New Relic license key.
    */
   /* Staging */
-  // license_key: '29c2c541ecebf4c1aab8201efc40d522596694e8',
+  // license_key: 'eu01xx8c79ffb5f5774237a770e1c0d53335NRAL',
 
   /* Prod */
-  license_key: '29c2c541ecebf4c1aab8201efc40d522596694e8',
+  license_key: 'eu01xx8c79ffb5f5774237a770e1c0d53335NRAL',
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
