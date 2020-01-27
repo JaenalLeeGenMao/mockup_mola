@@ -1,5 +1,5 @@
 variables:
-  DOCKER_HOST: 'tcp://localhost:2375'
+  DOCKER_HOST: "tcp://localhost:2375"
 
 stages:
   - build
@@ -24,12 +24,19 @@ stages:
   stage: build
   artifacts:
     paths:
-      - ./build
-    expire_in: 5 mins
+      - node_modules/
+      - build/
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .node_modules/
   script:
     - apk --no-cache --update add g++ make bash zlib-dev libpng-dev
+    - "[ -d .node_modules ] && mv .node_modules/ node_modules/"
     - yarn install --no-progress --production=false
     - node_modules/.bin/babel-node tools/run build -- --release --docker
+    - cp -r node_modules/ .node_modules/
+    - yarn install --no-progress --production=true
 
 cache:
   key: vendor

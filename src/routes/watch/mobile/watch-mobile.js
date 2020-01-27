@@ -208,8 +208,12 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     let urlParams = queryString.parse(window.location.search)
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
-    const url = encodeURIComponent(`${domain}/download-app/${videoId}?utm_source=${source}`)
-    document.location = `intent://mola.tv/watch?v=${videoId}&utm_source=${source}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
+    const medium = urlParams.utm_medium ? urlParams.utm_medium : ''
+    const campaign = urlParams.utm_campaign ? urlParams.utm_campaign : ''
+    const url = encodeURIComponent(
+      `${domain}/download-app/${videoId}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}`
+    )
+    document.location = `intent://mola.tv/watch?v=${videoId}&utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}/#Intent;scheme=molaapp;package=tv.mola.app;S.browser_fallback_url=${url};end`
   }
 
   handlePlayMovieApple = () => {
@@ -217,8 +221,10 @@ class MovieDetail extends Component {
     const domain = config.endpoints.domain
     let urlParams = queryString.parse(window.location.search)
     const source = urlParams.utm_source ? urlParams.utm_source : 'redirect-from-browser'
-    const url = `${domain}/download-app/${videoId}?utm_source=${source}`
-    document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}`
+    const medium = urlParams.utm_medium ? urlParams.utm_medium : ''
+    const campaign = urlParams.utm_campaign ? urlParams.utm_campaign : ''
+    const url = `${domain}/download-app/${videoId}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}`
+    document.location = `molaapp://mola.tv/watch?v=${videoId}&utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}`
     setTimeout(function() {
       window.location.href = url
     }, 250)
