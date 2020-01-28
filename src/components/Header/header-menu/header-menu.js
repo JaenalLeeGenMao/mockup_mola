@@ -178,7 +178,7 @@ class HeaderMenu extends Component {
                         }
 
                         const title = _.get(dts, 'attributes.title.en', '')
-                        if (dts.id > 1 && dts.id < 6) {
+                        if (dts.id != 1 && dts.attributes.onboarding) {
                           return (
                             <Link
                               key={dts.id}
@@ -207,7 +207,7 @@ class HeaderMenu extends Component {
                     }
 
                     const title = _.get(dts, 'attributes.title.en', '')
-                    if (dts.id >= 6 && dts.id != 9) {
+                    if (dts.id != 1 && !dts.attributes.onboarding && dts.id != 9) {
                       return (
                         <Link
                           key={dts.id}

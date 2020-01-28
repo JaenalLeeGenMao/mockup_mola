@@ -800,7 +800,8 @@ const getProgrammeGuides = (date, playlistId, timezone = 7) => {
 }
 
 const getHeaderMenu = () => {
-  return get(`${HEADERMENU}/menu.json`, {
+  // return get(`${HEADERMENU}/menu.json`, {
+  return get(`${HEADERMENU}`, {
     ...endpoints.setting,
   })
     .then(response => {

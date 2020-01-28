@@ -22,7 +22,8 @@ export const CHANNELS_PLAYLIST_ENDPOINT = `${endpoints.api}/videos/playlists`
 export const PROGRAMME_GUIDES = `${endpoints.api}/videos/program-guides`
 // export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
 export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
-export const HEADERMENU = 'http://mola01.koicdn.com/dev/json'
+// export const HEADERMENU = 'http://mola01.koicdn.com/dev/json'
+export const HEADERMENU = `${endpoints.api}/config/ui/menu`
 
 export const ARTICLES_ENDPOINT = `${endpoints.api}/articles/articles`
 export const ARTICLES_RECOMMENDED_ENDPOINT = `${endpoints.api}/articles/lists`
