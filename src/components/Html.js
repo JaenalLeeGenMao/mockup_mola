@@ -10,6 +10,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
+import _get from 'lodash/get'
 import { logoLandscapeBlue } from '@global/imageUrl'
 import config from '../config'
 import yoastSEOPlugin from './yoastSEOPlugin.json'
@@ -51,9 +52,9 @@ class Html extends React.Component {
       appLinkUrl = '',
       type = 'website',
       akamai_analytic_enabled = false,
-      bcaScript = '',
+      chunks = [],
     } = this.props
-
+    const isPromoBCA = _get(chunks, '[0]', '') === 'bca-promo'
     const metaTitle =
       title && title.indexOf('Untitled Page') < 0
         ? `Mola TV - ${title}`
@@ -168,6 +169,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               border-radius: .5rem;
               width: 6rem;
               height: 6rem;
+              margin: auto;
               box-shadow: 0 0 12px 0 rgba(0,0,0,0.2);
             }
 
@@ -301,7 +303,8 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               .embeddedServiceHelpButton .helpButton {
                 position: fixed;
                 bottom: 2.5rem !important;  
-                right: 2rem !important;
+                right: 0 !important;
+                left: 0 !important;
                 padding-bottom: 3rem !important;
               }
               .embeddedServiceHelpButton .helpButton button.uiButton {
@@ -408,8 +411,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               }`,
             }}
           />
-
-          {bcaScript && (
+          {isPromoBCA && (
             <>
               <script
                 id="BCAScript"

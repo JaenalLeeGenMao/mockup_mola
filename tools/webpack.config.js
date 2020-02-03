@@ -13,7 +13,6 @@ import webpack from 'webpack'
 import WebpackAssetsManifest from 'webpack-assets-manifest'
 import nodeExternals from 'webpack-node-externals'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
-import DashboardPlugin from 'webpack-dashboard/plugin'
 import overrideRules from './lib/overrideRules'
 import pkg from '../package.json'
 
@@ -506,7 +505,6 @@ const serverConfig = {
   plugins: [
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
-    new DashboardPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         BROWSER: false,

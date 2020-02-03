@@ -6,12 +6,7 @@
     "node": ">=7.40.0",
     "npm": ">=3.10.10"
   },
-  "browserslist": [
-    ">1%",
-    "last 4 versions",
-    "Firefox ESR",
-    "not ie < 9"
-  ],
+  "browserslist": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
   "dependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.4.4",
     "@babel/plugin-proposal-optional-chaining": "7.6.0",
@@ -90,7 +85,6 @@
     "ua-parser-js": "0.7.19",
     "universal-router": "6.0.0",
     "url": "^0.11.0",
-    "webpack-dashboard": "^3.0.7",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
@@ -194,19 +188,9 @@
     "webpack-node-externals": "1.6.0"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --no-ignore --fix",
-      "prettier --single-quote --write",
-      "git add --force"
-    ],
-    "*.{json,md,graphql}": [
-      "prettier --write",
-      "git add --force"
-    ],
-    "*.{css,less,styl,scss,sass,sss}": [
-      "stylelint --fix",
-      "git add --force"
-    ]
+    "*.{js,jsx}": ["eslint --no-ignore --fix", "prettier --single-quote --write", "git add --force"],
+    "*.{json,md,graphql}": ["prettier --write", "git add --force"],
+    "*.{css,less,styl,scss,sass,sss}": ["stylelint --fix", "git add --force"]
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -229,8 +213,8 @@
     "build-stats": "yarn run build --release --analyse",
     "deploy": "babel-node tools/run deploy",
     "render": "babel-node tools/run render",
-    "serve": "webpack-dashboard -- babel-node tools/run runServer",
-    "start": "webpack-dashboard -- babel-node tools/run start",
+    "serve": "babel-node tools/run runServer",
+    "start": "babel-node tools/run start",
     "dev": "REACT_APP_ENV=development BABEL_ENV=development yarn start",
     "stag": "REACT_APP_ENV=staging BABEL_ENV=staging yarn start",
     "prod": "REACT_APP_ENV=production BABEL_ENV=production yarn start"
