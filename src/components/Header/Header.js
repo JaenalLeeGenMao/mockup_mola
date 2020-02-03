@@ -47,7 +47,7 @@ class Header extends Component {
       window.addEventListener('resize', this.handleWindowSizeChange)
     }
 
-    if (categoryWatch == '/watch') {
+    if (categoryWatch == '/watch' || categoryWatch.includes('promo')) {
       currentMenu = true
       this.setState({
         showMenu: currentMenu,
@@ -72,7 +72,7 @@ class Header extends Component {
   }
 
   render() {
-    const { pathname, headerMenu, user, activeMenuId } = this.props
+    const { pathname, headerMenu, user, activeMenuId, title } = this.props
     const { width, isLandscape, showMenu } = this.state
     let isMobileView = width < 875
     if (/iPad/i.test(navigator.userAgent)) {
@@ -87,7 +87,12 @@ class Header extends Component {
           <LazyLoad>
             <Link to="/">
               {showMenu && isMobileView ? (
-                <div className={styles.backIcon} onClick={this.handleButtonBack} />
+                <>
+                  <div className={styles.title__wrapper}>
+                    <div className={styles.backIcon} onClick={this.handleButtonBack} />
+                    <div className={styles.header__title}> {title} </div>
+                  </div>
+                </>
               ) : (
                 <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
               )}

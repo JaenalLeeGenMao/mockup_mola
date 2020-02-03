@@ -114,6 +114,14 @@ class HeaderMenu extends Component {
   }
 
   render() {
+    let promoActive = false
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname.includes('promo')) {
+        promoActive = true
+      } else {
+        promoActive = false
+      }
+    }
     const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu }, activeMenuId } = this.props
     const { toggle, newNotif } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
@@ -144,18 +152,20 @@ class HeaderMenu extends Component {
                           <Link
                             key={dts.id}
                             title={title}
-                            className={`tourCategory${dts.id} ${isActive ? styles.header_menu__active : ''}`}
+                            className={`tourCategory${dts.id} ${
+                              isActive && !promoActive ? styles.header_menu__active : ''
+                            }`}
                             to={relMenuUrl}
                           >
                             {title}
                           </Link>
                           <Link
                             key={'promo-bca'}
-                            title={'Promo BCA'}
-                            // className={`${isActive ? styles.header_menu__active : ''}`}
-                            to={'/promo/bca?utm_source=molatv&utm_medium=web-header'}
+                            title={'Promo'}
+                            className={`${promoActive ? styles.header_menu__active : ''}`}
+                            to={'/promo'}
                           >
-                            Promo BCA
+                            Promo
                           </Link>
                         </>
                       )

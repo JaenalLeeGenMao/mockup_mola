@@ -102,9 +102,19 @@ class NewHeader extends Component {
   }
 
   render() {
+    let promoActive = false
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname.includes('promo')) {
+        promoActive = true
+      } else {
+        promoActive = false
+      }
+    }
     const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu }, activeMenuId } = this.props
     const { toggle, newNotif, filters } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
+    const orderHeaderMenu = _.orderBy(headerMenuList, 'attributes.sortOrder', 'asc')
+
     return (
       <>
         <div className={styles.header__menu}>
@@ -112,7 +122,7 @@ class NewHeader extends Component {
             <div className={styles.header_menu_outer}>
               {!isMobile && (
                 <>
-                  {headerMenuList.map((dts, index) => {
+                  {orderHeaderMenu.map((dts, index) => {
                     const absMenuUrl = dts.attributes.url
                     const absMenuArray = absMenuUrl.split('/')
                     const isHome = absMenuArray.length <= 3
@@ -132,26 +142,29 @@ class NewHeader extends Component {
                           <Link
                             key={dts.id}
                             title={title}
-                            className={`tourCategory${dts.id} ${isActive ? styles.header_menu__active : ''}`}
+                            className={`tourCategory${dts.id} ${
+                              isActive && !promoActive ? styles.header_menu__active : ''
+                            }`}
                             to={relMenuUrl}
                           >
                             {title}
                           </Link>
                           <Link
                             key={'promo-bca'}
-                            title={'Promo BCA'}
-                            to={'/promo/bca?utm_source=molatv&utm_medium=web-header'}
+                            title={'Promo'}
+                            className={`${promoActive ? styles.header_menu__active : ''}`}
+                            to={'/promo'}
                           >
-                            Promo BCA
+                            Promo
                           </Link>
                         </>
                       )
                     }
                   })}
 
-                  {headerMenuList.length > 0 && (
+                  {orderHeaderMenu.length > 0 && (
                     <div className="tourCategory" style={{ display: 'inline-block' }}>
-                      {headerMenuList.map((dts, index) => {
+                      {orderHeaderMenu.map((dts, index) => {
                         const absMenuUrl = dts.attributes.url
                         const absMenuArray = absMenuUrl.split('/')
                         const isHome = absMenuArray.length <= 3
@@ -180,7 +193,7 @@ class NewHeader extends Component {
                       })}
                     </div>
                   )}
-                  {headerMenuList.map((dts, index) => {
+                  {orderHeaderMenu.map((dts, index) => {
                     const absMenuUrl = dts.attributes.url
                     const absMenuArray = absMenuUrl.split('/')
                     const isHome = absMenuArray.length <= 3

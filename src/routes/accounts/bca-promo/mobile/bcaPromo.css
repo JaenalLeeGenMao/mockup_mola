@@ -10,20 +10,22 @@
 @import '../../../../components/variables.css';
 
 html {
-  font-size: 62.5% !important;
+  /* font-size: 62.5% !important; */
 }
 
 .wrapper {
   --font-size-paragraph: 1.2rem;
   --margin-bottom: 15px;
+
   position: relative;
 }
 
 .root {
   position: relative;
-  padding-right: 2rem;
-  padding-left: 2rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
   line-height: 2rem;
+  padding-top: 7.5rem;
 }
 
 .container {
@@ -147,5 +149,40 @@ html {
   .wrapper {
     margin: auto;
     width: 30%;
+  }
+}
+
+.root h1 {
+  font-size: 2rem;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 0;
+}
+
+.root h2 {
+  font-size: 1.5rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+.root p {
+  font-size: 1.2rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+@media only screen and (max-width: 768px) {
+  .root {
+    padding-top: 5rem;
+  }
+
+  .root h1 {
+    font-size: 1.51rem;
+  }
+
+  .root h2 {
+    font-size: 1.136rem;
+  }
+
+  .root p {
+    font-size: 0.909rem;
   }
 }
