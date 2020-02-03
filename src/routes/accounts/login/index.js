@@ -14,6 +14,7 @@ import React from 'react'
 import Login from './login'
 
 import Molalayout from '@components/Molalayout'
+import MobileNavbar from '@components/MobileNavbar'
 
 const title = 'Login'
 const description = 'Login to watch premium HD videos'
@@ -26,6 +27,7 @@ function action({ isMobile }) {
     component: (
       <Molalayout>
         <Login isMobile={isMobile} />
+        {isMobile && <MobileNavbar routes={'accounts'} />}
       </Molalayout>
     ),
   }
