@@ -1,6 +1,6 @@
 {
   "name": "mola-web",
-  "version": "1.9.8",
+  "version": "1.9.0",
   "private": true,
   "engines": {
     "node": ">=7.40.0",
