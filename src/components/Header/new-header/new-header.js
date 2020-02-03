@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _ from 'lodash'
-// import $ from 'jquery'
-
-// import Auth from '@api/auth'
 
 import LazyLoad from '@components/common/Lazyload'
 import Footer from '@components/Footer'
 import Link from '@components/Link'
-// import Notifications from '@components/Header/notifications'
 
 import { getLocale } from '../locale'
 
-import styles from './header-menu.css'
+import styles from './new-header.css'
 import history from '@source/history'
-// import { IoIosArrowDown } from 'react-icons/io'
 import DropdownMenu from '../dropdown-menu'
 
 import { get } from 'axios'
@@ -36,16 +31,9 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
-              {/* <Link onClick={onProfileClick} className={styles.popup__menu_image_wrapper}>
-                {photo && <img alt="mola user profile" src={photo} className={styles.popup__menu_image} />}
-              </Link> */}
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
             <Link onClick={onProfileClick}>{locale['profile']}</Link>
-            {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
-            {/* <Link to="/accounts/history" onClick={onClick}>{locale['video_history']}</Link> */}
-            {/* <Link to="/accounts/profile?tab=subscription" onClick={onClick}>{locale['paket_MOLA']}</Link> */}
-            {/* <Link to="/accounts/profile?tab=transaction" onClick={onClick}>{locale['transaction_history']}</Link> */}
           </>
         )}
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
@@ -56,7 +44,7 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
     </LazyLoad>
   )
 }
-class HeaderMenu extends Component {
+class NewHeader extends Component {
   state = {
     locale: getLocale(),
     headerMenuList: [],
@@ -65,6 +53,7 @@ class HeaderMenu extends Component {
       status: false,
       totalNewNotif: 0,
     },
+    filters: '/libraries',
   }
 
   handleProfileClick = () => {
@@ -103,7 +92,6 @@ class HeaderMenu extends Component {
       const absMenuArray = absMenuUrl.split('/')
       const isHome = absMenuArray.length <= 3
       const relMenuUrl = isHome ? '/' : '/' + absMenuUrl.replace(/^(?:\/\/|[^\/]+)*\//, '')
-      // const isActive = isHome ? pathname == relMenuUrl : pathname.indexOf(relMenuUrl) > -1
 
       if (filteredMenu[0].id == 9) {
         this.handleToggle(e)
@@ -115,7 +103,7 @@ class HeaderMenu extends Component {
 
   render() {
     const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu }, activeMenuId } = this.props
-    const { toggle, newNotif } = this.state
+    const { toggle, newNotif, filters } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
     return (
       <>
@@ -152,7 +140,6 @@ class HeaderMenu extends Component {
                           <Link
                             key={'promo-bca'}
                             title={'Promo BCA'}
-                            // className={`${isActive ? styles.header_menu__active : ''}`}
                             to={'/promo/bca?utm_source=molatv&utm_medium=web-header'}
                           >
                             Promo BCA
@@ -178,7 +165,7 @@ class HeaderMenu extends Component {
                         }
 
                         const title = _.get(dts, 'attributes.title.en', '')
-                        if (dts.id != 1 && dts.attributes.onboarding) {
+                        if (dts.id > 1 && dts.id < 6) {
                           return (
                             <Link
                               key={dts.id}
@@ -207,7 +194,7 @@ class HeaderMenu extends Component {
                     }
 
                     const title = _.get(dts, 'attributes.title.en', '')
-                    if (dts.id != 1 && !dts.attributes.onboarding && dts.id != 9) {
+                    if (dts.id >= 6 && dts.id != 9) {
                       return (
                         <Link
                           key={dts.id}
@@ -231,40 +218,22 @@ class HeaderMenu extends Component {
                       )
                     }
                   })}
-                  {/* <Notifications /> */}
                 </>
               )}
             </div>
             {isMobile && (
-              <div
-                className={`${styles.header__menu_wrapper_m} tourHamburger ${
-                  isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                }`}
-              >
-                {/* <DropdownMenu
-                  className={styles.header_menu_dropdown_container}
-                  pathname={pathname}
-                  dataList={headerMenuList}
-                  activeId={activeMenuId}
-                  onClick={this.handleNavigation}
-                  newNotif={newNotif}
-                  {...this.props}
-                /> */}
-              </div>
+              <>
+                <div
+                  className={`${styles.header__menu_wrapper_m} tourHamburger ${
+                    isLandscape ? styles.header_menu_select_wrapper__ls : ''
+                  }`}
+                >
+                  {/* <Link to="/live-support">
+                    <div className={styles.icon_livechat} />
+                  </Link> */}
+                </div>
+              </>
             )}
-            {/* <div
-              className={`${styles.header__menu_wrapper_m} tourHamburger ${
-                isLandscape ? styles.header_menu_select_wrapper__ls : ''
-              }`}
-            >
-              <DropdownMenu
-                className={styles.header_menu_dropdown_container}
-                pathname={pathname}
-                dataList={headerMenuList}
-                activeId={activeMenuDropdown}
-                onClick={this.handleNavigation}
-              />
-            </div> */}
             {toggle && (
               <PopupMenu
                 onClick={this.handleToggle}
@@ -281,4 +250,4 @@ class HeaderMenu extends Component {
   }
 }
 
-export default withStyles(styles)(HeaderMenu)
+export default withStyles(styles)(NewHeader)
