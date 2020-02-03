@@ -14,6 +14,12 @@ const initialState = {
     },
     data: [],
   },
+  squareBanners: {
+    meta: {
+      status: 'loading',
+    },
+    data: [],
+  },
   banners: {
     meta: {
       status: 'loading',
@@ -101,6 +107,32 @@ export default function home(state = {}, action) {
           ...newState,
           [action.id]: { ...newState[action.id], banners: { ...newState[action.id].banners, ...action.payload } },
         }
+      // SQUARE_BANNER
+      case types.GET_FEATURE_SQUARE_BANNER_LOADING:
+        return {
+          ...newState,
+          [action.id]: {
+            ...newState[action.id],
+            squareBanners: { ...newState[action.id].banners, ...action.payload },
+          },
+        }
+      case types.GET_FEATURE_SQUARE_BANNER_SUCCESS:
+        return {
+          ...newState,
+          [action.id]: {
+            ...newState[action.id],
+            squareBanners: { ...newState[action.id].banners, ...action.payload },
+          },
+        }
+      case types.GET_FEATURE_SQUARE_BANNER_ERROR:
+        return {
+          ...newState,
+          [action.id]: {
+            ...newState[action.id],
+            squareBanners: { ...newState[action.id].banners, ...action.payload },
+          },
+        }
+      // SQUARE_BANNER
       case types.GET_FEATURE_ARTICLE_LOADING:
         return {
           ...newState,

@@ -124,6 +124,43 @@ const getFeatureBanner = pathname => dispatch => {
   })
 }
 
+const getFeatureSquareBanner = pathname => dispatch => {
+  const id = `landing-page-${pathname}-square` /* landing-page-epl-square */
+
+  dispatch({
+    type: types.GET_FEATURE_SQUARE_BANNER_LOADING,
+    payload: {
+      meta: {
+        status: 'loading',
+        error: '',
+      },
+      data: [],
+    },
+    id: pathname,
+  })
+  return Mola.getFeatureBanner({ id }).then(result => {
+    if (result.meta.status === 'error') {
+      dispatch({
+        type: types.GET_FEATURE_SQUARE_BANNER_ERROR,
+        payload: {
+          meta: {
+            status: 'error',
+            error: result.meta.error || 'Error: feature square banner failed',
+          },
+          data: [],
+        },
+        id: pathname,
+      })
+    } else {
+      dispatch({
+        type: types.GET_FEATURE_SQUARE_BANNER_SUCCESS,
+        payload: result,
+        id: pathname,
+      })
+    }
+  })
+}
+
 const getFeatureArticle = id => dispatch => {
   dispatch({
     type: types.GET_FEATURE_ARTICLE_LOADING,
@@ -171,5 +208,6 @@ export default {
   getFeatureVideo,
   getFeatureBanner,
   getFeatureArticle,
+  getFeatureSquareBanner,
   resetFeatureVideos,
 }

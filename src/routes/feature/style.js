@@ -40,6 +40,10 @@ export const bannerContainer = css`
 }
 `
 
+export const bannerSquareContainer = css`
+  position: relative;
+`
+
 export const carouselHeader = css`
   display: flex;
   justify-content: space-between;

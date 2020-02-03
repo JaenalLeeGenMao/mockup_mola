@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import _ from 'lodash'
+import dateFormat from 'dateformat'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -9,15 +10,13 @@ import ListMenu from '@components/listMenu'
 import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
-import ArticleCard from '@components/article-card'
 import ArticleCardNew from '@components/article-card/articleCardNew'
 import VideoCard from '@components/video-card'
-
-import ArticlesCard from '../articles/articleCard/articleCard'
 
 import featureActions from '@actions/feature'
 
 import { getErrorCode } from '@routes/home/util'
+import _get from 'lodash/get'
 
 import history from '@source/history'
 import { getContentTypeName } from '@source/lib/globalUtil'
@@ -49,6 +48,9 @@ class Feature extends Component {
       // this.props.onHandleResetVideo()
       this.props.onHandlePlaylist(id)
       this.props.onHandleBanner(id)
+      if (this.props.isMobile) {
+        this.props.onHandlerSquareBanner(id)
+      }
       // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
@@ -142,10 +144,11 @@ class Feature extends Component {
 
   render() {
     const { viewportWidth } = this.state,
+      isIpad = /iPad/i.test(navigator.userAgent),
       isMobile = viewportWidth <= 960,
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
     if (this.props.feature[id]) {
-      const { playlists, videos, banners, articles } = this.props.feature[id]
+      const { playlists, videos, banners, articles, squareBanners } = this.props.feature[id]
       // const { articles } = this.props.feature['featured']
       const isLoading = playlists.meta.status === 'loading',
         isError = playlists.meta.status === 'error',
@@ -163,7 +166,6 @@ class Feature extends Component {
       }
 
       Math.trunc(contentTypeList['articles'].slideToShow)
-
       return (
         <>
           <Helmet>
@@ -181,36 +183,77 @@ class Feature extends Component {
               }
             />
           )}
-          <div style={{ height: '8vh' }} />
+          <div style={{ height: '12vh' }} />
           {isSuccess && (
             <>
-              {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
-              {banners.data.length > 0 && (
-                <Carousel
-                  wrap={banners.length === 1 ? false : true}
-                  autoplay={false}
-                  sliderCoin={true}
-                  dragging={true}
-                  slidesToShow={isMobile ? 1.25 : 2.25}
-                  transitionMode={'scroll3d'}
-                  withoutControls={
-                    banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
-                  }
-                  cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
-                  framePadding="0rem"
-                >
-                  {banners.data.map(obj => (
-                    <PlaylistCard
+              {isMobile && !isIpad ? (
+                /* FOR SQUARE BANNERS */
+                <>
+                  {squareBanners.meta.status !== 'success' && (
+                    <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />
+                  )}
+                  {squareBanners.data.length > 0 && (
+                    <Carousel
+                      wrap={squareBanners.length === 1 ? false : true}
+                      autoplay={false}
+                      sliderCoin={true}
+                      dragging={true}
+                      slidesToShow={1}
+                      zoomScale={0}
+                      transitionMode={'scroll'}
+                      withoutControls={squareBanners.data.length < 2}
+                      cellSpacing={0}
+                      framePadding="0rem"
+                      bannerSquare
+                    >
+                      {squareBanners.data.map(obj => (
+                        <PlaylistCard
+                          transitionMode={'scroll'}
+                          key={obj.id}
+                          onClick={() => this.handleOnClick(obj)}
+                          src={`${obj.background.landscape}?w=900`}
+                          containerClassName={bannerSquareContainer}
+                          bannerCard
+                        />
+                      ))}
+                    </Carousel>
+                  )}
+                </>
+              ) : (
+                /* FOR SQUARE BANNERS */
+                <>
+                  {banners.meta.status !== 'success' && (
+                    <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />
+                  )}
+                  {banners.data.length > 0 && (
+                    <Carousel
+                      wrap={banners.length === 1 ? false : true}
+                      autoplay={false}
+                      sliderCoin={true}
+                      dragging={true}
+                      slidesToShow={isMobile ? 1.25 : 2.25}
                       transitionMode={'scroll3d'}
-                      key={obj.id}
-                      onClick={() => this.handleOnClick(obj)}
-                      alt={obj.title}
-                      src={`${obj.background.landscape}?w=1080`}
-                      // onLoad={this.updateOnImageLoad}
-                      containerClassName={bannerContainer}
-                    />
-                  ))}
-                </Carousel>
+                      withoutControls={
+                        banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
+                      }
+                      cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
+                      framePadding="0rem"
+                    >
+                      {banners.data.map(obj => (
+                        <PlaylistCard
+                          transitionMode={'scroll3d'}
+                          key={obj.id}
+                          onClick={() => this.handleOnClick(obj)}
+                          alt={obj.title}
+                          src={`${obj.background.landscape}?w=1080`}
+                          // onLoad={this.updateOnImageLoad}
+                          containerClassName={bannerContainer}
+                          bannerCard
+                        />
+                      ))}
+                    </Carousel>
+                  )}
+                </>
               )}
               {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />}
               <LazyLoad containerClassName={container}>
@@ -392,6 +435,7 @@ const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
   onHandleVideo: ({ id, playlist, index }) => dispatch(featureActions.getFeatureVideo({ id, playlist, index })),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
+  onHandlerSquareBanner: id => dispatch(featureActions.getFeatureSquareBanner(id)),
   // onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
   onHandleResetVideo: () => dispatch(featureActions.resetFeatureVideos()),
 })

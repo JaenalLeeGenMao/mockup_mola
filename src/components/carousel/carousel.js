@@ -5,7 +5,15 @@ import Carousel from 'nuka-carousel'
 
 import LazyLoad from '@components/common/Lazyload'
 
-import { carouselContainer, arrowButtons, hiddenButtons, destroyButtons, chevronLeft, chevronRight } from './style'
+import {
+  carouselContainer,
+  arrowButtons,
+  hiddenButtons,
+  destroyButtons,
+  chevronLeft,
+  chevronRight,
+  paddingDot,
+} from './style'
 
 class BannerCarousel extends Component {
   constructor(props) {

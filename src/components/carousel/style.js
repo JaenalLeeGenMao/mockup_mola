@@ -121,3 +121,17 @@ export const chevronRight = css`
     background-position: center;
 }
 `
+export const paddingDot = css`
+  @media screen and (max-width: 960px) {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 0 3px;
+    display: inline-block;
+    background: #ababab;
+  }
+
+  &.active {
+    background: #fff;
+  }
+`
