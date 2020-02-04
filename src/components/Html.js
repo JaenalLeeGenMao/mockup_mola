@@ -300,6 +300,9 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             }
             /*potrait*/
             @media (min-width: 320px) and (max-width: 480px) {
+              .embeddedServiceHelpButton {
+                visibility: visible;
+              }
               .embeddedServiceHelpButton .helpButton {
                 position: fixed;
                 bottom: 2.5rem !important;  
