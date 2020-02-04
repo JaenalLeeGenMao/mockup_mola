@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Link from '@components/Link'
-import LazyLoad from '@components/common/Lazyload'
 
 import styles from './MobileNavbar.css'
 
@@ -38,9 +37,9 @@ export class MobileNavbar extends Component {
         inactive: `${styles.navbar__img} ${styles.search__inactive}`,
       },
       {
-        id: 'accounts',
+        id: 'more',
         name: 'More',
-        path: '/accounts/login',
+        path: '/more',
         active: `${styles.navbar__img} ${styles.more__active}`,
         inactive: `${styles.navbar__img} ${styles.more__inactive}`,
       },
