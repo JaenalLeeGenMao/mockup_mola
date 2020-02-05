@@ -484,8 +484,11 @@ const getMovieDetail = ({ id }) => {
 }
 
 const getRecommendation = id => {
-  return get(`${RECOMMENDATION}/${id}`, {
-    ...endpoints.setting,
+  return get(`${RECOMMENDATION}?app_id=molatv&video_id=${id}`, {
+    params: {
+      app_id: 'molatv',
+      video_id: id,
+    },
   })
     .then(response => {
       const result = utils.normalizeRecommendation(response)

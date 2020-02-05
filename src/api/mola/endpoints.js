@@ -21,7 +21,8 @@ export const ADD_DEVICE_ENDPOINT = `${endpoints.api}/videos/drm/add-device`
 export const CHANNELS_PLAYLIST_ENDPOINT = `${endpoints.api}/videos/playlists`
 export const PROGRAMME_GUIDES = `${endpoints.api}/videos/program-guides`
 // export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
-export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
+// export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
+export const RECOMMENDATION = `${endpoints.analytic}/v1/analytics/prophet/recommendation/videos`
 // export const HEADERMENU = 'http://mola01.koicdn.com/dev/json'
 export const HEADERMENU = `${endpoints.api}/config/ui/menu`
 
