@@ -21,7 +21,7 @@ import { globalTracker } from '@source/lib/globalTracker'
 import Header from '@components/Header'
 import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
-import PlatformDesktop from '@components/PlatformCheckNew'
+import PlatformDesktop from '@components/PlatformCheckDesktop'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 // import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
 
