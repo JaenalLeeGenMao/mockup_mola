@@ -1,7 +1,6 @@
-.container {
+.menu__container {
   background: #1d1f21;
   padding-left: 24px;
-  height: 100vh;
 }
 
 .header__container {
@@ -40,12 +39,18 @@
   line-height: 14px;
 }
 
-.flx__info {
-  width: 75%;
+.info__wrapper {
+  /* width: 100%; */
   height: 100%;
   display: flex;
   justify-content: center;
   flex-flow: column nowrap;
+}
+
+.footer__container {
+  background: #1d1f21;
+  padding-left: 24px;
+  height: 100vh;
 }
 
 .footer__wrapper {

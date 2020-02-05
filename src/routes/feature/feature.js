@@ -199,7 +199,7 @@ class Feature extends Component {
                       sliderCoin={true}
                       dragging={true}
                       slidesToShow={1}
-                      zoomScale={0}
+                      zoomScale={1}
                       transitionMode={'scroll'}
                       withoutControls={squareBanners.data.length < 2}
                       cellSpacing={0}
