@@ -32,7 +32,7 @@ export class More extends Component {
     this.setState({
       content,
       email: user && user.email ? user.email : '',
-      isLogin: uid || sid ? true : true,
+      isLogin: uid || sid ? true : false,
     })
   }
 
