@@ -20,14 +20,16 @@ import { getErrorCode } from '@routes/home/util'
 
 import history from '@source/history'
 import { getContentTypeName } from '@source/lib/globalUtil'
+import { logoOri } from '@global/imageUrl'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 
 import Placeholder from './placeholder'
 import { BannerPlaceholder } from './placeholder/banner-placeholder'
 import VideoPlaceholder from './placeholder/videoPlaceholder'
+import MolaOriginal from './original'
 import { contentTypeList, banners as dummyDataBanners } from './const'
 
-import { container, bannerContainer, carouselHeader } from './style'
+import { container, bannerContainer, carouselHeader, bannerSquareContainer, CarouselWrapper, Icon } from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
@@ -227,104 +229,136 @@ class Feature extends Component {
                     return (
                       <div key={carouselIndex} style={{ margin: '0 0 1rem 0' }}>
                         <div className={carouselHeader}>
-                          {video.data.length > 0 && <h3>{video.meta.title}</h3>}
+                          {video.data.length > 0 && (
+                            <div className={playlistId === 'ori-trai' ? 'mola-ori-header' : ''}>
+                              {playlistId === 'ori-trai' && (
+                                <img alt="mola original" src={logoOri} style={{ width: isMobile ? '4rem' : '44px' }} />
+                              )}
+                              <h3>{video.meta.title}</h3>
+                            </div>
+                          )}
                           {!viewAllHide &&
                             video.data.length > slideToShow && (
                               <a href={`/categories/${viewMorePlaylistId || playlistId}`}>View More</a>
                             )}
                         </div>
-                        <Carousel
-                          wrap={false}
-                          autoplay={false}
-                          sliderCoin={true}
-                          dragging={true}
-                          withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
-                          slidesToShow={
-                            isMobile
-                              ? contentTypeList[contentTypeName].slideToScroll
-                              : contentTypeList[contentTypeName].slideToShow
-                          }
-                          slidesToScroll={Math.trunc(slideToShow)}
-                          transitionMode={'scroll'}
-                          cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
-                          framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
-                        >
-                          {video.data.length > 0 &&
-                            video.data.map(obj => {
-                              const videoCTN = getContentTypeName(_.get(obj, 'contentType', '')),
-                                isMatch = videoCTN === 'live' || videoCTN === 'replay',
-                                matchLive =
-                                  isMatch &&
-                                  isMatchLive(
-                                    obj.startTime,
-                                    obj.endTime
-                                  ) /** id 4 is replay matches, 3 is live matches */
-                              if (contentTypeName === 'movie' || contentTypeName === 'vod') {
-                                return (
-                                  <VideoCard
-                                    key={obj.id}
-                                    alt={obj.title}
-                                    description={obj.title}
-                                    src={
-                                      obj.type === 'playlists'
-                                        ? `${obj.images.cover.portrait}?w=540`
-                                        : `${obj.background.portrait}?w=540`
-                                    }
-                                    // onLoad={this.updateOnImageLoad}
-                                    onClick={() => this.handleOnClick(obj)}
-                                  />
-                                )
-                              } else {
-                                return (
-                                  <PlaylistCard
-                                    key={obj.id}
-                                    alt={obj.title}
-                                    description={obj.title}
-                                    contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
-                                    src={
-                                      obj.type === 'playlists'
-                                        ? `${obj.images.cover.landscape}?w=720`
-                                        : `${obj.background.landscape}?w=720`
-                                    }
-                                    // onLoad={this.updateOnImageLoad}
-                                    onClick={() => this.handleOnClick(obj)}
-                                  />
-                                )
+                        {playlistId === 'ori-trai' &&
+                          video.data.length > 0 && (
+                            <MolaOriginal
+                              id={viewMorePlaylistId ? viewMorePlaylistId : playlistId}
+                              data={video.data}
+                              onClick={this.handleOnClick}
+                              isMobile={isMobile}
+                              cellSpacing={isMobile ? viewportWidth * 0.125 : viewportWidth * 0.0525}
+                              framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
+                            />
+                          )}
+                        {playlistId !== 'ori-trai' &&
+                          video.data.length > 0 && (
+                            <CarouselWrapper
+                              height={
+                                contentTypeName === 'movie' || contentTypeName === 'vod'
+                                  ? isMobile ? '17rem' : '31rem'
+                                  : isMobile ? '15rem' : '25rem'
                               }
-                            })}
-                        </Carousel>
-                        {carouselIndex === 1 &&
-                          articles.data.length > 0 && (
-                            <div className={container} style={{ margin: 0 }}>
-                              <h3 className="article-section-text">ARTICLES</h3>
+                            >
                               <Carousel
                                 wrap={false}
                                 autoplay={false}
                                 sliderCoin={true}
                                 dragging={true}
-                                slidesToShow={isMobile ? 1.2 : 3.5}
-                                slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
+                                withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
+                                slidesToShow={
+                                  isMobile
+                                    ? contentTypeList[contentTypeName].slideToScroll
+                                    : contentTypeList[contentTypeName].slideToShow
+                                }
+                                slidesToScroll={Math.trunc(slideToShow)}
                                 transitionMode={'scroll'}
-                                withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                                 cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
-                                framePadding={!isMobile ? '0rem' : '0rem 5px'}
+                                framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                               >
-                                {articles.data.map(obj => (
-                                  <ArticleCardNew data={obj} key={obj.id} isMobile={this.props.isMobile} />
-                                  // <ArticleCard
-                                  //   key={obj.id}
-                                  //   onClick={() => this.handleOnClick(obj)}
-                                  //   alt={obj.title}
-                                  //   src={`${obj.imageUrl}`}
-                                  //   title={obj.title}
-                                  //   contentType={obj.type}
-                                  //   createdAt={obj.createdAt}
-                                  //   description={obj.imageCaption}
-                                  // // onLoad={this.updateOnImageLoad}
-                                  // // containerClassName={bannerContainer}
-                                  // />
-                                ))}
+                                {video.data.length > 0 &&
+                                  video.data.map(obj => {
+                                    const videoCTN = getContentTypeName(_.get(obj, 'contentType', '')),
+                                      isMatch = videoCTN === 'live' || videoCTN === 'replay',
+                                      matchLive =
+                                        isMatch &&
+                                        isMatchLive(
+                                          obj.startTime,
+                                          obj.endTime
+                                        ) /** id 4 is replay matches, 3 is live matches */
+                                    if (contentTypeName === 'movie' || contentTypeName === 'vod') {
+                                      return (
+                                        <VideoCard
+                                          key={obj.id}
+                                          alt={obj.title}
+                                          description={obj.title}
+                                          src={
+                                            obj.type === 'playlists'
+                                              ? `${obj.images.cover.portrait}?w=540`
+                                              : `${obj.background.portrait}?w=540`
+                                          }
+                                          // onLoad={this.updateOnImageLoad}
+                                          onClick={() => this.handleOnClick(obj)}
+                                        />
+                                      )
+                                    } else {
+                                      return (
+                                        <PlaylistCard
+                                          key={obj.id}
+                                          alt={obj.title}
+                                          description={obj.title}
+                                          data={obj}
+                                          contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
+                                          src={
+                                            obj.type === 'playlists'
+                                              ? `${obj.images.cover.landscape}?w=720`
+                                              : `${obj.background.landscape}?w=720`
+                                          }
+                                          // onLoad={this.updateOnImageLoad}
+                                          onClick={() => this.handleOnClick(obj)}
+                                        />
+                                      )
+                                    }
+                                  })}
                               </Carousel>
+                            </CarouselWrapper>
+                          )}
+                        {carouselIndex === 1 &&
+                          articles.data.length > 0 && (
+                            <div className={container} style={{ margin: 0 }}>
+                              <h3 className="article-section-text">ARTICLES</h3>
+                              <CarouselWrapper height={isMobile ? '17rem' : '29rem'}>
+                                <Carousel
+                                  wrap={true}
+                                  autoplay={false}
+                                  sliderCoin={true}
+                                  dragging={true}
+                                  slidesToShow={isMobile ? 1.2 : 3.5}
+                                  slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
+                                  transitionMode={'scroll'}
+                                  withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
+                                  cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
+                                  framePadding={!isMobile ? '0rem' : '0rem 5px'}
+                                >
+                                  {articles.data.map(obj => (
+                                    <ArticleCardNew data={obj} key={obj.id} isMobile={this.props.isMobile} />
+                                    // <ArticleCard
+                                    //   key={obj.id}
+                                    //   onClick={() => this.handleOnClick(obj)}
+                                    //   alt={obj.title}
+                                    //   src={`${obj.imageUrl}`}
+                                    //   title={obj.title}
+                                    //   contentType={obj.type}
+                                    //   createdAt={obj.createdAt}
+                                    //   description={obj.imageCaption}
+                                    // // onLoad={this.updateOnImageLoad}
+                                    // // containerClassName={bannerContainer}
+                                    // />
+                                  ))}
+                                </Carousel>
+                              </CarouselWrapper>
                             </div>
                           )}
                       </div>

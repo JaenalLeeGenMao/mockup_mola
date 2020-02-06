@@ -56,7 +56,7 @@ export const playlistContainer = css`
     position: relative;
     display: inline-block;
     text-align: left;
-    width: 100%;
+    width: 100.5%;
     overflow: hidden;
   }
 

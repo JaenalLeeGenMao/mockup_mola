@@ -26,6 +26,7 @@ export const commonError = `${error}/common-error.png`
 export const unavailableImg = `${imgBaseUrl}/unavailable-image.png`
 export const notificationBarBackground = `${imgBaseUrl}/notification-bar.png`
 export const noImg = `${imgBaseUrl}/no-img.png`
+export const logoOri = `${imgBaseUrl}/mola.png`
 export const logoMobile = `${imgBaseUrl}/mola-logo-mobile.svg`
 export const logoBlue = `${imgBaseUrl}/mola-blue.svg`
 export const logoHorizontal = `${imgBaseUrl}/mola_logo_horizontal.png`
