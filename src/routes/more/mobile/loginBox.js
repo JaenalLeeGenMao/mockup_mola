@@ -6,7 +6,7 @@ import styles from './loginBox.css'
 
 export class loginBox extends Component {
   render() {
-    const { isLogin, user: { email = '' } } = this.props
+    const { isLogin, email = '' } = this.props
     return (
       <div className={styles.login__box__wrapper}>
         <div className={styles.box__profile}>
@@ -16,7 +16,7 @@ export class loginBox extends Component {
           {isLogin ? (
             <>
               <div className={styles.title__profile}> {email} </div>
-              <Link to={'/accounts/profile'} className={styles.edit}>
+              <Link to="/accounts/profile" className={styles.edit}>
                 {' '}
                 Edit Profile{' '}
               </Link>
@@ -24,7 +24,7 @@ export class loginBox extends Component {
           ) : (
             <>
               <div className={styles.title__login}> Please login to enjoy all MOLA TV features </div>
-              <Link to={'/accounts/login'} className={styles.btn__primary}>
+              <Link to="/accounts/login" className={styles.btn__primary}>
                 {' '}
                 Login{' '}
               </Link>

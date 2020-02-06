@@ -3,6 +3,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import { fetchProfile } from '@actions/user'
 import Link from '@components/Link'
 import Header from '@components/Header'
 
@@ -14,22 +15,29 @@ export class More extends Component {
   state = {
     isLogin: false,
     content: [],
+    email: '',
   }
-  componentDidMount() {
-    const { user: { uid = '', sid = '' }, configParams: { store_url = '', ios_store_url = '' } } = this.props
+  async componentDidMount() {
+    const {
+      fetchProfile,
+      user: { uid = '', sid = '' },
+      configParams: { data: { store_url = '', ios_store_url = '' } },
+    } = this.props
     const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
       storeUrl = isApple ? ios_store_url : store_url,
       downloadText = isApple ? 'gratis di Appstore' : 'gratis di Playstore',
-      content = moreContent(storeUrl, downloadText)
+      content = moreContent(storeUrl, downloadText),
+      user = await fetchProfile()
+
     this.setState({
       content,
-      isLogin: uid || sid ? true : false,
+      email: user && user.email ? user.email : '',
+      isLogin: uid || sid ? true : true,
     })
   }
 
   render() {
-    const { isLogin, content } = this.state
-    const { user } = this.props
+    const { isLogin, content, email } = this.state
     const filteredMoreContent = !isLogin ? content.filter(content => content.id !== 2 && content.id !== 3) : content
     return (
       <>
@@ -37,19 +45,19 @@ export class More extends Component {
           <Header isMobile {...this.props} />
         </div>
         <div style={{ height: '60px' }} />
-        <LoginBox isLogin={isLogin} user={user} />
+        <LoginBox isLogin={isLogin} email={email} />
         <div className={styles.menu__container}>
           {filteredMoreContent.length > 0 &&
             filteredMoreContent.map(dt => (
               <div key={dt.id} className={styles.menu__wrapper}>
-                <Link to={dt.url} className={styles.img__wrapper}>
+                <a href={dt.url} className={styles.img__wrapper}>
                   <div className={`${styles.img__menu} ${dt.img}`} />
-                </Link>
+                </a>
                 <div className={styles.info__wrapper}>
-                  <Link to={dt.url} className={styles.menu__title}>
+                  <a href={dt.url} className={styles.menu__title}>
                     {' '}
                     {dt.title}{' '}
-                  </Link>
+                  </a>
                   <div className={styles.menu__info}> {dt.info} </div>
                 </div>
               </div>
@@ -64,13 +72,13 @@ export class More extends Component {
               </Link>
             </div>
           ))}
-          <div className={styles.system__info}> Web Version </div>
+          <div className={styles.system__info}> Version </div>
           <div className={styles.system__info}> {pkg.version} </div>
           {isLogin && (
-            <Link to={'/signout'} className={styles.btn__logout}>
+            <a href="/signout" className={styles.btn__logout}>
               {' '}
               Logout{' '}
-            </Link>
+            </a>
           )}
         </div>
       </>
@@ -84,4 +92,8 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(withStyles(styles), connect(mapStateToProps, null))(More)
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: () => dispatch(fetchProfile()),
+})
+
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(More)
