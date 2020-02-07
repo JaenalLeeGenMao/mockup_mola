@@ -71,7 +71,7 @@ class MolaOriginal extends Component {
               sliderCoin={true}
               dragging={true}
               withoutControls={false}
-              slidesToShow={isMobile ? 1 : 1.9}
+              slidesToShow={isMobile ? 1.2 : 1.9}
               slidesToScroll={1}
               transitionMode={'scroll3d'}
               cellAlign={'left'}

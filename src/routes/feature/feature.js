@@ -249,7 +249,7 @@ class Feature extends Component {
                               data={video.data}
                               onClick={this.handleOnClick}
                               isMobile={isMobile}
-                              cellSpacing={isMobile ? 8 : viewportWidth * 0.0525}
+                              cellSpacing={isMobile ? viewportWidth * 0.125 : viewportWidth * 0.0525}
                               framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                             />
                           )}

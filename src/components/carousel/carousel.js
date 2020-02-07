@@ -84,7 +84,7 @@ class BannerCarousel extends Component {
         width={this.props.width}
         withoutControls={this.props.withoutControls}
         wrapAround={this.props.wrap}
-        zoomScale={isMobile ? 0.95 : this.props.zoomScale || 0.85}
+        zoomScale={this.props.zoomScale || 0.85}
         afterSlide={this.handleAfterSlide}
         renderBottomCenterControls={({ slideCount, currentSlide, goToSlide }) => {
           if (this.props.bannerSquare) {

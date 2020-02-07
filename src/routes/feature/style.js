@@ -29,7 +29,7 @@ export const container = css`
 
     p {
       color: #ffffff;
-      font-size: 11px;
+      font-size: 12px;
     }
   }
 `
@@ -55,6 +55,10 @@ export const carouselHeader = css`
     transform: translate(0.5rem, 5rem);
     position: relative;
     z-index: 1;
+  }
+
+  div.mola-ori-header > h3 {
+    color: #ffffff;
   }
 
   h3 {

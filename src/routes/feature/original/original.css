@@ -39,19 +39,20 @@
 }
 
 .original_grid_detail button {
-  color: #333;
-  background: rgba(255, 255, 255, 0.8);
+  color: #fff;
+  background: rgba(31, 147, 255, 0.8);
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.3rem;
   font-size: 1.28rem;
   font-weight: 600;
   transition: all ease 500ms;
+  border: none;
 }
 
 .original_grid_detail button:hover {
   cursor: pointer;
-  background: rgba(255, 255, 255, 1);
+  background: rgba(31, 147, 255, 1);
 }
 
 .original_grid_slider {
@@ -79,7 +80,7 @@
   }
 
   .original_wrapper {
-    height: 500px;
+    height: 450px;
   }
 
   .original_grid_slider {
@@ -94,16 +95,16 @@
   }
 
   .original_grid_detail p {
-    height: 3.67rem;
+    height: 3.87rem;
     margin: 0 1rem;
   }
 
   .original_grid_detail button {
-    margin: 0.5rem 1rem;
+    margin: 1rem;
     font-size: 1rem;
   }
 
   .original_grid_slider :global(.slider-frame) {
-    right: 0;
+    right: 10%;
   }
 }
