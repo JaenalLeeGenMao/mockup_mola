@@ -1,7 +1,9 @@
 .filterContentfilterByDay_container {
   padding: 0 4rem 1rem 1rem;
-  position: sticky;
+  position: fixed;
   top: 16rem;
+  z-index: 1;
+  right: 0;
 }
 
 .tourFilterDate {

@@ -644,12 +644,10 @@ class Matches extends React.Component {
                   {matchesPlaylists.meta.status === 'loading' && <PlaceholderContent />}
                   {matchesPlaylists.meta.status !== 'loading' &&
                     matchesPlaylists.meta.status !== 'error' && (
-                      <div className={s.matches_grid}>
+                      <>
                         <span>{this.categoryFilter()}</span>
                         <span className={'tourMatchStatus'}>
-                          <div className={s.matchlist_wrappercontent_center}>
-                            <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
-                          </div>
+                          <div className={s.matchlist_content_center}>{this.renderMatchCard()}</div>
                         </span>
                         <VerticalCalendar
                           handleCategoryFilter={this.handleDateFilter}
@@ -659,7 +657,7 @@ class Matches extends React.Component {
                           handleJumpToLive={this.handleJumpToLive}
                           isChannel={false}
                         />
-                      </div>
+                      </>
                     )}
                 </div>
               </div>
