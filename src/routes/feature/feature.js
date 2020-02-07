@@ -29,7 +29,15 @@ import VideoPlaceholder from './placeholder/videoPlaceholder'
 import MolaOriginal from './original'
 import { contentTypeList, banners as dummyDataBanners } from './const'
 
-import { container, bannerContainer, carouselHeader, bannerSquareContainer, CarouselWrapper, Icon } from './style'
+import {
+  container,
+  bannerContainer,
+  carouselHeader,
+  bannerSquareContainer,
+  CarouselWrapper,
+  Icon,
+  CustomContainer,
+} from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
@@ -41,16 +49,14 @@ class Feature extends Component {
   }
 
   componentDidMount() {
+    const { configParams, isMobile, onHandlePlaylist, onHandleBanner } = this.props
     if (window) {
       this.updateWindowDimensions()
-
-      const id = this.props.id || _.get(pathname.split('/'), '[2]', '')
+      const id = this.props.id || _.get(this.props.pathname.split('/'), '[2]', ''),
+        squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
       // this.props.onHandleResetVideo()
-      this.props.onHandlePlaylist(id)
-      this.props.onHandleBanner(id)
-      if (this.props.isMobile) {
-        this.props.onHandlerSquareBanner(id)
-      }
+      onHandlePlaylist(id)
+      onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
       // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
@@ -147,8 +153,11 @@ class Feature extends Component {
       isIpad = /iPad/i.test(navigator.userAgent),
       isMobile = viewportWidth <= 960,
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
+    const { configParams } = this.props,
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
+
     if (this.props.feature[id]) {
-      const { playlists, videos, banners, articles, squareBanners } = this.props.feature[id]
+      const { playlists, videos, banners, articles } = this.props.feature[id]
       // const { articles } = this.props.feature['featured']
       const isLoading = playlists.meta.status === 'loading',
         isError = playlists.meta.status === 'error',
@@ -186,74 +195,37 @@ class Feature extends Component {
           <div style={{ height: '12vh' }} />
           {isSuccess && (
             <>
-              {isMobile && !isIpad ? (
-                /* FOR SQUARE BANNERS */
-                <>
-                  {squareBanners.meta.status !== 'success' && (
-                    <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />
-                  )}
-                  {squareBanners.data.length > 0 && (
-                    <Carousel
-                      wrap={squareBanners.length === 1 ? false : true}
-                      autoplay={false}
-                      sliderCoin={true}
-                      dragging={true}
-                      slidesToShow={1}
-                      zoomScale={1}
-                      transitionMode={'scroll'}
-                      withoutControls={squareBanners.data.length < 2}
-                      cellSpacing={0}
-                      framePadding="0rem"
-                      bannerSquare
-                    >
-                      {squareBanners.data.map(obj => (
-                        <PlaylistCard
-                          transitionMode={'scroll'}
-                          key={obj.id}
-                          onClick={() => this.handleOnClick(obj)}
-                          src={`${obj.background.landscape}?w=900`}
-                          containerClassName={bannerSquareContainer}
-                          bannerCard
-                        />
-                      ))}
-                    </Carousel>
-                  )}
-                </>
-              ) : (
-                /* FOR SQUARE BANNERS */
-                <>
-                  {banners.meta.status !== 'success' && (
-                    <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />
-                  )}
-                  {banners.data.length > 0 && (
-                    <Carousel
-                      wrap={banners.length === 1 ? false : true}
-                      autoplay={false}
-                      sliderCoin={true}
-                      dragging={true}
-                      slidesToShow={isMobile ? 1.25 : 2.25}
+              {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.data.length > 0 && (
+                <Carousel
+                  className={isMobile && squareBannerEnabled ? CustomContainer : ''}
+                  wrap={banners.length === 1 ? false : true}
+                  autoplay={false}
+                  sliderCoin={true}
+                  dragging={true}
+                  slidesToShow={isMobile && squareBannerEnabled ? 1 : 2.25}
+                  transitionMode={isMobile && squareBannerEnabled ? 'scroll' : 'scroll3d'}
+                  withoutControls={
+                    banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
+                  }
+                  cellSpacing={isMobile && squareBannerEnabled ? 0 : viewportWidth * 0.0425}
+                  framePadding="0rem"
+                  zoomScale={isMobile && squareBannerEnabled ? 1 : null}
+                  bannerSquare={isMobile && squareBannerEnabled}
+                >
+                  {banners.data.map(obj => (
+                    <PlaylistCard
                       transitionMode={'scroll3d'}
-                      withoutControls={
-                        banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
-                      }
-                      cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
-                      framePadding="0rem"
-                    >
-                      {banners.data.map(obj => (
-                        <PlaylistCard
-                          transitionMode={'scroll3d'}
-                          key={obj.id}
-                          onClick={() => this.handleOnClick(obj)}
-                          alt={obj.title}
-                          src={`${obj.background.landscape}?w=1080`}
-                          // onLoad={this.updateOnImageLoad}
-                          containerClassName={bannerContainer}
-                          bannerCard
-                        />
-                      ))}
-                    </Carousel>
-                  )}
-                </>
+                      key={obj.id}
+                      onClick={() => this.handleOnClick(obj)}
+                      alt={obj.title}
+                      src={`${obj.background.landscape}?w=1080`}
+                      // onLoad={this.updateOnImageLoad}
+                      containerClassName={bannerContainer}
+                      bannerCard
+                    />
+                  ))}
+                </Carousel>
               )}
               {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />}
               <LazyLoad containerClassName={container}>
@@ -435,7 +407,6 @@ const mapDispatchToProps = dispatch => ({
   onHandlePlaylist: id => dispatch(featureActions.getFeaturePlaylist(id)),
   onHandleVideo: ({ id, playlist, index }) => dispatch(featureActions.getFeatureVideo({ id, playlist, index })),
   onHandleBanner: id => dispatch(featureActions.getFeatureBanner(id)),
-  onHandlerSquareBanner: id => dispatch(featureActions.getFeatureSquareBanner(id)),
   // onHandleArticle: id => dispatch(featureActions.getFeatureArticle(id)),
   onHandleResetVideo: () => dispatch(featureActions.resetFeatureVideos()),
 })

@@ -25,7 +25,7 @@ import styles from './homeFeatured.css'
 
 export class homeFeatured extends Component {
   state = {
-    squareBanners: null,
+    banners: null,
     filteredVideos: [],
   }
   componentDidMount() {
@@ -40,14 +40,14 @@ export class homeFeatured extends Component {
 
   componentDidUpdate() {
     const { playlists, videos } = this.props.home
-    const { squareBanners } = this.state
-    if (videos.meta.status === 'success' && !squareBanners) {
+    const { banners } = this.state
+    if (videos.meta.status === 'success' && !banners) {
       const getBanner = videos.data.filter(video => video.meta.id === 'web-featured')
       const filteredVideos = videos.data.filter(video => video.meta.id !== 'web-featured')
 
       this.setState({
         filteredVideos: filteredVideos && filteredVideos.length > 0 ? filteredVideos : [],
-        squareBanners: getBanner && getBanner.length > 0 ? getBanner[0] : null,
+        banners: getBanner && getBanner.length > 0 ? getBanner[0] : null,
       })
     }
   }
@@ -82,8 +82,9 @@ export class homeFeatured extends Component {
   }
 
   render() {
-    const { home: { playlists, videos }, isMobile } = this.props,
-      { squareBanners, filteredVideos } = this.state
+    const { home: { playlists, videos }, isMobile, configParams } = this.props,
+      { banners, filteredVideos } = this.state,
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
 
     const isPlaylistsLoading = playlists.meta.status === 'loading',
       isPlaylistsError = playlists.meta.status === 'error',
@@ -93,7 +94,7 @@ export class homeFeatured extends Component {
       isVideosError = videos.meta.status === 'error',
       isVideosSuccess = videos.meta.status === 'success'
 
-    const isBannerSuccess = squareBanners && squareBanners.meta.status === 'success' && squareBanners.data.length > 0
+    const isBannerSuccess = banners && banners.meta.status === 'success' && banners.data.length > 0
 
     const playlistError = playlists.meta.error ? playlists.meta.error : '',
       playlistErrorCode = getErrorCode(playlistError)
@@ -102,7 +103,7 @@ export class homeFeatured extends Component {
       <>
         <Header libraryOff color={false} {...this.props} isMobile={isMobile} activeMenuId="Featured" />
         <ListMenu {...this.props} isMobile={isMobile} />
-        {isPlaylistsLoading || (isVideosLoading && <HomePlaceholder />)}
+        {/* {isPlaylistsLoading || (isVideosLoading && <HomePlaceholder />)} */}
         {isPlaylistsError && (
           <HomeError status={playlistErrorCode} message={playlistError || 'Mola TV playlist is not loaded'} />
         )}
@@ -113,24 +114,25 @@ export class homeFeatured extends Component {
               {isBannerSuccess && (
                 /* START SQUARE BANNERS */
                 <Carousel
-                  wrap={squareBanners.data.length === 1 ? false : true}
+                  className={styles.custom__container}
+                  wrap={banners.length === 1 ? false : true}
                   autoplay={false}
                   sliderCoin={true}
                   dragging={true}
                   slidesToShow={1}
-                  zoomScale={1}
                   transitionMode={'scroll'}
-                  withoutControls={squareBanners.data.length < 2}
+                  withoutControls={banners.data.length < 2}
                   cellSpacing={0}
                   framePadding="0rem"
-                  bannerSquare
+                  zoomScale={1}
+                  bannerSquare={squareBannerEnabled}
                 >
-                  {squareBanners.data.map(obj => (
+                  {banners.data.map(obj => (
                     <PlaylistCard
                       transitionMode={'scroll'}
                       key={obj.id}
                       onClick={() => this.handleOnClick(obj)}
-                      src={`${obj.background.landscape}?w=900`}
+                      src={`${obj.background.landscape}?w=1080`}
                       containerClassName={styles.banner__square__container}
                       bannerCard
                     />

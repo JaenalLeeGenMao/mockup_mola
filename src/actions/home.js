@@ -39,9 +39,11 @@ const getHomePlaylist = () => dispatch => {
   })
 }
 
-const getHomeVideo = (playlist, isMobile) => dispatch => {
+const getHomeVideo = (playlist, isMobile) => (dispatch, getState) => {
   if (playlist.id === 'web-featured') {
-    const id = isMobile ? 'mobile-featured' : 'desktop-featured'
+    const { configParams } = getState(),
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled,
+      id = isMobile && squareBannerEnabled ? 'desktop-featured-square' : 'desktop-featured'
     return Mola.getFeatureBanner({ id }).then(result => {
       result = {
         meta: {

@@ -31,9 +31,13 @@ export default function home(state = initialState, action) {
       // console.log('reducer home checking result', result)
 
       const index = findIndexByKeyValue(result, 'id', action.payload.meta.id),
-        filteredStatus = state.videos.data.filter(({ meta }) => meta.status === 'error').length > 0
+        filteredStatus =
+          state.videos.data.filter(({ meta }) => meta.status === 'error' && meta.id !== 'web-featured').length > 0, // cek status video error
+        bannerStatusError =
+          state.videos.data.filter(({ meta }) => meta.status === 'error' && meta.id === 'web-featured').length > 0 //cek status banner error
 
-      if (filteredStatus) {
+      if (filteredStatus && bannerStatusError) {
+        // error only if banner and videos error
         status = 'error'
       } else if (state.videos.data.length < state.playlists.data.length - 1) {
         status = 'loading'
