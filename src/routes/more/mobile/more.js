@@ -18,22 +18,26 @@ export class More extends Component {
     email: '',
   }
   async componentDidMount() {
-    const {
-      fetchProfile,
-      user: { uid = '', sid = '' },
-      configParams: { data: { store_url = '', ios_store_url = '' } },
-    } = this.props
-    const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
+    const { fetchProfile, user: { uid = '', sid = '' }, configParams } = this.props
+    const android_store_url = configParams && configParams.data ? configParams.data.store_url : '',
+      ios_store_url = configParams && configParams.data ? configParams.data.ios_store_url : '',
+      isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
       storeUrl = isApple ? ios_store_url : store_url,
       downloadText = isApple ? 'gratis di Appstore' : 'gratis di Playstore',
-      content = moreContent(storeUrl, downloadText),
-      user = await fetchProfile()
+      content = moreContent(storeUrl, downloadText)
 
-    this.setState({
-      content,
-      email: user && user.email ? user.email : '',
-      isLogin: uid || sid ? true : false,
-    })
+    this.setState(
+      {
+        content,
+        isLogin: uid || sid ? true : false,
+      },
+      async () => {
+        const data = await fetchProfile()
+        this.setState({
+          email: data && data.email ? data.email : '',
+        })
+      }
+    )
   }
 
   render() {

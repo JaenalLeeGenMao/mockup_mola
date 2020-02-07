@@ -50,7 +50,7 @@
 .footer__container {
   background: #1d1f21;
   padding-left: 24px;
-  height: 100vh;
+  height: calc(35vh + 150px);
 }
 
 .footer__wrapper {
