@@ -234,7 +234,7 @@ class Feature extends Component {
                           {video.data.length > 0 && (
                             <div className={playlistId === 'ori-trai' ? 'mola-ori-header' : ''}>
                               {playlistId === 'ori-trai' && (
-                                <img alt="mola original" src={logoOri} style={{ width: isMobile ? '4rem' : '44px' }} />
+                                <img alt="mola original" src={logoOri} style={{ width: !isMobile ? '4rem' : '44px' }} />
                               )}
                               <h3>{video.meta.title}</h3>
                             </div>
