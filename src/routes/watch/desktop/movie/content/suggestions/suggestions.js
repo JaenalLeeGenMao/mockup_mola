@@ -57,6 +57,7 @@ const Suggestions = ({ style = {}, videos = [], contentType = '', isMobile = fal
                 alt={obj.title}
                 description={obj.title}
                 src={`${obj.cover_landscape}?w=720`}
+                data={obj}
               />
             </Link>
           )

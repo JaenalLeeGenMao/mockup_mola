@@ -6,6 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { logoHorizontal } from '@global/imageUrl'
 import Link from '@components/Link'
 import LazyLoad from '@components/common/Lazyload'
+import Header from '@components/Header'
 import s from './bcaPromo.css'
 import bcaUrl from '../../../../../src/global/assets-global/images/bca-button.png'
 import { globalTracker } from '@source/lib/globalTracker'
@@ -50,17 +51,20 @@ class BcaPromo extends React.Component {
 
   render() {
     return (
-      <Fragment>
-        {this.renderHeader()}
+      <>
+        {/* {this.renderHeader()} */}
+        <Header isMobile title="Promo Detail" />
         <div className={s.wrapper}>
           <LazyLoad>
             <div className={s.root}>
-              <div className={s.header_text}>Selamat Datang di MOLA TV</div>
+              <div className={s.header_text}>
+                <h1>Selamat Datang di MOLA TV</h1>
+              </div>
               <div className={s.banner}>
                 <img src={this.state.bannerUrl} />
               </div>
               <div className={s.paragraph_bold}>
-                Ingin bisa bebas streaming seluruh pertandingan Liga Inggris di MOLA TV selama sebulan?
+                <h2>Ingin bisa bebas streaming seluruh pertandingan Liga Inggris di MOLA TV selama sebulan?</h2>
               </div>
               <div className={s.paragraph}>
                 <p>
@@ -71,9 +75,13 @@ class BcaPromo extends React.Component {
 
               <div className={s.code}>
                 <div style={{ display: 'inline' }}>
-                  <div className={s.voucher_code}>{this.state.voucher_code}</div>
+                  <div className={s.voucher_code}>
+                    <h2>{this.state.voucher_code}</h2>
+                  </div>
                   <CopyToClipboard text={this.state.voucher_code} onCopy={() => alert('Copied the text: MOLATV')}>
-                    <div className={s.copy_button}>GUNAKAN</div>
+                    <div className={s.copy_button}>
+                      <p>GUNAKAN</p>
+                    </div>
                   </CopyToClipboard>
                 </div>
               </div>
@@ -86,7 +94,7 @@ class BcaPromo extends React.Component {
             </div>
           </LazyLoad>
         </div>
-      </Fragment>
+      </>
     )
   }
 }

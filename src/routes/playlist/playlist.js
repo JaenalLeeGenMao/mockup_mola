@@ -164,6 +164,7 @@ class Playlist extends React.Component {
                             description={video.title ? video.title : ''}
                             contentType={matchLive ? video.contentType : 4}
                             src={`${video.background.landscape}?w=540`}
+                            data={obj}
                           />
                         ) : (
                           <VideoCard

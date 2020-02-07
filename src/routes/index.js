@@ -121,6 +121,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'get-app-desktop' */ './get-app-desktop'),
     },
     {
+      path: '/promo',
+      load: () => import(/* webpackChunkName: 'promo' */ './promo'),
+    },
+    {
       path: '/conditions',
       load: () => import(/* webpackChunkName: 'conditions' */ './conditions'),
     },

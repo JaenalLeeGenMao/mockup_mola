@@ -261,6 +261,8 @@ const normalizeHomeVideo = response => {
                 awayTeamId,
                 seasonNumber,
                 permission,
+                league,
+                platforms,
               },
             } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
@@ -295,6 +297,8 @@ const normalizeHomeVideo = response => {
               type,
               homeTeamId,
               awayTeamId,
+              league,
+              platforms,
             }
           })
         // .sort((a, b) => a.displayOrder - b.displayOrder)

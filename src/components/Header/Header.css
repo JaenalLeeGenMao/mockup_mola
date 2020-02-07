@@ -37,6 +37,17 @@
   position: relative;
 }
 
+.title__wrapper {
+  display: flex;
+}
+
+.header__title {
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
 .header__logo {
   position: relative;
   width: 4rem;
