@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
+import ListMenu from '@components/listMenu'
 import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
@@ -169,6 +170,7 @@ class Feature extends Component {
             <title>{playlists.meta.title}</title>
           </Helmet>
           <Header libraryOff color={false} {...this.props} isMobile={isMobile} activeMenuId={playlists.meta.menuId} />
+          <ListMenu {...this.props} isMobile={isMobile} />
           {isLoading && <Placeholder isMobile={isMobile} />}
           {isError && (
             <FeatureError

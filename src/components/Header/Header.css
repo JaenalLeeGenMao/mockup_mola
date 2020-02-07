@@ -23,7 +23,7 @@
   justify-content: space-between;
   height: 6rem;
   width: 100%;
-  z-index: 100;
+  z-index: 1;
   box-sizing: border-box;
 }
 
@@ -62,9 +62,17 @@
   left: 0;
 }
 
+.backIcon {
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiI+PGRlZnM+PHN0eWxlPi5hLC5ie2ZpbGw6I2ZmZjt9LmJ7Y2xpcC1ydWxlOmV2ZW5vZGQ7fS5je2NsaXAtcGF0aDp1cmwoI2EpO30uZHtjbGlwLXBhdGg6dXJsKCNiKTt9PC9zdHlsZT48Y2xpcFBhdGggaWQ9ImEiPjxyZWN0IGNsYXNzPSJhIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1IDIwKSIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJiIj48cGF0aCBjbGFzcz0iYiIgZD0iTTE0LjMzNS0yMi42NDdIMy4wOTFsNC4xNTctNC4yMTRhLjY1OS42NTksMCwwLDAsLjAwOC0uOTEuNjEuNjEsMCwwLDAtLjg4MS0uMDA5bC01LjIzMiw1LjNhLjY1Mi42NTIsMCwwLDAtLjE4Ni40NTYuNjU0LjY1NCwwLDAsMCwuMTgyLjQ1OGw1LjI0LDUuNDEyYS42MTEuNjExLDAsMCwwLC40NC4xODguNjExLjYxMSwwLDAsMCwuNDQtLjE4OC42NTguNjU4LDAsMCwwLDAtLjkwOUwzLjEtMjEuMzYxSDE0LjMzNUEuNjMzLjYzMywwLDAsMCwxNC45NTgtMjJhLjYzMy42MzMsMCwwLDAtLjYyMy0uNjQzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC45NTggMjcuOTYzKSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsYXNzPSJjIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTUgLTIwKSI+PGcgY2xhc3M9ImQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2IDIyKSI+PHBhdGggY2xhc3M9ImEiIGQ9Ik0tNC4wNDItMzIuOTYzSDE0LjEwOXYxNi4yODdILTQuMDQyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMS45NjcgMzAuODIpIi8+PC9nPjwvZz48L3N2Zz4=);
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 @media screen and (min-width: 299px) and (max-width: 640px) {
   .header__container_m {
-    padding: 0 5%;
+    padding: 0 16px;
     align-items: center;
     position: fixed;
     display: flex;
@@ -72,7 +80,7 @@
     justify-content: space-between;
     height: 60px;
     width: 100%;
-    z-index: 100;
+    z-index: 2;
     box-sizing: border-box;
   }
 
@@ -82,6 +90,7 @@
 
   .header__shadow {
     height: 60px;
+    opacity: 1;
   }
 
   .header__logo_wrapper_m .header__logo {
@@ -98,5 +107,11 @@
 
   .header__logo_wrapper_m .header__logo {
     width: 132px;
+  }
+}
+
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+  .header__shadow {
+    opacity: 1;
   }
 }

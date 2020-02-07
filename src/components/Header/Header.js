@@ -24,21 +24,34 @@ import Link from '../Link'
 // import RightMenu from './right-menu'
 // import LeftMenu from './left-menu'
 import HeaderMenu from './header-menu'
+import NewHeader from './new-header'
 import styles from './Header.css'
+import _get from 'lodash/get'
 
 class Header extends Component {
   state = {
     width: this.props.isMobile ? 640 : 1200,
     isLandscape: false,
+    showMenu: false,
   }
 
   componentDidMount() {
+    let currentMenu = true
+    const categoryWatch = _get(window, 'location.pathname', '')
+
     if (process.env.BROWSER) {
       this.setState({
         width: window.innerWidth,
         isLandscape: window.innerHeight < window.innerWidth,
       })
       window.addEventListener('resize', this.handleWindowSizeChange)
+    }
+
+    if (categoryWatch == '/watch') {
+      currentMenu = true
+      this.setState({
+        showMenu: currentMenu,
+      })
     }
   }
 
@@ -54,10 +67,13 @@ class Header extends Component {
       isLandscape: window.innerHeight < window.innerWidth,
     })
   }
+  handleButtonBack = () => {
+    history.goBack()
+  }
 
   render() {
     const { pathname, headerMenu, user, activeMenuId } = this.props
-    const { width, isLandscape } = this.state
+    const { width, isLandscape, showMenu } = this.state
     let isMobileView = width < 875
     if (/iPad/i.test(navigator.userAgent)) {
       isMobileView = true
@@ -70,11 +86,23 @@ class Header extends Component {
         <div className={`${isMobileView ? styles.header__logo_wrapper_m : styles.header__logo_wrapper}`}>
           <LazyLoad>
             <Link to="/">
-              <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
+              {showMenu && isMobileView ? (
+                <div className={styles.backIcon} onClick={this.handleButtonBack} />
+              ) : (
+                <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
+              )}
             </Link>
           </LazyLoad>
         </div>
-        <HeaderMenu
+        {/* <HeaderMenu
+          user={user}
+          isMobile={isMobileView}
+          menu={headerMenu}
+          activeMenuId={activeMenuId}
+          isLandscape={isLandscape}
+          pathname={pathname}
+        /> */}
+        <NewHeader
           user={user}
           isMobile={isMobileView}
           menu={headerMenu}

@@ -247,7 +247,7 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              if (pathRoute === 'home') {
+              if (pathRoute === 'home' || window.App.isMobile) {
                 elMessage.addEventListener('DOMSubtreeModified', hideOffline)
                 if (elMessage.innerHTML === 'Online') {
                   document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
