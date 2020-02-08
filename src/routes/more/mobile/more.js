@@ -16,75 +16,96 @@ export class More extends Component {
     isLogin: false,
     content: [],
     email: '',
+    showSubs: false,
+    isLoading: true,
   }
   async componentDidMount() {
-    const { fetchProfile, user: { uid = '', sid = '' }, configParams } = this.props
-    const android_store_url = configParams && configParams.data ? configParams.data.store_url : '',
+    const { fetchProfile, user: { uid = '', sid = '' }, configParams } = this.props,
+      android_store_url = configParams && configParams.data ? configParams.data.store_url : '',
       ios_store_url = configParams && configParams.data ? configParams.data.ios_store_url : '',
       isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
       storeUrl = isApple ? ios_store_url : store_url,
       downloadText = isApple ? 'gratis di Appstore' : 'gratis di Playstore',
       content = moreContent(storeUrl, downloadText)
 
-    this.setState(
-      {
-        content,
-        isLogin: uid || sid ? true : false,
-      },
-      async () => {
-        const data = await fetchProfile()
+    await fetchProfile()
+      .then(() => {
+        const { user: { email = '' } } = this.props
         this.setState({
-          email: data && data.email ? data.email : '',
+          content,
+          isLogin: uid || sid ? true : false,
+          showSubs: subscriptions_enabled ? true : false,
+          email,
+          isLoading: false,
         })
-      }
-    )
+      })
+      .catch(() => {
+        this.setState({
+          content,
+          isLogin: uid || sid ? true : false,
+          showSubs: subscriptions_enabled ? true : false,
+          isLoading: false,
+        })
+      })
   }
 
   render() {
-    const { isLogin, content, email } = this.state
-    const filteredMoreContent = !isLogin ? content.filter(content => content.id !== 2 && content.id !== 3) : content
+    const { isLogin, content, email, showSubs, isLoading } = this.state
+    let filteredMoreContent = !isLogin ? content.filter(content => content.id !== 2 && content.id !== 3) : content
+
+    if (!showSubs) {
+      filteredMoreContent = !isLogin
+        ? content.filter(content => content.id !== 2 && content.id !== 3)
+        : content.filter(content => content.id !== 2)
+    }
     return (
       <>
-        <div className={styles.header__container}>
-          <Header isMobile {...this.props} />
-        </div>
-        <div style={{ height: '60px' }} />
-        <LoginBox isLogin={isLogin} email={email} />
-        <div className={styles.menu__container}>
-          {filteredMoreContent.length > 0 &&
-            filteredMoreContent.map(dt => (
-              <div key={dt.id} className={styles.menu__wrapper}>
-                <a href={dt.url} className={styles.img__wrapper}>
-                  <div className={`${styles.img__menu} ${dt.img}`} />
-                </a>
-                <div className={styles.info__wrapper}>
-                  <a href={dt.url} className={styles.menu__title}>
-                    {' '}
-                    {dt.title}{' '}
-                  </a>
-                  <div className={styles.menu__info}> {dt.info} </div>
-                </div>
-              </div>
-            ))}
-        </div>
-        <div className={styles.footer__container}>
-          {footers.map(footer => (
-            <div key={footer.id} className={styles.footer__wrapper}>
-              <Link to={footer.url} className={styles.footer__list}>
-                {' '}
-                {footer.list}{' '}
-              </Link>
+        {!isLoading && (
+          <>
+            <div className={styles.header__container}>
+              <Header isMobile {...this.props} />
             </div>
-          ))}
-          <div className={styles.system__info}> Version </div>
-          <div className={styles.system__info}> {pkg.version} </div>
-          {isLogin && (
-            <a href="/signout" className={styles.btn__logout}>
-              {' '}
-              Logout{' '}
-            </a>
-          )}
-        </div>
+            <div style={{ height: '60px' }} />
+            <LoginBox isLogin={isLogin} email={email} />
+            <div className={styles.menu__container}>
+              {filteredMoreContent.length > 0 &&
+                filteredMoreContent.map(dt => (
+                  <div key={dt.id} className={styles.menu__wrapper}>
+                    <a href={dt.url} className={styles.img__wrapper}>
+                      <div className={`${styles.img__menu} ${dt.img}`} />
+                    </a>
+                    <div className={styles.info__wrapper}>
+                      <a href={dt.url} className={styles.menu__title}>
+                        {' '}
+                        {dt.title}{' '}
+                      </a>
+                      <div className={styles.menu__info}> {dt.info} </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            <div className={styles.footer__container}>
+              {footers.map(footer => (
+                <div key={footer.id} className={styles.footer__wrapper}>
+                  <Link to={footer.url} className={styles.footer__list}>
+                    {' '}
+                    {footer.list}{' '}
+                  </Link>
+                </div>
+              ))}
+              <div>
+                <div className={styles.system__info}> Version </div>
+                <div className={styles.system__info}> {pkg.version} </div>
+              </div>
+              {isLogin && (
+                <a href="/signout" className={styles.btn__logout}>
+                  {' '}
+                  Logout{' '}
+                </a>
+              )}
+            </div>
+          </>
+        )}
       </>
     )
   }
