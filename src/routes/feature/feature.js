@@ -23,11 +23,12 @@ import { getContentTypeName } from '@source/lib/globalUtil'
 import { logoOri } from '@global/imageUrl'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 
-import Placeholder from './placeholder'
-import { BannerPlaceholder } from './placeholder/banner-placeholder'
-import VideoPlaceholder from './placeholder/videoPlaceholder'
+import Placeholder from '@components/placeholder'
+import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
+import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
+import { banners as dummyDataBanners } from '@components/placeholder/const'
 import MolaOriginal from './original'
-import { contentTypeList, banners as dummyDataBanners } from './const'
+import { contentTypeList } from './const'
 
 import {
   container,

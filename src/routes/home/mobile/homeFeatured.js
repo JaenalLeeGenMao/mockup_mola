@@ -15,6 +15,8 @@ import VideoCard from '@components/video-card'
 import Header from '@components/Header'
 import HomeError from '@components/common/error'
 import ListMenu from '@components/listMenu'
+import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
+import { banners as dummyDataBanners } from '@components/placeholder/const'
 
 import { getLocale } from '@routes/home/locale'
 import { getErrorCode } from '@routes/home/util'
@@ -111,6 +113,7 @@ export class homeFeatured extends Component {
         {isPlaylistsSuccess &&
           isVideosSuccess && (
             <>
+              {!isBannerSuccess && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
               {isBannerSuccess && (
                 /* START SQUARE BANNERS */
                 <Carousel
