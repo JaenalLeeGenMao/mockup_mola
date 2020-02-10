@@ -23,8 +23,9 @@ export class More extends Component {
     const { fetchProfile, user: { uid = '', sid = '' }, configParams } = this.props,
       android_store_url = configParams && configParams.data ? configParams.data.store_url : '',
       ios_store_url = configParams && configParams.data ? configParams.data.ios_store_url : '',
+      subscriptions_enabled = configParams && configParams.data ? configParams.data.subscriptions_enabled : '',
       isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
-      storeUrl = isApple ? ios_store_url : store_url,
+      storeUrl = isApple ? ios_store_url : android_store_url,
       downloadText = isApple ? 'gratis di Appstore' : 'gratis di Playstore',
       content = moreContent(storeUrl, downloadText)
 
