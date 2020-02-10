@@ -88,8 +88,8 @@ const getFeatureVideo = ({ id = '', playlist, index = 0 }) => async dispatch => 
 }
 
 const getFeatureBanner = pathname => dispatch => {
-  const id = `landing-page-${pathname}` /* landing-page-epl */
-
+  const id = `landing-page-${pathname}` /* landing-page-epl */,
+    filteredId = pathname ? pathname.split('-')[0] : pathname
   dispatch({
     type: types.GET_FEATURE_BANNER_LOADING,
     payload: {
@@ -99,7 +99,7 @@ const getFeatureBanner = pathname => dispatch => {
       },
       data: [],
     },
-    id: pathname,
+    id: filteredId,
   })
   return Mola.getFeatureBanner({ id }).then(result => {
     if (result.meta.status === 'error') {
@@ -112,13 +112,13 @@ const getFeatureBanner = pathname => dispatch => {
           },
           data: [],
         },
-        id: pathname,
+        id: filteredId,
       })
     } else {
       dispatch({
         type: types.GET_FEATURE_BANNER_SUCCESS,
         payload: result,
-        id: pathname,
+        id: filteredId,
       })
     }
   })

@@ -40,6 +40,10 @@ export const bannerContainer = css`
 }
 `
 
+export const bannerSquareContainer = css`
+  position: relative;
+`
+
 export const carouselHeader = css`
   display: flex;
   justify-content: space-between;
@@ -140,4 +144,7 @@ export const Icon = css`
       height: 18px;
     }
   }
+`
+export const CustomContainer = css`
+  margin-bottom: 20px;
 `

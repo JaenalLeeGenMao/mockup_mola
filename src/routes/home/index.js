@@ -11,7 +11,7 @@ import React from 'react'
 import HomeDesktop from './desktop'
 import HomeMobile from './mobile'
 import MolaLayout from '@components/Molalayout'
-import _ from 'lodash'
+import MobileNavbar from '@components/MobileNavbar'
 
 const title = 'Homepage'
 const description =
@@ -25,7 +25,8 @@ async function action({ isMobile, store, pathname }) {
     chunks: ['home'],
     component: (
       <MolaLayout>
-        <Home {...store} pathname={pathname} />
+        <Home {...store} pathname={pathname} isMobile={isMobile} />
+        {isMobile && <MobileNavbar routes={'home'} />}
       </MolaLayout>
     ),
   }

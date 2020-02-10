@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import _ from 'lodash'
+import dateFormat from 'dateformat'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -9,28 +10,35 @@ import ListMenu from '@components/listMenu'
 import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
-import ArticleCard from '@components/article-card'
 import ArticleCardNew from '@components/article-card/articleCardNew'
 import VideoCard from '@components/video-card'
-
-import ArticlesCard from '../articles/articleCard/articleCard'
 
 import featureActions from '@actions/feature'
 
 import { getErrorCode } from '@routes/home/util'
+import _get from 'lodash/get'
 
 import history from '@source/history'
 import { getContentTypeName } from '@source/lib/globalUtil'
 import { logoOri } from '@global/imageUrl'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 
-import Placeholder from './placeholder'
-import { BannerPlaceholder } from './placeholder/banner-placeholder'
-import VideoPlaceholder from './placeholder/videoPlaceholder'
+import Placeholder from '@components/placeholder'
+import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
+import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
+import { banners as dummyDataBanners } from '@components/placeholder/const'
 import MolaOriginal from './original'
-import { contentTypeList, banners as dummyDataBanners } from './const'
+import { contentTypeList } from './const'
 
-import { container, bannerContainer, carouselHeader, bannerSquareContainer, CarouselWrapper, Icon } from './style'
+import {
+  container,
+  bannerContainer,
+  carouselHeader,
+  bannerSquareContainer,
+  CarouselWrapper,
+  Icon,
+  CustomContainer,
+} from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
@@ -42,13 +50,14 @@ class Feature extends Component {
   }
 
   componentDidMount() {
+    const { configParams, isMobile, onHandlePlaylist, onHandleBanner } = this.props
     if (window) {
       this.updateWindowDimensions()
-
-      const id = this.props.id || _.get(pathname.split('/'), '[2]', '')
+      const id = this.props.id || _.get(this.props.pathname.split('/'), '[2]', ''),
+        squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
       // this.props.onHandleResetVideo()
-      this.props.onHandlePlaylist(id)
-      this.props.onHandleBanner(id)
+      onHandlePlaylist(id)
+      onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
       // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
@@ -142,8 +151,12 @@ class Feature extends Component {
 
   render() {
     const { viewportWidth } = this.state,
+      isIpad = /iPad/i.test(navigator.userAgent),
       isMobile = viewportWidth <= 960,
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
+    const { configParams } = this.props,
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
+
     if (this.props.feature[id]) {
       const { playlists, videos, banners, articles } = this.props.feature[id]
       // const { articles } = this.props.feature['featured']
@@ -163,7 +176,6 @@ class Feature extends Component {
       }
 
       Math.trunc(contentTypeList['articles'].slideToShow)
-
       return (
         <>
           <Helmet>
@@ -181,23 +193,26 @@ class Feature extends Component {
               }
             />
           )}
-          <div style={{ height: '8vh' }} />
+          <div style={{ height: '12vh' }} />
           {isSuccess && (
             <>
               {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
               {banners.data.length > 0 && (
                 <Carousel
+                  className={isMobile && squareBannerEnabled ? CustomContainer : ''}
                   wrap={banners.length === 1 ? false : true}
                   autoplay={false}
                   sliderCoin={true}
                   dragging={true}
-                  slidesToShow={isMobile ? 1.25 : 2.25}
-                  transitionMode={'scroll3d'}
+                  slidesToShow={isMobile && squareBannerEnabled ? 1 : 2.25}
+                  transitionMode={isMobile && squareBannerEnabled ? 'scroll' : 'scroll3d'}
                   withoutControls={
                     banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
                   }
-                  cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
+                  cellSpacing={isMobile && squareBannerEnabled ? 0 : viewportWidth * 0.0425}
                   framePadding="0rem"
+                  zoomScale={isMobile && squareBannerEnabled ? 1 : null}
+                  bannerSquare={isMobile && squareBannerEnabled}
                 >
                   {banners.data.map(obj => (
                     <PlaylistCard
@@ -208,6 +223,7 @@ class Feature extends Component {
                       src={`${obj.background.landscape}?w=1080`}
                       // onLoad={this.updateOnImageLoad}
                       containerClassName={bannerContainer}
+                      bannerCard
                     />
                   ))}
                 </Carousel>
