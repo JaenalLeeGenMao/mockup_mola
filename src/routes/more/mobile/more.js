@@ -26,7 +26,7 @@ export class More extends Component {
       subscriptions_enabled = configParams && configParams.data ? configParams.data.subscriptions_enabled : '',
       isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
       storeUrl = isApple ? ios_store_url : android_store_url,
-      downloadText = isApple ? 'gratis di Appstore' : 'gratis di Playstore',
+      downloadText = isApple ? 'Gratis di Appstore' : 'Gratis di Playstore',
       content = moreContent(storeUrl, downloadText)
 
     await fetchProfile()
