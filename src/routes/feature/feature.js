@@ -183,7 +183,7 @@ class Feature extends Component {
           </Helmet>
           <Header libraryOff color={false} {...this.props} isMobile={isMobile} activeMenuId={playlists.meta.menuId} />
           <ListMenu {...this.props} isMobile={isMobile} />
-          {isLoading && <Placeholder isMobile={isMobile} />}
+          {/* {isLoading && <Placeholder isMobile={isMobile} />} */}
           {isError && (
             <FeatureError
               status={errorObj.code}
@@ -228,7 +228,7 @@ class Feature extends Component {
                   ))}
                 </Carousel>
               )}
-              {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />}
+              {/* {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />} */}
               <LazyLoad containerClassName={container}>
                 {playlists.data.length > 0 &&
                   videos.data.length > 0 &&
@@ -391,7 +391,7 @@ class Feature extends Component {
       return (
         <>
           <Header libraryOff color={false} {...this.props} isMobile={isMobile} />
-          <Placeholder isMobile={isMobile} />
+          {/* <Placeholder isMobile={isMobile} /> */}
         </>
       )
     }
