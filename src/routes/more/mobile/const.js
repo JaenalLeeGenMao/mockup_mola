@@ -11,7 +11,7 @@ export const moreContent = (storeUrl = '', text = '') => {
     },
     {
       id: 2,
-      title: 'Subscribe Now',
+      title: 'Subscribe Now!',
       info: 'Unlimited Mola TV content',
       img: styles.img__subscriptions,
       url: '/accounts/profile?tab=subscription',
@@ -39,7 +39,7 @@ export const moreContent = (storeUrl = '', text = '') => {
     },
     {
       id: 6,
-      title: 'Unduh aplikasi Mola TV',
+      title: 'Download Mola TV App',
       info: text,
       img: styles.img__download__app,
       url: storeUrl,
