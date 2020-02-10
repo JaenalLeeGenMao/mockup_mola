@@ -59,6 +59,7 @@ export class More extends Component {
         ? content.filter(content => content.id !== 2 && content.id !== 3)
         : content.filter(content => content.id !== 2)
     }
+
     return (
       <>
         {!isLoading && (

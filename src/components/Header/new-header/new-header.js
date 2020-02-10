@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _ from 'lodash'
 
@@ -14,9 +16,10 @@ import DropdownMenu from '../dropdown-menu'
 
 import { get } from 'axios'
 
-const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
+const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut, onSubscriptionsClick, showThisSubs }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
   const isLogin = uid || sid
+  const showSubs = showThisSubs && showThisSubs.data ? showThisSubs.data.subscriptions_enabled : ''
 
   let name = `${firstName} ${lastName}`
   if (firstName == null) {
@@ -34,6 +37,11 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
             <Link onClick={onProfileClick}>{locale['profile']}</Link>
+            {showSubs && (
+              <Link to="/accounts/subscriptionsList" onClick={onSubscriptionsClick}>
+                {locale['paket_MOLA']}
+              </Link>
+            )}
           </>
         )}
         <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
@@ -60,6 +68,11 @@ class NewHeader extends Component {
     const { toggle } = this.state
     this.setState({ toggle: !toggle })
     history.push('/accounts/profile')
+  }
+
+  handleSubscriptionsClick = e => {
+    e.preventDefault()
+    window.location.href = '/accounts/subscriptionsList'
   }
 
   handleToggle = e => {
@@ -251,7 +264,9 @@ class NewHeader extends Component {
               <PopupMenu
                 onClick={this.handleToggle}
                 onProfileClick={this.handleProfileClick}
+                onSubscriptionsClick={this.handleSubscriptionsClick}
                 user={this.props.user}
+                showThisSubs={this.props.configParams}
                 locale={this.state.locale}
                 onSignOut={this.handleSignOut}
               />
@@ -263,4 +278,8 @@ class NewHeader extends Component {
   }
 }
 
-export default withStyles(styles)(NewHeader)
+const mapStateToProps = state => {
+  return { ...state }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps))(NewHeader)

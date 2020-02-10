@@ -47,7 +47,7 @@ class Header extends Component {
       window.addEventListener('resize', this.handleWindowSizeChange)
     }
 
-    if (categoryWatch == '/watch' || categoryWatch.includes('promo')) {
+    if (categoryWatch == '/watch' || categoryWatch.includes('promo') || categoryWatch.includes('/accounts/profile')) {
       currentMenu = true
       this.setState({
         showMenu: currentMenu,
