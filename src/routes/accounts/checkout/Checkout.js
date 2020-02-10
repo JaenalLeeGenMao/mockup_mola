@@ -203,7 +203,7 @@ class Checkout extends Component {
 
     return (
       <Layout>
-        {!isMobile && <Header libraryOff leftMenuOff rightMenuOff isDark={0} {...this.props} />}
+        {!isMobile && <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} />}
         <div className={styles.wrapper}>{!loading && !error && this.renderSubscription()}</div>
       </Layout>
 
