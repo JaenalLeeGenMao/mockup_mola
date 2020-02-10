@@ -4,7 +4,8 @@
   font-size: 1rem;
   line-height: 1.6rem;
   text-transform: capitalize;
-  padding: 0 15px;
+
+  /* padding: 0 15px; */
 }
 
 .container p {
@@ -30,6 +31,7 @@
   display: inline-block;
   transform: translate(0, -10%);
   color: #969696;
+  padding: 0 15px;
 }
 
 .people__wrapper {
@@ -55,6 +57,11 @@
   background-size: contain;
   border-radius: 100%;
   margin: 0 auto 10px;
+}
+
+.person__wrapper:first-child {
+  margin-left: 0;
+  padding-left: 15px;
 }
 
 .castImg_dummy {

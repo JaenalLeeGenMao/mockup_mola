@@ -9,19 +9,33 @@
 
 @import '../../../../components/variables.css';
 
+@media (max-width: 481px) {
+  html {
+    font-size: 62.5% !important;
+  }
+}
+
 .wrapper {
   height: 100vh;
   overflow-y: hidden;
   position: relative;
+  min-height: 85vh;
+  display: flex;
 }
 
 .root {
-  position: fixed;
+  /* position: fixed;
   top: 50%;
-  left: 50%;
+  left: 50%; */
+  display: flex;
+  flex-direction: column;
+
+  /* min-width: 400px; */
+  margin: auto;
 
   /* bring your own prefixes */
-  transform: translate(-50%, -50%);
+
+  /* transform: translate(-50%, -50%); */
 }
 
 .circle {
@@ -55,18 +69,22 @@
   color: white;
 }
 
+.flip h1 {
+  font-size: 1.4rem;
+}
+
 .description {
   font-size: 1.2rem;
 }
 
 .description p {
   line-height: 1.5;
+  padding: 0 8.7rem;
 }
 
 .description a {
-  text-decoration: underline;
   cursor: pointer;
-  color: #fff;
+  color: #385fff;
 }
 
 .ordered_button_active {
@@ -100,4 +118,28 @@
 .ordered_button:hover {
   background: #1d1d1d;
   cursor: pointer;
+}
+
+.container__logo img {
+  width: 7rem;
+}
+
+.container__logo_failed img {
+  width: 5rem;
+}
+
+.close_button {
+  box-sizing: border-box;
+  height: 3rem;
+  width: 20%;
+  background: #2c56ff;
+  border: 0.1rem solid #2c56ff;
+  border-radius: 0.4rem;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  font-weight: 100;
+  margin-top: 2rem;
 }

@@ -15,13 +15,14 @@ export const RECENT_SEARCH_ENDPOINT = `${SEARCH_ENDPOINT}histories`
 export const SUBSCRIPTION_ENDPOINT = `${endpoints.api}/subscriptions/subscriptions`
 export const USER_SUBSCRIPTION = `${endpoints.api}/subscriptions/users`
 export const ORDER_ENDPOINT = `${endpoints.api}/orders/`
-export const PAYMENT_ENDPOINT = `${endpoints.api}/payments/api/v1/dopay`
+export const PAYMENT_ENDPOINT = `${endpoints.api}/payments/api/v1/dopay/mola`
 export const CAMPAIGN_ENDPOINT = `${endpoints.api}/campaigns/banner-positions`
 export const ADD_DEVICE_ENDPOINT = `${endpoints.api}/videos/drm/add-device`
 export const CHANNELS_PLAYLIST_ENDPOINT = `${endpoints.api}/videos/playlists`
 export const PROGRAMME_GUIDES = `${endpoints.api}/videos/program-guides`
 // export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
-export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
+// export const RECOMMENDATION = `${endpoints.api}/videos/recommendation`
+export const RECOMMENDATION = `${endpoints.analytic}/v1/analytics/prophet/recommendation/videos`
 // export const HEADERMENU = 'http://mola01.koicdn.com/dev/json'
 export const HEADERMENU = `${endpoints.api}/config/ui/menu`
 

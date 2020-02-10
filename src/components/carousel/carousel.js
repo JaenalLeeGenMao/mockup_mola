@@ -5,7 +5,15 @@ import Carousel from 'nuka-carousel'
 
 import LazyLoad from '@components/common/Lazyload'
 
-import { carouselContainer, arrowButtons, hiddenButtons, destroyButtons, chevronLeft, chevronRight } from './style'
+import {
+  carouselContainer,
+  arrowButtons,
+  hiddenButtons,
+  destroyButtons,
+  chevronLeft,
+  chevronRight,
+  paddingDot,
+} from './style'
 
 class BannerCarousel extends Component {
   constructor(props) {
@@ -28,6 +36,12 @@ class BannerCarousel extends Component {
 
   updateWindowDimensions = () => {
     this.setState({ viewportWidth: window.innerWidth, show: true })
+  }
+
+  handleAfterSlide = slideIndex => {
+    if (this.rootCarouselRef && this.props.afterSlideCallback) {
+      this.props.afterSlideCallback(this.rootCarouselRef)
+    }
   }
 
   static propTypes = {
@@ -59,6 +73,7 @@ class BannerCarousel extends Component {
         } /** IMPORTANT NOTE: set to false to prevent custom styling injected by NukaCarousel library */
         autoplayInterval={5000}
         autoplay={this.props.autoplay}
+        cellAlign={this.props.cellAlign}
         cellSpacing={this.props.cellSpacing}
         className={`${carouselContainer} ${this.props.className}`}
         disableEdgeSwiping={true}
@@ -77,9 +92,24 @@ class BannerCarousel extends Component {
         width={this.props.width}
         withoutControls={this.props.withoutControls}
         wrapAround={this.props.wrap}
-        zoomScale={isMobile ? 0.95 : this.props.zoomScale || 0.85}
-        renderBottomCenterControls={() => {
-          return false
+        zoomScale={this.props.zoomScale || 0.85}
+        afterSlide={this.handleAfterSlide}
+        renderBottomCenterControls={({ slideCount, currentSlide, goToSlide }) => {
+          if (this.props.bannerSquare) {
+            let numOfSlides = new Array(slideCount).fill('slide')
+            return (
+              <div>
+                {numOfSlides.map((_, paddingDotIndex) => (
+                  <div
+                    key={paddingDotIndex}
+                    onClick={() => goToSlide(paddingDotIndex)}
+                    className={`${paddingDot} ${paddingDotIndex === currentSlide ? 'active' : ''}`}
+                  />
+                ))}
+              </div>
+            )
+          }
+          return <div />
         }}
         renderCenterLeftControls={({ previousSlide, currentSlide }) => {
           return (

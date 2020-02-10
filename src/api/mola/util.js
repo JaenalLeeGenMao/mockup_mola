@@ -261,6 +261,8 @@ const normalizeHomeVideo = response => {
                 awayTeamId,
                 seasonNumber,
                 permission,
+                league,
+                platforms,
               },
             } = video
             const background = _get(images, 'cover', { portrait: null, landscape: null })
@@ -295,6 +297,8 @@ const normalizeHomeVideo = response => {
               type,
               homeTeamId,
               awayTeamId,
+              league,
+              platforms,
             }
           })
         // .sort((a, b) => a.displayOrder - b.displayOrder)
@@ -634,12 +638,13 @@ const normalizeGetUserSubscriptions = response => {
       } = userSubscribe
 
       const subscriptionList = subscriptions.map(subList => {
-        const { id: subscriptionId, attributes: { title, description, permission } } = subList
+        const { id: subscriptionId, attributes: { title, description, permission, price } } = subList
         return {
           subscriptionId,
           title,
           description,
           permission,
+          price,
         }
       })
 

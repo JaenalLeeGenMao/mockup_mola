@@ -9,9 +9,7 @@ import { globalTracker } from '@source/lib/globalTracker'
 import BodyClassName from 'react-body-classname'
 import config from '@source/config'
 import { getPartners } from '@actions/partners'
-
-import checkIcon from '../../global/assets-global/images/check.png'
-import crossIcon from '../../global/assets-global/images/cross.png'
+import { checkIcon, crossIcon } from '@global/imageUrl'
 
 import _ from 'lodash'
 

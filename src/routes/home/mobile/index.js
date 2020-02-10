@@ -1,3 +1,3 @@
-import HomeMobile from './home';
+import HomeMobile from './homeFeatured'
 
-export default HomeMobile;
+export default HomeMobile

@@ -5,7 +5,7 @@ import LazyLoad from '@components/common/Lazyload'
 
 import { placeholderBlankLandscape, placeholderBlankPortrait } from '@global/imageUrl'
 
-import { banners } from '../const'
+import { banners } from './const'
 import { fixedContainer, carouselMargin, DummyPlaceholder } from './styleVideoPlaceholder'
 
 class Placeholder extends Component {

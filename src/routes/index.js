@@ -97,6 +97,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'subscriptionsList' */ './accounts/subscriptionsList'),
     },
     {
+      path: '/accounts/checkout',
+      load: () => import(/* webpackChunkName: 'checkout' */ './accounts/checkout'),
+    },
+    {
       path: '/accounts/consent',
       load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
     },
@@ -119,6 +123,10 @@ const routes = {
     {
       path: '/get-app-desktop',
       load: () => import(/* webpackChunkName: 'get-app-desktop' */ './get-app-desktop'),
+    },
+    {
+      path: '/promo',
+      load: () => import(/* webpackChunkName: 'promo' */ './promo'),
     },
     {
       path: '/conditions',
@@ -198,6 +206,10 @@ const routes = {
       path: '/live-support',
       load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
+    {
+      path: '/more',
+      load: () => import(/* webpackChunkName: 'more' */ './more'),
+    },
     // {
     //   path: '/notifications',
     //   load: () => import(/* webpackChunkName: 'notifications' */ './notifications'),
@@ -247,7 +259,7 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              if (pathRoute === 'home') {
+              if (pathRoute === 'home' || window.App.isMobile) {
                 elMessage.addEventListener('DOMSubtreeModified', hideOffline)
                 if (elMessage.innerHTML === 'Online') {
                   document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'

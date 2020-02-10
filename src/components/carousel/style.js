@@ -50,7 +50,7 @@ export const arrowButtons = css`
   background: rgba(0,0,0,0.4);
   color: white;
   opacity: 1;
-  height: 100% !important;
+  height: 95% !important;
   width: 3vw;
   position: relative;
   cursor: pointer;
@@ -75,7 +75,7 @@ export const hiddenButtons = css`
   color: white;
   padding: 1rem;
   opacity: 1;
-  height: 100% !important;
+  height: 95% !important;
   width: 30vw;
   // max-width: 370px;
   opacity: 0;
@@ -91,7 +91,7 @@ export const destroyButtons = css`
   color: white;
   padding: 1rem;
   opacity: 1;
-  height: 100% !important;
+  height: 95% !important;
   width: 3vw;
   // max-width: 370px;
   opacity: 0 !important; /* nanti di hilangin, tergantung kebutuhan */
@@ -120,4 +120,18 @@ export const chevronRight = css`
     background-repeat: no-repeat;
     background-position: center;
 }
+`
+export const paddingDot = css`
+  @media screen and (max-width: 960px) {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 0 3px;
+    display: inline-block;
+    background: #ababab;
+  }
+
+  &.active {
+    background: #fff;
+  }
 `

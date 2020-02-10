@@ -28,7 +28,7 @@ export const playlistContainer = css`
     overflow: hidden;
     padding: 0 0.15rem;
     color: white;
-    opacity: 0;
+    // opacity: 0;
     transition: all ease 500ms;
 
     @media screen and (max-width: 960px) {
@@ -52,11 +52,90 @@ export const playlistContainer = css`
     z-index: 1;
   }
 
+  .title {
+    margin-top: 5px;
+    color: #fff;
+    font-weight: bold;
+    height: 2rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: larger !important;
+
+    @media screen and (max-width: 960px) {
+      height: 1.5rem !important;
+      font-size: 1rem !important;
+    }
+  }
+
+  .time {
+    color: #fff;
+    font-weight: normal;
+    height: 1.65rem !important;
+    font-size: larger !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: unset !important;
+    }
+  }
+
+  .league {
+    color: #b1b1b1;
+    height: 1.65rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+  }
+
+  .shortDesc {
+    color: #b1b1b1;
+    height: 3.3rem !important;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    @media screen and (max-width: 960px) {
+      height: 2.2rem !important;
+      font-size: smaller !important;
+    }
+  }
+
+  .platform {
+    color: #f8ac00;
+    height: 1.65rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+  }
+
+  .free {
+    color: #609dff;
+    height: 1.65rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+  }
+
+  .premiumIcon {
+    height: 1.3rem;
+    width: 3rem;
+    margin-left: 4px;
+    margin-bottom: 4px;
+    display: inline-block;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAoCAYAAACrUDmFAAAACXBIWXMAACxKAAAsSgF3enRNAAACWUlEQVRoge1ZwU0DMRDcICQ/4e1P0gGhAqACkNxA6IAOSAdcB4QCLEEFQAUkFZD7+J08/QqyNEQhsc/rcD5dopun7bNnvOvdta+3Wq3omHFy1Oo6gUeA0yYkWC2HRFQQ0RWaZkQ0EspMc6/dlAVfN8Q5XKAtO7ILtFpeE1Hf09VHX1Z0UbQGuHO29EyzRF9WZBcolFkQ0YOn6wF9hy0QOGe21Y7spZrVcgBXPNvqci46FMrMc67fhAULjzhCW5F78awWRBp4jwy7Ecp85OLgFWi1dOdjhLPzuk/FgTmmgRy4iRKumhxwUCHdEdECPHfcfcdF8ZEb+EREj0T0ZbWcpC6OyBkTRxjji7KVAKcvcHRcp+D+BzsWtFrOA8TYroTA8p3I+ZLrKRWuXwplBpsNviAT2vWUsmofi6cEnBCXPo7GGilRlJW3rJajrcKaiyt8WxsXCrioq/JvA+M/cc3x5i7s3jyQFjhwuXEQCjhw/UnFBr4JZe42G3wWdLv4EpjATfxttSy2XQEI5TwuvLnRreXWxLkOiXsB9z+ozIMRa7rdHgtlCuLnPC7WAc1q6SLsuGLjdqyWItDtyHOEVImdK3CRrQMzpI4JI9XcC2WCQS32ZMFJC/0aLfeLi4Q5KzlWRlEEk1kquwYxixXrnDSRrU6sAVFuHIGNPA7tiSg31m3Carn4Z/jPgaVQJprwuZVMG92UxakTCLTxHLI4sQQiFJf/51QbSu5bTsptok1WZHNJEdimc8jmkvToZLVsxe9goUyPOzb12fAtnU7tSOLQ/aM/dHQCDxpE9AO3ktWHATVM2QAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+  }
+
   .imageWrapper {
     position: relative;
     display: inline-block;
     text-align: left;
-    width: 100%;
+    width: 100.5%;
     overflow: hidden;
   }
 
@@ -86,7 +165,7 @@ export const icons = css`
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0.5rem;
   background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
   // opacity: 0
   // transition: all ease 500ms;
@@ -103,6 +182,22 @@ export const icons = css`
     @media screen and (max-width: 960px) {
       width: 18px;
       height: 18px;
+    }
+  }
+
+  .live-icon {
+    display: inline-block;
+    color: #fff;
+    background-color: #ff0000;
+    vertical-align: middle;
+    padding: 2px 5px;
+    font-weight: bold;
+    border-radius: 3px;
+    font-size: smaller;
+
+    @media screen and (max-width: 960px) {
+      width: 23px;
+      height: 13px;
     }
   }
 

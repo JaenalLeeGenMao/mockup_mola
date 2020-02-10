@@ -12,9 +12,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-// import { iconMolaSuccess, iconMolaFailed } from '@global/imageUrl'
-import iconMolaSuccess from '../../../../../src/global/assets-global/images/icon_success.png'
-import iconMolaFailed from '../../../../../src/global/assets-global/images/icon_fail.png'
+import { iconMolaSuccess, iconMolaFailed } from '@global/imageUrl'
 
 import Header from '@components/Header'
 
@@ -74,7 +72,7 @@ class BcaSubscribe extends React.Component {
             <div className={s.checkmark__fail} />
           </div> */}
             <div className={s.container__logo_failed}>
-              <img src={iconMolaSuccess} />
+              <img src={iconMolaFailed} />
             </div>
 
             <div className={s.container__logo_text}>
@@ -104,7 +102,7 @@ class BcaSubscribe extends React.Component {
             <div className={s.checkmark__fail} />
           </div> */}
             <div className={s.container__logo_failed}>
-              <img src={iconMolaFailed} />
+              <img src={iconMolaSuccess} />
             </div>
 
             <div className={s.container__logo_text}>

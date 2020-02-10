@@ -1,0 +1,41 @@
+.headerMenuScroll {
+  background-color: black;
+  color: white;
+  z-index: 1;
+  position: fixed;
+  top: 60px;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding: 0 5px 0 5px;
+  height: 30px;
+  opacity: 1;
+}
+
+.itemScroll {
+  display: inline-block;
+}
+
+.itemScroll a.header_menu__active {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border-bottom: 2px solid #2996ff;
+}
+
+.itemScroll a {
+  color: #b2b2b2;
+  font-size: 14px;
+  padding: 11px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .headerMenuScroll {
+    top: 5.9vh;
+  }
+
+  .itemScroll a {
+    padding: 11px 20px 10px 20px;
+  }
+}

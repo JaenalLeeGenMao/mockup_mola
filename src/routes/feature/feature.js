@@ -2,32 +2,43 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import _ from 'lodash'
+import dateFormat from 'dateformat'
 
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
+import ListMenu from '@components/listMenu'
 import FeatureError from '@components/common/error'
 import Carousel from '@components/carousel'
 import PlaylistCard from '@components/playlist-card'
-import ArticleCard from '@components/article-card'
 import ArticleCardNew from '@components/article-card/articleCardNew'
 import VideoCard from '@components/video-card'
-
-import ArticlesCard from '../articles/articleCard/articleCard'
 
 import featureActions from '@actions/feature'
 
 import { getErrorCode } from '@routes/home/util'
+import _get from 'lodash/get'
 
 import history from '@source/history'
 import { getContentTypeName } from '@source/lib/globalUtil'
+import { logoOri } from '@global/imageUrl'
 import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from '@source/lib/dateTimeUtil'
 
-import Placeholder from './placeholder'
-import { BannerPlaceholder } from './placeholder/banner-placeholder'
-import VideoPlaceholder from './placeholder/videoPlaceholder'
-import { contentTypeList, banners as dummyDataBanners } from './const'
+import Placeholder from '@components/placeholder'
+import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
+import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
+import { banners as dummyDataBanners } from '@components/placeholder/const'
+import MolaOriginal from './original'
+import { contentTypeList } from './const'
 
-import { container, bannerContainer, carouselHeader } from './style'
+import {
+  container,
+  bannerContainer,
+  carouselHeader,
+  bannerSquareContainer,
+  CarouselWrapper,
+  Icon,
+  CustomContainer,
+} from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
 class Feature extends Component {
@@ -39,13 +50,14 @@ class Feature extends Component {
   }
 
   componentDidMount() {
+    const { configParams, isMobile, onHandlePlaylist, onHandleBanner } = this.props
     if (window) {
       this.updateWindowDimensions()
-
-      const id = this.props.id || _.get(pathname.split('/'), '[2]', '')
+      const id = this.props.id || _.get(this.props.pathname.split('/'), '[2]', ''),
+        squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
       // this.props.onHandleResetVideo()
-      this.props.onHandlePlaylist(id)
-      this.props.onHandleBanner(id)
+      onHandlePlaylist(id)
+      onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
       // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
@@ -139,8 +151,12 @@ class Feature extends Component {
 
   render() {
     const { viewportWidth } = this.state,
+      isIpad = /iPad/i.test(navigator.userAgent),
       isMobile = viewportWidth <= 960,
       id = this.props.id || _.get(pathname.split('/'), '[2]', '')
+    const { configParams } = this.props,
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
+
     if (this.props.feature[id]) {
       const { playlists, videos, banners, articles } = this.props.feature[id]
       // const { articles } = this.props.feature['featured']
@@ -160,14 +176,14 @@ class Feature extends Component {
       }
 
       Math.trunc(contentTypeList['articles'].slideToShow)
-
       return (
         <>
           <Helmet>
             <title>{playlists.meta.title}</title>
           </Helmet>
           <Header libraryOff color={false} {...this.props} isMobile={isMobile} activeMenuId={playlists.meta.menuId} />
-          {isLoading && <Placeholder isMobile={isMobile} />}
+          <ListMenu {...this.props} isMobile={isMobile} />
+          {/* {isLoading && <Placeholder isMobile={isMobile} />} */}
           {isError && (
             <FeatureError
               status={errorObj.code}
@@ -177,23 +193,26 @@ class Feature extends Component {
               }
             />
           )}
-          <div style={{ height: '8vh' }} />
+          <div style={{ height: '12vh' }} />
           {isSuccess && (
             <>
               {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
               {banners.data.length > 0 && (
                 <Carousel
+                  className={isMobile && squareBannerEnabled ? CustomContainer : ''}
                   wrap={banners.length === 1 ? false : true}
                   autoplay={false}
                   sliderCoin={true}
                   dragging={true}
-                  slidesToShow={isMobile ? 1.25 : 2.25}
-                  transitionMode={'scroll3d'}
+                  slidesToShow={isMobile && squareBannerEnabled ? 1 : 2.25}
+                  transitionMode={isMobile && squareBannerEnabled ? 'scroll' : 'scroll3d'}
                   withoutControls={
                     banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
                   }
-                  cellSpacing={isMobile ? 20 : viewportWidth * 0.0425}
+                  cellSpacing={isMobile && squareBannerEnabled ? 0 : viewportWidth * 0.0425}
                   framePadding="0rem"
+                  zoomScale={isMobile && squareBannerEnabled ? 1 : null}
+                  bannerSquare={isMobile && squareBannerEnabled}
                 >
                   {banners.data.map(obj => (
                     <PlaylistCard
@@ -204,11 +223,12 @@ class Feature extends Component {
                       src={`${obj.background.landscape}?w=1080`}
                       // onLoad={this.updateOnImageLoad}
                       containerClassName={bannerContainer}
+                      bannerCard
                     />
                   ))}
                 </Carousel>
               )}
-              {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />}
+              {/* {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />} */}
               <LazyLoad containerClassName={container}>
                 {playlists.data.length > 0 &&
                   videos.data.length > 0 &&
@@ -227,104 +247,136 @@ class Feature extends Component {
                     return (
                       <div key={carouselIndex} style={{ margin: '0 0 1rem 0' }}>
                         <div className={carouselHeader}>
-                          {video.data.length > 0 && <h3>{video.meta.title}</h3>}
+                          {video.data.length > 0 && (
+                            <div className={playlistId === 'ori-trai' ? 'mola-ori-header' : ''}>
+                              {playlistId === 'ori-trai' && (
+                                <img alt="mola original" src={logoOri} style={{ width: !isMobile ? '4rem' : '44px' }} />
+                              )}
+                              <h3>{video.meta.title}</h3>
+                            </div>
+                          )}
                           {!viewAllHide &&
                             video.data.length > slideToShow && (
                               <a href={`/categories/${viewMorePlaylistId || playlistId}`}>View More</a>
                             )}
                         </div>
-                        <Carousel
-                          wrap={false}
-                          autoplay={false}
-                          sliderCoin={true}
-                          dragging={true}
-                          withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
-                          slidesToShow={
-                            isMobile
-                              ? contentTypeList[contentTypeName].slideToScroll
-                              : contentTypeList[contentTypeName].slideToShow
-                          }
-                          slidesToScroll={Math.trunc(slideToShow)}
-                          transitionMode={'scroll'}
-                          cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
-                          framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
-                        >
-                          {video.data.length > 0 &&
-                            video.data.map(obj => {
-                              const videoCTN = getContentTypeName(_.get(obj, 'contentType', '')),
-                                isMatch = videoCTN === 'live' || videoCTN === 'replay',
-                                matchLive =
-                                  isMatch &&
-                                  isMatchLive(
-                                    obj.startTime,
-                                    obj.endTime
-                                  ) /** id 4 is replay matches, 3 is live matches */
-                              if (contentTypeName === 'movie' || contentTypeName === 'vod') {
-                                return (
-                                  <VideoCard
-                                    key={obj.id}
-                                    alt={obj.title}
-                                    description={obj.title}
-                                    src={
-                                      obj.type === 'playlists'
-                                        ? `${obj.images.cover.portrait}?w=540`
-                                        : `${obj.background.portrait}?w=540`
-                                    }
-                                    // onLoad={this.updateOnImageLoad}
-                                    onClick={() => this.handleOnClick(obj)}
-                                  />
-                                )
-                              } else {
-                                return (
-                                  <PlaylistCard
-                                    key={obj.id}
-                                    alt={obj.title}
-                                    description={obj.title}
-                                    contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
-                                    src={
-                                      obj.type === 'playlists'
-                                        ? `${obj.images.cover.landscape}?w=720`
-                                        : `${obj.background.landscape}?w=720`
-                                    }
-                                    // onLoad={this.updateOnImageLoad}
-                                    onClick={() => this.handleOnClick(obj)}
-                                  />
-                                )
+                        {playlistId === 'ori-trai' &&
+                          video.data.length > 0 && (
+                            <MolaOriginal
+                              id={viewMorePlaylistId ? viewMorePlaylistId : playlistId}
+                              data={video.data}
+                              onClick={this.handleOnClick}
+                              isMobile={isMobile}
+                              cellSpacing={isMobile ? viewportWidth * 0.125 : viewportWidth * 0.0525}
+                              framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
+                            />
+                          )}
+                        {playlistId !== 'ori-trai' &&
+                          video.data.length > 0 && (
+                            <CarouselWrapper
+                              height={
+                                contentTypeName === 'movie' || contentTypeName === 'vod'
+                                  ? isMobile ? '17rem' : '31rem'
+                                  : isMobile ? '15rem' : '25rem'
                               }
-                            })}
-                        </Carousel>
-                        {carouselIndex === 1 &&
-                          articles.data.length > 0 && (
-                            <div className={container} style={{ margin: 0 }}>
-                              <h3 className="article-section-text">ARTICLES</h3>
+                            >
                               <Carousel
                                 wrap={false}
                                 autoplay={false}
                                 sliderCoin={true}
                                 dragging={true}
-                                slidesToShow={isMobile ? 1.2 : 3.5}
-                                slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
+                                withoutControls={video.data.length < contentTypeList[contentTypeName].slideToShow}
+                                slidesToShow={
+                                  isMobile
+                                    ? contentTypeList[contentTypeName].slideToScroll
+                                    : contentTypeList[contentTypeName].slideToShow
+                                }
+                                slidesToScroll={Math.trunc(slideToShow)}
                                 transitionMode={'scroll'}
-                                withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
                                 cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
-                                framePadding={!isMobile ? '0rem' : '0rem 5px'}
+                                framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                               >
-                                {articles.data.map(obj => (
-                                  <ArticleCardNew data={obj} key={obj.id} isMobile={this.props.isMobile} />
-                                  // <ArticleCard
-                                  //   key={obj.id}
-                                  //   onClick={() => this.handleOnClick(obj)}
-                                  //   alt={obj.title}
-                                  //   src={`${obj.imageUrl}`}
-                                  //   title={obj.title}
-                                  //   contentType={obj.type}
-                                  //   createdAt={obj.createdAt}
-                                  //   description={obj.imageCaption}
-                                  // // onLoad={this.updateOnImageLoad}
-                                  // // containerClassName={bannerContainer}
-                                  // />
-                                ))}
+                                {video.data.length > 0 &&
+                                  video.data.map(obj => {
+                                    const videoCTN = getContentTypeName(_.get(obj, 'contentType', '')),
+                                      isMatch = videoCTN === 'live' || videoCTN === 'replay',
+                                      matchLive =
+                                        isMatch &&
+                                        isMatchLive(
+                                          obj.startTime,
+                                          obj.endTime
+                                        ) /** id 4 is replay matches, 3 is live matches */
+                                    if (contentTypeName === 'movie' || contentTypeName === 'vod') {
+                                      return (
+                                        <VideoCard
+                                          key={obj.id}
+                                          alt={obj.title}
+                                          description={obj.title}
+                                          src={
+                                            obj.type === 'playlists'
+                                              ? `${obj.images.cover.portrait}?w=540`
+                                              : `${obj.background.portrait}?w=540`
+                                          }
+                                          // onLoad={this.updateOnImageLoad}
+                                          onClick={() => this.handleOnClick(obj)}
+                                        />
+                                      )
+                                    } else {
+                                      return (
+                                        <PlaylistCard
+                                          key={obj.id}
+                                          alt={obj.title}
+                                          description={obj.title}
+                                          data={obj}
+                                          contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
+                                          src={
+                                            obj.type === 'playlists'
+                                              ? `${obj.images.cover.landscape}?w=720`
+                                              : `${obj.background.landscape}?w=720`
+                                          }
+                                          // onLoad={this.updateOnImageLoad}
+                                          onClick={() => this.handleOnClick(obj)}
+                                        />
+                                      )
+                                    }
+                                  })}
                               </Carousel>
+                            </CarouselWrapper>
+                          )}
+                        {carouselIndex === 1 &&
+                          articles.data.length > 0 && (
+                            <div className={container} style={{ margin: 0 }}>
+                              <h3 className="article-section-text">ARTICLES</h3>
+                              <CarouselWrapper height={isMobile ? '17rem' : '29rem'}>
+                                <Carousel
+                                  wrap={true}
+                                  autoplay={false}
+                                  sliderCoin={true}
+                                  dragging={true}
+                                  slidesToShow={isMobile ? 1.2 : 3.5}
+                                  slidesToScroll={isMobile ? 1 : Math.trunc(contentTypeList['articles'].slideToShow)}
+                                  transitionMode={'scroll'}
+                                  withoutControls={articles.data.length < contentTypeList['articles'].slideToShow}
+                                  cellSpacing={isMobile ? 8 : viewportWidth * 0.0125}
+                                  framePadding={!isMobile ? '0rem' : '0rem 5px'}
+                                >
+                                  {articles.data.map(obj => (
+                                    <ArticleCardNew data={obj} key={obj.id} isMobile={this.props.isMobile} />
+                                    // <ArticleCard
+                                    //   key={obj.id}
+                                    //   onClick={() => this.handleOnClick(obj)}
+                                    //   alt={obj.title}
+                                    //   src={`${obj.imageUrl}`}
+                                    //   title={obj.title}
+                                    //   contentType={obj.type}
+                                    //   createdAt={obj.createdAt}
+                                    //   description={obj.imageCaption}
+                                    // // onLoad={this.updateOnImageLoad}
+                                    // // containerClassName={bannerContainer}
+                                    // />
+                                  ))}
+                                </Carousel>
+                              </CarouselWrapper>
                             </div>
                           )}
                       </div>
@@ -339,7 +391,7 @@ class Feature extends Component {
       return (
         <>
           <Header libraryOff color={false} {...this.props} isMobile={isMobile} />
-          <Placeholder isMobile={isMobile} />
+          {/* <Placeholder isMobile={isMobile} /> */}
         </>
       )
     }

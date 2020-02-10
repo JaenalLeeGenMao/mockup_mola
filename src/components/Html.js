@@ -10,6 +10,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
+import _get from 'lodash/get'
 import { logoLandscapeBlue } from '@global/imageUrl'
 import config from '../config'
 import yoastSEOPlugin from './yoastSEOPlugin.json'
@@ -51,9 +52,9 @@ class Html extends React.Component {
       appLinkUrl = '',
       type = 'website',
       akamai_analytic_enabled = false,
-      bcaScript = '',
+      chunks = [],
     } = this.props
-
+    const isPromoBCA = _get(chunks, '[0]', '') === 'bca-promo'
     const metaTitle =
       title && title.indexOf('Untitled Page') < 0
         ? `Mola TV - ${title}`
@@ -162,18 +163,19 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             }
             .embeddedServiceHelpButton .helpButton button.uiButton {
               display: -webkit-box;
-              background-color: #2D56FF;
+              background-color: transparent ;
               font-family: "Arial", sans-serif;
               min-width: 0;
               border-radius: .5rem;
               width: 6rem;
               height: 6rem;
-              box-shadow: 0 0 12px 0 rgba(0,0,0,0.2);
+              margin: auto;
+              box-shadow: none;
             }
 
             .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
               display: inline-block !important;
-              background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAORJREFUSA3tVtERgjAMBc8BGMENdARGcBN1A0dhE9gAR8ARmKC+VxIPq5c7ufSvuQtpSfpe8z4IVQULIbTwHu5tIwAv5KixaBF7bjLajd0M0kbnSQTMBn4X7JFE0TxJFAvAJItG6QITNUwLPKPi7zxBLaxCZKlj5op0pjxWskhnqWPminSmPGkSH9STvJv3aZJ7FDQIx1+5P94dUHuV+uFrTAgJJ67eRmo3hxknzx8dJSRPFEyb4ZezPN9h1E3vCUsSOH8maA845fOzCLs88pHwuisiLv07UU1WRPlIpCMS5CUB0QupHg6T2Sh/jAAAAABJRU5ErkJggg==);
+              background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiMwMDcwYjI7fS5jbHMtMntvcGFjaXR5OjAuMjtpc29sYXRpb246aXNvbGF0ZTt9LmNscy0ze2ZpbGw6IzlhYzFmZjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPkFydGJvYXJkIDE8L3RpdGxlPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI0LDEydjkuNzFBMi4yOCwyLjI4LDAsMCwxLDIxLjcyLDI0SDEyYTEyLjQyLDEyLjQyLDAsMCwxLTItLjE3QTEyLDEyLDAsMSwxLDI0LDEyWiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI0LDEydjkuN0EyLjI5LDIuMjksMCwwLDEsMjEuNzIsMjRIMTJhMTEuNDksMTEuNDksMCwwLDEtMi0uMTgsMTQuNjMsMTQuNjMsMCwwLDEsMS40Ny00LjE2LDE0LjIyLDE0LjIyLDAsMCwxLC44My0xLjM0LDEsMSwwLDAsMSwuMywwLDEuMTQsMS4xNCwwLDAsMSwxLC41N2guNzNBMi44NSwyLjg1LDAsMCwwLDE3LjE0LDE2VjEzLjg3YTE0LjI5LDE0LjI5LDAsMCwxLDMuMzQtMS4zNkExNC40NSwxNC40NSwwLDAsMSwyNCwxMloiLz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0yMC41NywxMy4xNHYuNTdBMi4yOCwyLjI4LDAsMCwxLDE4LjI5LDE2aDBhNCw0LDAsMCwxLTQsNGgtLjczYTEuMTQsMS4xNCwwLDAsMS0yLjExLS4zNCwxLjY0LDEuNjQsMCwwLDEsMC0uMjMsMS4xMywxLjEzLDAsMCwxLC44NS0xLjEsMSwxLDAsMCwxLC4zLDAsMS4xNCwxLjE0LDAsMCwxLDEsLjU3aC43M0EyLjg2LDIuODYsMCwwLDAsMTcuMTUsMTZWOS43MWE1LjE1LDUuMTUsMCwwLDAtMTAuMjksMFYxNkg1LjcyYTIuMjksMi4yOSwwLDAsMS0yLjI5LTIuMjhoMHYtLjU3YTIuMjgsMi4yOCwwLDAsMSwyLjI4LTIuMjhoMFY5LjcxYTYuMjksNi4yOSwwLDAsMSwxMi41NywwdjEuMTVhMi4yOCwyLjI4LDAsMCwxLDIuMTksMS42NUEyLjIzLDIuMjMsMCwwLDEsMjAuNTcsMTMuMTRaIi8+PC9zdmc+);
               width: 3rem;
               height: 3rem;
               background-repeat: no-repeat;
@@ -298,11 +300,15 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             }
             /*potrait*/
             @media (min-width: 320px) and (max-width: 480px) {
+              .embeddedServiceHelpButton {
+                visibility: visible;
+              }
               .embeddedServiceHelpButton .helpButton {
                 position: fixed;
                 bottom: 2.5rem !important;  
-                right: 2rem !important;
-                padding-bottom: 3rem !important;
+                right: 0 !important;
+                padding-bottom: 0 !important;
+                top: 8px;
               }
               .embeddedServiceHelpButton .helpButton button.uiButton {
                 width: 4rem !important;
@@ -320,6 +326,19 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
                 overflow: visible !important;
                 margin-top: .1rem !important;
                 font-size: 8px;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton .embeddedServiceIcon {
+                display: inline-block !important;
+                background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiMwMDcwYjI7fS5jbHMtMntvcGFjaXR5OjAuMjtpc29sYXRpb246aXNvbGF0ZTt9LmNscy0ze2ZpbGw6IzlhYzFmZjt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPkFydGJvYXJkIDE8L3RpdGxlPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI0LDEydjkuNzFBMi4yOCwyLjI4LDAsMCwxLDIxLjcyLDI0SDEyYTEyLjQyLDEyLjQyLDAsMCwxLTItLjE3QTEyLDEyLDAsMSwxLDI0LDEyWiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI0LDEydjkuN0EyLjI5LDIuMjksMCwwLDEsMjEuNzIsMjRIMTJhMTEuNDksMTEuNDksMCwwLDEtMi0uMTgsMTQuNjMsMTQuNjMsMCwwLDEsMS40Ny00LjE2LDE0LjIyLDE0LjIyLDAsMCwxLC44My0xLjM0LDEsMSwwLDAsMSwuMywwLDEuMTQsMS4xNCwwLDAsMSwxLC41N2guNzNBMi44NSwyLjg1LDAsMCwwLDE3LjE0LDE2VjEzLjg3YTE0LjI5LDE0LjI5LDAsMCwxLDMuMzQtMS4zNkExNC40NSwxNC40NSwwLDAsMSwyNCwxMloiLz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0yMC41NywxMy4xNHYuNTdBMi4yOCwyLjI4LDAsMCwxLDE4LjI5LDE2aDBhNCw0LDAsMCwxLTQsNGgtLjczYTEuMTQsMS4xNCwwLDAsMS0yLjExLS4zNCwxLjY0LDEuNjQsMCwwLDEsMC0uMjMsMS4xMywxLjEzLDAsMCwxLC44NS0xLjEsMSwxLDAsMCwxLC4zLDAsMS4xNCwxLjE0LDAsMCwxLDEsLjU3aC43M0EyLjg2LDIuODYsMCwwLDAsMTcuMTUsMTZWOS43MWE1LjE1LDUuMTUsMCwwLDAtMTAuMjksMFYxNkg1LjcyYTIuMjksMi4yOSwwLDAsMS0yLjI5LTIuMjhoMHYtLjU3YTIuMjgsMi4yOCwwLDAsMSwyLjI4LTIuMjhoMFY5LjcxYTYuMjksNi4yOSwwLDAsMSwxMi41NywwdjEuMTVhMi4yOCwyLjI4LDAsMCwxLDIuMTksMS42NUEyLjIzLDIuMjMsMCwwLDEsMjAuNTcsMTMuMTRaIi8+PC9zdmc+);
+                width: 21px;
+                height: 21px;
+                background-repeat: no-repeat;
+                background-size: contain;
+                margin-right: 0;
+                margin-top: .3rem;
+              }
+              .embeddedServiceHelpButton .helpButton button.uiButton {
+                background-color: transparent;
               }
             }
              `,
@@ -408,8 +427,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               }`,
             }}
           />
-
-          {bcaScript && (
+          {isPromoBCA && (
             <>
               <script
                 id="BCAScript"

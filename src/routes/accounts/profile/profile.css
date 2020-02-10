@@ -23,7 +23,7 @@
   position: fixed;
 
   /* top: 35vh; */
-  width: 30%;
+  width: 20%;
   text-align: center;
   color: #a7a7a7;
   font-size: 34px;
@@ -70,7 +70,7 @@
 
 .profile__contents_wrapper {
   display: inline-block;
-  width: 40%;
+  width: 50%;
   text-align: left;
 }
 
@@ -115,7 +115,7 @@
   }
 
   .profile__contents_container {
-    top: 14vh;
+    top: 10vh;
     text-align: center;
     font-size: 1rem;
   }

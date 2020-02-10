@@ -66,6 +66,14 @@ input::-webkit-calendar-picker-indicator:hover {
   }
 }
 
+/* medium window Styles */
+
+/* @media screen and (min-height: 781px) and (max-height: 1078px) {
+  html {
+    font-size: 75%;
+  }
+} */
+
 /* big window Styles */
 @media screen and (min-height: 1079px) and (max-height: 1439px) {
   html {

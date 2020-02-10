@@ -10,23 +10,18 @@
 import React from 'react'
 import Molalayout from '@components/Molalayout'
 import OrderedDesktop from './desktop/Ordered'
-import OrderedMobile from './mobile/Ordered'
+// import OrderedMobile from './mobile/Ordered'
 
-const title = 'Congrats!'
-const description = 'Your order has been verified'
+const title = 'Order Status'
+// const description = 'Your order has been verified'
 
 function action({ isMobile }) {
   return {
     chunks: ['ordered'],
     title,
-    description,
-    component: isMobile ? (
+    component: (
       <Molalayout>
-        <OrderedMobile />
-      </Molalayout>
-    ) : (
-      <Molalayout>
-        <OrderedDesktop />
+        <OrderedDesktop isMobile={isMobile} />
       </Molalayout>
     ),
   }

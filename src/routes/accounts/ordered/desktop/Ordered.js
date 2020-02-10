@@ -13,6 +13,7 @@ import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import _isUndefined from 'lodash/isUndefined'
 
 import history from '@source/history'
 
@@ -21,31 +22,47 @@ import s from './Ordered.css'
 import LazyLoad from '@components/common/Lazyload'
 import Header from '@components/Header'
 
-import { logoBlue, logoMobile } from '@global/imageUrl'
+import { iconMolaFailed, crossImage, hourglassImage } from '@global/imageUrl'
+// import crossImage from '../../../../global/assets-global/images/big_cross.png'
+
+const statusText = {
+  success: 'success',
+  failed: 'failed',
+  waiting: 'waiting',
+}
+
+const code = {
+  waiting: '201',
+  success: '200',
+}
 
 class Ordered extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true,
+      success: false,
+      status: statusText.failed,
+    }
   }
 
   static propTypes = {
     title: PropTypes.string.isRequired,
   }
-
+  // status_code
   componentDidMount() {
-    //page only accesible from register page
-    let isAccesible = false
+    const statusCode = this.readQueryParams('status_code')
 
-    if (history.location.state && history.location.state.isAccesible) {
-      isAccesible = true
+    if (statusCode == code.success) {
+      this.setState({ status: statusText.success, loading: false })
+      this.toRedirect = setTimeout(() => {
+        this.goToHome()
+      }, 10000)
+    } else if (statusCode == code.waiting) {
+      this.setState({ status: statusText.waiting, loading: false })
+    } else {
+      this.setState({ status: statusText.failed, loading: false })
     }
-    if (!isAccesible) {
-      history.push('not-found')
-    }
-    this.toRedirect = setTimeout(() => {
-      window.location.href = 'accounts/profile?tab=subscription'
-    }, 15000)
-    // console.log('naonaonao', this.toLogin)
   }
 
   componentWillUnmount() {
@@ -54,32 +71,106 @@ class Ordered extends React.Component {
     }
   }
 
-  handleOrder = () => {
-    history.push('/accounts/profile')
+  readQueryParams = query => {
+    const uriSearch = location.search
+    if (!_isUndefined(uriSearch) && uriSearch !== '') {
+      const urlParams = new URLSearchParams(uriSearch)
+      return urlParams.get(query)
+    }
+    return
+  }
+
+  goToHome = () => {
+    // for testing on react native
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage('close')
+    } else {
+      window.postMessage('close', '*')
+    }
+
+    setTimeout(() => {
+      history.push('/')
+    }, 1500)
+  }
+
+  renderWaiting = () => {
+    return (
+      <LazyLoad>
+        <div className={s.flip}>
+          <div className={s.container__logo_failed}>
+            <img src={hourglassImage} />
+          </div>
+          <h1>Waiting for Payment </h1>
+          <div className={s.description}>
+            <p> Please Check your E-mail for Payment Detail</p>
+          </div>
+          <div>
+            <button type="submit" className={s.close_button} onClick={this.goToHome}>
+              Close
+            </button>
+          </div>
+        </div>
+      </LazyLoad>
+    )
+  }
+
+  renderSuccess = () => {
+    return (
+      <LazyLoad>
+        <div className={s.flip}>
+          {/* <div className={s.circle}>
+        <img className={s.logoBlue} />
+      </div> */}
+          <div className={s.container__logo}>
+            <img src={iconMolaFailed} />
+          </div>
+          <h1>Your subscription has been activated</h1>
+          <div className={s.description}>
+            <p>
+              {' '}
+              <a onClick={() => this.goToHome()}>click here</a> if you are not redirected to homepage in 10 seconds.
+            </p>
+          </div>
+        </div>
+      </LazyLoad>
+    )
+  }
+
+  renderFailed = () => {
+    return (
+      <LazyLoad>
+        <div className={s.flip}>
+          {/* <div className={s.circle}>
+        <img className={s.logoBlue} />
+      </div> */}
+          <div className={s.container__logo_failed}>
+            <img src={crossImage} />
+          </div>
+          <h1>Failed to Activate Your subscription </h1>
+          <div className={s.description}>
+            <p> There was a problem activate your subscription. Please try again later.</p>
+          </div>
+          <div>
+            <button type="submit" className={s.close_button} onClick={this.goToHome}>
+              Close
+            </button>
+          </div>
+        </div>
+      </LazyLoad>
+    )
   }
 
   render() {
+    const { loading, status } = this.state
+    const { isMobile } = this.props
     return (
       <Fragment>
-        <Header libraryOff leftMenuOff rightMenuOff isDark={0} {...this.props} />
+        {!isMobile && <Header libraryOff leftMenuOff rightMenuOff isDark={0} {...this.props} />}
         <div className={s.wrapper}>
           <div className={s.root}>
-            <LazyLoad>
-              <div className={s.flip}>
-                <div className={s.circle}>
-                  <img className={s.logoBlue} />
-                </div>
-                <h1>Aktifasi Paket Berhasil</h1>
-                <div className={s.description}>
-                  <p>Jika anda tidak diarahkan kehalaman utama dalam 10 detik...</p>
-                </div>
-                <div className={s.ordered_button_wrapper}>
-                  <button className={s.ordered_button_active} onClick={() => this.handleOrder()}>
-                    Klik disini
-                  </button>
-                </div>
-              </div>
-            </LazyLoad>
+            {!loading && status == statusText.success && this.renderSuccess()}
+            {!loading && status == statusText.failed && this.renderFailed()}
+            {!loading && status == statusText.waiting && this.renderWaiting()}
           </div>
         </div>
       </Fragment>
