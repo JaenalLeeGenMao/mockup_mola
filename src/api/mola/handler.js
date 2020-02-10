@@ -512,19 +512,9 @@ const getRecommendation = id => {
     })
 }
 
-const getAllSubscriptions = token => {
-  // console.log('ini subscription', token)
-  return get(`${SUBSCRIPTION_ENDPOINT}?platformId=1`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    params: {
-      app_id: 2,
-    },
-    ...endpoints.setting,
-  })
+const getSubscriptionById = subsId => {
+  return get(`${SUBSCRIPTION_ENDPOINT}/${subsId}?app_id=molatv&platformId=1`, { ...endpoints.setting })
     .then(response => {
-      // console.log('ini response handler', response)
       return {
         meta: {
           status: 'success',
@@ -535,13 +525,13 @@ const getAllSubscriptions = token => {
     })
     .catch(error => {
       // console.log('masuk error', error)
-      const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      const errorMessage = error.toString().replace('Error:', 'Get Mola Subscription by ID')
       return {
         meta: {
           status: 'error',
           error: errorMessage,
         },
-        data: [],
+        data: {},
       }
     })
 }
@@ -582,24 +572,70 @@ const getUserSubscriptions = uid => {
     })
 }
 
-const createOrder = ({ token, uid, subscriptionId = 26, price = 10000 }) => {
-  const data = JSON.stringify({
-    order_type_id: 1,
-    subscription_id: subscriptionId /* hanya hardcode midtrans 26 */,
-    quantity: 1 /* subscription per tahun */,
-    uom: 'm' /* sementara monthly */,
-    package_expiry: '',
-    status: 0,
-    user_id: uid,
-    order_amount: 1 * price,
-    total_price: 1 * price,
-    source: 'GSyOzu2WPaAijqbX3Tv6HCQr' /* hardcode dulu nanti baru di pikirin lagi */,
-    payment_method_id: 270 /* payment_method_id midtrans di hardcode 270 dari DataBase */,
-  })
-
-  return post(`${ORDER_ENDPOINT}`, data, {
+const getAllSubscriptions = token => {
+  // console.log('ini subscription', token)
+  return get(`${SUBSCRIPTION_ENDPOINT}?app_id=molatv&platformId=1`, {
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      app_id: 2,
+    },
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // console.log('ini response get all subs lohh', response)
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: response.data.data,
+      }
+    })
+    .catch(error => {
+      // console.log('masuk error dums', error)
+      const errorMessage = error.toString().replace('Error:', 'Mola All Subscriptions')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: [],
+      }
+    })
+}
+
+const createOrder = ({ token, uid, subscriptionId, price, uom, quantity, package_expiry }) => {
+  // const data ={
+  //   order_type_id: 1,
+  //   subscription_id: subscriptionId,
+  //   uom: uom,
+  //   order_status: 0,
+  //   source: 'GSyOzu2WPaAijqbX3Tv6HCQr' /* hardcode dulu nanti baru di pikirin lagi */,
+  //   quantity: quantity,
+  //   payment_method_id: 6,
+  //   order_amount: 1,
+  //   total_price: price,
+  //   user_id: uid,
+  // }
+
+  var formData = new FormData()
+  formData.set('order_type_id', 1)
+  formData.set('order_status', 0)
+  formData.set('source', 'test')
+  formData.set('payment_method_id', 6)
+  formData.set('order_amount', 1)
+  formData.set('subscription_id', subscriptionId)
+  formData.set('uom', uom)
+  formData.set('quantity', quantity)
+  formData.set('total_price', price)
+  formData.set('user_id', uid)
+  formData.set('package_expiry', package_expiry)
+
+  return post(`${ORDER_ENDPOINT}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${token}`,
     },
     withCredentials: true,
@@ -630,17 +666,10 @@ const createOrder = ({ token, uid, subscriptionId = 26, price = 10000 }) => {
     })
 }
 
-const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, token, orderId }) => {
+const createMidtransPayment = ({ token, orderId }) => {
   const data = JSON.stringify({
-    paymentMethodId: 270, // payment_method_id midtrans di hardcode 17 dari DataBase
-    Id: `${orderId}`,
-    title: 'Mola - Paket No Ads',
-    phone: phoneNumber,
-    email: email,
-    name: `${firstName} ${lastName}`,
-    userId: uid,
-    productSku: '1',
-    productName: 'Mola - Paket No Ads',
+    payment_method_id: 277, // payment_method_id midtrans di hardcode 17 dari DataBase
+    id: `${orderId}`,
   })
 
   return post(`${PAYMENT_ENDPOINT}`, data, {
@@ -653,13 +682,13 @@ const createMidtransPayment = ({ uid, firstName, lastName, phoneNumber, email, t
   })
     .then(response => {
       const { paymentData } = response.data
-      const redirectUrl = `${endpoints.domain}/accounts/profile`
+      // const redirectUrl = `${endpoints.domain}/accounts/profile`
       return {
         meta: {
           status: 'success',
           error: '',
         },
-        data: { ...paymentData, redirectUrl },
+        data: { ...paymentData },
       }
     })
     .catch(error => {
@@ -954,6 +983,7 @@ export default {
   getMovieDetail,
   getRecommendation,
   getAllSubscriptions,
+  getSubscriptionById,
   createOrder,
   createMidtransPayment,
   getSportVideo,

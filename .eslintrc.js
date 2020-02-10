@@ -14,6 +14,7 @@ module.exports = {
     quotes: ['warn', 'single', 'avoid-escape'],
     commadangle: 0,
     'react/jsx-uses-vars': 1,
+    'react/jsx-key': 0,
     'react/react-in-jsx-scope': 1,
     'react/display-name': 1,
     'react/displayname': [true, { ignoreTranspilerName: true }],

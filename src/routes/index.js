@@ -97,6 +97,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'subscriptionsList' */ './accounts/subscriptionsList'),
     },
     {
+      path: '/accounts/checkout',
+      load: () => import(/* webpackChunkName: 'checkout' */ './accounts/checkout'),
+    },
+    {
       path: '/accounts/consent',
       load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
     },
