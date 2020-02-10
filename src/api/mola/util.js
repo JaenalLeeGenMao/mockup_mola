@@ -634,12 +634,13 @@ const normalizeGetUserSubscriptions = response => {
       } = userSubscribe
 
       const subscriptionList = subscriptions.map(subList => {
-        const { id: subscriptionId, attributes: { title, description, permission } } = subList
+        const { id: subscriptionId, attributes: { title, description, permission, price } } = subList
         return {
           subscriptionId,
           title,
           description,
           permission,
+          price,
         }
       })
 

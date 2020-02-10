@@ -9,18 +9,18 @@ import { updatePassword } from '@actions/resetPassword'
 // import subscribeActions from '@actions/subscribe'
 import Mola from '@api/mola'
 
-import history from '@source/history'
+// import history from '@source/history'
 
 import '@global/style/css/reactReduxToastr.css'
 
-import { logoBlue } from '@global/imageUrl'
+// import { logoBlue } from '@global/imageUrl'
 
 import LazyLoad from '@components/common/Lazyload'
-import OrderList from '@components/SubscriptionsOrder'
+// import OrderList from '@components/SubscriptionsOrder'
 
 import s from './subscription.css'
 
-// const getFormattedPrice = number => number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+const getFormattedPrice = number => number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
 
 class Subscription extends Component {
   constructor(props) {
@@ -28,15 +28,16 @@ class Subscription extends Component {
     this.state = {
       isToggled: false,
       isSubscribe: false,
-      isHidden: true,
+      // isHidden: true,
     }
   }
 
-  componentDidMount() {
-    const { user, getAllSubscriptions, getUserSubscriptions } = this.props
-    /* Semua subscription MOLA */
-    // getAllSubscriptions(user.token)
-  }
+  // componentDidMount() {
+  //   // const { user, getAllSubscriptions, getUserSubscriptions } = this.props
+  //   /* Semua subscription MOLA */
+  //   // getAllSubscriptions(user.token)
+  //   // this.checkStatusBca()
+  // }
 
   handleClick = async ({ id, attributes }) => {
     const { user } = this.props
@@ -55,20 +56,14 @@ class Subscription extends Component {
     } else {
       toastr.error('Notification', 'Failed retrieving Mola payment')
     }
-
     // this.props.onClick()
-  }
-
-  handleClickSubs = () => {
-    history.push('/accounts/subscriptionsList')
   }
 
   render() {
     // const { isMobile, onClick, user, subscribe, getUserSubscriptions } = this.props
-    const { user, subscribe, data, meta } = this.props
+    const { user, subscribe, data } = this.props
+    // const { isSubscribe, isHi } = this.state
     // const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
-    // const { isToggled, subsDong, isHidden } = this.state
-    const { isSubscribe, isHidden } = this.state
 
     return (
       <div>
@@ -87,13 +82,35 @@ class Subscription extends Component {
                   </div>
             </>
           )} */}
-          <div className={s.subscription_detail_title}>Active Package</div>
+          <div className={s.subscription_detail_title}>
+            <p>Your Subscription Status</p>
+            <div className={s.subscription__button_upgrader_wrapper}>
+              <button
+                className={s.subscription_button_active}
+                onClick={() => (window.location.href = '/accounts/subscriptionsList')}
+              >
+                Add Package
+              </button>
+            </div>
+          </div>
+
           <div className={s.subscription_detail_packet}>
             {data.map((subscription, index) => {
+              let hideButtonUgrade = false
+              let freeSubs = false
+              let statusExp = false
+
               const expiry = new Date(subscription.expireAt),
                 today = new Date(),
-                formattedExpiry = moment(expiry).format('DD MMM YYYY'),
-                title = subscription.subscriptionList[0].title
+                formattedExpiry = moment(expiry).format('DD-MM-YYYY'),
+                title = subscription.subscriptionList[0].title,
+                miniDesc = subscription.subscriptionList[0].description.miniDescription,
+                price = subscription.subscriptionList[0].price
+
+              hideButtonUgrade = subscription.subscriptionList[0].subscriptionId == 25
+              freeSubs = subscription.subscriptionList[0].subscriptionId == 24
+              statusExp = today < expiry
+
               return (
                 // <Fragment key={index}>
                 <>
@@ -104,14 +121,21 @@ class Subscription extends Component {
                   >
                     <div className={s.subscription__wrapper_active}>
                       <div className={s.subscription__section_left_active}>
-                        <h1>{title}</h1>
-                        <div className={s.subscription_expiry}>Valid Until {formattedExpiry}</div>
+                        <div
+                          className={`${
+                            statusExp ? s.subscription__section_right_active : s.subscription__section_right_deactive
+                          }`}
+                        >
+                          {statusExp ? 'Active' : 'Expired'}
+                        </div>
+                        <div className={s.subscription_expiry}>
+                          {' '}
+                          {!freeSubs ? <p>Berlaku hingga {formattedExpiry}</p> : ''}
+                        </div>
                       </div>
-                      <div className={s.subscription__section_right_active}>
-                        <p>Active</p>
-                      </div>
+                      <h1>{title}</h1>
+                      <p>{miniDesc}</p>
                     </div>
-
                     {/* <div className={s.subscription_button_wrapper}> */}
                     {/* <button
                         className={s.subscription_button_active}

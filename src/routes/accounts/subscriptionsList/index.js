@@ -10,7 +10,8 @@
 import React from 'react'
 import Molalayout from '@components/Molalayout'
 import SubscriptionsListDesktop from './desktop/SubscriptionsList'
-// import SubscriptionsMobile from './mobile/SubscriptionsList'
+import SubscriptionsListMobile from './mobile/SubscriptionsList'
+// import SubscriptionsListMobile from './mobile'
 
 const title = 'Subscriptions'
 const description = 'this is package list your packet'
@@ -22,7 +23,7 @@ function action({ isMobile }) {
     description,
     component: isMobile ? (
       <Molalayout>
-        <SubscriptionsListDesktop />
+        <SubscriptionsListMobile />
       </Molalayout>
     ) : (
       <Molalayout>

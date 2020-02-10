@@ -9,8 +9,7 @@ import config from '@source/config'
 import { getPartners } from '@actions/partners'
 import _ from 'lodash'
 
-import checkIcon from '../../global/assets-global/images/check.png'
-import crossIcon from '../../global/assets-global/images/cross.png'
+import { checkIcon, crossIcon } from '@global/imageUrl'
 
 class PlatformCheck extends Component {
   state = {

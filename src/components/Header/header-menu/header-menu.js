@@ -19,7 +19,7 @@ import DropdownMenu from '../dropdown-menu'
 
 import { get } from 'axios'
 
-const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
+const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut, onSubscriptionsClick }) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
   const isLogin = uid || sid
 
@@ -42,6 +42,9 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut }) => {
               <h2 className={styles.popup__menu_username}>{name}</h2>
             </div>
             <Link onClick={onProfileClick}>{locale['profile']}</Link>
+            <Link to="/accounts/subscriptionsList" onClick={onSubscriptionsClick}>
+              {locale['paket_MOLA']}
+            </Link>
             {/* <Link to="/accounts/inbox" onClick={onClick}>{locale['inbox']}</Link> */}
             {/* <Link to="/accounts/history" onClick={onClick}>{locale['video_history']}</Link> */}
             {/* <Link to="/accounts/profile?tab=subscription" onClick={onClick}>{locale['paket_MOLA']}</Link> */}
@@ -71,6 +74,11 @@ class HeaderMenu extends Component {
     const { toggle } = this.state
     this.setState({ toggle: !toggle })
     history.push('/accounts/profile')
+  }
+
+  handleSubscriptionsClick = e => {
+    e.preventDefault()
+    window.location.href = '/accounts/subscriptionsList'
   }
 
   handleToggle = e => {
@@ -269,6 +277,7 @@ class HeaderMenu extends Component {
               <PopupMenu
                 onClick={this.handleToggle}
                 onProfileClick={this.handleProfileClick}
+                onSubscriptionsClick={this.handleSubscriptionsClick}
                 user={this.props.user}
                 locale={this.state.locale}
                 onSignOut={this.handleSignOut}

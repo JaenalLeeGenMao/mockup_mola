@@ -27,7 +27,7 @@ class Profile extends Component {
     switch: false,
     isTabMobile: false,
     isActiveMenu: '',
-    showSubscriptionTab: false,
+    // showSubscriptionTab: true,
   }
   componentDidMount() {
     const { getUserSubscriptions, user } = this.props
@@ -64,7 +64,7 @@ class Profile extends Component {
 
     if (data.length !== prevProps.subscribe.data.length) {
       if (metaStatus === 'success') {
-        this.checkStatus()
+        // this.checkStatus()
       }
     }
 
@@ -103,24 +103,24 @@ class Profile extends Component {
     history.push(`/accounts/profile${tab ? `?tab=${tab}` : ''}`)
   }
 
-  checkStatus() {
-    const { data, meta } = this.props.subscribe
-    let showSubscription = false
+  // checkStatus() {
+  //   const { data, meta } = this.props.subscribe
+  //   let showSubscription = false
 
-    if (data.length > 0) {
-      showSubscription = data.find(x => x.subscriptionList[0].subscriptionId != 24)
+  //   if (data.length > 0) {
+  //     showSubscription = data.find(x => x.subscriptionList[0].subscriptionId != 24)
 
-      if (showSubscription) {
-        this.setState({
-          showSubscriptionTab: true,
-        })
-      } else {
-        this.setState({
-          showSubscriptionTab: false,
-        })
-      }
-    }
-  }
+  //     if (showSubscription) {
+  //       this.setState({
+  //         showSubscriptionTab: true,
+  //       })
+  //     } else {
+  //       this.setState({
+  //         showSubscriptionTab: false,
+  //       })
+  //     }
+  //   }
+  // }
 
   renderTabs() {
     const { data, meta } = this.props.subscribe
@@ -142,19 +142,19 @@ class Profile extends Component {
                 onClick={() => this.handleTabClick()}
                 className={!this.state.whitelistedTabs.includes(tab) ? styles.active : ''}
               >
-                Profil
+                Profile
               </div>
               <div onClick={() => this.handleTabClick('security')} className={tab === 'security' ? styles.active : ''}>
-                Keamanan
+                Security
               </div>
-              {this.state.showSubscriptionTab && (
-                <div
-                  onClick={() => this.handleTabClick('subscription')}
-                  className={tab === 'subscription' ? styles.active : ''}
-                >
-                  Subscriptions
-                </div>
-              )}
+              {/* {this.state.showSubscriptionTab && ( */}
+              <div
+                onClick={() => this.handleTabClick('subscription')}
+                className={tab === 'subscription' ? styles.active : ''}
+              >
+                Subscription
+              </div>
+              {/* // )} */}
               {/* <div onClick={() => this.handleTabClick('setting')} className={tab === 'setting' ? styles.active : ''}>
                 Setelan
               </div> */}
@@ -170,7 +170,7 @@ class Profile extends Component {
     const filterList = [
       { id: 1, title: 'Profile', value: 'profile' },
       { id: 2, title: 'Security', value: 'security' },
-      { id: 3, title: 'Subscriptions', value: 'subscription' },
+      { id: 3, title: 'Subscription', value: 'subscription' },
     ]
 
     const { query } = this.props,
@@ -228,7 +228,7 @@ class Profile extends Component {
     const filterList = [
       { id: 1, title: 'Profile', value: 'profile' },
       { id: 2, title: 'Security', value: 'security' },
-      { id: 3, title: 'Subscriptions', value: 'subscription' },
+      { id: 3, title: 'Subscription', value: 'subscription' },
     ]
     const filterListNoSub = [
       { id: 1, title: 'Profile', value: 'profile' },
@@ -241,7 +241,8 @@ class Profile extends Component {
           {this.props.isMobile && (
             <DropdownList
               className={styles.profile__contents_dropdown_container}
-              dataList={this.state.showSubscriptionTab ? filterList : filterListNoSub}
+              // dataList={this.state.showSubscriptionTab ? filterList : filterListNoSub}
+              dataList={filterList}
               onClick={this.handleSelectClick}
               activeId={this.state.isActiveMenu}
             />

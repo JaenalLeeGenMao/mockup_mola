@@ -745,8 +745,8 @@ app.get('/p/:voucher', async (req, res) => {
     httpOnly: true,
   })
   //if user has login
-  if (cookies._at && cookies.SID) {
-    const uid = jwt.decode(req.cookies.SID).uid
+  if (cookies._at) {
+    const uid = jwt.decode(req.cookies._at).sub
     try {
       const redeemResponse = await postBcaRedeem(uid, voucherCode)
       const redeemStatus = redeemResponse.status
@@ -910,7 +910,7 @@ app.get('*', async (req, res, next) => {
       return res.redirect(domain + `/p/${req.cookies.bcavoucher}`)
     }
 
-    const uid = req.cookies.SID ? jwt.decode(req.cookies.SID).uid : ''
+    const uid = req.cookies._at ? jwt.decode(req.cookies._at).sub : ''
     const expToken = req.cookies._at ? jwt.decode(req.cookies._at).exp : ''
     const expGToken = guestToken ? jwt.decode(guestToken).exp : ''
 

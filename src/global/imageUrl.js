@@ -55,5 +55,12 @@ export const playStoreBadge = `${imgBaseUrl}/google-play-badge@2x_2.png`
 export const appStoreBadge = `${imgBaseUrl}/app-store-badge@2x.png`
 export const iconMolaSuccess = `${imgBaseUrl}/icon_fail.png`
 export const iconMolaFailed = `${imgBaseUrl}/icon_success.png`
+export const checkIcon = `${imgBaseUrl}/check.png`
+export const crossIcon = `${imgBaseUrl}/cross.png`
+export const crossImage = `${imgBaseUrl}/big_cross.png`
+export const hourglassImage = `${imgBaseUrl}/wait-time.png`
+export const forbidIcon = `${imgBaseUrl}/icon-no-packet.png`
+export const checkIconSubs = `${imgBaseUrl}/icon-check-subscription.png`
+export const crossIconSubs = `${imgBaseUrl}/icon-cross-subscription.png`
 
 export const bcaButton = `${imgBaseUrl}/bca-button.png`
