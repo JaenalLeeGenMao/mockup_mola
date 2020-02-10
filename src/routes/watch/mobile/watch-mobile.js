@@ -544,6 +544,8 @@ class MovieDetail extends Component {
 
     const { user, movieDetail: { data: movieDetailData } } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+    const { blocked } = this.props
+    const isDesktopVideoBlocker = this.props.configParams.data.desktop_video_blocker ? true : false
     // user.loc = loc
     // const adsFlag = status === 'success' ? _get(movieDetailData, 'movieDetailData[0].ads', null) : null
     // const defaultVidSetting = status === 'success' ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '') : {}
@@ -571,8 +573,8 @@ class MovieDetail extends Component {
       isMatchPassed = true
     }
 
-    if (this.props.blocked) {
-      return <PlatformCheckMobile showHeader {...this.props} />
+    if (blocked) {
+      return <PlatformCheckMobile showHeader isDesktopVideoBlocker={isDesktopVideoBlocker} {...this.props} />
     }
 
     return (
