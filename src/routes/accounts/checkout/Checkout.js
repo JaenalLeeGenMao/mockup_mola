@@ -24,6 +24,32 @@ const getFormattedPrice = number => {
     .join(',')
 }
 
+const copyCodeToClipboard = str => {
+  toastr.info('Copied to clipboard ' + str)
+  var el = document.createElement('textarea')
+  el.value = str
+  el.setAttribute('readonly', '')
+  el.style = { position: 'absolute', left: '-9999px' }
+  document.body.appendChild(el)
+  el.select()
+  document.execCommand('copy')
+  document.body.removeChild(el)
+}
+
+const CheckoutItem = props => {
+  return (
+    <div className={styles.checkout_item__container}>
+      <h3 className={styles.checkout_item__title}>{props.title}</h3>
+      <div className={styles.checkout_item__wrap}>
+        <h4 className={styles.checkout_item__content}>{props.content}</h4>
+        <button onClick={() => copyCodeToClipboard(props.content)} className={styles.checkout_item__action}>
+          {props.actionTitle}
+        </button>
+      </div>
+    </div>
+  )
+}
+
 class Checkout extends Component {
   state = {
     data: {},
@@ -33,31 +59,38 @@ class Checkout extends Component {
     loading: true,
     loadingCheckout: false,
     error: false,
+    isShowCheckoutDetail: false,
   }
 
-  handleCheckout = async () => {
-    const { subscriptionId, accessToken, uid, data } = this.state
-    const { isMobile } = this.props
+  // handleCheckout = async () => {
+  //   const { subscriptionId, accessToken, uid, data } = this.state
+  //   const { isMobile } = this.props
 
-    const order = await MolaHandler.createOrder({
-      ...this.state.data,
-      token: accessToken,
-      uid,
-      subscriptionId,
-      package_expiry: data.expireAt,
+  //   const order = await MolaHandler.createOrder({
+  //     ...this.state.data,
+  //     token: accessToken,
+  //     uid,
+  //     subscriptionId,
+  //     package_expiry: data.expireAt,
+  //   })
+  //   if (order.meta.status !== 'success') {
+  //     toastr.error('Notification', 'Failure upon generating new order')
+  //     return
+  //   }
+  //   toastr.info('Notification', 'Redirecting you to Mola payment')
+  //   const payment = await MolaHandler.createMidtransPayment({ token: this.state.accessToken, orderId: order.data.id })
+
+  //   if (payment.meta.status === 'success') {
+  //     window.open(`${payment.data.url}`, '_self')
+  //   } else {
+  //     toastr.error('Notification', 'Failed retrieving Mola payment')
+  //   }
+  // }
+
+  handleCheckout = () => {
+    this.setState({
+      isShowCheckoutDetail: !this.state.isShowCheckoutDetail,
     })
-    if (order.meta.status !== 'success') {
-      toastr.error('Notification', 'Failure upon generating new order')
-      return
-    }
-    toastr.info('Notification', 'Redirecting you to Mola payment')
-    const payment = await MolaHandler.createMidtransPayment({ token: this.state.accessToken, orderId: order.data.id })
-
-    if (payment.meta.status === 'success') {
-      window.open(`${payment.data.url}`, '_self')
-    } else {
-      toastr.error('Notification', 'Failed retrieving Mola payment')
-    }
   }
 
   async componentDidMount() {
@@ -141,6 +174,41 @@ class Checkout extends Component {
     return date.format(format)
   }
 
+  renderCheckoutDetail() {
+    return (
+      <div className={styles.checkout_container}>
+        <div className={styles.order__content_list}>
+          <div className={styles.order__content_title}> Waiting for Payment </div>
+
+          <div className={styles.warning}>
+            <p>
+              Harap selesaikan pembayaran sebelum: <strong>14 January 12:19 WIB</strong>.
+            </p>
+          </div>
+
+          <div className={styles.detail_wrap}>
+            <CheckoutItem title="Jumlah yang harus dibayar" content="Rp150,035" actionTitle="Salin Jumlah" />
+            <CheckoutItem title="Nomor Rekening" content="07743478032" actionTitle="Salin Nomor" />
+          </div>
+
+          <div className={styles.info_wrap}>
+            <h4 className={styles.info_title}>Intruksi Pembayaran</h4>
+            <p className={styles.gray_text}>
+              Klik tombol di bawah ini untuk informasi cara pembayaran BCA Virtual Acccount.
+            </p>
+          </div>
+
+          <a
+            href="https://www.bca.co.id/bisnis/produk-dan-layanan/e-banking/klikbca-bisnis/bca-virtual-account"
+            className={styles.btn_submit}
+          >
+            Instruksi Pembayaran
+          </a>
+        </div>
+      </div>
+    )
+  }
+
   renderSubscription() {
     const { data } = this.state
     const { isMobile } = this.props
@@ -198,13 +266,16 @@ class Checkout extends Component {
   }
 
   render() {
-    const { loading, error } = this.state
+    const { loading, error, isShowCheckoutDetail } = this.state
     const { isMobile } = this.props
 
     return (
       <Layout>
         {!isMobile && <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} />}
-        <div className={styles.wrapper}>{!loading && !error && this.renderSubscription()}</div>
+        <div className={styles.wrapper}>
+          {!loading && !error && !isShowCheckoutDetail && this.renderSubscription()}
+          {!loading && !error && isShowCheckoutDetail && this.renderCheckoutDetail()}
+        </div>
       </Layout>
 
       // {/* </div> */}
