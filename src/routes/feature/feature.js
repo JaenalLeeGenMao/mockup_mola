@@ -204,12 +204,12 @@ class Feature extends Component {
                   autoplay={false}
                   sliderCoin={true}
                   dragging={true}
-                  slidesToShow={isMobile && squareBannerEnabled ? 1 : 2.25}
+                  slidesToShow={isMobile && squareBannerEnabled ? 1 : isMobile ? 1.25 : 2.25}
                   transitionMode={isMobile && squareBannerEnabled ? 'scroll' : 'scroll3d'}
                   withoutControls={
                     banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
                   }
-                  cellSpacing={isMobile && squareBannerEnabled ? 0 : viewportWidth * 0.0425}
+                  cellSpacing={isMobile && squareBannerEnabled ? 20 : isMobile ? 40 : viewportWidth * 0.0425}
                   framePadding="0rem"
                   zoomScale={isMobile && squareBannerEnabled ? 1 : null}
                   bannerSquare={isMobile && squareBannerEnabled}
