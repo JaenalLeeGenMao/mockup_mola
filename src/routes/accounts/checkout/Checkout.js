@@ -60,6 +60,16 @@ class Checkout extends Component {
     loadingCheckout: false,
     error: false,
     isShowCheckoutDetail: false,
+    payment: {
+      process_id: '',
+      status_message: '',
+      transaction_id: '',
+      order_id: '',
+      amount: 0,
+      payment_code: '',
+      transaction_time: '',
+      expired_time: '',
+    },
   }
 
   // handleCheckout = async () => {
@@ -87,10 +97,37 @@ class Checkout extends Component {
   //   }
   // }
 
-  handleCheckout = () => {
-    this.setState({
-      isShowCheckoutDetail: !this.state.isShowCheckoutDetail,
+  handleCheckout = async () => {
+    const { subscriptionId, accessToken, uid, data } = this.state
+
+    const order = await MolaHandler.createOrder({
+      ...this.state.data,
+      token: accessToken,
+      uid,
+      subscriptionId,
+      package_expiry: data.expireAt,
     })
+
+    if (order.meta.status !== 'success') {
+      toastr.error('Notification', 'Failure upon generating new order')
+      return
+    }
+
+    const payment = await MolaHandler.createMCBillPayment({
+      token: this.state.accessToken,
+      orderId: order.data.id,
+      amount: this.state.data.price,
+      customerInfo: this.state.uid,
+    })
+
+    if (payment.meta.status === 'success') {
+      this.setState({
+        isShowCheckoutDetail: !this.state.isShowCheckoutDetail,
+        payment: payment.data,
+      })
+    } else {
+      toastr.error('Notification', 'Failed retrieving MCBill payment')
+    }
   }
 
   async componentDidMount() {
@@ -175,6 +212,9 @@ class Checkout extends Component {
   }
 
   renderCheckoutDetail() {
+    const { expired_time, amount, payment_code } = this.state.payment
+    const date_exp = moment(expired_time).format('DD MMMM YYYY HH:mm')
+
     return (
       <div className={styles.checkout_container}>
         <div className={styles.order__content_list}>
@@ -182,13 +222,17 @@ class Checkout extends Component {
 
           <div className={styles.warning}>
             <p>
-              Harap selesaikan pembayaran sebelum: <strong>14 January 12:19 WIB</strong>.
+              Harap selesaikan pembayaran sebelum: <strong>{`${date_exp} WIB`}</strong>.
             </p>
           </div>
 
           <div className={styles.detail_wrap}>
-            <CheckoutItem title="Jumlah yang harus dibayar" content="Rp150,035" actionTitle="Salin Jumlah" />
-            <CheckoutItem title="Nomor Rekening" content="07743478032" actionTitle="Salin Nomor" />
+            <CheckoutItem
+              title="Jumlah yang harus dibayar"
+              content={`Rp${getFormattedPrice(amount)}`}
+              actionTitle="Salin Jumlah"
+            />
+            <CheckoutItem title="Nomor Rekening" content={payment_code} actionTitle="Salin Nomor" />
           </div>
 
           <div className={styles.info_wrap}>
