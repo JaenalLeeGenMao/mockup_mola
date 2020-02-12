@@ -10,6 +10,7 @@ import {
   SUBSCRIPTION_ENDPOINT,
   ORDER_ENDPOINT,
   PAYMENT_ENDPOINT,
+  PAYMENT_MCBILL_ENDPOINT,
   CAMPAIGN_ENDPOINT,
   CHANNELS_PLAYLIST_ENDPOINT,
   PROGRAMME_GUIDES,
@@ -702,6 +703,46 @@ const createMidtransPayment = ({ token, orderId }) => {
       }
     })
 }
+
+const createMCBillPayment = ({ token, orderId, amount, customerInfo }) => {
+  const data = JSON.stringify({
+    paymentMethod: 'va',
+    paymentChannel: 'VA_BCA',
+    amount: amount,
+    paymentInfo: `Order #${orderId}`,
+    customerInfo: customerInfo,
+    orderID: `${orderId}`,
+  })
+
+  return post(`${PAYMENT_MCBILL_ENDPOINT}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    withCredentials: true,
+    ...endpoints.setting,
+  })
+    .then(response => {
+      // const redirectUrl = `${endpoints.domain}/accounts/profile`
+      return {
+        meta: {
+          status: 'success',
+          error: '',
+        },
+        data: { ...response.data },
+      }
+    })
+    .catch(error => {
+      const errorMessage = error.toString().replace('Error:', 'Mola MCBill Payment')
+      return {
+        meta: {
+          status: 'error',
+          error: errorMessage,
+        },
+        data: '',
+      }
+    })
+}
 // const getOrderHistoryTransactions = ({ uid, token }) => {
 //   // console.log('token', token)
 //   return get(`${ORDER_ENDPOINT}_/users/${uid}`, {
@@ -986,6 +1027,7 @@ export default {
   getSubscriptionById,
   createOrder,
   createMidtransPayment,
+  createMCBillPayment,
   getSportVideo,
   getLeaguesList,
   getMatchesPlaylists,

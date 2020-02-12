@@ -15,7 +15,7 @@ import watchPermission from '@source/lib/watchPermission'
 
 import { getVUID_retry } from '@actions/vuid'
 
-import PlatformDesktop from '@components/PlatformCheckNew'
+import PlatformDesktop from '@components/PlatformCheckDesktop'
 import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
 import Header from '@components/Header'
 import CountDown from '@components/CountDown'
