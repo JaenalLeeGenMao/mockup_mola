@@ -122,12 +122,12 @@ export class homeFeatured extends Component {
                   autoplay={false}
                   sliderCoin={true}
                   dragging={true}
-                  slidesToShow={1}
-                  transitionMode={'scroll'}
+                  slidesToShow={squareBannerEnabled ? 1 : 1.25}
+                  transitionMode={squareBannerEnabled ? 'scroll' : 'scroll3d'}
                   withoutControls={banners.data.length < 2}
-                  cellSpacing={0}
+                  cellSpacing={squareBannerEnabled ? 20 : 40}
                   framePadding="0rem"
-                  zoomScale={1}
+                  zoomScale={squareBannerEnabled ? 1 : null}
                   bannerSquare={squareBannerEnabled}
                 >
                   {banners.data.map(obj => (
