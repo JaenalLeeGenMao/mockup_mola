@@ -191,7 +191,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             .embeddedServiceHelpButton .uiButton .helpButtonLabel .message {
               background-color: transparent !important;
               margin-top: .5rem;
-              font-family: 'Open Sans' !important;
+              font-family: 'Public Sans' !important;
               font-weight: 600 !important;
             }
 

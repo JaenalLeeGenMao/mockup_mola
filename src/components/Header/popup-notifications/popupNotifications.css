@@ -20,7 +20,6 @@
 }
 
 .popup__notifications_content_title {
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
   margin: auto;
@@ -214,13 +213,11 @@
   font-size: 2.4rem;
   color: #fff;
   margin-top: 1rem;
-  font-family: 'Open Sans', sans-serif;
   font-weight: 600;
 }
 
 .popup__notifications_empty_sub {
   margin-top: 0.7rem;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.4rem;
   color: #cbcbcb;
 }
@@ -235,13 +232,11 @@
 
 .popup__notifications_error_title {
   font-size: 1.6rem;
-  font-family: 'Open Sans', sans-serif;
   margin-bottom: 1rem;
 }
 
 .popup__notifications_error_desc {
   font-size: 1.2rem;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .loading__notifications_wrap {

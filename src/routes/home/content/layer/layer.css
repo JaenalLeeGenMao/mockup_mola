@@ -6,7 +6,6 @@
   height: auto;
   border-radius: 3px;
   overflow: hidden;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .layer__grid_title {
@@ -24,7 +23,6 @@
   position: relative;
   z-index: 2;
   height: 100%;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .layer__grid_desc_content h1 {
@@ -57,7 +55,7 @@
 .layer__grid_desc_footer {
   overflow: hidden;
   height: 16rem;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Public Sans', sans-serif;
 }
 
 .layer__grid_desc_footer p {

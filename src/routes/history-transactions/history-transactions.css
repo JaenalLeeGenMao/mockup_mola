@@ -9,7 +9,6 @@
 .historyTransactions_Pagetitle {
   color: white;
   font-size: 17.5px;
-  font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   text-align: left;
 }
@@ -64,7 +63,7 @@
 
 .historyTransaction_viewlinkdetail {
   color: #2c66ff;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Public Sans', sans-serif;
   font-weight: bold;
   background: none;
   border: none;

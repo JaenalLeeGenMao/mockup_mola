@@ -122,6 +122,7 @@ export const CarouselWrapper = styled('div')`
   margin: 0.5rem;
   padding: 1.5rem 0 !important;
   height: ${props => props.height || '29rem'};
+  min-height: ${props => props.minHeight || '300px'};
 
   .slider-frame {
     padding: 0 !important;

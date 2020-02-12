@@ -267,13 +267,18 @@ class Feature extends Component {
                               data={video.data}
                               onClick={this.handleOnClick}
                               isMobile={isMobile}
-                              cellSpacing={isMobile ? viewportWidth * 0.125 : viewportWidth * 0.0525}
+                              cellSpacing={isMobile ? viewportWidth * 0.135 : viewportWidth * 0.0525}
                               framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                             />
                           )}
                         {playlistId !== 'ori-trai' &&
                           video.data.length > 0 && (
                             <CarouselWrapper
+                              minHeight={
+                                contentTypeName === 'movie' || contentTypeName === 'vod'
+                                  ? isMobile ? '215px' : '375px'
+                                  : 'auto'
+                              }
                               height={
                                 contentTypeName === 'movie' || contentTypeName === 'vod'
                                   ? isMobile ? '17rem' : '31rem'
