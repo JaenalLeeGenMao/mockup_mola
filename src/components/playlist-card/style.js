@@ -72,10 +72,9 @@ export const playlistContainer = css`
     color: #fff;
     font-weight: normal;
     height: 1.65rem !important;
-    font-size: larger !important;
     @media screen and (max-width: 960px) {
       height: 1.22rem !important;
-      font-size: unset !important;
+      font-size: smaller !important;
     }
   }
 
