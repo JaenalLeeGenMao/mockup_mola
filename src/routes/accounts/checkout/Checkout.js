@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { toastr } from 'react-redux-toastr'
+import ReactTooltip from 'react-tooltip'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _isUndefined from 'lodash/isUndefined'
@@ -24,10 +25,10 @@ const getFormattedPrice = number => {
     .join(',')
 }
 
-const copyCodeToClipboard = str => {
-  toastr.info('Copied to clipboard ' + str)
+const copyCodeToClipboard = props => {
+  ReactTooltip.show(props.ref)
   var el = document.createElement('textarea')
-  el.value = str
+  el.value = props.value ? props.value : props.content
   el.setAttribute('readonly', '')
   el.style = { position: 'absolute', left: '-9999px' }
   document.body.appendChild(el)
@@ -42,9 +43,20 @@ const CheckoutItem = props => {
       <h3 className={styles.checkout_item__title}>{props.title}</h3>
       <div className={styles.checkout_item__wrap}>
         <h4 className={styles.checkout_item__content}>{props.content}</h4>
-        <button onClick={() => copyCodeToClipboard(props.content)} className={styles.checkout_item__action}>
+        <button
+          ref={ref => (props.ref = ref)}
+          data-tip={`Copied ${props.content}`}
+          data-event="focus"
+          onClick={() => copyCodeToClipboard(props)}
+          onMouseLeave={() => {
+            ReactTooltip.hide(props.ref)
+          }}
+          className={styles.checkout_item__action}
+        >
           {props.actionTitle}
         </button>
+
+        <ReactTooltip delayHide={1000} globalEventOff="leave" place="bottom" effect="solid" />
       </div>
     </div>
   )
@@ -238,11 +250,14 @@ class Checkout extends Component {
 
           <div className={styles.detail_wrap}>
             <CheckoutItem
+              ref={this.amountRef}
               title="Jumlah yang harus dibayar"
               content={`Rp${getFormattedPrice(amount)}`}
+              value={amount}
               actionTitle="Salin Jumlah"
             />
-            <CheckoutItem title="Nomor Rekening" content={payment_code} actionTitle="Salin Nomor" />
+
+            <CheckoutItem ref={this.rekRef} title="Nomor Rekening" content={payment_code} actionTitle="Salin Nomor" />
           </div>
 
           <div className={styles.info_wrap}>
