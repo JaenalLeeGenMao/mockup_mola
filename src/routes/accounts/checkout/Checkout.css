@@ -360,6 +360,64 @@
   background: #2242c4;
 }
 
+.big_mb {
+  margin-bottom: 3rem;
+}
+
+.big_mt {
+  margin-top: 3rem;
+}
+
+.loading__ring {
+  display: block;
+  position: relative;
+  width: 52px;
+  height: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  bottom: 50%;
+}
+
+.loading__ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 11px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: loading__ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.loading__ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.loading__ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.loading__ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes loading__ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading__page {
+  width: 100%;
+  height: 92%;
+}
+
 @media only screen and (max-width: 481px) {
   .checkout_container {
     padding-top: 8.1rem;

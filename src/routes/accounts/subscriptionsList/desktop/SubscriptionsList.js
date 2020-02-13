@@ -192,6 +192,7 @@ class SubscriptionsList extends React.Component {
     const { subscribe, user } = this.props
     const { accessToken, isHeader } = this.state
     const isData = subscribe.data.length > 0
+    let isDataUnderThree = subscribe.data.length < 3
 
     // const  = subscribe.length > 0
     // console.log('lol', isData)
@@ -209,7 +210,11 @@ class SubscriptionsList extends React.Component {
             </div>
             {isData &&
               subscribe.meta.status === 'success' && (
-                <div className={s.subscriptions__main_container}>
+                <div
+                  className={`${
+                    isDataUnderThree ? s.subscriptions__main_container_below : s.subscriptions__main_container
+                  }`}
+                >
                   {subscribe.data.map((sub, index) => (
                     <div key={'subs' + index} className={s.subscription__main_wrapper}>
                       <div className={s.subscription__wrapper}>
