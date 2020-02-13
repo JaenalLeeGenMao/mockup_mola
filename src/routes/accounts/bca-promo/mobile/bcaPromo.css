@@ -154,19 +154,16 @@ html {
 
 .root h1 {
   font-size: 2rem;
-  font-family: 'Open Sans', sans-serif;
   margin-top: 0;
 }
 
 .root h2 {
   font-size: 1.5rem;
-  font-family: 'Open Sans', sans-serif;
   font-weight: 400;
 }
 
 .root p {
   font-size: 1.2rem;
-  font-family: 'Open Sans', sans-serif;
 }
 
 @media only screen and (max-width: 768px) {

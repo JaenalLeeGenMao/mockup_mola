@@ -204,12 +204,12 @@ class Feature extends Component {
                   autoplay={false}
                   sliderCoin={true}
                   dragging={true}
-                  slidesToShow={isMobile && squareBannerEnabled ? 1 : 2.25}
+                  slidesToShow={isMobile && squareBannerEnabled ? 1 : isMobile ? 1.25 : 2.25}
                   transitionMode={isMobile && squareBannerEnabled ? 'scroll' : 'scroll3d'}
                   withoutControls={
                     banners.data.length < 3 || banners.data.length < contentTypeList['banners'].slideToShow
                   }
-                  cellSpacing={isMobile && squareBannerEnabled ? 0 : viewportWidth * 0.0425}
+                  cellSpacing={isMobile && squareBannerEnabled ? 20 : isMobile ? 40 : viewportWidth * 0.0425}
                   framePadding="0rem"
                   zoomScale={isMobile && squareBannerEnabled ? 1 : null}
                   bannerSquare={isMobile && squareBannerEnabled}
@@ -267,13 +267,18 @@ class Feature extends Component {
                               data={video.data}
                               onClick={this.handleOnClick}
                               isMobile={isMobile}
-                              cellSpacing={isMobile ? viewportWidth * 0.125 : viewportWidth * 0.0525}
+                              cellSpacing={isMobile ? viewportWidth * 0.135 : viewportWidth * 0.0525}
                               framePadding={!isMobile ? '0rem' : '0rem 0rem 0rem 5px'}
                             />
                           )}
                         {playlistId !== 'ori-trai' &&
                           video.data.length > 0 && (
                             <CarouselWrapper
+                              minHeight={
+                                contentTypeName === 'movie' || contentTypeName === 'vod'
+                                  ? isMobile ? '215px' : '375px'
+                                  : 'auto'
+                              }
                               height={
                                 contentTypeName === 'movie' || contentTypeName === 'vod'
                                   ? isMobile ? '17rem' : '31rem'
