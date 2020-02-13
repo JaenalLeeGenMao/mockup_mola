@@ -114,7 +114,7 @@ class Checkout extends Component {
     })
 
     if (order.meta.status !== 'success') {
-      toastr.error('Notification', 'Failure upon generating new order')
+      // toastr.error('Notification', 'Failure upon generating new order')
       return
     }
 
@@ -153,7 +153,7 @@ class Checkout extends Component {
     // VALIDATION, SHOULD BE MADE SEPERATE FUNCTION
     if (!subscriptionId || !accessToken) {
       this.setState({ loading: false, error: true })
-      toastr.error('Notification', 'Please back to Subscription List page')
+      // toastr.error('Notification', 'Please back to Subscription List page')
       return
     }
 
@@ -161,14 +161,14 @@ class Checkout extends Component {
 
     if (!isAccessTokenValid) {
       this.setState({ loading: false, error: true })
-      toastr.error('Technical Error', 'Please back to Subscription List page')
+      // toastr.error('Technical Error', 'Please back to Subscription List page')
       return
     }
     const isAtHaveUid = jwt.decode(accessToken).sub != undefined
 
     if (!isAtHaveUid) {
       this.setState({ loading: false, error: true })
-      toastr.error('Technical Error', 'Please back to Subscription List page')
+      // toastr.error('Technical Error', 'Please back to Subscription List page')
       return
     }
     // END OF VALIDATION
@@ -266,7 +266,7 @@ class Checkout extends Component {
   }
 
   renderSubscription() {
-    const { data } = this.state
+    const { data, loading, isCheckoutDetailLoading } = this.state
     const { isMobile } = this.props
     return (
       <LazyLoad>
@@ -312,11 +312,24 @@ class Checkout extends Component {
                   </a>{' '}
                 </p>
               </div>
-              <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
-                Checkout
-              </button>
-
-              <div className={styles.big_mt}>{this.state.isCheckoutDetailLoading && <p>Loading...</p>}</div>
+              {!isCheckoutDetailLoading && (
+                <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
+                  Checkout
+                </button>
+              )}
+              {isCheckoutDetailLoading && (
+                <button type="submit" className={styles.order__content_submit_disabled} onClick={this.handleCheckout}>
+                  <div className={styles.loading__page}>
+                    <div className={styles.loading__ring}>
+                      <div />
+                      <div />
+                      <div />
+                      <div />
+                    </div>
+                  </div>
+                </button>
+              )}
+              {/* <div className={styles.big_mt}>{this.state.isCheckoutDetailLoading && <p>Loading...</p>}</div> */}
             </div>
           </div>
         </div>
