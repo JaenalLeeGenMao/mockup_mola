@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { toastr } from 'react-redux-toastr'
+import ReactTooltip from 'react-tooltip'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _isUndefined from 'lodash/isUndefined'
@@ -24,10 +25,10 @@ const getFormattedPrice = number => {
     .join(',')
 }
 
-const copyCodeToClipboard = str => {
-  toastr.info('Copied to clipboard ' + str)
+const copyCodeToClipboard = props => {
+  ReactTooltip.show(props.ref)
   var el = document.createElement('textarea')
-  el.value = str
+  el.value = props.value ? props.value : props.content
   el.setAttribute('readonly', '')
   el.style = { position: 'absolute', left: '-9999px' }
   document.body.appendChild(el)
@@ -42,9 +43,20 @@ const CheckoutItem = props => {
       <h3 className={styles.checkout_item__title}>{props.title}</h3>
       <div className={styles.checkout_item__wrap}>
         <h4 className={styles.checkout_item__content}>{props.content}</h4>
-        <button onClick={() => copyCodeToClipboard(props.content)} className={styles.checkout_item__action}>
+        <button
+          ref={ref => (props.ref = ref)}
+          data-tip={`Copied ${props.content}`}
+          data-event="focus"
+          onClick={() => copyCodeToClipboard(props)}
+          onMouseLeave={() => {
+            ReactTooltip.hide(props.ref)
+          }}
+          className={styles.checkout_item__action}
+        >
           {props.actionTitle}
         </button>
+
+        <ReactTooltip delayHide={1000} globalEventOff="leave" place="bottom" effect="solid" />
       </div>
     </div>
   )
@@ -60,6 +72,7 @@ class Checkout extends Component {
     loadingCheckout: false,
     error: false,
     isShowCheckoutDetail: false,
+    isCheckoutDetailLoading: false,
     payment: {
       process_id: '',
       status_message: '',
@@ -100,6 +113,10 @@ class Checkout extends Component {
   handleCheckout = async () => {
     const { subscriptionId, accessToken, uid, data } = this.state
 
+    this.setState({
+      isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
+    })
+
     const order = await MolaHandler.createOrder({
       ...this.state.data,
       token: accessToken,
@@ -109,23 +126,28 @@ class Checkout extends Component {
     })
 
     if (order.meta.status !== 'success') {
-      toastr.error('Notification', 'Failure upon generating new order')
+      // toastr.error('Notification', 'Failure upon generating new order')
       return
     }
 
     const payment = await MolaHandler.createMCBillPayment({
       token: this.state.accessToken,
       orderId: order.data.id,
-      amount: this.state.data.price,
-      customerInfo: this.state.uid,
+      amount: data.price,
+      customerInfo: data.title,
     })
 
     if (payment.meta.status === 'success') {
       this.setState({
         isShowCheckoutDetail: !this.state.isShowCheckoutDetail,
+        isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
         payment: payment.data,
       })
     } else {
+      this.setState({
+        isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
+      })
+
       toastr.error('Notification', 'Failed retrieving MCBill payment')
     }
   }
@@ -143,7 +165,7 @@ class Checkout extends Component {
     // VALIDATION, SHOULD BE MADE SEPERATE FUNCTION
     if (!subscriptionId || !accessToken) {
       this.setState({ loading: false, error: true })
-      toastr.error('Notification', 'Please back to Subscription List page')
+      // toastr.error('Notification', 'Please back to Subscription List page')
       return
     }
 
@@ -151,14 +173,14 @@ class Checkout extends Component {
 
     if (!isAccessTokenValid) {
       this.setState({ loading: false, error: true })
-      toastr.error('Technical Error', 'Please back to Subscription List page')
+      // toastr.error('Technical Error', 'Please back to Subscription List page')
       return
     }
     const isAtHaveUid = jwt.decode(accessToken).sub != undefined
 
     if (!isAtHaveUid) {
       this.setState({ loading: false, error: true })
-      toastr.error('Technical Error', 'Please back to Subscription List page')
+      // toastr.error('Technical Error', 'Please back to Subscription List page')
       return
     }
     // END OF VALIDATION
@@ -228,11 +250,14 @@ class Checkout extends Component {
 
           <div className={styles.detail_wrap}>
             <CheckoutItem
+              ref={this.amountRef}
               title="Jumlah yang harus dibayar"
               content={`Rp${getFormattedPrice(amount)}`}
+              value={amount}
               actionTitle="Salin Jumlah"
             />
-            <CheckoutItem title="Nomor Rekening" content={payment_code} actionTitle="Salin Nomor" />
+
+            <CheckoutItem ref={this.rekRef} title="Nomor Rekening" content={payment_code} actionTitle="Salin Nomor" />
           </div>
 
           <div className={styles.info_wrap}>
@@ -243,6 +268,8 @@ class Checkout extends Component {
           </div>
 
           <a
+            rel="noopener noreferrer"
+            target="_blank"
             href="https://www.bca.co.id/bisnis/produk-dan-layanan/e-banking/klikbca-bisnis/bca-virtual-account"
             className={styles.btn_submit}
           >
@@ -254,7 +281,7 @@ class Checkout extends Component {
   }
 
   renderSubscription() {
-    const { data } = this.state
+    const { data, loading, isCheckoutDetailLoading } = this.state
     const { isMobile } = this.props
     return (
       <LazyLoad>
@@ -286,6 +313,7 @@ class Checkout extends Component {
 
             <div className={styles.order__content_list_button}>
               <div className={styles.order__content_list_info}>
+                <p className={styles.big_mb}>We only accept BCA Virtual Account for this subscription type.</p>
                 <p>By clicking Checkout , you agree to our</p>
                 <p>
                   {' '}
@@ -299,9 +327,24 @@ class Checkout extends Component {
                   </a>{' '}
                 </p>
               </div>
-              <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
-                Checkout
-              </button>
+              {!isCheckoutDetailLoading && (
+                <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
+                  Checkout
+                </button>
+              )}
+              {isCheckoutDetailLoading && (
+                <button type="submit" className={styles.order__content_submit_disabled} onClick={this.handleCheckout}>
+                  <div className={styles.loading__page}>
+                    <div className={styles.loading__ring}>
+                      <div />
+                      <div />
+                      <div />
+                      <div />
+                    </div>
+                  </div>
+                </button>
+              )}
+              {/* <div className={styles.big_mt}>{this.state.isCheckoutDetailLoading && <p>Loading...</p>}</div> */}
             </div>
           </div>
         </div>
