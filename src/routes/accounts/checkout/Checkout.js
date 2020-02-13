@@ -60,6 +60,7 @@ class Checkout extends Component {
     loadingCheckout: false,
     error: false,
     isShowCheckoutDetail: false,
+    isCheckoutDetailLoading: false,
     payment: {
       process_id: '',
       status_message: '',
@@ -100,6 +101,10 @@ class Checkout extends Component {
   handleCheckout = async () => {
     const { subscriptionId, accessToken, uid, data } = this.state
 
+    this.setState({
+      isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
+    })
+
     const order = await MolaHandler.createOrder({
       ...this.state.data,
       token: accessToken,
@@ -116,16 +121,21 @@ class Checkout extends Component {
     const payment = await MolaHandler.createMCBillPayment({
       token: this.state.accessToken,
       orderId: order.data.id,
-      amount: this.state.data.price,
-      customerInfo: this.state.uid,
+      amount: data.price,
+      customerInfo: data.title,
     })
 
     if (payment.meta.status === 'success') {
       this.setState({
         isShowCheckoutDetail: !this.state.isShowCheckoutDetail,
+        isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
         payment: payment.data,
       })
     } else {
+      this.setState({
+        isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
+      })
+
       toastr.error('Notification', 'Failed retrieving MCBill payment')
     }
   }
@@ -243,6 +253,8 @@ class Checkout extends Component {
           </div>
 
           <a
+            rel="noopener noreferrer"
+            target="_blank"
             href="https://www.bca.co.id/bisnis/produk-dan-layanan/e-banking/klikbca-bisnis/bca-virtual-account"
             className={styles.btn_submit}
           >
@@ -286,6 +298,7 @@ class Checkout extends Component {
 
             <div className={styles.order__content_list_button}>
               <div className={styles.order__content_list_info}>
+                <p className={styles.big_mb}>We only accept BCA Virtual Account for this subscription type.</p>
                 <p>By clicking Checkout , you agree to our</p>
                 <p>
                   {' '}
@@ -302,6 +315,8 @@ class Checkout extends Component {
               <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
                 Checkout
               </button>
+
+              <div className={styles.big_mt}>{this.state.isCheckoutDetailLoading && <p>Loading...</p>}</div>
             </div>
           </div>
         </div>

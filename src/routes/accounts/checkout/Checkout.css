@@ -360,6 +360,14 @@
   background: #2242c4;
 }
 
+.big_mb {
+  margin-bottom: 3rem;
+}
+
+.big_mt {
+  margin-top: 3rem;
+}
+
 @media only screen and (max-width: 481px) {
   .checkout_container {
     padding-top: 8.1rem;
