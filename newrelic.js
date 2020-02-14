@@ -14,7 +14,7 @@ exports.config = {
   // app_name: ['mola-web-staging'],
 
   /* Production */
-  app_name: ['mola-web-staging'],
+  app_name: ['mola-web'],
   /**
    * Your New Relic license key.
    */
