@@ -427,6 +427,27 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               }`,
             }}
           />
+
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                document.addEventListener("DOMContentLoaded", () => {
+                  if ((location.search).indexOf('noHeader') >= 0) {
+                    console.log('No Header');
+
+                    setTimeout(function () {
+                      var liveSupport = document.querySelector(".embeddedServiceHelpButton");
+                      console.log('liveSupport =>', liveSupport);
+                      if (liveSupport) {
+                        liveSupport.style.display = 'none';
+                      }
+                    }, 3000);
+                  }
+                });
+              `,
+            }}
+          />
+        
           {isPromoBCA && (
             <>
               <script
