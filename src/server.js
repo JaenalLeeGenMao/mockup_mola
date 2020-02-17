@@ -640,6 +640,12 @@ app.get('/oauth/callback', async (req, res) => {
     return res.redirect(domain + redirect)
   }
 
+  const redirectUriCookie = req.cookies.redirect_uri
+  if (redirectUriCookie) {
+    res.clearCookie(req.cookies.redirect_uri)
+    return res.redirect(redirectUriCookie)
+  }
+
   return res.redirect(domain || 'https://stag.mola.tv')
 })
 
@@ -710,6 +716,13 @@ app.get('/accounts/signin', async (req, res) => {
   if (!req.cookies._at && req.query.redirect_watch) {
     res.cookie('redirectwatch', req.query.redirect_watch, {
       maxAge: 30 * 1000,
+      httpOnly: true,
+    })
+  }
+
+  if (!req.cookies._at && req.query.redirect_uri) {
+    res.cookie('redirect_uri', req.query.redirect_uri, {
+      maxAge: 60 * 1000,
       httpOnly: true,
     })
   }

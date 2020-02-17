@@ -173,6 +173,7 @@ class SubscriptionsList extends React.Component {
   }
 
   handleClickSubs = (aksesToken, subsId) => {
+    const redirectUri = _get(document, 'location.href', '/')
     if (aksesToken) {
       history.push({
         pathname: '/accounts/checkout',
@@ -186,6 +187,7 @@ class SubscriptionsList extends React.Component {
     } else {
       history.push({
         pathname: '/accounts/login',
+        search: `redirect_uri=${encodeURIComponent(redirectUri)}`,
       })
     }
   }

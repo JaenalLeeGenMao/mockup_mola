@@ -1,6 +1,6 @@
 import styles from './more.css'
 
-export const moreContent = (storeUrl = '', text = '') => {
+export const moreContent = (storeUrl = '', text = '', isLogin = false) => {
   return [
     {
       id: 1,
@@ -14,7 +14,7 @@ export const moreContent = (storeUrl = '', text = '') => {
       title: 'Subscribe Now!',
       info: 'Unlimited Mola TV content',
       img: styles.img__subscriptions,
-      url: '/accounts/profile?tab=subscription',
+      url: isLogin ? '/accounts/profile?tab=subscription' : '/accounts/subscriptionsList',
     },
     {
       id: 3,

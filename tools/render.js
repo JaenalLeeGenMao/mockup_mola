@@ -27,6 +27,7 @@ const routes = [
   '/accounts/login',
   '/accounts/profile',
   '/accounts/security',
+  '/accounts/subscriptionsList',
   '/accounts/setting',
   '/accounts/history',
   '/accounts/register',
