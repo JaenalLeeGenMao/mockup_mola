@@ -344,7 +344,13 @@ const getUserSubscription = async (userId, accessToken) => {
   }
 
   try {
-    const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/users/${userId}?app_id=${appId}`, {
+    /**
+     *
+     * example for SSR: http://10.220.0.11/external/users/Fbulm80CnjrOpMcwjyaRjcenIJCOcC?app_id=molatv
+     * example for client: https://mola.tv/api/v2/subscriptions/users/Fbulm80CnjrOpMcwjyaRjcenIJCOcC?app_id=molatv
+     *
+     */
+    const rawResponse = await fetch(`${SUBSCRIPTION_API_URL}/external/users/${userId}?app_id=${appId}`, {
       method: 'GET',
       timeout: 5000,
       headers: {
