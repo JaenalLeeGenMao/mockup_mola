@@ -173,15 +173,21 @@ class SubscriptionsList extends React.Component {
   }
 
   handleClickSubs = (aksesToken, subsId) => {
-    history.push({
-      pathname: '/accounts/checkout',
-      search: `at=${aksesToken}&subsId=${subsId}`,
-      state: {
-        aksesToken: aksesToken,
-        subsId: subsId,
-        // sid: sid,
-      },
-    })
+    if (aksesToken) {
+      history.push({
+        pathname: '/accounts/checkout',
+        search: `at=${aksesToken}&subsId=${subsId}`,
+        state: {
+          aksesToken: aksesToken,
+          subsId: subsId,
+          // sid: sid,
+        },
+      })
+    } else {
+      history.push({
+        pathname: '/accounts/login',
+      })
+    }
   }
 
   handleOnBack = () => {
