@@ -29,6 +29,18 @@ class Login extends Component {
     isLoading: false,
   }
 
+  componentDidMount() {
+    const uriSearch = location.search
+    if (!_isUndefined(uriSearch) && uriSearch !== '') {
+      const urlParams = new URLSearchParams(uriSearch)
+
+      const redirectURL = urlParams.get('redirect_uri')
+      if (redirectURL) {
+        document.cookie = `redirect_uri=${redirectURL}; max-age=${60 * 1000}; path=/;`
+      }
+    }
+  }
+
   handleInputChange = e => {
     const target = e.target
     const { id, value } = target
