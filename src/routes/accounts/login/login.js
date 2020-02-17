@@ -29,8 +29,12 @@ class Login extends Component {
     isLoading: false,
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
+    /** delete cookie */
+    document.cookie = 'redirect_uri=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+
     const uriSearch = location.search
+
     if (!_isUndefined(uriSearch) && uriSearch !== '') {
       const urlParams = new URLSearchParams(uriSearch)
 
