@@ -575,10 +575,14 @@ const getUserSubscriptions = uid => {
 
 const getAllSubscriptions = token => {
   // console.log('ini subscription', token)
+  const headerContent = token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {}
+
   return get(`${SUBSCRIPTION_ENDPOINT}?app_id=molatv&platformId=1`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: headerContent,
     params: {
       app_id: 2,
     },
