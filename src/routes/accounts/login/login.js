@@ -29,7 +29,7 @@ class Login extends Component {
     isLoading: false,
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     /** delete cookie */
     document.cookie = 'redirect_uri=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
 
