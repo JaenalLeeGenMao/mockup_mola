@@ -40,7 +40,7 @@ class Login extends Component {
 
       const redirectURL = urlParams.get('redirect_uri')
       if (redirectURL) {
-        document.cookie = `redirect_uri=${redirectURL}; max-age=${60 * 1000}; path=/;`
+        document.cookie = `redirect_uri=${redirectURL}; max-age=${60}; path=/;`
       }
     }
   }
