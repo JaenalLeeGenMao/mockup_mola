@@ -56,7 +56,9 @@ export class More extends Component {
     let filteredMoreContent = !isLogin ? content.filter(content => content.id !== 3) : content
 
     if (!showSubs) {
-      filteredMoreContent = !isLogin ? content.filter(content => content.id !== 3) : content
+      filteredMoreContent = !isLogin
+        ? content.filter(content => content.id !== 2 && content.id !== 3)
+        : content.filter(content => content.id !== 2)
     }
 
     return (

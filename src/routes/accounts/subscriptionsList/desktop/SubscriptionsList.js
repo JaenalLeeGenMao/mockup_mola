@@ -193,7 +193,7 @@ class SubscriptionsList extends React.Component {
   }
 
   handleOnBack = () => {
-    history.goBack()
+    history.push('/')
   }
 
   render() {
