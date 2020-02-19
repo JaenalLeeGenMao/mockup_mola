@@ -466,7 +466,7 @@ const getHeaderMenus = async () => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 10800, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 60, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -518,7 +518,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 300, function(err, success) {
+      molaCache.set('configParams', configParams, 60, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache config params', configParams)
         } else {
