@@ -102,8 +102,7 @@
   font-weight: bold;
   text-align: center;
   color: #fff;
-  margin: 0;
-  margin-bottom: 50px;
+  margin: 0 1rem 5rem 1rem;
   text-transform: uppercase;
 }
 
@@ -370,7 +369,7 @@
   align-items: center;
   background: #141414aa;
   height: 65%;
-  min-height: 640px;
+  min-height: 575px;
   width: 30%;
   border-top: 3px solid #505050;
 }
@@ -394,7 +393,7 @@
 
 .subscription__section_list_price sup {
   font-size: 14px;
-  font-weight: 100;
+  font-weight: bold;
   vertical-align: super;
   color: #fff;
   margin: 0;

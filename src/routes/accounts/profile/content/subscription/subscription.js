@@ -83,13 +83,13 @@ class Subscription extends Component {
             </>
           )} */}
           <div className={s.subscription_detail_title}>
-            <p>Your Subscription Status</p>
+            <p>Paket Langganan Anda</p>
             <div className={s.subscription__button_upgrader_wrapper}>
               <button
                 className={s.subscription_button_active}
                 onClick={() => (window.location.href = '/accounts/subscriptionsList')}
               >
-                Add Package
+                Beli Paket
               </button>
             </div>
           </div>
