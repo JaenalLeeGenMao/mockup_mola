@@ -53,12 +53,15 @@ export class More extends Component {
 
   render() {
     const { isLogin, content, email, showSubs, isLoading } = this.state
-    let filteredMoreContent = !isLogin ? content.filter(content => content.id !== 3) : content
+
+    let filteredMoreContent = content
 
     if (!showSubs) {
-      filteredMoreContent = !isLogin
-        ? content.filter(content => content.id !== 2 && content.id !== 3)
-        : content.filter(content => content.id !== 2)
+      filteredMoreContent = filteredMoreContent.filter(content => content.id !== 1)
+    }
+
+    if (!isLogin) {
+      filteredMoreContent = filteredMoreContent.filter(content => content.id !== 3)
     }
 
     return (
