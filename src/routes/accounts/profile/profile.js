@@ -356,7 +356,7 @@ class Profile extends Component {
     let titleMenu = 'Profile'
     const { query } = this.props
     if (query.tab === 'subscription') {
-      titleMenu = 'Subscription'
+      titleMenu = 'Paket Berlangganan'
     }
     if (query.tab === 'security') {
       titleMenu = 'Security'

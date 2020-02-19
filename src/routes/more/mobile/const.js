@@ -4,17 +4,17 @@ export const moreContent = (storeUrl = '', text = '', isLogin = false) => {
   return [
     {
       id: 1,
+      title: 'Beli Paket',
+      info: 'Akses ke semua konten premium tanpa batas ',
+      img: styles.img__subscriptions,
+      url: isLogin ? '/accounts/profile?tab=subscription' : '/accounts/subscriptionsList',
+    },
+    {
+      id: 2,
       title: 'Promos',
       info: 'Get 1 month free for MOLA TV subscription',
       img: styles.img__promos,
       url: '/promo',
-    },
-    {
-      id: 2,
-      title: 'Subscribe Now!',
-      info: 'Unlimited Mola TV content',
-      img: styles.img__subscriptions,
-      url: isLogin ? '/accounts/profile?tab=subscription' : '/accounts/subscriptionsList',
     },
     {
       id: 3,

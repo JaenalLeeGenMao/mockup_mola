@@ -193,7 +193,7 @@ class SubscriptionsList extends React.Component {
   }
 
   handleOnBack = () => {
-    history.push('/')
+    history.push('/accounts/profile?tab=subscription')
   }
 
   render() {
@@ -213,7 +213,7 @@ class SubscriptionsList extends React.Component {
           {isHeader ? <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} /> : ''}
           <div className={s.subscription__container_wrapper}>
             <div className={s.subscription__title}>
-              <h1>Choose your subscription</h1>
+              <h1>Pilih Paket Langganan</h1>
             </div>
             {isData &&
               subscribe.meta.status === 'success' && (
@@ -225,7 +225,7 @@ class SubscriptionsList extends React.Component {
                           <h1>{sub.attributes.title}</h1>
                         </div>
 
-                        <div className={s.subscriptions__section_detail}>
+                        {/* <div className={s.subscriptions__section_detail}>
                           {sub.attributes.description.features.map((desc, index) => (
                             <div
                               key={'att' + index}
@@ -239,7 +239,7 @@ class SubscriptionsList extends React.Component {
                               <p>{desc.name}</p>
                             </div>
                           ))}
-                        </div>
+                        </div> */}
 
                         <div className={s.subscription__section_list}>
                           <div className={s.subscription__section_list_price}>
@@ -257,7 +257,7 @@ class SubscriptionsList extends React.Component {
                               className={s.subscription_button_active}
                               onClick={() => this.handleClickSubs(accessToken, sub.id)}
                             >
-                              Subscribe
+                              Pilih Paket
                             </button>
                           </div>
                         </div>
@@ -276,14 +276,14 @@ class SubscriptionsList extends React.Component {
                         <div className={s.subscriptions__unavailable_logo}>
                           <img src={forbidIcon} />
                         </div>
-                        <h1>Whoops, sorry this package unavailable</h1>
+                        <h1>Whoops, maaf paket ini tidak tersedia</h1>
                         <div className={s.subscriptions__unavailable_flip_description}>
-                          <p>Please try again or come back later for more package</p>
+                          <p>Anda telah memiliki paket ini. Lihat halaman paket berlangganan</p>
                         </div>
                       </div>
                       <div className={s.subscription_button_go_back_wrapper}>
                         <button className={s.subscription_button_go_back} onClick={() => this.handleOnBack()}>
-                          Back
+                          Kembali
                         </button>
                       </div>
                     </div>

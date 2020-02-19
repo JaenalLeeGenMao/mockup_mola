@@ -240,7 +240,7 @@ class Checkout extends Component {
     return (
       <div className={styles.checkout_container}>
         <div className={styles.order__content_list}>
-          <div className={styles.order__content_title}> Waiting for Payment </div>
+          <div className={styles.order__content_title}> Menunggu Pembayaran </div>
 
           <div className={styles.warning}>
             <p>
@@ -287,13 +287,13 @@ class Checkout extends Component {
       <LazyLoad>
         <div className={styles.checkout_container}>
           <div className={styles.order__content_list}>
-            <div className={styles.order__content_title}> Review your subscription </div>
+            <div className={styles.order__content_title}> Cek Pesanan Anda </div>
 
             <div className={styles.order__content_list_price}>
               <div className={styles.order__content_list_price_wrapper}>
                 <div className={styles.order__content_list_price_title}>
                   <h1>{data.title}</h1>
-                  <p>until {this.formatDate(data.quantity, data.uom, data.expireAt)}</p>
+                  <p>sampai {this.formatDate(data.quantity, data.uom, data.expireAt)}</p>
                   {/* <h1>1 MONTH PLAN</h1> */}
                   {/* <p>until 23 Oct 2019</p> */}
                 </div>
@@ -306,30 +306,33 @@ class Checkout extends Component {
               <div className={styles.checkout_changePlan}>
                 <a href={'/accounts/subscriptionsList'} target="_self">
                   {' '}
-                  Change Plan{' '}
+                  Ubah Paket{' '}
                 </a>
               </div>
             </div>
 
             <div className={styles.order__content_list_button}>
               <div className={styles.order__content_list_info}>
-                <p className={styles.big_mb}>We only accept BCA Virtual Account for this subscription type.</p>
-                <p>By clicking Checkout , you agree to our</p>
+                <p className={styles.big_mb}>
+                  Kami hanya menerima pembayaran menggunakan BCA virtual Account untuk paket ini.
+                </p>
+                <p>Dengan menekan tombol Bayar , Anda menyetujui</p>
                 <p>
                   {' '}
                   <a href={'/privacy'} target="_self" rel="noopener noreferrer">
                     {' '}
-                    Privacy Policy
+                    Kebijakan Privasi
                   </a>{' '}
-                  and our{' '}
+                  dan{' '}
                   <a href={'/terms'} target="_self" rel="noopener noreferrer">
-                    Terms
+                    Ketentuan
                   </a>{' '}
+                  kami
                 </p>
               </div>
               {!isCheckoutDetailLoading && (
                 <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
-                  Checkout
+                  Bayar
                 </button>
               )}
               {isCheckoutDetailLoading && (
