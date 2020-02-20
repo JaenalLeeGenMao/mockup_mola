@@ -325,6 +325,7 @@ const getUserInfo = async sid => {
       headers: {
         Cookie: `SID=${sid}`,
         'Content-Type': 'application/json',
+        'x-app-id': xAppId,
       },
     })
 

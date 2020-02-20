@@ -10,6 +10,7 @@ const serverApi = {
   // AUTH_API_URL: process.env.AUTH_ENDPOINT,
   // SUBSCRIPTION_API_URL: process.env.SUBSCRIPTION_ENDPOINT,
   VIDEO_API_URL: 'http://videos.core.sstv.local',
+  // AUTH_API_URL: 'http://10.220.0.54',
   AUTH_API_URL: 'http://accounts-api.accounts.sstv.local',
   SUBSCRIPTION_API_URL: 'http://subscriptions.core.sstv.local',
   // SUBSCRIPTION_API_URL: 'http://10.220.0.11',
