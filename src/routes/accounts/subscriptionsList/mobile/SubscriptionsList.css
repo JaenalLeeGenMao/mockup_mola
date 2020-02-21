@@ -45,7 +45,7 @@
 .subscription__main_wrapper {
   flex-wrap: wrap;
   margin: 1rem;
-  background: #141414aa;
+  background: rgba(32, 30, 30, 0.897);
   padding: -1rem;
   width: 85%;
 }
