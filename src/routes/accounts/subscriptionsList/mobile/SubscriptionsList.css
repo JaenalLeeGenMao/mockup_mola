@@ -92,6 +92,8 @@
   margin: 0;
   margin-bottom: 20px;
   text-transform: uppercase;
+  width: 78%;
+  line-height: 1.4;
 }
 
 .subscription__section_plan_active h1 {
@@ -152,8 +154,8 @@
   margin-bottom: 1rem;
   -ms-flex-item-align: center;
   align-self: baseline;
-  width: 60%;
-  margin-left: 2rem;
+  width: auto;
+  margin: 0 2rem;
 }
 
 .subscriptions__section_detail_list {
@@ -420,10 +422,4 @@
   border-radius: 5px;
   width: 121px;
   height: 44px;
-}
-
-@media only screen and (max-width: 360px) {
-  .subscriptions__section_detail {
-    width: 60%;
-  }
 }
