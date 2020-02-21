@@ -16,54 +16,67 @@ export class More extends Component {
     isLogin: false,
     content: [],
     email: '',
-    showSubs: false,
     isLoading: true,
   }
-  async componentDidMount() {
-    const { fetchProfile, user: { uid = '', sid = '' }, configParams } = this.props,
+  componentDidMount() {
+    this.filteredContent(this.props)
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.user && this.props.user) {
+  //     if (prevProps.user.uid !== this.props.user.uid || prevProps.user.sid !== this.props.user.sid) {
+  //       this.filteredContent(this.props)
+  //     }
+  //   }
+  // }
+
+  filteredContent = props => {
+    const { fetchProfile, user: { uid = '', sid = '' }, configParams, sidebarMenu } = props,
+      isLogin = uid || sid ? true : false,
+      isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
+      subscriptions_enabled = configParams && configParams.data ? configParams.data.subscriptions_enabled : false,
       android_store_url = configParams && configParams.data ? configParams.data.store_url : '',
       ios_store_url = configParams && configParams.data ? configParams.data.ios_store_url : '',
-      subscriptions_enabled = configParams && configParams.data ? configParams.data.subscriptions_enabled : '',
-      isApple = /iPad|iPhone|iPod/.test(navigator.userAgent),
       storeUrl = isApple ? ios_store_url : android_store_url,
-      downloadText = isApple ? 'Available on Appstore' : 'Available on Playstore',
-      isLogin = sid ? true : false,
-      content = moreContent(storeUrl, downloadText, isLogin)
+      downloadText = isApple ? 'Available on Appstore' : 'Available on Playstore'
 
-    await fetchProfile()
+    let arrContent = []
+    if (sidebarMenu && sidebarMenu.data) {
+      arrContent = isLogin
+        ? sidebarMenu.data.filter(dt => dt.visibility.login)
+        : sidebarMenu.data.filter(dt => dt.visibility.not_login)
+      arrContent = subscriptions_enabled ? arrContent : arrContent.filter(dt => !dt.visibility.subscribe)
+      arrContent = isApple ? arrContent.filter(dt => dt.platform.ios) : arrContent.filter(dt => dt.platform.android)
+
+      // changing store url and text for download app
+      const idxDownloadApp = arrContent.findIndex(dt => dt.label.toLowerCase().includes('download'))
+      if (idxDownloadApp !== -1) {
+        arrContent[idxDownloadApp].description = downloadText
+        arrContent[idxDownloadApp].menuAction.action = storeUrl
+      }
+    }
+
+    fetchProfile()
       .then(() => {
         const { user: { email = '' } } = this.props
         this.setState({
-          content,
-          isLogin: uid || sid ? true : false,
-          showSubs: subscriptions_enabled ? true : false,
+          content: arrContent,
+          isLogin,
           email,
           isLoading: false,
         })
       })
       .catch(() => {
         this.setState({
-          content,
-          isLogin: uid || sid ? true : false,
-          showSubs: subscriptions_enabled ? true : false,
+          content: arrContent,
+          isLogin,
           isLoading: false,
         })
       })
   }
 
   render() {
-    const { isLogin, content, email, showSubs, isLoading } = this.state
-
-    let filteredMoreContent = content
-
-    if (!showSubs) {
-      filteredMoreContent = filteredMoreContent.filter(content => content.id !== 1)
-    }
-
-    if (!isLogin) {
-      filteredMoreContent = filteredMoreContent.filter(content => content.id !== 3)
-    }
-
+    const { isLogin, content, email, isLoading } = this.state
     return (
       <>
         {!isLoading && (
@@ -74,18 +87,18 @@ export class More extends Component {
             <div style={{ height: '60px' }} />
             <LoginBox isLogin={isLogin} email={email} />
             <div className={styles.menu__container}>
-              {filteredMoreContent.length > 0 &&
-                filteredMoreContent.map(dt => (
-                  <div key={dt.id} className={styles.menu__wrapper}>
-                    <a href={dt.url} className={styles.img__wrapper}>
-                      <div className={`${styles.img__menu} ${dt.img}`} />
+              {content.length > 0 &&
+                content.map(dt => (
+                  <div key={dt.label} className={styles.menu__wrapper}>
+                    <a href={dt.menuAction.action} className={styles.img__wrapper}>
+                      <img className={styles.img__menu} src={dt.icon} />
                     </a>
                     <div className={styles.info__wrapper}>
-                      <a href={dt.url} className={styles.menu__title}>
+                      <a href={dt.menuAction.action} className={styles.menu__title}>
                         {' '}
-                        {dt.title}{' '}
+                        {dt.label}{' '}
                       </a>
-                      <div className={styles.menu__info}> {dt.info} </div>
+                      <div className={styles.menu__info}> {dt.description} </div>
                     </div>
                   </div>
                 ))}

@@ -849,8 +849,8 @@ const getChannelsList = (id = 'channels-m') => {
     })
 }
 
-const getProgrammeGuides = (date, playlistId, timezone = 7) => {
-  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}?tz=${timezone}`, {
+const getProgrammeGuides = (date, playlistId) => {
+  return get(`${PROGRAMME_GUIDES}/${date}/playlists/${playlistId}`, {
     ...endpoints.setting,
     // headers: token && { Authorization: `Bearer ${token}` }
   })
@@ -878,11 +878,10 @@ const getProgrammeGuides = (date, playlistId, timezone = 7) => {
 
 const getHeaderMenu = () => {
   // return get(`${HEADERMENU}/menu.json`, {
-  return get(`${HEADERMENU}`, {
+  return get(`${HEADERMENU}?platform_id=2`, {
     ...endpoints.setting,
   })
     .then(response => {
-      // console.log('response', response)
       return {
         meta: {
           status: 'success',

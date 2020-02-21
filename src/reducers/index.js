@@ -20,6 +20,7 @@ import partnerRedeem from './partner-redeem'
 import partners from './partners'
 import notifications from './notifications'
 import articlesDetail from './articles'
+import sidebarMenu from './sidebar-menu'
 // import { getReducer } from '../../../gandalf';
 // import { getReducer } from 'gandalf';
 // const { user, runtime, home, history, search, movieDetail, movieLibrary, movieStream, toastr } = getReducer();
@@ -46,4 +47,5 @@ export default combineReducers({
   notifications,
   articlesDetail,
   partnerRedeem,
+  sidebarMenu,
 })
