@@ -162,7 +162,7 @@
   flex-direction: column;
   margin-bottom: 3rem;
   align-self: center;
-  width: 58%;
+  width: 80%;
 }
 
 .subscriptions__section_detail_list {
@@ -367,7 +367,7 @@
   flex-direction: column;
   -ms-flex-align: center;
   align-items: center;
-  background: #141414aa;
+  background: rgba(32, 30, 30, 0.897);
   height: 65%;
   min-height: 575px;
   width: 30%;

@@ -201,6 +201,7 @@ class SubscriptionsList extends React.Component {
     const { accessToken, isHeader } = this.state
     const isData = subscribe.data.length > 0
     let isDataUnderThree = subscribe.data.length < 3
+    let price = ''
 
     // const  = subscribe.length > 0
     // console.log('lol', isData)
@@ -230,7 +231,7 @@ class SubscriptionsList extends React.Component {
                           <h1>{sub.attributes.title}</h1>
                         </div>
 
-                        {/* <div className={s.subscriptions__section_detail}>
+                        <div className={s.subscriptions__section_detail}>
                           {sub.attributes.description.features.map((desc, index) => (
                             <div
                               key={'att' + index}
@@ -244,12 +245,12 @@ class SubscriptionsList extends React.Component {
                               <p>{desc.name}</p>
                             </div>
                           ))}
-                        </div> */}
+                        </div>
 
                         <div className={s.subscription__section_list}>
                           <div className={s.subscription__section_list_price}>
                             <h1>
-                              <sup>Rp</sup>
+                              <sup>{(price = sub.attributes.priceUnit !== '' ? sub.attributes.priceUnit : 'Rp')}</sup>
                               {/* {sub.attributes.currency} */}
 
                               {getFormattedPrice(sub.attributes.price)}
