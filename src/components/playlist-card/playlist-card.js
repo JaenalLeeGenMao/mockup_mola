@@ -52,7 +52,7 @@ class PlaylistCard extends Component {
       },
       isMatch = contentTypeName === 'live' || contentTypeName === 'replay'
 
-    let sortPlatform = _.orderBy(data && data.platforms, ['name'], ['asc']) || []
+    let sortPlatform = _.orderBy(data && data.platforms, ['id'], ['asc']) || []
     const platforms = sortPlatform.length > 0 && sortPlatform[0].status === 1
     const isVideos = data && data.type === 'videos'
     // const showDate = data && data.contentType === 3 && isVideos ? true : false

@@ -211,6 +211,7 @@ export class homeFeatured extends Component {
                                       }
                                       // onLoad={this.updateOnImageLoad}
                                       onClick={() => this.handleOnClick(obj)}
+                                      data={obj}
                                     />
                                   )
                                 } else {
