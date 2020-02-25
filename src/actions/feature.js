@@ -89,7 +89,7 @@ const getFeatureVideo = ({ id = '', playlist, index = 0 }) => async dispatch => 
 
 const getFeatureBanner = pathname => dispatch => {
   const id = `landing-page-${pathname}` /* landing-page-epl */,
-    filteredId = pathname ? pathname.split('-')[0] : pathname
+    filteredId = pathname && pathname.includes('square') ? pathname.split('-square')[0] : pathname
   dispatch({
     type: types.GET_FEATURE_BANNER_LOADING,
     payload: {

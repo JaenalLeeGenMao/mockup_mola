@@ -70,7 +70,8 @@ class Feature extends Component {
   }
 
   componentDidUpdate() {
-    const { id = _.get(pathname.split('/'), '[2]', '') } = this.props
+    const { id = _.get(pathname.split('/'), '[2]', ''), configParams, isMobile } = this.props,
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
 
     try {
       setTimeout(() => {
@@ -78,7 +79,7 @@ class Feature extends Component {
           // if (playlists.meta.id && id !== playlists.meta.id) {
           // this.props.onHandleResetVideo()
           this.props.onHandlePlaylist(id)
-          this.props.onHandleBanner(id)
+          this.props.onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
           // this.props.onHandleArticle(id)
 
           trackedPlaylistIds = []
