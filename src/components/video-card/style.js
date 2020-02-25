@@ -21,7 +21,7 @@ export const videoContainer = css`
     line-height: 1.525rem !important;
     height: 2.9rem;
     overflow: hidden;
-    display: -webkit-box;
+    display: -webkit-box !important;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     padding: 0 0.15rem;
@@ -38,7 +38,9 @@ export const videoContainer = css`
       line-height: 14px !important;
       height: 28px !important;
       overflow: hidden;
-      text-overflow: clip;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 
