@@ -282,7 +282,7 @@ class Feature extends Component {
                               }
                               height={
                                 contentTypeName === 'movie' || contentTypeName === 'vod'
-                                  ? isMobile ? '17rem' : '31rem'
+                                  ? isMobile ? '19rem' : '31rem'
                                   : isMobile ? '15rem' : '25rem'
                               }
                             >
