@@ -50,6 +50,7 @@ const getHomeVideo = (playlist, isMobile) => (dispatch, getState) => {
           status: result.meta.status,
           id: playlist.id,
           sortOrder: 0,
+          contentType: 'banners', // banner dont have content type, dan ini ga kepake sih sbeenernya
         },
         data: result.data,
       }
@@ -69,7 +70,6 @@ const getHomeVideo = (playlist, isMobile) => (dispatch, getState) => {
         },
         isDark: 0,
       }
-
       const filterVisibility = result.data.filter(dt => {
         return dt.visibility === 1
       })
@@ -79,6 +79,7 @@ const getHomeVideo = (playlist, isMobile) => (dispatch, getState) => {
           status: result.meta.status,
           id: playlist.id,
           sortOrder: playlist.sortOrder,
+          contentType: playlist.contentType, // taro content type buat baca khusus di home
         },
         data: filterVisibility.concat(viewAllSection),
       }

@@ -19,14 +19,15 @@ const description =
 
 async function action({ isMobile, store, pathname }) {
   const Home = isMobile ? HomeMobile : HomeDesktop
+  const routes = 'home'
   return {
     title,
     description,
     chunks: ['home'],
     component: (
       <MolaLayout>
-        <Home {...store} pathname={pathname} isMobile={isMobile} />
-        {isMobile && <MobileNavbar routes={'home'} />}
+        <Home {...store} pathname={pathname} isMobile={isMobile} routes={routes} />
+        {isMobile && <MobileNavbar routes={routes} />}
       </MolaLayout>
     ),
   }
