@@ -80,6 +80,10 @@ class Channels extends Component {
       this.eventVideosTracker(id)
       this.setFirstRenderSchedule(id)
     })
+    // --- tempat menaruh dimana nanti akan dibuatkan ref kondisi dari si gradient ----
+    // this.clScrollerRefs.addEventListener('scroll', () => {
+
+    // })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -446,16 +450,31 @@ class Channels extends Component {
           {channelsPlaylist.meta.status === 'success' && (
             <>
               <div className={styles.channels_top_wrapper}>
-                <div className={styles.channels_list_wrapper}>
-                  <LazyLoad>
+                <div className={styles.channels_list_scroller}>
+                  {/* === Dropdown Feature on channels ==== */}
+                  {/* <LazyLoad>
                     <DropdownList
                       className={styles.channels_dropdown_container}
                       dataList={channelsPlaylist.data}
                       activeId={activeChannelId}
                       onClick={this.handleSelectChannel}
                     />
-                  </LazyLoad>
+                  </LazyLoad> */}
+                  {channelsPlaylist.data.map(channels => (
+                    <div
+                      className={`${styles.title_spacing} ${
+                        channels.id === this.state.activeChannelId ? styles.header_menu__active : ''
+                      }`}
+                      onClick={() => this.handleSelectChannel(channels.id)}
+                    >
+                      <p className={styles.style_img}>
+                        <img className={styles.thumbnails_height} src={channels.thumbnailImg} alt={channels.title} />
+                      </p>
+                      <p className={styles.style_text}>{channels.title}</p>
+                    </div>
+                  ))}
                 </div>
+                {/* <div className={styles.gradients_effect} /> */}
               </div>
 
               <div className={styles.video_container} id="video-player-root">

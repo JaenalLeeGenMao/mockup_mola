@@ -22,14 +22,20 @@ class MolaOriginal extends Component {
     this.setState({ currentSlide: index })
   }
 
+  // handleIsNotDescription = isNotDescription => {
+  //   this,props.isNoDesc && desc {}
+  // }
+
   render() {
     const { id, data = [], isMobile = false } = this.props,
       { currentSlide } = this.state
 
     const title = _get(data, `[${currentSlide}].title`, ''),
       description = _get(data, `[${currentSlide}].description`, '')
+
     return (
       <div className={s.original_wrapper}>
+        {/* <div className={s.hide_content}> */}
         <div
           style={{
             position: 'absolute',
@@ -59,8 +65,8 @@ class MolaOriginal extends Component {
         <div className={s.original_content}>
           <div className={s.original_grid_detail}>
             <div>
-              <h2>{title}</h2>
-              <p>{description && description.length > 185 ? `${description.substr(0, 185)}...` : description}</p>
+              {title && <h2>{title}</h2>}
+              {description && <p>{description.length > 185 ? `${description.substr(0, 185)}...` : description}</p>}
               <button onClick={() => this.handleOnClick(_get(data, `[${currentSlide}]`, ''))}>View Movie</button>
             </div>
           </div>
@@ -98,6 +104,7 @@ class MolaOriginal extends Component {
           </div>
         </div>
       </div>
+      // </div>
     )
   }
 }

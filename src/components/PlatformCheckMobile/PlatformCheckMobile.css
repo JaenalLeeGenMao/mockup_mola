@@ -16,20 +16,20 @@
 
 .container {
   align-items: baseline;
-  flex: 1;
+  flex: 0.8;
   width: 100%;
   background: #000311;
   color: #fff;
   height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: 50%;
 
   /* position: absolute; */
 
   /* overflow: hidden; */
 
   /* top: 0; */
-  background-position: center;
 }
 
 .player__container {

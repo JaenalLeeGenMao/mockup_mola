@@ -38,7 +38,7 @@ body {
 .matches__container {
   margin-left: 20px;
   margin-right: 50px;
-  padding-top: 90px;
+  padding-top: 135px;
 
   /* margin-bottom: 50vh; */
   position: absolute;
@@ -69,10 +69,72 @@ body {
   margin-top: 25px;
 }
 
+/* css feature dropdown */
 .matches__filter {
   margin-left: 1.4rem;
   z-index: 1;
   width: 60%;
+}
+
+/* css feature scroller */
+.matches__filter__scroller {
+  margin-left: 1.4 rem;
+  display: -webkit-inline-box;
+  color: #b2b2b2;
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  font-size: 14px;
+}
+
+/* tidak menampilkan scrollbar tetapi masih menjalankan fungsi scroll */
+.matches__filter__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* spacing text on scroller */
+.title_spacing {
+  padding-left: 1rem;
+  padding-right: 0.5rem;
+  height: 2rem;
+}
+
+/* ukuran thumbnails */
+.thumbnails_height {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  margin-right: 7px;
+  vertical-align: middle;
+}
+
+/* gradients css */
+.gradients_effect {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 26px;
+  background: linear-gradient(to left, black, transparent);
+}
+
+/* isActive effect */
+.header_menu__active {
+  border-bottom: 2px solid #2996ff;
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+/* css img agar dia sejajar dengan text */
+.style_img {
+  display: contents;
+}
+
+/* css text agar dia sejajar dengan img */
+.style_text {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .matches_dropdown_container {
@@ -102,9 +164,10 @@ body {
 }
 
 .matches__filterWeek {
-  margin-right: 1rem;
+  margin-right: 25px;
   top: 85px;
   z-index: 1;
+  width: 100%;
 }
 
 .matches_dropdown_container_filterWeek {
@@ -114,9 +177,22 @@ body {
 
 .filter__container {
   position: fixed;
-  top: 60px;
+  top: 50px;
   width: 100%;
-  height: 35px;
+  height: 43px;
+  background-color: #212121;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+}
+
+/* css position dropdown filter week */
+.filter__week {
+  position: fixed;
+  top: 85px;
+  width: 100%;
+  height: 50px;
   background-color: #212121;
   display: flex;
   align-items: center;
