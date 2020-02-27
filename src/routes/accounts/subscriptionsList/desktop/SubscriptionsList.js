@@ -125,7 +125,6 @@ class SubscriptionsList extends React.Component {
 
   componentDidMount() {
     this.setSubscription()
-    // this.getAvailablePackage(this.props.user.subscriptions)
   }
 
   setSubscription = () => {
@@ -229,6 +228,7 @@ class SubscriptionsList extends React.Component {
     const isData = subscribe.data.length > 0
     let isDataUnderThree = subscribe.data.length < 3
     let showPackageList = numberOfPackage > 1
+    let price = ''
 
     // const expiry = new Date(subscription.attributes.expireAt)
     // const subsInfo = user.subscriptions
@@ -287,7 +287,8 @@ class SubscriptionsList extends React.Component {
                             <div className={s.subscription__section_list_price}>
                               <h1>
                                 {/* {sub.attributes.currency} */}
-                                Rp{getFormattedPrice(sub.attributes.price)}
+                                {(price = sub.attributes.priceUnit !== '' ? sub.attributes.priceUnit : 'Rp')}
+                                {getFormattedPrice(sub.attributes.price)}
                               </h1>
                               {/* <p>{sub.attributes.description.miniDescription}</p> */}
                             </div>

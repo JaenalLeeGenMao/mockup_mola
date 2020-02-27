@@ -230,6 +230,7 @@ class SubscriptionsList extends React.Component {
     // const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
     const Background = configParams && configParams.data ? configParams.data.subscriptions_list_background : ''
     let showPackageList = numberOfPackage > 1
+    let price = ''
     // const subsInfo = user.subscriptions
     // let satuAjaBangcat = false
     // let angkatBangcyat = 0
@@ -292,7 +293,8 @@ class SubscriptionsList extends React.Component {
                             <h1>
                               {/* <sup>Rp</sup> */}
                               {/* {sub.attributes.currency} */}
-                              Rp {getFormattedPrice(sub.attributes.price)}
+                              {(price = sub.attributes.priceUnit !== '' ? sub.attributes.priceUnit : 'Rp')}{' '}
+                              {getFormattedPrice(sub.attributes.price)}
                             </h1>
                             {/* <p>{sub.attributes.description.miniDescription}</p> */}
                           </div>

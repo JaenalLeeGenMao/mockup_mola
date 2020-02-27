@@ -16,7 +16,9 @@ export class loginBox extends Component {
     const { user: { uid = '', sid = '' } } = this.props
     const isLogin = sid || uid
     if (isLogin) {
-      this.getAvailablePackage(this.props.user.subscriptions)
+      if (this.props.user.subscriptions.length > 0) {
+        this.getAvailablePackage(this.props.user.subscriptions)
+      }
     }
   }
 
@@ -37,7 +39,7 @@ export class loginBox extends Component {
   render() {
     const { isLogin, email = '', user } = this.props
     const { numberOfPackage, titlePackage } = this.state
-    const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
+    let showPackageList = numberOfPackage > 1
 
     return (
       <div className={styles.login__box__wrapper}>
@@ -54,25 +56,19 @@ export class loginBox extends Component {
               </Link>
 
               <Link to="/accounts/profile?tab=subscription">
-                {titleSubscriptions.map((sub, index) => {
-                  if (numberOfPackage <= 1) {
-                    return (
-                      // console.log('dapetnih',sub.attributes.title)
-                      <div className={styles.button__tab_subscriptions}>
-                        <p>{titlePackage}</p>
-                      </div>
-                    )
-                  } else {
-                    return (
-                      <div className={styles.button__tab_subscriptions_wrapper}>
-                        <div className={styles.button__tab_subscriptions_yellow}>
-                          <p>{titlePackage}</p>
-                        </div>
-                        <p>&amp; {numberOfPackage} paket lainnya</p>
-                      </div>
-                    )
-                  }
-                })}
+                {!showPackageList && (
+                  <div className={styles.button__tab_subscriptions}>
+                    <p>{titlePackage}</p>
+                  </div>
+                )}
+                {showPackageList && (
+                  <div className={styles.button__tab_subscriptions_wrapper}>
+                    <div className={styles.button__tab_subscriptions_yellow}>
+                      <p>{titlePackage}</p>
+                    </div>
+                    <p>&amp; {numberOfPackage} paket lainnya</p>
+                  </div>
+                )}
               </Link>
             </>
           ) : (

@@ -48,8 +48,11 @@ class Profile extends Component {
 
     /* flag to notify user once */
     const isLogin = sid || uid
+
     if (isLogin) {
-      this.getAvailablePackage(this.props.user.subscriptions)
+      if (this.props.user.subscriptions.length > 0) {
+        this.getAvailablePackage(this.props.user.subscriptions)
+      }
     }
     // this.getAvailablePackage(this.props.user.subscriptions)
     this.flag = true
@@ -270,7 +273,7 @@ class Profile extends Component {
     const isLogin = uid || sid
     const { user } = this.props
 
-    const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
+    // const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
     const countTitle = user.subscriptions.length - 1
     const Background = configParams && configParams.data ? configParams.data.subscriptions_list_background : ''
     // const metaStatus = _get(meta, 'status', null)
