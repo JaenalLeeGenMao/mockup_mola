@@ -61,11 +61,15 @@ class Subscription extends Component {
 
   render() {
     // const { isMobile, onClick, user, subscribe, getUserSubscriptions } = this.props
-    const { user, subscribe, data } = this.props
+    const { user, data, isMobile } = this.props
+
     // const { isSubscribe, isHi } = this.state
     // const { uid, firstName, lastName, email, phoneNumber, birthdate, gender, location, subscriptions } = user
 
     return (
+      // <>
+      //   <div>hallo</div>
+      // </>
       <div>
         <div className={s.subscription__container}>
           {/* {meta.status === 'error' && (
@@ -83,11 +87,15 @@ class Subscription extends Component {
             </>
           )} */}
           <div className={s.subscription_detail_title}>
-            <p>Paket Langganan Anda</p>
+            <p>Status Berlangganan Anda</p>
             <div className={s.subscription__button_upgrader_wrapper}>
               <button
                 className={s.subscription_button_active}
-                onClick={() => (window.location.href = '/accounts/subscriptionsList')}
+                onClick={() => {
+                  isMobile
+                    ? (window.location.href = '/accounts/subscriptionsList')
+                    : (window.location.href = '/accounts/profile?tab=subscriptionPackage')
+                }}
               >
                 Beli Paket
               </button>
@@ -100,15 +108,15 @@ class Subscription extends Component {
               let freeSubs = false
               let statusExp = false
 
-              const expiry = new Date(subscription.expireAt),
+              const expiry = new Date(subscription.attributes.expireAt),
                 today = new Date(),
                 formattedExpiry = moment(expiry).format('DD-MM-YYYY'),
-                title = subscription.subscriptionList[0].title,
-                miniDesc = subscription.subscriptionList[0].description.miniDescription,
-                price = subscription.subscriptionList[0].price
+                title = subscription.attributes.subscriptions[0].attributes.title,
+                miniDesc = subscription.attributes.subscriptions[0].attributes.description.miniDescription,
+                price = subscription.attributes.subscriptions[0].attributes.price
 
-              hideButtonUgrade = subscription.subscriptionList[0].subscriptionId == 25
-              freeSubs = subscription.subscriptionList[0].subscriptionId == 24
+              hideButtonUgrade = subscription.attributes.subscriptions[0].id == 25
+              freeSubs = subscription.attributes.subscriptions[0].id == 24
               statusExp = today < expiry
 
               return (

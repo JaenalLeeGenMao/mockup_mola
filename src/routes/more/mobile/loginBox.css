@@ -30,7 +30,7 @@
 }
 
 .box__info {
-  width: 75%;
+  /* width: 75%; */
   height: 100%;
   display: flex;
   justify-content: center;
@@ -68,4 +68,71 @@
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
+}
+
+.button__tab_subscriptions_wrapper {
+  display: flex;
+}
+
+.button__tab_subscriptions_wrapper p {
+  align-self: center;
+  margin: 8px;
+
+  /* margin-top: 20px; */
+  color: #fff9;
+  font-size: 10px;
+}
+
+.button__tab_subscriptions {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  background: #454849fc;
+  border: none;
+  border-radius: 0.2rem;
+
+  /* width: 100px; */
+
+  /* height: 23px; */
+  font-size: 12px;
+  cursor: pointer;
+
+  /* margin-top: 12px; */
+}
+
+.button__tab_subscriptions_yellow {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  background: #f8ac00;
+  border: none;
+  border-radius: 0.2rem;
+
+  /* width: 100px; */
+
+  /* height: 23px; */
+  font-size: 12px;
+  cursor: pointer;
+
+  /* margin-top: 12px; */
+}
+
+.button__tab_subscriptions p {
+  align-items: center;
+  align-self: center;
+  margin: 8px;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.button__tab_subscriptions_yellow p {
+  align-items: center;
+  align-self: center;
+  margin: 8px;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
 }

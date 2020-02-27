@@ -581,10 +581,11 @@ const getAllSubscriptions = token => {
       }
     : {}
 
-  return get(`${SUBSCRIPTION_ENDPOINT}?app_id=molatv&platformId=1`, {
+  return get(`${SUBSCRIPTION_ENDPOINT}`, {
     headers: headerContent,
     params: {
-      app_id: 2,
+      app_id: 'molatv',
+      platformId: 1,
     },
     ...endpoints.setting,
   })

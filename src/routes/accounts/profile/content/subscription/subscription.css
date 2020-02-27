@@ -139,7 +139,7 @@
 
 .subscription_button_active {
   color: white;
-  background: #2c56ff;
+  background: #0d78b7;
   border: none;
   border-radius: 0.2rem;
   padding: 1.12rem 2.8rem;
@@ -148,7 +148,7 @@
 }
 
 .subscription_button_active:hover {
-  background: #2242c4;
+  background: #0d78b7;
   cursor: pointer;
 }
 
@@ -302,7 +302,7 @@
 
 .subscription_detail_title p {
   font-size: 2.2rem;
-  color: #fff;
+  color: #c1c2c2;
   font-weight: 400;
 }
 

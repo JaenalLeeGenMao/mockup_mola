@@ -43,6 +43,8 @@ class SubscriptionsList extends React.Component {
       accessToken: '',
       checkAt: '',
       isHeader: false,
+      numberOfPackage: 0,
+      titlePackage: '',
       // sid: '',
     }
 
@@ -123,6 +125,7 @@ class SubscriptionsList extends React.Component {
 
   componentDidMount() {
     this.setSubscription()
+    // this.getAvailablePackage(this.props.user.subscriptions)
   }
 
   setSubscription = () => {
@@ -196,82 +199,114 @@ class SubscriptionsList extends React.Component {
     history.push('/accounts/profile?tab=subscription')
   }
 
+  getAvailablePackage = data => {
+    const { numberOfPackage, titlePackage } = this.state
+    const availablePackage = data.filter(el => {
+      const expiry = new Date(el.attributes.expireAt)
+      const today = new Date()
+      return today < expiry
+    })
+
+    let title = data[0].attributes.subscriptions[0].attributes.title
+    this.setState({
+      numberOfPackage: availablePackage.length - 1,
+      titlePackage: title,
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      if (this.props.user.subscriptions.length > 0) {
+        this.getAvailablePackage(this.props.user.subscriptions)
+      }
+    }
+  }
+
   render() {
-    const { subscribe, user } = this.props
-    const { accessToken, isHeader } = this.state
+    const { user: { uid = '', sid = '' }, subscribe, user, configParams } = this.props
+    const isLogin = uid || sid
+    const { accessToken, isHeader, titlePackage, numberOfPackage } = this.state
     const isData = subscribe.data.length > 0
     let isDataUnderThree = subscribe.data.length < 3
-    let price = ''
+    let showPackageList = numberOfPackage > 1
 
-    // const  = subscribe.length > 0
-    // console.log('lol', isData)
-
-    // console.log('atRender', accessToken)
-    // console.log('ini data', subscribe.data)
+    // const expiry = new Date(subscription.attributes.expireAt)
+    // const subsInfo = user.subscriptions
+    // const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
+    // const countTitle = user.subscriptions.length - 1
 
     return (
       <LazyLoad>
         <Fragment>
-          {isHeader ? <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} /> : ''}
+          {/* {isHeader ? <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} /> : ''} */}
           <div className={s.subscription__container_wrapper}>
             <div className={s.subscription__title}>
-              <h1>Pilih Paket Langganan</h1>
+              <h1 />
             </div>
             {isData &&
               subscribe.meta.status === 'success' && (
-                <div
-                  className={`${
-                    isDataUnderThree ? s.subscriptions__main_container_below : s.subscriptions__main_container
-                  }`}
-                >
-                  {subscribe.data.map((sub, index) => (
-                    <div key={'subs' + index} className={s.subscription__main_wrapper}>
-                      <div className={s.subscription__wrapper}>
-                        <div className={s.subscription__section_plan}>
-                          <h1>{sub.attributes.title}</h1>
-                        </div>
+                <>
+                  {isLogin && (
+                    <div className={s.subscriptions__contents_status_wrapper}>
+                      <h1>Status Berlangganan Anda</h1>
+                      <div className={s.subscriptions__contents_status_wrapper_inline}>
+                        <h1 onClick={() => (window.location.href = '/accounts/profile?tab=subscription')}>
+                          {titlePackage}
+                        </h1>
+                        {showPackageList ? <p> &nbsp;&amp; {numberOfPackage} paket lainnya</p> : ''}
+                      </div>
+                    </div>
+                  )}
+                  <div
+                    className={`${
+                      isDataUnderThree ? s.subscriptions__main_container_below : s.subscriptions__main_container
+                    }`}
+                  >
+                    {subscribe.data.map((sub, index) => (
+                      <div key={'subs' + index} className={s.subscription__main_wrapper}>
+                        <div className={s.subscription__wrapper}>
+                          <div className={s.subscription__section_plan}>{<h1>{sub.attributes.title}</h1>}</div>
 
-                        <div className={s.subscriptions__section_detail}>
-                          {sub.attributes.description.features.map((desc, index) => (
-                            <div
-                              key={'att' + index}
-                              className={`${
-                                desc.status === true
-                                  ? s.subscriptions__section_detail_list
-                                  : s.subscriptions__section_detail_list_false
-                              }`}
-                            >
-                              <img src={`${desc.status === true ? checkIconSubs : crossIconSubs}`} />
-                              <p>{desc.name}</p>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className={s.subscription__section_list}>
-                          <div className={s.subscription__section_list_price}>
-                            <h1>
-                              <sup>{(price = sub.attributes.priceUnit !== '' ? sub.attributes.priceUnit : 'Rp')}</sup>
-                              {/* {sub.attributes.currency} */}
-
-                              {getFormattedPrice(sub.attributes.price)}
-                            </h1>
-                            <p>{sub.attributes.description.miniDescription}</p>
+                          <div className={s.subscriptions__section_detail}>
+                            {sub.attributes.description.features.map((desc, index) => (
+                              <div
+                                key={'att' + index}
+                                className={`${
+                                  desc.status === true
+                                    ? s.subscriptions__section_detail_list
+                                    : s.subscriptions__section_detail_list_false
+                                }`}
+                              >
+                                <img src={`${desc.status === true ? checkIconSubs : crossIconSubs}`} />
+                                <p>{desc.name}</p>
+                              </div>
+                            ))}
                           </div>
 
-                          <div className={s.subscription_button_wrapper}>
-                            <button
-                              className={s.subscription_button_active}
-                              onClick={() => this.handleClickSubs(accessToken, sub.id)}
-                            >
-                              Pilih Paket
-                            </button>
+                          <div className={s.subscription__section_list}>
+                            <div className={s.subscription__section_list_price}>
+                              <h1>
+                                {/* {sub.attributes.currency} */}
+                                Rp{getFormattedPrice(sub.attributes.price)}
+                              </h1>
+                              {/* <p>{sub.attributes.description.miniDescription}</p> */}
+                            </div>
+
+                            <div className={s.subscription_button_wrapper}>
+                              <button
+                                className={s.subscription_button_active}
+                                onClick={() => this.handleClickSubs(accessToken, sub.id)}
+                              >
+                                Beli Paket
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                  {/* </div> */}
-                </div>
+                    ))}
+                    {/* </div> */}
+                  </div>
+                </>
               )}
             {!isData &&
               subscribe.meta.status === 'success' && (
@@ -312,6 +347,7 @@ class SubscriptionsList extends React.Component {
 // .toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
 const mapStateToProps = state => {
   return {
+    ...state,
     user: state.user,
     subscribe: state.subscribe,
   }
