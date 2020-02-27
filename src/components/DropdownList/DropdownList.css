@@ -2,6 +2,7 @@
   color: white;
   font-size: 12px;
   width: auto;
+  float: right;
 }
 
 .select_icon {
@@ -39,5 +40,5 @@
 }
 
 .tourPlaylist {
-  display: inline-block
+  display: inline-block;
 }

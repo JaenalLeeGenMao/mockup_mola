@@ -611,15 +611,31 @@ class Matches extends Component {
     // }
 
     return (
-      <LazyLoad containerClassName={styles.matches__filter}>
-        <DropdownList
-          activeId={this.state.filterByLeague}
-          className={styles.matches_dropdown_container}
-          labelClassName={`${styles.matches_dropdown_label}`}
-          dataList={leagueList.data}
-          onClick={this.handleFilterByLeague}
-        />
-      </LazyLoad>
+      <div className={styles.matches__filter__scroller}>
+        {leagueList.data.map(liga => (
+          <div
+            className={`${styles.title_spacing} ${
+              liga.id === this.state.filterByLeague ? styles.header_menu__active : ''
+            }`}
+            onClick={() => this.handleFilterByLeague(liga.id)}
+          >
+            <p className={styles.style_img}>
+              <img className={styles.thumbnails_height} alt={liga.title} src={liga.thumbnails} />
+            </p>
+            <p className={styles.style_text}>{liga.title}</p>
+          </div>
+        ))}
+      </div>
+      // === dropdown feature on live matches ====
+      // <LazyLoad containerClassName={styles.matches__filter}>
+      //   <DropdownList
+      //     activeId={this.state.filterByLeague}
+      //     className={styles.matches_dropdown_container}
+      //     labelClassName={`${styles.matches_dropdown_label}`}
+      //     dataList={leagueList.data}
+      //     onClick={this.handleFilterByLeague}
+      //   />
+      // </LazyLoad>
     )
   }
 
@@ -708,8 +724,9 @@ class Matches extends Component {
             <div className={styles.matches_header_bg} />
             <div className={styles.filter__container}>
               {this.renderFilterLeague()}
-              {this.renderFilterWeek()}
+              {/* <div className={styles.gradients_effect} /> */}
             </div>
+            <div className={styles.filter__week}>{this.renderFilterWeek()}</div>
             {matchesPlaylists.meta.status !== 'loading' &&
               matchesPlaylists.meta.status !== 'error' && (
                 <>

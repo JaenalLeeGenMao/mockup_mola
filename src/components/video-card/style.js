@@ -16,26 +16,31 @@ export const videoContainer = css`
 
   p {
     position: relative;
-    font-size: .9rem !important;
+    font-size: 1.2rem !important;
     max-width: 100%;
-    line-height: 1.39rem !important;
+    line-height: 1.525rem !important;
     height: 2.9rem;
-    text-overflow: clip;
     overflow: hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     padding: 0 0.15rem;
     color: white;
-    opacity: 0;
+    font-weight: 600;
+    // opacity: 0;
     transition: all ease 500ms;
 
     @media screen and (max-width: 960px) {
       opacity: 1;
       max-width: 100%;
-      margin: 0 .5rem;
-      font-size: 11px !important;
+      // margin: 0 .5rem;
+      font-size: 1rem !important;
       line-height: 14px !important;
       height: 28px !important;
       overflow: hidden;
-      text-overflow: clip;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 
@@ -75,6 +80,72 @@ export const videoContainer = css`
   .bannerImage3d.hide {
     position: absolute;
     z-index: 0;
+  }
+
+  .title {
+    margin-bottom: 5px;
+  }
+
+  .time {
+    color: #fff;
+    font-weight: normal;
+    height: 1.65rem !important;
+    font-size: 1.1rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+  }
+
+  .league {
+    color: #b1b1b1;
+    height: 1.65rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+  }
+
+  .free {
+    color: #609dff;
+    height: 1.65rem !important;
+    font-size: 1.1rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+    @media (min-width: 350px) and (max-width: 600px) {
+      font-size: 10px !important;
+    }
+  }
+
+  .platform {
+    color: #f8ac00;
+    height: 1.65rem !important;
+    font-size: 1.1rem !important;
+    @media screen and (max-width: 960px) {
+      height: 1.22rem !important;
+      font-size: smaller !important;
+    }
+    @media (min-width: 350px) and (max-width: 600px) {
+      font-size: 10px !important;
+    }
+  }
+
+  .premiumIcon {
+    height: 1.1rem;
+    width: 1.5rem;
+    margin-left: 4px;
+    margin-bottom: 4px;
+    display: inline-block;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAoCAYAAACrUDmFAAAACXBIWXMAACxKAAAsSgF3enRNAAACWUlEQVRoge1ZwU0DMRDcICQ/4e1P0gGhAqACkNxA6IAOSAdcB4QCLEEFQAUkFZD7+J08/QqyNEQhsc/rcD5dopun7bNnvOvdta+3Wq3omHFy1Oo6gUeA0yYkWC2HRFQQ0RWaZkQ0EspMc6/dlAVfN8Q5XKAtO7ILtFpeE1Hf09VHX1Z0UbQGuHO29EyzRF9WZBcolFkQ0YOn6wF9hy0QOGe21Y7spZrVcgBXPNvqci46FMrMc67fhAULjzhCW5F78awWRBp4jwy7Ecp85OLgFWi1dOdjhLPzuk/FgTmmgRy4iRKumhxwUCHdEdECPHfcfcdF8ZEb+EREj0T0ZbWcpC6OyBkTRxjji7KVAKcvcHRcp+D+BzsWtFrOA8TYroTA8p3I+ZLrKRWuXwplBpsNviAT2vWUsmofi6cEnBCXPo7GGilRlJW3rJajrcKaiyt8WxsXCrioq/JvA+M/cc3x5i7s3jyQFjhwuXEQCjhw/UnFBr4JZe42G3wWdLv4EpjATfxttSy2XQEI5TwuvLnRreXWxLkOiXsB9z+ozIMRa7rdHgtlCuLnPC7WAc1q6SLsuGLjdqyWItDtyHOEVImdK3CRrQMzpI4JI9XcC2WCQS32ZMFJC/0aLfeLi4Q5KzlWRlEEk1kquwYxixXrnDSRrU6sAVFuHIGNPA7tiSg31m3Carn4Z/jPgaVQJprwuZVMG92UxakTCLTxHLI4sQQiFJf/51QbSu5bTsptok1WZHNJEdimc8jmkvToZLVsxe9goUyPOzb12fAtnU7tSOLQ/aM/dHQCDxpE9AO3ktWHATVM2QAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    @media (min-width: 350px) and (max-width: 600px) {
+      width: 14px;
+      height: 10px;
+    }
   }
 }
 `

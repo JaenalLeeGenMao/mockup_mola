@@ -282,7 +282,12 @@ class Checkout extends Component {
 
   renderSubscription() {
     const { data, loading, isCheckoutDetailLoading } = this.state
+
     const { isMobile } = this.props
+    let price = ''
+    console.log(data.priceUnit, 'hihi')
+    console.log('data', data)
+
     return (
       <LazyLoad>
         <div className={styles.checkout_container}>
@@ -298,7 +303,9 @@ class Checkout extends Component {
                   {/* <p>until 23 Oct 2019</p> */}
                 </div>
                 <div className={styles.order__content_list_price_count}>
-                  <sup>Rp</sup>
+                  {/* <sup>Rp</sup>
+                  {getFormattedPrice(data.price)} */}
+                  {(price = data.priceUnit !== '' ? data.priceUnit : 'Rp')}
                   {getFormattedPrice(data.price)}
                   {/* {getFormattedPrice(1321322)} */}
                 </div>

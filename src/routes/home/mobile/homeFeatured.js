@@ -28,7 +28,6 @@ import styles from './homeFeatured.css'
 export class homeFeatured extends Component {
   state = {
     banners: null,
-    filteredVideos: [],
   }
   componentDidMount() {
     const { onHandlePlaylist } = this.props
@@ -45,10 +44,7 @@ export class homeFeatured extends Component {
     const { banners } = this.state
     if (videos.meta.status === 'success' && !banners) {
       const getBanner = videos.data.filter(video => video.meta.id === 'web-featured')
-      const filteredVideos = videos.data.filter(video => video.meta.id !== 'web-featured')
-
       this.setState({
-        filteredVideos: filteredVideos && filteredVideos.length > 0 ? filteredVideos : [],
         banners: getBanner && getBanner.length > 0 ? getBanner[0] : null,
       })
     }
@@ -84,8 +80,8 @@ export class homeFeatured extends Component {
   }
 
   render() {
-    const { home: { playlists, videos }, isMobile, configParams } = this.props,
-      { banners, filteredVideos } = this.state,
+    const { home: { playlists, videos }, isMobile, configParams, routes } = this.props,
+      { banners } = this.state,
       squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
 
     const isPlaylistsLoading = playlists.meta.status === 'loading',
@@ -150,7 +146,7 @@ export class homeFeatured extends Component {
                   videos.data.map((video, carouselIndex) => {
                     if (video.meta.id !== 'web-featured') {
                       const contentTypeName = getContentTypeName(
-                          _.get(video, `data[${carouselIndex}].contentType`, '')
+                          _.get(video, 'meta.contentType', '') /** ini beda smaa di feature harap di perhatikan */
                         ),
                         playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
                         slideToShow = contentTypeList[contentTypeName].slideToScroll,
@@ -202,7 +198,7 @@ export class homeFeatured extends Component {
                                       obj.startTime,
                                       obj.endTime
                                     ) /** id 4 is replay matches, 3 is live matches */
-                                if (contentTypeName === 'movie' || contentTypeName === 'vod') {
+                                if (routes !== 'home' && (contentTypeName === 'movie' || contentTypeName === 'vod')) {
                                   return (
                                     <VideoCard
                                       key={obj.id}
@@ -215,6 +211,7 @@ export class homeFeatured extends Component {
                                       }
                                       // onLoad={this.updateOnImageLoad}
                                       onClick={() => this.handleOnClick(obj)}
+                                      data={obj}
                                     />
                                   )
                                 } else {

@@ -128,8 +128,8 @@ export const contentTypeList = {
   },
   'mola-featured': {
     id: 9,
-    slideToShow: 4.5,
-    slideToScroll: 1.3,
+    slideToShow: 5.5, // 4.5 aslinya
+    slideToScroll: 1.6, // 1.3 aslinya cm kebutuhan di home ganti dulu
   },
   'mola-categories': {
     id: 10,

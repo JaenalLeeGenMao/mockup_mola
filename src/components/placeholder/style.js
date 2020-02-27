@@ -91,23 +91,23 @@ export const DummyWithoutAnimationPlaceholder = styled('div')`
   display: inline-block;
   border-radius: 0.25rem;
   transition: all ease 500ms;
-  background-color: rgba(68, 68, 68, 1);
+  // background-color: rgba(68, 68, 68, 1);
 
   @media screen and (max-width: 960px) {
-    width: 77.5vw;
+    width: ${props => (props.width ? props.width : '77.5vw')};
   }
 
   .bannerImage {
     position: relative;
     z-index: 1;
-    opacity: 0;
+    opacity: 1;
   }
 
   .bannerImage3d {
     position: relative;
     z-index: 1;
     width: 40vw;
-    opacity: 0;
+    opacity: 1;
 
     @media screen and (max-width: 960px) {
       width: 77.5vw;

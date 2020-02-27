@@ -32,6 +32,7 @@ const normalizeHomePlaylist = response => {
           const thumbnailImg = _get(images, 'thumbnails.cover', '')
           const coverBGColor = _get(images, 'cover.backgroundColor', '')
           return {
+            ...playlist.attributes,
             id,
             title,
             visibility,

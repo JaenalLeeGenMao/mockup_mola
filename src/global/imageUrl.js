@@ -48,6 +48,10 @@ export const placeholderCardPortrait = `${imgBaseUrl}/placeholder-card-portrait.
 export const placeholderBlankLandscape = `${imgBaseUrl}/placeholder-blank-landscape.png`
 export const placeholderBlankPortrait = `${imgBaseUrl}/placeholder-blank-portrait.png`
 
+export const placeholderMolaLogoLandscape = `${imgBaseUrl}/placeholder-mola-logo-landscape.png`
+export const placeholderMolaLogoSquare = `${imgBaseUrl}/placeholder-mola-logo-square.png`
+export const placeholderMolaLogoPortrait = `${imgBaseUrl}/placeholder-mola-logo-portrait.png`
+
 export const viewAllMovieImg = 'https://cdn01.sent.tv/BCSaWm1FQBSnozrmH74m_sent_1563354762.png'
 export const viewAllMovieImgWebp = 'https://cdn01.sent.tv/tEiP59aSTAek9XzGLM04_sent_1563354795.webp'
 

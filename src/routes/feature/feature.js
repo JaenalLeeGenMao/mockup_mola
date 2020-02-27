@@ -25,6 +25,7 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 
 import Placeholder from '@components/placeholder'
 import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
+import { BannerSquarePlaceholder } from '@components/placeholder/banner-square-placeholder'
 import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
 import { banners as dummyDataBanners } from '@components/placeholder/const'
 import MolaOriginal from './original'
@@ -70,7 +71,8 @@ class Feature extends Component {
   }
 
   componentDidUpdate() {
-    const { id = _.get(pathname.split('/'), '[2]', '') } = this.props
+    const { id = _.get(pathname.split('/'), '[2]', ''), configParams, isMobile } = this.props,
+      squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
 
     try {
       setTimeout(() => {
@@ -78,7 +80,7 @@ class Feature extends Component {
           // if (playlists.meta.id && id !== playlists.meta.id) {
           // this.props.onHandleResetVideo()
           this.props.onHandlePlaylist(id)
-          this.props.onHandleBanner(id)
+          this.props.onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
           // this.props.onHandleArticle(id)
 
           trackedPlaylistIds = []
@@ -196,7 +198,14 @@ class Feature extends Component {
           <div style={{ height: '12vh' }} />
           {isSuccess && (
             <>
-              {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.meta.status !== 'success' &&
+                !squareBannerEnabled && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.meta.status !== 'success' &&
+                squareBannerEnabled &&
+                !isMobile && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.meta.status !== 'success' &&
+                squareBannerEnabled &&
+                isMobile && <BannerSquarePlaceholder isMobile={isMobile} data={dummyDataBanners} />}
               {banners.data.length > 0 && (
                 <Carousel
                   className={isMobile && squareBannerEnabled ? CustomContainer : ''}
@@ -281,7 +290,7 @@ class Feature extends Component {
                               }
                               height={
                                 contentTypeName === 'movie' || contentTypeName === 'vod'
-                                  ? isMobile ? '17rem' : '31rem'
+                                  ? isMobile ? '22rem' : '31rem'
                                   : isMobile ? '15rem' : '25rem'
                               }
                             >
@@ -324,6 +333,7 @@ class Feature extends Component {
                                           }
                                           // onLoad={this.updateOnImageLoad}
                                           onClick={() => this.handleOnClick(obj)}
+                                          data={obj}
                                         />
                                       )
                                     } else {

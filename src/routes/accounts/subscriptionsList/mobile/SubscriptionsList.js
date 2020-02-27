@@ -43,6 +43,8 @@ class SubscriptionsList extends React.Component {
       accessToken: '',
       checkAt: '',
       isHeader: false,
+      numberOfPackage: 0,
+      titlePackage: '',
       // sid: '',
     }
 
@@ -196,26 +198,70 @@ class SubscriptionsList extends React.Component {
     history.push('/accounts/profile?tab=subscription')
   }
 
+  getAvailablePackage = data => {
+    const { numberOfPackage, titlePackage } = this.state
+    const availablePackage = data.filter(el => {
+      const expiry = new Date(el.attributes.expireAt)
+      const today = new Date()
+      return today < expiry
+    })
+
+    let title = data[0].attributes.subscriptions[0].attributes.title
+    this.setState({
+      numberOfPackage: availablePackage.length - 1,
+      titlePackage: title,
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      if (this.props.user.subscriptions.length > 0) {
+        this.getAvailablePackage(this.props.user.subscriptions)
+      }
+    }
+  }
+
   render() {
-    const { subscribe, user } = this.props
-    const { accessToken, isHeader } = this.state
+    const { user: { uid = '', sid = '' }, subscribe, user, configParams } = this.props
+    const isLogin = uid || sid
+    const { accessToken, isHeader, titlePackage, numberOfPackage } = this.state
     const isData = subscribe.data.length > 0
+    // const titleSubscriptionsList = configParams && configParams.data ? configParams.data.subscriptions_list_title : ''
+    // const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
+    const Background = configParams && configParams.data ? configParams.data.subscriptions_list_background : ''
+    let showPackageList = numberOfPackage > 1
     let price = ''
+    // const subsInfo = user.subscriptions
+    // let satuAjaBangcat = false
+    // let angkatBangcyat = 0
 
-    // const  = subscribe.length > 0
-    // console.log('lol', isData)
-
-    // console.log('atRender', accessToken)
-    // console.log('ini data', subscribe.data)
+    // let countPacket = subscribe.data.length - 1
+    // const countTitle = user.subscriptions.length - 1
+    // if (countTitle <= 1) {
+    //   countTitle = ''
+    // }
 
     return (
       <LazyLoad>
         <Fragment>
           {isHeader ? <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} /> : ''}
-          <div className={s.subscription__container_wrapper}>
-            <div className={s.subscription__title}>
-              <h1>Pilih Paket Langganan</h1>
+          <div className={s.subscription__container_wrapper} style={{ backgroundImage: `url(${Background})` }}>
+            <div className={s.subscription__background_wrapper}>
+              <div className={s.subscription__title}>
+                {isLogin && (
+                  <>
+                    <h1>Status Berlangganan Anda</h1>
+                    <div className={s.subscriptions__contents_status_wrapper_inline}>
+                      <h1 onClick={() => (window.location.href = '/accounts/profile?tab=subscription')}>
+                        {titlePackage}
+                      </h1>
+                      <div>{showPackageList ? <p>&amp; {numberOfPackage} paket lainnya</p> : ''}</div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
+
             {isData &&
               subscribe.meta.status === 'success' && (
                 <div className={s.subscriptions__main_container}>
@@ -245,12 +291,12 @@ class SubscriptionsList extends React.Component {
                         <div className={s.subscription__section_list}>
                           <div className={s.subscription__section_list_price}>
                             <h1>
-                              <sup>{(price = sub.attributes.priceUnit !== '' ? sub.attributes.priceUnit : 'Rp')}</sup>
+                              {/* <sup>Rp</sup> */}
                               {/* {sub.attributes.currency} */}
-
+                              {(price = sub.attributes.priceUnit !== '' ? sub.attributes.priceUnit : 'Rp')}{' '}
                               {getFormattedPrice(sub.attributes.price)}
                             </h1>
-                            <p>{sub.attributes.description.miniDescription}</p>
+                            {/* <p>{sub.attributes.description.miniDescription}</p> */}
                           </div>
 
                           <div className={s.subscription_button_wrapper}>
@@ -258,7 +304,7 @@ class SubscriptionsList extends React.Component {
                               className={s.subscription_button_active}
                               onClick={() => this.handleClickSubs(accessToken, sub.id)}
                             >
-                              Pilih Paket
+                              Beli Paket
                             </button>
                           </div>
                         </div>
@@ -307,6 +353,7 @@ class SubscriptionsList extends React.Component {
 // .toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
 const mapStateToProps = state => {
   return {
+    ...state,
     user: state.user,
     subscribe: state.subscribe,
   }

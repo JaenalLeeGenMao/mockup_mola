@@ -16,7 +16,16 @@ import DropdownMenu from '../dropdown-menu'
 
 import { get } from 'axios'
 
-const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut, onSubscriptionsClick, showThisSubs }) => {
+const PopupMenu = ({
+  user,
+  locale,
+  onClick,
+  onProfileClick,
+  onSignOut,
+  onSubscriptionsClick,
+  showThisSubs,
+  onBuyPackageSubscriptionsClick,
+}) => {
   const { uid = '', sid = '', firstName = '', lastName = '', photo = '' } = user
   const isLogin = uid || sid
   const showSubs = showThisSubs && showThisSubs.data ? showThisSubs.data.subscriptions_enabled : ''
@@ -31,6 +40,18 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut, onSubscri
         <div className={styles.popup__menu_close} onClick={onClick} />
       </div>
       <div className={styles.popup__menu_content}>
+        {!isLogin && (
+          <>
+            {showSubs && (
+              <Link to="/accounts/profile?tab=subscriptionPackage" onClick={onBuyPackageSubscriptionsClick}>
+                Beli Paket
+              </Link>
+            )}
+            <Link to="/accounts/login" className={styles.popup__menu_signout}>
+              Login
+            </Link>
+          </>
+        )}
         {isLogin && (
           <>
             <div className={styles.popup__menu_profile_container}>
@@ -38,15 +59,16 @@ const PopupMenu = ({ user, locale, onClick, onProfileClick, onSignOut, onSubscri
             </div>
             <Link onClick={onProfileClick}>{locale['profile']}</Link>
             {showSubs && (
-              <Link to="/accounts/subscriptionsList" onClick={onSubscriptionsClick}>
+              <Link to="/accounts/profile?tab=subscriptionPackage" onClick={onSubscriptionsClick}>
                 {locale['paket_MOLA']}
               </Link>
             )}
+            <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
+              {locale['sign_out']}
+            </Link>
           </>
         )}
-        <Link to="/signout" className={styles.popup__menu_signout} onClick={onSignOut}>
-          {locale['sign_out']}
-        </Link>
+
         <Footer />
       </div>
     </LazyLoad>
@@ -72,7 +94,12 @@ class NewHeader extends Component {
 
   handleSubscriptionsClick = e => {
     e.preventDefault()
-    window.location.href = '/accounts/subscriptionsList'
+    window.location.href = '/accounts/profile?tab=subscriptionPackage'
+  }
+
+  handleBuyPackageSubscriptions = e => {
+    e.preventDefault()
+    window.location.href = '/accounts/profile?tab=subscriptionPackage'
   }
 
   handleToggle = e => {
@@ -82,7 +109,9 @@ class NewHeader extends Component {
       const { toggle } = this.state
       this.setState({ toggle: !toggle })
     } else {
-      window.location.href = '/accounts/login'
+      const { toggle } = this.state
+      this.setState({ toggle: !toggle })
+      // window.location.href = '/accounts/login'
     }
     e.preventDefault()
   }
@@ -265,6 +294,7 @@ class NewHeader extends Component {
                 onClick={this.handleToggle}
                 onProfileClick={this.handleProfileClick}
                 onSubscriptionsClick={this.handleSubscriptionsClick}
+                onBuyPackageSubscriptionsClick={this.handleBuyPackageSubscriptions}
                 user={this.props.user}
                 showThisSubs={this.props.configParams}
                 locale={this.state.locale}
