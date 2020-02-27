@@ -58,7 +58,7 @@ class Feature extends Component {
         squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
       // this.props.onHandleResetVideo()
       onHandlePlaylist(id)
-      // onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
+      onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
       // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)

@@ -527,7 +527,7 @@ const getSidebarMenu = async configParams => {
       console.log('Error Get Sidebar Menu', err)
     }
     if (sidebarArr.length > 0) {
-      molaCache.set('sidebarMenu', sidebarArr, 10800, function(err, success) {
+      molaCache.set('sidebarMenu', sidebarArr, 60, function(err, success) {
         if (!err && success) {
           console.log('success set cache node cache sidebar menu', sidebarArr)
         } else {
@@ -1068,7 +1068,7 @@ app.get('*', async (req, res, next) => {
                   },
                   data: result,
                 }
-                molaCache.set(articleId, result, 2700, function(err, success) {
+                molaCache.set(articleId, result, 60, function(err, success) {
                   if (!err && success) {
                     console.log('success set cache node cache', articleId, result)
                     // true
@@ -1262,7 +1262,7 @@ app.get('*', async (req, res, next) => {
             url: data.url,
           }
         }
-        molaCache.set(videoId, videoObj, 2700, function(err, success) {
+        molaCache.set(videoId, videoObj, 60, function(err, success) {
           if (!err && success) {
             console.log('success set cache node cache', videoId, videoObj)
             // true
