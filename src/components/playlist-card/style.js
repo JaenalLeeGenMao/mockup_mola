@@ -138,6 +138,13 @@ export const playlistContainer = css`
     overflow: hidden;
   }
 
+  .imageWrapper.hide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
   .bannerImage.hide,
   .bannerPlaceholder {
     position: absolute;

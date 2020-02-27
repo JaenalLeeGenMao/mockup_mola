@@ -92,7 +92,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={playlistIndex} num={playlistIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderBlankLandscape}
+                  src={squareplacehoder}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>
@@ -115,7 +115,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={categoryIndex} num={categoryIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderBlankLandscape}
+                  src={squareplacehoder}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>
@@ -138,7 +138,7 @@ class Placeholder extends Component {
               <DummyPlaceholder key={movieIndex} num={movieIndex}>
                 <img
                   className="bannerImage"
-                  src={placeholderBlankLandscape}
+                  src={squareplacehoder}
                   // onLoad={this.updateOnImageLoad}
                 />
               </DummyPlaceholder>

@@ -25,6 +25,7 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 
 import Placeholder from '@components/placeholder'
 import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
+import { BannerSquarePlaceholder } from 'components/placeholder/banner-square-placeholder'
 import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
 import { banners as dummyDataBanners } from '@components/placeholder/const'
 import MolaOriginal from './original'
@@ -57,7 +58,7 @@ class Feature extends Component {
         squareBannerEnabled = configParams && configParams.data && configParams.data.square_banner_enabled
       // this.props.onHandleResetVideo()
       onHandlePlaylist(id)
-      onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
+      // onHandleBanner(`${id}${isMobile && squareBannerEnabled ? '-square' : ''}`)
       // this.props.onHandleArticle(id)
 
       window.addEventListener('resize', this.updateWindowDimensions)
@@ -197,7 +198,14 @@ class Feature extends Component {
           <div style={{ height: '12vh' }} />
           {isSuccess && (
             <>
-              {banners.meta.status !== 'success' && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.meta.status !== 'success' &&
+                !squareBannerEnabled && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.meta.status !== 'success' &&
+                squareBannerEnabled &&
+                !isMobile && <BannerPlaceholder isMobile={isMobile} data={dummyDataBanners} />}
+              {banners.meta.status !== 'success' &&
+                squareBannerEnabled &&
+                isMobile && <BannerSquarePlaceholder isMobile={isMobile} data={dummyDataBanners} />}
               {banners.data.length > 0 && (
                 <Carousel
                   className={isMobile && squareBannerEnabled ? CustomContainer : ''}
