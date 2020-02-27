@@ -25,7 +25,7 @@ import { formatDateTime, isToday, isTomorrow, isMatchPassed, isMatchLive } from 
 
 import Placeholder from '@components/placeholder'
 import { BannerPlaceholder } from '@components/placeholder/banner-placeholder'
-import { BannerSquarePlaceholder } from 'components/placeholder/banner-square-placeholder'
+import { BannerSquarePlaceholder } from '@components/placeholder/banner-square-placeholder'
 import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
 import { banners as dummyDataBanners } from '@components/placeholder/const'
 import MolaOriginal from './original'
