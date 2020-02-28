@@ -285,8 +285,8 @@ class Checkout extends Component {
 
     const { isMobile } = this.props
     let price = ''
-    console.log(data.priceUnit, 'hihi')
-    console.log('data', data)
+    // console.log(data.priceUnit, 'hihi')
+    // console.log('data', data)
 
     return (
       <LazyLoad>
@@ -321,9 +321,11 @@ class Checkout extends Component {
             <div className={styles.order__content_list_button}>
               <div className={styles.order__content_list_info}>
                 <p className={styles.big_mb}>
-                  Kami hanya menerima pembayaran menggunakan BCA virtual Account untuk paket ini.
+                  Kami hanya menerima pembayaran menggunakan BCA Virtual Account untuk paket ini.
                 </p>
-                <p>Dengan menekan tombol Bayar , Anda menyetujui</p>
+                <p>
+                  Dengan menekan tombol <q>Bayar</q> , Anda menyetujui
+                </p>
                 <p>
                   {' '}
                   <a href={'/privacy'} target="_self" rel="noopener noreferrer">
