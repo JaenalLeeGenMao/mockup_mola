@@ -259,27 +259,25 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              if (pathRoute === 'home' || window.App.isMobile) {
-                elMessage.addEventListener('DOMSubtreeModified', hideOffline)
-                if (elMessage.innerHTML === 'Online') {
+              elMessage.addEventListener('DOMSubtreeModified', hideOffline)
+              if (elMessage.innerHTML === 'Online') {
+                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+              }
+
+              if (pathRoute === 'live-support') {
+                if (window.App.isMobile) {
                   document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+                  let _el = document.getElementsByClassName('helpButton')[0]
+                  _el.style.left = '44.5vw'
+                  _el.style.right = '-50vw'
+                  _el.style.top = '50vh'
+                  _el.style.visibility = 'visible'
                 }
               } else {
-                if (pathRoute === 'live-support') {
-                  if (window.App.isMobile) {
-                    document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-                    let _el = document.getElementsByClassName('helpButton')[0]
-                    _el.style.left = '44.5vw'
-                    _el.style.right = '-50vw'
-                    _el.style.top = '50vh'
-                    _el.style.visibility = 'visible'
-                  }
-                } else {
-                  if (elMessage && _isFunction(elMessage)) {
-                    elMessage.removeventListener('DOMSubtreeModified', hideOffline)
-                  }
-                  document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+                if (elMessage && _isFunction(elMessage)) {
+                  elMessage.removeventListener('DOMSubtreeModified', hideOffline)
                 }
+                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
               }
             }
           }

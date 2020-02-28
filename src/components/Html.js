@@ -153,12 +153,12 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
             dangerouslySetInnerHTML={{
               __html: `
             .embeddedServiceHelpButton {
-              visibility: hidden;
+              // visibility: hidden;
               z-index: 99 !important;
             }
             .embeddedServiceHelpButton .helpButton {
               position: fixed;
-              padding-bottom: 8.5rem !important;  
+              padding-bottom: 8.5rem !important;
               right: 6rem !important;
             }
             .embeddedServiceHelpButton .helpButton button.uiButton {
@@ -447,7 +447,7 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               `,
             }}
           />
-        
+
           {isPromoBCA && (
             <>
               <script

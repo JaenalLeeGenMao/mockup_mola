@@ -8,11 +8,9 @@ const TOKEN_ENDPOINT = production
   ? 'https://mola.tv/api/v2/videos/_/pubsub'
   : 'https://stag.mola.tv/api/v2/videos/_/pubsub'
 
-const PUBSUB_ENDPOINT = production
-  ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
-  : 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/ds-feeder-guardian:publish'
-
-// const PUBSUB_ENDPOINT_PILOT = 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/dataflow-pilot:publish'
+// const PUBSUB_ENDPOINT = production
+//   ? 'https://pubsub.googleapis.com/v1/projects/supersoccer-173813/topics/ds-feeder-guardian:publish'
+//   : 'https://pubsub.googleapis.com/v1/projects/staging-199507/topics/ds-feeder-guardian:publish'
 
 class Tracker {
   static sessionId = () => {
@@ -174,6 +172,8 @@ class Tracker {
         },
       ],
     }
+
+    const PUBSUB_ENDPOINT = _get(window, 'App.state.configParams.data.pubsub_url', 'http://pubsub.com')
 
     const options = {
       method: 'POST',
