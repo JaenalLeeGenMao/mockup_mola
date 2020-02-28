@@ -117,7 +117,7 @@ const oauthApp = {
 const configUrl = {
   endpoint: !debugMode ? 'http://config.core.sstv.local' : 'http://10.220.0.12',
   appId: 'molatv',
-  platformId: '1',
+  // platformId: '1', ini harus baca dari api getPlatformId
 }
 
 process.on('unhandledRejection', (reason, p) => {
@@ -333,7 +333,7 @@ const getUserInfo = async sid => {
 
     const content = await rawResponse.json()
     userinfo = content
-    console.log('GET USER INFO', content.data)
+    // console.log('GET USER INFO', content.data)
     return content.data
   } catch (err) {
     console.error('error get user info:', err)
@@ -431,7 +431,7 @@ const requestCode = async (req, res) => {
   }
 
   const oAuthAuthorizationEndpoint = `${oauthEndpoint}/authorize?${qs}`
-  console.log('oAuth==>', oAuthAuthorizationEndpoint)
+  // console.log('oAuth==>', oAuthAuthorizationEndpoint)
 
   return oAuthAuthorizationEndpoint
 }
@@ -478,7 +478,7 @@ const getHeaderMenus = async configParams => {
     if (headerArr.length > 0) {
       molaCache.set('headerMenu', headerArr, 60, function(err, success) {
         if (!err && success) {
-          console.log('success set cache node cache headermenu', headerArr)
+          // console.log('success set cache node cache headermenu', headerArr)
         } else {
           headerError = 'failed set cache node cache headermenu, err:' + err
           console.log('failed set cache node cache headermenu', 'err:', err)
@@ -529,7 +529,7 @@ const getSidebarMenu = async configParams => {
     if (sidebarArr.length > 0) {
       molaCache.set('sidebarMenu', sidebarArr, 60, function(err, success) {
         if (!err && success) {
-          console.log('success set cache node cache sidebar menu', sidebarArr)
+          // console.log('success set cache node cache sidebar menu', sidebarArr)
         } else {
           sidebarError = 'failed set cache node cache sidebar menu, err:' + err
           console.log('failed set cache node cache sidebar menu', 'err:', err)
@@ -583,7 +583,7 @@ const getConfigParams = async () => {
     if (configParams) {
       molaCache.set('configParams', configParams, 60, function(err, success) {
         if (!err && success) {
-          console.log('success set cache node cache config params', configParams)
+          // console.log('success set cache node cache config params', configParams)
         } else {
           console.log('failed set cache node cache config params', 'err:', err)
         }
@@ -591,6 +591,35 @@ const getConfigParams = async () => {
     }
   }
   return configParams
+}
+
+const getPlatformId = async name => {
+  let platformId = null
+
+  try {
+    const rawResponse = await fetch(`${configUrl.endpoint}/platforms?app_id=${configUrl.appId}`, {
+      timeout: 5000,
+      maxRedirects: 1,
+    })
+
+    const response = await rawResponse.json()
+
+    if (response && response.data) {
+      response.data.map(platformObj => {
+        const platformName = _get(platformObj, 'attributes.name', '')
+        if (platformName.toLowerCase() === name) {
+          platformId = platformObj.id
+          return false
+        }
+      })
+      return platformId
+    } else {
+      return platformId
+    }
+  } catch (e) {
+    console.log(`failed to fetch /platforms?app_id=${configUrl.appId}`)
+    return platformId
+  }
 }
 
 const postBcaRedeem = async (uid, voucher) => {
@@ -624,7 +653,7 @@ const postBcaRedeem = async (uid, voucher) => {
 // set a cookie
 app.use('*', async (req, res, next) => {
   // check if client sent cookie
-  console.log('=========', oauth)
+  // console.log('=========', oauth)
 
   const cookie = req.cookies
   if (`${cookie.SID}` !== 'undefined' || cookie.SID !== undefined) {
@@ -1005,6 +1034,9 @@ app.get('*', async (req, res, next) => {
       }
     }
 
+    /** ini untuk dapeting platformId filter by name, kalo ada perubahan attribute name di DB ubah disini */
+    configUrl.platformId = await getPlatformId('web')
+
     const responseConfigParams = await getConfigParams()
     const responseHeaderMenu = await getHeaderMenus(responseConfigParams)
     const responseSidebarMenu = await getSidebarMenu(responseConfigParams)
@@ -1070,7 +1102,7 @@ app.get('*', async (req, res, next) => {
                 }
                 molaCache.set(articleId, result, 60, function(err, success) {
                   if (!err && success) {
-                    console.log('success set cache node cache', articleId, result)
+                    // console.log('success set cache node cache', articleId, result)
                     // true
                     // ... do something ...
                   } else {
@@ -1139,6 +1171,7 @@ app.get('*', async (req, res, next) => {
         data: responseConfigParams ? responseConfigParams : '',
       },
       runtime: {
+        platformId: configUrl.platformId,
         appUrl: 'molaapp://mola.tv/watch',
         appPackage: config.env == 'staging' ? 'com.molademo' : 'tv.mola.app',
         gt: guestToken,
@@ -1264,7 +1297,7 @@ app.get('*', async (req, res, next) => {
         }
         molaCache.set(videoId, videoObj, 60, function(err, success) {
           if (!err && success) {
-            console.log('success set cache node cache', videoId, videoObj)
+            // console.log('success set cache node cache', videoId, videoObj)
             // true
             // ... do something ...
           } else {
