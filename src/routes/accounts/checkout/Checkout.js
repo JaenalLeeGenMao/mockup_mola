@@ -11,6 +11,7 @@ import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import MolaHandler from '@api/mola'
 import Layout from '@components/Molalayout'
+import Checkbox from '@components/Checkbox'
 import '@global/style/css/reactReduxToastr.css'
 
 import styles from './Checkout.css'
@@ -73,6 +74,8 @@ class Checkout extends Component {
     error: false,
     isShowCheckoutDetail: false,
     isCheckoutDetailLoading: false,
+    checkboxCheckedOne: false,
+    checkboxCheckedTwo: false,
     payment: {
       process_id: '',
       status_message: '',
@@ -280,13 +283,23 @@ class Checkout extends Component {
     )
   }
 
+  checkboxOnChange = e => {
+    this.setState({
+      checkboxCheckedOne: !this.state.checkboxCheckedOne,
+    })
+  }
+
+  checkboxOnChangeTwo = e => {
+    this.setState({
+      checkboxCheckedTwo: !this.state.checkboxCheckedTwo,
+    })
+  }
+
   renderSubscription() {
-    const { data, loading, isCheckoutDetailLoading } = this.state
+    const { data, loading, isCheckoutDetailLoading, checkboxCheckedOne, checkboxCheckedTwo } = this.state
 
     const { isMobile } = this.props
     let price = ''
-    // console.log(data.priceUnit, 'hihi')
-    // console.log('data', data)
 
     return (
       <LazyLoad>
@@ -321,26 +334,51 @@ class Checkout extends Component {
             <div className={styles.order__content_list_button}>
               <div className={styles.order__content_list_info}>
                 <p className={styles.big_mb}>
-                  Kami hanya menerima pembayaran menggunakan BCA Virtual Account untuk paket ini.
+                  Kami hanya menerima pembayaran dengan BCA Virtual Account untuk paket ini.
                 </p>
-                <p>
-                  Dengan menekan tombol <q>Bayar</q> , Anda menyetujui
-                </p>
-                <p>
-                  {' '}
-                  <a href={'/privacy'} target="_self" rel="noopener noreferrer">
-                    {' '}
-                    Kebijakan Privasi
-                  </a>{' '}
-                  dan{' '}
-                  <a href={'/terms'} target="_self" rel="noopener noreferrer">
-                    Ketentuan
-                  </a>{' '}
-                  kami
-                </p>
+                <div className={styles.order__content_checkbox}>
+                  <div className={styles.order__content_checkbox_list}>
+                    <Checkbox value={checkboxCheckedOne} onChange={this.checkboxOnChange} />
+                    <div className={styles.order__content_checkbox_text}>
+                      <p>
+                        Saya telah membaca, mengerti dan menerima
+                        {/* </p>
+                    <p> */}{' '}
+                        {/* <a href={'/privacy'} target="_self" rel="noopener noreferrer"> */}
+                        <a href={'/terms'} target="_self" rel="noopener noreferrer">
+                          Ketentuan
+                        </a>{' '}
+                        &amp; {/* </a>{' '} */}
+                        <a href={'/privacy'} target="_self" rel="noopener noreferrer">
+                          Kebijakan Privasi
+                        </a>{' '}
+                        tentang Layanan Mola TV tersebut
+                      </p>
+                    </div>
+                  </div>
+                  <div className={styles.order__content_checkbox_list}>
+                    <Checkbox value={checkboxCheckedTwo} onChange={this.checkboxOnChangeTwo} />
+                    <div className={styles.order__content_checkbox_text}>
+                      <p>
+                        Saya telah memastikan dengan Customer Service Mola TV bahwa perangkat (Mobile Phone, Tab, &amp;
+                        sejenisnya) yang saya gunakan kompatibel/ sesuai dengan aplikasi dan Layanan Mola TV
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
+
               {!isCheckoutDetailLoading && (
-                <button type="submit" className={styles.order__content_submit} onClick={this.handleCheckout}>
+                <button
+                  type="submit"
+                  className={`${
+                    checkboxCheckedOne && checkboxCheckedTwo
+                      ? styles.order__content_submit
+                      : styles.order__content_submit_false
+                  }`}
+                  onClick={this.handleCheckout}
+                  disabled={!checkboxCheckedOne || !checkboxCheckedTwo}
+                >
                   Bayar
                 </button>
               )}
