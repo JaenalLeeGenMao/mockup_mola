@@ -277,7 +277,7 @@ const routes = {
                 if (elMessage && _isFunction(elMessage)) {
                   elMessage.removeventListener('DOMSubtreeModified', hideOffline)
                 }
-                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+                // document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
               }
             }
           }
