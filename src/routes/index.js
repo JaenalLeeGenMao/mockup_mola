@@ -259,7 +259,7 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              elMessage.addEventListener('DOMSubtreeModified', hideOffline)
+              // elMessage.addEventListener('DOMSubtreeModified', hideOffline)
               if (elMessage.innerHTML === 'Online') {
                 document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
               }
@@ -273,11 +273,6 @@ const routes = {
                   _el.style.top = '50vh'
                   _el.style.visibility = 'visible'
                 }
-              } else {
-                if (elMessage && _isFunction(elMessage)) {
-                  elMessage.removeventListener('DOMSubtreeModified', hideOffline)
-                }
-                // document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
               }
             }
           }
