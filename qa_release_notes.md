@@ -430,16 +430,299 @@ Improvement:
 
 **18/12/2019**
 
-V1.8.6 + **2027**
+*18/12/2019*
+
+V1.8.6 + **2027** 
 
 Improvement:
-* Add BCA script tracker for google ads (request by Gabriel and Arend) (Jaenal)
+* Add BCA script tracker for google ads (Jaenal)
 
-**19/12/2019**
+*19/12/2019*
 
-V1.6.0 + **2030**
+V.1.8.6 + **2030** 
 
 Improvement:
-* Fix carousel cellSpacing default value (Jaenal)
+* HotFix carousel cellSpacing default value (Jaenal)
 
- 
+*03/01/2020*
+
+V1.8.7 + **2035** 
+
+Improvement
+* Change text promo BCA from salin to Gunakan (Jaenal)
+
+*14/01/2020*
+
+V1.8.7 + **2037** 
+
+Improvement:
+* Update License key for newrelic (Jaenal)
+
+V1.8.8 + **2040** 
+
+Improvement:
+* Hotfix Channels on video 404 must show blocker with plaformblocker enabled (Jaenal)
+
+V1.8.8 + **2043** 
+
+Improvement:
+* Enable channel mobile platformblocker (Jaenal)
+
+*27/01/2020*
+
+V1.9.0 + **2095** 
+
+Improvements:
+* Update gitlab CI (Risal)
+* Cleanup unused command in gitlab CI (Risal)
+* Add Medium and Campaign for deeplink (Elkana)
+
+*28/01/2020*
+
+V1.9.0 + **2096** 
+
+Improvement:
+* Reorder header menu from API (Elkana)
+
+V1.9.0 + **2097** 
+
+Improvements:
+* Fix date picker on register (Sabiq)
+* update gitlab CI (Risal)
+* Cleanup unused command in gitlab CI (Risal)
+
+*03/02/2020*
+
+V1.9.0 + **2115**
+
+Improvement:
+* Remove Webpack dashboard and promo BCA logic script (Jaenal)
+
+*07/02/2020*
+
+V1.10.0 + **2145** 
+Improvement:
+* Add component Mola Original (Jaenal)
+* Change endpoints recomendation, For movie or match recommendation display (Ayu)
+* Styling placeholders on a loading match page (Ayu)
+
+
+Bug Fix: 
+* Fix Bug jumpto video detail page matches, previously cannot scrolled base on date picker (Ayu)
+
+V1.10.0 + **2147** 
+
+Improvement
+* Add component Mola Original (Jaenal)
+* Add feature promo page and redesign on playlist card (Elkana)
+
+V.10.0 + **2148** 
+
+Improvements:
+* Change new header on homepage (Ayu)
+* Update visbility for help button mobile view (Ayu)
+
+V1.10.0 + **2149** 
+
+Improvements
+* Fix new mola logo 44px (Jaenal)
+* Styling feature promo page and playlist card (Elkana)
+
+*10/02/2020*
+
+V1.10.0 + **2157** 
+
+Improvements:
+* Recommit Banner square for branch develop #104 (Aang)
+* Home mobile change to feature. recommit #103 (Aang)
+* recommit mobile navigation bar #102 (Aang)
+* Add more screen #105 (Aang)
+* Add Clickable content in more pages #105 (Aang)
+* Banner square modify with configparams #105 (Aang)
+* Hot fix to ignore fetchprofile #105 (Aang)
+* page more revision #105 (Aang)
+* move placeholder to component #103 (Aang)
+* Resolve conflict (Aang)
+* remove temporary comment feature.js placeholder (jaenal)
+* Add feature mola checkout (sabiq)
+* Enabled subs by config params and changes behaviour view profile on mobile view (sabiq)
+* Fix icon on more mobile web (Sabiq)
+
+
+Bug Fix:
+* fixing bug dowmloaded apps and user profile #105 (Aang)
+
+V1.10.0 + **2162** 
+
+Improvement:
+* Hotfix wording on more page mobile (Sabiq)
+
+V1.10.0 + **2162** 
+
+Improvement:
+* Add platform blocker with api gg tq (Sabiq)
+
+*11/02/2020*
+
+V1.10.0 + **2168** 
+
+Improvements:
+* Add Checkout detail (Septian) 
+
+*12/02/2020*
+
+V1.10.0 + **2168** 
+
+Improvements:
+* Hot fix banner add padding in banner (Aang) 
+* Fix mola ori styles and change font to public sans (Jaenal)
+* HotFix card and promo style (Elkana)
+* Hotfix Add checkout MCBill (Septian)
+
+*13/02/2020*
+
+V1.10.0 + **2174** 
+
+Improvements:
+* Hotfix Add Loading on checkout, Open new tab on link to bca website (Septian)
+* Hotfix Add icon loading co and fix styling subslist (Sabiq)
+* HotFix tooltip and handler payment ve id (Fujianto)
+
+*14/02/2020*
+
+V1.11.0 + **2177** 
+
+Improvement:
+* Update New relic (Jaenal)
+
+*17/02/2020*
+
+V1.11.0 + **2187** 
+
+Improvement:
+* Add new flow subscribe for non login users, Show subscribe menu on mobile (Fujianto)
+
+V1.11.0 + **2187** 
+
+Improvement:
+* Fix redirect_uri on subscriptionList (Jaenal)
+
+V1.11.0 + **2194** 
+
+Improvement:
+* Set new relic to prod (Jaenal)
+
+V1.11.0 + **2195** 
+
+Improvement:
+* Add redirect_uri on client side login.js (Jaenal)
+
+V1.11.0 + **2195** 
+
+Improvement:
+* Validate redirect_url param (Jaenal)
+
+V1.11.0 + **2199**
+
+Improvement:
+* Wrong lifecycle (Jaenal)
+
+*18/02/2020*
+
+V1.11.0 + **2200** 
+Improvement:
+* Fix cookie on client side to 60s (Jaenal)
+
+V1.11.0 + **2201** 
+
+Improvement:
+* Hotfix button back no package and hide subscription by config params on tab more (Sabiq)
+
+*19/02/2020*
+
+V1.11.0 + **2202** 
+
+Improvement:
+* Hotfix wording checkout (Sabiq)
+
+V1.11.0 + **2203** 
+
+Improvement:
+* Hotfix more with id 1 (Jaenal)
+
+V1.11.0 + **2204** 
+
+Improvement:
+* Change config param and header menu cache to 1 min (Jaenal)
+
+*21/02/2020*
+
+V1.11.0 + **2210** 
+
+Improvement:
+* Hotfix color bg payment (Sabiq)
+
+*27/02/2020*
+
+V1.11.0 + **2231** 
+
+Improvement: 
+* read query string no header for live support (Trisno)
+* Change subscription redux account api user (Ayu)
+* Consume config param for page more (Aang)
+* Create home featured no potrait image based n contentype playlist (Aang)
+* * Add details page on video card (Elkana)
+* Styling videocard feature heigt into 19rem (Elkana)
+* Add more height to videocard on movies (Elkana)
+* Matches dropdown change to scroller “this solves #113 #107 #106” (Naufal) 
+* Channels dropdown change to scroller “this solves #113 #107 #106” (Naufal) 
+* Add new flow subscriptions and new design subscriptions (jaenal)
+* Add link not found when clicked banner without data (Cecep)
+* fix debagging placeholder banner on EPL (Cecep)
+* Resolve error and add price unit (Jaenal)
+* Styling "Syarat ketentuan" in user subscriptions (Jaenal)
+* onHandleBanner set into on and cache server set 60 sec. (Jaenal)
+
+Bug Fix:
+* Fix error invalid host account api user (Bug Fix)
+* Fixing bug wrong filtered id for get redux banner (Bug Fix)
+
+
+
+*28/03/2020*
+
+V1.11.0 + **2232** 
+
+Improvement:
+* Add platform api on server side (Jaenal)
+
+V1.11.0 + **2234** 
+
+Improvement:
+* Hotfix wording bayar (Sabiq)
+
+V1.11.0 + **2235** 
+
+Improvement:
+* Move Pubsub to configParam and enable live support on all pages (Jaenal)
+
+V1.11.0 + **2236** 
+
+Improvement:
+* Add checkbox on payment page (Sabiq)
+
+*29/02/2020*
+
+V1.11.0 + **2237** 
+
+Improvement:
+* Remove live support visibility hidden (Jaenal)
+
+*03/03/2020*
+
+V1.11.0 + **2238** 
+
+Improvement: 
+* Comment and remove all live support visibility hidden (Improvement)
+
+
