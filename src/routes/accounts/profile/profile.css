@@ -136,7 +136,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  margin-top: 0.4rem;
+  margin: 0.4rem 0 0.4rem 0;
 }
 
 .profile__contents_status_wrapper_inline h1 {

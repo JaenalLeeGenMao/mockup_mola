@@ -22,7 +22,6 @@ import {
   VIDEOS_ENDPOINT_NOCACHE,
   NOTIFICATION_ENDPOINT,
   PARTNERS_ENDPOINT,
-  USER_SUBSCRIPTION,
   VALIDATE_PROMO_ENDPOINT,
 } from './endpoints'
 import utils from './util'
@@ -537,42 +536,6 @@ const getSubscriptionById = subsId => {
     })
 }
 
-const getUserSubscriptions = uid => {
-  // console.log('ini subscription', uid)
-  return get(`${USER_SUBSCRIPTION}/${uid}`, {
-    // headers: {
-    //   Accept: 'application/json',
-    //   'Content-Type': 'application/json',
-    // },
-    // params: {
-    //   app_id: 2,
-    // },
-    ...endpoints.setting,
-  })
-    .then(response => {
-      const result = utils.normalizeGetUserSubscriptions(response)
-      // console.log('ini response handler', response)
-      return {
-        meta: {
-          status: result.length > 0 ? 'success' : 'no_result',
-          error: '',
-        },
-        data: [...result] || [],
-      }
-    })
-    .catch(error => {
-      // console.log('masuk error', error)
-      const errorMessage = error.toString().replace('Error:', 'Mola User Subscriptions')
-      return {
-        meta: {
-          status: 'error',
-          error: errorMessage,
-        },
-        data: [],
-      }
-    })
-}
-
 const getAllSubscriptions = token => {
   // console.log('ini subscription', token)
   const headerContent = token
@@ -709,12 +672,13 @@ const createMidtransPayment = ({ token, orderId }) => {
     })
 }
 
-const createMCBillPayment = ({ token, orderId, amount, customerInfo }) => {
+const createMCBillPayment = ({ token, orderId, amount, paymentInfo, customerInfo }) => {
   const data = JSON.stringify({
     paymentMethod: 'va',
     paymentChannel: 'VA_BCA',
     amount: amount,
-    paymentInfo: `Order #${orderId}`,
+    // paymentInfo: `Order #${orderId}`,
+    paymentInfo: paymentInfo,
     customerInfo: customerInfo,
     orderID: `${orderId}`,
   })
@@ -1044,6 +1008,5 @@ export default {
   getPartners,
   getNotifications,
   getTotalNotifications,
-  getUserSubscriptions,
   getApiPromoValidate,
 }

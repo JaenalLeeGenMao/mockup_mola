@@ -232,6 +232,18 @@
   /* border: 1px solid #ffff; */
 }
 
+.subscription_button_disabled {
+  opacity: 0.5;
+  color: white;
+  background: #0d78b7;
+  border: none;
+  border-radius: 0.5rem;
+  width: auto;
+  padding: 0.8rem;
+  font-size: 1.42rem;
+  cursor: no-drop;
+}
+
 .subscription_button_active:hover {
   background: #0d78b7;
   cursor: pointer;

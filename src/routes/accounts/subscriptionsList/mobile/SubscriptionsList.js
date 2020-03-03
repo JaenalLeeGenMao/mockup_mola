@@ -35,7 +35,6 @@ class SubscriptionsList extends React.Component {
     this.state = {
       isToggled: false,
       subsDong: false,
-      // isHidden: true,
       monthName: '',
       dataListSubs: [],
       aksesToken: '',
@@ -45,82 +44,7 @@ class SubscriptionsList extends React.Component {
       isHeader: false,
       numberOfPackage: 0,
       titlePackage: '',
-      // sid: '',
     }
-
-    // this.data = {
-    //   kucing: [
-    //     {
-    //       type: 'subscription',
-    //       id: 23,
-    //       attributes: {
-    //         title: '1 Season Plan',
-    //         description: 'watch up to 10 matches/week in 1 season',
-    //         permission: 2,
-    //         chargingBase: 1,
-    //         maxQty: 1,
-    //         ads: 0,
-    //         price: 1350000,
-    //         currency: '',
-    //         displayOrder: 0,
-    //         recommended: 0,
-    //         icon: '',
-    //         enabled: 1,
-    //         baseColor: '',
-    //         textColor: '',
-    //         priceUnit: '',
-    //         status: 1,
-    //         isGlobal: 0,
-    //       },
-    //     },
-    //     {
-    //       type: 'subscription',
-    //       id: 23,
-    //       attributes: {
-    //         title: '1 Month Plan',
-    //         description: 'watch up to 10 matches/week in 1 season',
-    //         permission: 2,
-    //         chargingBase: 1,
-    //         maxQty: 1,
-    //         ads: 0,
-    //         price: 150000,
-    //         currency: '',
-    //         displayOrder: 0,
-    //         recommended: 0,
-    //         icon: '',
-    //         enabled: 1,
-    //         baseColor: '',
-    //         textColor: '',
-    //         priceUnit: '',
-    //         status: 1,
-    //         isGlobal: 0,
-    //       },
-    //     },
-    //     {
-    //       type: 'subscription',
-    //       id: 23,
-    //       attributes: {
-    //         title: '1 Week Plan',
-    //         description: 'watch up to 10 matches/week in 1 season',
-    //         permission: 2,
-    //         chargingBase: 1,
-    //         maxQty: 1,
-    //         ads: 0,
-    //         price: 75000,
-    //         currency: '',
-    //         displayOrder: 0,
-    //         recommended: 0,
-    //         icon: '',
-    //         enabled: 1,
-    //         baseColor: '',
-    //         textColor: '',
-    //         priceUnit: '',
-    //         status: 1,
-    //         isGlobal: 0,
-    //       },
-    //     },
-    //   ],
-    // }
   }
 
   componentDidMount() {
@@ -129,7 +53,6 @@ class SubscriptionsList extends React.Component {
 
   setSubscription = () => {
     const { user, getAllSubscriptions } = this.props
-    // const { isHeader } = false
     const checkAt = this.readQueryParams('at')
 
     //desktop
@@ -226,20 +149,9 @@ class SubscriptionsList extends React.Component {
     const isLogin = uid || sid
     const { accessToken, isHeader, titlePackage, numberOfPackage } = this.state
     const isData = subscribe.data.length > 0
-    // const titleSubscriptionsList = configParams && configParams.data ? configParams.data.subscriptions_list_title : ''
-    // const titleSubscriptions = user && user.subscriptions[0] ? user.subscriptions[0].attributes.subscriptions : ''
     const Background = configParams && configParams.data ? configParams.data.subscriptions_list_background : ''
     let showPackageList = numberOfPackage > 1
     let price = ''
-    // const subsInfo = user.subscriptions
-    // let satuAjaBangcat = false
-    // let angkatBangcyat = 0
-
-    // let countPacket = subscribe.data.length - 1
-    // const countTitle = user.subscriptions.length - 1
-    // if (countTitle <= 1) {
-    //   countTitle = ''
-    // }
 
     return (
       <LazyLoad>

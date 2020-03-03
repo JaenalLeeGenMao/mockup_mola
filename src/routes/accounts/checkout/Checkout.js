@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { toastr } from 'react-redux-toastr'
 import ReactTooltip from 'react-tooltip'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _isUndefined from 'lodash/isUndefined'
@@ -50,7 +52,10 @@ const CheckoutItem = props => {
         <h4 className={styles.checkout_item__content}>{props.content}</h4>
         <button
           ref={ref => (props.ref = ref)}
-          data-tip={`Copied ${props.content}`}
+          // data-tip={`Copied ${props.content}`}
+          data-tip={`${
+            props.value ? `Jumlah bayar telah disalin ${props.content}` : `Kode Tranfer Telah disalin ${props.content}`
+          }`}
           data-event="focus"
           onClick={() => copyCodeToClipboard(props)}
           onMouseLeave={() => {
@@ -69,6 +74,7 @@ const CheckoutItem = props => {
 
 class Checkout extends Component {
   state = {
+    email: this.props.user.email,
     data: {},
     subscriptionId: '',
     accessToken: '',
@@ -118,7 +124,7 @@ class Checkout extends Component {
   // }
 
   handleCheckout = async () => {
-    const { subscriptionId, accessToken, uid, data } = this.state
+    const { subscriptionId, accessToken, uid, data, email } = this.state
 
     this.setState({
       isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
@@ -145,7 +151,8 @@ class Checkout extends Component {
       token: this.state.accessToken,
       orderId: order.data.id,
       amount: data.price,
-      customerInfo: data.title,
+      paymentInfo: data.title,
+      customerInfo: email,
     })
 
     if (payment.meta.status === 'success') {
@@ -245,8 +252,37 @@ class Checkout extends Component {
     return date.format(format)
   }
 
+  handleSelectList = event => {
+    const value = event.target
+    const { id } = value
+
+    this.setState({
+      [id]: !this.state[id],
+    })
+  }
+
+  handleButtonClick = () => {
+    const { isMobile } = this.props
+    // for testing on react native
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage('close')
+    } else {
+      {
+        isMobile
+          ? (window.location.href = '/accounts/subscriptionsList')
+          : (window.location.href = '/accounts/profile?tab=subscriptionPackage')
+      }
+    }
+
+    // setTimeout(() => {
+    //   history.push('/')
+    // }, 1500)
+  }
+
   renderCheckoutDetail() {
     const { expired_time, amount, payment_code } = this.state.payment
+    const { isActiveMenu } = this.state
+    const { isMobile } = this.props
     const date_exp = moment(expired_time).format('DD MMMM YYYY HH:mm')
 
     return (
@@ -274,19 +310,234 @@ class Checkout extends Component {
 
           <div className={styles.info_wrap}>
             <h4 className={styles.info_title}>Intruksi Pembayaran</h4>
-            <p className={styles.gray_text}>
-              Klik tombol di bawah ini untuk informasi cara pembayaran BCA Virtual Acccount.
-            </p>
           </div>
 
-          <a
+          <div className={styles.order__info_detail_wrapper}>
+            <div className={styles.order__info_detail_menus}>
+              <div className={styles.order__info_detail_list}>Kantor Bank BCA</div>
+              <div
+                className={`${
+                  this.state.listOne ? styles.order__info_detail_img_active : styles.order__info_detail_img
+                }`}
+                id="listOne"
+                onClick={this.handleSelectList}
+              />
+            </div>
+
+            {!this.state.listOne && (
+              <div className={styles.order__info_detail_list_menus}>
+                <ol>
+                  <li>
+                    <span>
+                      Ambil nomor antrian transaksi Teller dan <p>isi slip setoran</p>.
+                    </span>
+                  </li>
+                  <li>
+                    <span>Serahkan slip dan jumlah setoran kepada Teller BCA.</span>
+                  </li>
+                  <li>
+                    <span>Teller BCA akan melakukan validasi transaksi.</span>
+                  </li>
+                  <li>
+                    <span>Simpan slip setoran hasil validasi sebagai bukti pembayaran</span>
+                  </li>
+                </ol>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.order__info_detail_wrapper}>
+            <div className={styles.order__info_detail_menus}>
+              <div className={styles.order__info_detail_list}>ATM BCA</div>
+              <div
+                className={`${
+                  this.state.listTwo ? styles.order__info_detail_img : styles.order__info_detail_img_active
+                }`}
+                id="listTwo"
+                onClick={this.handleSelectList}
+              />
+            </div>
+
+            {this.state.listTwo && (
+              <div className={styles.order__info_detail_list_menus}>
+                <ol>
+                  <li>
+                    <span>
+                      Masukkan <p>kartu ATM BCA &amp; PIN</p> di mesin ATM BCA.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih &apos;<p>Transaksi Lainnya</p>&apos;.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih &apos;<p>Transfer</p>&apos;.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih &apos;<p>ke Rekening BCA Virtual Account</p>&apos;.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan <p>nomor BCA Virtual Account.</p>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan <p>jumlah nominal</p> yang ingin dibayarkan.
+                    </span>
+                  </li>
+                  <li>
+                    <span>Validasi pembayaran Anda.</span>
+                  </li>
+                  <li>
+                    <span>Pembayaran selesai.</span>
+                  </li>
+                </ol>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.order__info_detail_wrapper}>
+            <div className={styles.order__info_detail_menus}>
+              <div className={styles.order__info_detail_list}>BCA Mobile</div>
+              <div
+                className={`${
+                  this.state.listThree ? styles.order__info_detail_img : styles.order__info_detail_img_active
+                }`}
+                id="listThree"
+                onClick={this.handleSelectList}
+              />
+            </div>
+
+            {this.state.listThree && (
+              <div className={styles.order__info_detail_list_menus}>
+                <ol>
+                  <li>
+                    <span>
+                      Lakukan <p>log in pada aplikasi BCA Mobile.</p>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih ‘<p>m-BCA</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan <p>kode akses m-BCA</p>.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih ‘<p>m-Transfer</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih ‘<p>BCA Virtual Account</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan ‘<p>nomor BCA Virtual Account</p>’ atau ‘<p>pilih dari ‘Daftar Transfer</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan <p>jumlah nominal</p> yang ingin dibayarkan.
+                    </span>
+                  </li>
+                  <li>
+                    <span>Masukkan pin m-BCA.</span>
+                  </li>
+                  <li>
+                    <span>Pembayaran selesai.</span>
+                  </li>
+                </ol>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.order__info_detail_wrapper}>
+            <div className={styles.order__info_detail_menus}>
+              <div className={styles.order__info_detail_list}>KlikBCA</div>
+              <div
+                className={`${
+                  this.state.listFour ? styles.order__info_detail_img : styles.order__info_detail_img_active
+                }`}
+                id="listFour"
+                onClick={this.handleSelectList}
+              />
+            </div>
+
+            {this.state.listFour && (
+              <div className={styles.order__info_detail_list_menus}>
+                <ol>
+                  <li>
+                    <span>
+                      Lakukan <p>log in pada aplikasi KlikBCA Individual</p>.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan <p>user ID dan PIN</p>.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih ‘<p>Transfer Dana</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Pilih ‘<p>Transfer ke BCA Virtual Account</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan ‘<p>nomor BCA Virtual Account</p>’ atau ‘<p>pilih dari ‘Daftar Transfer</p>’.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      Masukkan <p>jumlah nominal</p> yang ingin dibayarkan.
+                    </span>
+                  </li>
+                  <li>
+                    <span>Validasi pembayaran Anda.</span>
+                  </li>
+                  <li>
+                    <span>Pembayaran selesai.</span>
+                  </li>
+                </ol>
+              </div>
+            )}
+          </div>
+
+          {/* <a
             rel="noopener noreferrer"
             target="_blank"
             href="https://www.bca.co.id/bisnis/produk-dan-layanan/e-banking/klikbca-bisnis/bca-virtual-account"
             className={styles.btn_submit}
           >
-            Instruksi Pembayaran
-          </a>
+            Lihat Paket Lainnya
+          </a> */}
+          <button
+            className={styles.btn_submit}
+            onClick={this.handleButtonClick}
+            // onClick={() => {
+            //   isMobile
+            //     ? (window.location.href = '/accounts/subscriptionsList')
+            //     : (window.location.href = '/accounts/profile?tab=subscriptionPackage')
+            // }}
+          >
+            Lihat Paket Lainnya
+          </button>
         </div>
       </div>
     )
@@ -368,7 +619,7 @@ class Checkout extends Component {
             <div className={styles.order__content_list_button}>
               <div className={styles.order__content_list_info}>
                 <p className={styles.big_mb}>
-                  Kami hanya menerima pembayaran dengan BCA Virtual Account untuk paket ini.
+                  Paket ini hanya menerima pembayaran dengan BCA Virtual Account dan melalui bank BCA.
                 </p>
                 <div className={styles.order__content_checkbox}>
                   <div className={styles.order__content_checkbox_list}>
@@ -453,4 +704,10 @@ class Checkout extends Component {
   }
 }
 
-export default withStyles(styles)(Checkout)
+const mapStateToProps = state => {
+  return {
+    ...state,
+  }
+}
+
+export default compose(withStyles(styles), connect(mapStateToProps, null))(Checkout)
