@@ -240,15 +240,19 @@ const routes = {
 
     const hideOffline = e => {
       const targetHide = document.getElementsByClassName('embeddedServiceHelpButton')[0]
-      if (e.target.innerText === 'Offline') {
-        targetHide.style.visibility = 'hidden'
-      } else if (e.target.innerHTML === 'Online') {
-        if (window) {
-          if (window.location.pathname === '/') {
-            targetHide.style.visibility = 'visible'
-          }
-        }
+      const labelChat = document.getElementById('headerTextLabel')
+      if (labelChat && configParams.data.live_support_label) {
+        labelChat.textContent = configParams.data.live_support_label
       }
+      // if (e.target.innerText === 'Offline') {
+      //   targetHide.style.visibility = 'hidden'
+      // } else if (e.target.innerHTML === 'Online') {
+      //   if (window) {
+      //     if (window.location.pathname === '/') {
+      //       targetHide.style.visibility = 'visible'
+      //     }
+      //   }
+      // }
     }
 
     if (configParams.data) {
