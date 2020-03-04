@@ -243,9 +243,10 @@ const routes = {
       const labelChat = document.getElementById('headerTextLabel')
       if (labelChat && configParams.data.live_support_label) {
         labelChat.textContent = configParams.data.live_support_label
+        targetHide.removeEventListener('DOMSubtreeModified', hideOffline)
       }
       // if (e.target.innerText === 'Offline') {
-      //   targetHide.style.visibility = 'hidden'
+      //   // targetHide.style.visibility = 'hidden'
       // } else if (e.target.innerHTML === 'Online') {
       //   if (window) {
       //     if (window.location.pathname === '/') {
@@ -263,7 +264,7 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              // elMessage.addEventListener('DOMSubtreeModified', hideOffline)
+              elMessage.addEventListener('DOMSubtreeModified', hideOffline)
               if (elMessage.innerHTML === 'Online') {
                 document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
               }
