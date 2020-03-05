@@ -9,6 +9,7 @@ import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
 import moment from 'moment'
 import Countdown from 'react-countdown-now'
+import 'moment/locale/id'
 import jwt from 'jsonwebtoken'
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
@@ -52,10 +53,10 @@ const CheckoutItem = props => {
         <h4 className={styles.checkout_item__content}>{props.content}</h4>
         <button
           ref={ref => (props.ref = ref)}
-          // data-tip={`Copied ${props.content}`}
-          data-tip={`${
-            props.value ? `Jumlah bayar telah disalin ${props.content}` : `Kode Tranfer Telah disalin ${props.content}`
-          }`}
+          data-tip={`Copied ${props.content}`}
+          // data-tip={`${
+          //   props.value ? `Jumlah bayar telah disalin ${props.content}` : `Kode Tranfer Telah disalin ${props.content}`
+          // }`}
           data-event="focus"
           onClick={() => copyCodeToClipboard(props)}
           onMouseLeave={() => {
@@ -240,7 +241,8 @@ class Checkout extends Component {
 
   formatDate = (quantity, uom, expireAt) => {
     let date = moment()
-    const format = 'DD MMM YYYY'
+    date.locale('id')
+    const format = 'DD MMMM YYYY'
     if (uom == 'm') {
       return date.add(quantity * 30, 'days').format(format)
     } else if (uom == 'd') {
@@ -316,6 +318,7 @@ class Checkout extends Component {
             <div className={styles.order__info_detail_menus}>
               <div className={styles.order__info_detail_list}>Kantor Bank BCA</div>
               <div
+                // src={arrowIconInstructions}
                 className={`${
                   this.state.listOne ? styles.order__info_detail_img_active : styles.order__info_detail_img
                 }`}
@@ -333,13 +336,19 @@ class Checkout extends Component {
                     </span>
                   </li>
                   <li>
-                    <span>Serahkan slip dan jumlah setoran kepada Teller BCA.</span>
+                    <span>
+                      <p>Serahkan slip dan jumlah setoran</p> kepada Teller BCA.
+                    </span>
                   </li>
                   <li>
-                    <span>Teller BCA akan melakukan validasi transaksi.</span>
+                    <span>
+                      Teller BCA akan melakukan <p>validasi transaksi</p>.
+                    </span>
                   </li>
                   <li>
-                    <span>Simpan slip setoran hasil validasi sebagai bukti pembayaran</span>
+                    <span>
+                      <p>Simpan slip setoran hasil validasi</p> sebagai bukti pembayaran.
+                    </span>
                   </li>
                 </ol>
               </div>
@@ -527,17 +536,19 @@ class Checkout extends Component {
           >
             Lihat Paket Lainnya
           </a> */}
-          <button
-            className={styles.btn_submit}
-            onClick={this.handleButtonClick}
-            // onClick={() => {
-            //   isMobile
-            //     ? (window.location.href = '/accounts/subscriptionsList')
-            //     : (window.location.href = '/accounts/profile?tab=subscriptionPackage')
-            // }}
-          >
-            Lihat Paket Lainnya
-          </button>
+          <div className={styles.order__info_detail_line}>
+            <button
+              className={styles.btn_submit}
+              onClick={this.handleButtonClick}
+              // onClick={() => {
+              //   isMobile
+              //     ? (window.location.href = '/accounts/subscriptionsList')
+              //     : (window.location.href = '/accounts/profile?tab=subscriptionPackage')
+              // }}
+            >
+              Lihat Paket Lainnya
+            </button>
+          </div>
         </div>
       </div>
     )

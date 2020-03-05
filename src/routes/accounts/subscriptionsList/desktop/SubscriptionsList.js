@@ -295,7 +295,12 @@ class SubscriptionsList extends React.Component {
 
                             <div className={s.subscription_button_wrapper}>
                               <button
-                                className={s.subscription_button_active}
+                                disabled={sub.attributes.disabled}
+                                className={
+                                  sub.attributes.disabled
+                                    ? s.subscription_button_disabled
+                                    : s.subscription_button_active
+                                }
                                 onClick={() => this.handleClickSubs(accessToken, sub.id)}
                               >
                                 Beli Paket

@@ -233,10 +233,8 @@
 }
 
 .subscription_button_disabled {
-  opacity: 0.5;
   color: white;
-  background: #0d78b7;
-  border: none;
+  background: #212325;
   border-radius: 0.5rem;
   width: auto;
   padding: 0.8rem;

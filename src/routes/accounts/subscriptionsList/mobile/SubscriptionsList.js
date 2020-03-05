@@ -157,7 +157,10 @@ class SubscriptionsList extends React.Component {
       <LazyLoad>
         <Fragment>
           {isHeader ? <Header libraryOff leftMenuOff rightMenuOff isDark={0} activeMenuId={9} {...this.props} /> : ''}
-          <div className={s.subscription__container_wrapper} style={{ backgroundImage: `url(${Background})` }}>
+          <div
+            className={`${isHeader ? s.subscription__container_wrapper : s.subscription__container_wrapper_in_app}`}
+            style={{ backgroundImage: `url(${Background})` }}
+          >
             <div className={s.subscription__background_wrapper}>
               <div className={s.subscription__title}>
                 {isLogin && (
@@ -213,7 +216,10 @@ class SubscriptionsList extends React.Component {
 
                           <div className={s.subscription_button_wrapper}>
                             <button
-                              className={s.subscription_button_active}
+                              disabled={sub.attributes.disabled}
+                              className={
+                                sub.attributes.disabled ? s.subscription_button_disabled : s.subscription_button_active
+                              }
                               onClick={() => this.handleClickSubs(accessToken, sub.id)}
                             >
                               Beli Paket
