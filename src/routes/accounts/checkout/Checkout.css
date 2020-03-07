@@ -37,6 +37,23 @@
   color: #fff;
 }
 
+.checkout__error_wrapper {
+  position: fixed;
+
+  /* bottom: 0; */
+  top: 10rem;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkout__error_wrapper p {
+  font-size: 2rem;
+  color: white;
+}
+
 .order__header_wrapper,
 .order__footer_wrapper,
 .order__content_wrapper {
@@ -458,6 +475,10 @@
 }
 
 @media only screen and (max-width: 481px) {
+  .checkout__error_wrapper p {
+    font-size: 1.6rem;
+  }
+
   .checkout_container {
     padding-top: 8.1rem;
   }

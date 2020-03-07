@@ -851,7 +851,8 @@ app.get('/p/:voucher', async (req, res) => {
   })
   //if user has login
   if (cookies._at) {
-    const uid = jwt.decode(req.cookies._at).sub
+    const accessTokenObj = jwt.decode(req.cookies._at)
+    const uid = _get(accessTokenObj, 'sub', '')
     try {
       const redeemResponse = await postBcaRedeem(uid, voucherCode)
       const redeemStatus = redeemResponse.status
@@ -1015,8 +1016,9 @@ app.get('*', async (req, res, next) => {
       return res.redirect(domain + `/p/${req.cookies.bcavoucher}`)
     }
 
-    const uid = req.cookies._at ? jwt.decode(req.cookies._at).sub : ''
-    const expToken = req.cookies._at ? jwt.decode(req.cookies._at).exp : ''
+    const accessTokenObj = jwt.decode(req.cookies._at)
+    const uid = _get(accessTokenObj, 'sub', '')
+    const expToken = _get(accessTokenObj, 'exp', '')
     const expGToken = guestToken ? jwt.decode(guestToken).exp : ''
 
     let userInfo, userSubs, userSubsError, userInfoError

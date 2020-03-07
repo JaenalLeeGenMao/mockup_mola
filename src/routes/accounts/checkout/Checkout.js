@@ -6,12 +6,16 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
 import moment from 'moment'
+import Countdown from 'react-countdown-now'
 import jwt from 'jsonwebtoken'
 import Header from '@components/Header'
 import LazyLoad from '@components/common/Lazyload'
 import MolaHandler from '@api/mola'
 import Layout from '@components/Molalayout'
 import Checkbox from '@components/Checkbox'
+
+import history from '@source/history'
+
 import '@global/style/css/reactReduxToastr.css'
 
 import styles from './Checkout.css'
@@ -149,6 +153,7 @@ class Checkout extends Component {
     } else {
       this.setState({
         isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
+        error: true /** NOTE: gagal redirect ke halaman subscriptions list */,
       })
 
       toastr.error('Notification', 'Failed retrieving MCBill payment')
@@ -283,6 +288,31 @@ class Checkout extends Component {
     )
   }
 
+  renderErrorPage() {
+    const { isMobile } = this.props
+    const renderer = ({ days, hours, minutes, seconds, completed }) => {
+      if (completed) {
+        const origin = _get(document, 'location.origin', '')
+        const redirectUri = `${origin}${
+          isMobile ? '/accounts/subscriptionsList' : '/accounts/profile?tab=subscriptionPackage'
+        }`
+        history.push({
+          pathname: '/accounts/login',
+          search: `redirect_uri=${encodeURIComponent(redirectUri)}`,
+        })
+        return null
+      }
+
+      return (
+        <div className={styles.checkout__error_wrapper}>
+          <p>Your session has expired. Redirecting to login in {seconds} seconds.</p>
+        </div>
+      )
+    }
+
+    return <Countdown date={Date.now() + 5000} renderer={renderer} />
+  }
+
   checkboxOnChange = e => {
     this.setState({
       checkboxCheckedOne: !this.state.checkboxCheckedOne,
@@ -412,11 +442,9 @@ class Checkout extends Component {
         <div className={styles.wrapper}>
           {!loading && !error && !isShowCheckoutDetail && this.renderSubscription()}
           {!loading && !error && isShowCheckoutDetail && this.renderCheckoutDetail()}
+          {error && this.renderErrorPage()}
         </div>
       </Layout>
-
-      // {/* </div> */}
-      // </div>
     )
   }
 }
