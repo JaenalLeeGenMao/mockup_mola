@@ -16,6 +16,16 @@
   /* background-image: url('../../../../global/style/icons/bg-subslist.png'); */
 }
 
+.subscription__container_wrapper_in_app {
+  position: absolute;
+  top: -60px;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: top center;
+  background-attachment: fixed;
+}
+
 .subscriptions__main_container {
   width: 100%;
 
@@ -281,6 +291,23 @@
 .subscription_button_active {
   color: white;
   background: #0d78b7;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 11px 28px;
+
+  /* margin-right: 2.5rem; */
+  font-size: 12px;
+
+  /* border: 1px solid #ffff; */
+
+  /* width: 82%; */
+  margin: 24px 0 24px 0;
+}
+
+.subscription_button_disabled {
+  cursor: no-drop;
+  color: white;
+  background: #212325;
   border: none;
   border-radius: 0.2rem;
   padding: 11px 28px;

@@ -15,14 +15,6 @@ export default function subscribe(state = initialState, action) {
       return { ...state, ...action.payload }
     case types.GET_ALL_SUBSCRIPTION_ERROR:
       return { ...state, ...action.payload }
-
-    case types.GET_USER_SUBSCRIPTION_LOADING:
-      return { ...state, ...action.payload }
-    case types.GET_USER_SUBSCRIPTION_SUCCESS:
-      return { ...state, ...action.payload }
-    case types.GET_USER_SUBSCRIPTION_ERROR:
-      return { ...state, ...action.payload }
-
     default:
       return { ...state }
   }

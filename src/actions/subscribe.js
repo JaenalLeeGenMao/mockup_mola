@@ -29,34 +29,6 @@ const getAllSubscriptions = token => dispatch => {
   })
 }
 
-const getUserSubscriptions = uid => dispatch => {
-  dispatch({
-    type: types.GET_USER_SUBSCRIPTION_LOADING,
-    payload: {
-      meta: {
-        status: 'loading',
-        error: '',
-      },
-      data: [],
-    },
-  })
-  return Mola.getUserSubscriptions(uid).then(result => {
-    // console.log('result action user subs dong', result)
-    if (result.meta.status === 'error') {
-      dispatch({
-        type: types.GET_USER_SUBSCRIPTION_ERROR,
-        payload: result,
-      })
-    } else {
-      dispatch({
-        type: types.GET_USER_SUBSCRIPTION_SUCCESS,
-        payload: result,
-      })
-    }
-  })
-}
-
 export default {
   getAllSubscriptions,
-  getUserSubscriptions,
 }

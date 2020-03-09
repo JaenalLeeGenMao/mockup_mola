@@ -708,8 +708,8 @@ app.get('/oauth/callback', async (req, res) => {
           },
           (error, response, body) => {
             if (error || response.statusCode !== 200) {
-              console.error(error, response.statusCode, body)
-              return reject({ error, statusCode: response.statusCode, body })
+              console.error(error, _get(response, 'statusCode', 'timeout'), body)
+              return reject({ error, statusCode: _get(response, 'statusCode', 'timeout'), body })
             }
             res.cookie('_at', body.access_token, {
               maxAge: body.expires_in * 1000,
@@ -851,7 +851,8 @@ app.get('/p/:voucher', async (req, res) => {
   })
   //if user has login
   if (cookies._at) {
-    const uid = jwt.decode(req.cookies._at).sub
+    const accessTokenObj = jwt.decode(req.cookies._at)
+    const uid = _get(accessTokenObj, 'sub', '')
     try {
       const redeemResponse = await postBcaRedeem(uid, voucherCode)
       const redeemStatus = redeemResponse.status
@@ -1015,8 +1016,9 @@ app.get('*', async (req, res, next) => {
       return res.redirect(domain + `/p/${req.cookies.bcavoucher}`)
     }
 
-    const uid = req.cookies._at ? jwt.decode(req.cookies._at).sub : ''
-    const expToken = req.cookies._at ? jwt.decode(req.cookies._at).exp : ''
+    const accessTokenObj = jwt.decode(req.cookies._at)
+    const uid = _get(accessTokenObj, 'sub', '')
+    const expToken = _get(accessTokenObj, 'exp', '')
     const expGToken = guestToken ? jwt.decode(guestToken).exp : ''
 
     let userInfo, userSubs, userSubsError, userInfoError
