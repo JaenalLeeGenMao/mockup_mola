@@ -28,13 +28,14 @@ class PlaylistCard extends Component {
         src,
         contentType = '',
         bannerCard,
-        showDesc,
+        // showDesc,
         description,
         data,
         onClick = () => {},
         containerClassName = '',
         className = '',
         transitionMode = 'scroll',
+        categories,
         isLive,
       } = this.props,
       { show } = this.state
@@ -60,14 +61,17 @@ class PlaylistCard extends Component {
       ? data.contentType === 3 && isVideos ? 'upcoming' : data.contentType === 1 && isVideos ? 'highlights' : false
       : false
 
+    const videoType = isVideos && data && data.contentType
     const contentLeagueType = isVideos && data && data.league
-    const videoType =
+    const videoLeagueType =
       data && data.contentType === 3
         ? 'Live Match'
         : data && data.contentType === 4 ? 'Replay' : data && data.contentType === 1 ? 'Highlights' : null
     // if (showDate) {
     //   console.log(data.title)
     // }
+    const isVOD = videoType && data.contentType === 1
+    const isMatchType = videoType && (data.contentType === 3 || data.contentType === 4)
 
     return (
       <div
@@ -96,24 +100,12 @@ class PlaylistCard extends Component {
             )}
         </div>
 
-        {/* Card Text */}
+        {/* video isVOD */}
         {!bannerCard &&
-          !showDesc && (
+          isVOD && (
             <>
               <p className={'title'}>{description}</p>
-
-              {/* show date */}
-              {showDate === 'upcoming' ? (
-                <p className={'time'}>{dateFormat(data.startTime * 1000, 'ddd, d mmm HH:MM')}</p>
-              ) : // :
-              // showDate === 'highlights' && data.startTime ?
-              //   <p className={'time'}>FT, {dateFormat(data.startTime * 1000, 'd mmm yyyy')}</p>
-              null}
-              {contentLeagueType ? (
-                <p className={'league'}>
-                  {data.league.attributes.name} - {videoType}
-                </p>
-              ) : null}
+              <p className={'shortDesc'}>{data.shortDescription}</p>
 
               {/* show platforms */}
               {isVideos ? (
@@ -129,12 +121,38 @@ class PlaylistCard extends Component {
             </>
           )}
 
-        {/* Card Short Description */}
+        {/* video isLive || isReplay */}
         {!bannerCard &&
-          showDesc && (
+          isMatchType && (
             <>
-              <p className={'title'}>{description}</p>
-              <p className={'shortDesc'}>{data.shortDescription}</p>
+              <>
+                {categories ? <p className={'title'}>{description}</p> : null}
+
+                {/* show date */}
+                {showDate === 'upcoming' ? (
+                  <p className={'time'}>{dateFormat(data.startTime * 1000, 'ddd, d mmm HH:MM')}</p>
+                ) : // :
+                // showDate === 'highlights' && data.startTime ?
+                //   <p className={'time'}>FT, {dateFormat(data.startTime * 1000, 'd mmm yyyy')}</p>
+                null}
+                {contentLeagueType ? (
+                  <p className={'league'}>
+                    {data.league.attributes.name} - {videoLeagueType}
+                  </p>
+                ) : null}
+
+                {/* show platforms */}
+                {isVideos ? (
+                  platforms ? (
+                    <p className={'free'}>Free streaming on App</p>
+                  ) : (
+                    <p className={'platform'}>
+                      Premium on App
+                      <span className={'premiumIcon'} />
+                    </p>
+                  )
+                ) : null}
+              </>
             </>
           )}
       </div>
@@ -143,3 +161,5 @@ class PlaylistCard extends Component {
 }
 
 export default PlaylistCard
+
+// 15.1875

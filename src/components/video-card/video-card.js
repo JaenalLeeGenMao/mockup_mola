@@ -28,15 +28,15 @@ class VideoCard extends Component {
 
   render() {
     const {
-      src,
-      contentType = '',
-      description,
-      onClick = () => { },
-      containerClassName = '',
-      className = '',
-      transitionMode = 'scroll',
-      data,
-    } = this.props,
+        src,
+        contentType = '',
+        description,
+        onClick = () => {},
+        containerClassName = '',
+        className = '',
+        transitionMode = 'scroll',
+        data,
+      } = this.props,
       { show } = this.state
 
     const contentTypeName = getContentTypeName(contentType),
@@ -56,19 +56,17 @@ class VideoCard extends Component {
     const isVideos = data && data.type === 'videos'
     // const showDate = data && data.contentType === 3 && isVideos ? true : false
     const showDate = data
-      ? data.contentType === 3 && isVideos
-        ? 'upcoming'
-        : data.contentType === 1 && isVideos
-          ? 'highlights'
-          : false
+      ? data.contentType === 3 && isVideos ? 'upcoming' : data.contentType === 1 && isVideos ? 'highlights' : false
       : false
+    const videoType = isVideos && data && data.contentType
+    const isMatchType = videoType && (data.contentType === 1 || data.contentType === 3 || data.contentType === 4)
 
     return (
       <div onClick={() => onClick()} className={`${videoContainer} ${containerClassName}`}>
         <img
           className={`${transitionMode === 'scroll' ? 'bannerImage' : 'bannerImage3d'} ${className} ${
             !show ? '' : 'hide'
-            }`}
+          }`}
           src={placeholderBlankPortrait}
         />
         <div className="imageWrapper">
@@ -91,27 +89,30 @@ class VideoCard extends Component {
           <span className={'premiumIcon'} />
         </p> */}
 
-        {/* Card Text */}
-        <p className={'title'}>{description}</p>
+        {isMatchType ? (
+          <>
+            <p className={'title'}>{description}</p>
 
-        {/* show date */}
-        {showDate === 'upcoming' ? (
-          <p className={'time'}>{dateFormat(data.startTime * 1000, 'ddd, d mmm HH:MM')}</p>
-        ) : // :
-          // showDate === 'highlights' && data.startTime ?
-          //   <p className={'time'}>FT, {dateFormat(data.startTime * 1000, 'd mmm yyyy')}</p>
-          null}
+            {/* show date */}
+            {showDate === 'upcoming' ? (
+              <p className={'time'}>{dateFormat(data.startTime * 1000, 'ddd, d mmm HH:MM')}</p>
+            ) : // :
+            // showDate === 'highlights' && data.startTime ?
+            //   <p className={'time'}>FT, {dateFormat(data.startTime * 1000, 'd mmm yyyy')}</p>
+            null}
 
-        {/* show platforms */}
-        {isVideos ? (
-          platforms ? (
-            <p className={'free'}>Free streaming on App</p>
-          ) : (
-              <p className={'platform'}>
-                Premium on App
-              <span className={'premiumIcon'} />
-              </p>
-            )
+            {/* show platforms */}
+            {isVideos ? (
+              platforms ? (
+                <p className={'free'}>Free streaming on App</p>
+              ) : (
+                <p className={'platform'}>
+                  Premium on App
+                  <span className={'premiumIcon'} />
+                </p>
+              )
+            ) : null}
+          </>
         ) : null}
       </div>
     )

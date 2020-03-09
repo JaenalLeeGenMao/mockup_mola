@@ -89,7 +89,7 @@ export const playlistContainer = css`
 
   .shortDesc {
     color: #b1b1b1;
-    height: 3.3rem !important;
+    height: 3.09rem !important;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
