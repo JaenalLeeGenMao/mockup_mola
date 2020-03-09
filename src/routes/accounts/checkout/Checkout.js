@@ -134,6 +134,10 @@ class Checkout extends Component {
 
     if (order.meta.status !== 'success') {
       // toastr.error('Notification', 'Failure upon generating new order')
+      this.setState({
+        isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
+        error: true /** NOTE: gagal redirect ke halaman subscriptions list */,
+      })
       return
     }
 

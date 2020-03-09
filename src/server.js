@@ -707,9 +707,9 @@ app.get('/oauth/callback', async (req, res) => {
             },
           },
           (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-              console.error(error, response.statusCode, body)
-              return reject({ error, statusCode: response.statusCode, body })
+            if (error || response.status_code !== 200) {
+              console.error(error, _get(response, 'statusCode', 'timeout'), body)
+              return reject({ error, statusCode: _get(response, 'statusCode', 'timeout'), body })
             }
             res.cookie('_at', body.access_token, {
               maxAge: body.expires_in * 1000,
