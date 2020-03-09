@@ -707,7 +707,7 @@ app.get('/oauth/callback', async (req, res) => {
             },
           },
           (error, response, body) => {
-            if (error || response.status_code !== 200) {
+            if (error || response.statusCode !== 200) {
               console.error(error, _get(response, 'statusCode', 'timeout'), body)
               return reject({ error, statusCode: _get(response, 'statusCode', 'timeout'), body })
             }
