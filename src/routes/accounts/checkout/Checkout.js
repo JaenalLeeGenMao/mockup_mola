@@ -311,7 +311,7 @@ class Checkout extends Component {
           </div>
 
           <div className={styles.info_wrap}>
-            <h4 className={styles.info_title}>Intruksi Pembayaran</h4>
+            <h4 className={styles.info_title}>Instruksi Pembayaran</h4>
           </div>
 
           <div className={styles.order__info_detail_wrapper}>
