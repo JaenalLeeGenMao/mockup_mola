@@ -562,10 +562,8 @@ class Checkout extends Component {
         const redirectUri = `${origin}${
           isMobile ? '/accounts/subscriptionsList' : '/accounts/profile?tab=subscriptionPackage'
         }`
-        history.push({
-          pathname: '/accounts/login',
-          search: `redirect_uri=${encodeURIComponent(redirectUri)}`,
-        })
+        // tidak bisa lewat client kena page not found, terpaksa SSR
+        window.location.href = `${origin}/signout?redirect_uri=${encodeURIComponent(redirectUri)}`
         return null
       }
 

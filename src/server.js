@@ -837,7 +837,18 @@ app.get('/accounts', async (req, res) => {
 app.get('/signout', (req, res) => {
   res.clearCookie('_at')
   res.clearCookie('SID')
-  return res.redirect(domain || 'http://jaenal.mola.tv')
+
+  if (req.query.redirect_uri) {
+    res.cookie('redirect_uri', req.query.redirect_uri, {
+      maxAge: 60 * 1000,
+      httpOnly: true,
+    })
+
+    /** kebanyakan redirect need improvement */
+    return res.redirect(`${domain}/accounts/login?redirect_uri=${req.query.redirect_uri}`)
+  }
+
+  return res.redirect(domain || 'https://stag.mola.tv')
 })
 
 app.get('/p/:voucher', async (req, res) => {

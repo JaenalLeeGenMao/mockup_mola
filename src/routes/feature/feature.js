@@ -290,8 +290,10 @@ class Feature extends Component {
                               }
                               height={
                                 contentTypeName === 'movie' || contentTypeName === 'vod'
-                                  ? isMobile ? '22rem' : '31rem'
-                                  : isMobile ? '15rem' : '25rem'
+                                  ? isMobile ? '19rem' : '31rem'
+                                  : contentTypeName === 'mola-categories'
+                                    ? isMobile ? '12rem' : '18rem'
+                                    : isMobile ? '15rem' : '25rem'
                               }
                             >
                               <Carousel
@@ -343,7 +345,9 @@ class Feature extends Component {
                                           alt={obj.title}
                                           description={obj.title}
                                           data={obj}
+                                          categories={contentTypeName === 'mola-categories' ? false : true}
                                           contentType={isMatch ? (matchLive ? obj.contentType : 4) : obj.contentType}
+                                          isLive={isMatch ? matchLive : false}
                                           src={
                                             obj.type === 'playlists'
                                               ? `${obj.images.cover.landscape}?w=720`
