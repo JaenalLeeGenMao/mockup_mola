@@ -8,7 +8,8 @@ import ReactTooltip from 'react-tooltip'
 import ReactMarkdown from 'react-markdown'
 
 import config from '@source/config'
-import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+// import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
 import watchPermission from '@source/lib/watchPermission'
@@ -23,6 +24,8 @@ import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from '../upcoming-video'
 import PlayerHeader from '../player-header'
+
+import VOPlayer from '@components/VOPlayer'
 
 // import ChatUtils from '@components/ChatUtils'
 
@@ -186,7 +189,7 @@ class WatchDesktop extends Component {
       }
       try {
         localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
+      } catch (err) { }
     }
   }
 
@@ -298,12 +301,12 @@ class WatchDesktop extends Component {
 
         const defaultVidSetting = dataFetched
           ? defaultVideoSetting(
-              user,
-              dataFetched,
-              vuidStatus === 'success' ? vuid : '',
-              handleNextVideo,
-              videoSettingProps
-            )
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            handleNextVideo,
+            videoSettingProps
+          )
           : {}
 
         this.setState({
@@ -343,6 +346,7 @@ class WatchDesktop extends Component {
   }
 
   renderVideo = dataFetched => {
+    console.log('dataFetched', dataFetched)
     const { user, getMovieDetail, videoId, blocked, isAutoPlay, isMatchPassed, configParams } = this.props
 
     let theoVolumeInfo = {}
@@ -352,7 +356,7 @@ class WatchDesktop extends Component {
       if (theoVolumeInfo != null) {
         theoVolumeInfo = JSON.parse(theoVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
 
     if (dataFetched) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
@@ -376,80 +380,106 @@ class WatchDesktop extends Component {
       }
 
       // Block if the video is not available in web & app
-      if (blocked) {
-        return (
-          <>
-            <PlatformDesktop {...this.props} />
-          </>
-        )
-      } else {
-        // Block if user is not logged in
-        if (!isAllowed) {
-          if (watchPermissionErrorCode == 'login_first') {
-            return (
-              <div className={movieDetailNotAllowed}>
-                <p>
-                  Silahkan{' '}
-                  <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
-                    {' '}
-                    login
-                  </a>{' '}
-                  untuk menyaksikan tayangan ini.
-                </p>
-              </div>
-            )
-          }
-        }
-        // Show countdown if it is a live match
-        if (
-          this.state.countDownStatus &&
-          getContentTypeName(dataFetched.contentType) === 'live' &&
-          dataFetched.startTime * 1000 > Date.now()
-        ) {
-          return (
-            <CountDown
-              hideCountDown={this.hideCountDown}
-              startTime={dataFetched.startTime}
-              videoId={videoId}
-              getMovieDetail={getMovieDetail}
-              isMobile={false}
-            />
-          )
-        } else if (isMatchPassed) {
-          return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
-        } else if (dataFetched.streamSourceUrl && defaultVidSetting) {
-          // Else render, only if there's streamSourceUrl
-          if (!this.state.errorLicense) {
-            const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
-            return (
-              <>
-                <Theoplayer
-                  className={customTheoplayer}
-                  subtitles={this.subtitles()}
-                  poster={autoPlay ? null : poster}
-                  autoPlay={autoPlay}
-                  handleOnReadyStateChange={this.handleOnReadyStateChange}
-                  handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                  handleOnVideoPlaying={this.handleOnVideoPlaying}
-                  {...videoSettings}
-                >
-                  <div className={videoInnerContainer}>
-                    {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
-                    {this.renderPlayerHeader(dataFetched)}
-                  </div>
-                </Theoplayer>
-                {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
-              </>
-            )
-          } else {
-            return (
-              <div className={movieDetailNotAvailableContainer}>
-                Error during license server request. Please refresh the browser.
-              </div>
-            )
-          }
-        }
-      }
+      // if (blocked) {
+      //   return (
+      //     <>
+      //       <PlatformDesktop {...this.props} />
+      //     </>
+      //   )
+      // } else {
+      //   // Block if user is not logged in
+      //   if (!isAllowed) {
+      //     if (watchPermissionErrorCode == 'login_first') {
+      //       return (
+      //         <div className={movieDetailNotAllowed}>
+      //           <p>
+      //             Silahkan{' '}
+      //             <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
+      //               {' '}
+      //               login
+      //             </a>{' '}
+      //             untuk menyaksikan tayangan ini.
+      //           </p>
+      //         </div>
+      //       )
+      //     }
+      //   }
+      //   // Show countdown if it is a live match
+      //   if (
+      //     this.state.countDownStatus &&
+      //     getContentTypeName(dataFetched.contentType) === 'live' &&
+      //     dataFetched.startTime * 1000 > Date.now()
+      //   ) {
+      //     return (
+      //       <CountDown
+      //         hideCountDown={this.hideCountDown}
+      //         startTime={dataFetched.startTime}
+      //         videoId={videoId}
+      //         getMovieDetail={getMovieDetail}
+      //         isMobile={false}
+      //       />
+      //     )
+      //   } else if (isMatchPassed) {
+      //     return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
+      //   } else if (dataFetched.streamSourceUrl && defaultVidSetting) {
+      //     // Else render, only if there's streamSourceUrl
+      //     if (!this.state.errorLicense) {
+      const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
+      return (
+        <>
+        <VOPlayer
+          title={dataFetched.title}
+          poster={poster}
+          autoplay={autoPlay}
+          subtitles={this.subtitles()}
+          recommendation={this.props.recommendation}
+          {...videoSettings}
+        >
+            <div
+              id="nextVideo"
+              style={{
+                position: 'absolute',
+                backgroundColor: 'green',
+                width: '100px',
+                height: '100px',
+                bottom: '0%',
+                right: '2rem',
+              }}
+            >
+              Next video
+            </div>
+            <div className={videoInnerContainer}>
+              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              {this.renderPlayerHeader(dataFetched)}
+            </div>
+          </VOPlayer>
+          {/* <Theoplayer
+            className={customTheoplayer}
+            subtitles={this.subtitles()}
+            poster={autoPlay ? null : poster}
+            autoPlay={autoPlay}
+            handleOnReadyStateChange={this.handleOnReadyStateChange}
+            handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
+            handleOnVideoPlaying={this.handleOnVideoPlaying}
+            {...videoSettings}
+          >
+            <div className={videoInnerContainer}>
+              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              {this.renderPlayerHeader(dataFetched)}
+            </div>
+          </Theoplayer> */}
+          {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+        </>
+      )
+      //     } else {
+      //       return (
+      //         <div className={movieDetailNotAvailableContainer}>
+      //           Error during license server request. Please refresh the browser.
+      //         </div>
+      //       )
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -505,12 +535,13 @@ class WatchDesktop extends Component {
     const { blocked } = this.props
     const isDesktopVideoBlocker = this.props.configParams.data.desktop_video_blocker ? true : false
 
+    console.log('data', data)
     const dataFetched = videoStatus === 'success' && data.length > 0 ? data[0] : undefined
     let drmStreamUrl = '',
       isDRM = false
     const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
     if (videoStatus === 'success') {
-      drmStreamUrl = isSafari ? dataFetched?.drm?.fairplay?.streamUrl : dataFetched?.drm?.widevine?.streamUrl
+      drmStreamUrl = isSafari ? dataFetched ?.drm ?.fairplay ?.streamUrl : dataFetched ?.drm ?.widevine ?.streamUrl
     }
     isDRM = drmStreamUrl ? true : false
 
@@ -583,17 +614,7 @@ class WatchDesktop extends Component {
                     </div>
                   )}
                 <div className={playerClass} id="video-player-root">
-                  {loadPlayer ? (
-                    <>
-                      {isDesktopVideoBlocker ? (
-                        <PlatformDesktop isDesktopVideoBlocker={isDesktopVideoBlocker} {...this.props} />
-                      ) : (
-                        this.renderVideo(dataFetched)
-                      )}
-                    </>
-                  ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  {this.renderVideo(dataFetched)}
                   <div className={`${videoPlayerInfoWrapper} ${isLiveMatch ? 'live' : ''}`}>
                     <div className="player__info_grid_title">
                       <h1>{dataFetched.title}</h1>

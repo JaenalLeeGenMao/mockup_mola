@@ -18,6 +18,7 @@ const handleOnTimePerMinute = ({ heartbeat, bitrate, video_quality, client_bandw
   const { clientIp, uid, referrer } = userData
   // const currentDuration = player ? player.currentTime : '';
   // const totalDuration = player ? player.duration : '';
+  console.log('referrer', referrer)
   const payload = {
     clientIp,
     heartbeat: heartbeat ? 60 : 0,
@@ -65,7 +66,7 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) {}
+            } catch (err) { }
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
 
@@ -109,7 +110,7 @@ const handleTimeUpdate = (payload, player) => {
             bitrate = `${currentTrack.activeQuality.bandwidth}`
             try {
               client_bandwidth = localStorage.getItem('theoplayer-stored-network-info')
-            } catch (err) {}
+            } catch (err) { }
             //console.log('bitrate full:', `${currentTrack.activeQuality.height} ${currentTrack.activeQuality.bandwidth / 1024 / 1000} ${localStorage.getItem('theoplayer-stored-network-info')}`);
           }
         }
@@ -145,7 +146,7 @@ const setBannerOptions = (ipaEnabled = true, araEnabled = true, araRequestUrl) =
 }
 
 const uuidADS = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)

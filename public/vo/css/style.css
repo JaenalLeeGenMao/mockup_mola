@@ -10,10 +10,33 @@
   padding: 20px;
 }
 
+.playbackInfo {
+  margin-top: 16px;
+  border-top: solid 2px #222;
+  padding-top: 10px;
+}
+
 #videoSection {
+  display: block;
   height: 400px;
   width: 100%;
 }
+
+#videoArea {
+  display: inline-block;
+  min-width: 640px;
+  width: 50%;
+  height: 100%;
+}
+
+#videoInfo {
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  vertical-align: top;
+  padding-left: 15px;
+}
+
 
 /* the video context fills the totallity of its parent surface */
 #videoContext {
@@ -22,6 +45,7 @@
   background-color: #000;
   width: 640px;
   margin: 0 auto;
+  color: white;
 }
 
 /* redefine width of videoContext when in fullscreen to get fullscreen video (browser-depending modificator) */
@@ -50,6 +74,14 @@
   width: 100%;
   background: -webkit-linear-gradient(bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#streamTable {
+  width: 100%;
+}
+
+#streamTable tr td {
+  vertical-align: top;
 }
 
 .svg-icon {

@@ -49,9 +49,9 @@ export const videoPlayerContainer = css`
 `
 
 export const videoTitle = css`
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: normal;
   padding: 0 15px;
 `
 
@@ -159,4 +159,47 @@ export const infoBarText = css`
 
 export const headerContainer = css`
   height: 60px;
+`
+
+export const videoInnerContainer = css`
+  width: 100%;
+  height: 100%;
+`
+
+export const videoBlockerPlatform = css`
+  background: transparent linear-gradient(180deg, #00000000 0%, #000000 40%) 0% 0% no-repeat padding-box;
+  opacity: 1;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 35%;
+  width: 100%;
+  pointer-events: none;
+
+  .wrap__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+    width: 100%;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+
+  .text__info {
+    text-align: center;
+    font: 25px;
+    letter-spacing: 0;
+    color: #ffffff;
+    opacity: 1;
+    margin: 0 10px;
+  }
+
+  .img__info {
+    width: 130px;
+    margin-top: 15px;
+    pointer-events: auto;
+  }
 `

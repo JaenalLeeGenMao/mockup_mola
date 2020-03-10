@@ -2,42 +2,65 @@ import React from 'react'
 const { getComponent } = require('@supersoccer/gandalf')
 const VideoThumbnail = getComponent('video-thumbnail')
 
-// import { unavailableImg } from '@global/imageUrl'
-import Link from '@components/Link'
-import { videoSuggestionContainer, videoSuggestionWrapper, videoSuggestionInnerWrapper, videoSuggestionPlayer, videoSuggestionPlayerDetail, titleSuggestions, imageWrapper, playIcon } from './style'
+import { getContentTypeName } from '@source/lib/globalUtil'
 
-const Suggestions = ({ style = {}, videos = [] }) => {
+// import { unavailableImg } from '@global/imageUrl'
+import Carousel from '@components/carousel'
+import PlaylistCard from '@components/playlist-card'
+import VideoCard from '@components/video-card'
+import Link from '@components/Link'
+import {
+  videoSuggestionContainer,
+  videoSuggestionWrapper,
+  videoSuggestionInnerWrapper,
+  videoSuggestionPlayer,
+  videoSuggestionPlayerDetail,
+  titleSuggestions,
+  imageWrapper,
+  playIcon,
+} from './style'
+
+const Suggestions = ({ style = {}, videos = [], contentType = '' }) => {
+  const contentTypeName = getContentTypeName(contentType),
+    isPortrait = contentTypeName === 'movie' || contentTypeName === 'vod' ? true : false
   return (
-    <>
-      <div className={videoSuggestionContainer}>
-        <div className={videoSuggestionWrapper} style={style}>
-          <div className={videoSuggestionInnerWrapper}>
-            {videos.map(({ id, background, title }) => {
-              const imageSource = background.landscape
-              return (
-                <Link to={`/watch?v=${id}`} key={id} className={videoSuggestionPlayer}>
-                  <VideoThumbnail
-                    thumbnailUrl={imageSource}
-                    thumbnailPosition="wrap"
-                    className={videoSuggestionPlayerDetail}
-                    imgWrapperClassName={imageWrapper}
-                    // detailStyle={{ position: 'absolute' }}
-                  >
-                    <div>
-                      <span className={playIcon} />
-                      <div className={titleSuggestions}>
-                        {' '}
-                        <span>{title}</span>
-                      </div>
-                    </div>
-                  </VideoThumbnail>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-    </>
+    <Carousel
+      className={videoSuggestionContainer}
+      wrap={false}
+      autoplay={false}
+      sliderCoin={true}
+      dragging={true}
+      withoutControls={videos.length <= 6}
+      slidesToShow={6.5}
+      slidesToScroll={6}
+      transitionMode={'scroll'}
+    >
+      {videos.map(obj => {
+        if (isPortrait) {
+          return (
+            <Link to={`/watch?v=${obj.video_id}`} key={obj.video_id}>
+              <VideoCard
+                key={obj.video_id}
+                alt={obj.title}
+                description={obj.title}
+                src={`${obj.cover_portrait}?w=540`}
+              />
+            </Link>
+          )
+        } else {
+          return (
+            <Link to={`/watch?v=${obj.video_id}`} key={obj.video_id}>
+              <PlaylistCard
+                key={obj.video_id}
+                alt={obj.title}
+                description={obj.title}
+                src={`${obj.cover_landscape}?w=720`}
+              />
+            </Link>
+          )
+        }
+      })}
+    </Carousel>
   )
 }
 

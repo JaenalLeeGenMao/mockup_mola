@@ -8,7 +8,8 @@ import queryString from 'query-string'
 import { globalTracker } from '@source/lib/globalTracker'
 import { playStoreBadge, appStoreBadge } from '@global/imageUrl'
 
-import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+// import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import config from '@source/config'
 import Tracker from '@source/lib/tracker'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
@@ -21,6 +22,8 @@ import Header from '@components/Header'
 import CountDown from '@components/CountDown'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import PlayerHeader from '../player-header'
+
+import VOPlayer from '@components/VOPlayer'
 // import { Synopsis as ContentSynopsis, Review as ContentReview, Creator as ContentCreator, Suggestions as ContentSuggestions, Trailer as ContentTrailer } from './content'
 import UpcomingVideo from '../upcoming-video'
 
@@ -426,7 +429,33 @@ class MovieDetail extends Component {
           const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
           return (
             <>
-              <Theoplayer
+            <VOPlayer
+          title={dataFetched.title}
+          poster={poster}
+          autoplay={autoPlay}
+          subtitles={this.subtitles()}
+          recommendation={this.props.recommendation}
+          {...videoSettings}
+        >
+            <div
+              id="nextVideo"
+              style={{
+                position: 'absolute',
+                backgroundColor: 'green',
+                width: '100px',
+                height: '100px',
+                bottom: '0%',
+                right: '2rem',
+              }}
+            >
+              Next video
+            </div>
+            <div className={videoInnerContainer}>
+              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              {this.renderPlayerHeader(dataFetched)}
+            </div>
+          </VOPlayer>
+              {/* <Theoplayer
                 className={customTheoplayer}
                 subtitles={this.subtitles()}
                 poster={autoPlay ? null : poster}
@@ -439,7 +468,7 @@ class MovieDetail extends Component {
                   {this.renderPlayerHeader(dataFetched)}
                   {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
                 </div>
-              </Theoplayer>
+              </Theoplayer> */}
               {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
             </>
           )

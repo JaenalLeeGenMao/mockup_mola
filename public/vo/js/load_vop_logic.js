@@ -3,7 +3,7 @@ var vo_playerStartTimeFromVOP = 0;
 
 function injectDOMElement() {
     var loadControl = document.createElement('div');
-    loadControl.innerHTML = '<br><h3>Load stream from VOP URL</h3> \
+    loadControl.innerHTML = '<br><hr><h3>Load stream from VOP URL</h3> \
         <input type="text" id="vopURL" size="80" placeholder="VOP URL" /> \
         <button type="button" onclick="loadTVaaSVOP()">Load stream from VOP</button>';
     document.getElementById('testControls').appendChild(loadControl);
@@ -16,75 +16,70 @@ function loadTVaaSVOP() {
 
 function loadVOPFromUrl(url) {
     console.log('Loading stream description from VOP url: ' + url);
-    fetch(url).then(function(response) {
-      return response.text();
-    }).then(function(responseTxt) {
+    fetch(url).then(function (response) {
+        return response.text();
+    }).then(function (responseTxt) {
         console.log('got response:', responseTxt);
         var parser = new DOMParser();
-        var xmlDoc =  parser.parseFromString(responseTxt, 'text/xml');
+        var xmlDoc = parser.parseFromString(responseTxt, 'text/xml');
 
-        var licenseAcqUrl = '';
-        var url = xmlDoc.getElementsByTagName('URL')[0].childNodes[0].nodeValue;
+        var media = {};
 
-        var drmLicenseAcquisionElements = xmlDoc.getElementsByTagName('DrmLicenseAcquisitionUrl');
-        if(drmLicenseAcquisionElements.length > 0) {
+        media.url = xmlDoc.getElementsByTagName('URL')[0].childNodes[0].nodeValue;
+
+        var drmTypeTag = xmlDoc.getElementsByTagName('DrmAgentType');
+        if (drmTypeTag.length > 0) {
             try {
-                licenseAcqUrl = drmLicenseAcquisionElements[0].childNodes[0].nodeValue;
+                var drmTypeValue = drmTypeTag[0].childNodes[0].nodeValue;
+                if (drmTypeValue == 'DrmAgentTypeWidevine') {
+                    media.drmAgentType = 'widevine';
+                }
+                else if (drmTypeValue == 'DrmAgentTypePlayready') {
+                    media.drmAgentType = 'playready';
+                }
             }
-            catch(e) {
-                licenseAcqUrl = '';
+            catch (e) { }
+        }
+
+        if (media.drmAgentType != undefined) {
+            var drmLicenseAcquisionElements = xmlDoc.getElementsByTagName('DrmLicenseAcquisitionUrl');
+            if (drmLicenseAcquisionElements.length > 0) {
+                try {
+                    media.licenseServer = drmLicenseAcquisionElements[0].childNodes[0].nodeValue;
+                }
+                catch (e) { }
+            }
+            // look for the server certificate tag for Widevine only
+            if (media.drmAgentType == 'widevine') {
+                var drmLicenseServerCertTag = xmlDoc.getElementsByTagName('DrmCertificateUrl');
+                if (drmLicenseServerCertTag.length > 0) {
+                    try {
+                        media.wvServerCertificateUrl = drmLicenseServerCertTag[0].childNodes[0].nodeValue;
+                    }
+                    catch (e) { }
+                }
             }
         }
-        //var licenseAcqCustomData = xmlDoc.getElementsByTagName('DrmLicenseAcquisitionCustomData')[0].childNodes[0].nodeValue;
 
-        console.log('VOP info:', url, licenseAcqUrl);
-
-        var drmServersConfig = {};
-        if(licenseAcqUrl.length > 0) {
-          drmServersConfig['com.widevine.alpha'] = licenseAcqUrl;
+        var vmapUrlTag = xmlDoc.getElementsByTagName('VmapUrl');
+        if (vmapUrlTag.length > 0) {
+            try {
+                media.vmapUrl = vmapUrlTag[0].childNodes[0].nodeValue;
+            }
+            catch (e) { }
         }
 
-        var config = {
-            drm: {
-              servers: drmServersConfig,
-              advanced: {
-      //            'com.apple.fps': {},
-                  'com.widevine.alpha' : {
-                      persistentStateRequired: false
-                  },
-                  'com.microsoft.playready': {
-                      persistentStateRequired: false
-                  }
-              }
-            },
-            manifest: {
-              availabilityWindowOverride: Infinity
-            },
-            subtitles: {
-              enableSMPTE: false
-            },
-            autostart: true
-          };
-
-        var widevineCertUrl = document.getElementById('widevineServerCertificateURL').value;
-        if(undefined != wvServerCertificate) {
-            config.drm.advanced['com.widevine.alpha'].serverCertificate = wvServerCertificate;
-        }
-        else if(widevineCertUrl.trim().length > 0) {
-            config.drm.advanced['com.widevine.alpha'].serverCertificateUrl = widevineCertUrl.trim();
+        var vastUrlTag = xmlDoc.getElementsByTagName('VastUrl');
+        if (vastUrlTag.length > 0) {
+            try {
+                media.vastUrl = vastUrlTag[0].childNodes[0].nodeValue;
+            }
+            catch (e) { }
         }
 
-        player.reset().then(
-          function() {
-            player.configure(config);
-            // Try to load a manifest
-            // This is an asynchronous process, returning a Promise
-            player.load(url, vo_playerStartTimeFromVOP).then(function() {
-              // This runs if the asynchronous load is successful
-              console.log('The video has now been loaded');
-            }).catch(onError);  // onError is executed if the asynchronous load fails
-          }
-        );
+        console.log('VOP info:', media.url, media.drmAgentType, media.licenseServer, media.vastUrl, media.vmapUrl);
+
+        loadMedia(media);
     });
 }
 

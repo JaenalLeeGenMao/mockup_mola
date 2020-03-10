@@ -1,0 +1,24 @@
+.vo_container {
+  height: 100%;
+  width: 100%;
+}
+
+.vo_poster {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  position: absolute;
+  z-index: 2;
+}
+
+.vo_child_container {
+  opacity: 1;
+  transition: all 300ms ease-in-out;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.vo_child_container.hide {
+  opacity: 0;
+}
