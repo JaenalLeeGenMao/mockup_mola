@@ -433,15 +433,23 @@ applicationID:${config.env === 'production' ? '172046541' : '171080482'},sa:1}`,
               __html: `
                 document.addEventListener("DOMContentLoaded", () => {
                   if ((location.search).indexOf('noHeader') >= 0) {
-                    console.log('No Header');
-
-                    setTimeout(function () {
+                    var liveSupportInterval = setInterval(hideLiveSupport, 500);
+                    var lastIdxInterval = 0;
+                    function hideLiveSupport () {
                       var liveSupport = document.querySelector(".embeddedServiceHelpButton");
-                      console.log('liveSupport =>', liveSupport);
+                      lastIdxInterval++;
+
                       if (liveSupport) {
                         liveSupport.style.display = 'none';
+                        clearInterval(liveSupportInterval);
+                        return;
                       }
-                    }, 3000);
+
+                      if (lastIdxInterval === 40) {
+                        clearInterval(liveSupportInterval);
+                        return;
+                      }
+                    }
                   }
                 });
               `,
