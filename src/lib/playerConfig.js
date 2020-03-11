@@ -1,7 +1,7 @@
 import { handleTracker } from './videoTracker'
 import { endpoints } from '@source/config'
 import Tracker from '@source/lib/tracker'
-import TrackerTest from '../../../web-tracker'
+import TrackerTest from '@supersoccer/web-tracker'
 import history from '@source/history'
 import config from '@source/config'
 import { get } from 'axios'
