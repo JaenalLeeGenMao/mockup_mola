@@ -432,8 +432,9 @@ class MovieDetail extends Component {
             <VOPlayer
           title={dataFetched.title}
           poster={poster}
-          autoplay={autoPlay}
+          autoPlay={false}
           subtitles={this.subtitles()}
+          streamSourceUrl={dataFetched.streamSourceUrl}
           recommendation={this.props.recommendation}
           {...videoSettings}
         >

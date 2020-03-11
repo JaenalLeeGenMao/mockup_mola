@@ -190,6 +190,16 @@ class VOPlayer extends Component {
 
       const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
 
+      if (drm && !drm.drmEnabled) {
+        const config = {
+          vmapUrl,
+          subtitles,
+          manifestUri: this.props.streamSourceUrl
+        }
+        this.handleInitPlayer(player, config)
+        return
+      }
+
       let drmStreamUrl = isSafari ? this.props?.drm?.fairplay?.streamUrl : this.props?.drm?.widevine?.streamUrl
 
       // console.log('drmStreamUrl', drmStreamUrl)
@@ -255,7 +265,6 @@ class VOPlayer extends Component {
       this.handlePlayerEventListener(player)
 
       window.video = _get(this.props, 'movieDetail.data[0]', '')
-      this.player = player
     } catch (e) {
       console.log('Error while creating the player: ', e)
       $('#videoContext').html('Error while creating player')
@@ -401,7 +410,22 @@ class VOPlayer extends Component {
               }
               // player.addSRTTextTrack('EN', '', 'http://localhost:3000/vo/sample-subs2.srt')
               // player.addSRTTextTrack('ID', '', 'http://localhost:3000/vo/sample-subs.srt')
-              console.log('The video has now been loaded')
+              console.log('The video has now been loaded with ads')
+            })
+            .catch(that.onError) // onError is executed if the asynchronous load fails
+        }).catch(() => {
+          player
+            .load(config.manifestUri, 0)
+            .then(function() {
+              // player.addSRTTextTrack('EN', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
+              if (config.subtitles && config.subtitles.length > 0) {
+                config.subtitles.map(subtitle => {
+                  player.addSRTTextTrack(subtitle.label, '', subtitle.src)
+                })
+              }
+              // player.addSRTTextTrack('EN', '', 'http://localhost:3000/vo/sample-subs2.srt')
+              // player.addSRTTextTrack('ID', '', 'http://localhost:3000/vo/sample-subs.srt')
+              console.log('The video has now been loaded, failed to retrieve ads')
             })
             .catch(that.onError) // onError is executed if the asynchronous load fails
         })
@@ -410,8 +434,13 @@ class VOPlayer extends Component {
           .load(config.manifestUri, 0)
           .then(function() {
             // player.addSRTTextTrack('en', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-            player.addSRTTextTrack('en', '', 'http://localhost:3000/vo/sample-subs.srt')
-            console.log('The video has now been loaded')
+            // player.addSRTTextTrack('en', '', 'http://localhost:3000/vo/sample-subs.srt')
+            if (config.subtitles && config.subtitles.length > 0) {
+              config.subtitles.map(subtitle => {
+                player.addSRTTextTrack(subtitle.label, '', subtitle.src)
+              })
+            }
+            console.log('The video has now been loaded without ads')
           })
           .catch(that.onError) // onError is executed if the asynchronous load fails
       }
@@ -469,7 +498,11 @@ class VOPlayer extends Component {
   }
 
   handlePlayButton = () => {
-    this.player.play()
+    /** nanti di fix deh gua binggung */
+    this.setState({
+      isPlaying: true
+    })
+    window.player.play()
   }
 
   handleSubtreeOnChange = () => {

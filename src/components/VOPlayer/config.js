@@ -53,8 +53,7 @@ let style = [
 */
 let script = [
   {
-    //ini sample kalo dari hostingan
-    src: 'http://yourjavascript.com/12091162319/jquery-3-1-1-min.js',
+    src: '../vo/js/jquery-3.1.1.min.js',
     id: 'jquery',
   },
   {
@@ -72,7 +71,7 @@ let script = [
   {
     src: '../vo/js/adBanner.js',
     id: 'voplayeradbannerjs',
-  },
+  }
 ]
 
 export const VOScript = script
