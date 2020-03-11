@@ -86,6 +86,7 @@ const oauth = {
     'payments:payment.dopay',
     'userdata:preference.read',
     'userdata:preference.insert',
+    'openid',
   ].join(' '),
 }
 
@@ -111,6 +112,7 @@ const oauthApp = {
     'payments:payment.dopay',
     'userdata:preference.read',
     'userdata:preference.insert',
+    'openid',
   ].join(' '),
 }
 
@@ -303,6 +305,7 @@ const requestGuestToken = async res => {
           'payments:payment.dopay',
           'userdata:preference.read',
           'userdata:preference.insert',
+          'openid',
         ].join(' '),
       },
     })
@@ -425,6 +428,7 @@ const requestCode = async (req, res) => {
         'payments:payment.dopay',
         'userdata:preference.read',
         'userdata:preference.insert',
+        'openid',
       ].join(' '),
       state: randomState,
     })
