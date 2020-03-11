@@ -23,6 +23,7 @@ import {
   NOTIFICATION_ENDPOINT,
   PARTNERS_ENDPOINT,
   VALIDATE_PROMO_ENDPOINT,
+  PROFILE_ENDPOINT,
 } from './endpoints'
 import utils from './util'
 
@@ -978,6 +979,30 @@ const getApiPromoValidate = voucher => {
     })
 }
 
+const getUserProfile = at => {
+  return get(`${PROFILE_ENDPOINT}`, {
+    ...endpoints.setting,
+    headers: { Authorization: `Bearer ${at}`, 'x-app-id': 2 },
+  })
+    .then(response => {
+      return {
+        meta: {
+          status: 'success',
+        },
+        data: response.data,
+      }
+    })
+    .catch(error => {
+      return {
+        meta: {
+          status: 'error',
+          error,
+        },
+        data: {},
+      }
+    })
+}
+
 export default {
   getHomePlaylist,
   getFeaturePlaylist,
@@ -1009,4 +1034,5 @@ export default {
   getNotifications,
   getTotalNotifications,
   getApiPromoValidate,
+  getUserProfile,
 }

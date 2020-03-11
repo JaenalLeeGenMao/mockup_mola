@@ -75,7 +75,7 @@ const CheckoutItem = props => {
 
 class Checkout extends Component {
   state = {
-    email: this.props.user.email,
+    email: '',
     data: {},
     subscriptionId: '',
     accessToken: '',
@@ -124,12 +124,39 @@ class Checkout extends Component {
   //   }
   // }
 
+  getUserProfile = async at => {
+    const user = await MolaHandler.getUserProfile(at)
+
+    console.log('USER', user)
+    if (user.meta.status == 'success') {
+      const email = _get(user, 'data.data.email', '')
+      this.setState({
+        email,
+      })
+
+      setTimeout(() => {
+        alert(this.state.email)
+      }, 2000)
+    }
+  }
+
   handleCheckout = async () => {
     const { subscriptionId, accessToken, uid, data, email } = this.state
 
     this.setState({
       isCheckoutDetailLoading: !this.state.isCheckoutDetailLoading,
     })
+
+    if (!email || email == '') {
+      setTimeout(() => {
+        this.setState({
+          isCheckoutDetailLoading: false,
+          // error: true /** NOTE: gagal redirect ke halaman subscriptions list */,
+        })
+      }, 1000)
+      toastr.error('Notification', 'Failed to retreive your info, please refresh this page')
+      return
+    }
 
     const order = await MolaHandler.createOrder({
       ...this.state.data,
@@ -188,6 +215,8 @@ class Checkout extends Component {
       // toastr.error('Notification', 'Please back to Subscription List page')
       return
     }
+
+    this.getUserProfile(accessToken)
 
     const isAccessTokenValid = jwt.decode(accessToken) != undefined
 

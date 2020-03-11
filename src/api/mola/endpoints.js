@@ -37,3 +37,4 @@ export const VALIDATE_PROMO_ENDPOINT = `${endpoints.api}/promos/voucher/validate
 // export const MOVIE_STREAMING = 'https://private-e3227-molawebapi4.apiary-mock.com/videos';
 
 export const NOTIFICATION_ENDPOINT = `${endpoints.api}/inbox/notif` //'https://private-6bd318-ferdy.apiary-mock.com/notifications'
+export const PROFILE_ENDPOINT = `${endpoints.api}/accounts/profile`
