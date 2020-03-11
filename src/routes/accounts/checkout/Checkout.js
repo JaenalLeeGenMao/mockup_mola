@@ -133,10 +133,6 @@ class Checkout extends Component {
       this.setState({
         email,
       })
-
-      setTimeout(() => {
-        alert(this.state.email)
-      }, 2000)
     }
   }
 
