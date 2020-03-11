@@ -197,6 +197,9 @@ class VOPlayer extends Component {
           manifestUri: this.props.streamSourceUrl
         }
         this.handleInitPlayer(player, config)
+        this.handlePlayerEventListener(player)
+
+        window.video = _get(this.props, 'movieDetail.data[0]', '')
         return
       }
 
@@ -413,32 +416,29 @@ class VOPlayer extends Component {
               console.log('The video has now been loaded with ads')
             })
             .catch(that.onError) // onError is executed if the asynchronous load fails
-        }).catch(() => {
-          player
-            .load(config.manifestUri, 0)
-            .then(function() {
-              // player.addSRTTextTrack('EN', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-              if (config.subtitles && config.subtitles.length > 0) {
-                config.subtitles.map(subtitle => {
-                  player.addSRTTextTrack(subtitle.label, '', subtitle.src)
-                })
-              }
-              // player.addSRTTextTrack('EN', '', 'http://localhost:3000/vo/sample-subs2.srt')
-              // player.addSRTTextTrack('ID', '', 'http://localhost:3000/vo/sample-subs.srt')
-              console.log('The video has now been loaded, failed to retrieve ads')
-            })
-            .catch(that.onError) // onError is executed if the asynchronous load fails
         })
-      } else {
-        player
+        setTimeout(() => {
+          player
           .load(config.manifestUri, 0)
           .then(function() {
-            // player.addSRTTextTrack('en', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-            // player.addSRTTextTrack('en', '', 'http://localhost:3000/vo/sample-subs.srt')
             if (config.subtitles && config.subtitles.length > 0) {
               config.subtitles.map(subtitle => {
                 player.addSRTTextTrack(subtitle.label, '', subtitle.src)
               })
+            }
+            console.log('The video has now been loaded with ads error')
+          })
+          .catch(that.onError) // onError is executed if the asynchronous load fails
+        }, 5000)
+      } else {
+        player
+          .load(config.manifestUri, 0)
+          .then(function() {
+            if (config.subtitles && config.subtitles.length > 0 && !loaded) {
+              config.subtitles.map(subtitle => {
+                player.addSRTTextTrack(subtitle.label, '', subtitle.src)
+              })
+              loaded = true;
             }
             console.log('The video has now been loaded without ads')
           })
@@ -510,7 +510,6 @@ class VOPlayer extends Component {
 
     const videoHeight = _get(document.getElementsByClassName('sqp-video'), '[0].offsetHeight', '')
     const videoChildEl = _get(document.getElementsByClassName(s.vo_child_container), '[0]', '')
-
     if (videoHeight && videoChildEl) {
       // if (!this.player.isPrerollPlaying && this.player.duration - this.player.currentTime <= 10) {
       //   videoChildEl.style.opacity = 1
