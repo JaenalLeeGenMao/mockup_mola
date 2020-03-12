@@ -87,6 +87,7 @@ const oauth = {
     'userdata:preference.read',
     'userdata:preference.insert',
     'openid',
+    'profile.internal',
   ].join(' '),
 }
 
@@ -113,6 +114,7 @@ const oauthApp = {
     'userdata:preference.read',
     'userdata:preference.insert',
     'openid',
+    'profile.internal',
   ].join(' '),
 }
 
@@ -306,6 +308,7 @@ const requestGuestToken = async res => {
           'userdata:preference.read',
           'userdata:preference.insert',
           'openid',
+          'profile.internal',
         ].join(' '),
       },
     })
@@ -429,6 +432,7 @@ const requestCode = async (req, res) => {
         'userdata:preference.read',
         'userdata:preference.insert',
         'openid',
+        'profile.internal',
       ].join(' '),
       state: randomState,
     })
