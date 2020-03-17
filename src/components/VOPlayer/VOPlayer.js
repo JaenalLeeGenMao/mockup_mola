@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import loadjs from 'loadjs'
 import _get from 'lodash/get'
+import _isUundefined from 'lodash/isUndefined'
 
 import UpcomingVideo from './upcoming-video'
 
@@ -16,6 +17,7 @@ class VOPlayer extends Component {
   state = {
     isPlaying: this.props.autoplay || false,
     nextVideoClose: false,
+    playButtonClose: true
   }
 
   onError = error => {
@@ -213,7 +215,7 @@ class VOPlayer extends Component {
       // console.log('license ', drm.fairplay.licenseUrl)
       // console.log('cert', drm.fairplay.certificateUrl)
 
-      const deviceId = 'MDFkNzlhNTgtYjRiOC0zYzQ2LTk2ZmMtZDY2OTFlODA1MWEz'
+      const deviceId = this.props.deviceId
       if (!isSafari) {
         const config = {
           vmapUrl,
@@ -283,18 +285,12 @@ class VOPlayer extends Component {
     const that = this
 
     player.on('error', e => console.log(e))
-    player.on('ready', function() {
+    player.on('ready', function(e) {
+      that.player = this
+      window.player = this
       console.log('Player Controls loaded and ready')
       // that.handleInitBanner(player)
     })
-
-    // drive bandwdith timer (stop monitoring when player is paused)
-    // player.on('play', function (e) {
-    //   // console.log(e)
-    //   // if (typeof bandwidthLogTimer === 'undefined') {
-    //   //   bandwidthLogTimer = setInterval(logBandwidth, 2000)
-    //   // }
-    // })
 
     let visitedTimeInSeconds = [],
       firstTimeFlag = 0,
@@ -396,55 +392,33 @@ class VOPlayer extends Component {
 
   handleInitPlayer = (player, config) => {
     const that = this
-    player.reset().then(function() {
+    player.reset().then(async function() {
       // player.liveHack = true
       player.configure(config)
       // that.applyDrmXHRFilters()
-      if (config.vmapUrl) {
-        that.loadVAST(player, config).then(() => {
-          player
-            .load(config.manifestUri, 0)
-            .then(function() {
-              // player.addSRTTextTrack('EN', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-              if (config.subtitles && config.subtitles.length > 0) {
-                config.subtitles.map(subtitle => {
-                  player.addSRTTextTrack(subtitle.label, '', subtitle.src)
-                })
-              }
-              // player.addSRTTextTrack('EN', '', 'http://localhost:3000/vo/sample-subs2.srt')
-              // player.addSRTTextTrack('ID', '', 'http://localhost:3000/vo/sample-subs.srt')
-              console.log('The video has now been loaded with ads')
-            })
-            .catch(that.onError) // onError is executed if the asynchronous load fails
-        })
-        setTimeout(() => {
-          player
-          .load(config.manifestUri, 0)
-          .then(function() {
-            if (config.subtitles && config.subtitles.length > 0) {
-              config.subtitles.map(subtitle => {
-                player.addSRTTextTrack(subtitle.label, '', subtitle.src)
-              })
-            }
-            console.log('The video has now been loaded with ads error')
-          })
-          .catch(that.onError) // onError is executed if the asynchronous load fails
-        }, 5000)
-      } else {
-        player
-          .load(config.manifestUri, 0)
-          .then(function() {
-            if (config.subtitles && config.subtitles.length > 0 && !loaded) {
-              config.subtitles.map(subtitle => {
-                player.addSRTTextTrack(subtitle.label, '', subtitle.src)
-              })
-              loaded = true;
-            }
-            console.log('The video has now been loaded without ads')
-          })
-          .catch(that.onError) // onError is executed if the asynchronous load fails
+      try {
+        const adsLoaded = await that.loadVAST(player, config)
+        console.log('The video has now been loaded with ads')
+      } catch (e) {
+        console.log('The video has now been loaded without ads')
       }
-      window.player = player
+      player.load(config.manifestUri, 0)
+        .then(function() {
+          // player.addSRTTextTrack('EN', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
+            if (!__DEV__ && config.subtitles && config.subtitles.length > 0) {
+              config.subtitles.map(subtitle => {
+                player.addSRTTextTrack(subtitle.label, '', subtitle.src)
+              })
+            }
+
+            /** only when player fully loaded then show the play button */
+            that.setState({
+              playButtonClose: false
+            })
+          // player.addSRTTextTrack('EN', '', 'http://localhost:3000/vo/sample-subs2.srt')
+          // player.addSRTTextTrack('ID', '', 'http://localhost:3000/vo/sample-subs.srt')
+        })
+        .catch(that.onError) // onError is executed if the asynchronous load fails
     })
   }
 
@@ -499,10 +473,12 @@ class VOPlayer extends Component {
 
   handlePlayButton = () => {
     /** nanti di fix deh gua binggung */
-    this.setState({
-      isPlaying: true
-    })
-    window.player.play()
+    // this.setState({
+    //   isPlaying: true
+    // })
+    if (this.player) {
+      this.player.play()
+    }
   }
 
   handleSubtreeOnChange = () => {
@@ -517,13 +493,18 @@ class VOPlayer extends Component {
       //   videoChildEl.style.opacity = overlayDisplay ? 0 : 1
       // }
 
-      videoChildEl.style.height = `${videoHeight - videoHeight * 0.15}px`
+      videoChildEl.style.height = `${videoHeight - videoHeight * 0.125}px`
     }
   }
 
   componentWillUnmount() {
     if (this.childRefs) {
       this.childRefs.removeEventListener('DOMSubtreeModified', this.handleSubtreeOnChange)
+    }
+    if (this.player) {
+      this.player.destroy()
+      this.player = undefined
+      window.player = undefined
     }
   }
 
@@ -571,7 +552,7 @@ class VOPlayer extends Component {
   }
 
   render() {
-    const { isPlaying, titleShow, nextVideoClose } = this.state
+    const { isPlaying, titleShow, nextVideoClose, playButtonClose } = this.state
     const { title, poster, children } = this.props
     console.log(this.props)
     const nextVideoStart =
@@ -588,31 +569,35 @@ class VOPlayer extends Component {
                     backgroundImage: `url(${poster})`,
                   }}
                 />
-                <button
-                  className="vo-big-play-button"
-                  type="button"
-                  title="Play Video"
-                  onClick={() => this.handlePlayButton()}
-                >
-                  <div className="vo-big-play-button-svg-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" fill="currentColor">
-                      <circle cx="75" cy="75" r="73" fill="#000" fillOpacity="0.2" />
-                      <circle
-                        cx="75"
-                        cy="75"
-                        r="73"
-                        className="theo-play-svg-circle"
-                        strokeWidth="4"
-                        stroke="currentColor"
-                        fill="none"
-                        transform="rotate(-90,75,75)"
-                      />
-                      <g transform="translate(85,75) scale(0.5625) translate(-75,-75)">
-                        <path d="m 123.89639,85.432 c -12.865,9.167 -29.482997,19.402 -49.848997,30.7 -19.634,11.035 -36.851,19.7 -51.65,26 l -16.3990002,6.099 c -1.033,-4.433 -2,-11.002 -2.9,-19.7 -2.033,-17.333 -3.04999998,-36.466 -3.04999998,-57.399 0,-19.167 1.38199998,-37.081 4.14799998,-53.75 l 4.0019995,-19.1499994 17.3990007,5.849 c 15.068,5.9999994 31.401,14.5169994 49,25.5509994 18.631,11.666 34.616997,22.766 47.948997,33.3 6.663,5.3 11.463,9.383 14.396,12.25 l -13.046,10.25" />
-                      </g>
-                    </svg>
-                  </div>
-                </button>
+                {
+                  this.player && !playButtonClose && (
+                    <button
+                      className="vo-big-play-button"
+                      type="button"
+                      title="Play Video"
+                      onClick={() => this.handlePlayButton()}
+                    >
+                      <div className="vo-big-play-button-svg-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" fill="currentColor">
+                          <circle cx="75" cy="75" r="73" fill="#000" fillOpacity="0.2" />
+                          <circle
+                            cx="75"
+                            cy="75"
+                            r="73"
+                            className="theo-play-svg-circle"
+                            strokeWidth="4"
+                            stroke="currentColor"
+                            fill="none"
+                            transform="rotate(-90,75,75)"
+                          />
+                          <g transform="translate(85,75) scale(0.5625) translate(-75,-75)">
+                            <path d="m 123.89639,85.432 c -12.865,9.167 -29.482997,19.402 -49.848997,30.7 -19.634,11.035 -36.851,19.7 -51.65,26 l -16.3990002,6.099 c -1.033,-4.433 -2,-11.002 -2.9,-19.7 -2.033,-17.333 -3.04999998,-36.466 -3.04999998,-57.399 0,-19.167 1.38199998,-37.081 4.14799998,-53.75 l 4.0019995,-19.1499994 17.3990007,5.849 c 15.068,5.9999994 31.401,14.5169994 49,25.5509994 18.631,11.666 34.616997,22.766 47.948997,33.3 6.663,5.3 11.463,9.383 14.396,12.25 l -13.046,10.25" />
+                          </g>
+                        </svg>
+                      </div>
+                    </button>
+                  )
+                }
               </>
             )}
             <div ref={node => (this.childRefs = node)} id="videoContext" className="noselect">

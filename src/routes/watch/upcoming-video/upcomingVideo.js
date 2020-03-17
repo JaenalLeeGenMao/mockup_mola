@@ -79,7 +79,7 @@ class UpcomingVideo extends Component {
     const { data, isMobile = false } = this.props
     const { adsWidth, adsHeight, isFullscreenMobile } = this.state
     const playerWidth = adsWidth ? `${adsWidth}px` : '100%'
-    const containerBottom = isMobile && !isFullscreenMobile ? {} : { bottom: '7rem' } //{ bottom: `calc(${adsHeight}px + 7rem)` }
+    const containerBottom = isMobile && !isFullscreenMobile ? {} : { bottom: '2rem' } //{ bottom: `calc(${adsHeight}px + 7rem)` }
     return (
       <div className={styles.player_container} style={{ width: playerWidth }}>
         <div className={styles.container} style={containerBottom}>

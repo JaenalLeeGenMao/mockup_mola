@@ -233,29 +233,29 @@ class MovieDetail extends Component {
     }, 250)
   }
 
-  handleOnReadyStateChange = player => {
-    this.player = player
-    this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
+  // handleOnReadyStateChange = player => {
+  //   this.player = player
+  //   this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
 
-    if (player && player.buffered.length > 0) {
-      this.detectorConnection(player)
-    }
+  //   if (player && player.buffered.length > 0) {
+  //     this.detectorConnection(player)
+  //   }
 
-    player.addEventListener('contentprotectionerror', e => {
-      if (e.error.toLowerCase() == 'error during license server request') {
-        errorFlag = errorFlag + 1
-        if (errorFlag < 2) {
-          this.props.getVUID_retry()
-        } else if (errorFlag > 6) {
-          //every error license will execute six times
-          this.setState({ errorLicense: true })
-        }
-      } else {
-        // console.log('ERROR content protection', e)
-        // this.handleVideoError(e);
-      }
-    })
-  }
+  //   player.addEventListener('contentprotectionerror', e => {
+  //     if (e.error.toLowerCase() == 'error during license server request') {
+  //       errorFlag = errorFlag + 1
+  //       if (errorFlag < 2) {
+  //         this.props.getVUID_retry()
+  //       } else if (errorFlag > 6) {
+  //         //every error license will execute six times
+  //         this.setState({ errorLicense: true })
+  //       }
+  //     } else {
+  //       // console.log('ERROR content protection', e)
+  //       // this.handleVideoError(e);
+  //     }
+  //   })
+  // }
 
   goOnline = () => {
     if (!this.state.isOnline) {
@@ -303,16 +303,24 @@ class MovieDetail extends Component {
 
   renderVideo = dataFetched => {
     const { user, getMovieDetail, videoId, isMatchPassed, isAutoPlay, configParams } = this.props
-    let theoVolumeInfo = {}
+    let playerVolumeInfo = {}
 
     try {
-      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
-      if (theoVolumeInfo != null) {
-        theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      playerVolumeInfo = localStorage.getItem('voplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (playerVolumeInfo != null) {
+        playerVolumeInfo = JSON.parse(playerVolumeInfo)
       }
     } catch (err) {}
 
-    if (dataFetched) {
+    const {
+      toggleInfoBar,
+      ios_redirect_to_app,
+      android_redirect_to_app,
+      nextVideoBlocker,
+      nextVideoClose,
+      defaultVidSetting,
+    } = this.state
+    if (dataFetched && defaultVidSetting) {
       const { loc } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
@@ -348,7 +356,7 @@ class MovieDetail extends Component {
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
-        ...theoVolumeInfo,
+        ...playerVolumeInfo,
         ...checkAdsSettings,
       }
 
@@ -358,13 +366,6 @@ class MovieDetail extends Component {
 
       const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-      const {
-        toggleInfoBar,
-        ios_redirect_to_app,
-        android_redirect_to_app,
-        nextVideoBlocker,
-        nextVideoClose,
-      } = this.state
       let isRedirectToApp = false
       if (isApple) {
         //ios
@@ -429,47 +430,21 @@ class MovieDetail extends Component {
           const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
           return (
             <>
-            <VOPlayer
-          title={dataFetched.title}
-          poster={poster}
-          autoPlay={false}
-          subtitles={this.subtitles()}
-          streamSourceUrl={dataFetched.streamSourceUrl}
-          recommendation={this.props.recommendation}
-          {...videoSettings}
-        >
-            <div
-              id="nextVideo"
-              style={{
-                position: 'absolute',
-                backgroundColor: 'green',
-                width: '100px',
-                height: '100px',
-                bottom: '0%',
-                right: '2rem',
-              }}
-            >
-              Next video
-            </div>
-            <div className={videoInnerContainer}>
-              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
-              {this.renderPlayerHeader(dataFetched)}
-            </div>
-          </VOPlayer>
-              {/* <Theoplayer
-                className={customTheoplayer}
+              <VOPlayer
+                deviceId={vuid}
+                title={dataFetched.title}
+                poster={poster}
+                autoPlay={false}
                 subtitles={this.subtitles()}
-                poster={autoPlay ? null : poster}
-                autoPlay={autoPlay}
-                handleOnReadyStateChange={this.handleOnReadyStateChange}
+                streamSourceUrl={dataFetched.streamSourceUrl}
+                recommendation={this.props.recommendation}
                 {...videoSettings}
-                isMobile
               >
                 <div className={videoInnerContainer}>
-                  {this.renderPlayerHeader(dataFetched)}
                   {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+                  {this.renderPlayerHeader(dataFetched)}
                 </div>
-              </Theoplayer> */}
+              </VOPlayer>
               {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
             </>
           )

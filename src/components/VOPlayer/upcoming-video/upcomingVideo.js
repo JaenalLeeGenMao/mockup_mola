@@ -16,52 +16,6 @@ class UpcomingVideo extends Component {
 
   componentDidMount() {
     setMultilineEllipsis('upc-video-text')
-    var ads = document.querySelector('.theoplayer-ad-nonlinear-content img')
-    if (ads) {
-      this.setState({
-        adsHeight: ads.clientHeight,
-        adsWidth: ads.clientWidth,
-      })
-    }
-    window.addEventListener('resize', this.handleResize)
-    this.loadFullscreenEvent()
-  }
-
-  handleFullScreen = () => {
-    setTimeout(() => {
-      var ads = document.querySelector('.theoplayer-ad-nonlinear-content img')
-      if (ads) {
-        this.setState({
-          adsHeight: ads.clientHeight,
-          adsWidth: ads.clientWidth,
-          isFullscreenMobile: document.getElementsByClassName('vjs-fullscreen').length,
-        })
-      } else {
-        this.setState({
-          isFullscreenMobile: document.getElementsByClassName('vjs-fullscreen').length,
-        })
-      }
-    }, 300)
-  }
-
-  loadFullscreenEvent = () => {
-    ;['', 'webkit', 'moz', 'ms'].forEach(prefix =>
-      document.addEventListener(prefix + 'fullscreenchange', this.handleFullScreen, false)
-    )
-  }
-
-  handleResize = () => {
-    var ads = document.querySelector('.theoplayer-ad-nonlinear-content img')
-    if (ads) {
-      this.setState({
-        adsHeight: ads.clientHeight,
-        adsWidth: ads.clientWidth,
-      })
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
   }
 
   cancelUpcVideo = e => {
@@ -107,7 +61,7 @@ class UpcomingVideo extends Component {
               <Link className={styles.play} to={`/watch?v=${data.video_id}&autoplay=1`}>
                 <CountDown
                   isMobile={isMobile}
-                  startSecond={100}
+                  startSecond={20}
                   onTimeFinish={() => this.redirectToNextVideo(data.video_id)}
                 />
               </Link>
