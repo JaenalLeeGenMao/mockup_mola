@@ -8,7 +8,6 @@ import ReactTooltip from 'react-tooltip'
 import ReactMarkdown from 'react-markdown'
 
 import config from '@source/config'
-// import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
@@ -50,11 +49,6 @@ import {
   videoInnerContainer,
   movieDetailNotAllowed,
 } from './style'
-
-import { customTheoplayer } from './theoplayer-style'
-// const { getComponent } = require('../../../../../gandalf')
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
 
 // let MissChat
 import { Suggestions as ContentSuggestions } from './movie/content'
@@ -164,7 +158,7 @@ class WatchDesktop extends Component {
     const { movieDetail } = this.props
     const subtitles =
       movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
-    const myTheoPlayer =
+    const filteredSubtitle =
       subtitles &&
       subtitles.length > 0 &&
       subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
@@ -177,7 +171,7 @@ class WatchDesktop extends Component {
           type: subtitleType,
         }
       })
-    return myTheoPlayer
+    return filteredSubtitle
   }
 
   disableAds = (status, videoSettings) => {
@@ -394,16 +388,16 @@ class WatchDesktop extends Component {
       const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
       return (
         <>
-        <VOPlayer
-          deviceId={vuid}
-          title={dataFetched.title}
-          poster={poster}
-          autoPlay={false}
-          subtitles={this.subtitles()}
-          streamSourceUrl={dataFetched.streamSourceUrl}
-          recommendation={this.props.recommendation}
-          {...videoSettings}
-        >
+          <VOPlayer
+            deviceId={vuid}
+            title={dataFetched.title}
+            poster={poster}
+            autoPlay={false}
+            subtitles={this.subtitles()}
+            streamSourceUrl={dataFetched.streamSourceUrl}
+            recommendation={this.props.recommendation}
+            {...videoSettings}
+          >
             <div className={videoInnerContainer}>
               {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
               {this.renderPlayerHeader(dataFetched)}

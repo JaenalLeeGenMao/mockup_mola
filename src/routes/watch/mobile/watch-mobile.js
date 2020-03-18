@@ -8,7 +8,6 @@ import queryString from 'query-string'
 import { globalTracker } from '@source/lib/globalTracker'
 import { playStoreBadge, appStoreBadge } from '@global/imageUrl'
 
-// import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
 import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import config from '@source/config'
 import Tracker from '@source/lib/tracker'
@@ -46,11 +45,6 @@ import {
   videoBlockerPlatform,
 } from './style'
 
-import { customTheoplayer } from './theoplayer-style'
-// const { getComponent } = require('../../../../../gandalf')
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
-
 import MovieContent from './movie'
 import SportContent from './sport'
 
@@ -81,24 +75,12 @@ class MovieDetail extends Component {
     badgeUrl: '',
   }
 
-  handleOnVideoVolumeChange = player => {
-    if (player) {
-      const playerVolumeInfo = {
-        volume: player.volume,
-        muted: player.muted,
-      }
-      try {
-        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
-    }
-  }
-
   subtitles() {
     const { movieDetail } = this.props
     const subtitles =
       movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
-    const myTheoPlayer =
+    const filteredSubtitle =
       subtitles &&
       subtitles.length > 0 &&
       subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
@@ -112,7 +94,7 @@ class MovieDetail extends Component {
         }
       })
 
-    return myTheoPlayer
+    return filteredSubtitle
   }
 
   disableAds = (status, videoSettings) => {

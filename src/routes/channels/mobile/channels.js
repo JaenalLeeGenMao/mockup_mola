@@ -13,7 +13,7 @@ import channelActions from '@actions/channels'
 
 import DRMConfig from '@source/lib/DRMConfig'
 import config from '@source/config'
-import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import history from '@source/history'
 import { formatDateTime } from '@source/lib/dateTimeUtil'
 import { globalTracker } from '@source/lib/globalTracker'
@@ -29,7 +29,6 @@ import OfflineNoticePopup from '@components/OfflineNoticePopup'
 
 import Placeholder from './placeholder'
 import { getChannelProgrammeGuides } from '../selectors'
-import { customTheoplayer } from './theoplayer-style'
 import styles from './channels.css'
 
 let errorFlag = 0
@@ -61,14 +60,6 @@ class Channels extends Component {
       window.addEventListener('online', this.goOnline)
       window.addEventListener('offline', this.goOffline)
     }
-
-    this.theoVolumeInfo = {}
-    try {
-      const theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
-      if (theoVolumeInfo != null) {
-        this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
-      }
-    } catch (err) {}
 
     fetchChannelsPlaylist('channels-m').then(() => {
       const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
@@ -151,13 +142,13 @@ class Channels extends Component {
           akamai_analytic_enabled:
             configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
         }
-        const defaultVidSetting = defaultVideoSetting(
+        const defaultVidSetting = dataFetched ? defaultVideoSetting(
           user,
           dataFetched,
           vuidStatus === 'success' ? vuid : '',
           null,
           videoSettingProps
-        )
+        ) : {}
         this.setState({
           defaultVidSetting: defaultVidSetting,
         })
@@ -309,24 +300,12 @@ class Channels extends Component {
     )
   }
 
-  handleOnVideoVolumeChange = player => {
-    if (player) {
-      const playerVolumeInfo = {
-        volume: player.volume,
-        muted: player.muted,
-      }
-      try {
-        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
-    }
-  }
-
   subtitles = () => {
     const { movieDetail } = this.props
     const subtitles =
       movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
-    const myTheoPlayer =
+    const filteredSubtitle =
       subtitles &&
       subtitles.length > 0 &&
       subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
@@ -340,7 +319,7 @@ class Channels extends Component {
         }
       })
 
-    return myTheoPlayer
+    return filteredSubtitle
   }
 
   handlePlayMovie = () => {
@@ -417,7 +396,6 @@ class Channels extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const videoSettings = {
-      ...this.theoVolumeInfo,
       ...defaultVidSetting,
     }
 
@@ -491,8 +469,6 @@ class Channels extends Component {
                       handlePlayMovie={this.handlePlayMovie}
                       handleOnReadyStateChange={this.handleOnReadyStateChange}
                       videoSettings={videoSettings}
-                      customTheoplayer={customTheoplayer}
-                      handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                       errorLicense={errorLicense}
                     />
                   )}

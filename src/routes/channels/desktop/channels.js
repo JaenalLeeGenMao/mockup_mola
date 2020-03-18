@@ -5,15 +5,13 @@ import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
 
 import * as movieDetailActions from '@actions/movie-detail'
 import { getVUID, getVUID_retry } from '@actions/vuid'
 import channelActions from '@actions/channels'
 
 import DRMConfig from '@source/lib/DRMConfig'
-import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import history from '@source/history'
 import { formatDateTime } from '@source/lib/dateTimeUtil'
 import { globalTracker } from '@source/lib/globalTracker'
@@ -23,6 +21,7 @@ import HorizontalPlaylist from '@components/HorizontalPlaylist'
 import VerticalCalendar from '@components/VerticalCalendar'
 import PlatformDesktop from '@components/PlatformCheckDesktop'
 import OfflineNoticePopup from '@components/OfflineNoticePopup'
+import VOPlayer from '@components/VOPlayer'
 // import RedirectToAppsDesktop from '@components/RedirectToAppsDesktop'
 
 import Placeholder from './placeholder'
@@ -32,7 +31,6 @@ import PrimaryMenu from './primaryMenu'
 import SecondaryMenu from './secondaryMenu'
 import ChannelCalendar from './channelCalendar'
 import { getChannelProgrammeGuides } from '../selectors'
-import { customTheoplayer } from './theoplayer-style'
 
 import styles from './channels.css'
 
@@ -66,14 +64,6 @@ class Channels extends Component {
       window.addEventListener('offline', this.goOffline)
       window.addEventListener('scroll', this.handleScroll)
     }
-
-    this.theoVolumeInfo = {}
-    try {
-      const theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
-      if (theoVolumeInfo != null) {
-        this.theoVolumeInfo = JSON.parse(theoVolumeInfo)
-      }
-    } catch (err) {}
 
     fetchChannelsPlaylist('channels-m').then(() => {
       const video = this.props.channelsPlaylist.data.find(item => item.id === movieId)
@@ -152,13 +142,13 @@ class Channels extends Component {
           akamai_analytic_enabled:
             configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
         }
-        const defaultVidSetting = defaultVideoSetting(
+        const defaultVidSetting = dataFetched ? defaultVideoSetting(
           user,
           dataFetched,
           vuidStatus === 'success' ? vuid : '',
           null,
           videoSettingProps
-        )
+        ) : {}
         this.setState({
           defaultVidSetting: defaultVidSetting,
         })
@@ -307,45 +297,12 @@ class Channels extends Component {
     })
   }
 
-  handleOnVideoPlaying = (status, player) => {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    let i = 0
-    if (isSafari && player.textTracks && player.textTracks.length > 0) {
-      // to hide empty subtitle in safari
-      player.textTracks.map(element => {
-        if (!element.id) {
-          if (player.textTracks.length > 1) {
-            const el = document.getElementsByClassName('theo-menu-item vjs-menu-item theo-text-track-menu-item')
-            el[i].style.display = 'none'
-          } else {
-            const subtitle = document.querySelector('.vjs-icon-subtitles')
-            subtitle.style.display = 'none'
-          }
-        } else {
-          i++
-        }
-      })
-    }
-  }
-
-  handleOnVideoVolumeChange = player => {
-    if (player) {
-      const playerVolumeInfo = {
-        volume: player.volume,
-        muted: player.muted,
-      }
-      try {
-        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
-    }
-  }
-
   subtitles() {
     const { movieDetail } = this.props
     const subtitles =
       movieDetail.data.length > 0 && movieDetail.data[0].subtitles ? movieDetail.data[0].subtitles : null
 
-    const myTheoPlayer =
+    const filteredSubtitle =
       subtitles &&
       subtitles.length > 0 &&
       subtitles.map(({ subtitleUrl, country, type = 'subtitles' }) => {
@@ -359,7 +316,7 @@ class Channels extends Component {
         }
       })
 
-    return myTheoPlayer
+    return filteredSubtitle
   }
 
   handleSelectChannel = id => {
@@ -430,7 +387,6 @@ class Channels extends Component {
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
     const videoSettings = {
-      ...this.theoVolumeInfo,
       ...defaultVidSetting,
     }
 
@@ -473,16 +429,14 @@ class Channels extends Component {
                 !errorLicense &&
                 loadPlayer &&
                 defaultVidSetting && (
-                  <Theoplayer
-                    className={customTheoplayer}
-                    showBackBtn={false}
+                  <VOPlayer
+                    poster={poster}
+                    autoPlay={false}
                     subtitles={this.subtitles()}
-                    handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
                     handleOnReadyStateChange={this.handleOnReadyStateChange}
-                    handleOnVideoPlaying={this.handleOnVideoPlaying}
-                    // poster={poster}
                     {...videoSettings}
-                  />
+                  >
+                  </VOPlayer>
                 )}
 
               {/* {need to be optimize later} */}

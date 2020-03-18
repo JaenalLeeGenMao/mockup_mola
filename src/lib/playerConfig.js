@@ -1,11 +1,7 @@
 import { handleTracker } from './videoTracker'
 import { endpoints } from '@source/config'
-import Tracker from '@source/lib/tracker'
 import TrackerTest from '@supersoccer/web-tracker'
 import history from '@source/history'
-import config from '@source/config'
-import { get } from 'axios'
-import { getContentTypeName } from '@source/lib/globalUtil'
 import Moment from 'moment'
 
 var videoData, userData, akamai_analytic_enabled
@@ -117,11 +113,8 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, props)
       streamSourceUrl: streamSourceUrl,
       deviceId: vuid,
       handleVideoWatchTime: handleVideoWatchTime,
-      // theoConfig: [],
     }
   }
-
-  //console.log(`THEOCINFLOCATION+++++`, user.loc)
 
   const payload = {
     project_id: '2',
@@ -148,6 +141,5 @@ export const defaultVideoSetting = (user, videoDt, vuid, handleNextVideo, props)
     streamSourceUrl: streamSourceUrl,
     // deviceId: vuid,
     handleVideoWatchTime: handleVideoWatchTime,
-    // theoConfig: [],
   }
 }

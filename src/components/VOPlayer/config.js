@@ -110,5 +110,3 @@ let style = [
 export const VOStyle = style
 
 export const VOLicense = licenseURL
-//theoplayer --> license key for dummy video
-//theoplayer --> licensekey real

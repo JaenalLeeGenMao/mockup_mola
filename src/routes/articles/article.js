@@ -9,10 +9,11 @@ import { getVUID } from '@actions/vuid'
 import DRMConfig from '@source/lib/DRMConfig'
 
 import { ARTICLES_ENDPOINT, ARTICLES_RELATED_ENDPOINT, ARTICLES_RECOMMENDED_ENDPOINT } from '@api/mola/endpoints'
-import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 
 import Header from '@components/Header'
 import ArticlesDetailError from '@components/common/error'
+import VOPlayer from '@components/VOPlayer'
 
 import articlesAction from '@actions/articles'
 
@@ -25,9 +26,6 @@ import RelatedVideo from './relatedVideo/relatedVideo'
 import utils from '@api/mola/util'
 
 import { CustomBackground, articleContainer, playerStyle } from './style'
-
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
 
 const normalizeRelatedVideo = data => {
   return data.map(result => {
@@ -222,12 +220,11 @@ class Article extends Component {
                   <div className="top-section">
                     {articlesDetail.data.video && this.state.videoSetting ? (
                       <div className="video-player-wrapper">
-                        <Theoplayer
-                          className={playerStyle}
+                        <VOPlayer
                           poster={articlesDetail.data.video[0].attributes.images.cover.background.landscape}
                           autoPlay={false}
-                          {...this.state.videoSetting}
-                        />
+                          {...this.state.videoSetting}>
+                        </VOPlayer>
                       </div>
                     ) : (
                       <BackgroundGradient url={articlesDetail.data.imageUrl} />

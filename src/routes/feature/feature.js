@@ -244,8 +244,8 @@ class Feature extends Component {
                   playlists.data.length === videos.data.length &&
                   videos.data.map((video, carouselIndex) => {
                     const contentTypeName = getContentTypeName(
-                        _.get(playlists, `data[${carouselIndex}].contentType`, '')
-                      ),
+                      _.get(playlists, `data[${carouselIndex}].contentType`, '')
+                    ),
                       playlistId = _.get(playlists, `data[${carouselIndex}].id`, ''),
                       viewMorePlaylistId = _.get(playlists, `data[${carouselIndex}].viewMorePlaylistId`, ''),
                       slideToShow = isMobile
@@ -293,7 +293,9 @@ class Feature extends Component {
                                   ? isMobile ? '19rem' : '31rem'
                                   : contentTypeName === 'mola-categories'
                                     ? isMobile ? '12rem' : '18rem'
-                                    : isMobile ? '15rem' : '25rem'
+                                    : contentTypeName === 'mola-featured'
+                                      ? isMobile ? '17rem' : '29rem'
+                                      : isMobile ? '15rem' : '25rem'
                               }
                             >
                               <Carousel

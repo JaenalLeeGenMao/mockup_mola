@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import ReactMarkdown from 'react-markdown'
+
+import VOPlayer from '@components/VOPlayer'
+
 import BackgroundGradient from '../backgroundGradient/backgroundGradient'
 
 import ArticleCard from '../articleCard/articleCard'
@@ -10,20 +13,18 @@ import RelatedVideo from '../relatedVideo/relatedVideo'
 
 import s from './article.css'
 
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
-
 class Articles extends Component {
   render() {
     return (
       <div className={s.wrapper}>
         {this.props.articlesDetail.data.video && this.props.videoSetting ? (
           <div className={s.video_player_wrapper}>
-            <Theoplayer
+            <VOPlayer
               poster={this.props.articlesDetail.data.video[0].attributes.images.cover.background.landscape}
               autoPlay={false}
               {...this.props.videoSetting}
-            />
+            >
+            </VOPlayer>
           </div>
         ) : (
           <BackgroundGradient isMobile={true} url={`${this.props.articlesDetail.data.imageUrl}`} />

@@ -12,18 +12,6 @@ export const CustomBackground = styled('div')`
   opacity: ${props => props.opacity || 1};
 `
 
-export const playerStyle = css`
-  // height: 33.1vw !important;
-
-  &.vjs-has-started {
-    // height: 33.1vw !important;
-  }
-
-  &.video-container .theo-primary-color {
-    color: #fff !important;
-  }
-`
-
 export const articleContainer = css`
   position: relative;
   height: 100%;

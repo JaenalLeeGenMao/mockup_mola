@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
-const { getComponent } = require('@supersoccer/gandalf')
-const Theoplayer = getComponent('theoplayer')
+import VOPlayer from '@components/VOPlayer'
 
 import styles from './RedirectToApps.css'
 class RedirectToApps extends Component {
@@ -10,13 +9,10 @@ class RedirectToApps extends Component {
       android_redirect_to_app,
       ios_redirect_to_app,
       videoSettings,
-      handleOnReadyStateChange,
       handlePlayMovie,
       handlePlayMovieApple,
       subtitles,
       poster,
-      customTheoplayer,
-      handleOnVideoVolumeChange,
       children,
       errorLicense,
     } = this.props
@@ -34,13 +30,12 @@ class RedirectToApps extends Component {
       } else {
         if (!errorLicense) {
           return (
-            <Theoplayer
-              className={customTheoplayer}
+            <VOPlayer
+              deviceId={vuid}
+              autoPlay={false}
               subtitles={subtitles}
-              handleOnReadyStateChange={handleOnReadyStateChange}
-              handleOnVideoVolumeChange={handleOnVideoVolumeChange}
               {...videoSettings}
-            />
+            ></VOPlayer>
           )
         } else {
           return (
@@ -60,15 +55,14 @@ class RedirectToApps extends Component {
       } else {
         if (!errorLicense) {
           return (
-            <Theoplayer
-              className={customTheoplayer}
-              subtitles={subtitles}
-              handleOnReadyStateChange={handleOnReadyStateChange}
-              handleOnVideoVolumeChange={handleOnVideoVolumeChange}
-              {...videoSettings}
-            >
-              {children}
-            </Theoplayer>
+              <VOPlayer
+                deviceId={vuid}
+                autoPlay={false}
+                subtitles={subtitles}
+                {...videoSettings}
+              >
+                {children}
+              </VOPlayer>
           )
         } else {
           return (
