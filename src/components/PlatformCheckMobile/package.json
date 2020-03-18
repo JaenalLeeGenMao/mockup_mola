@@ -1,6 +1,0 @@
-{
-  "name": "PlatformCheckMobile",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./PlatformCheckMobile.js"
-}
