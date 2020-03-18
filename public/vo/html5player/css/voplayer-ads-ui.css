@@ -1,0 +1,53 @@
+.ad-root {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.ui-control {
+  position: absolute;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 0.6rem;
+  background-color: rgba(115, 133, 159, 0.5);
+}
+
+.position-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: yellow;
+}
+
+.ad-button {
+  background-color: red;
+  width: 4rem;
+  height: 4rem;
+}
+
+.ui-ads-ad-progress {
+  bottom: 0;
+}
+
+.ui-text {
+  color: white;
+}
+
+.ad-skip-button {
+  background-color: rgba(125, 125, 125, 0.5);
+  bottom: 25%;
+  width: 32%;
+  right: 0;
+}
+
+.skip-button-text {
+  transform: translate(0, -50%);
+  top: 50%;
+  right: 5%;
+}

@@ -1291,40 +1291,42 @@ app.get('*', async (req, res, next) => {
               maxRedirects: 1,
             })
             response = await rawResponse.json()
+            const videoData = response && response.data ? response.data : null
+            data.title = videoData ? videoData[0].attributes.title : 'Mola TV'
+            data.description = videoData
+              ? videoData[0].attributes.description
+              : 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
+            const background = videoData ? _get(videoData[0].attributes.images, 'cover', { landscape: '' }) : null
+            data.image = videoData ? background.landscape : ''
+            data.type = 'video.other'
+            data.twitter_card_type = 'summary_large_image'
+            data.appLinkUrl = appLink
+            data.url = config.endpoints.domain + req.path + '?v=' + videoId
+  
+            videoObj = {
+              title: data.title,
+              description: data.description,
+              image: `${data.image}?w=600`,
+              type: data.type,
+              twitter_card_type: data.twitter_card_type,
+              appLinkUrl: data.appLinkUrl,
+              url: data.url,
+            }
           } catch (err) {
             console.log('error video api call for seo ', err)
           }
-          const videoData = response && response.data ? response.data : null
-          data.title = videoData ? videoData[0].attributes.title : 'Mola TV'
-          data.description = videoData
-            ? videoData[0].attributes.description
-            : 'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
-          const background = videoData ? _get(videoData[0].attributes.images, 'cover', { landscape: '' }) : null
-          data.image = videoData ? background.landscape : ''
-          data.type = 'video.other'
-          data.twitter_card_type = 'summary_large_image'
-          data.appLinkUrl = appLink
-          data.url = config.endpoints.domain + req.path + '?v=' + videoId
-
-          videoObj = {
-            title: data.title,
-            description: data.description,
-            image: `${data.image}?w=600`,
-            type: data.type,
-            twitter_card_type: data.twitter_card_type,
-            appLinkUrl: data.appLinkUrl,
-            url: data.url,
-          }
         }
-        molaCache.set(videoId, videoObj, 60, function(err, success) {
-          if (!err && success) {
-            // console.log('success set cache node cache', videoId, videoObj)
-            // true
-            // ... do something ...
-          } else {
-            console.log('failed set cache node cache', videoId, ', err:', err)
-          }
-        })
+        if (videoObj.title) {
+          molaCache.set(videoId, videoObj, 60, function(err, success) {
+            if (!err && success) {
+              // console.log('success set cache node cache', videoId, videoObj)
+              // true
+              // ... do something ...
+            } else {
+              console.log('failed set cache node cache', videoId, ', err:', err)
+            }
+          })
+        }
       } else {
         data.title = videoObj.title
         data.description = videoObj.description

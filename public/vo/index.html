@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <title>VO Player for Web (HTML5) Demo</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="html5player/css/voplayer-playback-ui.css">
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+
+    <!-- include the HTML5 player library -->
+    <script src="html5player/js/voplayer.min.js"></script>
+
+    <!-- include the extension of the HTML 5 player to display player controls (UI) -->
+    <script src="html5player/js/voplayer-ui.min.js"></script>
+
+    <!-- additional JavaSript logic related to test page (player customization ) -->
+    <script src="js/testpage-logic.js"></script>
+    <!-- <script src="js/adBanner.js"></script> -->
+    <script src="js/filters.js"></script>
+</head>
+
+<body>
+
+    <div id="content">
+        <h1>VO Player for Web - version <span id="playerVersion"></span></h1>
+
+        <div id="videoSection">
+            <div id="videoArea">
+                <!--
+                    overall video context
+                    This div is needed in order to have the playback controls still displayed when switching to fullscreen
+                    (fullscreen is requested on this context div instead of just on the video)
+                -->
+                <div id="videoContext" class="noselect">Video player goes here...</div>
+            </div>
+            <div id="videoInfo">
+                <span>Playback info</span><br>
+                Estimated downloading bandwidth: <span id="dlBandwdith"></span> kbps
+                <br>
+                <span id="wvServerCertLoadingStatus"></span>
+            </div>
+        </div>
+
+        <div id="testControls">
+            <section id="controls" class="playbackInfo">
+                <h2>Test controls</h2>
+                <div>
+                    <h3>UI configuration</h3>
+                    Use wall clock times for Live streams: <input type="checkbox" id="useWallClock" /><br>
+                    <button type="button" onclick="applyUIConfig()">Apply configuration</button>
+                </div>
+                <div id="playerConfig">
+                    <h3>Player configuration</h3>
+                    Start playback automatically: <input type="checkbox" id="autostartPlayback" /><br>
+                    Jump large gaps in stream: <input type="checkbox" id="jumpLargeGaps" /><br>
+                    Use DRM persistentState (when available): <input type="checkbox" id="drmPersistentState" />
+                </div>
+            </section>
+            <section id="streamInfo" class="playbackInfo">
+                <h2>Stream Info</h2>
+                <table id="streamTable">
+                    <tr>
+                        <td>
+                            <h3>Stream 1</h3>
+                            <input type="text" id="testStreamUrl1" class="startPlayback1" size="80"
+                                placeholder="stream URL"
+                                value="https://cdn-mxs-01.akamaized.net/Content/HLS/VOD/29ec3d64-4efb-4ca0-8f95-0ca2ae10a61b/c0de6451-cd85-84e0-fcd7-ea805ff7a6f2/index_L2.m3u8?hdnts=st=1576490329~exp=1576493929~acl=/*~hmac=a54d4ccaa1cf7af693b1dfbc9421aebe1e9560d5b3bcc02c41d7978c2a7efdbb" />
+                            <br>
+                            Start time: <input type="number" id="testStartTime1" class="startPlayback1" size="80"
+                                placeholder="time in seconds" />
+                            <button type="button" onclick="loadTestStream(1)">Load Stream 1</button>
+
+                            <br><br>
+
+                            Widevine: <br>
+                            License Acquistion URL: <input type="text" id="wvnLicenseURL1" class="startPlayback1"
+                                size="80" placeholder="Widevine License Server URL" />
+                            <br>
+                            Server Certificate URL: <input type="text" id="wvnServerCertificateURL1"
+                                class="startPlayback1" size="80" placeholder="Server Certificate URL" />
+                            <br>
+                            <button type="button" onclick="loadWVServerCertificate(1)">&nbsp;Load
+                                Certificate</button>&nbsp;<button type="button"
+                                onclick="deleteWVServerCertificate()">&nbsp;Delete Certificate</button>
+                            <br><br>
+                            PlayReady License Acquistion URL: <input type="text" id="plrLicenseURL1"
+                                class="startPlayback1" size="80" placeholder="PlayReady License Server URL" />
+                            <br><br>
+                            Fairplay:<br>
+                            Server Certificate URL: <input type="text" id="fplServerCertificateURL1"
+                                class="startPlayback1" size="80" placeholder="Server Certificate URL" />
+                            <br>
+                            License Acquistion URL: <input type="text" id="fplLicenseURL1" class="startPlayback1"
+                                size="80" placeholder="FairPlay License Server URL" />
+                        </td>
+                        <td>
+                            <h3>Stream 2</h3>
+                            <input type="text" id="testStreamUrl2" class="startPlayback2" size="80"
+                                placeholder="stream URL" />
+                            <br>
+                            Start time: <input type="number" id="testStartTime2" class="startPlayback2" size="80"
+                                placeholder="time in seconds" />
+                            <button type="button" onclick="loadTestStream(2)">Load Stream 2</button>
+                            <br><br>
+                            Widevine: <br>
+                            License Acquistion URL: <input type="text" id="wvnLicenseURL2" class="startPlayback1"
+                                size="80" placeholder="Widevine License Server URL" />
+                            <br>
+                            Server Certificate URL: <input type="text" id="wvnServerCertificateURL2"
+                                class="startPlayback1" size="80" placeholder="Server Certificate URL" />
+                            <br>
+                            <button type="button" onclick="loadWVServerCertificate(2)">&nbsp;Load
+                                Certificate</button>&nbsp;<button type="button"
+                                onclick="deleteWVServerCertificate()">&nbsp;Delete Certificate</button>
+                            <br><br>
+                            PlayReady License Acquistion URL: <input type="text" id="plrLicenseURL2"
+                                class="startPlayback1" size="80" placeholder="PlayReady License Server URL" />
+                            <br><br>
+                            Fairplay:<br>
+                            Server Certificate URL: <input type="text" id="fplServerCertificateURL2"
+                                class="startPlayback1" size="80" placeholder="Server Certificate URL" />
+                            <br>
+                            License Acquistion URL: <input type="text" id="fplLicenseURL2" class="startPlayback1"
+                                size="80" placeholder="FairPlay License Server URL" />
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <br>
+            <section id="requestFilters" class="playbackInfo">
+                <h2>DRM License filters</h2>
+                Set of request and response filters to use for DRM acquisition:
+                <select name="drmLicenseFilters" id="drmLicenseFilters">
+                    <option value="None">None</option>
+                    <!-- additional options will be populated by JavaScript in file js/filters.js -->
+                </select><br />
+                Additonal license acquisition parameters: <input type="text" id="drmReqAddtionalParam" size="80" />
+            </section>
+            <section id="extTracks" class="playbackInfo">
+                <h2>Tracks</h2>
+                Preferred text language: <input type="text" id="prefTextLng" size="30" /> / Preferred audio language :
+                <input type="text" id="prefAudioLng" size="30" />
+                <br><br>
+                Add SRT subtitle, URL: <input type="text" id="srtTrackURL" size="80" placeholder="SRT file url" /><br>
+                Track language: <input type="text" id="srtTrackLanguage" size="40" placeholder="Track language" />&nbsp;
+                Track Name: <input type="text" id="srtTrackName" size="40" placeholder="Track name" />
+                <button type="button" onclick="addSRT()">Add</button>
+            </section>
+            <section id="ads" class="playbackInfo">
+                <h2>Ad (VAST / VMAP)</h2>
+                VAST URL: <input type="text" id="vastURL" size="80" placeholder="VAST URL (leave empty)" /> (takes
+                precedence over VMAP if both are set)<br>
+                VMAP URL: <input type="text" id="vmapURL" size="80" placeholder="VAST URL (leave empty)"
+                    value="https://api.stag.supersoccer.tv/v1/ads/ads-rubik/api/v1/get-preroll-video?params=eyJwcm9qZWN0X2lkIjoiMiIsInZpZGVvX2lkIjoiczFrZmExQVNDNCIsImFwcF9pZCI6Im1vbGFfYWRzIiwic2Vzc2lvbl9pZCI6IndteDR4azg4aDhta2Fob252dHVzcnBlN2dpcTdyOXoiLCJjbGllbnRfaXAiOiIyMTIuMTE3LjYxLjU4IiwidXVpZCI6IjFiYmVkOTI1LWRhOTEtNDQ1OS04OGFkLWU4MGRlMjc3ODZlZSIsInRpbWVfb2Zmc2V0IjoiNyIsImxvYyI6ImhhSmZZNkpKUktOZllURWJvMTloTXRFQWthTmZZVFBSQ0RhaVgzb0w1aGljZGJvMTdybzcyIn0=" /><br>
+            </section>
+        </div>
+    </div>
+    <script>
+
+        var bandwidthLogTimer = null;
+        initPageControls();
+
+        var playerConfig = {
+            base: 'html5player',
+            license: 'fBOuHM7cLnXbxgK4KQEzXXu3lZhkT+dJ1jNayFBDOYp7eFEbOgUlEfobfNwM7ZI0u7mKWV5V4aCPFKe3lEL/cQ==', // demo license, exp 31/12/2019
+            qualityLevelFormater: formatQualityLevelForDisplay,
+            textTrackDisplayFormater: formatTextTrackForDisplay,
+            audioTrackDisplayFormater: formatAudioTrackForDisplay,
+            useQualityOnlyButton: true,
+            useCentralPlayBtn: false,
+            togglePlayPauseOnClick: true,
+            displayRelativePositionOnLive: false
+        };
+
+        try {
+            var player = voplayer.createPlayerWithControls('videoContext', playerConfig);
+            player.on('error', onError);
+            player.on('ready', function () {
+                console.log('Player Controls loaded and ready');
+                // handleInitBanner(player)
+            });
+
+            // drive bandwdith timer (stop monitoring when player is paused)
+            player.on('play', function () {
+                if (null == bandwidthLogTimer) {
+                    bandwidthLogTimer = setInterval(logBandwidth, 2000);
+                }
+            });
+            player.on('pause', function () {
+                if (null != bandwidthLogTimer) {
+                    clearInterval(bandwidthLogTimer);
+                    bandwidthLogTimer = null;
+                }
+            });
+            player.on('ended', function () {
+                console.log('Playback ended');
+                if (null != bandwidthLogTimer) {
+                    clearInterval(bandwidthLogTimer);
+                    bandwidthLogTimer = null;
+                }
+            });
+        }
+        catch (e) {
+            console.log('Error while creating the player: ', e);
+            $('#videoContext').html('Error while creating player');
+        }
+
+    </script>
+
+    <!-- script used for VO Player team internal testing purposes only (no effect if not present) -->
+    <script src="js/load_vop_logic.js"></script>
+</body>

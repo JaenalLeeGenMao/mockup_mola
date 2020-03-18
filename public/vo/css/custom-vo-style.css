@@ -1,0 +1,123 @@
+#videoSection {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* the video context fills the totallity of its parent surface */
+#videoContext {
+  position: relative;
+  height: 100%;
+  background-color: #000;
+  width: 100%;
+  margin: 0 auto;
+  color: white;
+  z-index: 1;
+}
+
+#videoArea {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.sqp-video {
+  object-position: center !important;
+}
+
+.mp-quality-height {
+  font-size: 1.4em;
+  text-align: center;
+}
+
+.mp-quality-bandwidth {
+  font-size: 0.55em;
+  margin-top: 1.2em;
+  margin-left: 0.5em;
+  vertical-align: sub;
+  font-weight: normal;
+  text-transform: none;
+  position: absolute;
+  right: 0.6em;
+}
+
+.mp-quality-hd {
+  position: absolute;
+  right: 0.6em;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.sqp-opt-value.sqp-opt-quality-text .mp-quality-height {
+  padding-left: 2px;
+}
+
+.sqp-opt-value.sqp-opt-quality-text .mp-quality-bandwidth,
+.sqp-opt-value.sqp-opt-quality-text .mp-quality-hd {
+  display: none;
+}
+
+.sqp-opt-item .sqp-opt-value-2nd {
+  text-align: center;
+}
+
+.ui-control.progress-bar .position-bar {
+  background-color: #fff; /*#0070b2*/
+}
+
+.sqp-progressbar-progress.sqp-ui-main-bgcolor,
+.sqp-progressbar-progress .sqp-ui-main-bgcolor {
+  background: #fff; /*#0070b2*/
+}
+
+.sqp-progressbar-progress.sqp-ui-secondary-bgcolor,
+.sqp-progressbar-progress .sqp-ui-secondary-bgcolor {
+  background: #000; /*#0070b2*/
+}
+
+.sqp-quality-txt,
+.sqp-subtitle-txt {
+  font-size: 1.08em;
+}
+
+.sqp-subtitle-element {
+  font-size: 1.6em;
+  margin-bottom: 1em;
+  text-transform: uppercase;
+}
+
+.sqp-opt-value.sqp-opt-subtitles-text,
+.sqp-opt-value-2nd {
+  text-transform: uppercase;
+}
+
+.vo-poster {
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.vo-big-play-button {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  width: 5rem;
+  background-color: transparent;
+  outline: none !important;
+  border: 0;
+  color: white;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  cursor: pointer;
+}
+
+/*inplayer ads banner*/
+.sqp-banner-a {
+  width: 100%;
+}

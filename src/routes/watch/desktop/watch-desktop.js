@@ -8,7 +8,8 @@ import ReactTooltip from 'react-tooltip'
 import ReactMarkdown from 'react-markdown'
 
 import config from '@source/config'
-import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+// import { defaultVideoSetting } from '@source/lib/theoplayerConfig.js'
+import { defaultVideoSetting } from '@source/lib/playerConfig.js'
 import { isMovie, getContentTypeName } from '@source/lib/globalUtil'
 import Tracker from '@source/lib/tracker'
 import watchPermission from '@source/lib/watchPermission'
@@ -23,6 +24,8 @@ import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from '../upcoming-video'
 import PlayerHeader from '../player-header'
+
+import VOPlayer from '@components/VOPlayer'
 
 // import ChatUtils from '@components/ChatUtils'
 
@@ -76,71 +79,50 @@ class WatchDesktop extends Component {
     defaultVidSetting: null,
   }
 
-  handleOnReadyStateChange = player => {
-    // console.log("player", player.duration)
-    const playerButton = document.querySelector('.vjs-button')
-    /** handle keyboard pressed */
-    document.onkeyup = event => {
-      switch (event.which || event.keyCode) {
-        case 13 /* enter */:
-          if (player.src) {
-            playerButton.click()
-          }
-          break
-        case 32 /* space */:
-          if (player.src) {
-            playerButton.click()
-          }
-          break
-        default:
-          event.preventDefault()
-          break
-      }
-    }
+  // handleOnReadyStateChange = player => {
+  //   // console.log("player", player.duration)
+  //   const playerButton = document.querySelector('.vjs-button')
+  //   /** handle keyboard pressed */
+  //   document.onkeyup = event => {
+  //     switch (event.which || event.keyCode) {
+  //       case 13 /* enter */:
+  //         if (player.src) {
+  //           playerButton.click()
+  //         }
+  //         break
+  //       case 32 /* space */:
+  //         if (player.src) {
+  //           playerButton.click()
+  //         }
+  //         break
+  //       default:
+  //         event.preventDefault()
+  //         break
+  //     }
+  //   }
 
-    this.player = player
-    this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
+  //   this.player = player
+  //   this.trackedDuration = [] /** important note: prevent tracker fire 4 times */
 
-    if (player && player.buffered.length > 0) {
-      this.detectorConnection(player)
-    }
+  //   if (player && player.buffered.length > 0) {
+  //     this.detectorConnection(player)
+  //   }
 
-    player.addEventListener('contentprotectionerror', e => {
-      if (e.error.toLowerCase() == 'error during license server request') {
-        errorFlag = errorFlag + 1
-        if (errorFlag < 2) {
-          this.props.getVUID_retry()
-        } else if (errorFlag > 6) {
-          //every error license will execute six times
-          this.setState({ errorLicense: true })
-        }
-      } else {
-        // console.log('ERROR content protection', e)
-        // this.handleVideoError(e);
-      }
-    })
-  }
-
-  handleOnVideoPlaying = (status, player) => {
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    let i = 0
-    if (isSafari && player.textTracks && player.textTracks.length > 0) {
-      // to hide empty subtitle in safari
-      player.textTracks.map(element => {
-        if (!element.id) {
-          if (player.textTracks.length > 1) {
-            const el = document.getElementsByClassName('theo-menu-item vjs-menu-item theo-text-track-menu-item')
-            el[i].style.display = 'none'
-          } else {
-            const subtitle = document.querySelector('.vjs-icon-subtitles')
-            subtitle.style.display = 'none'
-          }
-        } else {
-          i++
-        }
-      })
-    }
-  }
+  //   player.addEventListener('contentprotectionerror', e => {
+  //     if (e.error.toLowerCase() == 'error during license server request') {
+  //       errorFlag = errorFlag + 1
+  //       if (errorFlag < 2) {
+  //         this.props.getVUID_retry()
+  //       } else if (errorFlag > 6) {
+  //         //every error license will execute six times
+  //         this.setState({ errorLicense: true })
+  //       }
+  //     } else {
+  //       // console.log('ERROR content protection', e)
+  //       // this.handleVideoError(e);
+  //     }
+  //   })
+  // }
 
   detectorConnection = player => {
     if (!this.state.isOnline && Math.ceil(player.currentTime) >= Math.floor(player.buffered.end(0))) {
@@ -176,18 +158,6 @@ class WatchDesktop extends Component {
     this.setState({
       showOfflinePopup: false,
     })
-  }
-
-  handleOnVideoVolumeChange = player => {
-    if (player) {
-      const playerVolumeInfo = {
-        volume: player.volume,
-        muted: player.muted,
-      }
-      try {
-        localStorage.setItem('theoplayer-volume-info', JSON.stringify(playerVolumeInfo))
-      } catch (err) {}
-    }
   }
 
   subtitles() {
@@ -298,12 +268,12 @@ class WatchDesktop extends Component {
 
         const defaultVidSetting = dataFetched
           ? defaultVideoSetting(
-              user,
-              dataFetched,
-              vuidStatus === 'success' ? vuid : '',
-              handleNextVideo,
-              videoSettingProps
-            )
+            user,
+            dataFetched,
+            vuidStatus === 'success' ? vuid : '',
+            handleNextVideo,
+            videoSettingProps
+          )
           : {}
 
         this.setState({
@@ -343,23 +313,24 @@ class WatchDesktop extends Component {
   }
 
   renderVideo = dataFetched => {
+    console.log('dataFetched', dataFetched)
     const { user, getMovieDetail, videoId, blocked, isAutoPlay, isMatchPassed, configParams } = this.props
+    const { loc, nextVideoBlocker, nextVideoClose, defaultVidSetting } = this.state
 
-    let theoVolumeInfo = {}
+    let playerVolumeInfo = {}
 
     try {
-      theoVolumeInfo = localStorage.getItem('theoplayer-volume-info') || '{"muted": false,"volume": 1}'
-      if (theoVolumeInfo != null) {
-        theoVolumeInfo = JSON.parse(theoVolumeInfo)
+      playerVolumeInfo = localStorage.getItem('voplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (playerVolumeInfo != null) {
+        playerVolumeInfo = JSON.parse(playerVolumeInfo)
       }
-    } catch (err) {}
+    } catch (err) { }
 
-    if (dataFetched) {
+    if (dataFetched && defaultVidSetting) {
       const permission = watchPermission(dataFetched.permission, this.props.user.sid)
       const isAllowed = permission.isAllowed
       let watchPermissionErrorCode = permission.errorCode
 
-      const { loc, nextVideoBlocker, nextVideoClose, defaultVidSetting } = this.state
       const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
       const poster = dataFetched ? `${dataFetched.background.landscape}?w=1080` : ''
@@ -371,85 +342,85 @@ class WatchDesktop extends Component {
         adsFlag !== null && adsFlag <= 0 ? this.disableAds('success', defaultVidSetting) : defaultVidSetting
 
       const videoSettings = {
-        ...theoVolumeInfo,
+        ...playerVolumeInfo,
         ...checkAdsSettings,
       }
 
       // Block if the video is not available in web & app
-      if (blocked) {
-        return (
-          <>
-            <PlatformDesktop {...this.props} />
-          </>
-        )
-      } else {
-        // Block if user is not logged in
-        if (!isAllowed) {
-          if (watchPermissionErrorCode == 'login_first') {
-            return (
-              <div className={movieDetailNotAllowed}>
-                <p>
-                  Silahkan{' '}
-                  <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
-                    {' '}
-                    login
-                  </a>{' '}
-                  untuk menyaksikan tayangan ini.
-                </p>
-              </div>
-            )
-          }
-        }
-        // Show countdown if it is a live match
-        if (
-          this.state.countDownStatus &&
-          getContentTypeName(dataFetched.contentType) === 'live' &&
-          dataFetched.startTime * 1000 > Date.now()
-        ) {
-          return (
-            <CountDown
-              hideCountDown={this.hideCountDown}
-              startTime={dataFetched.startTime}
-              videoId={videoId}
-              getMovieDetail={getMovieDetail}
-              isMobile={false}
-            />
-          )
-        } else if (isMatchPassed) {
-          return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
-        } else if (dataFetched.streamSourceUrl && defaultVidSetting) {
-          // Else render, only if there's streamSourceUrl
-          if (!this.state.errorLicense) {
-            const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
-            return (
-              <>
-                <Theoplayer
-                  className={customTheoplayer}
-                  subtitles={this.subtitles()}
-                  poster={autoPlay ? null : poster}
-                  autoPlay={autoPlay}
-                  handleOnReadyStateChange={this.handleOnReadyStateChange}
-                  handleOnVideoVolumeChange={this.handleOnVideoVolumeChange}
-                  handleOnVideoPlaying={this.handleOnVideoPlaying}
-                  {...videoSettings}
-                >
-                  <div className={videoInnerContainer}>
-                    {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
-                    {this.renderPlayerHeader(dataFetched)}
-                  </div>
-                </Theoplayer>
-                {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
-              </>
-            )
-          } else {
-            return (
-              <div className={movieDetailNotAvailableContainer}>
-                Error during license server request. Please refresh the browser.
-              </div>
-            )
-          }
-        }
-      }
+      // if (blocked) {
+      //   return (
+      //     <>
+      //       <PlatformDesktop {...this.props} />
+      //     </>
+      //   )
+      // } else {
+      //   // Block if user is not logged in
+      //   if (!isAllowed) {
+      //     if (watchPermissionErrorCode == 'login_first') {
+      //       return (
+      //         <div className={movieDetailNotAllowed}>
+      //           <p>
+      //             Silahkan{' '}
+      //             <a style={{ color: '#005290' }} href={`/accounts/login?redirect_watch=${this.props.videoId}`}>
+      //               {' '}
+      //               login
+      //             </a>{' '}
+      //             untuk menyaksikan tayangan ini.
+      //           </p>
+      //         </div>
+      //       )
+      //     }
+      //   }
+      //   // Show countdown if it is a live match
+      //   if (
+      //     this.state.countDownStatus &&
+      //     getContentTypeName(dataFetched.contentType) === 'live' &&
+      //     dataFetched.startTime * 1000 > Date.now()
+      //   ) {
+      //     return (
+      //       <CountDown
+      //         hideCountDown={this.hideCountDown}
+      //         startTime={dataFetched.startTime}
+      //         videoId={videoId}
+      //         getMovieDetail={getMovieDetail}
+      //         isMobile={false}
+      //       />
+      //     )
+      //   } else if (isMatchPassed) {
+      //     return <div className={movieDetailNotAvailableContainer}>Pertandingan ini telah selesai</div>
+      //   } else if (dataFetched.streamSourceUrl && defaultVidSetting) {
+      //     // Else render, only if there's streamSourceUrl
+      //     if (!this.state.errorLicense) {
+      const autoPlay = isAutoPlay && !(dataFetched.suitableAge && dataFetched.suitableAge >= 18) ? true : false
+      return (
+        <>
+        <VOPlayer
+          deviceId={vuid}
+          title={dataFetched.title}
+          poster={poster}
+          autoPlay={false}
+          subtitles={this.subtitles()}
+          streamSourceUrl={dataFetched.streamSourceUrl}
+          recommendation={this.props.recommendation}
+          {...videoSettings}
+        >
+            <div className={videoInnerContainer}>
+              {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
+              {this.renderPlayerHeader(dataFetched)}
+            </div>
+          </VOPlayer>
+          {dataFetched && dataFetched.suitableAge && dataFetched.suitableAge >= 18 && <AgeRestrictionModal />}
+        </>
+      )
+      //     } else {
+      //       return (
+      //         <div className={movieDetailNotAvailableContainer}>
+      //           Error during license server request. Please refresh the browser.
+      //         </div>
+      //       )
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -501,20 +472,10 @@ class WatchDesktop extends Component {
     const { isControllerActive, loc, showOfflinePopup, showPlayerHeader } = this.state
     const { meta: { status: videoStatus }, data } = this.props.movieDetail
     const { user, videoId } = this.props
-    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
-    const { blocked } = this.props
     const isDesktopVideoBlocker = this.props.configParams.data.desktop_video_blocker ? true : false
 
     const dataFetched = videoStatus === 'success' && data.length > 0 ? data[0] : undefined
-    let drmStreamUrl = '',
-      isDRM = false
-    const isSafari = /.*Version.*Safari.*/.test(navigator.userAgent)
-    if (videoStatus === 'success') {
-      drmStreamUrl = isSafari ? dataFetched?.drm?.fairplay?.streamUrl : dataFetched?.drm?.widevine?.streamUrl
-    }
-    isDRM = drmStreamUrl ? true : false
 
-    const loadPlayer = dataFetched && ((isDRM && vuidStatus === 'success') || !isDRM)
     let hiddenController = []
     if (dataFetched && dataFetched.trailers.length === 0) {
       hiddenController.push('trailers')
@@ -522,7 +483,6 @@ class WatchDesktop extends Component {
     if (dataFetched && dataFetched.quotes.length === 0) {
       hiddenController.push('review')
     }
-    const poster = dataFetched ? `${dataFetched.background.landscape}?w=1080` : ''
 
     const isLiveMatch = getContentTypeName(dataFetched.contentType) === 'live'
     // const isLiveMatch = true
@@ -583,17 +543,7 @@ class WatchDesktop extends Component {
                     </div>
                   )}
                 <div className={playerClass} id="video-player-root">
-                  {loadPlayer ? (
-                    <>
-                      {isDesktopVideoBlocker ? (
-                        <PlatformDesktop isDesktopVideoBlocker={isDesktopVideoBlocker} {...this.props} />
-                      ) : (
-                        this.renderVideo(dataFetched)
-                      )}
-                    </>
-                  ) : (
-                    <div className={movieDetailNotAvailableContainer}>Video Not Available</div>
-                  )}
+                  {this.renderVideo(dataFetched)}
                   <div className={`${videoPlayerInfoWrapper} ${isLiveMatch ? 'live' : ''}`}>
                     <div className="player__info_grid_title">
                       <h1>{dataFetched.title}</h1>

@@ -97,10 +97,6 @@ const routes = {
       load: () => import(/* webpackChunkName: 'subscriptionsList' */ './accounts/subscriptionsList'),
     },
     {
-      path: '/accounts/checkout',
-      load: () => import(/* webpackChunkName: 'checkout' */ './accounts/checkout'),
-    },
-    {
       path: '/accounts/consent',
       load: () => import(/* webpackChunkName: 'consent' */ './accounts/consent'),
     },
@@ -123,10 +119,6 @@ const routes = {
     {
       path: '/get-app-desktop',
       load: () => import(/* webpackChunkName: 'get-app-desktop' */ './get-app-desktop'),
-    },
-    {
-      path: '/promo',
-      load: () => import(/* webpackChunkName: 'promo' */ './promo'),
     },
     {
       path: '/conditions',
@@ -206,10 +198,6 @@ const routes = {
       path: '/live-support',
       load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
-    {
-      path: '/more',
-      load: () => import(/* webpackChunkName: 'more' */ './more'),
-    },
     // {
     //   path: '/notifications',
     //   load: () => import(/* webpackChunkName: 'notifications' */ './notifications'),
@@ -240,20 +228,15 @@ const routes = {
 
     const hideOffline = e => {
       const targetHide = document.getElementsByClassName('embeddedServiceHelpButton')[0]
-      const labelChat = document.getElementById('headerTextLabel')
-      if (labelChat && configParams.data.live_support_label) {
-        labelChat.textContent = configParams.data.live_support_label
-        targetHide.removeEventListener('DOMSubtreeModified', hideOffline)
+      if (e.target.innerText === 'Offline') {
+        targetHide.style.visibility = 'hidden'
+      } else if (e.target.innerHTML === 'Online') {
+        if (window) {
+          if (window.location.pathname === '/') {
+            targetHide.style.visibility = 'visible'
+          }
+        }
       }
-      // if (e.target.innerText === 'Offline') {
-      //   // targetHide.style.visibility = 'hidden'
-      // } else if (e.target.innerHTML === 'Online') {
-      //   if (window) {
-      //     if (window.location.pathname === '/') {
-      //       targetHide.style.visibility = 'visible'
-      //     }
-      //   }
-      // }
     }
 
     if (configParams.data) {
@@ -264,19 +247,26 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              elMessage.addEventListener('DOMSubtreeModified', hideOffline)
-              if (elMessage.innerHTML === 'Online') {
-                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-              }
-
-              if (pathRoute === 'live-support') {
-                if (window.App.isMobile) {
+              if (pathRoute === 'home') {
+                elMessage.addEventListener('DOMSubtreeModified', hideOffline)
+                if (elMessage.innerHTML === 'Online') {
                   document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-                  let _el = document.getElementsByClassName('helpButton')[0]
-                  _el.style.left = '44.5vw'
-                  _el.style.right = '-50vw'
-                  _el.style.top = '50vh'
-                  _el.style.visibility = 'visible'
+                }
+              } else {
+                if (pathRoute === 'live-support') {
+                  if (window.App.isMobile) {
+                    document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+                    let _el = document.getElementsByClassName('helpButton')[0]
+                    _el.style.left = '44.5vw'
+                    _el.style.right = '-50vw'
+                    _el.style.top = '50vh'
+                    _el.style.visibility = 'visible'
+                  }
+                } else {
+                  if (elMessage && _isFunction(elMessage)) {
+                    elMessage.removeventListener('DOMSubtreeModified', hideOffline)
+                  }
+                  document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
                 }
               }
             }
