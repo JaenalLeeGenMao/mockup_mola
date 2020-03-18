@@ -395,7 +395,17 @@ class Channels extends Component {
     const { user } = this.props
     const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
 
+    let playerVolumeInfo = {}
+
+    try {
+      playerVolumeInfo = localStorage.getItem('voplayer-volume-info') || '{"muted": false,"volume": 1}'
+      if (playerVolumeInfo != null) {
+        playerVolumeInfo = JSON.parse(playerVolumeInfo)
+      }
+    } catch (err) { }
+
     const videoSettings = {
+      ...playerVolumeInfo,
       ...defaultVidSetting,
     }
 
