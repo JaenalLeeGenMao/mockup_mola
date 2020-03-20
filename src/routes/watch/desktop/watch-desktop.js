@@ -23,6 +23,7 @@ import OfflineNoticePopup from '@components/OfflineNoticePopup'
 import AgeRestrictionModal from '@components/AgeRestriction'
 import UpcomingVideo from '../upcoming-video'
 import PlayerHeader from '../player-header'
+import Watermark from '../watermark'
 
 import VOPlayer from '@components/VOPlayer'
 
@@ -71,6 +72,8 @@ class WatchDesktop extends Component {
     showPlayerHeader: false,
     errorLicense: false,
     defaultVidSetting: null,
+    showWatermark: false,
+    isVideoFirstPlay: false
   }
 
   // handleOnReadyStateChange = player => {
@@ -229,6 +232,12 @@ class WatchDesktop extends Component {
   //   }
   // }
 
+  changeWatermarkStatus = (status) => {
+    this.setState({
+      showWatermark: status
+    })
+  }
+
   componentDidMount() {
     const { user, videoId, movieDetail, configParams } = this.props
 
@@ -340,14 +349,14 @@ class WatchDesktop extends Component {
         ...checkAdsSettings,
         handleVideoWatchTime: (player) => {
           defaultVidSetting.handleVideoWatchTime(player)
-          const { watermark_interval, watermark_enabled } = configParams.data
+          const { watermark_interval, watermark_enabled} = configParams.data
           const minutes = watermark_interval || 300
           const showTime = player.totalWatchTime % minutes //minutes
-
+          
           if(showTime === 0 && this.state.isVideoFirstPlay && watermark_enabled) {
             this.changeWatermarkStatus(true)
           }
-          this.setState({ isVideoFirstPlay: true })
+          this.setState({isVideoFirstPlay: true})
         }
       }
 
@@ -409,6 +418,9 @@ class WatchDesktop extends Component {
             recommendation={this.props.recommendation}
             {...videoSettings}
           >
+             {this.state.showWatermark && (
+              <Watermark isWatermarkShow={this.changeWatermarkStatus} uid={user.uid}/>
+              )}
             <div className={videoInnerContainer}>
               {nextVideoBlocker && !nextVideoClose && this.renderNextVideo(dataFetched)}
               {this.renderPlayerHeader(dataFetched)}
