@@ -19,7 +19,7 @@ stages:
       - 'qa_release_notes.md'
 
 .build: &build
-  image: node:8-alpine
+  image: node:10-alpine
   stage: build
   artifacts:
     paths:

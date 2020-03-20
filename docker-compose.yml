@@ -13,4 +13,4 @@ services:
      - node
   node:
     container_name: node
-    image: node:8-alpine # pulls from docker hub
+    image: node:10-alpine # pulls from docker hub
