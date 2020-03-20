@@ -19,6 +19,7 @@ import styles from './login.css'
 import _isUndefined from 'lodash/isUndefined'
 
 const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../gandalf')
 const TextInput = getComponent('text-input')
 
 var emailInputRef, pwdInputRef

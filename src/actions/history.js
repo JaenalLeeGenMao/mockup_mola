@@ -6,7 +6,7 @@ export const getAllHistory = userId => dispatch => {
     type: types.GET_HISTORY_LOADING,
     payload: {
       meta: {
-        status: "loading",
+        status: 'loading',
         error: ''
       },
       data: []
@@ -14,7 +14,7 @@ export const getAllHistory = userId => dispatch => {
   });
   return Mola.getAllHistory({ userId })
     .then(result => {
-      if (result.meta.status === "error") {
+      if (result.meta.status === 'error') {
         dispatch({
           type: types.GET_HISTORY_ERROR,
           payload: result,

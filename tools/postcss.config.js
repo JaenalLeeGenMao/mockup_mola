@@ -20,7 +20,7 @@ module.exports = () => ({
         require('postcss-import')((id, basedir)  => {
             return resolver.resolveSync({}, basedir, id);
         }),
-        // W3C variables, e.g. :root { --color: red; } div { background: var(--color); }
+                // W3C variables, e.g. :root { --color: red; } div { background: var(--color); }
         // https://github.com/postcss/postcss-custom-properties
         require('postcss-custom-properties')(),
         // W3C CSS Custom Media Queries, e.g. @custom-media --small-viewport (max-width: 30em);
@@ -35,7 +35,7 @@ module.exports = () => ({
         // W3C calc() function, e.g. div { height: calc(100px - 2em); }
         // https://github.com/postcss/postcss-calc
         require('postcss-calc')(),
-        // Allows you to nest one style rule inside another
+                // Allows you to nest one style rule inside another
         // https://github.com/jonathantneal/postcss-nesting
         require('postcss-nesting')(),
         // Unwraps nested rules like how Sass does it

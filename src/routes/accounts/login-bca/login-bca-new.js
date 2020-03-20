@@ -23,6 +23,7 @@ import iconLoginFailed from '../../../global/assets-global/images/error_login.pn
 import iconLogoHadiah from '../../../global/assets-global/images/icon_hadiah.png'
 
 const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../gandalf')
 const TextInput = getComponent('text-input')
 
 import Modal from 'react-responsive-modal'

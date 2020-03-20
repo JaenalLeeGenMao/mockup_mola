@@ -10,8 +10,7 @@ import UpcomingVideo from './upcoming-video'
 import { VOStyle, VOScript, VOLicense } from './config'
 
 import s from './VOPlayer.css'
-// const { getComponent } = require('@supersoccer/gandalf')
-let scriptIdInc = 0
+
 var currentFilter = undefined
 class VOPlayer extends Component {
   state = {
@@ -67,26 +66,24 @@ class VOPlayer extends Component {
       isHD: false,
     }
 
-    if (level.hasOwnProperty('height') && level.height > 0) {
+    if (level.hasOwnProperty('height')) {
       formatedQuality.text += "<span class='mp-quality-height'>" + level.height + 'p</span>'
       if (level.height >= 720) {
         formatedQuality.isHD = true
       }
     }
-    if (level.bandwidth > 1000000) {
-      var b = Math.round(level.bandwidth / 100000)
-      formatedQuality.text += " <span class='mp-quality-bandwidth'>" + b / 10 + ' Mbps</span>'
-    } else {
-      var b = Math.round(level.bandwidth / 1000)
-      formatedQuality.text += " <span class='mp-quality-bandwidth'>" + b + ' kbps</span>'
-    }
-
-    if (forPrimaryDisplay && abrEnabled) {
-      formatedQuality.text = 'Auto ' + formatedQuality.text
-    }
-
+    // if (level.bandwidth > 1000000) {
+    //   var b = Math.round(level.bandwidth / 100000)
+    //   formatedQuality.text += " <span class='mp-quality-bandwidth'>" + b / 10 + ' Mbps</span>'
+    // } else {
+    //   var b = Math.round(level.bandwidth / 1000)
+    //   formatedQuality.text += " <span class='mp-quality-bandwidth'>" + b + ' kbps</span>'
+    // }
     if (formatedQuality.isHD) {
       formatedQuality.text += "<span class='mp-quality-hd'>HD</span>"
+    }
+    if (forPrimaryDisplay && abrEnabled) {
+      formatedQuality.text = 'Auto ' + formatedQuality.text
     }
 
     return formatedQuality

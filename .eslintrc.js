@@ -17,7 +17,6 @@ module.exports = {
     'react/jsx-key': 0,
     'react/react-in-jsx-scope': 1,
     'react/display-name': 1,
-    'react/displayname': [true, { ignoreTranspilerName: true }],
     'react/prop-types': 0,
     'no-unused-vars': 'warn',
     // 'no-case-declarations': 'error',

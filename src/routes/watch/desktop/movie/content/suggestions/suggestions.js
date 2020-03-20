@@ -1,5 +1,6 @@
 import React from 'react'
 const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../../../../gandalf')
 const VideoThumbnail = getComponent('video-thumbnail')
 
 import { getContentTypeName } from '@source/lib/globalUtil'

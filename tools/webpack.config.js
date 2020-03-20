@@ -41,28 +41,6 @@ const alias = {
   '@source': resolvePath('src'),
 }
 
-/** this is how to use gandalf */
-// import { webpackBaseConfig } from 'gandalf';
-// let config = webpackBaseConfig.updateConfig({
-//   isDebug,
-//   isVerbose,
-//   ROOT_DIR,
-//   env: process.env.REACT_APP_ENV
-// });
-
-// config = {
-//   ...config,
-//   resolve: {
-//     ...config.resolve,
-//     alias
-//   }
-// }
-
-// CSS Nano options http://cssnano.co/
-const minimizeCssOptions = {
-  discardComments: { removeAll: true },
-}
-
 //
 // Common configuration chunk to be used for both
 // client-side (client.js) and server-side (server.js) bundles
@@ -89,9 +67,7 @@ const config = {
   resolve: {
     // Allow absolute paths in imports, e.g. import Button from 'components/Button'
     // Keep in sync with .flowconfig and .eslintrc
-    extensions: ['.js', '.jsx', '.json'],
     modules: ['node_modules', 'src'],
-    symlinks: true,
     alias,
   },
 
@@ -137,6 +113,9 @@ const config = {
             ['@babel/preset-react', { development: isDebug }],
           ],
           plugins: [
+            // Experimental ECMAScript proposals
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-syntax-dynamic-import',
             // Treat React JSX elements as value types and hoist them to the highest scope
             // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements
             ...(isDebug ? [] : ['@babel/transform-react-constant-elements']),
@@ -146,18 +125,6 @@ const config = {
             // Remove unnecessary React propTypes from the production build
             // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
             ...(isDebug ? [] : ['transform-react-remove-prop-types']),
-
-            // Stage 2
-            ['@babel/plugin-proposal-decorators', { legacy: true }],
-            '@babel/plugin-proposal-function-sent',
-            '@babel/plugin-proposal-export-namespace-from',
-            '@babel/plugin-proposal-numeric-separator',
-            '@babel/plugin-proposal-throw-expressions',
-            // Stage 3
-            '@babel/plugin-syntax-dynamic-import',
-            '@babel/plugin-syntax-import-meta',
-            ['@babel/plugin-proposal-class-properties', { loose: false }],
-            '@babel/plugin-proposal-json-strings',
 
             // Optional chaining obj?.foo?.bar ?? 'unavailable'
             '@babel/plugin-proposal-optional-chaining',
@@ -182,7 +149,6 @@ const config = {
             loader: 'css-loader',
             options: {
               sourceMap: isDebug,
-              minimize: isDebug ? false : minimizeCssOptions,
             },
           },
 
@@ -192,13 +158,12 @@ const config = {
             loader: 'css-loader',
             options: {
               // CSS Loader https://github.com/webpack/css-loader
-              importLoaders: 1,
+              importLoaders: 2,
               sourceMap: isDebug,
               // CSS Modules https://github.com/css-modules/css-modules
               modules: true,
-              localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
-              // CSS Nano http://cssnano.co/
-              minimize: isDebug ? false : minimizeCssOptions,
+              localIdentName: isDebug ? '[path][name]__[local]' : '[hash:base64:5]',
+
             },
           },
 
@@ -223,10 +188,10 @@ const config = {
           // Compile Sass to CSS
           // https://github.com/webpack-contrib/sass-loader
           // Install dependencies before uncommenting: yarn add --dev sass-loader node-sass
-          // {
-          //   test: /\.(scss|sass)$/,
-          //   loader: 'sass-loader',
-          // },
+          {
+            test: /\.(scss|sass)$/,
+            loader: 'sass-loader',
+          },
         ],
       },
 
@@ -325,7 +290,7 @@ const config = {
 
   // Choose a developer tool to enhance debugging
   // https://webpack.js.org/configuration/devtool/#devtool
-  devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
+  devtool: isDebug ? 'eval' : 'source-map',
 }
 
 //
@@ -359,7 +324,7 @@ const clientConfig = {
       output: `${BUILD_DIR}/asset-manifest.json`,
       publicPath: true,
       writeToDisk: true,
-      customize: (key, value) => {
+      customize: ({ key, value }) => {
         // You can prevent adding items to the manifest by returning false.
         if (key.toLowerCase().endsWith('.map')) return false
         return { key, value }
@@ -386,7 +351,7 @@ const clientConfig = {
     }),
 
     // Ignore all locale files of moment.js
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
     ...(isDebug
       ? []

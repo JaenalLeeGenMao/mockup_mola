@@ -86,7 +86,8 @@ const options = {
   },
 }
 
-const baseConfig = require('@supersoccer/gandalf').config
+// const baseConfig = require('@supersoccer/gandalf').config
+const baseConfig = require('../../gandalf').config
 baseConfig.updateConfig(options)
 const config = baseConfig.default[env]
 

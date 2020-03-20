@@ -15,6 +15,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import recommendationActions from '@actions/recommendation'
 
 import { getComponent } from '@supersoccer/gandalf'
+// import { getComponent } from '../../../../gandalf'
 import LazyLoad from '@components/common/Lazyload'
 import Link from '@components/Link'
 import HomeError from '@components/common/error'

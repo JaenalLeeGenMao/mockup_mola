@@ -1,5 +1,5 @@
 import React from 'react'
-import WithStyles from 'isomorphic-style-loader/lib/withStyles'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import styles from './loading-notifications.css'
 
 const loader = props => {
@@ -25,4 +25,4 @@ const loader = props => {
   }
 }
 
-export default WithStyles(styles)(loader)
+export default withStyles(styles)(loader)

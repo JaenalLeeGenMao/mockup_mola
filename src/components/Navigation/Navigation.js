@@ -19,7 +19,7 @@ class Navigation extends Component {
   handleNavigation = e => {
     const { onClick, href } = this.props;
 
-    if(!href || href !== "" ) {
+    if(!href || href !== '' ) {
       onClick(e.currentTarget.id);
       e.preventDefault();
     }

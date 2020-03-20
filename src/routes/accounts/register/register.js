@@ -19,6 +19,7 @@ import { getLocale } from './locale'
 import styles from './register.css'
 
 const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../gandalf')
 const TextInput = getComponent('text-input')
 import { genderOptions } from '../profile/content/profile/const'
 import Select from 'react-select'

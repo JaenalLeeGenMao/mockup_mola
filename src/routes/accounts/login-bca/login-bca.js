@@ -21,6 +21,7 @@ import { logoBlue, logoMobile, logoHorizontal } from '@global/imageUrl'
 import iconLoginFailed from '../../../global/assets-global/images/error_login.png'
 
 const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../gandalf')
 const TextInput = getComponent('text-input')
 
 var emailInputRef, pwdInputRef

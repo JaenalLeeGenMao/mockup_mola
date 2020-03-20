@@ -20,6 +20,7 @@ import config from '@source/config'
 
 // import Form from '@components/FormInput'
 const { getComponent } = require('@supersoccer/gandalf')
+// const { getComponent } = require('../../../../../../gandalf')
 const TextInput = getComponent('text-input')
 import LazyLoad from '@components/common/Lazyload'
 

@@ -338,6 +338,17 @@ class WatchDesktop extends Component {
       const videoSettings = {
         ...playerVolumeInfo,
         ...checkAdsSettings,
+        handleVideoWatchTime: (player) => {
+          defaultVidSetting.handleVideoWatchTime(player)
+          const { watermark_interval, watermark_enabled } = configParams.data
+          const minutes = watermark_interval || 300
+          const showTime = player.totalWatchTime % minutes //minutes
+
+          if(showTime === 0 && this.state.isVideoFirstPlay && watermark_enabled) {
+            this.changeWatermarkStatus(true)
+          }
+          this.setState({ isVideoFirstPlay: true })
+        }
       }
 
       // Block if the video is not available in web & app

@@ -12,7 +12,7 @@ export default function history(state = {}, action) {
     return {
       ...state,
       meta: {
-        status: "loading"
+        status: 'loading'
       },
       data: []
     };
