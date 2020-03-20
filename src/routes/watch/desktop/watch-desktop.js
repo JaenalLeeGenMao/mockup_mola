@@ -350,8 +350,8 @@ class WatchDesktop extends Component {
         handleVideoWatchTime: (player) => {
           defaultVidSetting.handleVideoWatchTime(player)
           const { watermark_interval, watermark_enabled} = configParams.data
-          const minutes = watermark_interval || 300
-          const showTime = player.totalWatchTime % minutes //minutes
+          const seconds = watermark_interval || 300
+          const showTime = player.totalWatchTime % seconds  //seconds
           
           if(showTime === 0 && this.state.isVideoFirstPlay && watermark_enabled) {
             this.changeWatermarkStatus(true)

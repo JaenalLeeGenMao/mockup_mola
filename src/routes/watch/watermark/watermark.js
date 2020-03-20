@@ -168,8 +168,8 @@ class Watermark extends Component {
 
     return (
       <div className={styles.watermark_container} style={{ top: `${top}%`, right: `${right}%` }}>
-        F5432-SSSDW-123GHD-213213
-        {/* {uid} */}
+        {/* F5432-SSSDW-123GHD-213213 */}
+        {uid}
       </div>
       // isFullscreen ? (
       //   <div className={styles.watermark_container} style={{ top: `calc(100% - ${top}vh)`, right: `calc(100% - ${right}vw)` }}>
