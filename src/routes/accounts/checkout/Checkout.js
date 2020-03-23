@@ -172,7 +172,7 @@ class Checkout extends Component {
     }
 
     /* price == 0  means the package is free , so no need to proceed to createMCBillPayment API */
-    const price = _get(order, "data.attributes.totalPrice", 1)
+    const price = _get(order, "data.totalPrice", 1)
     if(price == 0) {
       window.location.href = '/accounts/ordered?status_code=200'
       return
