@@ -125,8 +125,8 @@ class NewHeader extends Component {
     const { menu: { data: headerMenu } } = this.props
     const filteredMenu = headerMenu
       ? headerMenu.filter(dt => {
-          return dt.id == id
-        })
+        return dt.id == id
+      })
       : []
 
     if (filteredMenu.length > 0) {
@@ -144,14 +144,6 @@ class NewHeader extends Component {
   }
 
   render() {
-    let promoActive = false
-    if (typeof window !== 'undefined') {
-      if (window.location.pathname.includes('promo')) {
-        promoActive = true
-      } else {
-        promoActive = false
-      }
-    }
     const { isMobile = false, isLandscape, pathname = '/', menu: { data: headerMenu }, activeMenuId } = this.props
     const { toggle, newNotif, filters } = this.state
     const headerMenuList = headerMenu ? headerMenu : []
@@ -185,19 +177,11 @@ class NewHeader extends Component {
                             key={dts.id}
                             title={title}
                             className={`tourCategory${dts.id} ${
-                              isActive && !promoActive ? styles.header_menu__active : ''
-                            }`}
+                              isActive ? styles.header_menu__active : ''
+                              }`}
                             to={relMenuUrl}
                           >
                             {title}
-                          </Link>
-                          <Link
-                            key={'promo-bca'}
-                            title={'Promo'}
-                            className={`${promoActive ? styles.header_menu__active : ''}`}
-                            to={'/promo'}
-                          >
-                            Promo
                           </Link>
                         </>
                       )
@@ -281,7 +265,7 @@ class NewHeader extends Component {
                 <div
                   className={`${styles.header__menu_wrapper_m} tourHamburger ${
                     isLandscape ? styles.header_menu_select_wrapper__ls : ''
-                  }`}
+                    }`}
                 >
                   {/* <Link to="/live-support">
                     <div className={styles.icon_livechat} />
