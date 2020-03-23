@@ -171,6 +171,13 @@ class Checkout extends Component {
       return
     }
 
+    /* price == 0  means the package is free , so no need to proceed to createMCBillPayment API */
+    const price = _get(order, "data.attributes.totalPrice", 1)
+    if(price == 0) {
+      window.location.href = '/accounts/ordered?status_code=200'
+      return
+    }
+
     const payment = await MolaHandler.createMCBillPayment({
       token: this.state.accessToken,
       orderId: order.data.id,
