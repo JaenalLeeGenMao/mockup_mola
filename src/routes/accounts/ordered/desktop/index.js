@@ -1,3 +1,3 @@
-import OrderedDesktop from './Thankyou'
+import OrderedDesktop from './Ordered'
 
 export default OrderedDesktop

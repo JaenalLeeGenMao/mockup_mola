@@ -100,13 +100,13 @@ class Ordered extends React.Component {
           <div className={s.container__logo_failed}>
             <img src={hourglassImage} />
           </div>
-          <h1>Waiting for Payment </h1>
+          <h1>Menunggu Untuk Pembayaran </h1>
           <div className={s.description}>
-            <p> Please Check your E-mail for Payment Detail</p>
+            <p>Mohon memeriksa Email anda untuk melihat perincian pembayaran</p>
           </div>
           <div>
             <button type="submit" className={s.close_button} onClick={this.goToHome}>
-              Close
+              Tutup
             </button>
           </div>
         </div>
@@ -124,11 +124,12 @@ class Ordered extends React.Component {
           <div className={s.container__logo}>
             <img src={iconMolaFailed} />
           </div>
-          <h1>Your subscription has been activated</h1>
+          <h1>Paket Berlangganan anda telah diaktifkan!</h1>
+
           <div className={s.description}>
             <p>
               {' '}
-              <a onClick={() => this.goToHome()}>click here</a> if you are not redirected to homepage in 10 seconds.
+              <a onClick={() => this.goToHome()}>klik di sini</a> jika anda tidak diarahkan otomatis ke beranda dalam 10 detik.
             </p>
           </div>
         </div>
@@ -146,13 +147,13 @@ class Ordered extends React.Component {
           <div className={s.container__logo_failed}>
             <img src={crossImage} />
           </div>
-          <h1>Failed to Activate Your subscription </h1>
+          <h1>Gagal Mengaktifkan Langganan </h1>
           <div className={s.description}>
-            <p> There was a problem activate your subscription. Please try again later.</p>
+            <p> Terjadi masalah saat mengaktifkan paket berlangganan anda, Silakan coba lagi nanti.</p>
           </div>
           <div>
             <button type="submit" className={s.close_button} onClick={this.goToHome}>
-              Close
+              Tutup
             </button>
           </div>
         </div>
