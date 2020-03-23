@@ -348,15 +348,20 @@ class WatchDesktop extends Component {
         ...playerVolumeInfo,
         ...checkAdsSettings,
         handleVideoWatchTime: (player) => {
-          defaultVidSetting.handleVideoWatchTime(player)
-          const { watermark_interval, watermark_enabled} = configParams.data
-          const seconds = watermark_interval || 300
-          const showTime = player.totalWatchTime % seconds  //seconds
-          
-          if(showTime === 0 && this.state.isVideoFirstPlay && watermark_enabled) {
-            this.changeWatermarkStatus(true)
+          const bitrate_interval = 60, totalWatchTime = _get(player, 'totalWatchTime', '');
+          if (totalWatchTime >= 0) {
+            if (totalWatchTime % bitrate_interval === 0) {
+              defaultVidSetting.handleVideoWatchTime(player)
+            }
+            const { watermark_interval, watermark_enabled } = configParams.data
+            const seconds = watermark_interval || 300
+            const showTime = player.totalWatchTime % seconds  //seconds
+
+            if(showTime === 0 && this.state.isVideoFirstPlay && watermark_enabled) {
+              this.changeWatermarkStatus(true)
+            }
+            this.setState({ isVideoFirstPlay: true })
           }
-          this.setState({isVideoFirstPlay: true})
         }
       }
 
