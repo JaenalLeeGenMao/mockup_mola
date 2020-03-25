@@ -125,14 +125,14 @@ class Subscription extends Component {
                   <LazyLoad
                     key={index}
                     containerClassName={s.sideCenter}
-                    // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
+                  // containerStyle={{ display: today < expiry ? 'none' : 'none' }}
                   >
                     <div className={s.subscription__wrapper_active}>
                       <div className={s.subscription__section_left_active}>
                         <div
                           className={`${
                             statusExp ? s.subscription__section_right_active : s.subscription__section_right_deactive
-                          }`}
+                            }`}
                         >
                           {statusExp ? 'Active' : 'Expired'}
                         </div>

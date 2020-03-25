@@ -43,6 +43,7 @@ class Ordered extends React.Component {
       loading: true,
       success: false,
       status: statusText.failed,
+      fromPage: ''
     }
   }
 
@@ -52,6 +53,11 @@ class Ordered extends React.Component {
   // status_code
   componentDidMount() {
     const statusCode = this.readQueryParams('status_code')
+    const fromPage = this.readQueryParams('for')
+    if (fromPage) {
+      this.setState({ fromPage, loading: false })
+
+    }
 
     if (statusCode == code.success) {
       this.setState({ status: statusText.success, loading: false })
@@ -161,9 +167,48 @@ class Ordered extends React.Component {
     )
   }
 
+  renderCompensation = () => {
+    return (
+      <LazyLoad>
+        <div className={s.flip}>
+          {/* <div className={s.circle}>
+        <img className={s.logoBlue} />
+      </div> */}
+          <div className={s.container__logo_failed}>
+            <img src={iconMolaFailed} />
+          </div>
+          <h1>Permintaan sedang kami proses </h1>
+          <div className={s.description}>
+            <p> Terima kasih sudah mengisi formulir, akan selesai proses dalam 7 hari kerja.</p>
+          </div>
+          <div>
+            <button type="submit" className={s.close_button} style={{ width: '40%' }} onClick={this.goToHome}>
+              Kembali ke beranda
+            </button>
+          </div>
+        </div>
+      </LazyLoad>
+    )
+  }
+
+
   render() {
-    const { loading, status } = this.state
+    const { loading, status, fromPage } = this.state
     const { isMobile } = this.props
+
+    if (fromPage === 'compensation') {
+      return (
+        <Fragment>
+          {!isMobile && <Header libraryOff leftMenuOff rightMenuOff isDark={0} {...this.props} />}
+          <div className={s.wrapper}>
+            <div className={s.root}>
+              {!loading && this.renderCompensation()}
+            </div>
+          </div>
+        </Fragment>
+      )
+    }
+
     return (
       <Fragment>
         {!isMobile && <Header libraryOff leftMenuOff rightMenuOff isDark={0} {...this.props} />}

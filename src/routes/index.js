@@ -107,6 +107,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'login-bca' */ './accounts/login-bca'),
     },
     {
+      path: '/accounts/compensation',
+      load: () => import(/* webpackChunkName: 'compensation' */ './accounts/compensation'),
+    },
+    {
       path: '/system-info',
       load: () => import(/* webpackChunkName: 'system-info' */ './system-info'),
     },
@@ -265,7 +269,7 @@ const routes = {
     if (configParams.data) {
       if (configParams.data.live_support_enabled) {
         let elMessage = null
-        setTimeout(function() {
+        setTimeout(function () {
           if (typeof document !== 'undefined') {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
@@ -311,9 +315,9 @@ const track = async store => {
     addListenerMulti(
       document,
       'click mousemove touchmove mouseup mousedown keydown keypress keyup submit change mouseenter scroll resize dblclick',
-      function(e) {
+      function (e) {
         if (timer) clearTimeout(timer)
-        timer = setTimeout(function(t) {
+        timer = setTimeout(function (t) {
           // console.log("EVENT ALL")
           tracker.sessionId()
         }, 60000)

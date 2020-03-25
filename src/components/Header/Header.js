@@ -47,7 +47,7 @@ class Header extends Component {
       window.addEventListener('resize', this.handleWindowSizeChange)
     }
 
-    if (categoryWatch == '/watch' || categoryWatch.includes('promo') || categoryWatch.includes('/accounts/profile')) {
+    if (categoryWatch == '/watch' || categoryWatch.includes('promo') || categoryWatch.includes('/accounts/profile') || categoryWatch.includes('/accounts/compensation')) {
       currentMenu = true
       this.setState({
         showMenu: currentMenu,
@@ -94,8 +94,8 @@ class Header extends Component {
                   </div>
                 </>
               ) : (
-                <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
-              )}
+                  <img alt="molatv" src={isMobileView ? logoHorizontal : logoBlue} className={styles.header__logo} />
+                )}
             </Link>
           </LazyLoad>
         </div>
