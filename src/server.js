@@ -10,6 +10,7 @@ import newrelic from 'newrelic'
 
 import path from 'path'
 import express from 'express'
+import cors from 'cors'
 import csurf from 'csurf'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
@@ -172,6 +173,7 @@ app.get('/ping', (req, res) => {
 // -----------------------------------------------------------------------------
 app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(cookieParser())
+app.use(cors())
 app.use(
   csurf({
     cookie: {
@@ -451,7 +453,7 @@ const getHeaderMenus = async configParams => {
   let hasCache = false
   let headerArr = []
   let headerError = ''
-  molaCache.get('headerMenu', function(err, value) {
+  molaCache.get('headerMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -484,7 +486,7 @@ const getHeaderMenus = async configParams => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 60, function(err, success) {
+      molaCache.set('headerMenu', headerArr, 60, function (err, success) {
         if (!err && success) {
           // console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -505,7 +507,7 @@ const getSidebarMenu = async configParams => {
   let hasCache = false
   let sidebarArr = []
   let sidebarError = ''
-  molaCache.get('sidebarMenu', function(err, value) {
+  molaCache.get('sidebarMenu', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -535,7 +537,7 @@ const getSidebarMenu = async configParams => {
       console.log('Error Get Sidebar Menu', err)
     }
     if (sidebarArr.length > 0) {
-      molaCache.set('sidebarMenu', sidebarArr, 60, function(err, success) {
+      molaCache.set('sidebarMenu', sidebarArr, 60, function (err, success) {
         if (!err && success) {
           // console.log('success set cache node cache sidebar menu', sidebarArr)
         } else {
@@ -557,7 +559,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function(err, value) {
+  molaCache.get('configParams', function (err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -575,7 +577,7 @@ const getConfigParams = async () => {
     try {
       const configParamUrl = `${configUrl.endpoint}/app-params?app_id=${configUrl.appId}&platform_id=${
         configUrl.platformId
-      }`
+        }`
       let response = null
 
       const rawResponse = await fetch(`${configParamUrl}`, {
@@ -589,7 +591,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 60, function(err, success) {
+      molaCache.set('configParams', configParams, 60, function (err, success) {
         if (!err && success) {
           // console.log('success set cache node cache config params', configParams)
         } else {
@@ -1092,7 +1094,7 @@ app.get('*', async (req, res, next) => {
       } else {
         let articlesData = null
         let hasCache = false
-        molaCache.get(articleId, function(err, value) {
+        molaCache.get(articleId, function (err, value) {
           if (!err) {
             if (value == undefined) {
               // key not found
@@ -1121,7 +1123,7 @@ app.get('*', async (req, res, next) => {
                   },
                   data: result,
                 }
-                molaCache.set(articleId, result, 60, function(err, success) {
+                molaCache.set(articleId, result, 60, function (err, success) {
                   if (!err && success) {
                     // console.log('success set cache node cache', articleId, result)
                     // true
@@ -1268,7 +1270,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function(err, value) {
+      molaCache.get(videoId, function (err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -1303,7 +1305,7 @@ app.get('*', async (req, res, next) => {
             data.twitter_card_type = 'summary_large_image'
             data.appLinkUrl = appLink
             data.url = config.endpoints.domain + req.path + '?v=' + videoId
-  
+
             videoObj = {
               title: data.title,
               description: data.description,
@@ -1318,7 +1320,7 @@ app.get('*', async (req, res, next) => {
           }
         }
         if (videoObj.title) {
-          molaCache.set(videoId, videoObj, 60, function(err, success) {
+          molaCache.set(videoId, videoObj, 60, function (err, success) {
             if (!err && success) {
               // console.log('success set cache node cache', videoId, videoObj)
               // true
