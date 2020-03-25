@@ -177,9 +177,9 @@ class Ordered extends React.Component {
           <div className={s.container__logo_failed}>
             <img src={iconMolaFailed} />
           </div>
-          <h1>Permintaan sedang kami proses </h1>
+          <h1>Klaim kompensasi sedang diproses </h1>
           <div className={s.description}>
-            <p> Terima kasih sudah mengisi formulir, akan selesai proses dalam 7 hari kerja.</p>
+            <p>Tunggu informasi detail kompensasi selanjutnya dari kami.</p>
           </div>
           <div>
             <button type="submit" className={s.close_button} style={{ width: '40%' }} onClick={this.goToHome}>
