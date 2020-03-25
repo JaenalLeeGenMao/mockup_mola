@@ -131,7 +131,7 @@ export const CarouselWrapper = styled('div')`
 
   @media screen and (min-width: 1441px) {
     height: ${props => (props.height === '31rem' ? '412px' :
-    props.height === '29rem' ? '30rem': props.height)};
+    props.height === '29rem' ? '30rem' : props.height)};
   }
 `
 
@@ -153,4 +153,26 @@ export const Icon = css`
 `
 export const CustomContainer = css`
 margin-bottom: 20px;
+`
+
+export const logo__sapp__wrapper = css`
+margin: 0 8px 2rem;
+display: grid;
+grid-template-columns: repeat(4, 20vw);
+grid-template-rows: 20vw;
+grid-auto-rows: 20vw;
+justify-content: center;
+align-items: center;
+grid-gap: 15px;
+`
+
+export const logo__sapp__wrapper__desktop = css`
+margin: 0 8px 2rem;
+display: grid;
+grid-template-columns: repeat(8, 10vw);
+grid-template-rows: 5vw;
+grid-auto-rows: 5vw;
+align-items: center;
+grid-gap: 15px;
+margin: 3rem 4rem;
 `
