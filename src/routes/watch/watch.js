@@ -10,10 +10,11 @@ import recommendationActions from '@actions/recommendation'
 import DRMConfig from '@source/lib/DRMConfig'
 import { updateCustomMeta } from '@source/DOMUtils'
 import MovieDetailError from '@components/common/error'
+import CoronaPage from '@components/CoronaPage'
 import { notificationBarBackground, logoLandscapeBlue } from '@global/imageUrl'
 
 import WatchDesktop from './desktop'
-import WatchMobile from './mobile'
+// import WatchMobile from './mobile'
 
 import Placeholder from './desktop/placeholder'
 import PlaceholderMobile from './mobile/placeholder'
@@ -125,7 +126,7 @@ class Watch extends Component {
     updateCustomMeta('og:image', logoLandscapeBlue)
     updateCustomMeta(
       'og:description',
-      'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.'
+      'Watch TV Shows Online, Watch Movies Online or stream right to your smart TV, PC, Mac, mobile, tablet and more.',
     )
     updateCustomMeta('og:url', window.location.href || 'https://mola.tv/')
     if (this.intervalCheckMatch) {
@@ -136,7 +137,10 @@ class Watch extends Component {
   render() {
     const { isMobile, vuid, videoId, getMovieDetail, isAutoPlay, recommendation } = this.props
     const { block, isHeader } = this.state
-    const { meta: { status, error }, data } = this.props.movieDetail
+    const {
+      meta: { status, error },
+      data,
+    } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
 
@@ -145,34 +149,33 @@ class Watch extends Component {
         {status === 'loading' && !isMobile && <> {<Placeholder />} </>}
         {status === 'loading' && isMobile && <> {<PlaceholderMobile />} </>}
 
-        {!isMobile &&
-          dataFetched && (
-            <>
-              <Helmet>
-                <title>{dataFetched.title}</title>
-              </Helmet>
-              <WatchDesktop
-                blocked={block}
-                videoId={videoId}
-                movieDetail={this.props.movieDetail}
-                getMovieDetail={getMovieDetail}
-                recommendation={recommendation}
-                vuid={vuid}
-                title={apiFetched ? dataFetched.title : ''}
-                isAutoPlay={isAutoPlay}
-                portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
-                isMatchPassed={this.state.isMatchPassed}
-              />
-            </>
-          )}
+        {!isMobile && dataFetched && (
+          <>
+            <Helmet>
+              <title>{dataFetched.title}</title>
+            </Helmet>
+            <WatchDesktop
+              blocked={block}
+              videoId={videoId}
+              movieDetail={this.props.movieDetail}
+              getMovieDetail={getMovieDetail}
+              recommendation={recommendation}
+              vuid={vuid}
+              title={apiFetched ? dataFetched.title : ''}
+              isAutoPlay={isAutoPlay}
+              portraitPoster={apiFetched ? dataFetched.background.landscape : ''}
+              isMatchPassed={this.state.isMatchPassed}
+            />
+          </>
+        )}
 
-        {dataFetched &&
-          isMobile && (
-            <>
-              <Helmet>
-                <title>{dataFetched.title}</title>
-              </Helmet>
-              <WatchMobile
+        {dataFetched && isMobile && (
+          <>
+            <Helmet>
+              <title>{dataFetched.title}</title>
+            </Helmet>
+            <CoronaPage isMobile />
+            {/* <WatchMobile
                 blocked={block}
                 videoId={videoId}
                 movieDetail={this.props.movieDetail}
@@ -180,9 +183,9 @@ class Watch extends Component {
                 vuid={vuid}
                 isAutoPlay={isAutoPlay}
                 isMatchPassed={this.state.isMatchPassed}
-              />
-            </>
-          )}
+              /> */}
+          </>
+        )}
         {status === 'error' && <MovieDetailError message={error} />}
       </>
     )

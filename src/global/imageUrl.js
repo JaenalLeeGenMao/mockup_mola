@@ -69,3 +69,6 @@ export const checkIconSubs = `${imgBaseUrl}/icon-check-subscription.png`
 export const crossIconSubs = `${imgBaseUrl}/icon-cross-subscription.png`
 
 export const bcaButton = `${imgBaseUrl}/bca-button.png`
+
+export const coronaGuardDesktop = `${imgBaseUrl}/corona-guard-d.png`
+export const coronaGuardMobile = `${imgBaseUrl}/corona-guard-m.png`

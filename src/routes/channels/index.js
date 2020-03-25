@@ -5,7 +5,9 @@ import MolaLayout from '@components/Molalayout'
 import MobileNavbar from '@components/MobileNavbar'
 
 import ChannelsDesktop from './desktop'
-import ChannelsMobile from './mobile'
+// import ChannelsMobile from './mobile'
+
+import CoronaPage from '@components/CoronaPage'
 
 async function action({ isMobile, pathname }) {
   const pathnameArr = pathname.split('/')
@@ -21,14 +23,15 @@ async function action({ isMobile, pathname }) {
     url: '',
     component: isMobile ? (
       <MolaLayout>
-        <ChannelsMobile movieId={movieId} pathname={pathname} />
-        <MobileNavbar routes={routes} />
+        {/* <ChannelsMobile movieId={movieId} pathname={pathname} /> */}
+        <CoronaPage isMobile />
+        {/* <MobileNavbar routes={routes} /> */}
       </MolaLayout>
     ) : (
-      <MolaLayout>
-        <ChannelsDesktop movieId={movieId} pathname={pathname} />
-      </MolaLayout>
-    ),
+        <MolaLayout>
+          <ChannelsDesktop movieId={movieId} pathname={pathname} />
+        </MolaLayout>
+      ),
   }
 }
 

@@ -1192,6 +1192,7 @@ app.get('*', async (req, res, next) => {
         data: responseConfigParams ? responseConfigParams : '',
       },
       runtime: {
+        coronaPageCount: 5,
         platformId: configUrl.platformId,
         appUrl: 'molaapp://mola.tv/watch',
         appPackage: config.env == 'staging' ? 'com.molademo' : 'tv.mola.app',

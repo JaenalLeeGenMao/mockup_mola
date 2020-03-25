@@ -19,6 +19,8 @@ import _isFunction from 'lodash/isFunction'
 import tracker from '../lib/tracker'
 import { globalTracker } from '@source/lib/globalTracker'
 
+import { setRuntimeVariable } from '@actions/runtime'
+
 // let firstRender = true;
 let currentLocation = history.location
 
@@ -167,6 +169,10 @@ const routes = {
       path: '/watch',
       load: () => import(/* webpackChunkName: 'watch' */ './watch'),
     },
+    // {
+    //   path: '/testvo',
+    //   load: () => import(/* webpackChunkName: 'testvo' */ './testvo'),
+    // },
     {
       path: '/channels',
       load: () => import(/* webpackChunkName: 'channels' */ './channels'),
@@ -198,6 +204,10 @@ const routes = {
       path: '/live-support',
       load: () => import(/* webpackChunkName: 'live-support' */ './live-support'),
     },
+    {
+      path: '/more',
+      load: () => import(/* webpackChunkName: 'more' */ './more'),
+    },
     // {
     //   path: '/notifications',
     //   load: () => import(/* webpackChunkName: 'notifications' */ './notifications'),
@@ -217,6 +227,14 @@ const routes = {
     /* Timeout runs the method in parallel upon changing routes */
     setTimeout(async () => {
       track(store)
+
+      /** ini sementara saja sesuai bisnis, setiap pindah 5 page muncul sekali */
+      const runtime = store.getState().runtime
+      if (runtime.coronaPageCount > 5) {
+        store.dispatch(setRuntimeVariable({ name: 'coronaPageCount', value: 0 }))
+      } else {
+        store.dispatch(setRuntimeVariable({ name: 'coronaPageCount', value: runtime.coronaPageCount + 1 }))
+      }
     })
 
     // Execute each child route until one of them return the result
@@ -228,15 +246,20 @@ const routes = {
 
     const hideOffline = e => {
       const targetHide = document.getElementsByClassName('embeddedServiceHelpButton')[0]
-      if (e.target.innerText === 'Offline') {
-        targetHide.style.visibility = 'hidden'
-      } else if (e.target.innerHTML === 'Online') {
-        if (window) {
-          if (window.location.pathname === '/') {
-            targetHide.style.visibility = 'visible'
-          }
-        }
+      const labelChat = document.getElementById('headerTextLabel')
+      if (labelChat && configParams.data.live_support_label) {
+        labelChat.textContent = configParams.data.live_support_label
+        targetHide.removeEventListener('DOMSubtreeModified', hideOffline)
       }
+      // if (e.target.innerText === 'Offline') {
+      //   // targetHide.style.visibility = 'hidden'
+      // } else if (e.target.innerHTML === 'Online') {
+      //   if (window) {
+      //     if (window.location.pathname === '/') {
+      //       targetHide.style.visibility = 'visible'
+      //     }
+      //   }
+      // }
     }
 
     if (configParams.data) {
@@ -247,26 +270,19 @@ const routes = {
             const pathRoute = route.chunks[0]
             if (document.getElementsByClassName('embeddedServiceHelpButton')[0]) {
               elMessage = document.getElementsByClassName('message')[0]
-              if (pathRoute === 'home') {
-                elMessage.addEventListener('DOMSubtreeModified', hideOffline)
-                if (elMessage.innerHTML === 'Online') {
+              elMessage.addEventListener('DOMSubtreeModified', hideOffline)
+              if (elMessage.innerHTML === 'Online') {
+                document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
+              }
+
+              if (pathRoute === 'live-support') {
+                if (window.App.isMobile) {
                   document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-                }
-              } else {
-                if (pathRoute === 'live-support') {
-                  if (window.App.isMobile) {
-                    document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'visible'
-                    let _el = document.getElementsByClassName('helpButton')[0]
-                    _el.style.left = '44.5vw'
-                    _el.style.right = '-50vw'
-                    _el.style.top = '50vh'
-                    _el.style.visibility = 'visible'
-                  }
-                } else {
-                  if (elMessage && _isFunction(elMessage)) {
-                    elMessage.removeventListener('DOMSubtreeModified', hideOffline)
-                  }
-                  document.getElementsByClassName('embeddedServiceHelpButton')[0].style.visibility = 'hidden'
+                  let _el = document.getElementsByClassName('helpButton')[0]
+                  _el.style.left = '44.5vw'
+                  _el.style.right = '-50vw'
+                  _el.style.top = '50vh'
+                  _el.style.visibility = 'visible'
                 }
               }
             }
