@@ -1,0 +1,59 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.logo > img {
+  height: 50%;
+  width: 50%;
+}
+
+.link {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #454B4E;
+  background-color: #333739;
+}
+
+.label__wrapper {
+  height: 50%;
+  width: 50%;
+  color: #FFF;
+  background-color: #333739;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link__desktop {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #454B4E;
+  background-color: #333739;
+}
+
+.logo__desktop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.logo__desktop > img {
+  height: 50%;
+  width: 50%;
+}
+
+.label__wrapper__desktop {
+  height: 50%;
+  width: 50%;
+  color: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

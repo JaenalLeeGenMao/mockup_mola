@@ -29,6 +29,7 @@ import { BannerSquarePlaceholder } from '@components/placeholder/banner-square-p
 import VideoPlaceholder from '@components/placeholder/videoPlaceholder'
 import { banners as dummyDataBanners } from '@components/placeholder/const'
 import MolaOriginal from './original'
+import MolaSuperApp from './superapp'
 import { contentTypeList } from './const'
 
 import {
@@ -39,6 +40,8 @@ import {
   CarouselWrapper,
   Icon,
   CustomContainer,
+  logo__sapp__wrapper,
+  logo__sapp__wrapper__desktop
 } from './style'
 
 let trackedPlaylistIds = [] /** tracked the playlist/videos id both similar */
@@ -178,6 +181,13 @@ class Feature extends Component {
       }
 
       Math.trunc(contentTypeList['articles'].slideToShow)
+
+      let isMovieLib = false
+      if (window) {
+        let pathname = window.location.pathname.split('/')
+        pathname[2] === 'movies' ? isMovieLib = true : isMovieLib = false
+      }
+
       return (
         <>
           <Helmet>
@@ -237,6 +247,25 @@ class Feature extends Component {
                   ))}
                 </Carousel>
               )}
+
+              {isMovieLib && !isMobile && configParams &&
+                configParams.data && configParams.data.superapp_id && configParams.data.superapp_id.length > 0 &&
+                <div className={logo__sapp__wrapper__desktop}>
+                  {configParams.data.superapp_id.map(obj => (
+                    <MolaSuperApp data={obj} />
+                  ))}
+                </div>
+              }
+
+              {isMovieLib && isMobile && configParams &&
+                configParams.data && configParams.data.superapp_id && configParams.data.superapp_id.length > 0 &&
+                <div className={logo__sapp__wrapper}>
+                  {configParams.data.superapp_id.map(obj => (
+                    <MolaSuperApp data={obj} isMobile />
+                  ))}
+                </div>
+              }
+
               {/* {videos.meta.status == 'loading' && <VideoPlaceholder isMobile={isMobile} />} */}
               <LazyLoad containerClassName={container}>
                 {playlists.data.length > 0 &&
