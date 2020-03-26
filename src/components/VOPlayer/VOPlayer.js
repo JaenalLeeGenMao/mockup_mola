@@ -48,16 +48,18 @@ class VOPlayer extends Component {
   //WARNING: below is only an example of Fairplay license response filter. This implementation is not meant to be generic
   fairplayLicenseResponseFilter = response => {
     var keyText = response.data.trim()
-    if (keyText.substr(0, 5) === '<ckc>' && keyText.substr(-6) === '</ckc>') {
-      keyText = keyText.slice(5, -6)
+    console.log('Response keytext = ' + keyText);
+    var key = JSON.parse(keyText).ckc;
+    if (key.substr(0, 5) === '<ckc>' && key.substr(-6) === '</ckc>') {
+      key = key.slice(5, -6)
     }
-    console.log(keyText.indexOf('<FAIRPLAY_RESPONSE>'))
-    if (keyText.indexOf('<FAIRPLAY_RESPONSE>') >= 0) {
-      var esidx = keyText.search('</LICENSE>')
-      keyText = keyText.slice(28, esidx)
-      console.log(keyText)
+    console.log(key.indexOf('<FAIRPLAY_RESPONSE>'))
+    if (key.indexOf('<FAIRPLAY_RESPONSE>') >= 0) {
+      var esidx = key.search('</LICENSE>')
+      key = key.slice(28, esidx)
+      console.log(key)
     }
-    response.data = keyText
+    response.data = key
   }
 
   formatQualityLevelForDisplay(level, forPrimaryDisplay, abrEnabled) {
@@ -68,9 +70,9 @@ class VOPlayer extends Component {
 
     if (level.hasOwnProperty('height')) {
       formatedQuality.text += "<span class='mp-quality-height'>" + level.height + 'p</span>'
-      if (level.height >= 720) {
-        formatedQuality.isHD = true
-      }
+      // if (level.height >= 720) {
+      //   formatedQuality.isHD = true
+      // }
     }
     // if (level.bandwidth > 1000000) {
     //   var b = Math.round(level.bandwidth / 100000)
@@ -79,9 +81,9 @@ class VOPlayer extends Component {
     //   var b = Math.round(level.bandwidth / 1000)
     //   formatedQuality.text += " <span class='mp-quality-bandwidth'>" + b + ' kbps</span>'
     // }
-    if (formatedQuality.isHD) {
-      formatedQuality.text += "<span class='mp-quality-hd'>HD</span>"
-    }
+    // if (formatedQuality.isHD) {
+    //   formatedQuality.text += "<span class='mp-quality-hd'>HD</span>"
+    // }
     if (forPrimaryDisplay && abrEnabled) {
       formatedQuality.text = 'Auto ' + formatedQuality.text
     }
