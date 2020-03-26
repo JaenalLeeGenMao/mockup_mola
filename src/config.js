@@ -49,7 +49,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://new.stag.mola.tv',
-      api: 'https://new.stag.mola.tv/api/v2', //kalo mau push balikin lagi ke awal api: 'https://new.stag.mola.tv/api/v2',
+      api: '/api/v2', //kalo mau push balikin lagi ke awal api: 'https://new.stag.mola.tv/api/v2',
       apiArticles: 'https://new.stag.mola.tv/api/v2/articles',
       auth: 'https://new.stag.mola.tv/accounts/_',
       domain: 'https://new.stag.mola.tv',
@@ -69,7 +69,7 @@ const options = {
     endpoints: {
       clientUrl: '',
       serverUrl: 'https://mola.tv',
-      api: 'https://mola.tv/api/v2',
+      api: '/api/v2',
       apiArticles: 'https://mola.tv/api/v2/articles',
       auth: 'https://mola.tv/accounts/_',
       domain: 'https://mola.tv',

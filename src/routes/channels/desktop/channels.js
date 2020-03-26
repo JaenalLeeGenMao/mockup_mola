@@ -70,7 +70,9 @@ class Channels extends Component {
       const id =
         video && video.id
           ? video.id
-          : this.props.channelsPlaylist.data.length > 0 ? this.props.channelsPlaylist.data[0].id : ''
+          : this.props.channelsPlaylist.data.length > 0
+          ? this.props.channelsPlaylist.data[0].id
+          : ''
       this.setDefaultVideoSetup(id)
       this.eventVideosTracker(id)
       this.setFirstRenderSchedule(id)
@@ -136,19 +138,18 @@ class Channels extends Component {
     this.props.fetchVideoByid(id).then(() => {
       if (this.props.movieDetail && this.props.movieDetail.meta.status === 'success') {
         const { user, movieDetail, configParams } = this.props
-        const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+        const {
+          data: vuid,
+          meta: { status: vuidStatus },
+        } = this.props.vuid
         const dataFetched = movieDetail.data.length > 0 ? movieDetail.data[0] : undefined
         const videoSettingProps = {
           akamai_analytic_enabled:
             configParams && configParams.data ? configParams.data.akamai_analytic_enabled : false,
         }
-        const defaultVidSetting = dataFetched ? defaultVideoSetting(
-          user,
-          dataFetched,
-          vuidStatus === 'success' ? vuid : '',
-          null,
-          videoSettingProps
-        ) : {}
+        const defaultVidSetting = dataFetched
+          ? defaultVideoSetting(user, dataFetched, vuidStatus === 'success' ? vuid : '', null, videoSettingProps)
+          : {}
         this.setState({
           defaultVidSetting: defaultVidSetting,
         })
@@ -379,12 +380,18 @@ class Channels extends Component {
       errorLicense,
       defaultVidSetting,
     } = this.state
-    const { meta: { status, error }, data } = this.props.movieDetail
+    const {
+      meta: { status, error },
+      data,
+    } = this.props.movieDetail
     const apiFetched = status === 'success' && data.length > 0
     const dataFetched = apiFetched ? data[0] : undefined
 
     const { user } = this.props
-    const { data: vuid, meta: { status: vuidStatus } } = this.props.vuid
+    const {
+      data: vuid,
+      meta: { status: vuidStatus },
+    } = this.props.vuid
 
     let playerVolumeInfo = {}
 
@@ -393,7 +400,7 @@ class Channels extends Component {
       if (playerVolumeInfo != null) {
         playerVolumeInfo = JSON.parse(playerVolumeInfo)
       }
-    } catch (err) { }
+    } catch (err) {}
 
     const videoSettings = {
       ...playerVolumeInfo,
@@ -423,34 +430,31 @@ class Channels extends Component {
           <div className={styles.channels_container} id="video-player-root">
             <div className={!toggleInfoBar ? styles.video_container : styles.video_container_with_infobar}>
               {showOfflinePopup && <OfflineNoticePopup />}
-              {!block &&
-                toggleInfoBar && (
-                  <div className={styles.channel__infobar}>
-                    <div className={styles.channel__infobar__container}>
-                      <div className={styles.channel__infobar__text}>{notice_bar_message}</div>
-                      <div className={styles.channel__infobar__close} onClick={this.handleCloseInfoBar}>
-                        <span />
-                      </div>
+              {!block && toggleInfoBar && (
+                <div className={styles.channel__infobar}>
+                  <div className={styles.channel__infobar__container}>
+                    <div className={styles.channel__infobar__text}>{notice_bar_message}</div>
+                    <div className={styles.channel__infobar__close} onClick={this.handleCloseInfoBar}>
+                      <span />
                     </div>
                   </div>
-                )}
-              {!isDesktopVideoBlocker &&
-                !block &&
-                !errorLicense &&
-                loadPlayer &&
-                defaultVidSetting && (
-                  <VOPlayer
-                    poster={poster}
-                    autoPlay={false}
-                    subtitles={this.subtitles()}
-                    handleOnReadyStateChange={this.handleOnReadyStateChange}
-                    {...videoSettings}
-                  >
-                  </VOPlayer>
-                )}
+                </div>
+              )}
+              {// !isDesktopVideoBlocker &&
+              // !block &&
+              // !errorLicense &&
+              loadPlayer && defaultVidSetting && (
+                <VOPlayer
+                  poster={poster}
+                  autoPlay={false}
+                  subtitles={this.subtitles()}
+                  handleOnReadyStateChange={this.handleOnReadyStateChange}
+                  {...videoSettings}
+                ></VOPlayer>
+              )}
 
               {/* {need to be optimize later} */}
-              {isDesktopVideoBlocker && (
+              {/* {isDesktopVideoBlocker && (
                 <PlatformDesktop
                   isDesktopVideoBlocker={isDesktopVideoBlocker}
                   {...this.props}
@@ -472,7 +476,7 @@ class Channels extends Component {
                     {' '}
                     Error during license server request. Please refresh the browser.
                   </div>
-                )}
+                )} */}
             </div>
             <PrimaryMenu
               activeChannelId={activeChannelId}
@@ -490,19 +494,13 @@ class Channels extends Component {
               <div className={styles.epg__grid__container}>
                 <span />
                 {programmeGuides.loading && <Placeholder />}
-                {!programmeGuides.loading &&
-                  programmeGuides.data &&
-                  scheduleList.length > 0 && (
-                    <ScheduleCard
-                      scheduleList={scheduleList}
-                      activeDate={activeDate}
-                      activeChannelId={activeChannelId}
-                    />
-                  )}
+                {!programmeGuides.loading && programmeGuides.data && scheduleList.length > 0 && (
+                  <ScheduleCard scheduleList={scheduleList} activeDate={activeDate} activeChannelId={activeChannelId} />
+                )}
                 {(programmeGuides.error && !programmeGuides.loading && !programmeGuides.data) ||
-                  (!programmeGuides.error &&
-                    !programmeGuides.loading &&
-                    scheduleList.length === 0 && <div className={styles.epg__no__schedule}> No Schedule </div>)}
+                  (!programmeGuides.error && !programmeGuides.loading && scheduleList.length === 0 && (
+                    <div className={styles.epg__no__schedule}> No Schedule </div>
+                  ))}
                 <VerticalCalendar handleCategoryFilter={this.handleSelectDate} selectedDate={activeDate} isChannel />
               </div>
             </div>

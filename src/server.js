@@ -144,20 +144,20 @@ const app = express()
 // If you are using proxy from external machine, you can set TRUST_PROXY env
 // Default is to trust proxy headers only from loopback interface.
 // -----------------------------------------------------------------------------
-app.set('trust proxy', config.trustProxy)
+// app.set('trust proxy', config.trustProxy)
 app.get('/ping', (req, res) => {
   res.status(200)
   res.send('PONG')
 })
 
-// app.use(
-//   '/api',
-//   proxy(`${config.endpoints.domain}/api/`, {
-//     proxyReqPathResolver: (req, res) => {
-//       return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
-//     },
-//   })
-// )
+app.use(
+  '/api',
+  proxy(`${config.endpoints.domain}/api/`, {
+    proxyReqPathResolver: (req, res) => {
+      return '/api' + (url.parse(req.url).path === '/' ? '' : url.parse(req.url).path)
+    },
+  })
+)
 
 // app.use(
 //   '/accounts/_',
@@ -453,7 +453,7 @@ const getHeaderMenus = async configParams => {
   let hasCache = false
   let headerArr = []
   let headerError = ''
-  molaCache.get('headerMenu', function (err, value) {
+  molaCache.get('headerMenu', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -486,7 +486,7 @@ const getHeaderMenus = async configParams => {
       console.log('Error Get Header Menu', err)
     }
     if (headerArr.length > 0) {
-      molaCache.set('headerMenu', headerArr, 60, function (err, success) {
+      molaCache.set('headerMenu', headerArr, 60, function(err, success) {
         if (!err && success) {
           // console.log('success set cache node cache headermenu', headerArr)
         } else {
@@ -507,7 +507,7 @@ const getSidebarMenu = async configParams => {
   let hasCache = false
   let sidebarArr = []
   let sidebarError = ''
-  molaCache.get('sidebarMenu', function (err, value) {
+  molaCache.get('sidebarMenu', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -537,7 +537,7 @@ const getSidebarMenu = async configParams => {
       console.log('Error Get Sidebar Menu', err)
     }
     if (sidebarArr.length > 0) {
-      molaCache.set('sidebarMenu', sidebarArr, 60, function (err, success) {
+      molaCache.set('sidebarMenu', sidebarArr, 60, function(err, success) {
         if (!err && success) {
           // console.log('success set cache node cache sidebar menu', sidebarArr)
         } else {
@@ -559,7 +559,7 @@ const getConfigParams = async () => {
   let hasCache = false
   let configParams = null
 
-  molaCache.get('configParams', function (err, value) {
+  molaCache.get('configParams', function(err, value) {
     if (!err) {
       if (value == undefined) {
         // key not found
@@ -575,9 +575,7 @@ const getConfigParams = async () => {
 
   if (!hasCache) {
     try {
-      const configParamUrl = `${configUrl.endpoint}/app-params?app_id=${configUrl.appId}&platform_id=${
-        configUrl.platformId
-        }`
+      const configParamUrl = `${configUrl.endpoint}/app-params?app_id=${configUrl.appId}&platform_id=${configUrl.platformId}`
       let response = null
 
       const rawResponse = await fetch(`${configParamUrl}`, {
@@ -591,7 +589,7 @@ const getConfigParams = async () => {
       // console.log('Error Get Paramss', err)
     }
     if (configParams) {
-      molaCache.set('configParams', configParams, 60, function (err, success) {
+      molaCache.set('configParams', configParams, 60, function(err, success) {
         if (!err && success) {
           // console.log('success set cache node cache config params', configParams)
         } else {
@@ -1094,7 +1092,7 @@ app.get('*', async (req, res, next) => {
       } else {
         let articlesData = null
         let hasCache = false
-        molaCache.get(articleId, function (err, value) {
+        molaCache.get(articleId, function(err, value) {
           if (!err) {
             if (value == undefined) {
               // key not found
@@ -1123,7 +1121,7 @@ app.get('*', async (req, res, next) => {
                   },
                   data: result,
                 }
-                molaCache.set(articleId, result, 60, function (err, success) {
+                molaCache.set(articleId, result, 60, function(err, success) {
                   if (!err && success) {
                     // console.log('success set cache node cache', articleId, result)
                     // true
@@ -1270,7 +1268,7 @@ app.get('*', async (req, res, next) => {
       appLink = 'watch?v=' + videoId
       let videoObj = {}
       let hasCache = false
-      molaCache.get(videoId, function (err, value) {
+      molaCache.get(videoId, function(err, value) {
         if (!err) {
           if (value == undefined) {
             // key not found
@@ -1320,7 +1318,7 @@ app.get('*', async (req, res, next) => {
           }
         }
         if (videoObj.title) {
-          molaCache.set(videoId, videoObj, 60, function (err, success) {
+          molaCache.set(videoId, videoObj, 60, function(err, success) {
             if (!err && success) {
               // console.log('success set cache node cache', videoId, videoObj)
               // true
