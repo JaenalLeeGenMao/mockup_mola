@@ -41,8 +41,11 @@ const RelatedVideos = ({ style = {}, containerClassName = '', className = '', de
 }
 
 class NotFound extends React.Component {
-  componentWillMount() {
-    const { recommendation: { meta, data }, fetchRecommendation } = this.props
+  componentDidMount() {
+    const {
+      recommendation: { meta, data },
+      fetchRecommendation,
+    } = this.props
     if (meta.status === 'loading') {
       fetchRecommendation()
     }

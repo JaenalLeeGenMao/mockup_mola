@@ -49,7 +49,7 @@ class Input extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let { type } = this.props
     type = type || 'text'
 

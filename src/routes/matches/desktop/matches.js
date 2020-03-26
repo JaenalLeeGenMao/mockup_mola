@@ -165,10 +165,6 @@ class Matches extends React.Component {
     }
   }
 
-  componentWillMount() {
-    // window.addEventListener('scroll', this.onScroll)
-  }
-
   handleTourCallback = data => {
     const { type, action, index } = data
     // console.log('tipe', type)

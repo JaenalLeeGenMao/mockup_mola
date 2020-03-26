@@ -36,7 +36,7 @@ class SwitchComponent extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentWillMount() {
+  componentDidmount() {
     const { checked } = this.props
     this.setState({
       checked: checked,

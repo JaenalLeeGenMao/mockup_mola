@@ -60,7 +60,7 @@ class Setting extends React.Component {
     })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const props = this.props
     const payload = Object.assign(this.state, props)
     this.setState({

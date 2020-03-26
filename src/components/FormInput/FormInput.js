@@ -58,7 +58,7 @@ class FormInput extends React.Component {
     })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let { type } = this.props
     type = type || 'text'
 
@@ -83,16 +83,15 @@ class FormInput extends React.Component {
           placeholder={props.children}
           onKeyUp={this.handleKeyUp}
         />
-        {this.props.type === 'password' &&
-          this.state.focus && (
-            <div className={style.eye}>
-              {this.state.visible ? (
-                <img src={visible} alt="mola tv hidden" onClick={() => this.toggle('visible')} />
-              ) : (
-                <img src={unVisible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
-              )}
-            </div>
-          )}
+        {this.props.type === 'password' && this.state.focus && (
+          <div className={style.eye}>
+            {this.state.visible ? (
+              <img src={visible} alt="mola tv hidden" onClick={() => this.toggle('visible')} />
+            ) : (
+              <img src={unVisible} alt="mola tv visible" onClick={() => this.toggle('visible')} />
+            )}
+          </div>
+        )}
       </div>
     )
   }
