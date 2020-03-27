@@ -16,7 +16,7 @@ class VOPlayer extends Component {
   state = {
     isPlaying: this.props.autoplay || false,
     nextVideoClose: false,
-    playButtonClose: true
+    playButtonClose: true,
   }
 
   onError = error => {
@@ -36,8 +36,7 @@ class VOPlayer extends Component {
       request.allowCrossSiteCredentials = true
       console.log('fairplayLicenseRequestFilter', request)
       // request body is already base-64 encoded
-      var newBody = 'spc=' + request.body
-      newBody += '&assetID=' + request.keyIds[0]
+      var newBody = 'spc=' + encodeURIComponent(request.body)
       // replace request body with newly crafted one
       request.body = newBody
       // add the content-type header matching the new body format
@@ -48,8 +47,8 @@ class VOPlayer extends Component {
   //WARNING: below is only an example of Fairplay license response filter. This implementation is not meant to be generic
   fairplayLicenseResponseFilter = response => {
     var keyText = response.data.trim()
-    console.log('Response keytext = ' + keyText);
-    var key = JSON.parse(keyText).ckc;
+    console.log('Response keytext = ' + keyText)
+    var key = JSON.parse(keyText).ckc
     if (key.substr(0, 5) === '<ckc>' && key.substr(-6) === '</ckc>') {
       key = key.slice(5, -6)
     }
@@ -195,7 +194,7 @@ class VOPlayer extends Component {
         const config = {
           vmapUrl,
           subtitles,
-          manifestUri: this.props.streamSourceUrl
+          manifestUri: this.props.streamSourceUrl,
         }
         this.handleInitPlayer(player, config)
         this.handlePlayerEventListener(player)
@@ -401,19 +400,20 @@ class VOPlayer extends Component {
       } catch (e) {
         console.log('The video has now been loaded without ads')
       }
-      player.load(config.manifestUri, 0)
+      player
+        .load(config.manifestUri, 0)
         .then(function() {
           // player.addSRTTextTrack('EN', '', 'https://mola01.koicdn.com/subtitles/s1kfa1ASC4-id.srt')
-            if (!__DEV__ && config.subtitles && config.subtitles.length > 0) {
-              config.subtitles.map(subtitle => {
-                player.addSRTTextTrack(subtitle.label, '', subtitle.src)
-              })
-            }
-
-            /** only when player fully loaded then show the play button */
-            that.setState({
-              playButtonClose: false
+          if (!__DEV__ && config.subtitles && config.subtitles.length > 0) {
+            config.subtitles.map(subtitle => {
+              player.addSRTTextTrack(subtitle.label, '', subtitle.src)
             })
+          }
+
+          /** only when player fully loaded then show the play button */
+          that.setState({
+            playButtonClose: false,
+          })
           // player.addSRTTextTrack('EN', '', 'http://localhost:3000/vo/sample-subs2.srt')
           // player.addSRTTextTrack('ID', '', 'http://localhost:3000/vo/sample-subs.srt')
         })
@@ -568,35 +568,33 @@ class VOPlayer extends Component {
                     backgroundImage: `url(${poster})`,
                   }}
                 />
-                {
-                  this.player && !playButtonClose && (
-                    <button
-                      className="vo-big-play-button"
-                      type="button"
-                      title="Play Video"
-                      onClick={() => this.handlePlayButton()}
-                    >
-                      <div className="vo-big-play-button-svg-container">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" fill="currentColor">
-                          <circle cx="75" cy="75" r="73" fill="#000" fillOpacity="0.2" />
-                          <circle
-                            cx="75"
-                            cy="75"
-                            r="73"
-                            className="theo-play-svg-circle"
-                            strokeWidth="4"
-                            stroke="currentColor"
-                            fill="none"
-                            transform="rotate(-90,75,75)"
-                          />
-                          <g transform="translate(85,75) scale(0.5625) translate(-75,-75)">
-                            <path d="m 123.89639,85.432 c -12.865,9.167 -29.482997,19.402 -49.848997,30.7 -19.634,11.035 -36.851,19.7 -51.65,26 l -16.3990002,6.099 c -1.033,-4.433 -2,-11.002 -2.9,-19.7 -2.033,-17.333 -3.04999998,-36.466 -3.04999998,-57.399 0,-19.167 1.38199998,-37.081 4.14799998,-53.75 l 4.0019995,-19.1499994 17.3990007,5.849 c 15.068,5.9999994 31.401,14.5169994 49,25.5509994 18.631,11.666 34.616997,22.766 47.948997,33.3 6.663,5.3 11.463,9.383 14.396,12.25 l -13.046,10.25" />
-                          </g>
-                        </svg>
-                      </div>
-                    </button>
-                  )
-                }
+                {this.player && !playButtonClose && (
+                  <button
+                    className="vo-big-play-button"
+                    type="button"
+                    title="Play Video"
+                    onClick={() => this.handlePlayButton()}
+                  >
+                    <div className="vo-big-play-button-svg-container">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" fill="currentColor">
+                        <circle cx="75" cy="75" r="73" fill="#000" fillOpacity="0.2" />
+                        <circle
+                          cx="75"
+                          cy="75"
+                          r="73"
+                          className="theo-play-svg-circle"
+                          strokeWidth="4"
+                          stroke="currentColor"
+                          fill="none"
+                          transform="rotate(-90,75,75)"
+                        />
+                        <g transform="translate(85,75) scale(0.5625) translate(-75,-75)">
+                          <path d="m 123.89639,85.432 c -12.865,9.167 -29.482997,19.402 -49.848997,30.7 -19.634,11.035 -36.851,19.7 -51.65,26 l -16.3990002,6.099 c -1.033,-4.433 -2,-11.002 -2.9,-19.7 -2.033,-17.333 -3.04999998,-36.466 -3.04999998,-57.399 0,-19.167 1.38199998,-37.081 4.14799998,-53.75 l 4.0019995,-19.1499994 17.3990007,5.849 c 15.068,5.9999994 31.401,14.5169994 49,25.5509994 18.631,11.666 34.616997,22.766 47.948997,33.3 6.663,5.3 11.463,9.383 14.396,12.25 l -13.046,10.25" />
+                        </g>
+                      </svg>
+                    </div>
+                  </button>
+                )}
               </>
             )}
             <div ref={node => (this.childRefs = node)} id="videoContext" className="noselect">
